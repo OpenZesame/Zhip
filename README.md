@@ -1,2 +1,2 @@
 # Zilliqa-Wallet-iOS
-iOS Wallet for Zilliqa
+This iOS Wallet be developed after the [Zilliqa Swift SDK](https://github.com/OpenZesame/Zilliqa-Swift-SDK) is done.
