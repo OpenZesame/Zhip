@@ -56,7 +56,7 @@ extension SendViewModel: ViewModelType {
 
         let _keyPair = self.wallet.keyPair
         let wallet: Driver<Wallet> = balanceAndNonce.map { balance in
-            let amount = try! Amount(double: balance.balance)
+            let amount = try! Amount(double: Double(balance.balance)!)
             return Wallet(keyPair: _keyPair, balance: amount, nonce: Nonce(balance.nonce))
         }
 
