@@ -1,0 +1,6 @@
+github "attaswift/BigInt"
+github "Sajjon/EllipticCurveKit" "master"
+github "krzyzanowskim/CryptoSwift"
+github "ollitapa/JSONRPCKit"
+github "ishkawa/APIKit"
+github "ReactiveX/RxSwift" "4.2.0"

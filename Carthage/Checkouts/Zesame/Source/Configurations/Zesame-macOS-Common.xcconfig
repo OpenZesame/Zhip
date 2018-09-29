@@ -1,0 +1,3 @@
+#include "Zesame-Shared.xcconfig"
+#include "../../Configurations/macos_framework.xcconfig"
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/Carthage/Build/macOS

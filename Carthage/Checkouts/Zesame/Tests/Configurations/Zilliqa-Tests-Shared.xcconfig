@@ -1,0 +1,3 @@
+INFOPLIST_FILE = Tests/SupportingFiles/ZilliqaSDKTests-Info.plist
+PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.ZesameTests
+PRODUCT_NAME = ZesameTests

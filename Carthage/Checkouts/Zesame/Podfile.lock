@@ -1,0 +1,24 @@
+PODS:
+  - CryptoSwift (0.10.0)
+  - EllipticCurve (0.3.3):
+    - UInt256 (~> 0.2.2)
+  - UInt256 (0.2.2)
+
+DEPENDENCIES:
+  - CryptoSwift
+  - EllipticCurve
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CryptoSwift
+    - EllipticCurve
+    - UInt256
+
+SPEC CHECKSUMS:
+  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  EllipticCurve: a045c4e97e005a1309e79162f738c028c109174d
+  UInt256: e88c8706e35e1e29fd5459be4dbc0488c8f7ea60
+
+PODFILE CHECKSUM: dc449438744ad2ce02f02cdf91510456618fddc6
+
+COCOAPODS: 1.5.3

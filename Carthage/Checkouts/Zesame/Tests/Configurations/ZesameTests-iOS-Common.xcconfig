@@ -1,0 +1,3 @@
+#include "../../Configurations/base_framework.xcconfig"
+#include "../../Configurations/base_tests.xcconfig"
+#include "Zilliqa-Tests-Shared.xcconfig"

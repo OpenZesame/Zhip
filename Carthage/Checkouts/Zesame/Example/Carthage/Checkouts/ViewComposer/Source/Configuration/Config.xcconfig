@@ -1,0 +1,22 @@
+//
+//  Config.xcconfig
+//  ViewComposer
+//
+//  Created by Alexander Cyon on 2017-05-31.
+//
+//
+
+// CUSTOM VARIABLES
+_DEBUG = DEBUG
+
+// SETTINGS
+SWIFT_VERSION = 3.1
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
+CLANG_MODULES_AUTOLINK = YES
+GCC_OPTIMIZATION_LEVEL = s
+SWIFT_OPTIMIZATION_LEVEL = -Owholemodule
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Debug][sdk=iphoneos*] = $(_DEBUG)
+GCC_PREPROCESSOR_DEFINITIONS[config=Debug] = $(_DEBUG)
+GCC_OPTIMIZATION_LEVEL[config=Debug] = 0
+SWIFT_OPTIMIZATION_LEVEL[config=Debug] = -Onone

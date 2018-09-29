@@ -1,0 +1,11 @@
+sources:
+  - Source/Sourcery/Rules
+  - Source/Classes
+templates:
+  - Source/Sourcery/Templates
+output: Source/Sourcery/Generated
+args:
+  disableCache: true
+  prune: true
+  verbose: true
+  importViewComposerInTemplate: false
