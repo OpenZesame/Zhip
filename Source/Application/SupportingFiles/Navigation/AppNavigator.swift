@@ -13,9 +13,11 @@ final class AppCoordinator {
 
     private let window: UIWindow
     var childCoordinators = [AnyCoordinator]()
+    private let services: UseCaseProvider
 
-    init(window: UIWindow) {
+    init(window: UIWindow, services: UseCaseProvider) {
         self.window = window
+        self.services = services
     }
 }
 
@@ -39,7 +41,9 @@ extension AppCoordinator: AppNavigation {
     func toChooseWallet() {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-        let chooseWalletCoordinator = ChooseWalletCoordinator(navigationController: navigationController, navigation: self)
+
+
+        let chooseWalletCoordinator = ChooseWalletCoordinator(navigationController: navigationController, navigation: self, services: services)
         childCoordinators = [chooseWalletCoordinator]
         chooseWalletCoordinator.start()
     }
@@ -47,7 +51,7 @@ extension AppCoordinator: AppNavigation {
     func toMain(wallet: Wallet) {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-        let mainCoordinator = MainCoordinator(navigationController: navigationController, wallet: wallet, navigation: self)
+        let mainCoordinator = MainCoordinator(navigationController: navigationController, wallet: wallet, navigation: self, services: services)
         childCoordinators = [mainCoordinator]
         mainCoordinator.start()
     }

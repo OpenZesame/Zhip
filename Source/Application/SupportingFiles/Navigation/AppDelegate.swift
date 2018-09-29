@@ -17,7 +17,7 @@ class AppDelegate: UIResponder {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.makeKeyAndVisible()
-        return AppCoordinator(window: window)
+        return AppCoordinator(window: window, services: DefaultUseCaseProvider.shared)
     }()
 }
 

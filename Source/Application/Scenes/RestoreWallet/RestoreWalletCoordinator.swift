@@ -9,18 +9,29 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator: AnyCoordinator {
+final class RestoreWalletCoordinator {
 
     private weak var navigationController: UINavigationController?
     private weak var navigator: ChooseWalletNavigator?
+    private let services: UseCaseProvider
 
-    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator) {
+    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, services: UseCaseProvider) {
         self.navigationController = navigationController
         self.navigator = navigator
+        self.services = services
     }
 }
 
-public protocol RestoreWalletNavigator: AnyObject {
+extension RestoreWalletCoordinator: AnyCoordinator {
+
+    func start() {
+        toRestoreWallet()
+    }
+
+}
+
+protocol Navigator: AnyObject {}
+protocol RestoreWalletNavigator: Navigator {
     func toRestoreWallet()
     func toMain(restoredWallet: Wallet)
 }
@@ -33,12 +44,8 @@ extension RestoreWalletCoordinator: RestoreWalletNavigator {
     }
 
     func toRestoreWallet() {
-        let viewModel = RestoreWalletViewModel(navigator: self)
+        let viewModel = RestoreWalletViewModel(navigator: self, useCase: services.makeChooseWalletUseCase())
         let vc = RestoreWallet(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    func start() {
-        toRestoreWallet()
     }
 }

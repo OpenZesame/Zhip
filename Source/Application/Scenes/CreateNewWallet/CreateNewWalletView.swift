@@ -28,15 +28,11 @@ final class CreateNewWalletView: ScrollingStackView {
 extension CreateNewWalletView: ViewModelled {
     typealias ViewModel = CreateNewWalletViewModel
     var inputFromView: ViewModel.Input {
-        return ViewModel.Input(
-            emailAddress: emailForKeystoreBackupField.rx.text.asDriverOnErrorReturnEmpty(),
-            sendBackupTrigger: sendBackupButton.rx.tap.asDriverOnErrorReturnEmpty()
-        )
+        return ViewModel.Input()
     }
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.canSendBackup --> sendBackupButton.rx.isEnabled,
             viewModel.wallet        --> walletView.rx.wallet
         ]
     }

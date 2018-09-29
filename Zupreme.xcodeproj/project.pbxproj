@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
+		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
+		4847EDCF215FE914002FF978 /* TransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* TransactionsUseCase.swift */; };
+		4847EDD1215FE93D002FF978 /* ChooseWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD0215FE93D002FF978 /* ChooseWalletUseCase.swift */; };
 		484B068720BA0D9600C4E50A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B068520BA0D8800C4E50A /* AppDelegate.swift */; };
 		484F7D7721441BF20023C6D4 /* SendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F7D7321441BF20023C6D4 /* SendCoordinator.swift */; };
 		484F7D7821441BF20023C6D4 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F7D7421441BF20023C6D4 /* SendView.swift */; };
@@ -50,7 +53,7 @@
 		48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCA21432E220063B0FA /* ViewModelType.swift */; };
 		48C89FCD21432E2E0063B0FA /* ChooseWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */; };
 		48C89FCF21432E440063B0FA /* CreateNewWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCE21432E440063B0FA /* CreateNewWalletViewModel.swift */; };
-		48C89FDB214331050063B0FA /* OpenWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FDA214331050063B0FA /* OpenWalletUseCase.swift */; };
+		48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FDA214331050063B0FA /* UseCaseProvider.swift */; };
 		48C89FDE2143313B0063B0FA /* KeyRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FDD2143313B0063B0FA /* KeyRestoration.swift */; };
 		48C89FE0214331590063B0FA /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FDF214331590063B0FA /* Scene.swift */; };
 		48C89FE22143316B0063B0FA /* ChooseWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FE12143316B0063B0FA /* ChooseWallet.swift */; };
@@ -89,6 +92,9 @@
 
 /* Begin PBXFileReference section */
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
+		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
+		4847EDCE215FE914002FF978 /* TransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsUseCase.swift; sourceTree = "<group>"; };
+		4847EDD0215FE93D002FF978 /* ChooseWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletUseCase.swift; sourceTree = "<group>"; };
 		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZilliqaSDK-iOS-Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
@@ -148,7 +154,7 @@
 		48C89FCA21432E220063B0FA /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletViewModel.swift; sourceTree = "<group>"; };
 		48C89FCE21432E440063B0FA /* CreateNewWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewWalletViewModel.swift; sourceTree = "<group>"; };
-		48C89FDA214331050063B0FA /* OpenWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWalletUseCase.swift; sourceTree = "<group>"; };
+		48C89FDA214331050063B0FA /* UseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseProvider.swift; sourceTree = "<group>"; };
 		48C89FDD2143313B0063B0FA /* KeyRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRestoration.swift; sourceTree = "<group>"; };
 		48C89FDF214331590063B0FA /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		48C89FE12143316B0063B0FA /* ChooseWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWallet.swift; sourceTree = "<group>"; };
@@ -205,6 +211,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4847EDC9215FDC6A002FF978 /* NetworkPlatform */ = {
+			isa = PBXGroup;
+			children = (
+				4847EDCA215FDC7D002FF978 /* UseCases */,
+			);
+			path = NetworkPlatform;
+			sourceTree = "<group>";
+		};
+		4847EDCA215FDC7D002FF978 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */,
+				4847EDD0215FE93D002FF978 /* ChooseWalletUseCase.swift */,
+				4847EDCE215FE914002FF978 /* TransactionsUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
 		484B062D20BA0C2D00C4E50A = {
 			isa = PBXGroup;
 			children = (
@@ -400,6 +424,7 @@
 		48C89FD121432FA40063B0FA /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				4847EDC9215FDC6A002FF978 /* NetworkPlatform */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -473,7 +498,7 @@
 		48C89FD9214330F20063B0FA /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				48C89FDA214331050063B0FA /* OpenWalletUseCase.swift */,
+				48C89FDA214331050063B0FA /* UseCaseProvider.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -696,7 +721,7 @@
 				48C89FE0214331590063B0FA /* Scene.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
 				4850A40A214C124400EBB85B /* ViewStyling.swift in Sources */,
-				48C89FDB214331050063B0FA /* OpenWalletUseCase.swift in Sources */,
+				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
 				48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */,
 				48C8A0132143CF6C0063B0FA /* RestoreWallet.swift in Sources */,
 				48607BEE215D2C5C001AD0D0 /* SettingsCoordinator.swift in Sources */,
@@ -713,7 +738,9 @@
 				48C89FE22143316B0063B0FA /* ChooseWallet.swift in Sources */,
 				48AC6CC42145AC4A00B4D036 /* SettingsViewModel.swift in Sources */,
 				4898FB48215423D6009501DC /* ScrollViewOwner.swift in Sources */,
+				4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */,
 				48C89FF32143322C0063B0FA /* ChooseWalletView.swift in Sources */,
+				4847EDCF215FE914002FF978 /* TransactionsUseCase.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				484F7D7821441BF20023C6D4 /* SendView.swift in Sources */,
 				484F7D7721441BF20023C6D4 /* SendCoordinator.swift in Sources */,
@@ -722,6 +749,7 @@
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
 				48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */,
+				4847EDD1215FE93D002FF978 /* ChooseWalletUseCase.swift in Sources */,
 				488A65822155AB2D0091FD03 /* WalletView.swift in Sources */,
 				48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */,
 				48B16E3021452A2600177434 /* Never.swift in Sources */,
