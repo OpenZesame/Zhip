@@ -13,10 +13,12 @@ final class CreateNewWalletCoordinator {
 
     private weak var navigationController: UINavigationController?
     private weak var navigator: ChooseWalletNavigator?
+    private let services: UseCaseProvider
 
-    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator) {
+    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, services: UseCaseProvider) {
         self.navigationController = navigationController
         self.navigator = navigator
+        self.services = services
     }
 }
 
@@ -38,7 +40,7 @@ extension CreateNewWalletCoordinator: CreateNewWalletNavigator {
     }
 
     func toCreateWallet() {
-        let viewModel = CreateNewWalletViewModel(navigator: self, service: DefaultZilliqaService.shared.rx)
+        let viewModel = CreateNewWalletViewModel(navigator: self, useCase: services.makeChooseWalletUseCase())
         let vc = CreateNewWallet(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }

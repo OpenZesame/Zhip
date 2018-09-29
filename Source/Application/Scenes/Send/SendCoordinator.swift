@@ -16,10 +16,12 @@ final class SendCoordinator {
 
     private weak var navigationController: UINavigationController?
     private let wallet: Wallet
+    private let services: UseCaseProvider
 
-    init(navigationController: UINavigationController, wallet: Wallet) {
+    init(navigationController: UINavigationController, wallet: Wallet, services: UseCaseProvider) {
         self.navigationController = navigationController
         self.wallet = wallet
+        self.services = services
     }
 }
 
@@ -38,7 +40,7 @@ extension SendCoordinator: SendNavigator {
     func toSend() {
         navigationController?.pushViewController(
             Send(
-                viewModel: SendViewModel(navigator: self, wallet: wallet, service: DefaultZilliqaService.shared.rx)
+                viewModel: SendViewModel(navigator: self, wallet: wallet, useCase: services.makeTransactionsUseCase())
             ),
             animated: true
         )

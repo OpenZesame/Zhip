@@ -8,4 +8,9 @@
 
 import Foundation
 
-public struct KeyRestoration {}
+enum KeyRestoration {
+    case privateKey(hexString: String)
+    // In the future we will add support for mneumonic and keystores
+    //    case mneumonic(Mneumonic)
+    //    case keystore(KeyStore, passphrase: String)
+}

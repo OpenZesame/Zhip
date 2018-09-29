@@ -14,9 +14,11 @@ final class RestoreWalletViewModel {
     private let bag = DisposeBag()
 
     private weak var navigator: RestoreWalletNavigator?
+    private let useCase: ChooseWalletUseCase
 
-    init(navigator: RestoreWalletNavigator) {
+    init(navigator: RestoreWalletNavigator, useCase: ChooseWalletUseCase) {
         self.navigator = navigator
+        self.useCase = useCase
     }
 }
 
@@ -32,11 +34,15 @@ extension RestoreWalletViewModel: ViewModelType {
     func transform(input: Input) -> Output {
 
         let wallet = input.privateKey
-            .map { Wallet(privateKeyHex: $0) }
-            .filterNil()
+            .flatMapLatest {
+                self.useCase
+                    .restoreWallet(from: .privateKey(hexString: $0))
+                    .asDriverOnErrorReturnEmpty()
+        }
 
         input.restoreTrigger
-            .withLatestFrom(wallet).do(onNext: {
+            .withLatestFrom(wallet)
+            .do(onNext: {
                 self.navigator?.toMain(restoredWallet: $0)
             }).drive().disposed(by: bag)
 

@@ -15,12 +15,12 @@ final class SendViewModel {
     private let bag = DisposeBag()
     
     private weak var navigator: SendNavigator?
-    private let service: ZilliqaServiceReactive
+    private let useCase: TransactionsUseCase
     private let wallet: Wallet
 
-    init(navigator: SendNavigator, wallet: Wallet, service: ZilliqaServiceReactive) {
+    init(navigator: SendNavigator, wallet: Wallet, useCase: TransactionsUseCase) {
         self.navigator = navigator
-        self.service = service
+        self.useCase = useCase
         self.wallet = wallet
     }
 }
@@ -49,14 +49,14 @@ extension SendViewModel: ViewModelType {
         let fetchTrigger = fetchBalanceSubject.asDriverOnErrorReturnEmpty()
 
         let balanceAndNonce: Driver<BalanceResponse> = fetchTrigger.flatMapLatest { _ in 
-            self.service
+            self.useCase
                 .getBalance(for: _address)
                 .asDriverOnErrorReturnEmpty()
         }
 
         let _keyPair = self.wallet.keyPair
         let wallet: Driver<Wallet> = balanceAndNonce.map { balance in
-            let amount = try! Amount(double: balance.balance)
+            let amount = try! Amount(double: Double(balance.balance)!)
             return Wallet(keyPair: _keyPair, balance: amount, nonce: Nonce(balance.nonce))
         }
 
@@ -72,7 +72,7 @@ extension SendViewModel: ViewModelType {
         let transactionId: Driver<String> = input.sendTrigger
             .withLatestFrom(Driver.combineLatest(payment, wallet) { (payment: $0, keyPair: $1.keyPair) })
             .flatMapLatest {
-                self.service.sendTransaction(for: $0.payment, signWith: $0.keyPair)
+                self.useCase.sendTransaction(for: $0.payment, signWith: $0.keyPair)
                     .asDriverOnErrorReturnEmpty()
                     // Trigger fetching of balance after successfull send
                     .do(onNext: { _ in

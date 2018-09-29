@@ -14,12 +14,14 @@ final class ChooseWalletCoordinator: Coordinator {
 
     private weak var navigationController: UINavigationController?
     private weak var navigation: AppNavigation?
+    private let services: UseCaseProvider
 
     var childCoordinators = [AnyCoordinator]()
 
-    init(navigationController: UINavigationController, navigation: AppNavigation) {
+    init(navigationController: UINavigationController, navigation: AppNavigation, services: UseCaseProvider) {
         self.navigationController = navigationController
         self.navigation = navigation
+        self.services = services
     }
 }
 
@@ -50,11 +52,11 @@ extension ChooseWalletCoordinator: ChooseWalletNavigator {
     }
 
     func toCreateNewWallet() {
-        start(coordinator: CreateNewWalletCoordinator(navigationController: navigationController, navigator: self))
+        start(coordinator: CreateNewWalletCoordinator(navigationController: navigationController, navigator: self, services: services))
     }
 
     func toRestoreWallet() {
-        start(coordinator: RestoreWalletCoordinator(navigationController: navigationController, navigator: self))
+        start(coordinator: RestoreWalletCoordinator(navigationController: navigationController, navigator: self, services: services))
     }
 
 }

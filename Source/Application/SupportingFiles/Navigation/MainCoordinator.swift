@@ -17,17 +17,19 @@ final class MainCoordinator: Coordinator {
     var childCoordinators = [AnyCoordinator]()
 
     private let wallet: Wallet
+    private let services: UseCaseProvider
     private weak var navigation: AppNavigation?
 
-    init(navigationController: UINavigationController, wallet: Wallet, navigation: AppNavigation) {
+    init(navigationController: UINavigationController, wallet: Wallet, navigation: AppNavigation, services: UseCaseProvider) {
         self.navigation = navigation
         self.navigationController = navigationController
         self.wallet = wallet
+        self.services = services
 
         // SEND
         let sendNavigationController = UINavigationController()
         sendNavigationController.tabBarItem = UITabBarItem("Send")
-        start(coordinator: SendCoordinator(navigationController: sendNavigationController, wallet: wallet))
+        start(coordinator: SendCoordinator(navigationController: sendNavigationController, wallet: wallet, services: services))
 
         // SETTINGS
         let settingsNavigationController = UINavigationController()
