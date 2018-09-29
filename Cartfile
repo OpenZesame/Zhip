@@ -1,12 +1,10 @@
 # The Zilliqa Swift SDK
-# github "OpenZesame/Zesame"
-git "../Zesame/" >= 0.0.6
-
+github "OpenZesame/Zesame" "master"
 # Drivng TableViews and CollectionView reactivly
-# github "RxSwiftCommunity/RxDataSources"
+github "RxSwiftCommunity/RxDataSources"
 
 # Autolayout easy
-# github "roberthein/TinyConstraints"
+github "roberthein/TinyConstraints"
 
 # Simple field validation
-# github "ustwo/formvalidator-swift"
+github "ustwo/formvalidator-swift"
