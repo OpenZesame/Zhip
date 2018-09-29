@@ -11,7 +11,7 @@ import XCTest
 
 class ZupremeTests: XCTestCase {
 
-    func testExample() {
+    func testTrivial() {
         XCTAssertTrue(true)
     }
 }

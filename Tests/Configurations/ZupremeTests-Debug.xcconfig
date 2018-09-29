@@ -1,2 +1,2 @@
 #include "ZupremeTests-Common.xcconfig"
-#include "../../../Configurations/base_debug.xcconfig"
+#include "../../Configurations/base_debug.xcconfig"
