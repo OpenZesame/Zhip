@@ -13,15 +13,15 @@ import Zesame
 final class ChooseWalletCoordinator: Coordinator {
 
     private weak var navigationController: UINavigationController?
-    private weak var navigation: AppNavigation?
-    private let services: UseCaseProvider
+    private weak var navigator: OnboardingNavigator?
+    private let useCase: ChooseWalletUseCase
 
     var childCoordinators = [AnyCoordinator]()
 
-    init(navigationController: UINavigationController, navigation: AppNavigation, services: UseCaseProvider) {
+    init(navigationController: UINavigationController, navigator: OnboardingNavigator, useCase: ChooseWalletUseCase) {
         self.navigationController = navigationController
-        self.navigation = navigation
-        self.services = services
+        self.navigator = navigator
+        self.useCase = useCase
     }
 }
 
@@ -42,7 +42,7 @@ protocol ChooseWalletNavigator: AnyObject {
 extension ChooseWalletCoordinator: ChooseWalletNavigator {
 
     func toMain(wallet: Wallet) {
-        navigation?.toMain(wallet: wallet)
+        navigator?.toMain(wallet: wallet)
     }
 
     func toChooseWallet() {
@@ -52,11 +52,11 @@ extension ChooseWalletCoordinator: ChooseWalletNavigator {
     }
 
     func toCreateNewWallet() {
-        start(coordinator: CreateNewWalletCoordinator(navigationController: navigationController, navigator: self, services: services))
+        start(coordinator: CreateNewWalletCoordinator(navigationController: navigationController, navigator: self, useCase: useCase))
     }
 
     func toRestoreWallet() {
-        start(coordinator: RestoreWalletCoordinator(navigationController: navigationController, navigator: self, services: services))
+        start(coordinator: RestoreWalletCoordinator(navigationController: navigationController, navigator: self, useCase: useCase))
     }
 
 }

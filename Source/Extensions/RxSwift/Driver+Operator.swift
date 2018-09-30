@@ -23,3 +23,13 @@ func --> (driver: Driver<String>, label: UILabel) -> Disposable {
 func --> (driver: Driver<String>, labels: LabelsView) -> Disposable {
     return driver --> labels.rx.value
 }
+
+infix operator <~
+func <~ (bag: DisposeBag, disposable: Disposable) {
+    disposable.disposed(by: bag)
+}
+func <~ (bag: DisposeBag, disposables: [Disposable]) {
+    disposables.forEach {
+        $0.disposed(by: bag)
+    }
+}

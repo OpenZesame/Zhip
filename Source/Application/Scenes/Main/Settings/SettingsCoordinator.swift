@@ -19,11 +19,11 @@ final class SettingsCoordinator: AnyCoordinator {
 
     private weak var navigationController: UINavigationController?
 
-    private weak var navigation: AppNavigation?
+    private weak var navigator: AppNavigator?
 
-    init(navigationController: UINavigationController?, navigation: AppNavigation) {
+    init(navigationController: UINavigationController?, navigator: AppNavigator) {
         self.navigationController = navigationController
-        self.navigation = navigation
+        self.navigator = navigator
     }
 }
 
@@ -32,7 +32,8 @@ extension SettingsCoordinator: SettingsNavigator {
 
     func toChooseWallet() {
         Unsafe︕！Cache.deleteWallet()
-        navigation?.toChooseWallet()
+//        navigator?.toChooseWallet()
+        navigator?.toOnboarding()
     }
 
     func start() {
@@ -42,7 +43,7 @@ extension SettingsCoordinator: SettingsNavigator {
     func toSettings() {
         navigationController?.pushViewController(
             Settings(
-                viewModel: SettingsViewModel(navigation: self)
+                viewModel: SettingsViewModel(navigator: self)
             ),
             animated: true
         )

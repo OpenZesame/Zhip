@@ -13,12 +13,12 @@ final class RestoreWalletCoordinator {
 
     private weak var navigationController: UINavigationController?
     private weak var navigator: ChooseWalletNavigator?
-    private let services: UseCaseProvider
+    private let useCase: ChooseWalletUseCase
 
-    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, services: UseCaseProvider) {
+    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, useCase: ChooseWalletUseCase) {
         self.navigationController = navigationController
         self.navigator = navigator
-        self.services = services
+        self.useCase = useCase
     }
 }
 
@@ -30,7 +30,9 @@ extension RestoreWalletCoordinator: AnyCoordinator {
 
 }
 
+/// Used for Navigation between Coordinators
 protocol Navigator: AnyObject {}
+
 protocol RestoreWalletNavigator: Navigator {
     func toRestoreWallet()
     func toMain(restoredWallet: Wallet)
@@ -44,7 +46,7 @@ extension RestoreWalletCoordinator: RestoreWalletNavigator {
     }
 
     func toRestoreWallet() {
-        let viewModel = RestoreWalletViewModel(navigator: self, useCase: services.makeChooseWalletUseCase())
+        let viewModel = RestoreWalletViewModel(navigator: self, useCase: useCase)
         let vc = RestoreWallet(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }

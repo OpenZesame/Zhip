@@ -10,6 +10,6 @@ import RxSwift
 import Zesame
 
 protocol UseCaseProvider {
-    func makeChooseWalletUseCase() -> ChooseWalletUseCase
     func makeTransactionsUseCase() -> TransactionsUseCase
+    func makeOnboardingUseCase() -> OnboardingUseCase
 }
