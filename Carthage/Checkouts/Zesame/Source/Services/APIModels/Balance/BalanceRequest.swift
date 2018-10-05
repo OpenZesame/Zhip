@@ -12,9 +12,9 @@ import JSONRPCKit
 public struct BalanceRequest: JSONRPCKit.Request {
     public typealias Response = BalanceResponse
 
-    public let publicAddress: String
-    public init(publicAddress: String) {
-        self.publicAddress = publicAddress
+    public let address: Address
+    public init(address: Address) {
+        self.address = address
     }
 }
 
@@ -24,6 +24,6 @@ public extension BalanceRequest {
     }
 
     var parameters: Encodable? {
-        return [publicAddress]
+        return [address.checksummedHex]
     }
 }

@@ -9,13 +9,8 @@
 import Foundation
 
 public struct Recipient {
-    let address: String
-    public init?(string: String) {
-        var raw = string
-        while raw.starts(with: "0x") {
-            raw = String(raw.dropFirst(2))
-        }
-        guard BigNumber(raw, radix: 16) != nil else { return nil }
-        self.address = raw
+    public let address: String
+    public init(address: Address) {
+        self.address = address.checksummedHex.droppingLeading0x().uppercased()
     }
 }

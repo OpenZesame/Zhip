@@ -35,7 +35,7 @@ public extension ZilliqaService {
             saltHex: salt.asHex
         )
 
-        try! Scrypt(passphrase: passphrase, kdfParameters: kdfParams).deriveKey() { derivedKey in
+        Scrypt(kdfParameters: kdfParams).deriveKey(passphrase: passphrase) { derivedKey in
             let keyStore = Keystore(from: derivedKey, for: wallet, parameters: kdfParams)
             done(Result.success(keyStore))
         }
@@ -46,7 +46,7 @@ public extension ZilliqaService {
 
         let encryptedPrivateKey = keyStore.crypto.encryptedPrivateKey
 
-        try! Scrypt(passphrase: passphrase, kdfParameters: keyStore.crypto.keyDerivationFunctionParameters).deriveKey() { derivedKey in
+        Scrypt(kdfParameters: keyStore.crypto.keyDerivationFunctionParameters).deriveKey(passphrase: passphrase) { derivedKey in
             let mac = (derivedKey.asData.suffix(16) + encryptedPrivateKey).sha3(.sha256)
             guard mac == keyStore.crypto.messageAuthenticationCode else { done(.failure(.walletImport(.incorrectPasshrase))); return }
 
