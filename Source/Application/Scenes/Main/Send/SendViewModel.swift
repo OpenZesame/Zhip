@@ -60,7 +60,8 @@ extension SendViewModel: ViewModelType {
             return Wallet(keyPair: _keyPair, balance: amount, nonce: Nonce(balance.nonce))
         }
 
-        let recipient = input.recepientAddress.map { Recipient(string: $0) }.filterNil()
+        let recipient = input.recepientAddress.map { Recipient.from(string: $0) }.filterNil()
+
         let amount = input.amountToSend.map { Double($0) }.filterNil()
         let gasLimit = input.gasLimit.map { Double($0) }.filterNil()
         let gasPrice = input.gasPrice.map { Double($0) }.filterNil()
@@ -84,5 +85,12 @@ extension SendViewModel: ViewModelType {
             wallet: wallet,
             transactionId: transactionId
         )
+    }
+}
+
+extension Recipient {
+    static func from(string: String) -> Recipient? {
+        guard let address = try? Address(hexString: string) else { return nil }
+        return Recipient(address: address)
     }
 }

@@ -46,7 +46,7 @@ final class WalletView: UIStackView, StackViewStyling {
 extension WalletView {
 
     func populate(with wallet: Wallet) {
-        addressLabels.setValue(wallet.address.address)
+        addressLabels.setValue(wallet.address.checksummedHex)
         publicKeyLabels.setValue(wallet.keyPair.publicKey)
         balanceLabels.setValue(wallet.balance)
         nonceLabels.setValue(wallet.nonce.nonce)
