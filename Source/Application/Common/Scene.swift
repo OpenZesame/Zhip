@@ -42,7 +42,19 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
 private extension Scene {
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
-        let output = viewModel.transform(input: contentView.inputFromView)
+
+        let userInput = contentView.userInput
+
+        let controllerInput = ControllerInput(
+            viewDidLoad: rx.viewDidLoad,
+            viewWillAppear: rx.viewWillAppear,
+            viewDidAppear: rx.viewDidAppear
+        )
+
+        let input = ViewModel.Input(fromView: userInput, fromController: controllerInput)
+
+        let output = viewModel.transform(input: input)
+
         contentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
 }

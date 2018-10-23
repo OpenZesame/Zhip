@@ -8,6 +8,8 @@
 
 import UIKit
 import Zesame
+import RxCocoa
+import RxSwift
 
 final class MainCoordinator: Coordinator {
 
@@ -18,21 +20,35 @@ final class MainCoordinator: Coordinator {
 
     private let services: UseCaseProvider
     private weak var navigator: AppNavigator?
+    private let securePersistence: SecurePersistence
 
-    init(navigationController: UINavigationController, navigator: AppNavigator, services: UseCaseProvider) {
+    init(navigationController: UINavigationController, navigator: AppNavigator, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.navigator = navigator
         self.navigationController = navigationController
         self.services = services
+        self.securePersistence = securePersistence
 
         // SEND
         let sendNavigationController = UINavigationController()
         sendNavigationController.tabBarItem = UITabBarItem("Send")
-        start(coordinator: SendCoordinator(navigationController: sendNavigationController, wallet: Unsafe︕！Cache.wallet!, services: services))
+        start(coordinator:
+            SendCoordinator(
+                navigationController: sendNavigationController,
+                wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil(),
+                services: services
+            )
+        )
 
         // SETTINGS
         let settingsNavigationController = UINavigationController()
         settingsNavigationController.tabBarItem = UITabBarItem("Settings")
-        start(coordinator: SettingsCoordinator(navigationController: settingsNavigationController, navigator: navigator))
+        start(coordinator:
+            SettingsCoordinator(
+                navigationController: settingsNavigationController,
+                navigator: navigator,
+                securePersistence: securePersistence
+            )
+        )
 
         tabBarController.viewControllers = [
             sendNavigationController,

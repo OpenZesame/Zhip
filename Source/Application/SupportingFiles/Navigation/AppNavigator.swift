@@ -8,23 +8,26 @@
 
 import UIKit
 import Zesame
+import KeychainSwift
 
 final class AppCoordinator {
 
     private let window: UIWindow
     var childCoordinators = [AnyCoordinator]()
     private let services: UseCaseProvider
+    private let securePersistence: SecurePersistence
 
-    init(window: UIWindow, services: UseCaseProvider) {
+    init(window: UIWindow, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.window = window
         self.services = services
+        self.securePersistence = securePersistence
     }
 }
 
 extension AppCoordinator: Coordinator {
     func start() {
-        if Unsafe︕！Cache.isWalletConfigured {
-            toMain(wallet: Unsafe︕！Cache.wallet!)
+        if let wallet = securePersistence.wallet {
+            toMain(wallet: wallet)
         } else {
            toOnboarding()
         }
@@ -43,14 +46,32 @@ extension AppCoordinator: AppNavigator {
     func toOnboarding() {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-        start(coordinator: OnboardingCoordinator(navigationController: navigationController, navigator: self, preferences: KeyValueStore(UserDefaults.standard), useCase: services.makeOnboardingUseCase()), mode: .replace)
+        start(
+            coordinator:
+            OnboardingCoordinator(
+                navigationController: navigationController,
+                navigator: self,
+                preferences: KeyValueStore(UserDefaults.standard),
+                securePersistence: securePersistence,
+                useCase: services.makeOnboardingUseCase()
+            ),
+            mode: .replace
+        )
     }
 
     func toMain(wallet: Wallet) {
-        Unsafe︕！Cache.unsafe︕！Store(wallet: wallet)
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-        start(coordinator: MainCoordinator(navigationController: navigationController, navigator: self, services: services), mode: .replace)
+        start(
+            coordinator:
+            MainCoordinator(
+                navigationController: navigationController,
+                navigator: self,
+                services: services,
+                securePersistence: securePersistence
+            ),
+            mode: .replace
+        )
     }
 
 }

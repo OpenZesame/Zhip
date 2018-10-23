@@ -30,21 +30,32 @@ final class WarningERC20ViewModel {
 }
 
 extension WarningERC20ViewModel: ViewModelType {
-    struct Input {
-        let accept: Driver<Void>
-        let doNotShowAgain: Driver<Void>
+    struct Input: InputType {
+        struct FromView {
+            let accept: Driver<Void>
+            let doNotShowAgain: Driver<Void>
+        }
+        let fromView: FromView
+        let fromController: ControllerInput
+
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
     }
 
     struct Output {}
 
     func transform(input: Input) -> Output {
 
+        let fromView = input.fromView
+
         bag <~ [
-            input.accept.do(onNext: {
+            fromView.accept.do(onNext: {
                 self.actionListener?.understandsERC20Risk()
             }).drive(),
 
-            input.doNotShowAgain.do(onNext: {
+            fromView.doNotShowAgain.do(onNext: {
                 self.useCase.doNotShowERC20WarningAgain()
                 self.actionListener?.doNotShowERC20WarningAgain()
             }).drive()

@@ -10,6 +10,11 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+protocol SettingsNavigator: AnyObject {
+    func toSettings()
+    func toChooseWallet()
+}
+
 final class SettingsViewModel {
     private let bag = DisposeBag()
     
@@ -22,8 +27,18 @@ final class SettingsViewModel {
 
 extension SettingsViewModel: ViewModelType {
 
-    struct Input {
-        let removeWalletTrigger: Driver<Void>
+    struct Input: InputType {
+        struct FromView {
+            let removeWalletTrigger: Driver<Void>
+        }
+
+        let fromView: FromView
+        let fromController: ControllerInput
+
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
     }
 
     struct Output {
@@ -32,23 +47,46 @@ extension SettingsViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        input.removeWalletTrigger
+        let fromView = input.fromView
+
+        fromView.removeWalletTrigger
             .do(onNext: {
                 self.navigator?.toChooseWallet()
             }).drive().disposed(by: bag)
 
-        let appVersionString: String? = {
-            guard
-                let info = Bundle.main.infoDictionary,
-                let version = info["CFBundleShortVersionString"] as? String,
-                let build = info["CFBundleVersion"] as? String
-                else { return nil }
-            return "\(version) (\(build))"
-        }()
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
 
         return Output(
             appVersion: appVersion
         )
+    }
+}
+
+private extension SettingsViewModel {
+    var appVersionString: String? {
+        let bundle = Bundle.main
+        guard
+            let version = bundle.version,
+            let build = bundle.build
+            else { return nil }
+        return "\(version) (\(build))"
+    }
+}
+
+extension Bundle {
+    var version: String? {
+        return value(of: "CFBundleShortVersionString")
+    }
+
+    var build: String? {
+        return value(of: "CFBundleVersion")
+    }
+
+    func value(of key: String) -> String? {
+        guard
+            let info = infoDictionary,
+            let value = info[key] as? String
+            else { return nil }
+        return value
     }
 }

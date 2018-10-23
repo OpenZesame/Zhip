@@ -23,8 +23,8 @@ final class ChooseWalletView: ScrollingStackView {
 
 extension ChooseWalletView: ViewModelled {
     typealias ViewModel = ChooseWalletViewModel
-    var inputFromView: ViewModel.Input {
-        return ViewModel.Input(
+    var userInput: UserInput {
+        return UserInput(
             createNewTrigger: createNewWalletButton.rx.tap.asDriver(),
             restoreTrigger: restoreWalletButton.rx.tap.asDriver()
         )

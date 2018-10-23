@@ -10,10 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol SettingsNavigator: AnyObject {
-    func toSettings()
-    func toChooseWallet()
-}
+import Zesame
 
 final class SettingsCoordinator: AnyCoordinator {
 
@@ -21,9 +18,12 @@ final class SettingsCoordinator: AnyCoordinator {
 
     private weak var navigator: AppNavigator?
 
-    init(navigationController: UINavigationController?, navigator: AppNavigator) {
+    private let securePersistence: SecurePersistence
+
+    init(navigationController: UINavigationController?, navigator: AppNavigator, securePersistence: SecurePersistence) {
         self.navigationController = navigationController
         self.navigator = navigator
+        self.securePersistence = securePersistence
     }
 }
 
@@ -31,8 +31,7 @@ final class SettingsCoordinator: AnyCoordinator {
 extension SettingsCoordinator: SettingsNavigator {
 
     func toChooseWallet() {
-        Unsafe︕！Cache.deleteWallet()
-//        navigator?.toChooseWallet()
+        securePersistence.deleteWallet()
         navigator?.toOnboarding()
     }
 

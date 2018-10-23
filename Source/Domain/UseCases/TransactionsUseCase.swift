@@ -11,5 +11,5 @@ import Zesame
 
 protocol TransactionsUseCase {
     func getBalance(for address: Address) -> Observable<BalanceResponse>
-    func sendTransaction(for payment: Payment, signWith: KeyPair) -> Observable<TransactionIdentifier>
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionIdentifier>
 }

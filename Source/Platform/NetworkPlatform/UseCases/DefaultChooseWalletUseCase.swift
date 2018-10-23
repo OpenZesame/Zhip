@@ -20,17 +20,12 @@ final class DefaultChooseWalletUseCase {
 
 extension DefaultChooseWalletUseCase: ChooseWalletUseCase {
 
-    func createNewWallet() -> Observable<Wallet> {
-        return zilliqaService.createNewWallet()
+    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
+        return zilliqaService.createNewWallet(encryptionPassphrase: encryptionPassphrase)
     }
 
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet> {
-        switch restoration {
-        case .privateKey(let hexString):
-            return Observable.from(
-                optional: Wallet(privateKeyHex: hexString)
-            )
-        }
+        return zilliqaService.restoreWallet(from: restoration)
     }
 
 }

@@ -16,13 +16,15 @@ final class OnboardingCoordinator {
     private weak var navigator: AppNavigator?
     private let useCase: OnboardingUseCase
     private let preferences: Preferences
+    private let securePersistence: SecurePersistence
 
     var childCoordinators = [AnyCoordinator]()
 
-    init(navigationController: UINavigationController, navigator: AppNavigator, preferences: Preferences, useCase: OnboardingUseCase) {
+    init(navigationController: UINavigationController, navigator: AppNavigator, preferences: Preferences, securePersistence: SecurePersistence, useCase: OnboardingUseCase) {
         self.navigationController = navigationController
         self.navigator = navigator
         self.preferences = preferences
+        self.securePersistence = securePersistence
         self.useCase = useCase
     }
 }
@@ -43,9 +45,11 @@ extension OnboardingCoordinator: PresentingCoordinator {
             return toWarningERC20()
         }
 
-//        guard keychain.isTrue(.hasConfiguredWallet) else {
+        guard let wallet = securePersistence.wallet else {
             return toChooseWallet()
-//        }
+        }
+        
+        toMain(wallet: wallet)
     }
 }
 
@@ -71,7 +75,12 @@ extension OnboardingCoordinator: OnboardingNavigator {
     }
 
     func toChooseWallet() {
-        let coordinator = ChooseWalletCoordinator(navigationController: self.navigationController!, navigator: self, useCase: useCase.makeChooseWalletUseCase())
+        let coordinator = ChooseWalletCoordinator(
+            navigationController: self.navigationController!,
+            navigator: self,
+            useCase: useCase.makeChooseWalletUseCase(),
+            securePersistence: securePersistence
+            )
         start(coordinator: coordinator, mode: .replace)
     }
 

@@ -27,7 +27,7 @@ final class TermsOfServiceView: ScrollingStackView {
 
 extension TermsOfServiceView: ViewModelled {
     typealias ViewModel = TermsOfServiceViewModel
-    var inputFromView: ViewModel.Input {
+    var userInput: UserInput {
 
         let nearBottom = htmlView.scrollView.rx.didScroll.map { [unowned self] in
             return self.htmlView.scrollView.isContentOffsetNearBottom()
@@ -35,7 +35,7 @@ extension TermsOfServiceView: ViewModelled {
 
         let didScrollToBottom = nearBottom.filter { $0 == true }.mapToVoid().asDriverOnErrorReturnEmpty()
 
-        return ViewModel.Input(
+        return UserInput(
             didScrollToBottom: didScrollToBottom,
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )

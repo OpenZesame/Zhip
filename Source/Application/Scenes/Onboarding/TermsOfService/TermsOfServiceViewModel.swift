@@ -27,11 +27,22 @@ final class TermsOfServiceViewModel {
     }
 }
 
+
+
 extension TermsOfServiceViewModel: ViewModelType {
 
-    struct Input {
-        let didScrollToBottom: Driver<Void>
-        let didAcceptTerms: Driver<Void>
+    struct Input: InputType {
+        struct FromView {
+            let didScrollToBottom: Driver<Void>
+            let didAcceptTerms: Driver<Void>
+        }
+        let fromView: FromView
+        let fromController: ControllerInput
+
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
     }
 
     struct Output {
@@ -40,9 +51,11 @@ extension TermsOfServiceViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let isAcceptButtonEnabled = input.didScrollToBottom.map { true }
+        let fromView = input.fromView
 
-        input.didAcceptTerms.do(onNext: {
+        let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
+
+        fromView.didAcceptTerms.do(onNext: {
             self.useCase.didAcceptTermsOfService()
             self.actionListener?.didAcceptTerms()
         }).drive().disposed(by: bag)

@@ -24,8 +24,7 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         return zilliqaService.getBalance(for: address)
     }
 
-    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionIdentifier> {
-        return zilliqaService.sendTransaction(for: payment, signWith: keyPair)
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionIdentifier> {
+        return zilliqaService.sendTransaction(for: payment, keystore: wallet.keystore, passphrase: encryptionPassphrase)
     }
-
 }
