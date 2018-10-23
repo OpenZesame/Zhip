@@ -14,21 +14,13 @@ public typealias PrivateKey = EllipticCurveKit.PrivateKey<Curve>
 public typealias PublicKey = EllipticCurveKit.PublicKey<Curve>
 public typealias Signature = EllipticCurveKit.Signature<Curve>
 public typealias Signer = EllipticCurveKit.AnyKeySigner<Schnorr<Curve>>
-public typealias Address = EllipticCurveKit.PublicAddress<Zilliqa>
 public typealias Network = EllipticCurveKit.Zilliqa.Network
 
-extension EllipticCurveKit.PublicKey: CustomStringConvertible {
-    public var description: String {
-        return hex.compressed
+public extension Network {
+    static var `default`: Network {
+        return .mainnet
     }
 }
-
-extension EllipticCurveKit.PublicAddress: CustomStringConvertible {
-    public var description: String {
-        return address
-    }
-}
-
 
 public struct Wallet {
     public let keyPair: KeyPair
@@ -37,17 +29,17 @@ public struct Wallet {
     public let nonce: Nonce
     public let network: Network
 
-    public init(keyPair: KeyPair, network: Network = .testnet, balance: Amount = 0, nonce: Nonce = 0) {
+    public init(keyPair: KeyPair, network: Network = .default, balance: Amount = 0, nonce: Nonce = 0) {
         self.keyPair = keyPair
-        self.address = Address(keyPair: keyPair, system: Zilliqa(.mainnet))
+        self.address = Address(keyPair: keyPair, network: network)
         self.balance = balance
-        self.network = .mainnet
+        self.network = network
         self.nonce = nonce
     }
 }
 
 public extension Wallet {
-    init?(privateKeyHex: String, network: Network = .testnet, balance: Amount = 1000000, nonce: Nonce = 0) {
+    init?(privateKeyHex: String, network: Network = .default, balance: Amount = 0, nonce: Nonce = 0) {
         guard let keyPair = KeyPair(privateKeyHex: privateKeyHex) else { return nil }
         self.init(keyPair: keyPair, network: network, balance: balance, nonce: nonce)
     }
@@ -61,5 +53,11 @@ public extension Wallet {
             publicKey: '\(keyPair.publicKey)'
             balance: '\(balance)'
         """
+    }
+}
+
+extension EllipticCurveKit.PublicKey: CustomStringConvertible {
+    public var description: String {
+        return hex.compressed
     }
 }

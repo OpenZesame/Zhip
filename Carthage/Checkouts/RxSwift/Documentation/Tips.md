@@ -30,9 +30,9 @@ extension ObservableType where E: MaybeCool {
       performURLRequest(text).subscribe(onNext: { result in
           ...
       })
-      .disposed(by: disposeBag)
+      .addDisposableTo(disposeBag)
   })
-  .disposed(by: disposeBag)
+  .addDisposableTo(disposeBag)
   ```
 
   **Preferred way of chaining disposables by using operators.**
@@ -46,5 +46,5 @@ extension ObservableType where E: MaybeCool {
           return performURLRequest(text)
       }
       ...
-      .disposed(by: disposeBag) // only one top most disposable
+      .addDisposableTo(disposeBag) // only one top most disposable
   ```

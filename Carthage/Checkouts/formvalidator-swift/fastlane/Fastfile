@@ -1,0 +1,149 @@
+desc "Runs tests on the primary platforms and configurations"
+lane :test do
+    verify(
+        scheme: "FormValidatorSwift iOS"
+    )
+    verify(
+        scheme: "FormValidatorSwift tvOS"
+    )
+    verify(
+        scheme: "FormValidatorSwift macOS",
+        destination: "platform=macOS"
+    )
+    verify(
+        scheme: "iOS Example"
+    )
+    if is_ci?
+        # Unable to run macOS UI Tests on Travis CI. See https://github.com/travis-ci/travis-ci/issues/7075
+        build(
+            scheme: "macOS Example",
+            destination: "platform=macOS"
+        )
+    else
+        verify(
+            scheme: "macOS Example",
+            destination: "platform=macOS"
+        )
+    end
+    pod_lib_lint
+end
+
+desc "Runs tests"
+lane :verify do |options|
+    scheme = options[:scheme]
+    destination = options[:destination]
+    sdk = options[:sdk]
+    output_directory = "fastlane/test_output/" + scheme + "/"
+    opts = {
+        :workspace => 'FormValidatorSwift.xcworkspace',
+        :scheme => scheme,
+        :destination => destination,
+        :sdk => sdk,
+        :code_coverage => true,
+        :xcargs => "ONLY_ACTIVE_ARCH=YES",
+        :output_directory => output_directory,
+        :clean => true
+    }
+    scan(opts)
+    upload_cov
+end
+
+desc "Builds scheme"
+lane :build do |options|
+    scheme = options[:scheme]
+    destination = options[:destination]
+    sdk = options[:sdk]
+    xcodebuild(
+        workspace: 'FormValidatorSwift.xcworkspace',
+        scheme: scheme,
+        destination: destination,
+        sdk: sdk,
+        xcargs: 'ONLY_ACTIVE_ARCH=YES',
+        build: true,
+        clean: true
+    )
+end
+
+desc "Upload code coverage reports (if running on CI)"
+lane :upload_cov do
+    if is_ci?
+        sh "bash ./codecov.sh"
+    else
+        say "No need to upload code coverage. Not running from CI."
+    end
+end
+
+desc "Updates the GitHub Pages documentation"
+lane :update_docs do
+    jazzy
+end
+
+desc "Bumps the version number of the project and podspec"
+desc "This action does the following:"
+desc ""
+desc "- Ensures a clean git status"
+desc "- Increment the version number (Project & Podspec)"
+desc "- Lints the CocoaPods Library"
+desc "- Commit and push the version bump"
+desc "- Creates a GitHub Release and git tag"
+desc "- Lints the CocoaPods Spec"
+desc ""
+desc "This action does NOT do the following:"
+desc ""
+desc "- Add the changelog notes to the GitHub release"
+desc "- Submit the updated podspec to CocoaPods"
+lane :bump_version  do |options|
+    version = options[:version]
+    raise "You must specify a version in A.B.X format to deploy." if version.nil? || version.scan(/\d+\.\d+\.\d+/).length == 0
+
+    ensure_git_status_clean
+
+    version_bump_podspec(
+        path: "FormValidatorSwift.podspec",
+        version_number: version
+    )
+    increment_version_number_in_plist(
+        version_number: version,
+        xcodeproj: './FormValidatorSwift.xcodeproj',
+        target: 'FormValidatorSwift iOS'
+    )
+    increment_version_number_in_plist(
+        version_number: version,
+        xcodeproj: './iOS Example.xcodeproj',
+        target: 'iOS Example'
+    )
+    increment_version_number_in_plist(
+        version_number: version,
+        xcodeproj: './macOS Example.xcodeproj',
+        target: 'macOS Example'
+    )
+
+    pod_lib_lint
+
+    git_add(
+        path: ['./Sources/Info.plist', './Example/iOS/Info.plist', './Example/macOS/Info.plist', './FormValidatorSwift.podspec']
+    )
+
+    commit_version_bump(
+        force: true,
+        xcodeproj: './FormValidatorSwift.xcodeproj'
+    )
+
+    update_docs
+
+    sh 'cd ../ && git add ./docs/*'
+
+    sh 'cd ../ && git commit -m \'Update documentation for v' + version + '\''
+
+    push_to_git_remote
+
+    set_github_release(
+        repository_name: "ustwo/formvalidator-swift",
+        api_token: ENV["GITHUB_TOKEN"],
+        description: 'Version Bump to ' + version,
+        name: "Version " + version,
+        tag_name: version
+    )
+
+    sh 'cd ../ && bundle exec pod spec lint'
+end

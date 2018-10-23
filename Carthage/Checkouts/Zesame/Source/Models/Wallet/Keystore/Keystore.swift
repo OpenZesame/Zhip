@@ -103,7 +103,7 @@ extension Keystore.Crypto.KeyDerivationFunctionParameters: Codable, Equatable {
 
 public extension Keystore {
     init(address: Address, crypto: Crypto, id: String? = nil, version: Int = 3) {
-        self.address = address.address
+        self.address = address.checksummedHex
         self.crypto = crypto
         self.id = id ?? UUID().uuidString
         self.version = version

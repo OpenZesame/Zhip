@@ -49,5 +49,9 @@ ENABLE_BITCODE = NO
 CODE_SIGN_ENTITLEMENTS =
 CODE_SIGN_IDENTITY =
 
+// "Fastest [-O3]"
+GCC_OPTIMIZATION_LEVEL = 3
+SWIFT_OPTIMIZATION_LEVEL = -O
+
 // Vanilla for FRAMEWORKS but not apps, however needed by our apps.
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks

@@ -12,6 +12,7 @@ public protocol Makeable: ViewStyling {
     associatedtype View: Styling & StaticEmptyInitializable & UIView
     func merged(other: Self, mode: MergeMode) -> Self
 }
+
 public extension Makeable {
     func mergeAttribute<T>(other: Self, path attributePath: KeyPath<Self, T?>, mode: MergeMode) -> T? {
         let selfAttribute = self[keyPath: attributePath]

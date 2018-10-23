@@ -16,25 +16,23 @@ final class MainCoordinator: Coordinator {
 
     var childCoordinators = [AnyCoordinator]()
 
-    private let wallet: Wallet
     private let services: UseCaseProvider
-    private weak var navigation: AppNavigation?
+    private weak var navigator: AppNavigator?
 
-    init(navigationController: UINavigationController, wallet: Wallet, navigation: AppNavigation, services: UseCaseProvider) {
-        self.navigation = navigation
+    init(navigationController: UINavigationController, navigator: AppNavigator, services: UseCaseProvider) {
+        self.navigator = navigator
         self.navigationController = navigationController
-        self.wallet = wallet
         self.services = services
 
         // SEND
         let sendNavigationController = UINavigationController()
         sendNavigationController.tabBarItem = UITabBarItem("Send")
-        start(coordinator: SendCoordinator(navigationController: sendNavigationController, wallet: wallet, services: services))
+        start(coordinator: SendCoordinator(navigationController: sendNavigationController, wallet: Unsafe︕！Cache.wallet!, services: services))
 
         // SETTINGS
         let settingsNavigationController = UINavigationController()
         settingsNavigationController.tabBarItem = UITabBarItem("Settings")
-        start(coordinator: SettingsCoordinator(navigationController: settingsNavigationController, navigation: navigation))
+        start(coordinator: SettingsCoordinator(navigationController: settingsNavigationController, navigator: navigator))
 
         tabBarController.viewControllers = [
             sendNavigationController,
@@ -42,6 +40,12 @@ final class MainCoordinator: Coordinator {
         ]
 
         navigationController.pushViewController(tabBarController, animated: false)
+    }
+}
+
+extension MainCoordinator {
+    func start() {
+        toSend()
     }
 }
 
@@ -59,9 +63,5 @@ extension MainCoordinator: MainNavigator {
 
     func toSettings() {
         tabBarController.selectedIndex = 1
-    }
-
-    func start() {
-        toSend()
     }
 }

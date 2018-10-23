@@ -12,21 +12,26 @@ import RxSwift
 
 final class DefaultUseCaseProvider {
 
-    static let shared = DefaultUseCaseProvider(zilliqaService: DefaultZilliqaService.shared.rx)
+    static let shared = DefaultUseCaseProvider(
+        zilliqaService: DefaultZilliqaService.shared.rx,
+        preferences: KeyValueStore(UserDefaults.standard)
+    )
 
     private let zilliqaService: ZilliqaServiceReactive
+    private let preferences: Preferences
 
-    init(zilliqaService: ZilliqaServiceReactive) {
+    init(zilliqaService: ZilliqaServiceReactive, preferences: Preferences) {
         self.zilliqaService = zilliqaService
+        self.preferences = preferences
     }
 }
 
 extension DefaultUseCaseProvider: UseCaseProvider {
-    func makeChooseWalletUseCase() -> ChooseWalletUseCase {
-        return DefaultChooseWalletUseCase(zilliqaService: zilliqaService)
-    }
-
     func makeTransactionsUseCase() -> TransactionsUseCase {
         return DefaultTransactionsUseCase(zilliqaService: zilliqaService)
+    }
+
+    func makeOnboardingUseCase() -> OnboardingUseCase {
+        return DefaultOnboardingUseCase(zilliqaService: zilliqaService, preferences: preferences)
     }
 }

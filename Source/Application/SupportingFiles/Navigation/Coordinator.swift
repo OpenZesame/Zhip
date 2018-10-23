@@ -14,12 +14,23 @@ protocol AnyCoordinator: AnyObject {
 
 protocol Coordinator: AnyCoordinator {
     var childCoordinators: [AnyCoordinator] { set get }
-    func start(coordinator: AnyCoordinator)
+    func start(coordinator: AnyCoordinator, mode: CoordinatorStartMode)
+}
+
+enum CoordinatorStartMode {
+    case append
+    case replace
 }
 
 extension Coordinator {
-    func start(coordinator: AnyCoordinator) {
+
+    func start(coordinator: AnyCoordinator, mode: CoordinatorStartMode = .append) {
         coordinator.start()
-        childCoordinators.append(coordinator)
+        switch mode {
+        case .append:
+            childCoordinators.append(coordinator)
+        case .replace:
+            childCoordinators = [coordinator]
+        }
     }
 }

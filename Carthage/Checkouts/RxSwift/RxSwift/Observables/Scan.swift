@@ -19,28 +19,9 @@ extension ObservableType {
      - parameter accumulator: An accumulator function to be invoked on each element.
      - returns: An observable sequence containing the accumulated values.
      */
-    public func scan<A>(into seed: A, accumulator: @escaping (inout A, E) throws -> ())
-        -> Observable<A> {
-        return Scan(source: self.asObservable(), seed: seed, accumulator: accumulator)
-    }
-
-    /**
-     Applies an accumulator function over an observable sequence and returns each intermediate result. The specified seed value is used as the initial accumulator value.
-
-     For aggregation behavior with no intermediate results, see `reduce`.
-
-     - seealso: [scan operator on reactivex.io](http://reactivex.io/documentation/operators/scan.html)
-
-     - parameter seed: The initial accumulator value.
-     - parameter accumulator: An accumulator function to be invoked on each element.
-     - returns: An observable sequence containing the accumulated values.
-     */
     public func scan<A>(_ seed: A, accumulator: @escaping (A, E) throws -> A)
         -> Observable<A> {
-        return Scan(source: self.asObservable(), seed: seed) { acc, element in
-            let currentAcc = acc
-            acc = try accumulator(currentAcc, element)
-        }
+        return Scan(source: self.asObservable(), seed: seed, accumulator: accumulator)
     }
 }
 
@@ -62,7 +43,7 @@ final fileprivate class ScanSink<ElementType, O: ObserverType> : Sink<O>, Observ
         switch event {
         case .next(let element):
             do {
-                try _parent._accumulator(&_accumulate, element)
+                _accumulate = try _parent._accumulator(_accumulate, element)
                 forwardOn(.next(_accumulate))
             }
             catch let error {
@@ -81,7 +62,7 @@ final fileprivate class ScanSink<ElementType, O: ObserverType> : Sink<O>, Observ
 }
 
 final fileprivate class Scan<Element, Accumulate>: Producer<Accumulate> {
-    typealias Accumulator = (inout Accumulate, Element) throws -> ()
+    typealias Accumulator = (Accumulate, Element) throws -> Accumulate
     
     fileprivate let _source: Observable<Element>
     fileprivate let _seed: Accumulate

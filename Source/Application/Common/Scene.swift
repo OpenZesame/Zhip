@@ -15,7 +15,8 @@ import TinyConstraints
 typealias Scene<View: UIView & ViewModelled> = SceneController<View>
 
 /// The "Single-Line Controller" base class
-class SceneController<View>: UIViewController where View: UIView & ViewModelled {
+class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewModelled {
+    typealias View = ViewType
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
@@ -28,7 +29,7 @@ class SceneController<View>: UIViewController where View: UIView & ViewModelled 
         view.bounds = UIScreen.main.bounds
     }
 
-    init(viewModel: ViewModel) {
+    required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         bindViewToViewModel()

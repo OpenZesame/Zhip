@@ -1,5 +1,6 @@
 # The Zilliqa Swift SDK
 github "OpenZesame/Zesame" "master"
+
 # Drivng TableViews and CollectionView reactivly
 github "RxSwiftCommunity/RxDataSources"
 
@@ -8,3 +9,9 @@ github "roberthein/TinyConstraints"
 
 # Simple field validation
 github "ustwo/formvalidator-swift"
+
+# Generate QR code
+github "EyreFree/EFQRCode"
+
+# Keychain made simple
+github "evgenyneu/keychain-swift"

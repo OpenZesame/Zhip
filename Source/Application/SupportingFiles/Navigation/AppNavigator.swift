@@ -26,33 +26,31 @@ extension AppCoordinator: Coordinator {
         if Unsafe︕！Cache.isWalletConfigured {
             toMain(wallet: Unsafe︕！Cache.wallet!)
         } else {
-           toChooseWallet()
+           toOnboarding()
         }
     }
 }
 
-protocol AppNavigation: AnyObject {
-    func toChooseWallet()
+
+protocol AppNavigator: Navigator {
+    func toOnboarding()
     func toMain(wallet: Wallet)
 }
 
-// MARK: - Private
-extension AppCoordinator: AppNavigation {
-    func toChooseWallet() {
+// MARK: - AppNavigator
+extension AppCoordinator: AppNavigator {
+
+    func toOnboarding() {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-
-
-        let chooseWalletCoordinator = ChooseWalletCoordinator(navigationController: navigationController, navigation: self, services: services)
-        childCoordinators = [chooseWalletCoordinator]
-        chooseWalletCoordinator.start()
+        start(coordinator: OnboardingCoordinator(navigationController: navigationController, navigator: self, preferences: KeyValueStore(UserDefaults.standard), useCase: services.makeOnboardingUseCase()), mode: .replace)
     }
 
     func toMain(wallet: Wallet) {
+        Unsafe︕！Cache.unsafe︕！Store(wallet: wallet)
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-        let mainCoordinator = MainCoordinator(navigationController: navigationController, wallet: wallet, navigation: self, services: services)
-        childCoordinators = [mainCoordinator]
-        mainCoordinator.start()
+        start(coordinator: MainCoordinator(navigationController: navigationController, navigator: self, services: services), mode: .replace)
     }
+
 }
