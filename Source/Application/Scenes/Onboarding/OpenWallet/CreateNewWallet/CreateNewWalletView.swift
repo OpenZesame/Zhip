@@ -11,29 +11,34 @@ import RxSwift
 
 final class CreateNewWalletView: ScrollingStackView {
 
-    private lazy var walletView = WalletView()
-    private lazy var emailForKeystoreBackupField: UITextField = "Email for keystore backup"
-    private lazy var sendBackupButton: UIButton = "Send keystore backup "
+    private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", text: "apabanan").make()
+    private lazy var confirmEncryptionPassphraseField = UITextField.Style("Confirm encryption passphrase", text: "apabanan").make()
+    private lazy var createNewWalletButton = UIButton.Style("Create New Wallet", isEnabled: false).make()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        walletView,
-        emailForKeystoreBackupField,
-        sendBackupButton,
+        encryptionPassphraseField,
+        confirmEncryptionPassphraseField,
+        createNewWalletButton,
         .spacer
     ]
 }
 
 // MARK: - ViewModelled
 extension CreateNewWalletView: ViewModelled {
+
     typealias ViewModel = CreateNewWalletViewModel
-    var inputFromView: ViewModel.Input {
-        return ViewModel.Input()
+    var userInput: UserInput {
+        return UserInput(
+            newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
+            confirmedNewEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
+            createWalletTrigger: createNewWalletButton.rx.tap.asDriver()
+        )
     }
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.wallet        --> walletView.rx.wallet
+            viewModel.isCreateWalletButtonEnabled --> createNewWalletButton.rx.isEnabled
         ]
     }
 }

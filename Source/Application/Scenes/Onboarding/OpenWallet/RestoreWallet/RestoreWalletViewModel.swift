@@ -24,28 +24,69 @@ final class RestoreWalletViewModel {
 
 extension RestoreWalletViewModel: ViewModelType {
 
-    struct Input {
-        let privateKey: Driver<String>
-        let restoreTrigger: Driver<Void>
+    struct Input: InputType {
+        struct FromView {
+
+            let privateKey: Driver<String>
+            let keystoreText: Driver<String>
+
+            let encryptionPassphrase: Driver<String>
+            let confirmEncryptionPassphrase: Driver<String>
+
+            let restoreTrigger: Driver<Void>
+        }
+
+        let fromController: ControllerInput
+        let fromView: FromView
+
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
     }
 
-    struct Output {}
+    struct Output {
+        let isRestoreButtonEnabled: Driver<Bool>
+    }
 
     func transform(input: Input) -> Output {
 
-        let wallet = input.privateKey
-            .flatMapLatest {
-                self.useCase
-                    .restoreWallet(from: .privateKey(hexString: $0))
-                    .asDriverOnErrorReturnEmpty()
+        let fromView = input.fromView
+
+        let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(fromView.encryptionPassphrase, fromView.confirmEncryptionPassphrase) {
+            guard
+                $0 == $1,
+                case let newPassphrase = $0,
+                newPassphrase.count >= 3
+                else { return nil }
+            return newPassphrase
         }
 
-        input.restoreTrigger
-            .withLatestFrom(wallet)
-            .do(onNext: {
+        let validPrivateKey: Driver<String?> = fromView.privateKey.map {
+            guard
+                case let key = $0,
+                key.count == 64
+                else { return nil }
+            return key
+        }
+
+        let isRestoreButtonEnabled = Driver.combineLatest(validEncryptionPassphrase, validPrivateKey) { ($0, $1) }.map { $0 != nil && $1 != nil }
+
+        let wallet = Driver.combineLatest(validPrivateKey.filterNil(), validEncryptionPassphrase.filterNil()) {
+            try? KeyRestoration(privateKeyHexString: $0, encryptBy: $1)
+        }.filterNil()
+        .flatMapLatest {
+            self.useCase.restoreWallet(from: $0)
+                .asDriverOnErrorReturnEmpty()
+        }
+
+        fromView.restoreTrigger
+            .withLatestFrom(wallet).do(onNext: {
                 self.navigator?.toMain(restoredWallet: $0)
             }).drive().disposed(by: bag)
 
-        return Output()
+        return Output(
+            isRestoreButtonEnabled: isRestoreButtonEnabled
+        )
     }
 }

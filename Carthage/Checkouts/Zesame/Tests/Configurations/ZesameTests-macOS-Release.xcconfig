@@ -1,2 +1,0 @@
-#include "ZesameTests-macOS-Common.xcconfig"
-#include "../../Configurations/base_release.xcconfig"

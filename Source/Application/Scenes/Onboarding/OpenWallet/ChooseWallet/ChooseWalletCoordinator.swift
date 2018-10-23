@@ -15,12 +15,14 @@ final class ChooseWalletCoordinator: Coordinator {
     private weak var navigationController: UINavigationController?
     private weak var navigator: OnboardingNavigator?
     private let useCase: ChooseWalletUseCase
+    private let securePersistence: SecurePersistence
 
     var childCoordinators = [AnyCoordinator]()
 
-    init(navigationController: UINavigationController, navigator: OnboardingNavigator, useCase: ChooseWalletUseCase) {
+    init(navigationController: UINavigationController, navigator: OnboardingNavigator, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
         self.navigationController = navigationController
         self.navigator = navigator
+        self.securePersistence = securePersistence
         self.useCase = useCase
     }
 }
@@ -42,6 +44,7 @@ protocol ChooseWalletNavigator: AnyObject {
 extension ChooseWalletCoordinator: ChooseWalletNavigator {
 
     func toMain(wallet: Wallet) {
+        securePersistence.save(wallet: wallet)
         navigator?.toMain(wallet: wallet)
     }
 

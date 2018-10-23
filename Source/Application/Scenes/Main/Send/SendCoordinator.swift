@@ -15,10 +15,10 @@ import Zesame
 final class SendCoordinator {
 
     private weak var navigationController: UINavigationController?
-    private let wallet: Wallet
+    private let wallet: Driver<Wallet>
     private let services: UseCaseProvider
 
-    init(navigationController: UINavigationController, wallet: Wallet, services: UseCaseProvider) {
+    init(navigationController: UINavigationController, wallet: Driver<Wallet>, services: UseCaseProvider) {
         self.navigationController = navigationController
         self.wallet = wallet
         self.services = services

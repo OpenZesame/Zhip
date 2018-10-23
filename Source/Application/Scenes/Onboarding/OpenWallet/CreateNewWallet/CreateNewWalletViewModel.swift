@@ -30,18 +30,52 @@ final class CreateNewWalletViewModel {
 
 extension CreateNewWalletViewModel: ViewModelType {
 
-    struct Input {}
+    struct Input: InputType {
+        struct FromView {
+            let newEncryptionPassphrase: Driver<String>
+            let confirmedNewEncryptionPassphrase: Driver<String>
+            let createWalletTrigger: Driver<Void>
+        }
+        let fromController: ControllerInput
+        let fromView: FromView
+
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
+    }
 
     struct Output {
-        let wallet: Driver<Wallet>
+        let isCreateWalletButtonEnabled: Driver<Bool>
     }
 
     func transform(input: Input) -> Output {
+        let fromView = input.fromView
 
-        let wallet = useCase.createNewWallet()
+        let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(fromView.newEncryptionPassphrase, fromView.confirmedNewEncryptionPassphrase) {
+            guard
+                $0 == $1,
+                case let newPassphrase = $0,
+                newPassphrase.count >= 3
+                else { return nil }
+            return newPassphrase
+        }
+
+        let isCreateWalletButtonEnabled = validEncryptionPassphrase.map { $0 != nil }
+
+
+        fromView.createWalletTrigger.withLatestFrom(validEncryptionPassphrase.filterNil()) { $1 }
+            .flatMapLatest {
+                self.useCase.createNewWallet(encryptionPassphrase: $0)
+                    .asDriverOnErrorReturnEmpty()
+            }
+            .do(onNext: { self.navigator?.toMain(wallet: $0) })
+            .drive()
+            .disposed(by: bag)
+
 
         return Output(
-            wallet: wallet.asDriverOnErrorReturnEmpty()
+            isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
         )
     }
 

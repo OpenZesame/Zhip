@@ -7,9 +7,28 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
+
+struct ControllerInput {
+    let viewDidLoad: Driver<Void>
+    let viewWillAppear: Driver<Void>
+    let viewDidAppear: Driver<Void>
+}
+
+protocol InputType {
+    associatedtype FromView
+    var fromView: FromView { get }
+    var fromController: ControllerInput { get }
+    init(fromView: FromView, fromController: ControllerInput)
+}
+
+extension InputType {
+    var fromController: ControllerInput { fatalError("implement me") }
+}
 
 protocol ViewModelType {
-    associatedtype Input
+    associatedtype Input: InputType
     associatedtype Output
     func transform(input: Input) -> Output
 }

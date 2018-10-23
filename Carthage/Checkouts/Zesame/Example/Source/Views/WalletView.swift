@@ -1,5 +1,5 @@
 //
-//  WalletView.swift
+//  WalletBalanceView.swift
 //  ZesameiOSExample
 //
 //  Created by Alexander Cyon on 2018-09-22.
@@ -8,6 +8,7 @@
 
 import UIKit
 import Zesame
+
 
 final class WalletView: UIStackView, StackViewStyling {
 
@@ -21,9 +22,6 @@ final class WalletView: UIStackView, StackViewStyling {
         valueStyle: UILabel.Style(numberOfLines: 0)
     )
 
-    private lazy var balanceLabels = LabelsView(titleStyle: "Balance", valueStyle: "🤷‍♀️")
-    private lazy var nonceLabels = LabelsView(titleStyle: "Current wallet nonce", valueStyle: "🤷‍♀️")
-
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -36,23 +34,22 @@ final class WalletView: UIStackView, StackViewStyling {
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
-        addressLabels,
-        publicKeyLabels,
-        balanceLabels,
-        nonceLabels,
+        addressLabels
+//        publicKeyLabels
         ], spacing: 16, margin: 0)
 }
 
 extension WalletView {
 
     func populate(with wallet: Wallet) {
-        addressLabels.setValue(wallet.address.address)
-        publicKeyLabels.setValue(wallet.keyPair.publicKey)
-        balanceLabels.setValue(wallet.balance)
-        nonceLabels.setValue(wallet.nonce.nonce)
+        addressLabels.setValue(wallet.address.checksummedHex)
+//        publicKeyLabels.setValue(wallet.keystore.)
+    }
+
+    func setAddress(_ address: String) {
+        addressLabels.setValue(address)
     }
 }
-
 
 import RxSwift
 import RxCocoa

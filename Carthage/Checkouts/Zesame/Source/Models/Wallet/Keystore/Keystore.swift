@@ -103,34 +103,33 @@ extension Keystore.Crypto.KeyDerivationFunctionParameters: Codable, Equatable {
 
 public extension Keystore {
     init(address: Address, crypto: Crypto, id: String? = nil, version: Int = 3) {
-        self.address = address.checksummedHex
+        self.address = address.checksummedHex.lowercased()
         self.crypto = crypto
         self.id = id ?? UUID().uuidString
         self.version = version
     }
 
-    init(from derivedKey: DerivedKey, for wallet: Wallet, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
+    init(from derivedKey: DerivedKey, address: Address, privateKey: PrivateKey, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
         self.init(
-            address: wallet.address,
+            address: address,
             crypto:
-            Keystore.Crypto(derivedKey: derivedKey, wallet: wallet, parameters: parameters)
+            Keystore.Crypto(derivedKey: derivedKey, privateKey: privateKey, parameters: parameters)
         )
     }
 }
-
 
 // MARK: Initialization
 public extension Keystore.Crypto {
 
     /// Convenience
-    init(derivedKey: DerivedKey, wallet: Wallet, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
+    init(derivedKey: DerivedKey, privateKey: PrivateKey, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
 
         /// initializationVector
         let iv = try! securelyGenerateBytes(count: 16).asData
 
         let aesCtr = try! AES(key: derivedKey.asData.prefix(16).bytes, blockMode: CTR(iv: iv.bytes))
 
-        let encryptedPrivateKey = try! aesCtr.encrypt(wallet.keyPair.privateKey.bytes).asData
+        let encryptedPrivateKey = try! aesCtr.encrypt(privateKey.bytes).asData
 
         let mac = (derivedKey.asData.suffix(16) + encryptedPrivateKey).asData.sha3(.sha256)
 

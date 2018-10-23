@@ -1,2 +1,0 @@
-#include "ZesameTests-iOS-Common.xcconfig"
-#include "../../Configurations/base_debug.xcconfig"

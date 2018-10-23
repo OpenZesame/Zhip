@@ -10,6 +10,6 @@ import RxSwift
 import Zesame
 
 protocol ChooseWalletUseCase {
-    func createNewWallet() -> Observable<Wallet>
+    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
 }

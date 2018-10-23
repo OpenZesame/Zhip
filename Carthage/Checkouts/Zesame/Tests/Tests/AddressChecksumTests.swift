@@ -33,8 +33,7 @@ extension AddressChecksumTests {
         XCTAssertTrue(Address.isAddressChecksummed(vector.good))
         XCTAssertTrue(Address.isAddressChecksummed(vector.goodWithoutLeading0x))
         let checksummed = Address.checksum(address: vector.original)
-        XCTAssertEqual(checksummed, vector.good)
-        XCTAssertEqual(checksummed.prefix(2), "0x")
+        XCTAssertEqual(checksummed, vector.goodWithoutLeading0x)
     }
 }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import Zesame
+import KeychainSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
@@ -17,7 +18,7 @@ class AppDelegate: UIResponder {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.makeKeyAndVisible()
-        return AppCoordinator(window: window, services: DefaultUseCaseProvider.shared)
+        return AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
     }()
 }
 

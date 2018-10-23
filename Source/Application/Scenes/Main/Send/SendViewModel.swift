@@ -12,13 +12,12 @@ import RxCocoa
 import Zesame
 
 final class SendViewModel {
-    private let bag = DisposeBag()
-    
+
     private weak var navigator: SendNavigator?
     private let useCase: TransactionsUseCase
-    private let wallet: Wallet
+    private let wallet: Driver<Wallet>
 
-    init(navigator: SendNavigator, wallet: Wallet, useCase: TransactionsUseCase) {
+    init(navigator: SendNavigator, wallet: Driver<Wallet>, useCase: TransactionsUseCase) {
         self.navigator = navigator
         self.useCase = useCase
         self.wallet = wallet
@@ -27,70 +26,82 @@ final class SendViewModel {
 
 extension SendViewModel: ViewModelType {
 
-    struct Input {
-        let sendTrigger: Driver<Void>
-        let recepientAddress: Driver<String>
-        let amountToSend: Driver<String>
-        let gasLimit: Driver<String>
-        let gasPrice: Driver<String>
+    struct Input: InputType {
+        struct FromView {
+            let sendTrigger: Driver<Void>
+            let recepientAddress: Driver<String>
+            let amountToSend: Driver<String>
+            let gasLimit: Driver<String>
+            let gasPrice: Driver<String>
+            let encryptionPassphrase: Driver<String>
+        }
+        let fromView: FromView
+        let fromController: ControllerInput
+        
+        init(fromView: FromView, fromController: ControllerInput) {
+            self.fromView = fromView
+            self.fromController = fromController
+        }
     }
 
     struct Output {
-        let wallet: Driver<Wallet>
+        let walletBalance: Driver<WalletBalance>
+        let isRecipientAddressValid: Driver<Bool>
         let transactionId: Driver<String>
     }
 
     func transform(input: Input) -> Output {
 
-        let _address = self.wallet.address
+        let fromView = input.fromView
 
         let fetchBalanceSubject = BehaviorSubject<Void>(value: ())
 
-        let fetchTrigger = fetchBalanceSubject.asDriverOnErrorReturnEmpty()
+        let fetchTrigger = Driver.merge(fetchBalanceSubject.asDriverOnErrorReturnEmpty(), wallet.mapToVoid())
 
-        let balanceAndNonce: Driver<BalanceResponse> = fetchTrigger.flatMapLatest { _ in 
+        let balanceResponse: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.useCase
-                .getBalance(for: _address)
+                .getBalance(for: $0.address)
                 .asDriverOnErrorReturnEmpty()
         }
 
-        let _keyPair = self.wallet.keyPair
-        let wallet: Driver<Wallet> = balanceAndNonce.map { balance in
-            let amount = try! Amount(double: Double(balance.balance)!)
-            return Wallet(keyPair: _keyPair, balance: amount, nonce: Nonce(balance.nonce))
+        let zeroBalance = wallet.map { WalletBalance(wallet: $0) }
+
+        let walletBalance: Driver<WalletBalance> = Driver.combineLatest(wallet, balanceResponse) {
+            return WalletBalance(wallet: $0, balance: $1.balance, nonce: $1.nonce)
         }
 
-        let recipient = input.recepientAddress.map { Recipient.from(string: $0) }.filterNil()
+        let balance = Driver.merge(zeroBalance, walletBalance)
 
-        let amount = input.amountToSend.map { Double($0) }.filterNil()
-        let gasLimit = input.gasLimit.map { Double($0) }.filterNil()
-        let gasPrice = input.gasPrice.map { Double($0) }.filterNil()
+        let recipient = fromView.recepientAddress.map {
+           try? Address(hexString: $0)
+        }
 
-        let payment = Driver.combineLatest(recipient, amount, gasLimit, gasPrice, wallet) {
-            Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, from: $4)
+        let amount = fromView.amountToSend.map { Double($0) }.filterNil()
+        let gasLimit = fromView.gasLimit.map { Double($0) }.filterNil()
+        let gasPrice = fromView.gasPrice.map { Double($0) }.filterNil()
+
+        let payment = Driver.combineLatest(recipient.filterNil(), amount, gasLimit, gasPrice, balanceResponse) {
+            Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
         }.filterNil()
 
-        let transactionId: Driver<String> = input.sendTrigger
-            .withLatestFrom(Driver.combineLatest(payment, wallet) { (payment: $0, keyPair: $1.keyPair) })
+        let transactionId: Driver<String> = fromView.sendTrigger
+            .withLatestFrom(Driver.combineLatest(payment, wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
             .flatMapLatest {
-                self.useCase.sendTransaction(for: $0.payment, signWith: $0.keyPair)
+                self.useCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
                     .asDriverOnErrorReturnEmpty()
                     // Trigger fetching of balance after successfull send
                     .do(onNext: { _ in
-                        fetchBalanceSubject.onNext(())
+                        // TODO: poll API using transaction ID later on
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                            fetchBalanceSubject.onNext(())
+                        }
                     })
         }
 
         return Output(
-            wallet: wallet,
+            walletBalance: balance,
+            isRecipientAddressValid: recipient.map { $0 != nil },
             transactionId: transactionId
         )
-    }
-}
-
-extension Recipient {
-    static func from(string: String) -> Recipient? {
-        guard let address = try? Address(hexString: string) else { return nil }
-        return Recipient(address: address)
     }
 }

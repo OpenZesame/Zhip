@@ -32,14 +32,14 @@ extension SettingsView: ViewModelled {
     
     typealias ViewModel = SettingsViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] { 
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
         	viewModel.appVersion --> appVersionLabels
         ]
     }
 
-    var inputFromView: ViewModel.Input {
-        return ViewModel.Input(
+    var userInput: UserInput {
+        return UserInput(
             removeWalletTrigger: removeWalletButton.rx.tap.asDriver()
         )
     }

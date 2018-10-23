@@ -17,7 +17,7 @@ public struct ZilliqaRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
 
 public extension ZilliqaRequest {
     var baseURL: URL {
-        return URL(string: "https://testnet-scilla-prod-api.aws.zilliqa.com")!
+        return URL(string: "https://scillagas-api.aws.zilliqa.com")!
     }
 
     var method: HTTPMethod {
@@ -26,6 +26,10 @@ public extension ZilliqaRequest {
 
     var path: String {
         return "/"
+    }
+
+    var headerFields: [String: String] {
+        return ["Content-Type": "application/json"]
     }
 
     var parameters: Any? {
@@ -38,6 +42,12 @@ public extension ZilliqaRequest {
 
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
         let jsonData = try JSONSerialization.data(withJSONObject: object)
+
+        if let jsonString = String(data: jsonData, encoding: .utf8), jsonString.contains("error") {
+            print("⚠️ ERROR - json contains word 'error':")
+            print(jsonString)
+        }
+
         return try batch.responses(from: jsonData)
     }
 }

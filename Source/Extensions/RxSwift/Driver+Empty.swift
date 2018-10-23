@@ -24,7 +24,19 @@ public extension ObservableType {
         }
     }
 
+    func asDriverOnErrorJustComplete() -> Driver<E> {
+        return asDriver { error in
+            return Driver.empty()
+        }
+    }
+
     func mapToVoid() -> Observable<Void> {
+        return map { _ in }
+    }
+}
+
+public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+    func mapToVoid() -> Driver<Void> {
         return map { _ in }
     }
 }

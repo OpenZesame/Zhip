@@ -15,9 +15,9 @@ import Zesame
 final class SendCoordinator {
 
     private weak var navigationController: UINavigationController?
-    private let wallet: Wallet
+    private let wallet: Observable<Wallet>
 
-    init(navigationController: UINavigationController, wallet: Wallet) {
+    init(navigationController: UINavigationController, wallet: Observable<Wallet>) {
         self.navigationController = navigationController
         self.wallet = wallet
     }
