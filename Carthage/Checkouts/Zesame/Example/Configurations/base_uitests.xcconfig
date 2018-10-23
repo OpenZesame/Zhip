@@ -1,2 +1,0 @@
-#include "../../Configurations/base_shared.xcconfig"
-TEST_TARGET_NAME = $(PRODUCT_NAME)

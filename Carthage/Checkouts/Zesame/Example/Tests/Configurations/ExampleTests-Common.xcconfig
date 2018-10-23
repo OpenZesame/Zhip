@@ -1,4 +1,0 @@
-#include "../../../Configurations/base_framework.xcconfig"
-#include "../../../Configurations/base_tests.xcconfig"
-INFOPLIST_FILE = Tests/SupportingFiles/Zesame-iOS-Example-Tests-Info.plist
-//TEST_HOST = $(BUILT_PRODUCTS_DIR)/$(_APP_NAME_PROD).app/$(_APP_NAME_PROD)

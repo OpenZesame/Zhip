@@ -23,7 +23,7 @@ public extension DefaultAPIClient {
         Session.send(httpRequest, callbackQueue: nil) {
             switch $0 {
             case .success(let response): handlerAPIKit(.success(response))
-            case .failure(let error): print("⚠️ \(error)"); handlerAPIKit(.failure(error))
+            case .failure(let error): handlerAPIKit(.failure(error))
             }
         }
     }

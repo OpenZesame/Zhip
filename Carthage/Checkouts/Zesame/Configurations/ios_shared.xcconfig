@@ -1,4 +1,0 @@
-#include "base_shared.xcconfig"
-
-IPHONEOS_DEPLOYMENT_TARGET = 11.3
-SDKROOT = iphoneos

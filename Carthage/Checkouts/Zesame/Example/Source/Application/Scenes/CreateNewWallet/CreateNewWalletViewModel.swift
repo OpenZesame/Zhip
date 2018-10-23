@@ -29,30 +29,41 @@ final class CreateNewWalletViewModel {
 extension CreateNewWalletViewModel: ViewModelType {
 
     struct Input {
-        let emailAddress: Driver<String?>
-        let sendBackupTrigger: Driver<Void>
+        let encryptionPassphrase: Driver<String?>
+        let confirmedEncryptionPassphrase: Driver<String?>
+        let createWalletTrigger: Driver<Void>
     }
 
     struct Output {
-        let canSendBackup: Driver<Bool>
-        let wallet: Driver<Wallet>
+        let isCreateWalletButtonEnabled: Driver<Bool>
     }
 
     func transform(input: Input) -> Output {
-        let emailValidator = EmailValidator()
 
-        let isEmailValid = input.emailAddress.map { $0.validates(by: emailValidator) }.startWith(false)
+        let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(input.encryptionPassphrase, input.confirmedEncryptionPassphrase) {
+            guard
+                $0 == $1,
+                let newPassphrase = $0,
+                newPassphrase.count >= 3
+                else { return nil }
+            return newPassphrase
+        }
 
-        let wallet = service.createNewWallet()
-        let keystore = wallet.flatMapLatest {
-            return self.service.exportKeystore(from: $0, encryptWalletBy: "apa")
-        }.asDriverOnErrorReturnEmpty()
-
-        keystore.do(onNext: { print("Successfully created keystore: \($0.toJson())")}).drive().disposed(by: bag)
-
+        let isCreateWalletButtonEnabled = validEncryptionPassphrase.map { $0 != nil }
+        
+        
+        input.createWalletTrigger.withLatestFrom(validEncryptionPassphrase.filterNil()) { $1 } //.flatMapLatest { (passphrase: String?) -> Driver<Wallet?> in
+            .flatMapLatest {
+                self.service.createNewWallet(encryptionPassphrase: $0)
+                    .asDriverOnErrorReturnEmpty()
+            }
+            .do(onNext: { self.navigator?.toMain(wallet: $0) })
+            .drive()
+            .disposed(by: bag)
+        
+        
         return Output(
-            canSendBackup: isEmailValid,
-            wallet: wallet.asDriverOnErrorReturnEmpty()
+            isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
         )
     }
 

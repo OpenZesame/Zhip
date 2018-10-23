@@ -1,3 +1,0 @@
-#include "Zesame-Shared.xcconfig"
-#include "../../Configurations/ios_framework.xcconfig"
-FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/Carthage/Build/iOS

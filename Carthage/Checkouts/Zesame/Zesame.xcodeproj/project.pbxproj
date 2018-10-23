@@ -17,16 +17,10 @@
 		48196F272157C574009C40BB /* ZilliqaService+DefaultImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48196F252157C574009C40BB /* ZilliqaService+DefaultImplementations.swift */; };
 		48196F2A2157C5CA009C40BB /* Keystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48196F292157C5CA009C40BB /* Keystore.swift */; };
 		48196F2B2157C5CA009C40BB /* Keystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48196F292157C5CA009C40BB /* Keystore.swift */; };
-		482E31702144421F00D81A91 /* EllipticCurveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E849C62144404F00A06C40 /* EllipticCurveKit.framework */; };
-		483460A42145BD28007E5D5C /* JSONRPCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A22145BD28007E5D5C /* JSONRPCKit.framework */; };
-		483460A52145BD28007E5D5C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A32145BD28007E5D5C /* Result.framework */; };
 		483460A82145BD4A007E5D5C /* ZilliqaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483460A72145BD4A007E5D5C /* ZilliqaService.swift */; };
 		483460A92145BD4C007E5D5C /* ZilliqaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483460A72145BD4A007E5D5C /* ZilliqaService.swift */; };
-		483460AB2145C183007E5D5C /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460AA2145C182007E5D5C /* APIKit.framework */; };
 		483F0F7C2146F9FA00E6EE08 /* Rx+ZilliqaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F7B2146F9FA00E6EE08 /* Rx+ZilliqaService.swift */; };
 		483F0F7D2146F9FA00E6EE08 /* Rx+ZilliqaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F7B2146F9FA00E6EE08 /* Rx+ZilliqaService.swift */; };
-		483F0F802146FB8D00E6EE08 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7E2146FB8D00E6EE08 /* RxCocoa.framework */; };
-		483F0F812146FB8D00E6EE08 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */; };
 		483F0F8B214704D700E6EE08 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F8A214704D700E6EE08 /* Error.swift */; };
 		483F0F8C214704D700E6EE08 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F8A214704D700E6EE08 /* Error.swift */; };
 		483F0F902147083800E6EE08 /* BalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F8F2147083800E6EE08 /* BalanceRequest.swift */; };
@@ -42,14 +36,59 @@
 		4847EE0C21614196002FF978 /* DerivedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0B21614196002FF978 /* DerivedKey.swift */; };
 		4847EE0D2161419A002FF978 /* DerivedKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0B21614196002FF978 /* DerivedKey.swift */; };
 		4847EE0F216141BB002FF978 /* Scrypt+KDFParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0E216141BB002FF978 /* Scrypt+KDFParameters.swift */; };
+		484DD367216A4C1900FB82C8 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD366216A4C1900FB82C8 /* KeyPair.swift */; };
+		484DD368216A4C1900FB82C8 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD366216A4C1900FB82C8 /* KeyPair.swift */; };
+		484DD36A216A4C2E00FB82C8 /* WalletBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD369216A4C2E00FB82C8 /* WalletBalance.swift */; };
+		484DD36B216A4C2E00FB82C8 /* WalletBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD369216A4C2E00FB82C8 /* WalletBalance.swift */; };
+		484DD36D216A4DB900FB82C8 /* Keystore+Wallet+Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD36C216A4DB900FB82C8 /* Keystore+Wallet+Import.swift */; };
+		484DD36E216A4DB900FB82C8 /* Keystore+Wallet+Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD36C216A4DB900FB82C8 /* Keystore+Wallet+Import.swift */; };
+		484DD370216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD36F216A4DE100FB82C8 /* Keystore+Wallet+Export.swift */; };
+		484DD371216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484DD36F216A4DE100FB82C8 /* Keystore+Wallet+Export.swift */; };
 		484E09EA21543F3B003D928E /* MessageFromUnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09E921543F3B003D928E /* MessageFromUnsignedTransaction.swift */; };
 		484E09EB21543F43003D928E /* MessageFromUnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09E921543F3B003D928E /* MessageFromUnsignedTransaction.swift */; };
 		484E09ED215440B1003D928E /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09EC215440B1003D928E /* APIClient.swift */; };
 		484E09EE215440B4003D928E /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09EC215440B1003D928E /* APIClient.swift */; };
 		484E09F021544134003D928E /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09EF21544134003D928E /* DefaultAPIClient.swift */; };
 		484E09F121544134003D928E /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E09EF21544134003D928E /* DefaultAPIClient.swift */; };
-		4871665B2141ADEA00F0B413 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166582141ADEA00F0B413 /* BigInt.framework */; };
-		4871665C2141ADEA00F0B413 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166592141ADEA00F0B413 /* SipHash.framework */; };
+		485D2899216A3BF7006F23E5 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485D2898216A3BF7006F23E5 /* UnsignedTransaction.swift */; };
+		485D289A216A3BFA006F23E5 /* UnsignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485D2898216A3BF7006F23E5 /* UnsignedTransaction.swift */; };
+		48802CDB21751A32003A22FD /* RxTest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48B5B2FB2148321500147005 /* RxTest.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CDD21751A32003A22FD /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CDE21751A32003A22FD /* APIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 483460AA2145C182007E5D5C /* APIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CDF21751A32003A22FD /* JSONRPCKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A22145BD28007E5D5C /* JSONRPCKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CE021751A32003A22FD /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A32145BD28007E5D5C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CE121751A32003A22FD /* EllipticCurveKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48E849C62144404F00A06C40 /* EllipticCurveKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CE221751A32003A22FD /* BigInt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 487166582141ADEA00F0B413 /* BigInt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CE321751A32003A22FD /* SipHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 487166592141ADEA00F0B413 /* SipHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF321751AE3003A22FD /* APIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE521751AB7003A22FD /* APIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF421751AE3003A22FD /* BigInt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE721751AB8003A22FD /* BigInt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF521751AE3003A22FD /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CEA21751AB8003A22FD /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF621751AE3003A22FD /* JSONRPCKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE621751AB7003A22FD /* JSONRPCKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF721751AE3003A22FD /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE421751AB7003A22FD /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF821751AE3003A22FD /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE921751AB8003A22FD /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802CF921751AE3003A22FD /* SipHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE821751AB8003A22FD /* SipHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802D0521751D0A003A22FD /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460AA2145C182007E5D5C /* APIKit.framework */; };
+		48802D0621751D0A003A22FD /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166582141ADEA00F0B413 /* BigInt.framework */; };
+		48802D0721751D0A003A22FD /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D0321751CD4003A22FD /* CryptoSwift.framework */; };
+		48802D0821751D0A003A22FD /* EllipticCurveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E849C62144404F00A06C40 /* EllipticCurveKit.framework */; };
+		48802D0921751D0A003A22FD /* JSONRPCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A22145BD28007E5D5C /* JSONRPCKit.framework */; };
+		48802D0A21751D0A003A22FD /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A32145BD28007E5D5C /* Result.framework */; };
+		48802D0B21751D0A003A22FD /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7E2146FB8D00E6EE08 /* RxCocoa.framework */; };
+		48802D0C21751D0A003A22FD /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */; };
+		48802D0E21751D0A003A22FD /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166592141ADEA00F0B413 /* SipHash.framework */; };
+		48802D1121751D37003A22FD /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE521751AB7003A22FD /* APIKit.framework */; };
+		48802D1221751D37003A22FD /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE721751AB8003A22FD /* BigInt.framework */; };
+		48802D1321751D37003A22FD /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CEA21751AB8003A22FD /* CryptoSwift.framework */; };
+		48802D1421751D37003A22FD /* JSONRPCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE621751AB7003A22FD /* JSONRPCKit.framework */; };
+		48802D1521751D37003A22FD /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE421751AB7003A22FD /* Result.framework */; };
+		48802D1621751D37003A22FD /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE921751AB8003A22FD /* RxSwift.framework */; };
+		48802D1721751D37003A22FD /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802CE821751AB8003A22FD /* SipHash.framework */; };
+		48802D1D21751D37003A22FD /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D1921751D37003A22FD /* RxCocoa.framework */; };
+		48802D1E21751D37003A22FD /* EllipticCurveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D1A21751D37003A22FD /* EllipticCurveKit.framework */; };
+		48802D2021751DCC003A22FD /* EllipticCurveKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D1A21751D37003A22FD /* EllipticCurveKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802D2221751DE7003A22FD /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D0321751CD4003A22FD /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802D2421751E0C003A22FD /* RxTest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48802D1B21751D37003A22FD /* RxTest.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		48802D2621751EE9003A22FD /* Scrypt+KDFParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0E216141BB002FF978 /* Scrypt+KDFParameters.swift */; };
 		488A65872155ACD20091FD03 /* ZilliqaService+Signing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A65862155ACD20091FD03 /* ZilliqaService+Signing.swift */; };
 		488A65882155ACD20091FD03 /* ZilliqaService+Signing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A65862155ACD20091FD03 /* ZilliqaService+Signing.swift */; };
 		488A658B2157A1670091FD03 /* DispatchQueue+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A658A2157A1670091FD03 /* DispatchQueue+Sugar.swift */; };
@@ -58,21 +97,22 @@
 		488A658F2157BC5F0091FD03 /* ExportKeystoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A658D2157BC5F0091FD03 /* ExportKeystoreTests.swift */; };
 		48B5B2F121482EC600147005 /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B5B2F021482EC600147005 /* TransactionSigningTests.swift */; };
 		48B5B2F221482EC600147005 /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B5B2F021482EC600147005 /* TransactionSigningTests.swift */; };
-		48B5B2F32148321400147005 /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460AA2145C182007E5D5C /* APIKit.framework */; };
-		48B5B2F42148321400147005 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166582141ADEA00F0B413 /* BigInt.framework */; };
-		48B5B2F52148321400147005 /* EllipticCurveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E849C62144404F00A06C40 /* EllipticCurveKit.framework */; };
-		48B5B2F62148321400147005 /* JSONRPCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A22145BD28007E5D5C /* JSONRPCKit.framework */; };
-		48B5B2F72148321400147005 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483460A32145BD28007E5D5C /* Result.framework */; };
-		48B5B2F82148321400147005 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7E2146FB8D00E6EE08 /* RxCocoa.framework */; };
-		48B5B2F92148321400147005 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */; };
-		48B5B2FA2148321400147005 /* SipHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 487166592141ADEA00F0B413 /* SipHash.framework */; };
-		48B5B2FC2148321500147005 /* RxTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B5B2FB2148321500147005 /* RxTest.framework */; };
-		48D4114A2147200A00E2F207 /* Recipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D411492147200A00E2F207 /* Recipient.swift */; };
 		48D4114C2147202500E2F207 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4114B2147202500E2F207 /* Transaction.swift */; };
 		48D4114F2147205200E2F207 /* TransactionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4114E2147205200E2F207 /* TransactionRequest.swift */; };
 		48D411502147205500E2F207 /* TransactionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4114E2147205200E2F207 /* TransactionRequest.swift */; };
-		48D411512147206300E2F207 /* Recipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D411492147200A00E2F207 /* Recipient.swift */; };
 		48D411522147206600E2F207 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4114B2147202500E2F207 /* Transaction.swift */; };
+		48E00236217CBB900077E5CF /* KeyRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00235217CBB900077E5CF /* KeyRestoration.swift */; };
+		48E00237217CBB900077E5CF /* KeyRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00235217CBB900077E5CF /* KeyRestoration.swift */; };
+		48E0023A217CBBBB0077E5CF /* Wallet+Decrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00239217CBBBB0077E5CF /* Wallet+Decrypt.swift */; };
+		48E0023B217CBBBB0077E5CF /* Wallet+Decrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00239217CBBBB0077E5CF /* Wallet+Decrypt.swift */; };
+		48E0023E217CBBE00077E5CF /* Address+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0023D217CBBE00077E5CF /* Address+Codable.swift */; };
+		48E0023F217CBBE00077E5CF /* Address+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0023D217CBBE00077E5CF /* Address+Codable.swift */; };
+		48E00241217CBBF40077E5CF /* Wallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00240217CBBF40077E5CF /* Wallet+Codable.swift */; };
+		48E00242217CBBF40077E5CF /* Wallet+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00240217CBBF40077E5CF /* Wallet+Codable.swift */; };
+		48E00244217CBC140077E5CF /* Address+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00243217CBC140077E5CF /* Address+Validation.swift */; };
+		48E00245217CBC140077E5CF /* Address+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00243217CBC140077E5CF /* Address+Validation.swift */; };
+		48E00247217CBC300077E5CF /* Address+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00246217CBC300077E5CF /* Address+HexString.swift */; };
+		48E00248217CBC300077E5CF /* Address+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E00246217CBC300077E5CF /* Address+HexString.swift */; };
 		48E76FB420B9D6210027A3FE /* ZilliqaSDK_macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 48E76FB120B9D6160027A3FE /* ZilliqaSDK_macOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48ED060E20B8618F00C639E5 /* Zesame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ED060520B8618F00C639E5 /* Zesame.framework */; };
 		48ED0E5020E7F150005DA19C /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F70A7820B811330027B72D /* Wallet.swift */; };
@@ -84,6 +124,10 @@
 		48ED0E6D20E80731005DA19C /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ED0E6B20E80731005DA19C /* BigNumber.swift */; };
 		48ED0E6F20E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ED0E6E20E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift */; };
 		48ED0E7020E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ED0E6E20E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift */; };
+		48F06AC1217E596900303D1E /* Address+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F06AC0217E596900303D1E /* Address+CustomStringConvertible.swift */; };
+		48F06AC2217E596C00303D1E /* Address+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F06AC0217E596900303D1E /* Address+CustomStringConvertible.swift */; };
+		48F06AC4217E599E00303D1E /* Wallet+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F06AC3217E599E00303D1E /* Wallet+CustomStringConvertible.swift */; };
+		48F06AC5217E599E00303D1E /* Wallet+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F06AC3217E599E00303D1E /* Wallet+CustomStringConvertible.swift */; };
 		48F70A1F20B72DD00027B72D /* Zesame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48F70A1520B72DD00027B72D /* Zesame.framework */; };
 		48F70A4820B7F4D00027B72D /* ZilliqaSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 48F70A3320B72E8A0027B72D /* ZilliqaSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48F70A4B20B7F55B0027B72D /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F70A4A20B7F55B0027B72D /* Payment.swift */; };
@@ -110,6 +154,47 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		48802CD521751743003A22FD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				48802D2221751DE7003A22FD /* CryptoSwift.framework in Embed Frameworks */,
+				48802CDB21751A32003A22FD /* RxTest.framework in Embed Frameworks */,
+				48802CDD21751A32003A22FD /* RxSwift.framework in Embed Frameworks */,
+				48802CDE21751A32003A22FD /* APIKit.framework in Embed Frameworks */,
+				48802CDF21751A32003A22FD /* JSONRPCKit.framework in Embed Frameworks */,
+				48802CE021751A32003A22FD /* Result.framework in Embed Frameworks */,
+				48802CE121751A32003A22FD /* EllipticCurveKit.framework in Embed Frameworks */,
+				48802CE221751A32003A22FD /* BigInt.framework in Embed Frameworks */,
+				48802CE321751A32003A22FD /* SipHash.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48802CF221751ACB003A22FD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				48802D2421751E0C003A22FD /* RxTest.framework in Embed Frameworks */,
+				48802D2021751DCC003A22FD /* EllipticCurveKit.framework in Embed Frameworks */,
+				48802CF321751AE3003A22FD /* APIKit.framework in Embed Frameworks */,
+				48802CF421751AE3003A22FD /* BigInt.framework in Embed Frameworks */,
+				48802CF521751AE3003A22FD /* CryptoSwift.framework in Embed Frameworks */,
+				48802CF621751AE3003A22FD /* JSONRPCKit.framework in Embed Frameworks */,
+				48802CF721751AE3003A22FD /* Result.framework in Embed Frameworks */,
+				48802CF821751AE3003A22FD /* RxSwift.framework in Embed Frameworks */,
+				48802CF921751AE3003A22FD /* SipHash.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		481169A12167778900341F81 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		481169A421677CC300341F81 /* AddressChecksumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressChecksumTests.swift; sourceTree = "<group>"; };
@@ -120,6 +205,12 @@
 		483460A32145BD28007E5D5C /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		483460A72145BD4A007E5D5C /* ZilliqaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZilliqaService.swift; sourceTree = "<group>"; };
 		483460AA2145C182007E5D5C /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
+		483B2CF32175126B004E07A4 /* Zesame-Tests-Mac.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Tests-Mac.xcconfig"; sourceTree = "<group>"; };
+		483B2CF42175126B004E07A4 /* Zesame-Tests-iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Tests-iOS.xcconfig"; sourceTree = "<group>"; };
+		483B2CF52175126B004E07A4 /* Zesame-Tests-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Tests-Shared.xcconfig"; sourceTree = "<group>"; };
+		483B2CF62175127B004E07A4 /* Zesame-iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-iOS.xcconfig"; sourceTree = "<group>"; };
+		483B2CF72175127B004E07A4 /* Zesame-Mac.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Mac.xcconfig"; sourceTree = "<group>"; };
+		483B2CF82175127B004E07A4 /* Zesame-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Shared.xcconfig"; sourceTree = "<group>"; };
 		483F0F7B2146F9FA00E6EE08 /* Rx+ZilliqaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+ZilliqaService.swift"; sourceTree = "<group>"; };
 		483F0F7E2146FB8D00E6EE08 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
@@ -129,21 +220,32 @@
 		483F0F952147087700E6EE08 /* ZilliqaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZilliqaRequest.swift; sourceTree = "<group>"; };
 		483F0F982147091900E6EE08 /* DefaultZilliqaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultZilliqaService.swift; sourceTree = "<group>"; };
 		483F0F9B2147093D00E6EE08 /* ZilliqaService+APIKit+ErrorMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZilliqaService+APIKit+ErrorMapping.swift"; sourceTree = "<group>"; };
-		4847EE032161390D002FF978 /* ZesameTests-iOS-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-iOS-Debug.xcconfig"; sourceTree = "<group>"; };
-		4847EE042161390D002FF978 /* ZesameTests-macOS-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-macOS-Release.xcconfig"; sourceTree = "<group>"; };
-		4847EE052161390D002FF978 /* ZesameTests-macOS-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-macOS-Debug.xcconfig"; sourceTree = "<group>"; };
-		4847EE062161390D002FF978 /* ZesameTests-iOS-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-iOS-Common.xcconfig"; sourceTree = "<group>"; };
-		4847EE072161390D002FF978 /* Zilliqa-Tests-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zilliqa-Tests-Shared.xcconfig"; sourceTree = "<group>"; };
-		4847EE082161390D002FF978 /* ZesameTests-iOS-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-iOS-Release.xcconfig"; sourceTree = "<group>"; };
-		4847EE092161390D002FF978 /* ZesameTests-macOS-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZesameTests-macOS-Common.xcconfig"; sourceTree = "<group>"; };
 		4847EE0A21613972002FF978 /* ZesameTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZesameTests-Info.plist"; sourceTree = "<group>"; };
 		4847EE0B21614196002FF978 /* DerivedKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedKey.swift; sourceTree = "<group>"; };
 		4847EE0E216141BB002FF978 /* Scrypt+KDFParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scrypt+KDFParameters.swift"; sourceTree = "<group>"; };
+		484DD366216A4C1900FB82C8 /* KeyPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPair.swift; sourceTree = "<group>"; };
+		484DD369216A4C2E00FB82C8 /* WalletBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalance.swift; sourceTree = "<group>"; };
+		484DD36C216A4DB900FB82C8 /* Keystore+Wallet+Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keystore+Wallet+Import.swift"; sourceTree = "<group>"; };
+		484DD36F216A4DE100FB82C8 /* Keystore+Wallet+Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keystore+Wallet+Export.swift"; sourceTree = "<group>"; };
 		484E09E921543F3B003D928E /* MessageFromUnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFromUnsignedTransaction.swift; sourceTree = "<group>"; };
 		484E09EC215440B1003D928E /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		484E09EF21544134003D928E /* DefaultAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
+		485D2898216A3BF7006F23E5 /* UnsignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTransaction.swift; sourceTree = "<group>"; };
 		487166582141ADEA00F0B413 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/iOS/BigInt.framework; sourceTree = "<group>"; };
 		487166592141ADEA00F0B413 /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/iOS/SipHash.framework; sourceTree = "<group>"; };
+		48802CE421751AB7003A22FD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
+		48802CE521751AB7003A22FD /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/Mac/APIKit.framework; sourceTree = "<group>"; };
+		48802CE621751AB7003A22FD /* JSONRPCKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSONRPCKit.framework; path = Carthage/Build/Mac/JSONRPCKit.framework; sourceTree = "<group>"; };
+		48802CE721751AB8003A22FD /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/Mac/BigInt.framework; sourceTree = "<group>"; };
+		48802CE821751AB8003A22FD /* SipHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SipHash.framework; path = Carthage/Build/Mac/SipHash.framework; sourceTree = "<group>"; };
+		48802CE921751AB8003A22FD /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
+		48802CEA21751AB8003A22FD /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/Mac/CryptoSwift.framework; sourceTree = "<group>"; };
+		48802D0321751CD4003A22FD /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
+		48802D0F21751D0A003A22FD /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/iOS/RxBlocking.framework; sourceTree = "<group>"; };
+		48802D1821751D37003A22FD /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/Mac/RxBlocking.framework; sourceTree = "<group>"; };
+		48802D1921751D37003A22FD /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/Mac/RxCocoa.framework; sourceTree = "<group>"; };
+		48802D1A21751D37003A22FD /* EllipticCurveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EllipticCurveKit.framework; path = Carthage/Build/Mac/EllipticCurveKit.framework; sourceTree = "<group>"; };
+		48802D1B21751D37003A22FD /* RxTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxTest.framework; path = Carthage/Build/Mac/RxTest.framework; sourceTree = "<group>"; };
 		48838C9420B9F64800C18DC2 /* WalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTests.swift; sourceTree = "<group>"; };
 		488A65862155ACD20091FD03 /* ZilliqaService+Signing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZilliqaService+Signing.swift"; sourceTree = "<group>"; };
 		488A658A2157A1670091FD03 /* DispatchQueue+Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Sugar.swift"; sourceTree = "<group>"; };
@@ -152,23 +254,23 @@
 		48B5B2EF21482EC600147005 /* ZilliqaSDK macOS Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZilliqaSDK macOS Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		48B5B2F021482EC600147005 /* TransactionSigningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSigningTests.swift; sourceTree = "<group>"; };
 		48B5B2FB2148321500147005 /* RxTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxTest.framework; path = Carthage/Build/iOS/RxTest.framework; sourceTree = "<group>"; };
-		48BD4ADB215EA846005F1B18 /* Zesame-macOS-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-macOS-Release.xcconfig"; sourceTree = "<group>"; };
-		48BD4ADC215EA846005F1B18 /* Zesame-iOS-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-iOS-Debug.xcconfig"; sourceTree = "<group>"; };
-		48BD4ADD215EA846005F1B18 /* Zesame-macOS-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-macOS-Debug.xcconfig"; sourceTree = "<group>"; };
-		48BD4ADE215EA846005F1B18 /* Zesame-Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-Shared.xcconfig"; sourceTree = "<group>"; };
-		48BD4ADF215EA846005F1B18 /* Zesame-macOS-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-macOS-Common.xcconfig"; sourceTree = "<group>"; };
-		48BD4AE0215EA846005F1B18 /* Zesame-iOS-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-iOS-Release.xcconfig"; sourceTree = "<group>"; };
-		48BD4AE1215EA846005F1B18 /* Zesame-iOS-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zesame-iOS-Common.xcconfig"; sourceTree = "<group>"; };
 		48C89FC42142C4F10063B0FA /* Zesame-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Zesame-Info.plist"; sourceTree = "<group>"; };
-		48D411492147200A00E2F207 /* Recipient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipient.swift; sourceTree = "<group>"; };
 		48D4114B2147202500E2F207 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		48D4114E2147205200E2F207 /* TransactionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRequest.swift; sourceTree = "<group>"; };
+		48E00235217CBB900077E5CF /* KeyRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRestoration.swift; sourceTree = "<group>"; };
+		48E00239217CBBBB0077E5CF /* Wallet+Decrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+Decrypt.swift"; sourceTree = "<group>"; };
+		48E0023D217CBBE00077E5CF /* Address+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+Codable.swift"; sourceTree = "<group>"; };
+		48E00240217CBBF40077E5CF /* Wallet+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+Codable.swift"; sourceTree = "<group>"; };
+		48E00243217CBC140077E5CF /* Address+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+Validation.swift"; sourceTree = "<group>"; };
+		48E00246217CBC300077E5CF /* Address+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+HexString.swift"; sourceTree = "<group>"; };
 		48E76FB120B9D6160027A3FE /* ZilliqaSDK_macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZilliqaSDK_macOS.h; sourceTree = "<group>"; };
 		48E849C62144404F00A06C40 /* EllipticCurveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EllipticCurveKit.framework; path = Carthage/Build/iOS/EllipticCurveKit.framework; sourceTree = "<group>"; };
 		48ED060520B8618F00C639E5 /* Zesame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zesame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48ED060D20B8618F00C639E5 /* ZesameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZesameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48ED0E6B20E80731005DA19C /* BigNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber.swift; sourceTree = "<group>"; };
 		48ED0E6E20E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt256+ExpressibleByStringLiteral.swift"; sourceTree = "<group>"; };
+		48F06AC0217E596900303D1E /* Address+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Address+CustomStringConvertible.swift"; sourceTree = "<group>"; };
+		48F06AC3217E599E00303D1E /* Wallet+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+CustomStringConvertible.swift"; sourceTree = "<group>"; };
 		48F70A1520B72DD00027B72D /* Zesame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zesame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F70A1E20B72DD00027B72D /* ZesameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZesameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F70A3320B72E8A0027B72D /* ZilliqaSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZilliqaSDK.h; sourceTree = "<group>"; };
@@ -190,6 +292,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48802D1121751D37003A22FD /* APIKit.framework in Frameworks */,
+				48802D1221751D37003A22FD /* BigInt.framework in Frameworks */,
+				48802D1321751D37003A22FD /* CryptoSwift.framework in Frameworks */,
+				48802D1E21751D37003A22FD /* EllipticCurveKit.framework in Frameworks */,
+				48802D1421751D37003A22FD /* JSONRPCKit.framework in Frameworks */,
+				48802D1521751D37003A22FD /* Result.framework in Frameworks */,
+				48802D1D21751D37003A22FD /* RxCocoa.framework in Frameworks */,
+				48802D1621751D37003A22FD /* RxSwift.framework in Frameworks */,
+				48802D1721751D37003A22FD /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,14 +316,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4871665B2141ADEA00F0B413 /* BigInt.framework in Frameworks */,
-				483460AB2145C183007E5D5C /* APIKit.framework in Frameworks */,
-				4871665C2141ADEA00F0B413 /* SipHash.framework in Frameworks */,
-				483460A42145BD28007E5D5C /* JSONRPCKit.framework in Frameworks */,
-				483F0F802146FB8D00E6EE08 /* RxCocoa.framework in Frameworks */,
-				483F0F812146FB8D00E6EE08 /* RxSwift.framework in Frameworks */,
-				483460A52145BD28007E5D5C /* Result.framework in Frameworks */,
-				482E31702144421F00D81A91 /* EllipticCurveKit.framework in Frameworks */,
+				48802D0521751D0A003A22FD /* APIKit.framework in Frameworks */,
+				48802D0621751D0A003A22FD /* BigInt.framework in Frameworks */,
+				48802D0721751D0A003A22FD /* CryptoSwift.framework in Frameworks */,
+				48802D0821751D0A003A22FD /* EllipticCurveKit.framework in Frameworks */,
+				48802D0921751D0A003A22FD /* JSONRPCKit.framework in Frameworks */,
+				48802D0A21751D0A003A22FD /* Result.framework in Frameworks */,
+				48802D0B21751D0A003A22FD /* RxCocoa.framework in Frameworks */,
+				48802D0C21751D0A003A22FD /* RxSwift.framework in Frameworks */,
+				48802D0E21751D0A003A22FD /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,15 +333,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48F70A1F20B72DD00027B72D /* Zesame.framework in Frameworks */,
-				48B5B2FC2148321500147005 /* RxTest.framework in Frameworks */,
-				48B5B2F32148321400147005 /* APIKit.framework in Frameworks */,
-				48B5B2F42148321400147005 /* BigInt.framework in Frameworks */,
-				48B5B2F52148321400147005 /* EllipticCurveKit.framework in Frameworks */,
-				48B5B2F62148321400147005 /* JSONRPCKit.framework in Frameworks */,
-				48B5B2F72148321400147005 /* Result.framework in Frameworks */,
-				48B5B2F82148321400147005 /* RxCocoa.framework in Frameworks */,
-				48B5B2F92148321400147005 /* RxSwift.framework in Frameworks */,
-				48B5B2FA2148321400147005 /* SipHash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +353,8 @@
 			isa = PBXGroup;
 			children = (
 				48196F292157C5CA009C40BB /* Keystore.swift */,
+				484DD36C216A4DB900FB82C8 /* Keystore+Wallet+Import.swift */,
+				484DD36F216A4DE100FB82C8 /* Keystore+Wallet+Export.swift */,
 			);
 			path = Keystore;
 			sourceTree = "<group>";
@@ -285,6 +390,19 @@
 		487166562141ADEA00F0B413 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48802D1A21751D37003A22FD /* EllipticCurveKit.framework */,
+				48802D0F21751D0A003A22FD /* RxBlocking.framework */,
+				48802D1821751D37003A22FD /* RxBlocking.framework */,
+				48802D1921751D37003A22FD /* RxCocoa.framework */,
+				48802D1B21751D37003A22FD /* RxTest.framework */,
+				48802D0321751CD4003A22FD /* CryptoSwift.framework */,
+				48802CE521751AB7003A22FD /* APIKit.framework */,
+				48802CE721751AB8003A22FD /* BigInt.framework */,
+				48802CEA21751AB8003A22FD /* CryptoSwift.framework */,
+				48802CE621751AB7003A22FD /* JSONRPCKit.framework */,
+				48802CE421751AB7003A22FD /* Result.framework */,
+				48802CE921751AB8003A22FD /* RxSwift.framework */,
+				48802CE821751AB8003A22FD /* SipHash.framework */,
 				48B5B2FB2148321500147005 /* RxTest.framework */,
 				483F0F7E2146FB8D00E6EE08 /* RxCocoa.framework */,
 				483F0F7F2146FB8D00E6EE08 /* RxSwift.framework */,
@@ -337,6 +455,29 @@
 				484E09E921543F3B003D928E /* MessageFromUnsignedTransaction.swift */,
 			);
 			path = Transaction;
+			sourceTree = "<group>";
+		};
+		48E00238217CBBAE0077E5CF /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				48F70A7820B811330027B72D /* Wallet.swift */,
+				48E00240217CBBF40077E5CF /* Wallet+Codable.swift */,
+				48E00239217CBBBB0077E5CF /* Wallet+Decrypt.swift */,
+				48F06AC3217E599E00303D1E /* Wallet+CustomStringConvertible.swift */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		48E0023C217CBBC90077E5CF /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				481169A12167778900341F81 /* Address.swift */,
+				48F06AC0217E596900303D1E /* Address+CustomStringConvertible.swift */,
+				48E00243217CBC140077E5CF /* Address+Validation.swift */,
+				48E0023D217CBBE00077E5CF /* Address+Codable.swift */,
+				48E00246217CBC300077E5CF /* Address+HexString.swift */,
+			);
+			path = Address;
 			sourceTree = "<group>";
 		};
 		48ED0E6620E80588005DA19C /* OLD */ = {
@@ -441,13 +582,9 @@
 		48F70A4020B730070027B72D /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				48BD4AE1215EA846005F1B18 /* Zesame-iOS-Common.xcconfig */,
-				48BD4ADC215EA846005F1B18 /* Zesame-iOS-Debug.xcconfig */,
-				48BD4AE0215EA846005F1B18 /* Zesame-iOS-Release.xcconfig */,
-				48BD4ADF215EA846005F1B18 /* Zesame-macOS-Common.xcconfig */,
-				48BD4ADD215EA846005F1B18 /* Zesame-macOS-Debug.xcconfig */,
-				48BD4ADB215EA846005F1B18 /* Zesame-macOS-Release.xcconfig */,
-				48BD4ADE215EA846005F1B18 /* Zesame-Shared.xcconfig */,
+				483B2CF62175127B004E07A4 /* Zesame-iOS.xcconfig */,
+				483B2CF72175127B004E07A4 /* Zesame-Mac.xcconfig */,
+				483B2CF82175127B004E07A4 /* Zesame-Shared.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -455,13 +592,9 @@
 		48F70A4420B7F4590027B72D /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				4847EE062161390D002FF978 /* ZesameTests-iOS-Common.xcconfig */,
-				4847EE032161390D002FF978 /* ZesameTests-iOS-Debug.xcconfig */,
-				4847EE082161390D002FF978 /* ZesameTests-iOS-Release.xcconfig */,
-				4847EE092161390D002FF978 /* ZesameTests-macOS-Common.xcconfig */,
-				4847EE052161390D002FF978 /* ZesameTests-macOS-Debug.xcconfig */,
-				4847EE042161390D002FF978 /* ZesameTests-macOS-Release.xcconfig */,
-				4847EE072161390D002FF978 /* Zilliqa-Tests-Shared.xcconfig */,
+				483B2CF42175126B004E07A4 /* Zesame-Tests-iOS.xcconfig */,
+				483B2CF32175126B004E07A4 /* Zesame-Tests-Mac.xcconfig */,
+				483B2CF52175126B004E07A4 /* Zesame-Tests-Shared.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -472,6 +605,7 @@
 				48F70A7720B811290027B72D /* Wallet */,
 				48F70A7620B811150027B72D /* Payment */,
 				48F70A7B20B811A00027B72D /* Amount.swift */,
+				48E00235217CBB900077E5CF /* KeyRestoration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -480,8 +614,8 @@
 			isa = PBXGroup;
 			children = (
 				48F70A4A20B7F55B0027B72D /* Payment.swift */,
+				485D2898216A3BF7006F23E5 /* UnsignedTransaction.swift */,
 				48F70A4C20B7F9940027B72D /* Gas.swift */,
-				48D411492147200A00E2F207 /* Recipient.swift */,
 				48D4114B2147202500E2F207 /* Transaction.swift */,
 			);
 			path = Payment;
@@ -490,10 +624,12 @@
 		48F70A7720B811290027B72D /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
+				48E0023C217CBBC90077E5CF /* Address */,
+				48E00238217CBBAE0077E5CF /* Wallet */,
 				48196F282157C5C1009C40BB /* Keystore */,
-				48F70A7820B811330027B72D /* Wallet.swift */,
-				481169A12167778900341F81 /* Address.swift */,
 				48F70A7E20B812990027B72D /* Nonce.swift */,
+				484DD366216A4C1900FB82C8 /* KeyPair.swift */,
+				484DD369216A4C2E00FB82C8 /* WalletBalance.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -545,6 +681,7 @@
 				48ED060920B8618F00C639E5 /* Sources */,
 				48ED060A20B8618F00C639E5 /* Frameworks */,
 				48ED060B20B8618F00C639E5 /* Resources */,
+				48802CF221751ACB003A22FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -581,6 +718,7 @@
 				48F70A1A20B72DD00027B72D /* Sources */,
 				48F70A1B20B72DD00027B72D /* Frameworks */,
 				48F70A1C20B72DD00027B72D /* Resources */,
+				48802CD521751743003A22FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -675,32 +813,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48F06AC2217E596C00303D1E /* Address+CustomStringConvertible.swift in Sources */,
+				48802D2621751EE9003A22FD /* Scrypt+KDFParameters.swift in Sources */,
 				48ED0E6D20E80731005DA19C /* BigNumber.swift in Sources */,
+				48E0023B217CBBBB0077E5CF /* Wallet+Decrypt.swift in Sources */,
 				483F0F9A2147091900E6EE08 /* DefaultZilliqaService.swift in Sources */,
 				48196F272157C574009C40BB /* ZilliqaService+DefaultImplementations.swift in Sources */,
 				483F0F7D2146F9FA00E6EE08 /* Rx+ZilliqaService.swift in Sources */,
 				483F0F912147083800E6EE08 /* BalanceRequest.swift in Sources */,
+				48E0023F217CBBE00077E5CF /* Address+Codable.swift in Sources */,
 				48ED0E5320E7F158005DA19C /* Amount.swift in Sources */,
 				481169A32167778C00341F81 /* Address.swift in Sources */,
+				48E00237217CBB900077E5CF /* KeyRestoration.swift in Sources */,
 				48196F2B2157C5CA009C40BB /* Keystore.swift in Sources */,
 				484E09EE215440B4003D928E /* APIClient.swift in Sources */,
 				488A658C2157A1670091FD03 /* DispatchQueue+Sugar.swift in Sources */,
-				48D411512147206300E2F207 /* Recipient.swift in Sources */,
 				484E09EB21543F43003D928E /* MessageFromUnsignedTransaction.swift in Sources */,
+				48E00242217CBBF40077E5CF /* Wallet+Codable.swift in Sources */,
 				483F0F942147085500E6EE08 /* BalanceResponse.swift in Sources */,
 				483F0F8C214704D700E6EE08 /* Error.swift in Sources */,
+				48E00248217CBC300077E5CF /* Address+HexString.swift in Sources */,
 				48ED0E5020E7F150005DA19C /* Wallet.swift in Sources */,
+				484DD371216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */,
 				48ED0E5220E7F155005DA19C /* Nonce.swift in Sources */,
+				484DD36E216A4DB900FB82C8 /* Keystore+Wallet+Import.swift in Sources */,
 				483F0F972147087700E6EE08 /* ZilliqaRequest.swift in Sources */,
+				48F06AC5217E599E00303D1E /* Wallet+CustomStringConvertible.swift in Sources */,
 				48D411522147206600E2F207 /* Transaction.swift in Sources */,
 				48ED0E5520E7F15D005DA19C /* Gas.swift in Sources */,
 				484E09F121544134003D928E /* DefaultAPIClient.swift in Sources */,
+				484DD368216A4C1900FB82C8 /* KeyPair.swift in Sources */,
+				485D289A216A3BFA006F23E5 /* UnsignedTransaction.swift in Sources */,
 				4847EE0D2161419A002FF978 /* DerivedKey.swift in Sources */,
 				48ED0E5420E7F15D005DA19C /* Payment.swift in Sources */,
 				483460A92145BD4C007E5D5C /* ZilliqaService.swift in Sources */,
 				483F0F9D2147093D00E6EE08 /* ZilliqaService+APIKit+ErrorMapping.swift in Sources */,
 				48ED0E7020E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift in Sources */,
 				48196F242157C480009C40BB /* Scrypt.swift in Sources */,
+				484DD36B216A4C2E00FB82C8 /* WalletBalance.swift in Sources */,
+				48E00245217CBC140077E5CF /* Address+Validation.swift in Sources */,
 				48D411502147205500E2F207 /* TransactionRequest.swift in Sources */,
 				488A65882155ACD20091FD03 /* ZilliqaService+Signing.swift in Sources */,
 			);
@@ -720,23 +871,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48F06AC1217E596900303D1E /* Address+CustomStringConvertible.swift in Sources */,
 				48ED0E6C20E80731005DA19C /* BigNumber.swift in Sources */,
 				483F0F992147091900E6EE08 /* DefaultZilliqaService.swift in Sources */,
+				48E0023A217CBBBB0077E5CF /* Wallet+Decrypt.swift in Sources */,
 				48196F262157C574009C40BB /* ZilliqaService+DefaultImplementations.swift in Sources */,
 				48D4114F2147205200E2F207 /* TransactionRequest.swift in Sources */,
 				483F0F7C2146F9FA00E6EE08 /* Rx+ZilliqaService.swift in Sources */,
 				483F0F902147083800E6EE08 /* BalanceRequest.swift in Sources */,
+				48E0023E217CBBE00077E5CF /* Address+Codable.swift in Sources */,
 				48196F2A2157C5CA009C40BB /* Keystore.swift in Sources */,
+				484DD36D216A4DB900FB82C8 /* Keystore+Wallet+Import.swift in Sources */,
+				48E00236217CBB900077E5CF /* KeyRestoration.swift in Sources */,
 				484E09ED215440B1003D928E /* APIClient.swift in Sources */,
 				488A658B2157A1670091FD03 /* DispatchQueue+Sugar.swift in Sources */,
 				481169A22167778900341F81 /* Address.swift in Sources */,
 				48F70A7D20B812080027B72D /* Amount.swift in Sources */,
+				48E00241217CBBF40077E5CF /* Wallet+Codable.swift in Sources */,
+				484DD36A216A4C2E00FB82C8 /* WalletBalance.swift in Sources */,
 				484E09EA21543F3B003D928E /* MessageFromUnsignedTransaction.swift in Sources */,
+				48E00247217CBC300077E5CF /* Address+HexString.swift in Sources */,
 				483F0F932147085500E6EE08 /* BalanceResponse.swift in Sources */,
-				48D4114A2147200A00E2F207 /* Recipient.swift in Sources */,
 				483F0F8B214704D700E6EE08 /* Error.swift in Sources */,
+				484DD370216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */,
 				4847EE0F216141BB002FF978 /* Scrypt+KDFParameters.swift in Sources */,
 				48D4114C2147202500E2F207 /* Transaction.swift in Sources */,
+				48F06AC4217E599E00303D1E /* Wallet+CustomStringConvertible.swift in Sources */,
 				48F70A7A20B811370027B72D /* Wallet.swift in Sources */,
 				48F70A4B20B7F55B0027B72D /* Payment.swift in Sources */,
 				483F0F962147087700E6EE08 /* ZilliqaRequest.swift in Sources */,
@@ -744,9 +904,12 @@
 				4847EE0C21614196002FF978 /* DerivedKey.swift in Sources */,
 				48F70A4D20B7F9940027B72D /* Gas.swift in Sources */,
 				48F70A8320B812F70027B72D /* Nonce.swift in Sources */,
+				485D2899216A3BF7006F23E5 /* UnsignedTransaction.swift in Sources */,
 				483460A82145BD4A007E5D5C /* ZilliqaService.swift in Sources */,
 				483F0F9C2147093D00E6EE08 /* ZilliqaService+APIKit+ErrorMapping.swift in Sources */,
 				48196F232157C480009C40BB /* Scrypt.swift in Sources */,
+				484DD367216A4C1900FB82C8 /* KeyPair.swift in Sources */,
+				48E00244217CBC140077E5CF /* Address+Validation.swift in Sources */,
 				48ED0E6F20E80754005DA19C /* UInt256+ExpressibleByStringLiteral.swift in Sources */,
 				488A65872155ACD20091FD03 /* ZilliqaService+Signing.swift in Sources */,
 			);
@@ -780,125 +943,69 @@
 /* Begin XCBuildConfiguration section */
 		48ED061720B8618F00C639E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48BD4ADD215EA846005F1B18 /* Zesame-macOS-Debug.xcconfig */;
+			baseConfigurationReference = 483B2CF72175127B004E07A4 /* Zesame-Mac.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		48ED061820B8618F00C639E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48BD4ADB215EA846005F1B18 /* Zesame-macOS-Release.xcconfig */;
+			baseConfigurationReference = 483B2CF72175127B004E07A4 /* Zesame-Mac.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		48ED061A20B8618F00C639E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4847EE052161390D002FF978 /* ZesameTests-macOS-Debug.xcconfig */;
+			baseConfigurationReference = 483B2CF32175126B004E07A4 /* Zesame-Tests-Mac.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_NAME = ZesameTests;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tests/Tests/ZilliqaSDK macOS Tests-Bridging-Header.h";
 			};
 			name = Debug;
 		};
 		48ED061B20B8618F00C639E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4847EE042161390D002FF978 /* ZesameTests-macOS-Release.xcconfig */;
+			baseConfigurationReference = 483B2CF32175126B004E07A4 /* Zesame-Tests-Mac.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_NAME = ZesameTests;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tests/Tests/ZilliqaSDK macOS Tests-Bridging-Header.h";
 			};
 			name = Release;
 		};
 		48F70A2720B72DD00027B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		48F70A2820B72DD00027B72D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 		48F70A2A20B72DD00027B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48BD4ADC215EA846005F1B18 /* Zesame-iOS-Debug.xcconfig */;
+			baseConfigurationReference = 483B2CF62175127B004E07A4 /* Zesame-iOS.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		48F70A2B20B72DD00027B72D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48BD4AE0215EA846005F1B18 /* Zesame-iOS-Release.xcconfig */;
+			baseConfigurationReference = 483B2CF62175127B004E07A4 /* Zesame-iOS.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		48F70A2D20B72DD00027B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4847EE032161390D002FF978 /* ZesameTests-iOS-Debug.xcconfig */;
+			baseConfigurationReference = 483B2CF42175126B004E07A4 /* Zesame-Tests-iOS.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				DEFINES_MODULE = NO;
-				DYLIB_COMPATIBILITY_VERSION = "";
-				DYLIB_CURRENT_VERSION = "";
-				DYLIB_INSTALL_NAME_BASE = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-					"$(FRAMEWORK_SEARCH_PATHS)",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
-				PRODUCT_NAME = ZesameTests;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		48F70A2E20B72DD00027B72D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4847EE082161390D002FF978 /* ZesameTests-iOS-Release.xcconfig */;
+			baseConfigurationReference = 483B2CF42175126B004E07A4 /* Zesame-Tests-iOS.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				DEFINES_MODULE = NO;
-				DYLIB_COMPATIBILITY_VERSION = "";
-				DYLIB_CURRENT_VERSION = "";
-				DYLIB_INSTALL_NAME_BASE = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-					"$(FRAMEWORK_SEARCH_PATHS)",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
-				PRODUCT_NAME = ZesameTests;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

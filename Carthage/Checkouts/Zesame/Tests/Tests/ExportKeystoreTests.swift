@@ -21,13 +21,15 @@ class ExportKeystoreTest: XCTestCase {
     }
 
     func testWalletImport() {
-        let expectedPrivateKey = "45EE46BDB0E3BC9107860AAA8BD443C3C745E2C2DC8AF63492D4C8896C06E864"
+        let expectedEncryptedPrivateKeyHex = "80fe61275f7a4078c7fcaafeda0c108f1b79335fa320b0d4b07bcba128f0bdd5"
         let passphrase = "test_of_export_of_wallet_to_keystore_file_json_example_passphrase"
         let service = DefaultZilliqaService.shared
         let sempaphore = expectation(description: "importing wallet from keystore json")
-        service.importWalletFrom(keyStoreJSONString: keystoreWalletJSONString, encryptedBy: passphrase) {
+        let keyRestoration = try! KeyRestoration(keyStoreJSONString: keystoreWalletJSONString, encryptedBy: passphrase)
+        service.restoreWallet(from: keyRestoration) {
             switch $0 {
-            case .success(let importedWallet): XCTAssertEqual(importedWallet.keyPair.privateKey.asHexStringLength64(), expectedPrivateKey)
+            case .success(let importedWallet):
+                XCTAssertEqual(importedWallet.keystore.crypto.encryptedPrivateKeyHex, expectedEncryptedPrivateKeyHex)
             case .failure(let error): XCTFail("Failed to export, error: \(error)")
             }
             sempaphore.fulfill()

@@ -35,6 +35,8 @@ public enum Error: Swift.Error {
 
     indirect case walletImport(WalletImport)
     public enum WalletImport: Swift.Error {
+        case badAddress
+        case badPrivateKeyHex
         case jsonStringDecoding
         case jsonDecoding(Swift.DecodingError)
         case incorrectPasshrase

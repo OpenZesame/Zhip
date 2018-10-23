@@ -8,6 +8,7 @@
 
 import UIKit
 import Zesame
+import RxSwift
 
 final class MainCoordinator: Coordinator {
 
@@ -16,10 +17,10 @@ final class MainCoordinator: Coordinator {
 
     var childCoordinators = [AnyCoordinator]()
 
-    private let wallet: Wallet
+    private let wallet: Observable<Wallet>
     private weak var navigation: AppNavigation?
 
-    init(navigationController: UINavigationController, wallet: Wallet, navigation: AppNavigation) {
+    init(navigationController: UINavigationController, wallet: Observable<Wallet>, navigation: AppNavigation) {
         self.navigation = navigation
         self.navigationController = navigationController
         self.wallet = wallet

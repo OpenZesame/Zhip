@@ -23,6 +23,7 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
         let colorNormal: UIColor?
         let colorDisabled: UIColor?
         let font: UIFont?
+        let isEnabled: Bool?
 
         init(
             _ text: String? = nil,
@@ -30,13 +31,15 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             colorNormal: UIColor? = nil,
-            colorDisabled: UIColor? = nil
+            colorDisabled: UIColor? = nil,
+            isEnabled: Bool? = nil
             ) {
             self.text = text
             self.textColor = textColor
             self.colorNormal = colorNormal
             self.colorDisabled = colorDisabled
             self.font = font
+            self.isEnabled = isEnabled
             super.init(height: height ?? .defaultHeight, backgroundColor: nil)
         }
 
@@ -55,7 +58,8 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
                 font: merge(\.font),
                 textColor: merge(\.textColor),
                 colorNormal: merge(\.colorNormal),
-                colorDisabled: merge(\.colorDisabled)
+                colorDisabled: merge(\.colorDisabled),
+                isEnabled:  merge(\.isEnabled)
             )
         }
     }
@@ -68,6 +72,7 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
         let colorDisabled = style.colorDisabled ?? .gray
         setBackgroundColor(colorNormal, for: .normal)
         setBackgroundColor(colorDisabled, for: .disabled)
+        isEnabled = style.isEnabled ?? true
     }
 }
 

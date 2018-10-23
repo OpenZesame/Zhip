@@ -1,3 +1,0 @@
-#include "../../../Configurations/base_framework.xcconfig"
-#include "../../Configurations/base_uitests.xcconfig"
-INFOPLIST_FILE = UITests/SupportingFiles/Zesame-iOS-Example-UITests-Info.plist
