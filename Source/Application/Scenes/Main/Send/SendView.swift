@@ -57,6 +57,7 @@ extension SendView: ViewModelled {
 
         return [
             viewModel.balance            --> balanceView.rx.balance,
+            viewModel.nonce            --> balanceView.rx.nonce,
             viewModel.isRecipientAddressValid   --> encryptionPassphraseField.rx.isValid,
             viewModel.transactionId             --> transactionIdentifierLabel
         ]

@@ -25,6 +25,7 @@ extension ReceiveViewModel: ViewModelType {
 
     struct Input: InputType {
         struct FromView {
+            let qrCodeImageWidth: CGFloat
             let amountToReceive: Driver<String>
         }
         let fromView: FromView
@@ -43,9 +44,14 @@ extension ReceiveViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let receivingAmount = input.fromView.amountToReceive.map { Double($0) }.filterNil().map { try? Amount(double: $0) }.filterNil()
+        let receivingAmount = input.fromView.amountToReceive
+            .map { Double($0) }
+            .filterNil()
+            .startWith(0)
+            .map { try? Amount(double: $0) }.filterNil()
 
-        let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }.map { QRCoding.image(of: $0, size: 300) }
+        let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }
+            .map { QRCoding.image(of: $0, size: input.fromView.qrCodeImageWidth) }
 
         return Output(
             receivingAddress: wallet.map { $0.address.checksummedHex },

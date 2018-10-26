@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4800F06121839E030022487F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484B067E20BA0D8800C4E50A /* LaunchScreen.storyboard */; };
 		4806AE6D2183690B002734C8 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE692183690B002734C8 /* ReceiveView.swift */; };
 		4806AE6E2183690B002734C8 /* ReceiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE6A2183690B002734C8 /* ReceiveCoordinator.swift */; };
 		4806AE6F2183690B002734C8 /* ReceiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE6B2183690B002734C8 /* ReceiveViewModel.swift */; };
@@ -49,6 +50,7 @@
 		4850A40C214C125400EBB85B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A40B214C125400EBB85B /* ViewStyle.swift */; };
 		48607BEE215D2C5C001AD0D0 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48607BED215D2C5C001AD0D0 /* SettingsCoordinator.swift */; };
 		48607BF1215D4DD9001AD0D0 /* FormValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48607BF0215D4DD9001AD0D0 /* FormValidator.swift */; };
+		4874B70A2183A0D400953370 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4874B7092183A0D400953370 /* Assets.xcassets */; };
 		488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EE4CB215FAD53009A3903 /* Driver+Empty.swift */; };
 		488EE4CE215FAE71009A3903 /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BB634C215EA25C0039E937 /* APIKit.framework */; };
 		488EE4CF215FAE71009A3903 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BB6359215EA25D0039E937 /* BigInt.framework */; };
@@ -162,7 +164,6 @@
 		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZilliqaSDK-iOS-Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		484B067B20BA0D2C00C4E50A /* ZupremeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZupremeTests.swift; sourceTree = "<group>"; };
-		484B067D20BA0D8800C4E50A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		484B067F20BA0D8800C4E50A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		484B068520BA0D8800C4E50A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		484B068620BA0D8800C4E50A /* Zupreme-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Zupreme-Info.plist"; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 		4850A40B214C125400EBB85B /* ViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyle.swift; sourceTree = "<group>"; };
 		48607BED215D2C5C001AD0D0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		48607BF0215D4DD9001AD0D0 /* FormValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidator.swift; sourceTree = "<group>"; };
+		4874B7092183A0D400953370 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		488A65812155AB2D0091FD03 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		488EE4C9215FAC1D009A3903 /* Zesame.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zesame.framework; path = Carthage/Build/iOS/Zesame.framework; sourceTree = "<group>"; };
 		488EE4CB215FAD53009A3903 /* Driver+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Empty.swift"; sourceTree = "<group>"; };
@@ -613,10 +615,10 @@
 		48C89FD221432FAC0063B0FA /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				4874B7092183A0D400953370 /* Assets.xcassets */,
 				4847EDF321600CD8002FF978 /* Assets */,
 				48C89FD8214330C50063B0FA /* Common */,
 				48C89FD32143308A0063B0FA /* Scenes */,
-				484B067D20BA0D8800C4E50A /* Assets.xcassets */,
 				484B068420BA0D8800C4E50A /* SupportingFiles */,
 			);
 			path = Application;
@@ -864,6 +866,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4800F06121839E030022487F /* LaunchScreen.storyboard in Resources */,
+				4874B70A2183A0D400953370 /* Assets.xcassets in Resources */,
 				4847EDF521600CD8002FF978 /* TermsOfService.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -57,4 +57,10 @@ extension Reactive where Base == BalanceView {
             $0.setBalance($1)
         }
     }
+
+    var nonce: Binder<String> {
+        return Binder<String>(base) {
+            $0.setNonce($1)
+        }
+    }
 }
