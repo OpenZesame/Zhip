@@ -10,11 +10,12 @@ import UIKit
 
 extension UIView {
 
-    static func spacer(_ verticalCompressionResistancePriority: UILayoutPriority = .defaultLow) -> UIView {
+    static func spacer(verticalCompressionResistancePriority: UILayoutPriority = .defaultLow, verticalContentHuggingPriority: UILayoutPriority = .defaultLow) -> UIView {
         let spacer = UIView()
         spacer.translatesAutoresizingMaskIntoConstraints = false
         spacer.setContentCompressionResistancePriority(verticalCompressionResistancePriority, for: .vertical)
         spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        spacer.setContentHuggingPriority(verticalContentHuggingPriority, for: .vertical)
         return spacer
     }
 

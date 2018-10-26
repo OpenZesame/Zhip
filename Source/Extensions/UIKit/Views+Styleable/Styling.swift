@@ -16,6 +16,7 @@ public protocol Styling {
 extension Styling where Self: UIView, Self: StaticEmptyInitializable, Self.Empty == Self {
 
     init(style: Style) {
+
         self = Self.createEmpty()
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = style.backgroundColor ?? .white

@@ -64,8 +64,7 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
         textColor = style.textColor ?? .defaultText
         font = style.font ?? .default
         text = style.text
-        layer.borderColor = UIColor.gray.withAlphaComponent(0.3).cgColor
-        layer.borderWidth = 0.5
+        addBorder()
     }
 }
 

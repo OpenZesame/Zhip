@@ -1,5 +1,5 @@
 //
-//  Send.swift
+//  Receive.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-09-08.
@@ -8,4 +8,4 @@
 
 import UIKit
 
-typealias Send = Scene<SendView>
+typealias Receive = Scene<ReceiveView>

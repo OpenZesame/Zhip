@@ -1,6 +1,6 @@
 #include "../../Configurations/base_apps.xcconfig"
 
-FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/Carthage/Build/iOS $(PROJECT_DIR)/../Carthage/Build/iOS
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/Carthage/Build/iOS
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
 PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.Zupreme
 INFOPLIST_FILE = Source/Application/SupportingFiles/Zupreme-Info.plist

@@ -7,26 +7,26 @@
 //
 
 import Foundation
-import FormValidatorSwift
+//import FormValidatorSwift
 
-extension Validator {
-    func validate(text: String?) -> Bool {
-        if let cond = checkConditions(text) {
-            return cond.isEmpty
-        } else {
-            return true
-        }
-    }
-}
-
-extension String {
-    func validates(by valididator: Validator) -> Bool {
-        return valididator.validate(text: self)
-    }
-}
-
-extension Optional where Wrapped == String {
-    func validates(by valididator: Validator) -> Bool {
-        return valididator.validate(text: self)
-    }
-}
+//extension Validator {
+//    func validate(text: String?) -> Bool {
+//        if let cond = checkConditions(text) {
+//            return cond.isEmpty
+//        } else {
+//            return true
+//        }
+//    }
+//}
+//
+//extension String {
+//    func validates(by valididator: Validator) -> Bool {
+//        return valididator.validate(text: self)
+//    }
+//}
+//
+//extension Optional where Wrapped == String {
+//    func validates(by valididator: Validator) -> Bool {
+//        return valididator.validate(text: self)
+//    }
+//}

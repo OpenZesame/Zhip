@@ -10,6 +10,8 @@ import Foundation
 
 import UIKit
 import Zesame
+import RxSwift
+import RxCocoa
 
 final class BalanceView: UIStackView, StackViewStyling {
     private lazy var balanceLabels = LabelsView(titleStyle: "Balance", valueStyle: "🤷‍♀️")
@@ -46,5 +48,13 @@ extension BalanceView {
 
     func setNonce(_ nonce: String) {
         nonceLabels.setValue(nonce)
+    }
+}
+
+extension Reactive where Base == BalanceView {
+    var balance: Binder<String> {
+        return Binder<String>(base) {
+            $0.setBalance($1)
+        }
     }
 }

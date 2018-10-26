@@ -14,16 +14,20 @@ class ScrollView: UIScrollView {
 
     init() {
         super.init(frame: .zero)
-        setup()
+        privateSetup()
     }
+
+    // Subclass me
+    func setup() {}
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
 private extension ScrollView {
-    func setup() {
+    func privateSetup() {
         setupContentView()
         contentInsetAdjustmentBehavior = .never
+        setup()
     }
 
     func setupContentView() {

@@ -14,19 +14,19 @@ import Zesame
 // MARK: - SendView
 final class SendView: ScrollingStackView {
 
-    private lazy var walletBalanceView = WalletBalanceView()
+    private lazy var balanceView = BalanceView()
 
     private lazy var recipientAddressField = UITextField.Style("To address", text: "74C544A11795905C2C9808F9E78D8156159D32E4").make()
     private lazy var amountToSendField = UITextField.Style("Amount", text: "11").make()
     private lazy var gasLimitField = UITextField.Style("Gas limit", text: "1").make()
     private lazy var gasPriceField = UITextField.Style("Gas price", text: "1").make()
-    private lazy var encryptionPassphraseField = UITextField.Style("Wallet Encryption Passphrase", text: "apabanan").make()
+    private lazy var encryptionPassphraseField = UITextField.Style("Wallet Encryption Passphrase", text: "Apabanan").make()
     private lazy var sendButton: UIButton = "Send"
     private lazy var transactionIdentifierLabel: UILabel = "No tx"
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        walletBalanceView,
+        balanceView,
         recipientAddressField,
         amountToSendField,
         gasLimitField,
@@ -56,25 +56,9 @@ extension SendView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
-            viewModel.walletBalance             --> walletBalanceView.rx.wallet,
+            viewModel.balance            --> balanceView.rx.balance,
             viewModel.isRecipientAddressValid   --> encryptionPassphraseField.rx.isValid,
             viewModel.transactionId             --> transactionIdentifierLabel
         ]
-    }
-}
-
-extension Reactive where Base: UITextField {
-    var isValid: Binder<Bool> {
-        return Binder<Bool>(base) {
-            $0.mark(isValid: $1)
-        }
-    }
-}
-
-extension UITextField {
-    func mark(isValid: Bool) {
-        layer.borderWidth = isValid ? 0 : 2
-        let borderColor: UIColor = isValid ? .clear : .red
-        layer.borderColor = borderColor.cgColor
     }
 }

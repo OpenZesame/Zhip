@@ -39,6 +39,16 @@ final class MainCoordinator: Coordinator {
             )
         )
 
+        // Recieve
+        let receiveNavigationController = UINavigationController()
+        receiveNavigationController.tabBarItem = UITabBarItem("Receive")
+        start(coordinator:
+            ReceiveCoordinator(
+                navigationController: receiveNavigationController,
+                wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil()
+            )
+        )
+
         // SETTINGS
         let settingsNavigationController = UINavigationController()
         settingsNavigationController.tabBarItem = UITabBarItem("Settings")
@@ -52,6 +62,7 @@ final class MainCoordinator: Coordinator {
 
         tabBarController.viewControllers = [
             sendNavigationController,
+            receiveNavigationController,
             settingsNavigationController
         ]
 
@@ -65,19 +76,18 @@ extension MainCoordinator {
     }
 }
 
-protocol MainNavigator: AnyObject {
-    func toSend()
-    func toSettings()
-}
-
-// MARK: - Conformance: Navigator
-extension MainCoordinator: MainNavigator {
+// MARK: - Navigating
+extension MainCoordinator {
 
     func toSend() {
         tabBarController.selectedIndex = 0
     }
 
-    func toSettings() {
+    func toReceive() {
         tabBarController.selectedIndex = 1
+    }
+
+    func toSettings() {
+        tabBarController.selectedIndex = 2
     }
 }

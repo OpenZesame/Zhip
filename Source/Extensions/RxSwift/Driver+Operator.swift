@@ -14,12 +14,27 @@ infix operator -->
 func --> <E>(driver: Driver<E>, binder: Binder<E>) -> Disposable {
     return driver.drive(binder)
 }
+
 func --> <E>(driver: Driver<E>, binder: Binder<E?>) -> Disposable {
     return driver.drive(binder)
 }
+
+func --> <E>(driver: Driver<E>, observer: AnyObserver<E>) -> Disposable {
+    return driver.drive(observer)
+}
+
 func --> (driver: Driver<String>, label: UILabel) -> Disposable {
     return driver --> label.rx.text
 }
+
+func --> (driver: Driver<String>, textView: UITextView) -> Disposable {
+    return driver --> textView.rx.text.orEmpty.asObserver()
+}
+
+func --> (driver: Driver<String?>, textView: UITextView) -> Disposable {
+    return driver --> textView.rx.text.asObserver()
+}
+
 func --> (driver: Driver<String>, labels: LabelsView) -> Disposable {
     return driver --> labels.rx.value
 }

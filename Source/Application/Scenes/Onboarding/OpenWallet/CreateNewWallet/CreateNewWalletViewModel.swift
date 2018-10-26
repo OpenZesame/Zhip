@@ -16,15 +16,23 @@ final class CreateNewWalletViewModel {
 
     private let bag = DisposeBag()
 
-    private weak var navigator: CreateNewWalletNavigator?
+    let stepper = Stepper<Step>()
 
     private let useCase: ChooseWalletUseCase
 
-    init(navigator: CreateNewWalletNavigator, useCase: ChooseWalletUseCase) {
-
-        self.navigator = navigator
+    init(useCase: ChooseWalletUseCase) {
         self.useCase = useCase
+    }
+}
 
+
+extension CreateNewWalletViewModel: SteppingViewModel {
+    enum Step {
+        case didCreateNew(wallet: Wallet)
+    }
+
+    var navigation: Driver<Step> {
+        return stepper.navigation
     }
 }
 
@@ -34,6 +42,7 @@ extension CreateNewWalletViewModel: ViewModelType {
         struct FromView {
             let newEncryptionPassphrase: Driver<String>
             let confirmedNewEncryptionPassphrase: Driver<String>
+            let understandsRisk: Driver<Bool>
             let createWalletTrigger: Driver<Void>
         }
         let fromController: ControllerInput
@@ -61,15 +70,14 @@ extension CreateNewWalletViewModel: ViewModelType {
             return newPassphrase
         }
 
-        let isCreateWalletButtonEnabled = validEncryptionPassphrase.map { $0 != nil }
-
+        let isCreateWalletButtonEnabled = Driver.combineLatest(validEncryptionPassphrase.map { $0 != nil }, input.fromView.understandsRisk) { $0 && $1 }
 
         fromView.createWalletTrigger.withLatestFrom(validEncryptionPassphrase.filterNil()) { $1 }
             .flatMapLatest {
                 self.useCase.createNewWallet(encryptionPassphrase: $0)
                     .asDriverOnErrorReturnEmpty()
             }
-            .do(onNext: { self.navigator?.toMain(wallet: $0) })
+            .do(onNext: { [s=stepper] in s.step(.didCreateNew(wallet: $0)) })
             .drive()
             .disposed(by: bag)
 

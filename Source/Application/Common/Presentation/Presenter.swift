@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol Presenter {
+protocol Presenter: AnyObject {
     func present(_ presentable: Presentable, presentation: PresentationMode)
 }
 

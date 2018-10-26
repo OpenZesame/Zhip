@@ -22,11 +22,12 @@ final class RestoreWalletViewModel {
     }
 }
 
+import SwiftValidator
 extension RestoreWalletViewModel: ViewModelType {
 
     struct Input: InputType {
         struct FromView {
-
+            let validator: Validator
             let privateKey: Driver<String>
             let keystoreText: Driver<String>
 
@@ -70,23 +71,35 @@ extension RestoreWalletViewModel: ViewModelType {
             return key
         }
 
-        let isRestoreButtonEnabled = Driver.combineLatest(validEncryptionPassphrase, validPrivateKey) { ($0, $1) }.map { $0 != nil && $1 != nil }
+        let keyRestorationKeystore: Driver<KeyRestoration?> = Driver.combineLatest(fromView.keystoreText, validEncryptionPassphrase.filterNil()) {
+            try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: $1)
+        }
 
-        let wallet = Driver.combineLatest(validPrivateKey.filterNil(), validEncryptionPassphrase.filterNil()) {
+        let keyRestorationPrivateKey: Driver<KeyRestoration?> = Driver.combineLatest(validPrivateKey.filterNil(), validEncryptionPassphrase.filterNil()) {
             try? KeyRestoration(privateKeyHexString: $0, encryptBy: $1)
-        }.filterNil()
-        .flatMapLatest {
+        }
+
+        let keyRestoration = Driver.merge(keyRestorationKeystore, keyRestorationPrivateKey)
+
+
+        let wallet = keyRestoration.filterNil().flatMapLatest {
             self.useCase.restoreWallet(from: $0)
                 .asDriverOnErrorReturnEmpty()
         }
 
-        fromView.restoreTrigger
+        bag <~ [
+            fromView.restoreTrigger
             .withLatestFrom(wallet).do(onNext: {
                 self.navigator?.toMain(restoredWallet: $0)
-            }).drive().disposed(by: bag)
+            })
+            .drive()
+        ]
+
+        let isRestoreButtonEnabled = keyRestoration.map { $0 != nil }
 
         return Output(
             isRestoreButtonEnabled: isRestoreButtonEnabled
+            
         )
     }
 }

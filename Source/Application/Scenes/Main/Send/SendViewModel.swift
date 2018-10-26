@@ -45,7 +45,7 @@ extension SendViewModel: ViewModelType {
     }
 
     struct Output {
-        let walletBalance: Driver<WalletBalance>
+        let balance: Driver<String>
         let isRecipientAddressValid: Driver<Bool>
         let transactionId: Driver<String>
     }
@@ -99,7 +99,7 @@ extension SendViewModel: ViewModelType {
         }
 
         return Output(
-            walletBalance: balance,
+            balance: balance.map { "\($0.balance.amount) ZILs" },
             isRecipientAddressValid: recipient.map { $0 != nil },
             transactionId: transactionId
         )

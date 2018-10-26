@@ -42,7 +42,7 @@ extension SendCoordinator: SendNavigator {
             Send(
                 viewModel: SendViewModel(navigator: self, wallet: wallet, useCase: services.makeTransactionsUseCase())
             ),
-            animated: true
+            animated: false
         )
     }
 }

@@ -7,8 +7,8 @@ github "RxSwiftCommunity/RxDataSources"
 # Autolayout easy
 github "roberthein/TinyConstraints"
 
-# Simple field validation
-github "ustwo/formvalidator-swift"
+# Input validation
+github "Sajjon/SwiftValidator"
 
 # Generate QR code
 github "EyreFree/EFQRCode"

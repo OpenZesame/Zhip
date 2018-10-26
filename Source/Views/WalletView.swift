@@ -11,7 +11,7 @@ import Zesame
 
 final class WalletView: UIStackView, StackViewStyling {
 
-    private lazy var addressLabels = LabelsView(
+    fileprivate lazy var addressLabels = LabelsView(
         titleStyle: "Your Public Address",
         valueStyle: UILabel.Style(numberOfLines: 0)
     )
@@ -32,20 +32,13 @@ final class WalletView: UIStackView, StackViewStyling {
     ], spacing: 16, margin: 0)
 }
 
-extension WalletView {
-
-    func populate(with wallet: Wallet) {
-        addressLabels.setValue(wallet.address.checksummedHex)
-    }
-
-}
 
 import RxSwift
 import RxCocoa
 extension Reactive where Base == WalletView {
-    var wallet: Binder<Wallet> {
+    var address: Binder<String> {
         return Binder(base) {
-            $0.populate(with: $1)
+            $0.addressLabels.setValue($1)
         }
     }
 }
