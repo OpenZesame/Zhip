@@ -42,8 +42,8 @@ final class SendView: ScrollingStackView {
 extension SendView: ViewModelled {
     typealias ViewModel = SendViewModel
 
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             sendTrigger: sendButton.rx.tap.asDriver(),
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),

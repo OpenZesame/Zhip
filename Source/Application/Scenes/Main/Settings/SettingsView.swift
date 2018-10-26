@@ -38,8 +38,8 @@ extension SettingsView: ViewModelled {
         ]
     }
 
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             removeWalletTrigger: removeWalletButton.rx.tap.asDriver()
         )
     }

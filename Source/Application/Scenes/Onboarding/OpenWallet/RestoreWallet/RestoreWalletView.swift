@@ -53,13 +53,13 @@ struct ValidationErrors {
 import RxCocoa
 extension RestoreWalletView: ViewModelled {
     typealias ViewModel = RestoreWalletViewModel
-    var userInput: UserInput {
+    var inputFromView: InputFromView {
 
         let validator = Validator()
         validator.registerField(encryptionPassphraseField, rules: [RequiredRule(), MinLengthRule(length: 9)])
         validator.registerField(confirmEncryptionPassphraseField, rules: [ConfirmationRule(confirmField: encryptionPassphraseField)])
 
-        return UserInput(
+        return InputFromView(
             validator: validator,
             privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
             keystoreText: keystoreTextView.rx.text.orEmpty.asDriver(),

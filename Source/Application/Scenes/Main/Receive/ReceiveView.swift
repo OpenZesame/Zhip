@@ -29,7 +29,8 @@ final class ReceiveView: ScrollingStackView {
 
     override func setup() {
         qrImageView.translatesAutoresizingMaskIntoConstraints = false
-        qrImageView.contentMode = .scaleAspectFill
+        qrImageView.contentMode = .scaleAspectFit
+        qrImageView.clipsToBounds = true
     }
 }
 
@@ -37,8 +38,8 @@ final class ReceiveView: ScrollingStackView {
 extension ReceiveView: ViewModelled {
     typealias ViewModel = ReceiveViewModel
 
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
     }

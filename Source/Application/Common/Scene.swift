@@ -43,15 +43,13 @@ private extension Scene {
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
 
-        let userInput = contentView.userInput
-
         let controllerInput = ControllerInput(
             viewDidLoad: rx.viewDidLoad,
             viewWillAppear: rx.viewWillAppear,
             viewDidAppear: rx.viewDidAppear
         )
 
-        let input = ViewModel.Input(fromView: userInput, fromController: controllerInput)
+        let input = ViewModel.Input(fromView: contentView.inputFromView, fromController: controllerInput)
 
         let output = viewModel.transform(input: input)
 

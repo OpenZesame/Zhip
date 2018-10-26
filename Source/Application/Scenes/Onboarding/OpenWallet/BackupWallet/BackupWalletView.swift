@@ -42,8 +42,8 @@ final class BackupWalletView: ScrollingStackView {
 
 extension BackupWalletView: ViewModelled {
     typealias ViewModel = BackupWalletViewModel
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
             understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
             doneTrigger: doneButton.rx.tap.asDriver()

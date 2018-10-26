@@ -38,8 +38,8 @@ final class CreateNewWalletView: ScrollingStackView {
 extension CreateNewWalletView: ViewModelled {
 
     typealias ViewModel = CreateNewWalletViewModel
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
             confirmedNewEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
             understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
