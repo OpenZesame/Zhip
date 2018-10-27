@@ -9,22 +9,23 @@
 import RxSwift
 import RxCocoa
 
-final class ChooseWalletViewModel {
+final class ChooseWalletViewModel: Navigatable {
+    enum Step {
+        case toCreate
+        case toRestore
+    }
+
     private let bag = DisposeBag()
 
-    private weak var navigator: ChooseWalletNavigator?
-
-    init(navigator: ChooseWalletNavigator) {
-        self.navigator = navigator
-    }
+    let stepper = Stepper<Step>()
 }
 
 extension ChooseWalletViewModel: ViewModelType {
 
     struct Input: InputType {
         struct FromView {
-        let createNewTrigger: Driver<Void>
-        let restoreTrigger: Driver<Void>
+            let createNewTrigger: Driver<Void>
+            let restoreTrigger: Driver<Void>
         }
         let fromView: FromView
         let fromController: ControllerInput
@@ -40,14 +41,15 @@ extension ChooseWalletViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let fromView = input.fromView
 
-        fromView.createNewTrigger.do(onNext: {
-            self.navigator?.toCreateNewWallet()
-        }).drive().disposed(by: bag)
+        bag <~ [
+            fromView.createNewTrigger.do(onNext: { [weak s=stepper] in
+                s?.step(.toCreate)
+            }).drive(),
 
-        fromView.restoreTrigger.do(onNext: {
-            self.navigator?.toRestoreWallet()
-        }).drive().disposed(by: bag)
-
+            fromView.restoreTrigger.do(onNext: { [weak s=stepper] in
+                s?.step(.toRestore)
+            }).drive()
+        ]
         return Output()
     }
 }

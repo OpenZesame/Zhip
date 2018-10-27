@@ -11,14 +11,13 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-final class SendViewModel {
+final class SendViewModel: Navigatable {
+    enum Step {}
 
-    private weak var navigator: SendNavigator?
     private let useCase: TransactionsUseCase
     private let wallet: Driver<Wallet>
-
-    init(navigator: SendNavigator, wallet: Driver<Wallet>, useCase: TransactionsUseCase) {
-        self.navigator = navigator
+    let stepper = Stepper<Step>()
+    init(wallet: Driver<Wallet>, useCase: TransactionsUseCase) {
         self.useCase = useCase
         self.wallet = wallet
     }

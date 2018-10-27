@@ -30,8 +30,6 @@
 		4847EDE92160074B002FF978 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDE82160074B002FF978 /* TermsOfServiceViewModel.swift */; };
 		4847EDEC2160078C002FF978 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDEB2160078C002FF978 /* Presentable.swift */; };
 		4847EDEE216007A3002FF978 /* PresentationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDED216007A3002FF978 /* PresentationMode.swift */; };
-		4847EDF0216007B0002FF978 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDEF216007B0002FF978 /* Presenter.swift */; };
-		4847EDF2216007D0002FF978 /* PresentingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDF1216007D0002FF978 /* PresentingCoordinator.swift */; };
 		4847EDF521600CD8002FF978 /* TermsOfService.html in Resources */ = {isa = PBXBuildFile; fileRef = 4847EDF421600CD8002FF978 /* TermsOfService.html */; };
 		4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDF62160F520002FF978 /* UITextView+Styling.swift */; };
 		4847EDF92160FA53002FF978 /* OnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDF82160FA53002FF978 /* OnboardingUseCase.swift */; };
@@ -98,7 +96,7 @@
 		48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */; };
 		48C89FFD2143353C0063B0FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */; };
 		48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */; };
-		48C8A001214335E70063B0FA /* AppNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A000214335E70063B0FA /* AppNavigator.swift */; };
+		48C8A001214335E70063B0FA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A000214335E70063B0FA /* AppCoordinator.swift */; };
 		48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */; };
 		48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0062143CD6F0063B0FA /* RestoreWalletView.swift */; };
 		48C8A0092143CD8D0063B0FA /* RestoreWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0082143CD8D0063B0FA /* RestoreWalletViewModel.swift */; };
@@ -116,6 +114,12 @@
 		48E0022B217A61E40077E5CF /* WalletBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0022A217A61E40077E5CF /* WalletBalanceView.swift */; };
 		48E0022D217A62170077E5CF /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0022C217A62170077E5CF /* BalanceView.swift */; };
 		48E0022F217A65DD0077E5CF /* KeychainSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E0022E217A65DD0077E5CF /* KeychainSwift.framework */; };
+		48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832DE2184D78D00EDAD40 /* Navigatable.swift */; };
+		48F832E12184DCD200EDAD40 /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */; };
+		48F832E32184DD5700EDAD40 /* Presenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E22184DD5700EDAD40 /* Presenting.swift */; };
+		48F832E52184DDBD00EDAD40 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E42184DDBD00EDAD40 /* Stepper.swift */; };
+		48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E62184DDE300EDAD40 /* Presenter.swift */; };
+		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,8 +155,6 @@
 		4847EDE82160074B002FF978 /* TermsOfServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceViewModel.swift; sourceTree = "<group>"; };
 		4847EDEB2160078C002FF978 /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		4847EDED216007A3002FF978 /* PresentationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationMode.swift; sourceTree = "<group>"; };
-		4847EDEF216007B0002FF978 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
-		4847EDF1216007D0002FF978 /* PresentingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentingCoordinator.swift; sourceTree = "<group>"; };
 		4847EDF421600CD8002FF978 /* TermsOfService.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = TermsOfService.html; sourceTree = "<group>"; };
 		4847EDF62160F520002FF978 /* UITextView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Styling.swift"; sourceTree = "<group>"; };
 		4847EDF82160FA53002FF978 /* OnboardingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUseCase.swift; sourceTree = "<group>"; };
@@ -236,7 +238,7 @@
 		48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Styling.swift"; sourceTree = "<group>"; };
 		48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Spacer.swift"; sourceTree = "<group>"; };
-		48C8A000214335E70063B0FA /* AppNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigator.swift; sourceTree = "<group>"; };
+		48C8A000214335E70063B0FA /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Styling.swift"; sourceTree = "<group>"; };
 		48C8A0062143CD6F0063B0FA /* RestoreWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletView.swift; sourceTree = "<group>"; };
 		48C8A0082143CD8D0063B0FA /* RestoreWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewModel.swift; sourceTree = "<group>"; };
@@ -254,6 +256,12 @@
 		48E0022A217A61E40077E5CF /* WalletBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceView.swift; sourceTree = "<group>"; };
 		48E0022C217A62170077E5CF /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		48E0022E217A65DD0077E5CF /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
+		48F832DE2184D78D00EDAD40 /* Navigatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
+		48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
+		48F832E22184DD5700EDAD40 /* Presenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenting.swift; sourceTree = "<group>"; };
+		48F832E42184DDBD00EDAD40 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
+		48F832E62184DDE300EDAD40 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,9 +389,14 @@
 		4847EDEA21600777002FF978 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				48AC6CC62145AF0A00B4D036 /* Coordinator.swift */,
+				48F832E62184DDE300EDAD40 /* Presenter.swift */,
+				48F832E42184DDBD00EDAD40 /* Stepper.swift */,
+				48F832E22184DD5700EDAD40 /* Presenting.swift */,
+				48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */,
 				4847EDEB2160078C002FF978 /* Presentable.swift */,
 				4847EDED216007A3002FF978 /* PresentationMode.swift */,
-				4847EDEF216007B0002FF978 /* Presenter.swift */,
+				48F832DE2184D78D00EDAD40 /* Navigatable.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -458,7 +471,9 @@
 		484B068420BA0D8800C4E50A /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				48AC6CBA214562DA00B4D036 /* Navigation */,
+				48C8A000214335E70063B0FA /* AppCoordinator.swift */,
+				48AC6CC82145AF1B00B4D036 /* MainCoordinator.swift */,
+				484B068520BA0D8800C4E50A /* AppDelegate.swift */,
 				484B067E20BA0D8800C4E50A /* LaunchScreen.storyboard */,
 				484B068620BA0D8800C4E50A /* Zupreme-Info.plist */,
 			);
@@ -569,18 +584,6 @@
 				483F0F742146E25400E6EE08 /* Driver+Operator.swift */,
 			);
 			path = RxSwift;
-			sourceTree = "<group>";
-		};
-		48AC6CBA214562DA00B4D036 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				48C8A000214335E70063B0FA /* AppNavigator.swift */,
-				48AC6CC62145AF0A00B4D036 /* Coordinator.swift */,
-				4847EDF1216007D0002FF978 /* PresentingCoordinator.swift */,
-				48AC6CC82145AF1B00B4D036 /* MainCoordinator.swift */,
-				484B068520BA0D8800C4E50A /* AppDelegate.swift */,
-			);
-			path = Navigation;
 			sourceTree = "<group>";
 		};
 		48AC6CBD2145AC4A00B4D036 /* Settings */ = {
@@ -746,6 +749,7 @@
 				48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */,
 				48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */,
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
+				48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */,
 				48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */,
 				4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */,
 				4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */,
@@ -953,6 +957,7 @@
 				48C8A00D2143CE3E0063B0FA /* StaticEmptyInitializable.swift in Sources */,
 				4850A406214C113000EBB85B /* LabelsView.swift in Sources */,
 				484B068720BA0D9600C4E50A /* AppDelegate.swift in Sources */,
+				48F832E32184DD5700EDAD40 /* Presenting.swift in Sources */,
 				48C89FE8214331CB0063B0FA /* CreateNewWallet.swift in Sources */,
 				48C89FE42143318E0063B0FA /* ChooseWalletCoordinator.swift in Sources */,
 				48C8A0092143CD8D0063B0FA /* RestoreWalletViewModel.swift in Sources */,
@@ -978,11 +983,11 @@
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
 				48CA697721824A2000C05F5F /* BackWalletViewModel.swift in Sources */,
+				48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */,
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
 				4806AE6D2183690B002734C8 /* ReceiveView.swift in Sources */,
-				4847EDF2216007D0002FF978 /* PresentingCoordinator.swift in Sources */,
 				4847EDD1215FE93D002FF978 /* DefaultChooseWalletUseCase.swift in Sources */,
 				48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */,
 				48B16E3021452A2600177434 /* Never.swift in Sources */,
@@ -1004,7 +1009,8 @@
 				48C89FF62143326F0063B0FA /* UIButton+Styling.swift in Sources */,
 				4898FB4521542333009501DC /* StackViewStyling.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder+Extensions.swift in Sources */,
-				48C8A001214335E70063B0FA /* AppNavigator.swift in Sources */,
+				48F832E12184DCD200EDAD40 /* AbstractCoordinator.swift in Sources */,
+				48C8A001214335E70063B0FA /* AppCoordinator.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
@@ -1016,12 +1022,14 @@
 				4850A408214C122900EBB85B /* Makeable.swift in Sources */,
 				4806AE6E2183690B002734C8 /* ReceiveCoordinator.swift in Sources */,
 				4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */,
+				48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
+				48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
+				48F832E52184DDBD00EDAD40 /* Stepper.swift in Sources */,
 				483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */,
 				4847EDDE216006C7002FF978 /* WarningERC20.swift in Sources */,
 				48C89FCD21432E2E0063B0FA /* ChooseWalletViewModel.swift in Sources */,
-				4847EDF0216007B0002FF978 /* Presenter.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
 				4850A40C214C125400EBB85B /* ViewStyle.swift in Sources */,
 				48C89FCF21432E440063B0FA /* CreateNewWalletViewModel.swift in Sources */,

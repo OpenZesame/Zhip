@@ -11,34 +11,20 @@ import RxCocoa
 import RxSwift
 import Zesame
 
-final class Stepper<Step> {
-    private let navigator = PublishSubject<Step>()
-    func step(_ step: Step) {
-        navigator.onNext(step)
+final class BackupWalletViewModel: Navigatable {
+    enum Step {
+        case didBackup(wallet: Wallet)
     }
-    var navigation: Driver<Step> {
-        return navigator.asDriverOnErrorReturnEmpty()
-    }
-}
 
-final class BackupWalletViewModel: SteppingViewModel {
+    let stepper = Stepper<Step>()
     private let bag = DisposeBag()
     private let wallet: Driver<Wallet>
-    let stepper = Stepper<Step>()
+
     init(wallet: Wallet) {
         self.wallet = .just(wallet)
     }
 }
 
-extension BackupWalletViewModel {
-    enum Step {
-        case didBackup(wallet: Wallet)
-    }
-
-    var navigation: Driver<Step> {
-        return stepper.navigation
-    }
-}
 
 extension BackupWalletViewModel: ViewModelType {
 

@@ -10,56 +10,64 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class ChooseWalletCoordinator: Coordinator {
+final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator.Step> {
+    enum Step {
+        case didChoose(wallet: Wallet)
+    }
 
-    private weak var navigationController: UINavigationController?
-    private weak var navigator: OnboardingNavigator?
     private let useCase: ChooseWalletUseCase
     private let securePersistence: SecurePersistence
 
-    var childCoordinators = [AnyCoordinator]()
 
-    init(navigationController: UINavigationController, navigator: OnboardingNavigator, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
-        self.navigationController = navigationController
-        self.navigator = navigator
+    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
         self.securePersistence = securePersistence
         self.useCase = useCase
+        super.init(navigationController: navigationController)
     }
-}
 
-extension ChooseWalletCoordinator {
-
-    func start() {
+    override func start() {
         toChooseWallet()
     }
 }
 
-protocol ChooseWalletNavigator: AnyObject {
-    func toMain(wallet: Wallet)
-    func toChooseWallet()
-    func toCreateNewWallet()
-    func toRestoreWallet()
-}
 
-extension ChooseWalletCoordinator: ChooseWalletNavigator {
+// MARK: Private
+private extension ChooseWalletCoordinator {
 
     func toMain(wallet: Wallet) {
         securePersistence.save(wallet: wallet)
-        navigator?.toMain(wallet: wallet)
+        stepper.step(.didChoose(wallet: wallet))
     }
 
     func toChooseWallet() {
-        let viewModel = ChooseWalletViewModel(navigator: self)
-        let vc = ChooseWallet(viewModel: viewModel)
-        navigationController?.pushViewController(vc, animated: true)
+        present(type: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [weak self] in
+            switch $0 {
+            case .toCreate: self?.toCreateNewWallet()
+            case .toRestore: self?.toRestoreWallet()
+            }
+        }
     }
 
     func toCreateNewWallet() {
-        start(coordinator: CreateNewWalletCoordinator(navigationController: navigationController, navigator: self, useCase: useCase))
+        start(
+            coordinator:
+            CreateNewWalletCoordinator(navigationController: navigationController!, useCase: useCase)
+        ) { [weak self] in
+            switch $0 {
+            case .didCreate(let wallet): self?.toMain(wallet: wallet)
+            }
+        }
     }
 
     func toRestoreWallet() {
-        start(coordinator: RestoreWalletCoordinator(navigationController: navigationController, navigator: self, useCase: useCase))
+        start(
+            coordinator:
+            RestoreWalletCoordinator(navigationController: navigationController!, useCase: useCase)
+        ) { [weak self] in
+            switch $0 {
+            case .didRestore(let wallet): self?.toMain(wallet: wallet)
+            }
+        }
     }
 
 }

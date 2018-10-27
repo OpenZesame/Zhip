@@ -10,24 +10,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol TermsOfServiceActionListener: AnyObject {
-    func didAcceptTerms()
-}
-
-final class TermsOfServiceViewModel {
+final class TermsOfServiceViewModel: Navigatable {
+    enum Step {
+        case didAcceptTerms
+    }
 
     private let bag = DisposeBag()
-
-    private weak var actionListener: TermsOfServiceActionListener?
-    private let useCase: OnboardingUseCase
-
-    init(actionListener: TermsOfServiceActionListener, useCase: OnboardingUseCase) {
-        self.actionListener = actionListener
-        self.useCase = useCase
-    }
+    let stepper = Stepper<Step>()
 }
-
-
 
 extension TermsOfServiceViewModel: ViewModelType {
 
@@ -55,10 +45,11 @@ extension TermsOfServiceViewModel: ViewModelType {
 
         let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
 
-        fromView.didAcceptTerms.do(onNext: {
-            self.useCase.didAcceptTermsOfService()
-            self.actionListener?.didAcceptTerms()
-        }).drive().disposed(by: bag)
+        bag <~ [
+            fromView.didAcceptTerms.do(onNext: { [weak s=stepper] in
+                s?.step(.didAcceptTerms)
+            }).drive()
+        ]
 
         return Output(
             isAcceptButtonEnabled: isAcceptButtonEnabled

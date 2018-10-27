@@ -10,23 +10,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol WarningERC20ActionListener: AnyObject {
-    func understandsERC20Risk()
-    func doNotShowERC20WarningAgain()
-}
-
-final class WarningERC20ViewModel {
-
-    private let bag = DisposeBag()
-
-    private weak var actionListener: WarningERC20ActionListener?
-    private let useCase: OnboardingUseCase
-
-    init(actionListener: WarningERC20ActionListener, useCase: OnboardingUseCase) {
-        self.actionListener = actionListener
-        self.useCase = useCase
+final class WarningERC20ViewModel: Navigatable {
+    enum Step {
+        case understandsRisks
+        case understandsRisksSkipWarningFromNowOn
     }
 
+    private let bag = DisposeBag()
+    let stepper = Stepper<Step>()
 }
 
 extension WarningERC20ViewModel: ViewModelType {
@@ -51,13 +42,12 @@ extension WarningERC20ViewModel: ViewModelType {
         let fromView = input.fromView
 
         bag <~ [
-            fromView.accept.do(onNext: {
-                self.actionListener?.understandsERC20Risk()
+            fromView.accept.do(onNext: { [weak s=stepper] in
+                s?.step(.understandsRisks)
             }).drive(),
 
-            fromView.doNotShowAgain.do(onNext: {
-                self.useCase.doNotShowERC20WarningAgain()
-                self.actionListener?.doNotShowERC20WarningAgain()
+            fromView.doNotShowAgain.do(onNext: { [weak s=stepper] in
+                s?.step(.understandsRisksSkipWarningFromNowOn)
             }).drive()
         ]
 

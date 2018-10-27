@@ -10,6 +10,7 @@ import Foundation
 
 enum PresentationMode {
     case push(animated: Bool)
+    case present(animated: Bool)
 }
 
 extension PresentationMode {

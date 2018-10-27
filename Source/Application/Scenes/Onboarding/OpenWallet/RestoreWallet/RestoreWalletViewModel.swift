@@ -6,23 +6,27 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import RxCocoa
-import RxSwift
 import Zesame
 
-final class RestoreWalletViewModel {
+import RxCocoa
+import RxSwift
+import SwiftValidator
+
+final class RestoreWalletViewModel: Navigatable {
+    enum Step {
+        case didRestore(wallet: Wallet)
+    }
+
     private let bag = DisposeBag()
 
-    private weak var navigator: RestoreWalletNavigator?
     private let useCase: ChooseWalletUseCase
+    let stepper = Stepper<Step>()
 
-    init(navigator: RestoreWalletNavigator, useCase: ChooseWalletUseCase) {
-        self.navigator = navigator
+    init(useCase: ChooseWalletUseCase) {
         self.useCase = useCase
     }
 }
 
-import SwiftValidator
 extension RestoreWalletViewModel: ViewModelType {
 
     struct Input: InputType {
@@ -89,8 +93,8 @@ extension RestoreWalletViewModel: ViewModelType {
 
         bag <~ [
             fromView.restoreTrigger
-            .withLatestFrom(wallet).do(onNext: {
-                self.navigator?.toMain(restoredWallet: $0)
+            .withLatestFrom(wallet).do(onNext: { [weak s=stepper] in
+                s?.step(.didRestore(wallet: $0))
             })
             .drive()
         ]

@@ -12,7 +12,10 @@ import RxCocoa
 import FormValidatorSwift
 import Zesame
 
-final class CreateNewWalletViewModel {
+final class CreateNewWalletViewModel: Navigatable {
+    enum Step {
+        case didCreateNew(wallet: Wallet)
+    }
 
     private let bag = DisposeBag()
 
@@ -22,17 +25,6 @@ final class CreateNewWalletViewModel {
 
     init(useCase: ChooseWalletUseCase) {
         self.useCase = useCase
-    }
-}
-
-
-extension CreateNewWalletViewModel: SteppingViewModel {
-    enum Step {
-        case didCreateNew(wallet: Wallet)
-    }
-
-    var navigation: Driver<Step> {
-        return stepper.navigation
     }
 }
 

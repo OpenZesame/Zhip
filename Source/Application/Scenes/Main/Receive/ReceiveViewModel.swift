@@ -12,14 +12,17 @@ import RxCocoa
 import Zesame
 
 
-final class ReceiveViewModel {
+final class ReceiveViewModel: Navigatable {
+    enum Step {}
 
     private let wallet: Driver<Wallet>
+    let stepper = Stepper<Step>()
 
     init(wallet: Driver<Wallet>) {
         self.wallet = wallet
     }
 }
+
 
 extension ReceiveViewModel: ViewModelType {
 

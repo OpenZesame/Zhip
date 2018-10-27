@@ -9,45 +9,35 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator {
+final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinator.Step> {
+    enum Step {
+        case didRestore(wallet: Wallet)
+    }
 
-    private weak var navigationController: UINavigationController?
-    private weak var navigator: ChooseWalletNavigator?
     private let useCase: ChooseWalletUseCase
 
-    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, useCase: ChooseWalletUseCase) {
-        self.navigationController = navigationController
-        self.navigator = navigator
+    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase) {
         self.useCase = useCase
+        super.init(navigationController: navigationController)
     }
-}
 
-extension RestoreWalletCoordinator: AnyCoordinator {
-
-    func start() {
+    override func start() {
         toRestoreWallet()
     }
-
 }
 
-/// Used for Navigation between Coordinators
-protocol Navigator: AnyObject {}
-
-protocol RestoreWalletNavigator: Navigator {
-    func toRestoreWallet()
-    func toMain(restoredWallet: Wallet)
-}
-
-// MARK: - Navigator
-extension RestoreWalletCoordinator: RestoreWalletNavigator {
+// MARK: - Private
+private extension RestoreWalletCoordinator {
 
     func toMain(restoredWallet: Wallet) {
-        navigator?.toMain(wallet: restoredWallet)
+        stepper.step(.didRestore(wallet: restoredWallet))
     }
 
     func toRestoreWallet() {
-        let viewModel = RestoreWalletViewModel(navigator: self, useCase: useCase)
-        let vc = RestoreWallet(viewModel: viewModel)
-        navigationController?.pushViewController(vc, animated: true)
+        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [weak self] in
+            switch $0 {
+            case .didRestore(let wallet): self?.toMain(restoredWallet: wallet)
+            }
+        }
     }
 }

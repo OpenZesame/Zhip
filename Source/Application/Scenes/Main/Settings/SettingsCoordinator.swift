@@ -12,39 +12,36 @@ import RxCocoa
 
 import Zesame
 
-final class SettingsCoordinator: AnyCoordinator {
-
-    private weak var navigationController: UINavigationController?
-
-    private weak var navigator: AppNavigator?
+final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
+    enum Step {
+        case didRemoveWallet
+    }
 
     private let securePersistence: SecurePersistence
 
-    init(navigationController: UINavigationController?, navigator: AppNavigator, securePersistence: SecurePersistence) {
-        self.navigationController = navigationController
-        self.navigator = navigator
+    init(navigationController: UINavigationController, securePersistence: SecurePersistence) {
         self.securePersistence = securePersistence
+        super.init(navigationController: navigationController)
+    }
+
+    override func start() {
+        toSettings()
     }
 }
 
-// MARK: - Navigator
-extension SettingsCoordinator: SettingsNavigator {
+// MARK: - Private
+private extension SettingsCoordinator {
 
     func toChooseWallet() {
         securePersistence.deleteWallet()
-        navigator?.toOnboarding()
-    }
-
-    func start() {
-        toSettings()
+        stepper.step(.didRemoveWallet)
     }
 
     func toSettings() {
-        navigationController?.pushViewController(
-            Settings(
-                viewModel: SettingsViewModel(navigator: self)
-            ),
-            animated: true
-        )
+        present(type: Settings.self, viewModel: SettingsViewModel()) { [weak self] in
+            switch $0 {
+            case .removeWallet: self?.toChooseWallet()
+            }
+        }
     }
 }

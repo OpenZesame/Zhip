@@ -10,19 +10,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol SettingsNavigator: AnyObject {
-    func toSettings()
-    func toChooseWallet()
-}
-
-final class SettingsViewModel {
-    private let bag = DisposeBag()
-    
-    private weak var navigator: SettingsNavigator?
-
-    init(navigator: SettingsNavigator) {
-        self.navigator = navigator
+final class SettingsViewModel: Navigatable {
+    enum Step {
+        case removeWallet
     }
+
+    let stepper = Stepper<Step>()
+
+    private let bag = DisposeBag()
 }
 
 extension SettingsViewModel: ViewModelType {
@@ -48,11 +43,12 @@ extension SettingsViewModel: ViewModelType {
     func transform(input: Input) -> Output {
 
         let fromView = input.fromView
-
-        fromView.removeWalletTrigger
-            .do(onNext: {
-                self.navigator?.toChooseWallet()
-            }).drive().disposed(by: bag)
+        bag <~ [
+            fromView.removeWalletTrigger
+                .do(onNext: { [weak s=stepper] in
+                    s?.step(.removeWallet)
+                }).drive()
+        ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
 
