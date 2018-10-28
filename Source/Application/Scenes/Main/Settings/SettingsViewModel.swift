@@ -10,37 +10,16 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class SettingsViewModel: Navigatable {
+final class SettingsViewModel: AbstractViewModel<
+    SettingsViewModel.Step,
+    SettingsViewModel.InputFromView,
+    SettingsViewModel.Output
+> {
     enum Step {
         case removeWallet
     }
 
-    let stepper = Stepper<Step>()
-
-    private let bag = DisposeBag()
-}
-
-extension SettingsViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let removeWalletTrigger: Driver<Void>
-        }
-
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {
-        let appVersion: Driver<String>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
         bag <~ [
@@ -55,6 +34,16 @@ extension SettingsViewModel: ViewModelType {
         return Output(
             appVersion: appVersion
         )
+    }
+}
+
+extension SettingsViewModel {
+    struct InputFromView {
+        let removeWalletTrigger: Driver<Void>
+    }
+
+    struct Output {
+        let appVersion: Driver<String>
     }
 }
 

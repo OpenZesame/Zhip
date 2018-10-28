@@ -106,7 +106,7 @@
 		48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */; };
 		48C8A0132143CF6C0063B0FA /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0122143CF6C0063B0FA /* RestoreWallet.swift */; };
 		48CA6975218249CB00C05F5F /* BackupWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6974218249CB00C05F5F /* BackupWalletView.swift */; };
-		48CA697721824A2000C05F5F /* BackWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697621824A2000C05F5F /* BackWalletViewModel.swift */; };
+		48CA697721824A2000C05F5F /* BackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697621824A2000C05F5F /* BackupWalletViewModel.swift */; };
 		48CA69792183052C00C05F5F /* BackupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA69782183052C00C05F5F /* BackupWallet.swift */; };
 		48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
@@ -120,6 +120,7 @@
 		48F832E52184DDBD00EDAD40 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E42184DDBD00EDAD40 /* Stepper.swift */; };
 		48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E62184DDE300EDAD40 /* Presenter.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
+		48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832EB2185C39A00EDAD40 /* AbstractViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,7 +249,7 @@
 		48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		48C8A0122143CF6C0063B0FA /* RestoreWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
 		48CA6974218249CB00C05F5F /* BackupWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletView.swift; sourceTree = "<group>"; };
-		48CA697621824A2000C05F5F /* BackWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackWalletViewModel.swift; sourceTree = "<group>"; };
+		48CA697621824A2000C05F5F /* BackupWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletViewModel.swift; sourceTree = "<group>"; };
 		48CA69782183052C00C05F5F /* BackupWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWallet.swift; sourceTree = "<group>"; };
 		48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayoutPriority+ExpressibleByIntegerLiteral.swift"; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
@@ -262,6 +263,7 @@
 		48F832E42184DDBD00EDAD40 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		48F832E62184DDE300EDAD40 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
+		48F832EB2185C39A00EDAD40 /* AbstractViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -672,8 +674,8 @@
 		48C89FD8214330C50063B0FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48F832EA2185C38400EDAD40 /* ViewModel */,
 				4847EDEA21600777002FF978 /* Presentation */,
-				48C89FCA21432E220063B0FA /* ViewModelType.swift */,
 				48C89FDF214331590063B0FA /* Scene.swift */,
 				489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */,
 				4806AE9521837F5F002734C8 /* QRCoding.swift */,
@@ -762,7 +764,7 @@
 			children = (
 				48CA6974218249CB00C05F5F /* BackupWalletView.swift */,
 				48CA69782183052C00C05F5F /* BackupWallet.swift */,
-				48CA697621824A2000C05F5F /* BackWalletViewModel.swift */,
+				48CA697621824A2000C05F5F /* BackupWalletViewModel.swift */,
 			);
 			path = BackupWallet;
 			sourceTree = "<group>";
@@ -781,6 +783,15 @@
 				48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */,
 			);
 			path = Foundation;
+			sourceTree = "<group>";
+		};
+		48F832EA2185C38400EDAD40 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				48C89FCA21432E220063B0FA /* ViewModelType.swift */,
+				48F832EB2185C39A00EDAD40 /* AbstractViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -982,7 +993,7 @@
 				489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
-				48CA697721824A2000C05F5F /* BackWalletViewModel.swift in Sources */,
+				48CA697721824A2000C05F5F /* BackupWalletViewModel.swift in Sources */,
 				48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */,
@@ -1021,6 +1032,7 @@
 				48AC6CC72145AF0A00B4D036 /* Coordinator.swift in Sources */,
 				4850A408214C122900EBB85B /* Makeable.swift in Sources */,
 				4806AE6E2183690B002734C8 /* ReceiveCoordinator.swift in Sources */,
+				48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */,
 				4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */,
 				48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,

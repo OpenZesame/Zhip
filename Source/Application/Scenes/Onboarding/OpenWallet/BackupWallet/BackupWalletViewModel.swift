@@ -1,5 +1,5 @@
 //
-//  BackWalletViewModel.swift
+//  BackupWalletViewModel.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-10-25.
@@ -11,25 +11,22 @@ import RxCocoa
 import RxSwift
 import Zesame
 
-final class BackupWalletViewModel: Navigatable {
+final class BackupWalletViewModel: AbstractViewModel<
+    BackupWalletViewModel.Step,
+    BackupWalletViewModel.InputFromView,
+    BackupWalletViewModel.Output
+> {
     enum Step {
         case didBackup(wallet: Wallet)
     }
 
-    let stepper = Stepper<Step>()
-    private let bag = DisposeBag()
     private let wallet: Driver<Wallet>
 
     init(wallet: Wallet) {
         self.wallet = .just(wallet)
     }
-}
 
-
-extension BackupWalletViewModel: ViewModelType {
-
-    func transform(input: Input) -> Output {
-
+    override func transform(input: Input) -> Output {
         let keystoreText = wallet.map {
             try? JSONEncoder(outputFormatting: .prettyPrinted).encode($0.keystore)
         }.filterNil().map {
@@ -40,9 +37,9 @@ extension BackupWalletViewModel: ViewModelType {
 
         bag <~ [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(keystoreText)
-            .do(onNext: {
-                UIPasteboard.general.string = $0
-            }).drive(),
+                .do(onNext: {
+                    UIPasteboard.general.string = $0
+                }).drive(),
 
             input.fromView.doneTrigger.withLatestFrom(understandsRisks)
                 .filter { $0 }
@@ -56,19 +53,14 @@ extension BackupWalletViewModel: ViewModelType {
             isDoneButtonEnabled: understandsRisks
         )
     }
+}
 
-    struct Input: InputType {
-        struct FromView {
-            let copyKeystoreToPasteboardTrigger: Driver<Void>
-            let understandsRisk: Driver<Bool>
-            let doneTrigger: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
+extension BackupWalletViewModel {
+
+    struct InputFromView {
+        let copyKeystoreToPasteboardTrigger: Driver<Void>
+        let understandsRisk: Driver<Bool>
+        let doneTrigger: Driver<Void>
     }
 
     struct Output {

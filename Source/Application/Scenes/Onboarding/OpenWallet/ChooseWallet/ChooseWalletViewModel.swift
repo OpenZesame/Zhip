@@ -9,36 +9,17 @@
 import RxSwift
 import RxCocoa
 
-final class ChooseWalletViewModel: Navigatable {
+final class ChooseWalletViewModel: AbstractViewModel<
+    ChooseWalletViewModel.Step,
+    ChooseWalletViewModel.InputFromView,
+    ChooseWalletViewModel.Output
+> {
     enum Step {
         case toCreate
         case toRestore
     }
 
-    private let bag = DisposeBag()
-
-    let stepper = Stepper<Step>()
-}
-
-extension ChooseWalletViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let createNewTrigger: Driver<Void>
-            let restoreTrigger: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {}
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
         let fromView = input.fromView
 
         bag <~ [
@@ -52,4 +33,14 @@ extension ChooseWalletViewModel: ViewModelType {
         ]
         return Output()
     }
+}
+
+extension ChooseWalletViewModel {
+
+    struct InputFromView {
+        let createNewTrigger: Driver<Void>
+        let restoreTrigger: Driver<Void>
+    }
+
+    struct Output {}
 }

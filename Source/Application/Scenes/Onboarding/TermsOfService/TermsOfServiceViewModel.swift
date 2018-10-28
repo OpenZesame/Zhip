@@ -10,36 +10,16 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class TermsOfServiceViewModel: Navigatable {
+final class TermsOfServiceViewModel: AbstractViewModel<
+    TermsOfServiceViewModel.Step,
+    TermsOfServiceViewModel.InputFromView,
+    TermsOfServiceViewModel.Output
+> {
     enum Step {
         case didAcceptTerms
     }
 
-    private let bag = DisposeBag()
-    let stepper = Stepper<Step>()
-}
-
-extension TermsOfServiceViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let didScrollToBottom: Driver<Void>
-            let didAcceptTerms: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {
-        let isAcceptButtonEnabled: Driver<Bool>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
 
@@ -54,6 +34,17 @@ extension TermsOfServiceViewModel: ViewModelType {
         return Output(
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
+    }
+}
 
+extension TermsOfServiceViewModel {
+
+    struct InputFromView {
+        let didScrollToBottom: Driver<Void>
+        let didAcceptTerms: Driver<Void>
+    }
+
+    struct Output {
+        let isAcceptButtonEnabled: Driver<Bool>
     }
 }

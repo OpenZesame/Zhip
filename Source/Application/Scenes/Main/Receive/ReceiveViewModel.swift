@@ -11,41 +11,20 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-
-final class ReceiveViewModel: Navigatable {
+final class ReceiveViewModel: AbstractViewModel<
+    ReceiveViewModel.Step,
+    ReceiveViewModel.InputFromView,
+    ReceiveViewModel.Output
+> {
     enum Step {}
 
     private let wallet: Driver<Wallet>
-    let stepper = Stepper<Step>()
 
     init(wallet: Driver<Wallet>) {
         self.wallet = wallet
     }
-}
 
-
-extension ReceiveViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let qrCodeImageWidth: CGFloat
-            let amountToReceive: Driver<String>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-        
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {
-        let receivingAddress: Driver<String>
-        let qrImage: Driver<UIImage?>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
 
         let receivingAmount = input.fromView.amountToReceive
             .map { Double($0) }
@@ -61,4 +40,19 @@ extension ReceiveViewModel: ViewModelType {
             qrImage: qrImage
         )
     }
+}
+
+extension ReceiveViewModel {
+
+    struct InputFromView {
+        let qrCodeImageWidth: CGFloat
+        let amountToReceive: Driver<String>
+    }
+
+    struct Output {
+        let receivingAddress: Driver<String>
+        let qrImage: Driver<UIImage?>
+    }
+
+
 }

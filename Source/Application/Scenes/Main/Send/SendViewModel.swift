@@ -11,46 +11,22 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-final class SendViewModel: Navigatable {
+final class SendViewModel: AbstractViewModel<
+    SendViewModel.Step,
+    SendViewModel.InputFromView,
+    SendViewModel.Output
+> {
     enum Step {}
 
     private let useCase: TransactionsUseCase
     private let wallet: Driver<Wallet>
-    let stepper = Stepper<Step>()
+
     init(wallet: Driver<Wallet>, useCase: TransactionsUseCase) {
         self.useCase = useCase
         self.wallet = wallet
     }
-}
 
-extension SendViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let sendTrigger: Driver<Void>
-            let recepientAddress: Driver<String>
-            let amountToSend: Driver<String>
-            let gasLimit: Driver<String>
-            let gasPrice: Driver<String>
-            let encryptionPassphrase: Driver<String>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-        
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {
-        let balance: Driver<String>
-        let nonce: Driver<String>
-        let isRecipientAddressValid: Driver<Bool>
-        let transactionId: Driver<String>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
 
@@ -67,13 +43,13 @@ extension SendViewModel: ViewModelType {
         let zeroBalance = wallet.map { WalletBalance(wallet: $0) }
 
         let walletBalance: Driver<WalletBalance> = Driver.combineLatest(wallet, balanceResponse) {
-            return WalletBalance(wallet: $0, balance: $1.balance, nonce: $1.nonce)
+            WalletBalance(wallet: $0, balance: $1.balance, nonce: $1.nonce)
         }
 
         let balance = Driver.merge(zeroBalance, walletBalance)
 
         let recipient = fromView.recepientAddress.map {
-           try? Address(hexString: $0)
+            try? Address(hexString: $0)
         }
 
         let amount = fromView.amountToSend.map { Double($0) }.filterNil()
@@ -82,7 +58,7 @@ extension SendViewModel: ViewModelType {
 
         let payment = Driver.combineLatest(recipient.filterNil(), amount, gasLimit, gasPrice, balanceResponse) {
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
-        }.filterNil()
+            }.filterNil()
 
         let transactionId: Driver<String> = fromView.sendTrigger
             .withLatestFrom(Driver.combineLatest(payment, wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
@@ -104,5 +80,25 @@ extension SendViewModel: ViewModelType {
             isRecipientAddressValid: recipient.map { $0 != nil },
             transactionId: transactionId
         )
+    }
+}
+
+extension SendViewModel {
+
+    struct InputFromView {
+        let sendTrigger: Driver<Void>
+        let recepientAddress: Driver<String>
+        let amountToSend: Driver<String>
+        let gasLimit: Driver<String>
+        let gasPrice: Driver<String>
+        let encryptionPassphrase: Driver<String>
+    }
+
+
+    struct Output {
+        let balance: Driver<String>
+        let nonce: Driver<String>
+        let isRecipientAddressValid: Driver<Bool>
+        let transactionId: Driver<String>
     }
 }

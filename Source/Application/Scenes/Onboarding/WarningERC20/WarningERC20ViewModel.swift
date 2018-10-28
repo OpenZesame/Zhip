@@ -10,47 +10,38 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class WarningERC20ViewModel: Navigatable {
+final class WarningERC20ViewModel: AbstractViewModel<
+    WarningERC20ViewModel.Step,
+    WarningERC20ViewModel.InputFromView,
+    WarningERC20ViewModel.Output
+> {
     enum Step {
         case understandsRisks
         case understandsRisksSkipWarningFromNowOn
     }
-
-    private let bag = DisposeBag()
-    let stepper = Stepper<Step>()
-}
-
-extension WarningERC20ViewModel: ViewModelType {
-    struct Input: InputType {
-        struct FromView {
-            let accept: Driver<Void>
-            let doNotShowAgain: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {}
-
-    func transform(input: Input) -> Output {
-
-        let fromView = input.fromView
-
+    
+    override func transform(input: Input) -> Output {
         bag <~ [
-            fromView.accept.do(onNext: { [weak s=stepper] in
+            input.fromView.accept.do(onNext: { [weak s=stepper] in
                 s?.step(.understandsRisks)
             }).drive(),
-
-            fromView.doNotShowAgain.do(onNext: { [weak s=stepper] in
+            
+            input.fromView.doNotShowAgain.do(onNext: { [weak s=stepper] in
                 s?.step(.understandsRisksSkipWarningFromNowOn)
             }).drive()
         ]
-
         return Output()
     }
+}
+
+extension WarningERC20ViewModel {
+    struct InputFromView {
+        let accept: Driver<Void>
+        let doNotShowAgain: Driver<Void>
+    }
+    
+    
+    struct Output {}
+    
+    
 }

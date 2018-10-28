@@ -12,45 +12,23 @@ import RxCocoa
 import FormValidatorSwift
 import Zesame
 
-final class CreateNewWalletViewModel: Navigatable {
+final class CreateNewWalletViewModel:
+AbstractViewModel<
+    CreateNewWalletViewModel.Step,
+    CreateNewWalletViewModel.InputFromView,
+    CreateNewWalletViewModel.Output
+> {
     enum Step {
         case didCreateNew(wallet: Wallet)
     }
-
-    private let bag = DisposeBag()
-
-    let stepper = Stepper<Step>()
 
     private let useCase: ChooseWalletUseCase
 
     init(useCase: ChooseWalletUseCase) {
         self.useCase = useCase
     }
-}
 
-extension CreateNewWalletViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let newEncryptionPassphrase: Driver<String>
-            let confirmedNewEncryptionPassphrase: Driver<String>
-            let understandsRisk: Driver<Bool>
-            let createWalletTrigger: Driver<Void>
-        }
-        let fromController: ControllerInput
-        let fromView: FromView
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {
-        let isCreateWalletButtonEnabled: Driver<Bool>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
         let fromView = input.fromView
 
         let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(fromView.newEncryptionPassphrase, fromView.confirmedNewEncryptionPassphrase) {
@@ -78,5 +56,16 @@ extension CreateNewWalletViewModel: ViewModelType {
             isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
         )
     }
+}
 
+extension CreateNewWalletViewModel {
+    struct InputFromView {
+        let newEncryptionPassphrase: Driver<String>
+        let confirmedNewEncryptionPassphrase: Driver<String>
+        let understandsRisk: Driver<Bool>
+        let createWalletTrigger: Driver<Void>
+    }
+    struct Output {
+        let isCreateWalletButtonEnabled: Driver<Bool>
+    }
 }
