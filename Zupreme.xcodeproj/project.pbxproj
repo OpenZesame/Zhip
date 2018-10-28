@@ -142,6 +142,8 @@
 		4806AE72218369A7002734C8 /* UITextField+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Rx.swift"; sourceTree = "<group>"; };
 		4806AE9521837F5F002734C8 /* QRCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCoding.swift; sourceTree = "<group>"; };
 		4806AE9721838137002734C8 /* EFQRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EFQRCode.framework; path = Carthage/Build/iOS/EFQRCode.framework; sourceTree = "<group>"; };
+		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
+		4811BA2121860B53005FB01C /* Zupreme.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Zupreme.xcconfig; sourceTree = "<group>"; };
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -188,12 +190,6 @@
 		4898FB4421542333009501DC /* StackViewStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewStyling.swift; sourceTree = "<group>"; };
 		4898FB47215423D6009501DC /* ScrollViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOwner.swift; sourceTree = "<group>"; };
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
-		489CDB9D2143E26C00318450 /* Zupreme-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Debug.xcconfig"; sourceTree = "<group>"; };
-		489CDB9E2143E26C00318450 /* Zupreme-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Common.xcconfig"; sourceTree = "<group>"; };
-		489CDB9F2143E26C00318450 /* Zupreme-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Release.xcconfig"; sourceTree = "<group>"; };
-		489CDBA12143E27500318450 /* ZupremeTests-Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Common.xcconfig"; sourceTree = "<group>"; };
-		489CDBA22143E27500318450 /* ZupremeTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Debug.xcconfig"; sourceTree = "<group>"; };
-		489CDBA32143E27500318450 /* ZupremeTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Release.xcconfig"; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
 		489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyValueStore+KeychainKey.swift"; sourceTree = "<group>"; };
@@ -563,9 +559,7 @@
 		489CDB9C2143E26C00318450 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				489CDB9D2143E26C00318450 /* Zupreme-Debug.xcconfig */,
-				489CDB9E2143E26C00318450 /* Zupreme-Common.xcconfig */,
-				489CDB9F2143E26C00318450 /* Zupreme-Release.xcconfig */,
+				4811BA2121860B53005FB01C /* Zupreme.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -573,9 +567,7 @@
 		489CDBA02143E27500318450 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				489CDBA12143E27500318450 /* ZupremeTests-Common.xcconfig */,
-				489CDBA22143E27500318450 /* ZupremeTests-Debug.xcconfig */,
-				489CDBA32143E27500318450 /* ZupremeTests-Release.xcconfig */,
+				4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1085,42 +1077,42 @@
 /* Begin XCBuildConfiguration section */
 		484B065C20BA0C2F00C4E50A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDB9D2143E26C00318450 /* Zupreme-Debug.xcconfig */;
+			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		484B065D20BA0C2F00C4E50A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDB9F2143E26C00318450 /* Zupreme-Release.xcconfig */;
+			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		484B065F20BA0C2F00C4E50A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDB9D2143E26C00318450 /* Zupreme-Debug.xcconfig */;
+			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		484B066020BA0C2F00C4E50A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDB9F2143E26C00318450 /* Zupreme-Release.xcconfig */;
+			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		484B066220BA0C2F00C4E50A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDBA22143E27500318450 /* ZupremeTests-Debug.xcconfig */;
+			baseConfigurationReference = 4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		484B066320BA0C2F00C4E50A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489CDBA32143E27500318450 /* ZupremeTests-Release.xcconfig */;
+			baseConfigurationReference = 4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;

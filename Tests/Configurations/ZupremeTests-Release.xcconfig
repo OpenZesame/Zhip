@@ -1,2 +1,0 @@
-#include "ZupremeTests-Common.xcconfig"
-#include "../../Configurations/base_release.xcconfig"

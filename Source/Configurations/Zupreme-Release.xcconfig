@@ -1,3 +1,0 @@
-#include "Zupreme-Common.xcconfig"
-
-SWIFT_OPTIMIZATION_LEVEL = -Owholemodule
