@@ -16,9 +16,13 @@
 default_platform(:ios)
 
 platform :ios do
+
   desc "Push a new beta build to TestFlight"
   lane :beta do
+  	match(type: "appstore", readonly: true)
     build_app(scheme: "Zupreme")
     upload_to_testflight
+    clean_build_artifacts
   end
+
 end
