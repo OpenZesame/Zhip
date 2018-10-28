@@ -70,6 +70,7 @@
 		489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A65812155AB2D0091FD03 /* WalletView.swift */; };
 		48A63FFF2186237F00B08C67 /* ConfigurationDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */; };
 		48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */; };
+		48A6400421862B9100B08C67 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A6400321862B9100B08C67 /* IQKeyboardManagerSwift.framework */; };
 		48AC6CB9214533C500B4D036 /* KeyValueStore+KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */; };
 		48AC6CC22145AC4A00B4D036 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CBE2145AC4A00B4D036 /* SettingsView.swift */; };
 		48AC6CC32145AC4A00B4D036 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CBF2145AC4A00B4D036 /* Settings.swift */; };
@@ -196,6 +197,7 @@
 		489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationDetection.swift; sourceTree = "<group>"; };
 		48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEncryptionPassphrase.swift; sourceTree = "<group>"; };
+		48A6400321862B9100B08C67 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
 		48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyValueStore+KeychainKey.swift"; sourceTree = "<group>"; };
 		48AC6CBE2145AC4A00B4D036 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		48AC6CBF2145AC4A00B4D036 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				488EE4D5215FAE71009A3903 /* RxCocoa.framework in Frameworks */,
 				48BA52F42180FA5D009775D5 /* SwiftValidator.framework in Frameworks */,
 				488EE4D6215FAE71009A3903 /* RxSwift.framework in Frameworks */,
+				48A6400421862B9100B08C67 /* IQKeyboardManagerSwift.framework in Frameworks */,
 				488EE4D7215FAE71009A3903 /* SipHash.framework in Frameworks */,
 				48E0022F217A65DD0077E5CF /* KeychainSwift.framework in Frameworks */,
 				488EE4D8215FAE71009A3903 /* TinyConstraints.framework in Frameworks */,
@@ -487,6 +490,7 @@
 		484B06AA20BA107A00C4E50A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48A6400321862B9100B08C67 /* IQKeyboardManagerSwift.framework */,
 				4806AE9721838137002734C8 /* EFQRCode.framework */,
 				48BA52F32180FA5D009775D5 /* SwiftValidator.framework */,
 				48E0022E217A65DD0077E5CF /* KeychainSwift.framework */,
@@ -920,6 +924,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftValidator.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/EFQRCode.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -939,6 +944,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftValidator.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KeychainSwift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/EFQRCode.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1101,6 +1107,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 			};
 			name = Debug;
 		};
@@ -1108,6 +1118,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 			};
 			name = Release;
 		};
