@@ -18,7 +18,6 @@ final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator
     private let useCase: ChooseWalletUseCase
     private let securePersistence: SecurePersistence
 
-
     init(navigationController: UINavigationController, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
         self.securePersistence = securePersistence
         self.useCase = useCase

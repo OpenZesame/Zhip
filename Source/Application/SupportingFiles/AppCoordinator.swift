@@ -11,16 +11,13 @@ import Zesame
 import KeychainSwift
 
 final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
-    enum Step {
-//        func toOnboarding()
-//        func toMain(wallet: Wallet)
-    }
+    enum Step {}
 
-    private let window: UIWindow
+    private weak var window: UIWindow?
     private let services: UseCaseProvider
     private let securePersistence: SecurePersistence
 
-    init(window: UIWindow, services: UseCaseProvider, securePersistence: SecurePersistence) {
+    init(window: UIWindow?, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.window = window
         self.services = services
         self.securePersistence = securePersistence
@@ -40,9 +37,8 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
 private extension AppCoordinator {
 
     func toOnboarding() {
-
         let navigationController = UINavigationController()
-        window.rootViewController = navigationController
+        window?.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(navigationController: navigationController, preferences: KeyValueStore(UserDefaults.standard), securePersistence: securePersistence, useCase: services.makeOnboardingUseCase())
 
@@ -55,7 +51,7 @@ private extension AppCoordinator {
 
     func toMain(wallet: Wallet) {
         let navigationController = UINavigationController()
-        window.rootViewController = navigationController
+        window?.rootViewController = navigationController
 
         let main = MainCoordinator(navigationController: navigationController, services: services, securePersistence: securePersistence)
 
@@ -65,5 +61,4 @@ private extension AppCoordinator {
             }
         }
     }
-
 }

@@ -12,14 +12,9 @@ import KeychainSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var window: UIWindow?
+    var window: UIWindow? = .default
 
-    private lazy var appCoordinator: AppCoordinator = {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-        window.makeKeyAndVisible()
-        return AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
-    }()
+    private lazy var appCoordinator = AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
 }
 
 extension AppDelegate: UIApplicationDelegate {

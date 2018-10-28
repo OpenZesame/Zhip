@@ -121,6 +121,7 @@
 		48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E62184DDE300EDAD40 /* Presenter.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832EB2185C39A00EDAD40 /* AbstractViewModel.swift */; };
+		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -264,6 +265,7 @@
 		48F832E62184DDE300EDAD40 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832EB2185C39A00EDAD40 /* AbstractViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractViewModel.swift; sourceTree = "<group>"; };
+		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -752,6 +754,7 @@
 				48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */,
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
 				48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */,
+				48F832ED2185DE0200EDAD40 /* UIWindow.swift */,
 				48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */,
 				4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */,
 				4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */,
@@ -992,6 +995,7 @@
 				484F7D7A21441BF20023C6D4 /* SendViewModel.swift in Sources */,
 				489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
+				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
 				48CA697721824A2000C05F5F /* BackupWalletViewModel.swift in Sources */,
 				48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */,
