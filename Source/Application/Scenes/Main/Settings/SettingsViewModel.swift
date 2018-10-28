@@ -17,6 +17,7 @@ final class SettingsViewModel: AbstractViewModel<
 > {
     enum Step {
         case removeWallet
+        case backupWallet
     }
 
     override func transform(input: Input) -> Output {
@@ -26,7 +27,12 @@ final class SettingsViewModel: AbstractViewModel<
             fromView.removeWalletTrigger
                 .do(onNext: { [weak s=stepper] in
                     s?.step(.removeWallet)
-                }).drive()
+                }).drive(),
+
+            fromView.backupWalletTrigger
+                .do(onNext: { [weak s=stepper] in
+                    s?.step(.backupWallet)
+                }).drive(),
         ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
@@ -40,6 +46,7 @@ final class SettingsViewModel: AbstractViewModel<
 extension SettingsViewModel {
     struct InputFromView {
         let removeWalletTrigger: Driver<Void>
+        let backupWalletTrigger: Driver<Void>
     }
 
     struct Output {

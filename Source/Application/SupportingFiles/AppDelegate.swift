@@ -9,10 +9,11 @@
 import UIKit
 import Zesame
 import KeychainSwift
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var window: UIWindow? = .default
+    lazy var window: UIWindow? = .default
 
     private lazy var appCoordinator = AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
 }
@@ -20,6 +21,9 @@ class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         appCoordinator.start()
+
+        IQKeyboardManager.shared.enable = true
+
         return true
     }
 }

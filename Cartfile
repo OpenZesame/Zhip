@@ -15,3 +15,6 @@ github "EyreFree/EFQRCode"
 
 # Keychain made simple
 github "evgenyneu/keychain-swift"
+
+# Simple keyboard avoiding solution
+github "hackiftekhar/IQKeyboardManager"

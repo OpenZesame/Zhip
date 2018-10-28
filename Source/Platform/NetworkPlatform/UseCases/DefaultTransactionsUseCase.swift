@@ -20,11 +20,16 @@ final class DefaultTransactionsUseCase {
 
 extension DefaultTransactionsUseCase: TransactionsUseCase {
 
+    /// Checks if the passed `passphrase` was used to encypt the Keystore
+    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+        return zilliqaService.verifyThat(encryptionPasshrase: passhrase, canDecryptKeystore: keystore)
+    }
+
     func getBalance(for address: Address) -> Observable<BalanceResponse> {
         return zilliqaService.getBalance(for: address)
     }
 
-    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionIdentifier> {
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
         return zilliqaService.sendTransaction(for: payment, keystore: wallet.keystore, passphrase: encryptionPassphrase)
     }
 }

@@ -17,20 +17,20 @@ final class UIActivityIndicatorViewTests: RxTest {
 
 extension UIActivityIndicatorViewTests {
     func testActivityIndicator_HasWeakReference() {
-        ensureControlObserverHasWeakReference(UIActivityIndicatorView(), { (view: UIActivityIndicatorView) -> AnyObserver<Bool> in view.rx.isAnimating.asObserver() }, { BehaviorRelay<Bool>(value: true).asObservable() })
+        ensureControlObserverHasWeakReference(UIActivityIndicatorView(), { (view: UIActivityIndicatorView) -> AnyObserver<Bool> in view.rx.isAnimating.asObserver() }, { Variable<Bool>(true).asObservable() })
     }
 
     func testActivityIndicator_NextElementsSetsValue() {
         let subject = UIActivityIndicatorView()
-        let boolSequence = BehaviorRelay<Bool>(value: false)
+        let boolSequence = Variable<Bool>(false)
 
         let disposable = boolSequence.asObservable().bind(to: subject.rx.isAnimating)
         defer { disposable.dispose() }
 
-        boolSequence.accept(true)
+        boolSequence.value = true
         XCTAssertTrue(subject.isAnimating, "Expected animation to be started")
 
-        boolSequence.accept(false)
+        boolSequence.value = false
         XCTAssertFalse(subject.isAnimating, "Expected animation to be stopped")
     }
 }

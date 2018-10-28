@@ -18,7 +18,7 @@ protocol Presenting: AnyObject {
 
     func present<P>(_ presentable: P, presentation: PresentationMode, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable
 
-    func present<V>(type: Scene<V>.Type, viewModel: V.ViewModel, presentation: PresentationMode, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable
+    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
 }
 
 // MARK: - Default Implementation
@@ -27,9 +27,9 @@ extension Presenting {
         _present(presentable, presentation: presentation, navigation: presentable.navigation, navigationHandler: navigationHandler)
     }
 
-    func present<V>(type: Scene<V>.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable
+    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
     {
-        let scene = Scene<V>.init(viewModel: viewModel)
+        let scene = S.init(viewModel: viewModel)
         _present(scene, presentation: presentation, navigation: viewModel.navigation, navigationHandler: navigationHandler)
     }
 }

@@ -23,6 +23,7 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
         public let text: String?
         public let textColor: UIColor?
         public let font: UIFont?
+        public let isSecureTextEntry: Bool?
 
         public init(
             _ placeholder: String? = nil,
@@ -30,12 +31,14 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
             height: CGFloat? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
-            backgroundColor: UIColor? = nil
+            backgroundColor: UIColor? = nil,
+            isSecureTextEntry: Bool? = nil
             ) {
             self.placeholder = placeholder
             self.text = text
             self.font = font
             self.textColor = textColor
+            self.isSecureTextEntry = isSecureTextEntry
             super.init(height: height ?? .defaultHeight, backgroundColor: backgroundColor)
         }
 
@@ -54,7 +57,8 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
                 height: merge(\.height),
                 font: merge(\.font),
                 textColor: merge(\.textColor),
-                backgroundColor: merge(\.backgroundColor)
+                backgroundColor: merge(\.backgroundColor),
+                isSecureTextEntry: merge(\.isSecureTextEntry)
             )
         }
     }
@@ -64,6 +68,7 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
         textColor = style.textColor ?? .defaultText
         font = style.font ?? .default
         text = style.text
+        isSecureTextEntry = style.isSecureTextEntry ?? false
         addBorder()
     }
 }

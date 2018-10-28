@@ -37,10 +37,20 @@ private extension SettingsCoordinator {
         stepper.step(.didRemoveWallet)
     }
 
+    func toBackupWallet() {
+        guard let wallet = securePersistence.wallet else { return }
+        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [weak self] in
+            switch $0 {
+            case .didBackup: self?.navigationController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+
     func toSettings() {
         present(type: Settings.self, viewModel: SettingsViewModel()) { [weak self] in
             switch $0 {
             case .removeWallet: self?.toChooseWallet()
+            case .backupWallet: self?.toBackupWallet()
             }
         }
     }

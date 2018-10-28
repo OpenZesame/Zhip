@@ -11,6 +11,53 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+public class ActivityIndicator: SharedSequenceConvertibleType {
+    public typealias E = Bool
+    public typealias SharingStrategy = DriverSharingStrategy
+
+    private let _lock = NSRecursiveLock()
+    private let _variable = Variable(false)
+    private let _loading: SharedSequence<SharingStrategy, Bool>
+
+    public init() {
+        _loading = _variable.asDriver()
+            .distinctUntilChanged()
+    }
+
+    fileprivate func trackActivityOfObservable<O: ObservableConvertibleType>(_ source: O) -> Observable<O.E> {
+        return source.asObservable()
+            .do(onNext: { _ in
+                self.sendStopLoading()
+            }, onError: { _ in
+                self.sendStopLoading()
+            }, onCompleted: {
+                self.sendStopLoading()
+            }, onSubscribe: subscribed)
+    }
+
+    private func subscribed() {
+        _lock.lock()
+        _variable.value = true
+        _lock.unlock()
+    }
+
+    private func sendStopLoading() {
+        _lock.lock()
+        _variable.value = false
+        _lock.unlock()
+    }
+
+    public func asSharedSequence() -> SharedSequence<SharingStrategy, E> {
+        return _loading
+    }
+}
+
+extension ObservableConvertibleType {
+    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<E> {
+        return activityIndicator.trackActivityOfObservable(self)
+    }
+}
+
 final class SendViewModel {
     private let bag = DisposeBag()
     
@@ -28,6 +75,7 @@ final class SendViewModel {
 extension SendViewModel: ViewModelType {
 
     struct Input {
+        let fetchBalanceTrigger: Driver<Void>
         let recepientAddress: Driver<String>
         let amountToSend: Driver<String>
         let gasLimit: Driver<String>
@@ -37,6 +85,7 @@ extension SendViewModel: ViewModelType {
     }
 
     struct Output {
+        let isFetchingBalance: Driver<Bool>
         let address: Driver<String>
         let nonce: Driver<String>
         let balance: Driver<String>
@@ -47,12 +96,15 @@ extension SendViewModel: ViewModelType {
 
         let fetchBalanceSubject = BehaviorSubject<Void>(value: ())
 
-        let fetchTrigger = fetchBalanceSubject.asDriverOnErrorReturnEmpty()
+        let fetchTrigger = Driver.merge(fetchBalanceSubject.asDriverOnErrorReturnEmpty(), input.fetchBalanceTrigger)
+
+        let activityIndicator = ActivityIndicator()
 
         let balanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet) { _, w in w.address }
             .flatMapLatest {
             self.service
                 .getBalance(for: $0)
+                .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
         }
 
@@ -76,9 +128,10 @@ extension SendViewModel: ViewModelType {
                     .do(onNext: { _ in
                         fetchBalanceSubject.onNext(())
                     })
-        }
+            }.map { $0.transactionIdentifier }
 
         return Output(
+            isFetchingBalance: activityIndicator.asDriver(),
             address: wallet.map { $0.address.checksummedHex },
             nonce: walletBalance.map { "\($0.nonce.nonce)" },
             balance: walletBalance.map { "\($0.balance)" },

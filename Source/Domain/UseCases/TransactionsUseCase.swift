@@ -10,6 +10,17 @@ import RxSwift
 import Zesame
 
 protocol TransactionsUseCase {
+
+    /// Checks if the passed `passphrase` was used to encypt the Keystore
+    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool>
     func getBalance(for address: Address) -> Observable<BalanceResponse>
-    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionIdentifier>
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse>
+}
+
+extension TransactionsUseCase {
+
+    /// Checks if the passed `passphrase` was used to encypt the Keystore inside the Wallet
+    func verify(passhrase: String, forWallet wallet: Wallet) -> Observable<Bool> {
+        return verify(passhrase: passhrase, forKeystore: wallet.keystore)
+    }
 }

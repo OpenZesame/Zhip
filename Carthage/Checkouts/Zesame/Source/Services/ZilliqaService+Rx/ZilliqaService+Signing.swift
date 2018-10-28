@@ -11,14 +11,14 @@ import Result
 
 public extension ZilliqaService {
 
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, done: @escaping Done<TransactionIdentifier>) {
+    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, done: @escaping Done<TransactionResponse>) {
         keystore.toKeypair(encryptedBy: passphrase) {
             guard case .success(let keyPair) = $0 else { done(Result.failure($0.error!)); return }
             self.sendTransaction(for: payment, signWith: keyPair, done: done)
         }
     }
 
-    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, done: @escaping Done<TransactionIdentifier>) {
+    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, done: @escaping Done<TransactionResponse>) {
         let transaction = sign(payment: payment, using: keyPair)
         send(transaction: transaction, done: done)
     }

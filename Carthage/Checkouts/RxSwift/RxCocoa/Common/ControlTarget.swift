@@ -14,12 +14,7 @@ import RxSwift
     import UIKit
 
     typealias Control = UIKit.UIControl
-
-    #if swift(>=4.2)
-        public typealias ControlEvents = UIKit.UIControl.Event
-    #else
-        public typealias ControlEvents = UIKit.UIControlEvents
-    #endif
+    typealias ControlEvents = UIKit.UIControlEvents
 #elseif os(macOS)
     import Cocoa
 
