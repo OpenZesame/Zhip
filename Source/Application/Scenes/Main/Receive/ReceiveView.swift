@@ -12,24 +12,26 @@ import RxCocoa
 import Zesame
 
 // MARK: - ReceiveView
+private let stackViewMargin: CGFloat = 16
 final class ReceiveView: ScrollingStackView {
 
     private lazy var walletView = WalletView()
 
-    private lazy var amountToReceiveField = UITextField.Style("Amount", text: "0").make()
+    private lazy var amountToReceiveField: UITextField = "Amount"
     private lazy var qrImageView = UIImageView()
 
     // MARK: - StackViewStyling
-    lazy var stackViewStyle: UIStackView.Style = [
+    lazy var stackViewStyle = UIStackView.Style([
         walletView,
         amountToReceiveField,
         qrImageView,
         .spacer
-    ]
+    ], margin: stackViewMargin)
 
     override func setup() {
         qrImageView.translatesAutoresizingMaskIntoConstraints = false
-        qrImageView.contentMode = .scaleAspectFill
+        qrImageView.contentMode = .scaleAspectFit
+        qrImageView.clipsToBounds = true
     }
 }
 
@@ -37,8 +39,9 @@ final class ReceiveView: ScrollingStackView {
 extension ReceiveView: ViewModelled {
     typealias ViewModel = ReceiveViewModel
 
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
+            qrCodeImageWidth: UIScreen.main.bounds.width - 2 * stackViewMargin,
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
     }

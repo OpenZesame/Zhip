@@ -10,8 +10,8 @@ import RxSwift
 
 protocol ViewModelled: EmptyInitializable {
     associatedtype ViewModel: ViewModelType
-    typealias UserInput = ViewModel.Input.FromView
-    var userInput: UserInput { get }
+    typealias InputFromView = ViewModel.Input.FromView
+    var inputFromView: InputFromView { get }
     func populate(with viewModel: ViewModel.Output) -> [Disposable]
 }
 

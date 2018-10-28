@@ -2,7 +2,7 @@
 //  Presenter.swift
 //  Zupreme
 //
-//  Created by Alexander Cyon on 2018-09-29.
+//  Created by Alexander Cyon on 2018-10-27.
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
@@ -16,7 +16,8 @@ extension UINavigationController: Presenter {
     func present(_ presentable: Presentable, presentation: PresentationMode = .animatedPush) {
         let controller = presentable.concrete
         switch presentation {
-        case .push(let animated): self.pushViewController(controller, animated: animated)
+        case .push(let animated): pushViewController(controller, animated: animated)
+        case .present(let animated): present(controller, animated: animated, completion: nil)
         }
     }
 }

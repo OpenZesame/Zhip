@@ -20,7 +20,7 @@ final class SendView: ScrollingStackView {
     private lazy var amountToSendField = UITextField.Style("Amount", text: "11").make()
     private lazy var gasLimitField = UITextField.Style("Gas limit", text: "1").make()
     private lazy var gasPriceField = UITextField.Style("Gas price", text: "1").make()
-    private lazy var encryptionPassphraseField = UITextField.Style("Wallet Encryption Passphrase", text: "Apabanan").make()
+    private lazy var encryptionPassphraseField: UITextField = "Wallet Encryption Passphrase"
     private lazy var sendButton: UIButton = "Send"
     private lazy var transactionIdentifierLabel: UILabel = "No tx"
 
@@ -42,8 +42,8 @@ final class SendView: ScrollingStackView {
 extension SendView: ViewModelled {
     typealias ViewModel = SendViewModel
 
-    var userInput: UserInput {
-        return UserInput(
+    var inputFromView: InputFromView {
+        return InputFromView(
             sendTrigger: sendButton.rx.tap.asDriver(),
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
@@ -57,6 +57,7 @@ extension SendView: ViewModelled {
 
         return [
             viewModel.balance            --> balanceView.rx.balance,
+            viewModel.nonce            --> balanceView.rx.nonce,
             viewModel.isRecipientAddressValid   --> encryptionPassphraseField.rx.isValid,
             viewModel.transactionId             --> transactionIdentifierLabel
         ]

@@ -11,29 +11,42 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-
-final class ReceiveViewModel {
+final class ReceiveViewModel: AbstractViewModel<
+    ReceiveViewModel.Step,
+    ReceiveViewModel.InputFromView,
+    ReceiveViewModel.Output
+> {
+    enum Step {}
 
     private let wallet: Driver<Wallet>
 
     init(wallet: Driver<Wallet>) {
         self.wallet = wallet
     }
+
+    override func transform(input: Input) -> Output {
+
+        let receivingAmount = input.fromView.amountToReceive
+            .map { Double($0) }
+            .filterNil()
+            .startWith(0)
+            .map { try? Amount(double: $0) }.filterNil()
+
+        let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }
+            .map { QRCoding.image(of: $0, size: input.fromView.qrCodeImageWidth) }
+
+        return Output(
+            receivingAddress: wallet.map { $0.address.checksummedHex },
+            qrImage: qrImage
+        )
+    }
 }
 
-extension ReceiveViewModel: ViewModelType {
+extension ReceiveViewModel {
 
-    struct Input: InputType {
-        struct FromView {
-            let amountToReceive: Driver<String>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-        
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
+    struct InputFromView {
+        let qrCodeImageWidth: CGFloat
+        let amountToReceive: Driver<String>
     }
 
     struct Output {
@@ -41,15 +54,5 @@ extension ReceiveViewModel: ViewModelType {
         let qrImage: Driver<UIImage?>
     }
 
-    func transform(input: Input) -> Output {
 
-        let receivingAmount = input.fromView.amountToReceive.map { Double($0) }.filterNil().map { try? Amount(double: $0) }.filterNil()
-
-        let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }.map { QRCoding.image(of: $0, size: 300) }
-
-        return Output(
-            receivingAddress: wallet.map { $0.address.checksummedHex },
-            qrImage: qrImage
-        )
-    }
 }

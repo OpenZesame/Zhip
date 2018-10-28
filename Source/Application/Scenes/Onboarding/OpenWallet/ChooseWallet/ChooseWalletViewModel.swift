@@ -9,45 +9,38 @@
 import RxSwift
 import RxCocoa
 
-final class ChooseWalletViewModel {
-    private let bag = DisposeBag()
+final class ChooseWalletViewModel: AbstractViewModel<
+    ChooseWalletViewModel.Step,
+    ChooseWalletViewModel.InputFromView,
+    ChooseWalletViewModel.Output
+> {
+    enum Step {
+        case toCreate
+        case toRestore
+    }
 
-    private weak var navigator: ChooseWalletNavigator?
+    override func transform(input: Input) -> Output {
+        let fromView = input.fromView
 
-    init(navigator: ChooseWalletNavigator) {
-        self.navigator = navigator
+        bag <~ [
+            fromView.createNewTrigger.do(onNext: { [weak s=stepper] in
+                s?.step(.toCreate)
+            }).drive(),
+
+            fromView.restoreTrigger.do(onNext: { [weak s=stepper] in
+                s?.step(.toRestore)
+            }).drive()
+        ]
+        return Output()
     }
 }
 
-extension ChooseWalletViewModel: ViewModelType {
+extension ChooseWalletViewModel {
 
-    struct Input: InputType {
-        struct FromView {
+    struct InputFromView {
         let createNewTrigger: Driver<Void>
         let restoreTrigger: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
     }
 
     struct Output {}
-
-    func transform(input: Input) -> Output {
-        let fromView = input.fromView
-
-        fromView.createNewTrigger.do(onNext: {
-            self.navigator?.toCreateNewWallet()
-        }).drive().disposed(by: bag)
-
-        fromView.restoreTrigger.do(onNext: {
-            self.navigator?.toRestoreWallet()
-        }).drive().disposed(by: bag)
-
-        return Output()
-    }
 }

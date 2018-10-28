@@ -39,11 +39,9 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
-private extension Scene {
+private extension SceneController {
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
-
-        let userInput = contentView.userInput
 
         let controllerInput = ControllerInput(
             viewDidLoad: rx.viewDidLoad,
@@ -51,7 +49,7 @@ private extension Scene {
             viewDidAppear: rx.viewDidAppear
         )
 
-        let input = ViewModel.Input(fromView: userInput, fromController: controllerInput)
+        let input = ViewModel.Input(fromView: contentView.inputFromView, fromController: controllerInput)
 
         let output = viewModel.transform(input: input)
 

@@ -12,37 +12,28 @@ import RxCocoa
 import Zesame
 
 // MARK: - SendNavigator
-final class SendCoordinator {
+final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
+    enum Step {}
 
-    private weak var navigationController: UINavigationController?
     private let wallet: Driver<Wallet>
     private let services: UseCaseProvider
 
     init(navigationController: UINavigationController, wallet: Driver<Wallet>, services: UseCaseProvider) {
-        self.navigationController = navigationController
         self.wallet = wallet
         self.services = services
+        super.init(navigationController: navigationController)
     }
-}
 
-extension SendCoordinator: AnyCoordinator {
-    func start() {
+    override func start() {
         toSend()
     }
 }
 
-protocol SendNavigator: AnyObject {
-    func toSend()
-}
-
-extension SendCoordinator: SendNavigator {
+private extension SendCoordinator {
 
     func toSend() {
-        navigationController?.pushViewController(
-            Send(
-                viewModel: SendViewModel(navigator: self, wallet: wallet, useCase: services.makeTransactionsUseCase())
-            ),
-            animated: false
-        )
+        present(type: Send.self, viewModel: SendViewModel(wallet: wallet, useCase: services.makeTransactionsUseCase())) {
+            switch $0 {}
+        }
     }
 }

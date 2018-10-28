@@ -10,57 +10,38 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol WarningERC20ActionListener: AnyObject {
-    func understandsERC20Risk()
-    func doNotShowERC20WarningAgain()
-}
-
-final class WarningERC20ViewModel {
-
-    private let bag = DisposeBag()
-
-    private weak var actionListener: WarningERC20ActionListener?
-    private let useCase: OnboardingUseCase
-
-    init(actionListener: WarningERC20ActionListener, useCase: OnboardingUseCase) {
-        self.actionListener = actionListener
-        self.useCase = useCase
+final class WarningERC20ViewModel: AbstractViewModel<
+    WarningERC20ViewModel.Step,
+    WarningERC20ViewModel.InputFromView,
+    WarningERC20ViewModel.Output
+> {
+    enum Step {
+        case understandsRisks
+        case understandsRisksSkipWarningFromNowOn
     }
-
-}
-
-extension WarningERC20ViewModel: ViewModelType {
-    struct Input: InputType {
-        struct FromView {
-            let accept: Driver<Void>
-            let doNotShowAgain: Driver<Void>
-        }
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    struct Output {}
-
-    func transform(input: Input) -> Output {
-
-        let fromView = input.fromView
-
+    
+    override func transform(input: Input) -> Output {
         bag <~ [
-            fromView.accept.do(onNext: {
-                self.actionListener?.understandsERC20Risk()
+            input.fromView.accept.do(onNext: { [weak s=stepper] in
+                s?.step(.understandsRisks)
             }).drive(),
-
-            fromView.doNotShowAgain.do(onNext: {
-                self.useCase.doNotShowERC20WarningAgain()
-                self.actionListener?.doNotShowERC20WarningAgain()
+            
+            input.fromView.doNotShowAgain.do(onNext: { [weak s=stepper] in
+                s?.step(.understandsRisksSkipWarningFromNowOn)
             }).drive()
         ]
-
         return Output()
     }
+}
+
+extension WarningERC20ViewModel {
+    struct InputFromView {
+        let accept: Driver<Void>
+        let doNotShowAgain: Driver<Void>
+    }
+    
+    
+    struct Output {}
+    
+    
 }

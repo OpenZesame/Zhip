@@ -11,38 +11,26 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-// MARK: - ReceiveNavigator
-final class ReceiveCoordinator {
+final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
+    enum Step {}
 
-    private weak var navigationController: UINavigationController?
     private let wallet: Driver<Wallet>
-//    private let services: UseCaseProvider
 
     init(navigationController: UINavigationController, wallet: Driver<Wallet>) {
-        self.navigationController = navigationController
         self.wallet = wallet
-//        self.services = services
+        super.init(navigationController: navigationController)
     }
-}
 
-extension ReceiveCoordinator: AnyCoordinator {
-    func start() {
+   override func start() {
         toReceive()
     }
 }
 
-protocol ReceiveNavigator: AnyObject {
-    func toReceive()
-}
-
-extension ReceiveCoordinator: ReceiveNavigator {
+private extension ReceiveCoordinator {
 
     func toReceive() {
-        navigationController?.pushViewController(
-            Receive(
-                viewModel: ReceiveViewModel(wallet: wallet)
-            ),
-            animated: false
-        )
+        present(type: Receive.self, viewModel: ReceiveViewModel(wallet: wallet)) {
+            switch $0 {}
+        }
     }
 }

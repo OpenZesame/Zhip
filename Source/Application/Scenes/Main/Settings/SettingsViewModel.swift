@@ -10,55 +10,40 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol SettingsNavigator: AnyObject {
-    func toSettings()
-    func toChooseWallet()
-}
-
-final class SettingsViewModel {
-    private let bag = DisposeBag()
-    
-    private weak var navigator: SettingsNavigator?
-
-    init(navigator: SettingsNavigator) {
-        self.navigator = navigator
-    }
-}
-
-extension SettingsViewModel: ViewModelType {
-
-    struct Input: InputType {
-        struct FromView {
-            let removeWalletTrigger: Driver<Void>
-        }
-
-        let fromView: FromView
-        let fromController: ControllerInput
-
-        init(fromView: FromView, fromController: ControllerInput) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
+final class SettingsViewModel: AbstractViewModel<
+    SettingsViewModel.Step,
+    SettingsViewModel.InputFromView,
+    SettingsViewModel.Output
+> {
+    enum Step {
+        case removeWallet
     }
 
-    struct Output {
-        let appVersion: Driver<String>
-    }
-
-    func transform(input: Input) -> Output {
+    override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
-
-        fromView.removeWalletTrigger
-            .do(onNext: {
-                self.navigator?.toChooseWallet()
-            }).drive().disposed(by: bag)
+        bag <~ [
+            fromView.removeWalletTrigger
+                .do(onNext: { [weak s=stepper] in
+                    s?.step(.removeWallet)
+                }).drive()
+        ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
 
         return Output(
             appVersion: appVersion
         )
+    }
+}
+
+extension SettingsViewModel {
+    struct InputFromView {
+        let removeWalletTrigger: Driver<Void>
+    }
+
+    struct Output {
+        let appVersion: Driver<String>
     }
 }
 

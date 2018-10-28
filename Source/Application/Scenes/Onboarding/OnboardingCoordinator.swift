@@ -10,31 +10,28 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class OnboardingCoordinator {
+final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
+    enum Step {
+        case didChoose(wallet: Wallet)
+    }
 
-    private weak var navigationController: UINavigationController?
-    private weak var navigator: AppNavigator?
     private let useCase: OnboardingUseCase
     private let preferences: Preferences
     private let securePersistence: SecurePersistence
 
-    var childCoordinators = [AnyCoordinator]()
-
-    init(navigationController: UINavigationController, navigator: AppNavigator, preferences: Preferences, securePersistence: SecurePersistence, useCase: OnboardingUseCase) {
-        self.navigationController = navigationController
-        self.navigator = navigator
+    init(navigationController: UINavigationController, preferences: Preferences, securePersistence: SecurePersistence, useCase: OnboardingUseCase) {
         self.preferences = preferences
         self.securePersistence = securePersistence
         self.useCase = useCase
+        super.init(navigationController: navigationController)
+    }
+
+    override func start() {
+        toNextStep()
     }
 }
 
-extension OnboardingCoordinator: PresentingCoordinator {
-    var presenter: Presenter { return navigationController! }
-
-    func start() {
-        toNextStep()
-    }
+private extension OnboardingCoordinator {
 
     func toNextStep() {
         guard preferences.isTrue(.hasAcceptedTermsOfService) else {
@@ -51,58 +48,44 @@ extension OnboardingCoordinator: PresentingCoordinator {
         
         toMain(wallet: wallet)
     }
-}
-
-// MARK: - OnboardingNavigator
-/// Used for navigation between coordinators during onboarding
-protocol OnboardingNavigator: Navigator {
-    func toTermsOfService()
-    func toWarningERC20()
-    func toChooseWallet()
-    func toMain(wallet: Wallet)
-}
-
-extension OnboardingCoordinator: OnboardingNavigator {
 
     func toTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(actionListener: self, useCase: useCase)
-        present(TermsOfService(viewModel: viewModel))
+        present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [weak self] in
+            switch $0 {
+            case .didAcceptTerms:
+                self?.useCase.didAcceptTermsOfService()
+                self?.toWarningERC20()
+            }
+        }
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(actionListener: self, useCase: useCase)
-        present(WarningERC20(viewModel: viewModel))
+        present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [weak self] in
+            switch $0 {
+            case .understandsRisksSkipWarningFromNowOn:
+                self?.useCase.doNotShowERC20WarningAgain()
+                fallthrough
+            case .understandsRisks: self?.toChooseWallet()
+            }
+        }
     }
 
     func toChooseWallet() {
-        let coordinator = ChooseWalletCoordinator(
-            navigationController: self.navigationController!,
-            navigator: self,
-            useCase: useCase.makeChooseWalletUseCase(),
-            securePersistence: securePersistence
+        start(
+            coordinator:
+            ChooseWalletCoordinator(
+                navigationController: navigationController,
+                useCase: useCase.makeChooseWalletUseCase(),
+                securePersistence: securePersistence
             )
-        start(coordinator: coordinator, mode: .replace)
+        ) { [weak s=stepper] in
+            switch $0 {
+            case .didChoose(let wallet): s?.step(.didChoose(wallet: wallet))
+            }
+        }
     }
 
     func toMain(wallet: Wallet) {
-        navigator?.toMain(wallet: wallet)
-    }
-}
-
-// MARK: - TermsOfServiceActionListener
-extension OnboardingCoordinator: TermsOfServiceActionListener {
-    func didAcceptTerms() {
-        toWarningERC20()
-    }
-}
-
-// MARK: - WarningERC20ActionListener
-extension OnboardingCoordinator: WarningERC20ActionListener {
-    func understandsERC20Risk() {
-        toChooseWallet()
-    }
-
-    func doNotShowERC20WarningAgain() {
-        understandsERC20Risk()
+        stepper.step(.didChoose(wallet: wallet))
     }
 }

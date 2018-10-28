@@ -32,9 +32,9 @@ final class WarningERC20View: ScrollingStackView {
 
 extension WarningERC20View: ViewModelled {
     typealias ViewModel = WarningERC20ViewModel
-    var userInput: UserInput {
+    var inputFromView: InputFromView {
 
-        return UserInput(
+        return InputFromView(
             accept: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
             doNotShowAgain: doNotShowThisAgainButton.rx.tap.asDriverOnErrorReturnEmpty()
         )

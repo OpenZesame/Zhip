@@ -12,65 +12,36 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class CreateNewWalletCoordinator {
-    let bag = DisposeBag()
-    weak var presenter: Presenter?
-    private weak var navigator: ChooseWalletNavigator?
+final class CreateNewWalletCoordinator: AbstractCoordinator<CreateNewWalletCoordinator.Step> {
+
     private let useCase: ChooseWalletUseCase
 
-    init(navigationController: UINavigationController?, navigator: ChooseWalletNavigator, useCase: ChooseWalletUseCase) {
-        self.presenter = navigationController
-        self.navigator = navigator
+    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase) {
         self.useCase = useCase
+        super.init(navigationController: navigationController)
     }
-}
 
-extension CreateNewWalletCoordinator: AnyCoordinator {
-    func start() {
+    override func start() {
         toCreateWallet()
     }
 }
 
-extension CreateNewWalletCoordinator: SteppingCoordinator {}
-
-protocol SteppingCoordinator: AnyObject {
-    var presenter: Presenter? { get }
-    var bag: DisposeBag { get }
-
-}
-
-extension SteppingCoordinator {
-    func navigateAndListen<V>(to sceneType: Scene<V>.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void)
-        where
-        V: ScrollingStackView & ViewModelled,
-        V.ViewModel: SteppingViewModel
-    {
-        let scene = Scene<V>.init(viewModel: viewModel)
-        presenter?.present(scene, presentation: presentation)
-
-        bag <~ viewModel.stepper.navigation.do(onNext: {
-            navigationHandler($0)
-        }).drive()
+extension CreateNewWalletCoordinator {
+    enum Step {
+        case didCreate(wallet: Wallet)
     }
+
 }
 
-protocol SteppingViewModel {
-    associatedtype Step
-    var stepper: Stepper<Step> { get }
-}
-
-// MARK: Navigation
+// MARK: Private
 private extension CreateNewWalletCoordinator {
 
     func toMain(wallet: Wallet) {
-        navigator?.toMain(wallet: wallet)
+        stepper.step(.didCreate(wallet: wallet))
     }
 
     func toBackupWallet(wallet: Wallet) {
-        navigateAndListen(
-            to: BackupWallet.self,
-            viewModel: BackupWalletViewModel(wallet: wallet)
-        ) { [weak self] in
+        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet)) { [weak self] in
             switch $0 {
             case .didBackup(let wallet): self?.toMain(wallet: wallet)
             }
@@ -78,8 +49,8 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toCreateWallet() {
-        navigateAndListen(
-            to: CreateNewWallet.self,
+        present(
+            type: CreateNewWallet.self,
             viewModel: CreateNewWalletViewModel(useCase: useCase)
         ) { [weak self] in
             switch $0 {

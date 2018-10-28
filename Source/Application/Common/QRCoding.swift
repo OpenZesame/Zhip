@@ -44,7 +44,7 @@ extension QRCoding {
 }
 
 private extension QRCoding {
-    static func generateImage(content: String, size cgFloatSize: CGFloat, backgroundColor: UIColor = .zilliqaDarkBlue, foregroundColor: UIColor = .zilliqaCyan, watermark: CGImage? = nil) -> UIImage? {
+    static func generateImage(content: String, size cgFloatSize: CGFloat, backgroundColor: UIColor = .white, foregroundColor: UIColor = .black, watermarkImage: UIImage? = UIImage(named: "zilliqa_logo")) -> UIImage? {
         let intSize = Int(cgFloatSize)
         let size = EFIntSize(width: intSize, height: intSize)
 
@@ -53,7 +53,7 @@ private extension QRCoding {
             size: size,
             backgroundColor: backgroundColor.cgColor,
             foregroundColor: foregroundColor.cgColor,
-            watermark: watermark) else { return nil }
+            watermark: watermarkImage?.cgImage) else { return nil }
 
         return UIImage(cgImage: cgImage)
     }
