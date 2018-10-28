@@ -20,9 +20,11 @@ final class SendView: ScrollingStackView {
     private lazy var amountToSendField = UITextField.Style("Amount", text: "11").make()
     private lazy var gasLimitField = UITextField.Style("Gas limit", text: "1").make()
     private lazy var gasPriceField = UITextField.Style("Gas price", text: "1").make()
-    private lazy var encryptionPassphraseField: UITextField = "Wallet Encryption Passphrase"
-    private lazy var sendButton: UIButton = "Send"
-    private lazy var transactionIdentifierLabel: UILabel = "No tx"
+
+
+    private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", isSecureTextEntry: true).make()
+    private lazy var sendButton = UIButton.Style("Send", isEnabled: false).make()
+    private lazy var transactionIdLabels = LabelsView(titleStyle: "Transaction Id", valueStyle: "No tx")
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -33,7 +35,7 @@ final class SendView: ScrollingStackView {
         gasPriceField,
         encryptionPassphraseField,
         sendButton,
-        transactionIdentifierLabel,
+        transactionIdLabels,
         .spacer
     ]
 }
@@ -44,6 +46,7 @@ extension SendView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
+            pullToRefreshTrigger: rx.pullToRefreshTrigger,
             sendTrigger: sendButton.rx.tap.asDriver(),
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
@@ -56,10 +59,12 @@ extension SendView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
-            viewModel.balance            --> balanceView.rx.balance,
-            viewModel.nonce            --> balanceView.rx.nonce,
+            viewModel.isFetchingBalance         --> rx.isRefreshing,
+            viewModel.isSendButtonEnabled       --> sendButton.rx.isEnabled,
+            viewModel.balance                   --> balanceView.rx.balance,
+            viewModel.nonce                     --> balanceView.rx.nonce,
             viewModel.isRecipientAddressValid   --> encryptionPassphraseField.rx.isValid,
-            viewModel.transactionId             --> transactionIdentifierLabel
+            viewModel.transactionId             --> transactionIdLabels
         ]
     }
 }

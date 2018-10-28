@@ -13,7 +13,7 @@ import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var window: UIWindow? = .default
+    lazy var window: UIWindow? = .default
 
     private lazy var appCoordinator = AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
 }
@@ -23,7 +23,7 @@ extension AppDelegate: UIApplicationDelegate {
         appCoordinator.start()
 
         IQKeyboardManager.shared.enable = true
-        
+
         return true
     }
 }

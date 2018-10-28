@@ -32,11 +32,14 @@ final class SendViewModel: AbstractViewModel<
 
         let fetchBalanceSubject = BehaviorSubject<Void>(value: ())
 
-        let fetchTrigger = Driver.merge(fetchBalanceSubject.asDriverOnErrorReturnEmpty(), wallet.mapToVoid())
+        let activityIndicator = ActivityIndicator()
+
+        let fetchTrigger = Driver.merge(fromView.pullToRefreshTrigger, fetchBalanceSubject.asDriverOnErrorReturnEmpty(), wallet.mapToVoid())
 
         let balanceResponse: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.useCase
                 .getBalance(for: $0.address)
+                .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
         }
 
@@ -58,10 +61,10 @@ final class SendViewModel: AbstractViewModel<
 
         let payment = Driver.combineLatest(recipient.filterNil(), amount, gasLimit, gasPrice, balanceResponse) {
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
-            }.filterNil()
+        }
 
         let transactionId: Driver<String> = fromView.sendTrigger
-            .withLatestFrom(Driver.combineLatest(payment, wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
+            .withLatestFrom(Driver.combineLatest(payment.filterNil(), wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
             .flatMapLatest {
                 self.useCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
                     .asDriverOnErrorReturnEmpty()
@@ -72,9 +75,19 @@ final class SendViewModel: AbstractViewModel<
                             fetchBalanceSubject.onNext(())
                         }
                     })
+            }.map { $0.transactionIdentifier }
+
+
+        let isEncryptionPassphraseCorrect: Driver<Bool> = Driver.combineLatest(fromView.encryptionPassphrase, wallet) { (passphrase: $0, wallet: $1) }
+            .flatMapLatest {
+            self.useCase.verify(passhrase: $0.passphrase, forWallet: $0.wallet).asDriverOnErrorReturnEmpty()
         }
 
+        let isSendButtonEnabled: Driver<Bool> = Driver.combineLatest(payment.map { $0 != nil }, isEncryptionPassphraseCorrect) { $0 && $1 }
+
         return Output(
+            isFetchingBalance: activityIndicator.asDriver(),
+            isSendButtonEnabled: isSendButtonEnabled,
             balance: balance.map { "\($0.balance.amount) ZILs" },
             nonce: balance.map { "\($0.nonce.nonce)" },
             isRecipientAddressValid: recipient.map { $0 != nil },
@@ -86,6 +99,7 @@ final class SendViewModel: AbstractViewModel<
 extension SendViewModel {
 
     struct InputFromView {
+        let pullToRefreshTrigger: Driver<Void>
         let sendTrigger: Driver<Void>
         let recepientAddress: Driver<String>
         let amountToSend: Driver<String>
@@ -96,6 +110,8 @@ extension SendViewModel {
 
 
     struct Output {
+        let isFetchingBalance: Driver<Bool>
+        let isSendButtonEnabled: Driver<Bool>
         let balance: Driver<String>
         let nonce: Driver<String>
         let isRecipientAddressValid: Driver<Bool>
