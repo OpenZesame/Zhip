@@ -13,6 +13,16 @@ import CryptoSwift
 
 public extension ZilliqaService {
 
+    func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore, done: @escaping Done<Bool>) {
+        background {
+            keystore.decryptPrivateKey(using: encryptionPasshrase) { result in
+                main {
+                    done(.success(result.value != nil))
+                }
+            }
+        }
+    }
+
     func createNewWallet(encryptionPassphrase: String, done: @escaping Done<Wallet>) {
         background {
             let privateKey = PrivateKey.generateNew()

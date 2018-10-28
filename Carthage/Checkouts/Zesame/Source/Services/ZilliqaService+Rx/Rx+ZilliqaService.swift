@@ -17,6 +17,12 @@ import EllipticCurveKit
 extension Reactive: ZilliqaServiceReactive where Base: (ZilliqaService & AnyObject) {}
 public extension Reactive where Base: (ZilliqaService & AnyObject) {
 
+    func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
+        return callBase {
+            $0.verifyThat(encryptionPasshrase: encryptionPasshrase, canDecryptKeystore: keystore, done: $1)
+        }
+    }
+
     func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
         return callBase {
             $0.createNewWallet(encryptionPassphrase: encryptionPassphrase, done: $1)
@@ -41,13 +47,13 @@ public extension Reactive where Base: (ZilliqaService & AnyObject) {
         }
     }
 
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionIdentifier> {
+    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionResponse> {
         return callBase {
             $0.sendTransaction(for: payment, keystore: keystore, passphrase: passphrase, done: $1)
         }
     }
 
-    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionIdentifier> {
+    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionResponse> {
         return callBase {
             $0.sendTransaction(for: payment, signWith: keyPair, done: $1)
         }

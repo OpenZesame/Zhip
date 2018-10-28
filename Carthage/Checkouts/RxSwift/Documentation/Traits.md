@@ -17,7 +17,6 @@ This document will try to describe what traits are, why they are a useful concep
   * [Driver](#driver)
       * [Why is it named Driver](#why-is-it-named-driver)
       * [Practical usage example](#practical-usage-example)
-  * [Signal](#signal)
   * [ControlProperty / ControlEvent](#controlproperty--controlevent)
 
 
@@ -55,8 +54,8 @@ You can think of them as a kind of builder pattern implementation for Observable
 
 A Single is a variation of Observable that, instead of emitting a series of elements, is always guaranteed to emit either _a single element_ or _an error_.
 
-* Emits exactly one element, or an error.
-* Doesn't share side effects.
+* Emits exactly one element, or an error
+* Doesn't share side effects
 
 One common use case for using Single is for performing HTTP Requests that could only return a response or an error, but a Single can be used to model any case where you only care for a single element, and not for an infinite stream of elements.
 
@@ -125,9 +124,9 @@ It's also possible using `.asSingle()` on a raw Observable sequence to transform
 
 A Completable is a variation of Observable that can only _complete_ or _emit an error_. It is guaranteed to not emit any elements.
 
-* Emits zero elements.
-* Emits a completion event, or an error.
-* Doesn't share side effects.
+* Emits zero elements
+* Emits a completion event, or an error
+* Doesn't share side effects
 
 A useful use case for Completable would be to model any case where we only care for the fact an operation has completed, but don't care about a element resulted by that completion.
 You could compare it to using an `Observable<Void>` that can't emit elements.
@@ -186,8 +185,8 @@ A Maybe is a variation of Observable that is right in between a Single and a Com
 
 **Note:** Any of these three events would terminate the Maybe, meaning - a Maybe that completed can't also emit an element, and a Maybe that emitted an element can't also send a Completion event.
 
-* Emits either a completed event, a single element or an error.
-* Doesn't share side effects.
+* Emits either a completed event, a single element or an error
+* Doesn't share side effects
 
 You could use Maybe to model any operation that **could** emit an element, but doesn't necessarily **have to** emit an element.
 
@@ -229,7 +228,6 @@ generateString()
 ```
 
 Or by using `subscribe(onSuccess:onError:onCompleted:)` as follows:
-
 ```swift
 generateString()
     .subscribe(onSuccess: { element in
@@ -244,7 +242,7 @@ generateString()
     .disposed(by: disposeBag)
 ```
 
-It's also possible using `.asMaybe()` on a raw Observable sequence to transform it into a `Maybe`.
+It's also possible using `.asMaybe()` on a raw Observable sequence to transform it into a Maybe.
 
 ---
 
@@ -254,17 +252,17 @@ It's also possible using `.asMaybe()` on a raw Observable sequence to transform 
 
 This is the most elaborate trait. Its intention is to provide an intuitive way to write reactive code in the UI layer, or for any case where you want to model a stream of data _Driving_ your application.
 
-* Can't error out.
-* Observe occurs on main scheduler.
-* Shares side effects (`share(replay: 1, scope: .whileConnected)`).
+* Can't error out
+* Observe occurs on main scheduler
+* Shares side effects (`shareReplayLatestWhileConnected`)
 
 #### Why is it named Driver
 
 Its intended use case was to model sequences that drive your application.
 
 E.g.
-* Drive UI from CoreData model.
-* Drive UI using values from other UI elements (bindings).
+* Drive UI from CoreData model
+* Drive UI using values from other UI elements (bindings)
 ...
 
 
@@ -300,9 +298,9 @@ results
 ```
 
 The intended behavior of this code was to:
-* Throttle user input.
-* Contact server and fetch a list of user results (once per query).
-* Bind the results to two UI elements: results table view and a label that displays the number of results.
+* Throttle user input
+* Contact server and fetch a list of user results (once per query)
+* Bind the results to two UI elements: results table view and a label that displays the number of results
 
 So, what are the problems with this code?:
 * If the `fetchAutoCompleteItems` observable sequence errors out (connection failed or parsing error), this error would unbind everything and the UI wouldn't respond any more to new queries.
@@ -319,7 +317,7 @@ let results = query.rx.text
             .observeOn(MainScheduler.instance)  // results are returned on MainScheduler
             .catchErrorJustReturn([])           // in the worst case, errors are handled
     }
-    .share(replay: 1)                           // HTTP requests are shared and results replayed
+    .shareReplay(1)                             // HTTP requests are shared and results replayed
                                                 // to all UI elements
 
 results
@@ -348,7 +346,7 @@ let results = query.rx.text.asDriver()        // This converts a normal sequence
 
 results
     .map { "\($0.count)" }
-    .drive(resultCount.rx.text)               // If there is a `drive` method available instead of `bind(to:)`,
+    .drive(resultCount.rx.text)               // If there is a `drive` method available instead of `bindTo`,
     .disposed(by: disposeBag)              // that means that the compiler has proven that all properties
                                               // are satisfied.
 results
@@ -375,39 +373,25 @@ The second change is:
 ```
 
 Any observable sequence can be converted to `Driver` trait, as long as it satisfies 3 properties:
-* Can't error out.
-* Observe on main scheduler.
-* Sharing side effects (`share(replay: 1, scope: .whileConnected)`).
+* Can't error out
+* Observe on main scheduler
+* Sharing side effects (`shareReplayLatestWhileConnected`)
 
 So how do you make sure those properties are satisfied? Just use normal Rx operators. `asDriver(onErrorJustReturn: [])` is equivalent to following code.
 
 ```swift
 let safeSequence = xs
-  .observeOn(MainScheduler.instance)        // observe events on main scheduler
-  .catchErrorJustReturn(onErrorJustReturn)  // can't error out
-  .share(replay: 1, scope: .whileConnected) // side effects sharing
-
-return Driver(raw: safeSequence)            // wrap it up
+  .observeOn(MainScheduler.instance)       // observe events on main scheduler
+  .catchErrorJustReturn(onErrorJustReturn) // can't error out
+  .shareReplayLatestWhileConnected()       // side effects sharing
+return Driver(raw: safeSequence)           // wrap it up
 ```
 
-The final piece is using `drive` instead of using `bind(to:)`.
+The final piece is using `drive` instead of using `bindTo`.
 
 `drive` is defined only on the `Driver` trait. This means that if you see `drive` somewhere in code, that observable sequence can never error out and it observes on the main thread, which is safe for binding to a UI element.
 
 Note however that, theoretically, someone could still define a `drive` method to work on `ObservableType` or some other interface, so to be extra safe, creating a temporary definition with `let results: Driver<[Results]> = ...` before binding to UI elements would be necessary for complete proof. However, we'll leave it up to the reader to decide whether this is a realistic scenario or not.
-
-### Signal
-
-A `Signal` is similar to `Driver` with one difference, it does **not** replay the latest event on subscription, but subscribers still share the sequence's computational resources.
-
-It can be considered a builder pattern to model Imperative Events in a Reactive way as part of your application.
-
-A `Signal`:
-
-* Can't error out.
-* Delivers events on Main Scheduler.
-* Shares computational resources (`share(scope: .whileConnected)`).
-* Does NOT replay elements on subscription.
 
 ## ControlProperty / ControlEvent
 
@@ -420,7 +404,7 @@ Sequence of values only represents initial control value and user initiated valu
 It's properties are:
 
 - it never fails
-- `share(replay: 1)` behavior
+- `shareReplay(1)` behavior
     - it's stateful, upon subscription (calling subscribe) last element is immediately replayed if it was produced
 - it will `Complete` sequence on control being deallocated
 - it never errors out
@@ -522,3 +506,9 @@ extension Reactive where Base: UICollectionView {
     }
 }
 ```
+
+
+
+
+
+

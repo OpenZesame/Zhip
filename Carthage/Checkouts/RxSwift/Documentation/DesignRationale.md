@@ -5,9 +5,9 @@ Design Rationale
 
 ```Swift
 enum Event<Element>  {
-    case next(Element)      // next element of a sequence
-    case error(Error)       // sequence failed with error
-    case completed          // sequence terminated successfully
+    case Next(Element)      // next element of a sequence
+    case Error(Error)   // sequence failed with error
+    case Completed          // sequence terminated successfully
 }
 ```
 

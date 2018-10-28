@@ -49,9 +49,9 @@ example("concat") {
     let subject1 = BehaviorSubject(value: "🍎")
     let subject2 = BehaviorSubject(value: "🐶")
     
-    let subjectsSubject = BehaviorSubject(value: subject1)
+    let variable = Variable(subject1)
     
-    subjectsSubject.asObservable()
+    variable.asObservable()
         .concat()
         .subscribe { print($0) }
         .disposed(by: disposeBag)
@@ -59,7 +59,7 @@ example("concat") {
     subject1.onNext("🍐")
     subject1.onNext("🍊")
     
-    subjectsSubject.onNext(subject2)
+    variable.value = subject2
     
     subject2.onNext("I would be ignored")
     subject2.onNext("🐱")

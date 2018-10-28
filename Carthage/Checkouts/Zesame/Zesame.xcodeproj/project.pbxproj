@@ -95,6 +95,8 @@
 		488A658C2157A1670091FD03 /* DispatchQueue+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A658A2157A1670091FD03 /* DispatchQueue+Sugar.swift */; };
 		488A658E2157BC5F0091FD03 /* ExportKeystoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A658D2157BC5F0091FD03 /* ExportKeystoreTests.swift */; };
 		488A658F2157BC5F0091FD03 /* ExportKeystoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A658D2157BC5F0091FD03 /* ExportKeystoreTests.swift */; };
+		48A6400A218645F300B08C67 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A64009218645F300B08C67 /* TransactionResponse.swift */; };
+		48A6400B218645F300B08C67 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A64009218645F300B08C67 /* TransactionResponse.swift */; };
 		48B5B2F121482EC600147005 /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B5B2F021482EC600147005 /* TransactionSigningTests.swift */; };
 		48B5B2F221482EC600147005 /* TransactionSigningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B5B2F021482EC600147005 /* TransactionSigningTests.swift */; };
 		48D4114C2147202500E2F207 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D4114B2147202500E2F207 /* Transaction.swift */; };
@@ -250,6 +252,7 @@
 		488A65862155ACD20091FD03 /* ZilliqaService+Signing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZilliqaService+Signing.swift"; sourceTree = "<group>"; };
 		488A658A2157A1670091FD03 /* DispatchQueue+Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Sugar.swift"; sourceTree = "<group>"; };
 		488A658D2157BC5F0091FD03 /* ExportKeystoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportKeystoreTests.swift; sourceTree = "<group>"; };
+		48A64009218645F300B08C67 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		48B5B2EE21482EC600147005 /* ZilliqaSDK iOS Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZilliqaSDK iOS Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		48B5B2EF21482EC600147005 /* ZilliqaSDK macOS Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZilliqaSDK macOS Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		48B5B2F021482EC600147005 /* TransactionSigningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSigningTests.swift; sourceTree = "<group>"; };
@@ -452,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				48D4114E2147205200E2F207 /* TransactionRequest.swift */,
+				48A64009218645F300B08C67 /* TransactionResponse.swift */,
 				484E09E921543F3B003D928E /* MessageFromUnsignedTransaction.swift */,
 			);
 			path = Transaction;
@@ -834,6 +838,7 @@
 				483F0F8C214704D700E6EE08 /* Error.swift in Sources */,
 				48E00248217CBC300077E5CF /* Address+HexString.swift in Sources */,
 				48ED0E5020E7F150005DA19C /* Wallet.swift in Sources */,
+				48A6400B218645F300B08C67 /* TransactionResponse.swift in Sources */,
 				484DD371216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */,
 				48ED0E5220E7F155005DA19C /* Nonce.swift in Sources */,
 				484DD36E216A4DB900FB82C8 /* Keystore+Wallet+Import.swift in Sources */,
@@ -892,6 +897,7 @@
 				484E09EA21543F3B003D928E /* MessageFromUnsignedTransaction.swift in Sources */,
 				48E00247217CBC300077E5CF /* Address+HexString.swift in Sources */,
 				483F0F932147085500E6EE08 /* BalanceResponse.swift in Sources */,
+				48A6400A218645F300B08C67 /* TransactionResponse.swift in Sources */,
 				483F0F8B214704D700E6EE08 /* Error.swift in Sources */,
 				484DD370216A4DE100FB82C8 /* Keystore+Wallet+Export.swift in Sources */,
 				4847EE0F216141BB002FF978 /* Scrypt+KDFParameters.swift in Sources */,

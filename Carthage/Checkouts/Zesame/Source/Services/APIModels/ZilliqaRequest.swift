@@ -43,9 +43,12 @@ public extension ZilliqaRequest {
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
         let jsonData = try JSONSerialization.data(withJSONObject: object)
 
-        if let jsonString = String(data: jsonData, encoding: .utf8), jsonString.contains("error") {
-            print("⚠️ ERROR - json contains word 'error':")
-            print(jsonString)
+        if let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("⤵️ received json: \(jsonString)")
+
+            if jsonString.contains("error") {
+                print("⚠️ ERROR - json contains word 'error':")
+            }
         }
 
         return try batch.responses(from: jsonData)

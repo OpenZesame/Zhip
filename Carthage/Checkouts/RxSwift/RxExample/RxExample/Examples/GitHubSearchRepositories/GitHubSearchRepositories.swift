@@ -61,10 +61,18 @@ extension GitHubSearchRepositoriesState {
 import RxSwift
 import RxCocoa
 
-struct GithubQuery: Equatable {
+struct GithubQuery {
     let searchText: String;
     let shouldLoadNextPage: Bool;
     let nextURL: URL?
+}
+
+extension GithubQuery: Equatable {
+    static func == (lhs: GithubQuery, rhs: GithubQuery) -> Bool {
+        return lhs.nextURL == rhs.nextURL
+            && lhs.searchText == rhs.searchText
+            && lhs.nextURL == rhs.nextURL
+    }
 }
 
 /**

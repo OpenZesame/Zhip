@@ -9,10 +9,8 @@
 import Foundation
 import JSONRPCKit
 
-public typealias TransactionIdentifier = String
-
 public struct TransactionRequest: JSONRPCKit.Request {
-    public typealias Response = TransactionIdentifier
+    public typealias Response = TransactionResponse
 
     public let transaction: Transaction
     public init(transaction: Transaction) {

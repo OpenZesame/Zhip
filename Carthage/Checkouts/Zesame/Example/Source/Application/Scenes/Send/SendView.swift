@@ -44,6 +44,7 @@ extension SendView: ViewModelled {
 
     var inputFromView: ViewModel.Input {
         return ViewModel.Input(
+            fetchBalanceTrigger: rx.pullToRefreshTrigger,
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
             gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
@@ -55,6 +56,7 @@ extension SendView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
+            viewModel.isFetchingBalance        --> rx.isRefreshing,
             viewModel.address           --> walletBalanceView.rx.address,
             viewModel.balance           --> walletBalanceView.rx.balance,
             viewModel.nonce           --> walletBalanceView.rx.nonce,

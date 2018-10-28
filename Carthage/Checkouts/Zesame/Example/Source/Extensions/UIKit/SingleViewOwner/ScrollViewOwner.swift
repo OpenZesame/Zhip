@@ -24,6 +24,10 @@ private extension ScrollView {
     func setup() {
         setupContentView()
         contentInsetAdjustmentBehavior = .never
+        self.alwaysBounceVertical = true
+        let refreshControl = UIRefreshControl(frame: .zero)
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl = refreshControl
     }
 
     func setupContentView() {
@@ -38,5 +42,18 @@ private extension ScrollView {
     func makeView() -> UIView {
         guard let viewProvider = self as? ContentViewProvider else { fatalError("should conform to `ContentViewProvider`") }
         return viewProvider.makeContentView()
+    }
+}
+
+import RxCocoa
+import RxSwift
+extension Reactive where Base: ScrollingStackView {
+    var isRefreshing: Binder<Bool> {
+        return base.refreshControl!.rx.isRefreshing
+    }
+
+    var pullToRefreshTrigger: Driver<Void> {
+        return base.refreshControl!.rx.controlEvent(.valueChanged)
+            .asDriverOnErrorReturnEmpty()
     }
 }
