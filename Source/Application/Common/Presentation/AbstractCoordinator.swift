@@ -10,30 +10,30 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class AbstractCoordinator<NavigationStep>: Coordinator {
-
-    let stepper = Stepper<NavigationStep>()
-    var navigation: Driver<NavigationStep> {
-        return stepper.navigation
-    }
-
-    typealias Step = NavigationStep
-
-    var concrete: UIViewController {
-        return navigationController!
-    }
+class AbstractCoordinator<Step>: Coordinator {
 
     var childCoordinators = [BaseCoordinator]()
+    let stepper = Stepper<Step>()
+    let bag = DisposeBag()
+    let navigationController: UINavigationController
 
+    // MARK: - Initialization
+    init(navigationController: UINavigationController = UINavigationController()) {
+        self.navigationController = navigationController
+    }
+
+    // MARK: - Overridable
     func start() {
         fatalError("override me")
     }
+}
 
-    var navigationController: UINavigationController?
+extension AbstractCoordinator {
+    var navigation: Driver<Step> {
+        return stepper.navigation
+    }
 
-    let bag = DisposeBag()
-
-    init(navigationController: UINavigationController = UINavigationController()) {
-        self.navigationController = navigationController
+    var concrete: UIViewController {
+        return navigationController
     }
 }

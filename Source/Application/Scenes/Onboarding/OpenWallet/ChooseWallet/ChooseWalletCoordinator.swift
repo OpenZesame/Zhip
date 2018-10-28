@@ -51,7 +51,7 @@ private extension ChooseWalletCoordinator {
     func toCreateNewWallet() {
         start(
             coordinator:
-            CreateNewWalletCoordinator(navigationController: navigationController!, useCase: useCase)
+            CreateNewWalletCoordinator(navigationController: navigationController, useCase: useCase)
         ) { [weak self] in
             switch $0 {
             case .didCreate(let wallet): self?.toMain(wallet: wallet)
@@ -62,7 +62,7 @@ private extension ChooseWalletCoordinator {
     func toRestoreWallet() {
         start(
             coordinator:
-            RestoreWalletCoordinator(navigationController: navigationController!, useCase: useCase)
+            RestoreWalletCoordinator(navigationController: navigationController, useCase: useCase)
         ) { [weak self] in
             switch $0 {
             case .didRestore(let wallet): self?.toMain(wallet: wallet)

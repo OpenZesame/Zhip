@@ -39,7 +39,7 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
-private extension Scene {
+private extension SceneController {
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
 

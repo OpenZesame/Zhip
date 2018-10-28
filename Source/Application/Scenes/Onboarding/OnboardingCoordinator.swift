@@ -13,10 +13,6 @@ import Zesame
 final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
     enum Step {
         case didChoose(wallet: Wallet)
-        //        func toTermsOfService()
-        //        func toWarningERC20()
-        //        func toChooseWallet()
-        //        func toMain(wallet: Wallet)
     }
 
     private let useCase: OnboardingUseCase
@@ -78,7 +74,7 @@ private extension OnboardingCoordinator {
         start(
             coordinator:
             ChooseWalletCoordinator(
-                navigationController: navigationController!,
+                navigationController: navigationController,
                 useCase: useCase.makeChooseWalletUseCase(),
                 securePersistence: securePersistence
             )

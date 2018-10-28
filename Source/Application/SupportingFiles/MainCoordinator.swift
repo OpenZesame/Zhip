@@ -26,8 +26,18 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
         self.services = services
         self.securePersistence = securePersistence
         super.init(navigationController: navigationController)
+        setupTabBar()
+    }
 
-        // SEND
+    override func start() {
+        toSend()
+    }
+}
+
+
+// MARK: - Private
+private extension MainCoordinator {
+    func setupTabBar() {
         let sendNavigationController = UINavigationController(tabBarTitle: "Send")
         let receiveNavigationController = UINavigationController(tabBarTitle: "Receive")
         let settingsNavigationController = UINavigationController(tabBarTitle: "Settings")
@@ -55,15 +65,11 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
         )
 
         start(coordinator: send, transition: .doNothing) {
-            switch $0 {
-//            case .didSend: print("did send")
-            }
+            switch $0 {} // nothing to do yet
         }
 
         start(coordinator: receive, transition: .doNothing) {
-            switch $0 {
-//            case .didReceive: print("did receive")
-            }
+            switch $0 {} // nothing to do yet
         }
 
         start(coordinator: settings, transition: .doNothing) { [weak s=stepper] in
@@ -76,14 +82,9 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 
         navigationController.pushViewController(tabBarController, animated: false)
     }
-
-    override func start() {
-        toSend()
-    }
 }
 
-
-// MARK: - Private
+// MARK: - Navigation
 private extension MainCoordinator {
 
     func toSend() {

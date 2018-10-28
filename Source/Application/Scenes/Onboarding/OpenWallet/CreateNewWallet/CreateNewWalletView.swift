@@ -11,8 +11,8 @@ import RxSwift
 
 final class CreateNewWalletView: ScrollingStackView {
 
-    private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", text: "Apabanan").make()
-    private lazy var confirmEncryptionPassphraseField = UITextField.Style("Confirm encryption passphrase", text: "Apabanan").make()
+    private lazy var encryptionPassphraseField: UITextField = "Encryption passphrase"
+    private lazy var confirmEncryptionPassphraseField: UITextField = "Confirm encryption passphrase"
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel.Style("⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.", numberOfLines: 0).make()
     private lazy var understandsRisksSwitch = UISwitch()
     private lazy var understandsRisksShortLabel: UILabel = "Passhrase is backed up"
