@@ -31,19 +31,17 @@ final class RestoreWalletViewModel: AbstractViewModel<
         
         let fromView = input.fromView
         
-        let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(fromView.encryptionPassphrase, fromView.confirmEncryptionPassphrase) {
-            guard
-                $0 == $1,
-                case let newPassphrase = $0,
-                newPassphrase.count >= 3
-                else { return nil }
-            return newPassphrase
-        }
+        let validEncryptionPassphrase: Driver<String?> = Observable.combineLatest(
+            fromView.encryptionPassphrase.asObservable(),
+            fromView.confirmEncryptionPassphrase.asObservable()
+        ) {
+            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1)
+        }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
         
         let validPrivateKey: Driver<String?> = fromView.privateKey.map {
             guard
                 case let key = $0,
-                key.count == 64
+                key.count <= 64
                 else { return nil }
             return key
         }
@@ -71,12 +69,14 @@ final class RestoreWalletViewModel: AbstractViewModel<
                 })
                 .drive()
         ]
-        
-        let isRestoreButtonEnabled = keyRestoration.map { $0 != nil }
-        
+
+        let isRestoreButtonEnabled = Driver.combineLatest(
+            keyRestoration.map { $0 != nil },
+            validEncryptionPassphrase.map { $0 != nil }
+        ) { $0 && $1}
+
         return Output(
             isRestoreButtonEnabled: isRestoreButtonEnabled
-            
         )
     }
 }

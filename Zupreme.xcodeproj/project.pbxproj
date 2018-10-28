@@ -68,6 +68,8 @@
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
 		489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */; };
 		489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A65812155AB2D0091FD03 /* WalletView.swift */; };
+		48A63FFF2186237F00B08C67 /* ConfigurationDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */; };
+		48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */; };
 		48AC6CB9214533C500B4D036 /* KeyValueStore+KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */; };
 		48AC6CC22145AC4A00B4D036 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CBE2145AC4A00B4D036 /* SettingsView.swift */; };
 		48AC6CC32145AC4A00B4D036 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CBF2145AC4A00B4D036 /* Settings.swift */; };
@@ -192,6 +194,8 @@
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
 		489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
+		48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationDetection.swift; sourceTree = "<group>"; };
+		48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEncryptionPassphrase.swift; sourceTree = "<group>"; };
 		48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyValueStore+KeychainKey.swift"; sourceTree = "<group>"; };
 		48AC6CBE2145AC4A00B4D036 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		48AC6CBF2145AC4A00B4D036 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -523,6 +527,7 @@
 			children = (
 				48B16E2F21452A2600177434 /* Never.swift */,
 				48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */,
+				48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -582,6 +587,14 @@
 			path = RxSwift;
 			sourceTree = "<group>";
 		};
+		48A640002186272900B08C67 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		48AC6CBD2145AC4A00B4D036 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -596,7 +609,6 @@
 		48C89FD021432F980063B0FA /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				48C89FDC214331110063B0FA /* Entities */,
 				48C89FD9214330F20063B0FA /* UseCases */,
 			);
 			path = Domain;
@@ -668,6 +680,7 @@
 		48C89FD8214330C50063B0FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48A640002186272900B08C67 /* Model */,
 				48F832EA2185C38400EDAD40 /* ViewModel */,
 				4847EDEA21600777002FF978 /* Presentation */,
 				48C89FDF214331590063B0FA /* Scene.swift */,
@@ -686,13 +699,6 @@
 				4847EDD2215FEA68002FF978 /* ChooseWalletUseCase.swift */,
 			);
 			path = UseCases;
-			sourceTree = "<group>";
-		};
-		48C89FDC214331110063B0FA /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Entities;
 			sourceTree = "<group>";
 		};
 		48C89FEF2143320B0063B0FA /* Views+Styleable */ = {
@@ -949,6 +955,7 @@
 				48C89FE0214331590063B0FA /* Scene.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
 				48E0022B217A61E40077E5CF /* WalletBalanceView.swift in Sources */,
+				48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */,
 				4850A40A214C124400EBB85B /* ViewStyling.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
 				48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */,
@@ -991,6 +998,7 @@
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
 				48CA697721824A2000C05F5F /* BackupWalletViewModel.swift in Sources */,
 				48F832E72184DDE300EDAD40 /* Presenter.swift in Sources */,
+				48A63FFF2186237F00B08C67 /* ConfigurationDetection.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */,
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
