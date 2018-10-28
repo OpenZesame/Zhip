@@ -5,5 +5,4 @@ git_url("git@github.com:Sajjon/zilliqa-wallet-certificates.git")
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 
 app_identifier("org.openzesame.Zupreme")
-username("alex.cyon@gmail.com") 
 team_id("7A6XYE8ZR7")
