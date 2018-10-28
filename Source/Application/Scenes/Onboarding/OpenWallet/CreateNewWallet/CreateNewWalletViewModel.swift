@@ -59,12 +59,15 @@ AbstractViewModel<
 }
 
 extension CreateNewWalletViewModel {
+
     struct InputFromView {
         let newEncryptionPassphrase: Driver<String>
         let confirmedNewEncryptionPassphrase: Driver<String>
+        
         let understandsRisk: Driver<Bool>
         let createWalletTrigger: Driver<Void>
     }
+
     struct Output {
         let isCreateWalletButtonEnabled: Driver<Bool>
     }
