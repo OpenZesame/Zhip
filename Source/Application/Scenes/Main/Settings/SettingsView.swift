@@ -13,7 +13,8 @@ import RxCocoa
 // MARK: - SettingsView
 final class SettingsView: ScrollingStackView {
 
-    private lazy var removeWalletButton: UIButton = "Remove Wallet"
+    private lazy var removeWalletButton = UIButton.Style("Remove Wallet", colorNormal: .red).make()
+    private lazy var backupWalletButton: UIButton = "Backup Wallet"
 
     private lazy var appVersionLabels = LabelsView(
         titleStyle: "App Version",
@@ -24,6 +25,7 @@ final class SettingsView: ScrollingStackView {
     lazy var stackViewStyle: UIStackView.Style = [
         removeWalletButton,
         appVersionLabels,
+        backupWalletButton,
         .spacer
     ]
 }
@@ -40,7 +42,8 @@ extension SettingsView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            removeWalletTrigger: removeWalletButton.rx.tap.asDriver()
+            removeWalletTrigger: removeWalletButton.rx.tap.asDriver(),
+            backupWalletTrigger: backupWalletButton.rx.tap.asDriver()
         )
     }
 }
