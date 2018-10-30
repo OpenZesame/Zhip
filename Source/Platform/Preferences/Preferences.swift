@@ -143,28 +143,3 @@ enum PreferencesKey: String, KeyConvertible {
 enum KeychainKey: String, KeyConvertible {
     case keystore
 }
-
-//protocol SecurePersistence {
-//    func save<Value>(value: Value) where Value: Codable
-//    func loadValue<Value>(value: Value) where Value: Codable
-//}
-//
-//extension SecurePersistence {
-//
-//    func save(keystore: Keystore) {
-//
-//    }
-//
-//    func loadKeystore() -> Keystore {
-//
-//    }
-//
-//    func deleteKeystore() {
-//
-//    }
-//
-//    func save(wallet: Wallet) {
-//        save(keystore: wallet.keystore)
-//    }
-//}
-
