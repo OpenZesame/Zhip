@@ -11,11 +11,15 @@ import RxSwift
 import RxCocoa
 
 final class Stepper<Step> {
-    private let navigator = PublishSubject<Step>()
+    private let navigator: PublishSubject<Step>
     func step(_ step: Step) {
         navigator.onNext(step)
     }
     var navigation: Driver<Step> {
         return navigator.asDriverOnErrorReturnEmpty()
+    }
+
+    init(publishSubject: PublishSubject<Step> = PublishSubject<Step>()) {
+        self.navigator = publishSubject
     }
 }
