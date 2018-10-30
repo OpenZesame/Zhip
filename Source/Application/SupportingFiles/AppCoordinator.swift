@@ -40,7 +40,12 @@ private extension AppCoordinator {
         let navigationController = UINavigationController()
         window?.rootViewController = navigationController
 
-        let onboarding = OnboardingCoordinator(navigationController: navigationController, preferences: KeyValueStore(UserDefaults.standard), securePersistence: securePersistence, useCase: services.makeOnboardingUseCase())
+        let onboarding = OnboardingCoordinator(
+            navigationController: navigationController,
+            preferences: KeyValueStore(UserDefaults.standard),
+            securePersistence: securePersistence,
+            useCase: services.makeOnboardingUseCase()
+        )
 
         start(coordinator: onboarding, transition: .replace) { [weak self] in
             switch $0 {
