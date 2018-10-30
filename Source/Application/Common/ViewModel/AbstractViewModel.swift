@@ -12,7 +12,11 @@ import RxCocoa
 
 class AbstractViewModel<Step, InputFromView, OutputType>: ViewModelType, Navigatable {
     let bag = DisposeBag()
-    let stepper = Stepper<Step>()
+    let stepper: Stepper<Step>
+
+    init(stepper: Stepper<Step> = Stepper<Step>()) {
+        self.stepper = stepper
+    }
 
     struct Input: InputType {
         typealias FromView = InputFromView
