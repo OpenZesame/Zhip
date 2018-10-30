@@ -50,22 +50,22 @@ private extension OnboardingCoordinator {
     }
 
     func toTermsOfService() {
-        present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [weak self] in
+        present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [unowned self] in
             switch $0 {
             case .didAcceptTerms:
-                self?.useCase.didAcceptTermsOfService()
-                self?.toWarningERC20()
+                self.useCase.didAcceptTermsOfService()
+                self.toWarningERC20()
             }
         }
     }
 
     func toWarningERC20() {
-        present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [weak self] in
+        present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [unowned self] in
             switch $0 {
             case .understandsRisksSkipWarningFromNowOn:
-                self?.useCase.doNotShowERC20WarningAgain()
+                self.useCase.doNotShowERC20WarningAgain()
                 fallthrough
-            case .understandsRisks: self?.toChooseWallet()
+            case .understandsRisks: self.toChooseWallet()
             }
         }
     }

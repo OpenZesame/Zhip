@@ -47,9 +47,9 @@ private extension AppCoordinator {
             useCase: services.makeOnboardingUseCase()
         )
 
-        start(coordinator: onboarding, transition: .replace) { [weak self] in
+        start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .didChoose(let wallet): self?.toMain(wallet: wallet)
+            case .didChoose(let wallet): self.toMain(wallet: wallet)
             }
         }
     }
@@ -60,9 +60,9 @@ private extension AppCoordinator {
 
         let main = MainCoordinator(navigationController: navigationController, services: services, securePersistence: securePersistence)
 
-        start(coordinator: main, transition: .replace) { [weak self] in
+        start(coordinator: main, transition: .replace) { [unowned self] in
             switch $0 {
-            case .didRemoveWallet: self?.toOnboarding()
+            case .didRemoveWallet: self.toOnboarding()
             }
         }
     }

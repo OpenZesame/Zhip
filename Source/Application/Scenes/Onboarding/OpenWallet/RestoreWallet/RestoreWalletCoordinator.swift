@@ -34,9 +34,9 @@ private extension RestoreWalletCoordinator {
     }
 
     func toRestoreWallet() {
-        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [weak self] in
+        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [unowned self] in
             switch $0 {
-            case .didRestore(let wallet): self?.toMain(restoredWallet: wallet)
+            case .didRestore(let wallet): self.toMain(restoredWallet: wallet)
             }
         }
     }
