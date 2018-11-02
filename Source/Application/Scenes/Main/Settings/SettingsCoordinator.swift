@@ -49,8 +49,8 @@ private extension SettingsCoordinator {
     func toSettings() {
         present(type: Settings.self, viewModel: SettingsViewModel()) { [unowned self] in
             switch $0 {
-            case .removeWallet: self.toChooseWallet()
-            case .backupWallet: self.toBackupWallet()
+            case .userSelectedRemoveWallet: self.toChooseWallet()
+            case .userSelectedBackupWallet: self.toBackupWallet()
             }
         }
     }

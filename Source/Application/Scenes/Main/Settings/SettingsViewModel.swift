@@ -16,8 +16,8 @@ final class SettingsViewModel: AbstractViewModel<
     SettingsViewModel.Output
 > {
     enum Step {
-        case removeWallet
-        case backupWallet
+        case userSelectedRemoveWallet
+        case userSelectedBackupWallet
     }
 
     override func transform(input: Input) -> Output {
@@ -26,12 +26,12 @@ final class SettingsViewModel: AbstractViewModel<
         bag <~ [
             fromView.removeWalletTrigger
                 .do(onNext: { [weak s=stepper] in
-                    s?.step(.removeWallet)
+                    s?.step(.userSelectedRemoveWallet)
                 }).drive(),
 
             fromView.backupWalletTrigger
                 .do(onNext: { [weak s=stepper] in
-                    s?.step(.backupWallet)
+                    s?.step(.userSelectedBackupWallet)
                 }).drive(),
         ]
 
