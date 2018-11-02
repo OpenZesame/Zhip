@@ -25,13 +25,13 @@ final class SettingsViewModel: AbstractViewModel<
         let fromView = input.fromView
         bag <~ [
             fromView.removeWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.userSelectedRemoveWallet)
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedRemoveWallet)
                 }).drive(),
 
             fromView.backupWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.userSelectedBackupWallet)
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedBackupWallet)
                 }).drive(),
         ]
 

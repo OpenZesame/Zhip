@@ -78,9 +78,9 @@ private extension OnboardingCoordinator {
                 useCase: useCase.makeChooseWalletUseCase(),
                 securePersistence: securePersistence
             )
-        ) { [weak s=stepper] in
+        ) { [unowned stepper] in
             switch $0 {
-            case .didChoose(let wallet): s?.step(.didChoose(wallet: wallet))
+            case .didChoose(let wallet): stepper.step(.didChoose(wallet: wallet))
             }
         }
     }

@@ -23,12 +23,12 @@ final class ChooseWalletViewModel: AbstractViewModel<
         let fromView = input.fromView
 
         bag <~ [
-            fromView.createNewTrigger.do(onNext: { [weak s=stepper] in
-                s?.step(.toCreate)
+            fromView.createNewTrigger.do(onNext: { [unowned stepper] in
+                stepper.step(.toCreate)
             }).drive(),
 
-            fromView.restoreTrigger.do(onNext: { [weak s=stepper] in
-                s?.step(.toRestore)
+            fromView.restoreTrigger.do(onNext: { [unowned stepper] in
+                stepper.step(.toRestore)
             }).drive()
         ]
         return Output()

@@ -26,8 +26,8 @@ final class TermsOfServiceViewModel: AbstractViewModel<
         let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
 
         bag <~ [
-            fromView.didAcceptTerms.do(onNext: { [weak s=stepper] in
-                s?.step(.didAcceptTerms)
+            fromView.didAcceptTerms.do(onNext: { [unowned stepper] in
+                stepper.step(.didAcceptTerms)
             }).drive()
         ]
 
