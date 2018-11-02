@@ -64,21 +64,3 @@ private extension SettingsViewModel {
         return "\(version) (\(build))"
     }
 }
-
-extension Bundle {
-    var version: String? {
-        return value(of: "CFBundleShortVersionString")
-    }
-
-    var build: String? {
-        return value(of: "CFBundleVersion")
-    }
-
-    func value(of key: String) -> String? {
-        guard
-            let info = infoDictionary,
-            let value = info[key] as? String
-            else { return nil }
-        return value
-    }
-}

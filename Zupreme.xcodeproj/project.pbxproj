@@ -84,6 +84,7 @@
 		48BA52F42180FA5D009775D5 /* SwiftValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BA52F32180FA5D009775D5 /* SwiftValidator.framework */; };
 		48C44430218C5F4C00C0D201 /* Enum+Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */; };
 		48C44433218C5F6A00C0D201 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C44432218C5F6A00C0D201 /* Tracker.swift */; };
+		48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */; };
 		48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C469F421445417008D0DD7 /* UILabel+Styling.swift */; };
 		48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCA21432E220063B0FA /* ViewModelType.swift */; };
 		48C89FCD21432E2E0063B0FA /* ChooseWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */; };
@@ -230,6 +231,7 @@
 		48BB6359215EA25D0039E937 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/iOS/BigInt.framework; sourceTree = "<group>"; };
 		48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Enum+Reflection.swift"; sourceTree = "<group>"; };
 		48C44432218C5F6A00C0D201 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Version+Build.swift"; sourceTree = "<group>"; };
 		48C469F421445417008D0DD7 /* UILabel+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		48C89FCA21432E220063B0FA /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletViewModel.swift; sourceTree = "<group>"; };
@@ -811,6 +813,7 @@
 			isa = PBXGroup;
 			children = (
 				48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */,
+				48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -1070,6 +1073,7 @@
 				48AC6CC72145AF0A00B4D036 /* Coordinator.swift in Sources */,
 				4850A408214C122900EBB85B /* Makeable.swift in Sources */,
 				4806AE6E2183690B002734C8 /* ReceiveCoordinator.swift in Sources */,
+				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */,
 				4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */,
 				48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */,
