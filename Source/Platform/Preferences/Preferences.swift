@@ -137,6 +137,7 @@ struct KeyValueStore<KeyType>: KeyValueStoring where KeyType: KeyConvertible {
 
 enum PreferencesKey: String, KeyConvertible {
     case hasAcceptedTermsOfService
+    case hasAcceptedAnalyticsTracking
     case skipShowingERC20Warning
 }
 

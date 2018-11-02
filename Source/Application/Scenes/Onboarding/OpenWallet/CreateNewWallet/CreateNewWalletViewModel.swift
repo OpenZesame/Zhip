@@ -12,16 +12,18 @@ import RxCocoa
 import FormValidatorSwift
 import Zesame
 
+// MARK: - CreateNewWalletNavigator
+enum CreateNewWalletNavigator: TrackedUserAction {
+     case userInitiatedCreationOfWallet(Wallet)
+}
+
+// MARK: - CreateNewWalletViewModel
 final class CreateNewWalletViewModel:
 AbstractViewModel<
-    CreateNewWalletViewModel.Step,
+    CreateNewWalletNavigator,
     CreateNewWalletViewModel.InputFromView,
     CreateNewWalletViewModel.Output
 > {
-    enum Step {
-        case userInitiatedCreationOf(wallet: Wallet)
-    }
-
     private let useCase: ChooseWalletUseCase
 
     init(useCase: ChooseWalletUseCase) {
@@ -47,7 +49,7 @@ AbstractViewModel<
                 self.useCase.createNewWallet(encryptionPassphrase: $0)
                     .asDriverOnErrorReturnEmpty()
             }
-            .do(onNext: { [unowned stepper] in stepper.step(.userInitiatedCreationOf(wallet: $0)) })
+            .do(onNext: { [unowned stepper] in stepper.step(.userInitiatedCreationOfWallet($0)) })
             .drive()
             .disposed(by: bag)
 

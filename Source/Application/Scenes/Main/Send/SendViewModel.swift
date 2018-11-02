@@ -11,13 +11,17 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+// MARK: - SendNavigation
+enum SendNavigation {
+    case userInitiatedTransaction
+}
+
+// MARK: - SendViewModel
 final class SendViewModel: AbstractViewModel<
-    SendViewModel.Step,
+    SendNavigation,
     SendViewModel.InputFromView,
     SendViewModel.Output
 > {
-    enum Step {}
-
     private let useCase: TransactionsUseCase
     private let wallet: Driver<Wallet>
 
@@ -69,9 +73,10 @@ final class SendViewModel: AbstractViewModel<
                 self.useCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
                     .asDriverOnErrorReturnEmpty()
                     // Trigger fetching of balance after successfull send
-                    .do(onNext: { _ in
+                    .do(onNext: { [unowned self] _ in
+                        self.stepper.step(.userInitiatedTransaction)
                         // TODO: poll API using transaction ID later on
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
                             fetchBalanceSubject.onNext(())
                         }
                     })

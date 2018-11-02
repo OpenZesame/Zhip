@@ -9,16 +9,18 @@
 import RxSwift
 import RxCocoa
 
+// MARK: - ChooseWalletNavigation
+enum ChooseWalletNavigation: String, TrackedUserAction {
+    case userSelectedCreateNewWallet
+    case userSelectedRestoreWallet
+}
+
+// MARK: - ChooseWalletViewModel
 final class ChooseWalletViewModel: AbstractViewModel<
-    ChooseWalletViewModel.Step,
+    ChooseWalletNavigation,
     ChooseWalletViewModel.InputFromView,
     ChooseWalletViewModel.Output
 > {
-    enum Step {
-        case userSelectedCreateNewWallet
-        case userSelectedRestoreWallet
-    }
-
     override func transform(input: Input) -> Output {
         let fromView = input.fromView
 

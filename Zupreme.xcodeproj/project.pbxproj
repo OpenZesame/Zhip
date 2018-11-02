@@ -49,6 +49,7 @@
 		48607BEE215D2C5C001AD0D0 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48607BED215D2C5C001AD0D0 /* SettingsCoordinator.swift */; };
 		48607BF1215D4DD9001AD0D0 /* FormValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48607BF0215D4DD9001AD0D0 /* FormValidator.swift */; };
 		4874B70A2183A0D400953370 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4874B7092183A0D400953370 /* Assets.xcassets */; };
+		48764265218CED93006C99F5 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48764264218CED93006C99F5 /* Toast.swift */; };
 		488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EE4CB215FAD53009A3903 /* Driver+Empty.swift */; };
 		488EE4CE215FAE71009A3903 /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BB634C215EA25C0039E937 /* APIKit.framework */; };
 		488EE4CF215FAE71009A3903 /* BigInt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BB6359215EA25D0039E937 /* BigInt.framework */; };
@@ -64,7 +65,7 @@
 		4898FB4521542333009501DC /* StackViewStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4421542333009501DC /* StackViewStyling.swift */; };
 		4898FB48215423D6009501DC /* ScrollViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* ScrollViewOwner.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
-		489CDB9A2143E0CC00318450 /* ZupremeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B067B20BA0D2C00C4E50A /* ZupremeTests.swift */; };
+		489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */; };
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
 		489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */; };
 		489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488A65812155AB2D0091FD03 /* WalletView.swift */; };
@@ -176,7 +177,7 @@
 		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZilliqaSDK-iOS-Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
-		484B067B20BA0D2C00C4E50A /* ZupremeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZupremeTests.swift; sourceTree = "<group>"; };
+		484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
 		484B067F20BA0D8800C4E50A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		484B068520BA0D8800C4E50A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		484B068620BA0D8800C4E50A /* Zupreme-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Zupreme-Info.plist"; sourceTree = "<group>"; };
@@ -191,6 +192,7 @@
 		48607BED215D2C5C001AD0D0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		48607BF0215D4DD9001AD0D0 /* FormValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidator.swift; sourceTree = "<group>"; };
 		4874B7092183A0D400953370 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48764264218CED93006C99F5 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		488A65812155AB2D0091FD03 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		488EE4C9215FAC1D009A3903 /* Zesame.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zesame.framework; path = Carthage/Build/iOS/Zesame.framework; sourceTree = "<group>"; };
 		488EE4CB215FAD53009A3903 /* Driver+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Empty.swift"; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				4847EDEB2160078C002FF978 /* Presentable.swift */,
 				4847EDED216007A3002FF978 /* PresentationMode.swift */,
 				48F832DE2184D78D00EDAD40 /* Navigatable.swift */,
+				48764264218CED93006C99F5 /* Toast.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -456,7 +459,7 @@
 			children = (
 				489CDBA02143E27500318450 /* Configurations */,
 				484B067920BA0D2C00C4E50A /* SupportingFiles */,
-				484B067B20BA0D2C00C4E50A /* ZupremeTests.swift */,
+				484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1050,6 +1053,7 @@
 				4847EDE92160074B002FF978 /* TermsOfServiceViewModel.swift in Sources */,
 				48AC6CC32145AC4A00B4D036 /* Settings.swift in Sources */,
 				48E0022D217A62170077E5CF /* BalanceView.swift in Sources */,
+				48764265218CED93006C99F5 /* Toast.swift in Sources */,
 				4847EDDC215FEC06002FF978 /* OnboardingCoordinator.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
 				48C8A00F2143CE490063B0FA /* Styling.swift in Sources */,
@@ -1095,7 +1099,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				489CDB9A2143E0CC00318450 /* ZupremeTests.swift in Sources */,
+				489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1125,6 +1129,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1132,6 +1137,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1139,10 +1145,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 			};
 			name = Debug;
 		};
@@ -1150,10 +1153,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 			};
 			name = Release;
 		};

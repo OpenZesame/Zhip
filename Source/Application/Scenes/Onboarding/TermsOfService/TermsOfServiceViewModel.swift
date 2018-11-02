@@ -10,15 +10,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// MARK: TermsOfServiceNavigation
+enum TermsOfServiceNavigation: String, TrackedUserAction {
+    case userAcceptedTerms
+}
+
+// MARK: - TermsOfServiceViewModel
 final class TermsOfServiceViewModel: AbstractViewModel<
-    TermsOfServiceViewModel.Step,
+    TermsOfServiceNavigation,
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output
 > {
-    enum Step {
-        case didAcceptTerms
-    }
-
     override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
@@ -27,7 +29,7 @@ final class TermsOfServiceViewModel: AbstractViewModel<
 
         bag <~ [
             fromView.didAcceptTerms.do(onNext: { [unowned stepper] in
-                stepper.step(.didAcceptTerms)
+                stepper.step(.userAcceptedTerms)
             }).drive()
         ]
 

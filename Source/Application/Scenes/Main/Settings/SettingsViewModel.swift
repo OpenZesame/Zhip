@@ -10,16 +10,18 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// MARK: SettingsNavigation
+enum SettingsNavigation: String, TrackedUserAction {
+    case userSelectedRemoveWallet
+    case userSelectedBackupWallet
+}
+
+// MARK: SettingsViewModel
 final class SettingsViewModel: AbstractViewModel<
-    SettingsViewModel.Step,
+    SettingsNavigation,
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
-    enum Step {
-        case userSelectedRemoveWallet
-        case userSelectedBackupWallet
-    }
-
     override func transform(input: Input) -> Output {
 
         let fromView = input.fromView

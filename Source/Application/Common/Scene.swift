@@ -43,11 +43,19 @@ private extension SceneController {
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
 
+        let toastSubject = PublishSubject<Toast>()
+
         let controllerInput = ControllerInput(
             viewDidLoad: rx.viewDidLoad,
             viewWillAppear: rx.viewWillAppear,
-            viewDidAppear: rx.viewDidAppear
+            viewDidAppear: rx.viewDidAppear,
+            toastSubject: toastSubject
         )
+
+        toastSubject.asDriverOnErrorReturnEmpty()
+            .do(onNext: { [unowned self] in
+                $0.present(using: self)
+            }).drive().disposed(by: bag)
 
         let input = ViewModel.Input(fromView: contentView.inputFromView, fromController: controllerInput)
 

@@ -33,7 +33,9 @@ private extension SendCoordinator {
 
     func toSend() {
         present(type: Send.self, viewModel: SendViewModel(wallet: wallet, useCase: services.makeTransactionsUseCase())) {
-            switch $0 {}
+            switch $0 {
+            case .userInitiatedTransaction: break;
+            }
         }
     }
 }

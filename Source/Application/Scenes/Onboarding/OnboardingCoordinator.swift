@@ -52,7 +52,7 @@ private extension OnboardingCoordinator {
     func toTermsOfService() {
         present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [unowned self] in
             switch $0 {
-            case .didAcceptTerms:
+            case .userAcceptedTerms:
                 self.useCase.didAcceptTermsOfService()
                 self.toWarningERC20()
             }
@@ -62,10 +62,10 @@ private extension OnboardingCoordinator {
     func toWarningERC20() {
         present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [unowned self] in
             switch $0 {
-            case .understandsRisksSkipWarningFromNowOn:
+            case .userSelectedRisksAreUnderstoodDoNotShowAgain:
                 self.useCase.doNotShowERC20WarningAgain()
                 fallthrough
-            case .understandsRisks: self.toChooseWallet()
+            case .userSelectedRisksAreUnderstood: self.toChooseWallet()
             }
         }
     }

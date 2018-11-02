@@ -41,7 +41,7 @@ private extension SettingsCoordinator {
         guard let wallet = securePersistence.wallet else { return }
         present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [unowned self] in
             switch $0 {
-            case .didBackup: self.navigationController.dismiss(animated: true, completion: nil)
+            case .userSelectedBackupIsDone: self.navigationController.dismiss(animated: true, completion: nil)
             }
         }
     }
