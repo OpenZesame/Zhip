@@ -19,7 +19,7 @@ AbstractViewModel<
     CreateNewWalletViewModel.Output
 > {
     enum Step {
-        case didCreateNew(wallet: Wallet)
+        case userInitiatedCreationOf(wallet: Wallet)
     }
 
     private let useCase: ChooseWalletUseCase
@@ -47,7 +47,7 @@ AbstractViewModel<
                 self.useCase.createNewWallet(encryptionPassphrase: $0)
                     .asDriverOnErrorReturnEmpty()
             }
-            .do(onNext: { [s=stepper] in s.step(.didCreateNew(wallet: $0)) })
+            .do(onNext: { [unowned stepper] in stepper.step(.userInitiatedCreationOf(wallet: $0)) })
             .drive()
             .disposed(by: bag)
 
