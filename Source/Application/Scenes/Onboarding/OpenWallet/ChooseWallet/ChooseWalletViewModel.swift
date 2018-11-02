@@ -15,8 +15,8 @@ final class ChooseWalletViewModel: AbstractViewModel<
     ChooseWalletViewModel.Output
 > {
     enum Step {
-        case toCreate
-        case toRestore
+        case userSelectedCreateNewWallet
+        case userSelectedRestoreWallet
     }
 
     override func transform(input: Input) -> Output {
@@ -24,11 +24,11 @@ final class ChooseWalletViewModel: AbstractViewModel<
 
         bag <~ [
             fromView.createNewTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.toCreate)
+                stepper.step(.userSelectedCreateNewWallet)
             }).drive(),
 
             fromView.restoreTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.toRestore)
+                stepper.step(.userSelectedRestoreWallet)
             }).drive()
         ]
         return Output()

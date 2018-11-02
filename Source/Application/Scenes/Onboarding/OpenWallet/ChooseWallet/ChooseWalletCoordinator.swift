@@ -12,7 +12,7 @@ import Zesame
 
 final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator.Step> {
     enum Step {
-        case didChoose(wallet: Wallet)
+        case userFinishedChoosing(wallet: Wallet)
     }
 
     private let useCase: ChooseWalletUseCase
@@ -35,14 +35,14 @@ private extension ChooseWalletCoordinator {
 
     func toMain(wallet: Wallet) {
         securePersistence.save(wallet: wallet)
-        stepper.step(.didChoose(wallet: wallet))
+        stepper.step(.userFinishedChoosing(wallet: wallet))
     }
 
     func toChooseWallet() {
         present(type: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] in
             switch $0 {
-            case .toCreate: self.toCreateNewWallet()
-            case .toRestore: self.toRestoreWallet()
+            case .userSelectedCreateNewWallet: self.toCreateNewWallet()
+            case .userSelectedRestoreWallet: self.toRestoreWallet()
             }
         }
     }
@@ -64,7 +64,7 @@ private extension ChooseWalletCoordinator {
             RestoreWalletCoordinator(navigationController: navigationController, useCase: useCase)
         ) { [unowned self] in
             switch $0 {
-            case .didRestore(let wallet): self.toMain(wallet: wallet)
+            case .finishedRestoring(let wallet): self.toMain(wallet: wallet)
             }
         }
     }

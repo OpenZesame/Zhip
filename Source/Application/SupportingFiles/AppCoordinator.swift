@@ -49,7 +49,7 @@ private extension AppCoordinator {
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .didChoose(let wallet): self.toMain(wallet: wallet)
+            case .userFinishedChoosing(let wallet): self.toMain(wallet: wallet)
             }
         }
     }

@@ -12,7 +12,7 @@ import Zesame
 
 final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
     enum Step {
-        case didChoose(wallet: Wallet)
+        case userFinishedChoosing(wallet: Wallet)
     }
 
     private let useCase: OnboardingUseCase
@@ -78,14 +78,14 @@ private extension OnboardingCoordinator {
                 useCase: useCase.makeChooseWalletUseCase(),
                 securePersistence: securePersistence
             )
-        ) { [unowned stepper] in
+        ) { [unowned self] in
             switch $0 {
-            case .didChoose(let wallet): stepper.step(.didChoose(wallet: wallet))
+            case .userFinishedChoosing(let wallet): self.toMain(wallet: wallet)
             }
         }
     }
 
     func toMain(wallet: Wallet) {
-        stepper.step(.didChoose(wallet: wallet))
+        stepper.step(.userFinishedChoosing(wallet: wallet))
     }
 }
