@@ -12,9 +12,10 @@ import RxCocoa
 
 import Zesame
 
+
 final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
     enum Step {
-        case didRemoveWallet
+        case walletWasRemovedByUser
     }
 
     private let securePersistence: SecurePersistence
@@ -33,8 +34,8 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
 private extension SettingsCoordinator {
 
     func toChooseWallet() {
-        securePersistence.deleteWallet()
-        stepper.step(.didRemoveWallet)
+        securePersistence.removeWallet()
+        stepper.step(.walletWasRemovedByUser)
     }
 
     func toBackupWallet() {
@@ -49,8 +50,8 @@ private extension SettingsCoordinator {
     func toSettings() {
         present(type: Settings.self, viewModel: SettingsViewModel()) { [unowned self] in
             switch $0 {
-            case .removeWallet: self.toChooseWallet()
-            case .backupWallet: self.toBackupWallet()
+            case .userSelectedBackupWallet: self.toBackupWallet()
+            case .userSelectedRemoveWallet: self.toChooseWallet()
             }
         }
     }

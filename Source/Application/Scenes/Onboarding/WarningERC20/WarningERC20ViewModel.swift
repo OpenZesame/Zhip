@@ -15,19 +15,19 @@ final class WarningERC20ViewModel: AbstractViewModel<
     WarningERC20ViewModel.InputFromView,
     WarningERC20ViewModel.Output
 > {
-    enum Step {
-        case understandsRisks
-        case understandsRisksSkipWarningFromNowOn
+    enum Step: String, TrackedUserAction {
+        case userSelectedRisksAreUnderstood
+        case userSelectedRisksAreUnderstoodDoNotShowAgain
     }
     
     override func transform(input: Input) -> Output {
         bag <~ [
-            input.fromView.accept.do(onNext: { [weak s=stepper] in
-                s?.step(.understandsRisks)
+            input.fromView.accept.do(onNext: { [unowned stepper] in
+                stepper.step(.userSelectedRisksAreUnderstood)
             }).drive(),
             
-            input.fromView.doNotShowAgain.do(onNext: { [weak s=stepper] in
-                s?.step(.understandsRisksSkipWarningFromNowOn)
+            input.fromView.doNotShowAgain.do(onNext: { [unowned stepper] in
+                stepper.step(.userSelectedRisksAreUnderstoodDoNotShowAgain)
             }).drive()
         ]
         return Output()
@@ -39,9 +39,6 @@ extension WarningERC20ViewModel {
         let accept: Driver<Void>
         let doNotShowAgain: Driver<Void>
     }
-    
-    
+
     struct Output {}
-    
-    
 }

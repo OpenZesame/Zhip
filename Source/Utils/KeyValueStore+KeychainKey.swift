@@ -23,7 +23,7 @@ extension KeyValueStore where KeyType == KeychainKey {
         save(value: walletJson, for: .keystore)
     }
 
-    func deleteWallet() {
+    func removeWallet() {
         deleteValue(for: .keystore)
     }
 }

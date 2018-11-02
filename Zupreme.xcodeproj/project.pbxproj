@@ -15,6 +15,7 @@
 		4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE72218369A7002734C8 /* UITextField+Rx.swift */; };
 		4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE9521837F5F002734C8 /* QRCoding.swift */; };
 		4806AE9821838137002734C8 /* EFQRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4806AE9721838137002734C8 /* EFQRCode.framework */; };
+		481C6D1B21890F6400529742 /* Bundle+Version+Build.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C6D1A21890F6400529742 /* Bundle+Version+Build.swift */; };
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
 		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
 		4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */; };
@@ -148,6 +149,7 @@
 		4806AE9721838137002734C8 /* EFQRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EFQRCode.framework; path = Carthage/Build/iOS/EFQRCode.framework; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
 		4811BA2121860B53005FB01C /* Zupreme.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Zupreme.xcconfig; sourceTree = "<group>"; };
+		481C6D1A21890F6400529742 /* Bundle+Version+Build.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Version+Build.swift"; sourceTree = "<group>"; };
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -797,6 +799,7 @@
 			isa = PBXGroup;
 			children = (
 				48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */,
+				481C6D1A21890F6400529742 /* Bundle+Version+Build.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -969,6 +972,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48CA69792183052C00C05F5F /* BackupWallet.swift in Sources */,
+				481C6D1B21890F6400529742 /* Bundle+Version+Build.swift in Sources */,
 				48C89FE0214331590063B0FA /* Scene.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
 				48E0022B217A61E40077E5CF /* WalletBalanceView.swift in Sources */,

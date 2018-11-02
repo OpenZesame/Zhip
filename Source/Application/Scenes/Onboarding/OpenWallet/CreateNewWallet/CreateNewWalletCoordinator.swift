@@ -54,7 +54,7 @@ private extension CreateNewWalletCoordinator {
             viewModel: CreateNewWalletViewModel(useCase: useCase)
         ) { [unowned self] in
             switch $0 {
-            case .didCreateNew(let wallet): self.toBackupWallet(wallet: wallet)
+            case .(let wallet): self.toBackupWallet(wallet: wallet)
             }
         }
     }

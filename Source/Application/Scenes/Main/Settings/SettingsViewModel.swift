@@ -15,9 +15,9 @@ final class SettingsViewModel: AbstractViewModel<
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
-    enum Step {
-        case removeWallet
-        case backupWallet
+    enum Step: String, TrackedUserAction {
+        case userSelectedRemoveWallet
+        case userSelectedBackupWallet
     }
 
     override func transform(input: Input) -> Output {
@@ -25,14 +25,14 @@ final class SettingsViewModel: AbstractViewModel<
         let fromView = input.fromView
         bag <~ [
             fromView.removeWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.removeWallet)
+                .do(onNext: { [unowned self] in
+                    stepper.step(.userSelectedRemoveWallet)
                 }).drive(),
 
             fromView.backupWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.backupWallet)
-                }).drive(),
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedBackupWallet)
+                }).drive()
         ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
@@ -57,28 +57,7 @@ extension SettingsViewModel {
 private extension SettingsViewModel {
     var appVersionString: String? {
         let bundle = Bundle.main
-        guard
-            let version = bundle.version,
-            let build = bundle.build
-            else { return nil }
+        guard let version = bundle.version, let build = bundle.build else { return nil }
         return "\(version) (\(build))"
-    }
-}
-
-extension Bundle {
-    var version: String? {
-        return value(of: "CFBundleShortVersionString")
-    }
-
-    var build: String? {
-        return value(of: "CFBundleVersion")
-    }
-
-    func value(of key: String) -> String? {
-        guard
-            let info = infoDictionary,
-            let value = info[key] as? String
-            else { return nil }
-        return value
     }
 }

@@ -12,7 +12,7 @@ import Zesame
 
 final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
     enum Step {
-        case didChoose(wallet: Wallet)
+        case userFinishedChoosing(wallet: Wallet)
     }
 
     private let useCase: OnboardingUseCase
@@ -52,7 +52,7 @@ private extension OnboardingCoordinator {
     func toTermsOfService() {
         present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [unowned self] in
             switch $0 {
-            case .didAcceptTerms:
+            case .userAcceptedTerms:
                 self.useCase.didAcceptTermsOfService()
                 self.toWarningERC20()
             }
@@ -62,10 +62,10 @@ private extension OnboardingCoordinator {
     func toWarningERC20() {
         present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [unowned self] in
             switch $0 {
-            case .understandsRisksSkipWarningFromNowOn:
+            case .userSelectedRisksAreUnderstoodDoNotShowAgain:
                 self.useCase.doNotShowERC20WarningAgain()
                 fallthrough
-            case .understandsRisks: self.toChooseWallet()
+            case .userSelectedRisksAreUnderstood: self.toChooseWallet()
             }
         }
     }
@@ -78,14 +78,14 @@ private extension OnboardingCoordinator {
                 useCase: useCase.makeChooseWalletUseCase(),
                 securePersistence: securePersistence
             )
-        ) { [weak s=stepper] in
+        ) { [unowned stepper] in
             switch $0 {
-            case .didChoose(let wallet): s?.step(.didChoose(wallet: wallet))
+            case .userFinishedChoosing(let wallet): stepper.step(.userFinishedChoosing(wallet: wallet))
             }
         }
     }
 
     func toMain(wallet: Wallet) {
-        stepper.step(.didChoose(wallet: wallet))
+        stepper.step(.userFinishedChoosing(wallet: wallet))
     }
 }

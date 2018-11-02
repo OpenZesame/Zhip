@@ -7,6 +7,9 @@
 build/
 DerivedData/
 
+# Ignore AppCode files
+.idea
+
 ## Various settings
 *.pbxuser
 !default.pbxuser

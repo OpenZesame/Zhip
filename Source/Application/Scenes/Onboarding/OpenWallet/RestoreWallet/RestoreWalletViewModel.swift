@@ -64,8 +64,8 @@ final class RestoreWalletViewModel: AbstractViewModel<
         
         bag <~ [
             fromView.restoreTrigger
-                .withLatestFrom(wallet).do(onNext: { [weak s=stepper] in
-                    s?.step(.didRestore(wallet: $0))
+                .withLatestFrom(wallet).do(onNext: { [unowned stepper] in
+                    stepper.step(.didRestore(wallet: $0))
                 })
                 .drive()
         ]

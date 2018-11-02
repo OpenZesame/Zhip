@@ -18,8 +18,8 @@ AbstractViewModel<
     CreateNewWalletViewModel.InputFromView,
     CreateNewWalletViewModel.Output
 > {
-    enum Step {
-        case didCreateNew(wallet: Wallet)
+    enum Step: TrackedUserEvent {
+        case userInitiatedCreationOf(wallet: Wallet)
     }
 
     private let useCase: ChooseWalletUseCase
@@ -70,5 +70,13 @@ extension CreateNewWalletViewModel {
 
     struct Output {
         let isCreateWalletButtonEnabled: Driver<Bool>
+    }
+}
+
+extension CreateNewWalletViewModel.Step {
+    var eventName: String {
+        switch self {
+        case .userInitiatedCreationOf: return "userInitiatedCreationOf"
+        }
     }
 }

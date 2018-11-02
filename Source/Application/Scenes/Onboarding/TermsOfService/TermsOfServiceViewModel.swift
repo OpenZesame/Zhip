@@ -15,8 +15,8 @@ final class TermsOfServiceViewModel: AbstractViewModel<
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output
 > {
-    enum Step {
-        case didAcceptTerms
+    enum Step: String, TrackedUserAction {
+        case userAcceptedTerms
     }
 
     override func transform(input: Input) -> Output {
@@ -26,8 +26,8 @@ final class TermsOfServiceViewModel: AbstractViewModel<
         let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
 
         bag <~ [
-            fromView.didAcceptTerms.do(onNext: { [weak s=stepper] in
-                s?.step(.didAcceptTerms)
+            fromView.didAcceptTerms.do(onNext: { [unowned stepper] in
+                stepper.step(.userAcceptedTerms)
             }).drive()
         ]
 

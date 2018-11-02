@@ -13,7 +13,7 @@ import RxSwift
 
 final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
     enum Step {
-        case didRemoveWallet
+        case walletWasRemovedByUser
     }
 
     private let tabBarController = UITabBarController()
@@ -72,9 +72,9 @@ private extension MainCoordinator {
             switch $0 {} // nothing to do yet
         }
 
-        start(coordinator: settings, transition: .doNothing) { [weak s=stepper] in
+        start(coordinator: settings, transition: .doNothing) { [unowned stepper] in
             switch $0 {
-            case .didRemoveWallet: s?.step(.didRemoveWallet)
+            case .walletWasRemovedByUser: stepper.step(.walletWasRemovedByUser)
             }
         }
 

@@ -30,7 +30,7 @@ class AbstractCoordinator<Step>: Coordinator {
 
 extension AbstractCoordinator {
     var navigation: Driver<Step> {
-        return stepper.navigation
+        return stepper.navigationSteps
     }
 
     var concrete: UIViewController {
