@@ -45,7 +45,7 @@ final class BackupWalletViewModel: AbstractViewModel<
                 .filter { $0 }
                 .withLatestFrom(wallet)
                 .do(onNext: { [unowned stepper] in
-             stepper.step(.didBackup(wallet: $0)) })
+                    stepper.step(.didBackup(wallet: $0)) })
                 .drive()
         ]
 
