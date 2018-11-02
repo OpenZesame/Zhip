@@ -74,7 +74,7 @@ private extension MainCoordinator {
 
         start(coordinator: settings, transition: .doNothing) { [weak s=stepper] in
             switch $0 {
-            case .didRemoveWallet: s?.step(.didRemoveWallet)
+            case .walletWasRemovedByUser: s?.step(.didRemoveWallet)
             }
         }
 

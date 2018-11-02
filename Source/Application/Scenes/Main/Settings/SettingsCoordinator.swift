@@ -14,7 +14,7 @@ import Zesame
 
 final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
     enum Step {
-        case didRemoveWallet
+        case walletWasRemovedByUser
     }
 
     private let securePersistence: SecurePersistence
@@ -34,7 +34,7 @@ private extension SettingsCoordinator {
 
     func toChooseWallet() {
         securePersistence.deleteWallet()
-        stepper.step(.didRemoveWallet)
+        stepper.step(.walletWasRemovedByUser)
     }
 
     func toBackupWallet() {
