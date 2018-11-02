@@ -82,6 +82,8 @@
 		48B16E3021452A2600177434 /* Never.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B16E2F21452A2600177434 /* Never.swift */; };
 		48BA52F22180EC47009775D5 /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BA52F12180EC47009775D5 /* UIView+Border.swift */; };
 		48BA52F42180FA5D009775D5 /* SwiftValidator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BA52F32180FA5D009775D5 /* SwiftValidator.framework */; };
+		48C44430218C5F4C00C0D201 /* Enum+Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */; };
+		48C44433218C5F6A00C0D201 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C44432218C5F6A00C0D201 /* Tracker.swift */; };
 		48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C469F421445417008D0DD7 /* UILabel+Styling.swift */; };
 		48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCA21432E220063B0FA /* ViewModelType.swift */; };
 		48C89FCD21432E2E0063B0FA /* ChooseWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */; };
@@ -226,6 +228,8 @@
 		48BB6357215EA25D0039E937 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		48BB6358215EA25D0039E937 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		48BB6359215EA25D0039E937 /* BigInt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BigInt.framework; path = Carthage/Build/iOS/BigInt.framework; sourceTree = "<group>"; };
+		48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Enum+Reflection.swift"; sourceTree = "<group>"; };
+		48C44432218C5F6A00C0D201 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		48C469F421445417008D0DD7 /* UILabel+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		48C89FCA21432E220063B0FA /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		48C89FCC21432E2E0063B0FA /* ChooseWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletViewModel.swift; sourceTree = "<group>"; };
@@ -534,6 +538,7 @@
 				48B16E2F21452A2600177434 /* Never.swift */,
 				48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */,
 				48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */,
+				48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -620,6 +625,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		48C44431218C5F5B00C0D201 /* AnalyticsTracking */ = {
+			isa = PBXGroup;
+			children = (
+				48C44432218C5F6A00C0D201 /* Tracker.swift */,
+			);
+			path = AnalyticsTracking;
+			sourceTree = "<group>";
+		};
 		48C89FD021432F980063B0FA /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -694,6 +707,7 @@
 		48C89FD8214330C50063B0FA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				48C44431218C5F5B00C0D201 /* AnalyticsTracking */,
 				48A64006218644A700B08C67 /* Rx */,
 				48A640002186272900B08C67 /* Model */,
 				48F832EA2185C38400EDAD40 /* ViewModel */,
@@ -968,6 +982,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48C44433218C5F6A00C0D201 /* Tracker.swift in Sources */,
 				48CA69792183052C00C05F5F /* BackupWallet.swift in Sources */,
 				48C89FE0214331590063B0FA /* Scene.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
@@ -1046,6 +1061,7 @@
 				48C8A001214335E70063B0FA /* AppCoordinator.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
+				48C44430218C5F4C00C0D201 /* Enum+Reflection.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
 				4847EDE521600717002FF978 /* TermsOfService.swift in Sources */,
 				4806AE6F2183690B002734C8 /* ReceiveViewModel.swift in Sources */,
