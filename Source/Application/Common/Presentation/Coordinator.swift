@@ -29,7 +29,7 @@ extension Coordinator {
         case .doNothing: break
         }
 
-        coordinator.navigation.do(onNext: {
+        coordinator.navigationSteps.do(onNext: {
             navigationHandler($0)
         })
             .drive()

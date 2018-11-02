@@ -16,5 +16,5 @@ protocol Navigatable: BaseNavigatable {
 }
 
 extension Navigatable {
-    var navigation: Driver<Step> { return stepper.navigationSteps }
+    var navigationSteps: Driver<Step> { return stepper.navigationSteps }
 }
