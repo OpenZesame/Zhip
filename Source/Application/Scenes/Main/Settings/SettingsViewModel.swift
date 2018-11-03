@@ -10,28 +10,30 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// MARK: SettingsNavigation
+enum SettingsNavigation: String, TrackedUserAction {
+    case userSelectedRemoveWallet
+    case userSelectedBackupWallet
+}
+
+// MARK: SettingsViewModel
 final class SettingsViewModel: AbstractViewModel<
-    SettingsViewModel.Step,
+    SettingsNavigation,
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
-    enum Step {
-        case removeWallet
-        case backupWallet
-    }
-
     override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
         bag <~ [
             fromView.removeWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.removeWallet)
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedRemoveWallet)
                 }).drive(),
 
             fromView.backupWalletTrigger
-                .do(onNext: { [weak s=stepper] in
-                    s?.step(.backupWallet)
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedBackupWallet)
                 }).drive(),
         ]
 
@@ -62,23 +64,5 @@ private extension SettingsViewModel {
             let build = bundle.build
             else { return nil }
         return "\(version) (\(build))"
-    }
-}
-
-extension Bundle {
-    var version: String? {
-        return value(of: "CFBundleShortVersionString")
-    }
-
-    var build: String? {
-        return value(of: "CFBundleVersion")
-    }
-
-    func value(of key: String) -> String? {
-        guard
-            let info = infoDictionary,
-            let value = info[key] as? String
-            else { return nil }
-        return value
     }
 }

@@ -63,7 +63,7 @@ extension SendView: ViewModelled {
             viewModel.isSendButtonEnabled       --> sendButton.rx.isEnabled,
             viewModel.balance                   --> balanceView.rx.balance,
             viewModel.nonce                     --> balanceView.rx.nonce,
-            viewModel.isRecipientAddressValid   --> encryptionPassphraseField.rx.isValid,
+            viewModel.isRecipientAddressValid   --> recipientAddressField.rx.isValid,
             viewModel.transactionId             --> transactionIdLabels
         ]
     }

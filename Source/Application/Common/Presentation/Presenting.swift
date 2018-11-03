@@ -24,13 +24,13 @@ protocol Presenting: AnyObject {
 // MARK: - Default Implementation
 extension Presenting {
     func present<P>(_ presentable: P, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable {
-        _present(presentable, presentation: presentation, navigation: presentable.navigation, navigationHandler: navigationHandler)
+        _present(presentable, presentation: presentation, navigation: presentable.navigationSteps, navigationHandler: navigationHandler)
     }
 
     func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
     {
         let scene = S.init(viewModel: viewModel)
-        _present(scene, presentation: presentation, navigation: viewModel.navigation, navigationHandler: navigationHandler)
+        _present(scene, presentation: presentation, navigation: viewModel.navigationSteps, navigationHandler: navigationHandler)
     }
 }
 

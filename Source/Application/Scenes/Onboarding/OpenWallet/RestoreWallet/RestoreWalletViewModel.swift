@@ -12,15 +12,17 @@ import RxCocoa
 import RxSwift
 import SwiftValidator
 
+// MARK: - RestoreWalletNavigation
+enum RestoreWalletNavigation: TrackedUserAction {
+    case userInitiatedRestorationOfWallet(Wallet)
+}
+
+// MARK: - RestoreWalletViewModel
 final class RestoreWalletViewModel: AbstractViewModel<
-    RestoreWalletViewModel.Step,
+    RestoreWalletNavigation,
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output
 > {
-    enum Step {
-        case didRestore(wallet: Wallet)
-    }
-    
     private let useCase: ChooseWalletUseCase
     
     init(useCase: ChooseWalletUseCase) {
@@ -64,8 +66,8 @@ final class RestoreWalletViewModel: AbstractViewModel<
         
         bag <~ [
             fromView.restoreTrigger
-                .withLatestFrom(wallet).do(onNext: { [weak s=stepper] in
-                    s?.step(.didRestore(wallet: $0))
+                .withLatestFrom(wallet).do(onNext: { [unowned stepper] in
+                    stepper.step(.userInitiatedRestorationOfWallet($0))
                 })
                 .drive()
         ]

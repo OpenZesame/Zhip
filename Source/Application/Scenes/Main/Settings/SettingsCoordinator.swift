@@ -14,7 +14,7 @@ import Zesame
 
 final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
     enum Step {
-        case didRemoveWallet
+        case walletWasRemovedByUser
     }
 
     private let securePersistence: SecurePersistence
@@ -34,23 +34,23 @@ private extension SettingsCoordinator {
 
     func toChooseWallet() {
         securePersistence.deleteWallet()
-        stepper.step(.didRemoveWallet)
+        stepper.step(.walletWasRemovedByUser)
     }
 
     func toBackupWallet() {
         guard let wallet = securePersistence.wallet else { return }
-        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [weak self] in
+        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [unowned self] in
             switch $0 {
-            case .didBackup: self?.navigationController.dismiss(animated: true, completion: nil)
+            case .userSelectedBackupIsDone: self.navigationController.dismiss(animated: true, completion: nil)
             }
         }
     }
 
     func toSettings() {
-        present(type: Settings.self, viewModel: SettingsViewModel()) { [weak self] in
+        present(type: Settings.self, viewModel: SettingsViewModel()) { [unowned self] in
             switch $0 {
-            case .removeWallet: self?.toChooseWallet()
-            case .backupWallet: self?.toBackupWallet()
+            case .userSelectedRemoveWallet: self.toChooseWallet()
+            case .userSelectedBackupWallet: self.toBackupWallet()
             }
         }
     }

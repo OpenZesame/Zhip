@@ -11,7 +11,7 @@ import Zesame
 
 final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinator.Step> {
     enum Step {
-        case didRestore(wallet: Wallet)
+        case finishedRestoring(wallet: Wallet)
     }
 
     private let useCase: ChooseWalletUseCase
@@ -30,13 +30,13 @@ final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinat
 private extension RestoreWalletCoordinator {
 
     func toMain(restoredWallet: Wallet) {
-        stepper.step(.didRestore(wallet: restoredWallet))
+        stepper.step(.finishedRestoring(wallet: restoredWallet))
     }
 
     func toRestoreWallet() {
-        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [weak self] in
+        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [unowned self] in
             switch $0 {
-            case .didRestore(let wallet): self?.toMain(restoredWallet: wallet)
+            case .userInitiatedRestorationOfWallet(let wallet): self.toMain(restoredWallet: wallet)
             }
         }
     }

@@ -11,15 +11,17 @@ import RxCocoa
 import RxSwift
 import Zesame
 
+// MARK: - BackupWalletNavigation
+enum BackupWalletNavigation: TrackedUserAction {
+    case userSelectedBackupIsDone(wallet: Wallet)
+}
+
+// MARK: - BackupWalletViewModel
 final class BackupWalletViewModel: AbstractViewModel<
-    BackupWalletViewModel.Step,
+    BackupWalletNavigation,
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
-    enum Step {
-        case didBackup(wallet: Wallet)
-    }
-
     private let wallet: Driver<Wallet>
 
     init(wallet: Wallet) {
@@ -39,12 +41,13 @@ final class BackupWalletViewModel: AbstractViewModel<
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(keystoreText)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
+                    input.fromController.toastSubject.onNext("✅ Copied keystore")
                 }).drive(),
 
             input.fromView.doneTrigger.withLatestFrom(understandsRisks)
                 .filter { $0 }
                 .withLatestFrom(wallet)
-                .do(onNext: { [weak s=stepper] in s?.step(.didBackup(wallet: $0)) })
+                .do(onNext: { [unowned stepper] in stepper.step(.userSelectedBackupIsDone(wallet: $0)) })
                 .drive()
         ]
 

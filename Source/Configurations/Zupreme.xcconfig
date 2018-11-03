@@ -1,10 +1,11 @@
+#include "../../Configurations/zupreme-shared.xcconfig"
 #include "../../Configurations/base_apps.xcconfig"
 #include "../../Configurations/Carthage.xcconfig"
 
 SDKROOT = iphoneos
 
 PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.Zupreme
-PRODUCT_NAME = Zupreme
+PRODUCT_NAME = $(_APP_NAME)
 
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
 INFOPLIST_FILE = Source/Application/SupportingFiles/Zupreme-Info.plist

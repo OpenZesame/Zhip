@@ -11,13 +11,15 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+// MARK: - ReceiveNavigation
+enum ReceiveNavigation {}
+
+// MARK: - ReceiveViewModel
 final class ReceiveViewModel: AbstractViewModel<
-    ReceiveViewModel.Step,
+    ReceiveNavigation,
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
-    enum Step {}
-
     private let wallet: Driver<Wallet>
 
     init(wallet: Driver<Wallet>) {

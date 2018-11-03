@@ -30,7 +30,6 @@ extension CreateNewWalletCoordinator {
     enum Step {
         case didCreate(wallet: Wallet)
     }
-
 }
 
 // MARK: Private
@@ -41,9 +40,9 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toBackupWallet(wallet: Wallet) {
-        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet)) { [weak self] in
+        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet)) { [unowned self] in
             switch $0 {
-            case .didBackup(let wallet): self?.toMain(wallet: wallet)
+            case .userSelectedBackupIsDone(let wallet): self.toMain(wallet: wallet)
             }
         }
     }
@@ -52,9 +51,9 @@ private extension CreateNewWalletCoordinator {
         present(
             type: CreateNewWallet.self,
             viewModel: CreateNewWalletViewModel(useCase: useCase)
-        ) { [weak self] in
+        ) { [unowned self] in
             switch $0 {
-            case .didCreateNew(let wallet): self?.toBackupWallet(wallet: wallet)
+            case .userInitiatedCreationOfWallet(let wallet): self.toBackupWallet(wallet: wallet)
             }
         }
     }

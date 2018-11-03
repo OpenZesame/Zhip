@@ -40,11 +40,16 @@ private extension AppCoordinator {
         let navigationController = UINavigationController()
         window?.rootViewController = navigationController
 
-        let onboarding = OnboardingCoordinator(navigationController: navigationController, preferences: KeyValueStore(UserDefaults.standard), securePersistence: securePersistence, useCase: services.makeOnboardingUseCase())
+        let onboarding = OnboardingCoordinator(
+            navigationController: navigationController,
+            preferences: KeyValueStore(UserDefaults.standard),
+            securePersistence: securePersistence,
+            useCase: services.makeOnboardingUseCase()
+        )
 
-        start(coordinator: onboarding, transition: .replace) { [weak self] in
+        start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .didChoose(let wallet): self?.toMain(wallet: wallet)
+            case .userFinishedChoosing(let wallet): self.toMain(wallet: wallet)
             }
         }
     }
@@ -55,9 +60,9 @@ private extension AppCoordinator {
 
         let main = MainCoordinator(navigationController: navigationController, services: services, securePersistence: securePersistence)
 
-        start(coordinator: main, transition: .replace) { [weak self] in
+        start(coordinator: main, transition: .replace) { [unowned self] in
             switch $0 {
-            case .didRemoveWallet: self?.toOnboarding()
+            case .didRemoveWallet: self.toOnboarding()
             }
         }
     }

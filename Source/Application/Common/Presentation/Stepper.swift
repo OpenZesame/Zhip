@@ -1,21 +1,40 @@
-//
-//  Stepper.swift
-//  Zupreme
-//
-//  Created by Alexander Cyon on 2018-10-27.
-//  Copyright © 2018 Open Zesame. All rights reserved.
-//
-
 import Foundation
 import RxSwift
 import RxCocoa
 
 final class Stepper<Step> {
-    private let navigator = PublishSubject<Step>()
-    func step(_ step: Step) {
-        navigator.onNext(step)
+
+    private let navigationSubject: PublishSubject<Step>
+    private let tracker: Tracking
+
+    init(navigationSubject: PublishSubject<Step> = PublishSubject<Step>(), tracker: Tracking = Tracker(preferences: KeyValueStore(UserDefaults.standard))) {
+        self.navigationSubject = navigationSubject
+        self.tracker = tracker
     }
-    var navigation: Driver<Step> {
-        return navigator.asDriverOnErrorReturnEmpty()
+}
+
+extension Stepper {
+
+    var navigationSteps: Driver<Step> {
+        return navigationSubject.asDriverOnErrorReturnEmpty()
+    }
+
+    func step(_ step: Step) {
+        navigationSubject.onNext(step)
+
+        if let userAction = step as? TrackedUserAction {
+            return track(event: userAction)
+        }
+
+        guard let userAction = findNestedEnumOfType(TrackedUserAction.self, in: step, recursiveTriesLeft: 3) else { return }
+
+        track(event: userAction)
+    }
+}
+
+
+extension Stepper: Tracking {
+    func track(event: TrackableEvent) {
+        tracker.track(event: event)
     }
 }

@@ -10,9 +10,15 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug
+/// read more: https://bugs.swift.org/browse/SR-9160
 class AbstractViewModel<Step, InputFromView, OutputType>: ViewModelType, Navigatable {
     let bag = DisposeBag()
-    let stepper = Stepper<Step>()
+    let stepper: Stepper<Step>
+
+    init(stepper: Stepper<Step> = Stepper<Step>()) {
+        self.stepper = stepper
+    }
 
     struct Input: InputType {
         typealias FromView = InputFromView

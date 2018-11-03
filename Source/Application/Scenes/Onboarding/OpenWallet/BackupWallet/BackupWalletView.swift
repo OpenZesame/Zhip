@@ -13,7 +13,7 @@ final class BackupWalletView: ScrollingStackView {
 
     private lazy var beSafeLabel = UILabel.Style("Store the keystore + passphrase somewhere safe (e.g. 1Password)", font: .boldSystemFont(ofSize: 18), numberOfLines: 0).make()
     private lazy var keystoreTextView = ScrollableContentSizedTextView(style: UITextView.Style(font: .systemFont(ofSize: 10), isEditable: false))
-    private lazy var copyKeystoreButton = UIButton.Style("Copy keystore", textColor: .white, colorNormal: .blue).make()
+    private lazy var copyKeystoreButton = UIButton.Style("Copy keystore", textColor: .white, colorNormal: .blue, colorSelected: .cyan).make()
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel.Style("⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.", numberOfLines: 0).make()
 
