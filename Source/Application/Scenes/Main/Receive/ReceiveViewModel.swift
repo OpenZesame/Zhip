@@ -45,7 +45,11 @@ final class ReceiveViewModel: AbstractViewModel<
                 .do(onNext: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject.onNext("✅ Copied address")
-                }).drive()
+                }).drive(),
+
+            input.fromController.rightBarButtonTrigger.do(onNext: {
+                input.fromController.toastSubject.onNext("This will soon be implemented")
+            }).drive()
         ]
 
         return Output(

@@ -14,6 +14,7 @@ struct ControllerInput {
     let viewDidLoad: Driver<Void>
     let viewWillAppear: Driver<Void>
     let viewDidAppear: Driver<Void>
+    let rightBarButtonTrigger: Driver<Void>
     let toastSubject: PublishSubject<Toast>
 }
 

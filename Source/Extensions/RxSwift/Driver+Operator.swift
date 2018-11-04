@@ -43,8 +43,8 @@ infix operator <~
 func <~ (bag: DisposeBag, disposable: Disposable) {
     disposable.disposed(by: bag)
 }
-func <~ (bag: DisposeBag, disposables: [Disposable]) {
-    disposables.forEach {
+func <~ (bag: DisposeBag, disposables: [Disposable?]) {
+    disposables.compactMap { $0 }.forEach {
         $0.disposed(by: bag)
     }
 }

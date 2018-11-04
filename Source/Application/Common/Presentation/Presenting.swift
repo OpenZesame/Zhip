@@ -13,7 +13,7 @@ import RxCocoa
 
 protocol Presenting: AnyObject {
 
-    var navigationController: UINavigationController { get }
+    var presenter: Presenter? { get }
     var bag: DisposeBag { get }
 
     func present<P>(_ presentable: P, presentation: PresentationMode, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable
@@ -37,7 +37,7 @@ extension Presenting {
 // MARK: - Private
 private extension Presenting {
     func _present<P, Step>(_ presentable: P, presentation: PresentationMode = .animatedPush, navigation: Driver<Step>, navigationHandler: @escaping (Step) -> Void) where P: Presentable {
-        navigationController.present(presentable, presentation: presentation)
+        presenter?.present(presentable, presentation: presentation)
         navigation.do(onNext: {
             navigationHandler($0)
         })

@@ -16,16 +16,16 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
         case didRemoveWallet
     }
 
-    private let tabBarController = UITabBarController()
-
+    private let tabBarController: UITabBarController
 
     private let services: UseCaseProvider
     private let securePersistence: SecurePersistence
 
-    init(navigationController: UINavigationController, services: UseCaseProvider, securePersistence: SecurePersistence) {
+    init(tabBarController: UITabBarController, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.services = services
         self.securePersistence = securePersistence
-        super.init(navigationController: navigationController)
+        self.tabBarController = tabBarController
+        super.init(presenter: nil)
         setupTabBar()
     }
 
@@ -79,8 +79,6 @@ private extension MainCoordinator {
         }
 
         childCoordinators = [send, receive, settings]
-
-        navigationController.pushViewController(tabBarController, animated: false)
     }
 }
 

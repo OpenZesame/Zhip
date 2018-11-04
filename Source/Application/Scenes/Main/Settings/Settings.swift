@@ -8,4 +8,9 @@
 
 import UIKit
 
-typealias Settings = Scene<SettingsView>
+final class Settings: Scene<SettingsView> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Settings"
+    }
+}

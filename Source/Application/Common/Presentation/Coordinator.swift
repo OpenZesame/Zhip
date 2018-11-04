@@ -11,18 +11,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol BaseCoordinator: AnyObject, Presentable, BaseNavigatable {
+protocol BaseCoordinator: AnyObject, BaseNavigatable {
     func start()
     var bag: DisposeBag { get }
     var childCoordinators: [BaseCoordinator] { set get }
-}
-
-protocol Coordinator: BaseCoordinator, Navigatable, Presenting {
     func start<C>(coordinator: C, transition: CoordinatorTransition, navigationHandler: @escaping (C.Step) -> Void) where C: Coordinator & Navigatable
 }
 
-extension Coordinator {
-    func start<C>(coordinator: C, transition: CoordinatorTransition = .append, navigationHandler: @escaping (C.Step) -> Void) where C: Coordinator & Navigatable {
+protocol Coordinator: BaseCoordinator, Navigatable, Presenting {}
+
+extension BaseCoordinator {
+    func start<C>(coordinator: C, transition: CoordinatorTransition = .append, navigationHandler: @escaping (C.Step) -> Void) where C: BaseCoordinator & Navigatable {
         switch transition {
         case .replace: childCoordinators = [coordinator]
         case .append: childCoordinators.append(coordinator)

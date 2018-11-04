@@ -15,6 +15,7 @@
 		4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE72218369A7002734C8 /* UITextField+Rx.swift */; };
 		4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE9521837F5F002734C8 /* QRCoding.swift */; };
 		4806AE9821838137002734C8 /* EFQRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4806AE9721838137002734C8 /* EFQRCode.framework */; };
+		48348FF2218F1BBC0005FEE1 /* AbstractTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */; };
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
 		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
 		4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */; };
@@ -152,6 +153,7 @@
 		4806AE9721838137002734C8 /* EFQRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EFQRCode.framework; path = Carthage/Build/iOS/EFQRCode.framework; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
 		4811BA2121860B53005FB01C /* Zupreme.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Zupreme.xcconfig; sourceTree = "<group>"; };
+		48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTarget.swift; sourceTree = "<group>"; };
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				48F832EA2185C38400EDAD40 /* ViewModel */,
 				4847EDEA21600777002FF978 /* Presentation */,
 				48C89FDF214331590063B0FA /* Scene.swift */,
+				48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */,
 				489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */,
 				4806AE9521837F5F002734C8 /* QRCoding.swift */,
 			);
@@ -1002,6 +1005,7 @@
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				4806AE702183690B002734C8 /* Receive.swift in Sources */,
 				484F7D7921441BF20023C6D4 /* Send.swift in Sources */,
+				48348FF2218F1BBC0005FEE1 /* AbstractTarget.swift in Sources */,
 				48C89FE6214331AD0063B0FA /* CreateNewWalletCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
 				4847EDEE216007A3002FF978 /* PresentationMode.swift in Sources */,

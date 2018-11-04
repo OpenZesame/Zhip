@@ -18,7 +18,7 @@ final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinat
 
     init(navigationController: UINavigationController, useCase: ChooseWalletUseCase) {
         self.useCase = useCase
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
     override func start() {
