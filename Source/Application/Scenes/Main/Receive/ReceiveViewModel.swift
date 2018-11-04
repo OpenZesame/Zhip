@@ -37,8 +37,19 @@ final class ReceiveViewModel: AbstractViewModel<
         let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }
             .map { QRCoding.image(of: $0, size: input.fromView.qrCodeImageWidth) }
 
+
+        let receivingAddress = wallet.map { $0.address.checksummedHex }
+
+        bag <~ [
+            input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
+                .do(onNext: {
+                    UIPasteboard.general.string = $0
+                    input.fromController.toastSubject.onNext("✅ Copied address")
+                }).drive()
+        ]
+
         return Output(
-            receivingAddress: wallet.map { $0.address.checksummedHex },
+            receivingAddress: receivingAddress,
             qrImage: qrImage
         )
     }
@@ -47,6 +58,7 @@ final class ReceiveViewModel: AbstractViewModel<
 extension ReceiveViewModel {
 
     struct InputFromView {
+        let copyMyAddressTrigger: Driver<Void>
         let qrCodeImageWidth: CGFloat
         let amountToReceive: Driver<String>
     }

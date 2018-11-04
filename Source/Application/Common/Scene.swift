@@ -20,15 +20,9 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
-
     private let viewModel: ViewModel
 
-    override func loadView() {
-        view = View()
-        view.backgroundColor = .white
-        view.bounds = UIScreen.main.bounds
-    }
-
+    // MARK: - Initialization
     required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -37,6 +31,13 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
+
+    // MARK: View Lifecycle
+    override func loadView() {
+        view = View()
+        view.backgroundColor = .white
+        view.bounds = UIScreen.main.bounds
+    }
 }
 
 private extension SceneController {

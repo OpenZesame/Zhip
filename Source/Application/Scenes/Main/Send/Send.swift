@@ -8,4 +8,4 @@
 
 import UIKit
 
-final class Send: Scene<SendView> {}
+typealias Send = Scene<SendView>
