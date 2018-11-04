@@ -17,12 +17,14 @@ final class ReceiveView: ScrollingStackView {
 
     private lazy var walletView = WalletView()
 
+    private lazy var copyMyAddressButton: UIButton = "Copy my address"
     private lazy var amountToReceiveField: UITextField = "Amount"
     private lazy var qrImageView = UIImageView()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
         walletView,
+        copyMyAddressButton,
         amountToReceiveField,
         qrImageView,
         .spacer
@@ -41,6 +43,7 @@ extension ReceiveView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
+            copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
             qrCodeImageWidth: UIScreen.main.bounds.width - 2 * stackViewMargin,
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
