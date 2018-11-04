@@ -8,4 +8,9 @@
 
 import UIKit
 
-typealias Send = Scene<SendView>
+final class Send: Scene<SendView> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Send Zillings"
+    }
+}

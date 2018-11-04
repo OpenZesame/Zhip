@@ -21,7 +21,7 @@ final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator
     init(navigationController: UINavigationController, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
         self.securePersistence = securePersistence
         self.useCase = useCase
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
     override func start() {
@@ -50,7 +50,7 @@ private extension ChooseWalletCoordinator {
     func toCreateNewWallet() {
         start(
             coordinator:
-            CreateNewWalletCoordinator(navigationController: navigationController, useCase: useCase)
+            CreateNewWalletCoordinator(navigationController: presenter as! UINavigationController, useCase: useCase)
         ) { [unowned self] in
             switch $0 {
             case .didCreate(let wallet): self.toMain(wallet: wallet)
@@ -61,7 +61,7 @@ private extension ChooseWalletCoordinator {
     func toRestoreWallet() {
         start(
             coordinator:
-            RestoreWalletCoordinator(navigationController: navigationController, useCase: useCase)
+            RestoreWalletCoordinator(navigationController: presenter as! UINavigationController, useCase: useCase)
         ) { [unowned self] in
             switch $0 {
             case .finishedRestoring(let wallet): self.toMain(wallet: wallet)

@@ -15,11 +15,11 @@ class AbstractCoordinator<Step>: Coordinator {
     var childCoordinators = [BaseCoordinator]()
     let stepper = Stepper<Step>()
     let bag = DisposeBag()
-    let navigationController: UINavigationController
+    let presenter: Presenter?
 
     // MARK: - Initialization
-    init(navigationController: UINavigationController = UINavigationController()) {
-        self.navigationController = navigationController
+    init(presenter: Presenter?) {
+        self.presenter = presenter
     }
 
     // MARK: - Overridable
@@ -31,9 +31,5 @@ class AbstractCoordinator<Step>: Coordinator {
 extension AbstractCoordinator {
     var navigation: Driver<Step> {
         return stepper.navigationSteps
-    }
-
-    var concrete: UIViewController {
-        return navigationController
     }
 }

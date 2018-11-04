@@ -23,7 +23,7 @@ final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Ste
         self.preferences = preferences
         self.securePersistence = securePersistence
         self.useCase = useCase
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
     override func start() {
@@ -74,7 +74,7 @@ private extension OnboardingCoordinator {
         start(
             coordinator:
             ChooseWalletCoordinator(
-                navigationController: navigationController,
+                navigationController: presenter as! UINavigationController,
                 useCase: useCase.makeChooseWalletUseCase(),
                 securePersistence: securePersistence
             )

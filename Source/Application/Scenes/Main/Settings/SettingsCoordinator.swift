@@ -21,7 +21,7 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
 
     init(navigationController: UINavigationController, securePersistence: SecurePersistence) {
         self.securePersistence = securePersistence
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
     override func start() {
@@ -41,7 +41,7 @@ private extension SettingsCoordinator {
         guard let wallet = securePersistence.wallet else { return }
         present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [unowned self] in
             switch $0 {
-            case .userSelectedBackupIsDone: self.navigationController.dismiss(animated: true, completion: nil)
+            case .userSelectedBackupIsDone: self.presenter?.dismiss(animated: true)
             }
         }
     }

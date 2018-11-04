@@ -18,7 +18,7 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
 
     init(navigationController: UINavigationController, wallet: Driver<Wallet>) {
         self.wallet = wallet
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
    override func start() {

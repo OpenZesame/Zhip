@@ -13,14 +13,16 @@ import KeychainSwift
 final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     enum Step {}
 
+
     private weak var window: UIWindow?
     private let services: UseCaseProvider
     private let securePersistence: SecurePersistence
-
+    
     init(window: UIWindow?, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.window = window
         self.services = services
         self.securePersistence = securePersistence
+        super.init(presenter: nil)
     }
 
     override func start() {
@@ -55,10 +57,10 @@ private extension AppCoordinator {
     }
 
     func toMain(wallet: Wallet) {
-        let navigationController = UINavigationController()
-        window?.rootViewController = navigationController
+        let tabBarController = UITabBarController()
+        window?.rootViewController = tabBarController
 
-        let main = MainCoordinator(navigationController: navigationController, services: services, securePersistence: securePersistence)
+        let main = MainCoordinator(tabBarController: tabBarController, services: services, securePersistence: securePersistence)
 
         start(coordinator: main, transition: .replace) { [unowned self] in
             switch $0 {

@@ -10,6 +10,7 @@ import UIKit
 
 protocol Presenter: AnyObject {
     func present(_ presentable: Presentable, presentation: PresentationMode)
+    func dismiss(animated: Bool)
 }
 
 extension UIViewController: Presenter {
@@ -33,5 +34,9 @@ extension UIViewController: Presenter {
                 present(controllerToPresent, animated: animated, completion: nil)
             }
         }
+    }
+
+    func dismiss(animated: Bool) {
+        dismiss(animated: animated, completion: nil)
     }
 }

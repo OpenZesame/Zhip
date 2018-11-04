@@ -21,7 +21,7 @@ final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
     init(navigationController: UINavigationController, wallet: Driver<Wallet>, services: UseCaseProvider) {
         self.wallet = wallet
         self.services = services
-        super.init(navigationController: navigationController)
+        super.init(presenter: navigationController)
     }
 
     override func start() {

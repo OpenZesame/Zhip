@@ -22,6 +22,9 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
     private let bag = DisposeBag()
     private let viewModel: ViewModel
 
+    private let rightBarButtonSubject = PublishSubject<Void>()
+    lazy var rightBarButtonAbtractTarget = AbstractTarget(triggerSubject: rightBarButtonSubject)
+
     // MARK: - Initialization
     required init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -50,6 +53,7 @@ private extension SceneController {
             viewDidLoad: rx.viewDidLoad,
             viewWillAppear: rx.viewWillAppear,
             viewDidAppear: rx.viewDidAppear,
+            rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
             toastSubject: toastSubject
         )
 
