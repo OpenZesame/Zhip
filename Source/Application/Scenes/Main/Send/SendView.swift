@@ -12,7 +12,7 @@ import RxCocoa
 import Zesame
 
 // MARK: - SendView
-final class SendView: ScrollingStackView {
+final class SendView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var balanceView = BalanceView()
 

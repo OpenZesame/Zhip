@@ -8,6 +8,8 @@
 
 import UIKit
 
+protocol PullToRefreshCapable {}
+
 typealias ScrollingStackView = ScrollView & StackViewStyling
 
 class ScrollView: UIScrollView {
@@ -27,7 +29,9 @@ private extension ScrollView {
     func privateSetup() {
         setupContentView()
         contentInsetAdjustmentBehavior = .never
-        setupRefreshControl()
+        if self is PullToRefreshCapable {
+            setupRefreshControl()
+        }
         setup()
     }
 
