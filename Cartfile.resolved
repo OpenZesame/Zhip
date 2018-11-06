@@ -1,6 +1,6 @@
 github "EyreFree/EFQRCode" "4.3.0"
-github "OpenZesame/Zesame" "339034a4e3c850bcff5724692e3e6ec3d7c9c42e"
-github "ReactiveX/RxSwift" "4.2.0"
+github "OpenZesame/Zesame" "9921ec4b27f162e20d39d6be35eb7c3b9eb04be8"
+github "ReactiveX/RxSwift" "4.4.0"
 github "RxSwiftCommunity/RxDataSources" "3.1.0"
 github "Sajjon/EllipticCurveKit" "e15c1377655e5d5867c2044b3d91b093754c9bd8"
 github "Sajjon/SwiftValidator" "5.0.0"
