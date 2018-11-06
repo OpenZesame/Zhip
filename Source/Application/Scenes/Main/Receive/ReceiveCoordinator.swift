@@ -15,9 +15,11 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
     enum Step {}
 
     private let wallet: Driver<Wallet>
+    private let deepLinkGenerator: DeepLinkGenerator
 
-    init(navigationController: UINavigationController, wallet: Driver<Wallet>) {
+    init(navigationController: UINavigationController, wallet: Driver<Wallet>, deepLinkGenerator: DeepLinkGenerator) {
         self.wallet = wallet
+        self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: navigationController)
     }
 
@@ -25,12 +27,23 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
         toReceive()
     }
 }
+private extension ReceiveCoordinator {
+    func share(transaction: Transaction) {
+        let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
+        let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
+        activityVC.modalPresentationStyle = .popover
+        activityVC.popoverPresentationController?.barButtonItem = (presenter as? UINavigationController)?.navigationItem.rightBarButtonItem
+        presenter?.present(activityVC, presentation: PresentationMode.present(animated: true))
+    }
+}
 
 private extension ReceiveCoordinator {
 
     func toReceive() {
-        present(type: Receive.self, viewModel: ReceiveViewModel(wallet: wallet)) {
-            switch $0 {}
+        present(type: Receive.self, viewModel: ReceiveViewModel(wallet: wallet)) { [unowned self] in
+            switch $0 {
+            case .userWouldLikeToReceive(let transactionToReceive): self.share(transaction: transactionToReceive)
+            }
         }
     }
 }

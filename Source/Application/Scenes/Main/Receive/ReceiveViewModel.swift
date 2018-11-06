@@ -12,7 +12,9 @@ import RxCocoa
 import Zesame
 
 // MARK: - ReceiveNavigation
-enum ReceiveNavigation {}
+enum ReceiveNavigation: TrackedUserAction {
+    case userWouldLikeToReceive(transaction: Transaction)
+}
 
 // MARK: - ReceiveViewModel
 final class ReceiveViewModel: AbstractViewModel<
@@ -34,9 +36,9 @@ final class ReceiveViewModel: AbstractViewModel<
             .startWith(0)
             .map { try? Amount(double: $0) }.filterNil()
 
-        let qrImage = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { QRCoding.Transaction(amount: $0, to: $1) }
-            .map { QRCoding.image(of: $0, size: input.fromView.qrCodeImageWidth) }
+        let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { Transaction(amount: $0, to: $1) }
 
+        let qrImage = transactionToReceive.map { QRCoding.image(of: $0, size: input.fromView.qrCodeImageWidth) }
 
         let receivingAddress = wallet.map { $0.address.checksummedHex }
 
@@ -47,8 +49,9 @@ final class ReceiveViewModel: AbstractViewModel<
                     input.fromController.toastSubject.onNext("✅ Copied address")
                 }).drive(),
 
-            input.fromController.rightBarButtonTrigger.do(onNext: {
-                input.fromController.toastSubject.onNext("This will soon be implemented")
+            input.fromController.rightBarButtonTrigger.withLatestFrom(transactionToReceive)
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userWouldLikeToReceive(transaction: $0))
             }).drive()
         ]
 

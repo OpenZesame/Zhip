@@ -23,6 +23,14 @@ func --> <E>(driver: Driver<E>, observer: AnyObserver<E>) -> Disposable {
     return driver.drive(observer)
 }
 
+func --> (driver: Driver<String>, controlProperty: ControlProperty<String>) -> Disposable {
+    return driver.drive(controlProperty)
+}
+
+func --> (driver: Driver<String>, controlProperty: ControlProperty<String?>) -> Disposable {
+    return driver.drive(controlProperty.orEmpty)
+}
+
 func --> (driver: Driver<String>, label: UILabel) -> Disposable {
     return driver --> label.rx.text
 }
@@ -36,6 +44,10 @@ func --> (driver: Driver<String?>, textView: UITextView) -> Disposable {
 }
 
 func --> (driver: Driver<String>, labels: LabelsView) -> Disposable {
+    return driver --> labels.rx.value
+}
+
+func --> (driver: Driver<String?>, labels: LabelsView) -> Disposable {
     return driver --> labels.rx.value
 }
 

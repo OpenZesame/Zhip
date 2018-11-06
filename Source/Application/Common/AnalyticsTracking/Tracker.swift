@@ -39,7 +39,7 @@ struct Tracker: Tracking {
 
     private let preferences: Preferences
 
-    init(preferences: Preferences) {
+    init(preferences: Preferences = KeyValueStore(UserDefaults.standard)) {
         self.preferences = preferences
     }
 

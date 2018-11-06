@@ -11,11 +11,18 @@ import Zesame
 import KeychainSwift
 import IQKeyboardManagerSwift
 
+let log = Logger()
+
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
 
-    private lazy var appCoordinator = AppCoordinator(window: window, services: DefaultUseCaseProvider.shared, securePersistence: KeyValueStore(KeychainSwift()))
+    private lazy var appCoordinator = AppCoordinator(
+        window: window,
+        deepLinkHandler: DeepLinkHandler(),
+        services: DefaultUseCaseProvider.shared,
+        securePersistence: KeyValueStore(KeychainSwift())
+    )
 }
 
 extension AppDelegate: UIApplicationDelegate {
@@ -25,5 +32,9 @@ extension AppDelegate: UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
 
         return true
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return appCoordinator.handleDeepLink(url, options: options)
     }
 }

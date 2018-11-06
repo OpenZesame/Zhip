@@ -8,20 +8,10 @@
 
 import UIKit
 import EFQRCode
-import Zesame
 
 final class QRCoding {}
 
 extension QRCoding {
-    struct Transaction: Codable {
-        let amount: Double
-        let recipient: Address
-
-        init(amount: Amount, to recipient: Address) {
-            self.amount = amount.amount
-            self.recipient = recipient
-        }
-    }
 
     static func image(of transaction: Transaction, size: CGFloat) -> UIImage? {
         guard
