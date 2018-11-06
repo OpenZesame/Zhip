@@ -47,6 +47,10 @@ func --> (driver: Driver<String>, labels: LabelsView) -> Disposable {
     return driver --> labels.rx.value
 }
 
+func --> (driver: Driver<String?>, labels: LabelsView) -> Disposable {
+    return driver --> labels.rx.value
+}
+
 infix operator <~
 func <~ (bag: DisposeBag, disposable: Disposable) {
     disposable.disposed(by: bag)
