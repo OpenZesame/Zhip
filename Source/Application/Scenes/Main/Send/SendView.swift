@@ -25,7 +25,8 @@ final class SendView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", isSecureTextEntry: true).make()
     private lazy var sendButton = UIButton.Style("Send", isEnabled: false).make()
-    private lazy var transactionIdLabels = LabelsView(titleStyle: "Transaction Id", valueStyle: "No tx")
+    private lazy var transactionIdLabels = LabelsView(titleStyle: "Transaction Id")
+    private lazy var openTransactionInfoInBrowserButton = UIButton.Style("Transaction Info", textColor: .white, colorNormal: .blue, isEnabled: false).make()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -37,6 +38,7 @@ final class SendView: ScrollingStackView, PullToRefreshCapable {
         encryptionPassphraseField,
         sendButton,
         transactionIdLabels,
+        openTransactionInfoInBrowserButton,
         .spacer
     ]
 }
@@ -53,7 +55,8 @@ extension SendView: ViewModelled {
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
             gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
             gasPrice: gasPriceField.rx.text.orEmpty.asDriver(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver()
+            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
+            openTransactionDetailsInBrowserTrigger: openTransactionInfoInBrowserButton.rx.tap.asDriver()
         )
     }
 
@@ -67,7 +70,8 @@ extension SendView: ViewModelled {
             viewModel.balance                   --> balanceView.rx.balance,
             viewModel.nonce                     --> balanceView.rx.nonce,
             viewModel.isRecipientAddressValid   --> recipientAddressField.rx.isValid,
-            viewModel.transactionId             --> transactionIdLabels
+            viewModel.transactionId             --> transactionIdLabels,
+            viewModel.isTxInfoButtonEnabled     --> openTransactionInfoInBrowserButton.rx.isEnabled
         ]
     }
 }

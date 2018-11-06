@@ -39,11 +39,19 @@ private extension SendCoordinator {
             deepLinkedTransaction: deepLinkTransactionSubject.asObservable()
         )
 
-        present(type: Send.self, viewModel: viewModel) {
+        present(type: Send.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
             case .userInitiatedTransaction: break;
+            case .userSelectedSeeTransactionDetailsInBrowser(let transactionId): self.openBrowser(viewTxDetailsFor: transactionId)
+
             }
         }
+    }
+
+    func openBrowser(viewTxDetailsFor transactionId: String) {
+        let baseURL = "https://dev-test-explorer.aws.z7a.xyz/"
+        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else { return log.warning("failed to create url") }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 
