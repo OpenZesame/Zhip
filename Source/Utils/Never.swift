@@ -11,3 +11,7 @@ import Foundation
 var interfaceBuilderSucks: Never {
     fatalError("interfaceBuilderSucks")
 }
+
+func incorrectImplementation(_ message: String) -> Never {
+    fatalError("Incorrect implementation - \(message)")
+}

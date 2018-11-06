@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+
 // MARK: - SendView
 final class SendView: ScrollingStackView, PullToRefreshCapable {
 
@@ -60,6 +61,8 @@ extension SendView: ViewModelled {
 
         return [
             viewModel.isFetchingBalance         --> rx.isRefreshing,
+            viewModel.amount                    --> amountToSendField.rx.text,
+            viewModel.recipient                 --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled       --> sendButton.rx.isEnabled,
             viewModel.balance                   --> balanceView.rx.balance,
             viewModel.nonce                     --> balanceView.rx.nonce,

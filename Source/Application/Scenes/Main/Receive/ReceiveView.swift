@@ -18,7 +18,7 @@ final class ReceiveView: ScrollingStackView {
     private lazy var walletView = WalletView()
 
     private lazy var copyMyAddressButton: UIButton = "Copy my address"
-    private lazy var amountToReceiveField: UITextField = "Amount"
+    private lazy var amountToReceiveField = UITextField.Style("Amount", text: "237").make()
     private lazy var qrImageView = UIImageView()
 
     // MARK: - StackViewStyling

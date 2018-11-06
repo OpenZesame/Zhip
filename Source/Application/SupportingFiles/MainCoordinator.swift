@@ -20,9 +20,11 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 
     private let services: UseCaseProvider
     private let securePersistence: SecurePersistence
+    private let deepLinkGenerator: DeepLinkGenerator
 
-    init(tabBarController: UITabBarController, services: UseCaseProvider, securePersistence: SecurePersistence) {
+    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.services = services
+        self.deepLinkGenerator = deepLinkGenerator
         self.securePersistence = securePersistence
         self.tabBarController = tabBarController
         super.init(presenter: nil)
@@ -33,7 +35,6 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
         toSend()
     }
 }
-
 
 // MARK: - Private
 private extension MainCoordinator {
@@ -56,7 +57,8 @@ private extension MainCoordinator {
 
         let receive = ReceiveCoordinator(
             navigationController: receiveNavigationController,
-            wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil()
+            wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil(),
+            deepLinkGenerator: deepLinkGenerator
         )
 
         let settings = SettingsCoordinator(
@@ -69,7 +71,7 @@ private extension MainCoordinator {
         }
 
         start(coordinator: receive, transition: .doNothing) {
-            switch $0 {} // nothing to do yet
+            switch $0 {}
         }
 
         start(coordinator: settings, transition: .doNothing) { [unowned stepper] in
@@ -82,18 +84,22 @@ private extension MainCoordinator {
     }
 }
 
-// MARK: - Navigation
-private extension MainCoordinator {
+// MARK: - Deep Link Navigation
+extension MainCoordinator {
 
-    func toSend() {
+    func toSend(prefilTransaction transaction: Transaction? = nil) {
         tabBarController.selectedIndex = 0
+        guard let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) else { return }
+        sendCoordinator.toSend(prefilTransaction: transaction)
     }
+}
 
-    func toReceive() {
-        tabBarController.selectedIndex = 1
-    }
-
-    func toSettings() {
-        tabBarController.selectedIndex = 2
+extension BaseCoordinator {
+    func anyCoordinatorOf<C>(type: C.Type) -> C? where C: BaseCoordinator {
+        guard let coordinator = childCoordinators.compactMap({ $0 as? C }).first else {
+            log.error("Coordinator has no child coordinator of type: `\(String(describing: type))`")
+            return nil
+        }
+        return coordinator
     }
 }

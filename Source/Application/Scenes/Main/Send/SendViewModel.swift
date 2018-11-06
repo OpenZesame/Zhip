@@ -24,10 +24,12 @@ final class SendViewModel: AbstractViewModel<
 > {
     private let useCase: TransactionsUseCase
     private let wallet: Driver<Wallet>
+    private let deepLinkedTransaction: Driver<Transaction>
 
-    init(wallet: Driver<Wallet>, useCase: TransactionsUseCase) {
+    init(wallet: Driver<Wallet>, useCase: TransactionsUseCase, deepLinkedTransaction: Observable<Transaction>) {
         self.useCase = useCase
         self.wallet = wallet
+        self.deepLinkedTransaction = deepLinkedTransaction.asDriverOnErrorReturnEmpty()
     }
 
     override func transform(input: Input) -> Output {
@@ -55,15 +57,19 @@ final class SendViewModel: AbstractViewModel<
 
         let balance = Driver.merge(zeroBalance, walletBalance)
 
-        let recipient = fromView.recepientAddress.map {
+        let recipientFromField = fromView.recepientAddress.map {
             try? Address(hexString: $0)
         }
 
-        let amount = fromView.amountToSend.map { Double($0) }.filterNil()
+        let recipientFromDeepLinkedTransaction = deepLinkedTransaction.map { $0.recipient }
+
+        let recipient = Driver.merge(recipientFromField.filterNil(), recipientFromDeepLinkedTransaction)
+        let amountFromDeepLinkedTransaction = deepLinkedTransaction.map { $0.amount }
+        let amount = Driver.merge(fromView.amountToSend.map { Double($0) }.filterNil(), amountFromDeepLinkedTransaction)
         let gasLimit = fromView.gasLimit.map { Double($0) }.filterNil()
         let gasPrice = fromView.gasPrice.map { Double($0) }.filterNil()
 
-        let payment = Driver.combineLatest(recipient.filterNil(), amount, gasLimit, gasPrice, balanceResponse) {
+        let payment = Driver.combineLatest(recipient, amount, gasLimit, gasPrice, balanceResponse) {
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
         }
 
@@ -90,12 +96,16 @@ final class SendViewModel: AbstractViewModel<
 
         let isSendButtonEnabled: Driver<Bool> = Driver.combineLatest(payment.map { $0 != nil }, isEncryptionPassphraseCorrect) { $0 && $1 }
 
+        let isRecipientAddressValid = Driver.merge(recipientFromField.map { $0 != nil }, recipientFromDeepLinkedTransaction.map { _ in true })
+
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
             balance: balance.map { "\($0.balance.amount) ZILs" },
             nonce: balance.map { "\($0.nonce.nonce)" },
-            isRecipientAddressValid: recipient.map { $0 != nil },
+            amount: amountFromDeepLinkedTransaction.map { "\($0)" },
+            recipient: recipient.map { $0.checksummedHex },
+            isRecipientAddressValid: isRecipientAddressValid,
             transactionId: transactionId
         )
     }
@@ -119,6 +129,8 @@ extension SendViewModel {
         let isSendButtonEnabled: Driver<Bool>
         let balance: Driver<String>
         let nonce: Driver<String>
+        let amount: Driver<String>
+        let recipient: Driver<String>
         let isRecipientAddressValid: Driver<Bool>
         let transactionId: Driver<String>
     }

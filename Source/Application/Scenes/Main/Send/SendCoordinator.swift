@@ -17,6 +17,7 @@ final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
 
     private let wallet: Driver<Wallet>
     private let services: UseCaseProvider
+    private let deepLinkTransactionSubject = PublishSubject<Transaction>()
 
     init(navigationController: UINavigationController, wallet: Driver<Wallet>, services: UseCaseProvider) {
         self.wallet = wallet
@@ -30,12 +31,30 @@ final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
 }
 
 private extension SendCoordinator {
-
     func toSend() {
-        present(type: Send.self, viewModel: SendViewModel(wallet: wallet, useCase: services.makeTransactionsUseCase())) {
+
+        let viewModel = SendViewModel(
+            wallet: wallet,
+            useCase: services.makeTransactionsUseCase(),
+            deepLinkedTransaction: deepLinkTransactionSubject.asObservable()
+        )
+
+        present(type: Send.self, viewModel: viewModel) {
             switch $0 {
             case .userInitiatedTransaction: break;
             }
+        }
+    }
+}
+
+extension SendCoordinator {
+
+    func toSend(prefilTransaction transaction: Transaction?) {
+        if let transaction = transaction {
+            deepLinkTransactionSubject.onNext(transaction)
+            // Right now we only have the Send Scene in this coordinator, so no need to focus the ViewController.
+        } else {
+            toSend()
         }
     }
 }

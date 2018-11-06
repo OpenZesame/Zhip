@@ -13,16 +13,18 @@ import KeychainSwift
 final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     enum Step {}
 
-
     private weak var window: UIWindow?
     private let services: UseCaseProvider
     private let securePersistence: SecurePersistence
-    
-    init(window: UIWindow?, services: UseCaseProvider, securePersistence: SecurePersistence) {
+    private let deepLinkHandler: DeepLinkHandler
+
+    init(window: UIWindow?, deepLinkHandler: DeepLinkHandler, services: UseCaseProvider, securePersistence: SecurePersistence) {
         self.window = window
+        self.deepLinkHandler = deepLinkHandler
         self.services = services
         self.securePersistence = securePersistence
         super.init(presenter: nil)
+        setupDeepLinkNavigationHandling()
     }
 
     override func start() {
@@ -34,6 +36,22 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     }
 }
 
+extension AppCoordinator {
+    /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
+    func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+        return deepLinkHandler.handle(url: url, options: options)
+    }
+
+    func setupDeepLinkNavigationHandling() {
+        let deepLinkStepper = Stepper<DeepLink>()
+        deepLinkHandler.set(stepper: deepLinkStepper)
+        bag <~ deepLinkStepper.navigationSteps.do(onNext: { [unowned self] in
+            switch $0 {
+            case .send(let transaction): self.toSend(prefilTransaction: transaction)
+            }
+        }).drive()
+    }
+}
 
 // MARK: - Private
 private extension AppCoordinator {
@@ -60,12 +78,25 @@ private extension AppCoordinator {
         let tabBarController = UITabBarController()
         window?.rootViewController = tabBarController
 
-        let main = MainCoordinator(tabBarController: tabBarController, services: services, securePersistence: securePersistence)
+        let main = MainCoordinator(
+            tabBarController: tabBarController,
+            deepLinkGenerator: DeepLinkGenerator(),
+            services: services,
+            securePersistence: securePersistence
+        )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
             switch $0 {
             case .didRemoveWallet: self.toOnboarding()
             }
         }
+    }
+}
+
+// MARK: Private DeepLink navigation
+private extension AppCoordinator {
+    func toSend(prefilTransaction transaction: Transaction) {
+        guard let mainCoordinator = anyCoordinatorOf(type: MainCoordinator.self) else { return }
+        mainCoordinator.toSend(prefilTransaction: transaction)
     }
 }

@@ -123,6 +123,13 @@
 		48E0022B217A61E40077E5CF /* WalletBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0022A217A61E40077E5CF /* WalletBalanceView.swift */; };
 		48E0022D217A62170077E5CF /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E0022C217A62170077E5CF /* BalanceView.swift */; };
 		48E0022F217A65DD0077E5CF /* KeychainSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E0022E217A65DD0077E5CF /* KeychainSwift.framework */; };
+		48F37D412190BA93008A2DA4 /* DeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D402190BA93008A2DA4 /* DeepLinkHandler.swift */; };
+		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
+		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
+		48F37D6821918EBD008A2DA4 /* DeepLinkGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6721918EBD008A2DA4 /* DeepLinkGenerator.swift */; };
+		48F37D6A21918ED2008A2DA4 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6921918ED2008A2DA4 /* DeepLink.swift */; };
+		48F37D6C21918EF8008A2DA4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6B21918EF8008A2DA4 /* Logger.swift */; };
+		48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* Transaction.swift */; };
 		48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832DE2184D78D00EDAD40 /* Navigatable.swift */; };
 		48F832E12184DCD200EDAD40 /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */; };
 		48F832E32184DD5700EDAD40 /* Presenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E22184DD5700EDAD40 /* Presenting.swift */; };
@@ -272,6 +279,13 @@
 		48E0022A217A61E40077E5CF /* WalletBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalanceView.swift; sourceTree = "<group>"; };
 		48E0022C217A62170077E5CF /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		48E0022E217A65DD0077E5CF /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
+		48F37D402190BA93008A2DA4 /* DeepLinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
+		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
+		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
+		48F37D6721918EBD008A2DA4 /* DeepLinkGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkGenerator.swift; sourceTree = "<group>"; };
+		48F37D6921918ED2008A2DA4 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		48F37D6B21918EF8008A2DA4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		48F37D6D21918F6F008A2DA4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		48F832DE2184D78D00EDAD40 /* Navigatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
 		48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
 		48F832E22184DD5700EDAD40 /* Presenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenting.swift; sourceTree = "<group>"; };
@@ -411,6 +425,9 @@
 				48AC6CC62145AF0A00B4D036 /* Coordinator.swift */,
 				48F832E62184DDE300EDAD40 /* Presenter.swift */,
 				48F832E42184DDBD00EDAD40 /* Stepper.swift */,
+				48F37D402190BA93008A2DA4 /* DeepLinkHandler.swift */,
+				48F37D6721918EBD008A2DA4 /* DeepLinkGenerator.swift */,
+				48F37D6921918ED2008A2DA4 /* DeepLink.swift */,
 				48F832E22184DD5700EDAD40 /* Presenting.swift */,
 				48F832E02184DCD200EDAD40 /* AbstractCoordinator.swift */,
 				4847EDEB2160078C002FF978 /* Presentable.swift */,
@@ -546,6 +563,7 @@
 				48AC6CB8214533C500B4D036 /* KeyValueStore+KeychainKey.swift */,
 				48A63FFE2186237F00B08C67 /* ConfigurationDetection.swift */,
 				48C4442F218C5F4C00C0D201 /* Enum+Reflection.swift */,
+				48F37D6B21918EF8008A2DA4 /* Logger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -723,6 +741,7 @@
 				48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */,
 				489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */,
 				4806AE9521837F5F002734C8 /* QRCoding.swift */,
+				48F37D6D21918F6F008A2DA4 /* Transaction.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -819,7 +838,9 @@
 			isa = PBXGroup;
 			children = (
 				48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */,
+				48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */,
 				48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */,
+				48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -996,9 +1017,11 @@
 				48C89FE0214331590063B0FA /* Scene.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
 				48E0022B217A61E40077E5CF /* WalletBalanceView.swift in Sources */,
+				48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */,
 				48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */,
 				4850A40A214C124400EBB85B /* ViewStyling.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
+				48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */,
 				48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */,
 				48C8A0132143CF6C0063B0FA /* RestoreWallet.swift in Sources */,
 				48607BEE215D2C5C001AD0D0 /* SettingsCoordinator.swift in Sources */,
@@ -1036,6 +1059,7 @@
 				4847EDFE21611B4A002FF978 /* Preferences.swift in Sources */,
 				484F7D7A21441BF20023C6D4 /* SendViewModel.swift in Sources */,
 				489FA4B1217FAD8C00B297D1 /* WalletView.swift in Sources */,
+				48F37D6A21918ED2008A2DA4 /* DeepLink.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				48AC6CC92145AF1B00B4D036 /* MainCoordinator.swift in Sources */,
@@ -1071,6 +1095,7 @@
 				48F832E12184DCD200EDAD40 /* AbstractCoordinator.swift in Sources */,
 				48C8A001214335E70063B0FA /* AppCoordinator.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
+				48F37D412190BA93008A2DA4 /* DeepLinkHandler.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				48C44430218C5F4C00C0D201 /* Enum+Reflection.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
@@ -1085,12 +1110,15 @@
 				48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */,
 				4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */,
 				48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */,
+				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
 				48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */,
+				48F37D6C21918EF8008A2DA4 /* Logger.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
 				48F832E52184DDBD00EDAD40 /* Stepper.swift in Sources */,
 				483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */,
 				4847EDDE216006C7002FF978 /* WarningERC20.swift in Sources */,
+				48F37D6821918EBD008A2DA4 /* DeepLinkGenerator.swift in Sources */,
 				48C89FCD21432E2E0063B0FA /* ChooseWalletViewModel.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
 				4850A40C214C125400EBB85B /* ViewStyle.swift in Sources */,
@@ -1133,7 +1161,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1141,7 +1168,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
