@@ -32,7 +32,7 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
     }
 
     override func start() {
-        tabBarController.selectedIndex = 0
+        focusSendTab()
     }
 }
 
@@ -82,14 +82,18 @@ private extension MainCoordinator {
 
         childCoordinators = [send, receive, settings]
     }
+
+    private func focusSendTab() {
+        tabBarController.selectedIndex = 0
+    }
 }
 
 // MARK: - Deep Link Navigation
 extension MainCoordinator {
 
     func toSend(prefilTransaction transaction: Transaction) {
-        tabBarController.selectedIndex = 0
         guard let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) else { return }
+        focusSendTab()
         sendCoordinator.toSend(prefilTransaction: transaction)
     }
 }
