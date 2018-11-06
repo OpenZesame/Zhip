@@ -32,7 +32,7 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
     }
 
     override func start() {
-        toSend()
+        tabBarController.selectedIndex = 0
     }
 }
 
@@ -87,19 +87,9 @@ private extension MainCoordinator {
 // MARK: - Deep Link Navigation
 extension MainCoordinator {
 
-    func toSend(prefilTransaction transaction: Transaction? = nil) {
+    func toSend(prefilTransaction transaction: Transaction) {
         tabBarController.selectedIndex = 0
         guard let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) else { return }
         sendCoordinator.toSend(prefilTransaction: transaction)
-    }
-}
-
-extension BaseCoordinator {
-    func anyCoordinatorOf<C>(type: C.Type) -> C? where C: BaseCoordinator {
-        guard let coordinator = childCoordinators.compactMap({ $0 as? C }).first else {
-            log.error("Coordinator has no child coordinator of type: `\(String(describing: type))`")
-            return nil
-        }
-        return coordinator
     }
 }

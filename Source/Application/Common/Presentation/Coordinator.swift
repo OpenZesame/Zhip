@@ -18,6 +18,16 @@ protocol BaseCoordinator: AnyObject, BaseNavigatable {
     func start<C>(coordinator: C, transition: CoordinatorTransition, navigationHandler: @escaping (C.Step) -> Void) where C: Coordinator & Navigatable
 }
 
+extension BaseCoordinator {
+    func anyCoordinatorOf<C>(type: C.Type) -> C? where C: BaseCoordinator {
+        guard let coordinator = childCoordinators.compactMap({ $0 as? C }).first else {
+            log.error("Coordinator has no child coordinator of type: `\(String(describing: type))`")
+            return nil
+        }
+        return coordinator
+    }
+}
+
 protocol Coordinator: BaseCoordinator, Navigatable, Presenting {}
 
 extension BaseCoordinator {
