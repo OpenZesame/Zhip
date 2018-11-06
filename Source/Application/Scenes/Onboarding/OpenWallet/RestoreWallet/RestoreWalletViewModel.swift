@@ -32,14 +32,16 @@ final class RestoreWalletViewModel: AbstractViewModel<
     override func transform(input: Input) -> Output {
         
         let fromView = input.fromView
+
+        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
         
         let validEncryptionPassphrase: Driver<String?> = Observable.combineLatest(
             fromView.encryptionPassphrase.asObservable(),
             fromView.confirmEncryptionPassphrase.asObservable()
         ) {
-            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1)
-        }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
-        
+            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1, mode: encryptionPassphraseMode)
+            }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
+
         let validPrivateKey: Driver<String?> = fromView.privateKey.map {
             guard
                 case let key = $0,
@@ -48,12 +50,14 @@ final class RestoreWalletViewModel: AbstractViewModel<
             return key
         }
         
-        let keyRestorationKeystore: Driver<KeyRestoration?> = Driver.combineLatest(fromView.keystoreText, validEncryptionPassphrase.filterNil()) {
-            try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: $1)
+        let keyRestorationKeystore: Driver<KeyRestoration?> = Driver.combineLatest(fromView.keystoreText, validEncryptionPassphrase) {
+            guard let newEncryptionPassphrase = $1 else { return nil }
+            return try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: newEncryptionPassphrase)
         }
         
-        let keyRestorationPrivateKey: Driver<KeyRestoration?> = Driver.combineLatest(validPrivateKey.filterNil(), validEncryptionPassphrase.filterNil()) {
-            try? KeyRestoration(privateKeyHexString: $0, encryptBy: $1)
+        let keyRestorationPrivateKey: Driver<KeyRestoration?> = Driver.combineLatest(validPrivateKey, validEncryptionPassphrase) {
+            guard let privateKeyHex = $0, let newEncryptionPassphrase = $1 else { return nil }
+            return try? KeyRestoration(privateKeyHexString: privateKeyHex, encryptBy: newEncryptionPassphrase)
         }
         
         let keyRestoration = Driver.merge(keyRestorationKeystore, keyRestorationPrivateKey)
@@ -78,6 +82,7 @@ final class RestoreWalletViewModel: AbstractViewModel<
         ) { $0 && $1}
 
         return Output(
+            encryptionPassphrasePlaceholder: .just("Encryption passphrase (min \(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)) chars)"),
             isRestoreButtonEnabled: isRestoreButtonEnabled
         )
     }
@@ -97,6 +102,7 @@ extension RestoreWalletViewModel {
     }
     
     struct Output {
+        let encryptionPassphrasePlaceholder: Driver<String>
         let isRestoreButtonEnabled: Driver<Bool>
     }
 }

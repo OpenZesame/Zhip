@@ -13,14 +13,21 @@ struct WalletEncryptionPassphrase {
         case passphrasesDoesNotMatch
         case passphraseIsTooShort
     }
-    static var minimumLength: Int {
-        guard isDebug == false else { return 3 }
-        return 8
+
+    enum Mode: Int {
+        case new = 8
+        case restore = 2
     }
+
+    static func minimumLenght(mode: Mode) -> Int {
+        return mode.rawValue
+    }
+
     let validPassphrase: String
-    init(passphrase: String, confirm: String) throws {
+    init(passphrase: String, confirm: String, mode: Mode) throws {
+        let minLength = mode.rawValue
         guard confirm == passphrase else { throw Error.passphrasesDoesNotMatch }
-        guard passphrase.count >= WalletEncryptionPassphrase.minimumLength else { throw Error.passphraseIsTooShort }
+        guard passphrase.count >= minLength else { throw Error.passphraseIsTooShort }
         validPassphrase = passphrase
     }
 }
