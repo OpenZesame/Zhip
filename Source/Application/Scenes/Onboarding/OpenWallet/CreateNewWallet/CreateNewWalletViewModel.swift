@@ -33,14 +33,14 @@ AbstractViewModel<
     override func transform(input: Input) -> Output {
         let fromView = input.fromView
 
-        let validEncryptionPassphrase: Driver<String?> = Driver.combineLatest(fromView.newEncryptionPassphrase, fromView.confirmedNewEncryptionPassphrase) {
-            guard
-                $0 == $1,
-                case let newPassphrase = $0,
-                newPassphrase.count >= 3
-                else { return nil }
-            return newPassphrase
-        }
+        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .new
+
+        let validEncryptionPassphrase: Driver<String?> = Observable.combineLatest(
+            fromView.newEncryptionPassphrase.asObservable(),
+            fromView.confirmedNewEncryptionPassphrase.asObservable()
+        ) {
+            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1, mode: encryptionPassphraseMode)
+            }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
 
         let isCreateWalletButtonEnabled = Driver.combineLatest(validEncryptionPassphrase.map { $0 != nil }, input.fromView.understandsRisk) { $0 && $1 }
 
@@ -55,6 +55,7 @@ AbstractViewModel<
 
 
         return Output(
+            encryptionPassphrasePlaceholder: .just("Encryption passphrase (min \(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)) chars)"),
             isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
         )
     }
@@ -71,6 +72,7 @@ extension CreateNewWalletViewModel {
     }
 
     struct Output {
+        let encryptionPassphrasePlaceholder: Driver<String>
         let isCreateWalletButtonEnabled: Driver<Bool>
     }
 }

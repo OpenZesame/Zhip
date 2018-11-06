@@ -8,4 +8,9 @@
 
 import Foundation
 
-typealias CreateNewWallet = Scene<CreateNewWalletView>
+final class CreateNewWallet: Scene<CreateNewWalletView> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Choose new passphrase"
+    }
+}

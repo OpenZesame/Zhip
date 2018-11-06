@@ -13,8 +13,8 @@ final class RestoreWalletView: ScrollingStackView {
 
     private lazy var privateKeyField = UITextField.Style("Private key", isSecureTextEntry: true).make()
     private lazy var keystoreLabel: UILabel = "Or paste keystore (JSON) below"
-    private lazy var keystoreTextView = UITextView.Style("", height: 50).make()
-    private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", isSecureTextEntry: true).make()
+    private lazy var keystoreTextView = UITextView.Style("", height: 200).make()
+    private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
     private lazy var confirmEncryptionPassphraseField = UITextField.Style("Confirm encryption passphrase", isSecureTextEntry: true).make()
     private lazy var restoreWalletButton = UIButton.Style("Restore Wallet", isEnabled: false).make()
 
@@ -31,23 +31,6 @@ final class RestoreWalletView: ScrollingStackView {
     override func setup() {
         keystoreTextView.addBorder()
     }
-}
-
-//protocol Validatable: AnyObject {
-//
-//}
-//
-//class Validator {
-//    private weak var validatable: Validatable?
-//    init(validatable: Validatable) {
-//        self.validatable = validatable
-//    }
-//}
-
-import SwiftValidator
-
-struct ValidationErrors {
-    let errors: [(UIView & Validatable, ValidationError)]
 }
 
 import RxCocoa
@@ -71,6 +54,7 @@ extension RestoreWalletView: ViewModelled {
 
     func populate(with viewModel: RestoreWalletViewModel.Output) -> [Disposable] {
         return [
+            viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
             viewModel.isRestoreButtonEnabled --> restoreWalletButton.rx.isEnabled
         ]
     }
@@ -86,9 +70,26 @@ private extension RestoreWalletView {
     func markFieldInvalids(errors: ValidationErrors) {
         for (view, error) in errors.errors {
             view.addBorder(.error)
-            print("🚨 error in input: \(error)")
+            log.error("Bad input: \(error)")
 //            error.errorLabel?.text = error.errorMessage // works if you added labels
 //            error.errorLabel?.isHidden = false
         }
     }
+}
+
+//protocol Validatable: AnyObject {
+//
+//}
+//
+//class Validator {
+//    private weak var validatable: Validatable?
+//    init(validatable: Validatable) {
+//        self.validatable = validatable
+//    }
+//}
+
+import SwiftValidator
+
+struct ValidationErrors {
+    let errors: [(UIView & Validatable, ValidationError)]
 }

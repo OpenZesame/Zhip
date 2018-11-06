@@ -8,4 +8,9 @@
 
 import Foundation
 
-typealias RestoreWallet = Scene<RestoreWalletView>
+final class RestoreWallet: Scene<RestoreWalletView> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Restore wallet"
+    }
+}
