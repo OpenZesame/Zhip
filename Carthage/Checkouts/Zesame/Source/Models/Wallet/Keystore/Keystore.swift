@@ -20,7 +20,7 @@ public struct Keystore {
 }
 
 public extension Keystore {
-    static var minumumPasshraseLength: Int { return 8 }
+    static var minumumPasshraseLength: Int { return 2 }
 }
 
 extension Keystore {
