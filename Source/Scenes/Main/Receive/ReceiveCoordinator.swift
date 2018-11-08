@@ -27,16 +27,9 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
         toReceive()
     }
 }
-private extension ReceiveCoordinator {
-    func share(transaction: Transaction) {
-        let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
-        let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
-        activityVC.modalPresentationStyle = .popover
-        activityVC.popoverPresentationController?.barButtonItem = (presenter as? UINavigationController)?.navigationItem.rightBarButtonItem
-        presenter?.present(activityVC, presentation: PresentationMode.present(animated: true))
-    }
-}
 
+
+// MARK: - Navigate
 private extension ReceiveCoordinator {
 
     func toReceive() {
@@ -45,5 +38,16 @@ private extension ReceiveCoordinator {
             case .userWouldLikeToReceive(let transactionToReceive): self.share(transaction: transactionToReceive)
             }
         }
+    }
+}
+
+// MARK: - Share
+private extension ReceiveCoordinator {
+    func share(transaction: Transaction) {
+        let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
+        let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
+        activityVC.modalPresentationStyle = .popover
+        activityVC.popoverPresentationController?.barButtonItem = (presenter as? UINavigationController)?.navigationItem.rightBarButtonItem
+        presenter?.present(activityVC, presentation: PresentationMode.present(animated: true))
     }
 }

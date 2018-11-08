@@ -38,12 +38,7 @@ extension RestoreWalletView: ViewModelled {
     typealias ViewModel = RestoreWalletViewModel
     var inputFromView: InputFromView {
 
-        let validator = Validator()
-        validator.registerField(encryptionPassphraseField, rules: [RequiredRule(), MinLengthRule(length: 9)])
-        validator.registerField(confirmEncryptionPassphraseField, rules: [ConfirmationRule(confirmField: encryptionPassphraseField)])
-
         return InputFromView(
-            validator: validator,
             privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
             keystoreText: keystoreTextView.rx.text.orEmpty.asDriver(),
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
@@ -55,41 +50,7 @@ extension RestoreWalletView: ViewModelled {
     func populate(with viewModel: RestoreWalletViewModel.Output) -> [Disposable] {
         return [
             viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
-            viewModel.isRestoreButtonEnabled --> restoreWalletButton.rx.isEnabled
+            viewModel.isRestoreButtonEnabled            --> restoreWalletButton.rx.isEnabled
         ]
     }
-
-    var errorBinder: Binder<ValidationErrors> {
-        return Binder<ValidationErrors>(self) {
-            $0.markFieldInvalids(errors: $1)
-        }
-    }
-}
-
-private extension RestoreWalletView {
-    func markFieldInvalids(errors: ValidationErrors) {
-        for (view, error) in errors.errors {
-            view.addBorder(.error)
-            log.error("Bad input: \(error)")
-//            error.errorLabel?.text = error.errorMessage // works if you added labels
-//            error.errorLabel?.isHidden = false
-        }
-    }
-}
-
-//protocol Validatable: AnyObject {
-//
-//}
-//
-//class Validator {
-//    private weak var validatable: Validatable?
-//    init(validatable: Validatable) {
-//        self.validatable = validatable
-//    }
-//}
-
-import SwiftValidator
-
-struct ValidationErrors {
-    let errors: [(UIView & Validatable, ValidationError)]
 }

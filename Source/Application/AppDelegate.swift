@@ -15,7 +15,7 @@ class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
 
     private lazy var appCoordinator = AppCoordinator(
-        window: window,
+        window: window!,
         deepLinkHandler: DeepLinkHandler(),
         useCaseProvider: DefaultUseCaseProvider.shared
     )

@@ -29,7 +29,7 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
     }
 }
 
-// MARK: - Private
+// MARK: - Navigate
 private extension SettingsCoordinator {
 
     func toChooseWallet() {

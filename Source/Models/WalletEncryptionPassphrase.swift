@@ -10,17 +10,9 @@ import Foundation
 import Zesame
 
 struct WalletEncryptionPassphrase {
-    enum Error: Swift.Error {
-        case passphrasesDoesNotMatch
-        case passphraseIsTooShort
-    }
-
-    enum Mode {
-        case new
-        case restore
-    }
 
     let validPassphrase: String
+    
     init(passphrase: String, confirm: String, mode: Mode) throws {
         let minLength = mode.mimimumPassphraseLength
         guard confirm == passphrase else { throw Error.passphrasesDoesNotMatch }
@@ -32,6 +24,20 @@ struct WalletEncryptionPassphrase {
 extension WalletEncryptionPassphrase {
     static func minimumLenght(mode: Mode) -> Int {
         return mode.mimimumPassphraseLength
+    }
+}
+
+// MARK: - Error {
+enum Error: Swift.Error {
+    case passphrasesDoesNotMatch
+    case passphraseIsTooShort
+}
+
+// MARK: - Mode
+extension WalletEncryptionPassphrase {
+    enum Mode {
+        case new
+        case restore
     }
 }
 

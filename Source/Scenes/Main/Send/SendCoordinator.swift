@@ -28,6 +28,20 @@ final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
     }
 }
 
+// MARK: DeepLinking
+internal extension SendCoordinator {
+
+    func toSend(prefilTransaction transaction: Transaction?) {
+        if let transaction = transaction {
+            deepLinkTransactionSubject.onNext(transaction)
+            // Right now we only have the Send Scene in this coordinator, so no need to focus the ViewController.
+        } else {
+            toSend()
+        }
+    }
+}
+
+// MARK: - Navigate
 private extension SendCoordinator {
     func toSend() {
 
@@ -46,21 +60,12 @@ private extension SendCoordinator {
         }
     }
 
+    // TODO extract this to its own type?
     func openBrowser(viewTxDetailsFor transactionId: String) {
         let baseURL = "https://dev-test-explorer.aws.z7a.xyz/"
-        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else { return log.warning("failed to create url") }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
-}
-
-extension SendCoordinator {
-
-    func toSend(prefilTransaction transaction: Transaction?) {
-        if let transaction = transaction {
-            deepLinkTransactionSubject.onNext(transaction)
-            // Right now we only have the Send Scene in this coordinator, so no need to focus the ViewController.
-        } else {
-            toSend()
+        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
+            return log.error("failed to create url")
         }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

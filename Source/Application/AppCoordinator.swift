@@ -8,18 +8,17 @@
 
 import UIKit
 import Zesame
-import KeychainSwift
 
 final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     enum Step {}
 
-    private weak var window: UIWindow?
+    private unowned let window: UIWindow
     private let useCaseProvider: UseCaseProvider
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(window: UIWindow?, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
+    init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
         self.deepLinkHandler = deepLinkHandler
         self.useCaseProvider = useCaseProvider
@@ -36,7 +35,9 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     }
 }
 
+// MARK: - DeepLink Handler
 extension AppCoordinator {
+    
     /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
     func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return deepLinkHandler.handle(url: url, options: options)
@@ -58,7 +59,7 @@ private extension AppCoordinator {
 
     func toOnboarding() {
         let navigationController = UINavigationController()
-        window?.rootViewController = navigationController
+        window.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(
             presenter: navigationController,
@@ -74,7 +75,7 @@ private extension AppCoordinator {
 
     func toMain() {
         let tabBarController = UITabBarController()
-        window?.rootViewController = tabBarController
+        window.rootViewController = tabBarController
 
         let main = MainCoordinator(
             tabBarController: tabBarController,

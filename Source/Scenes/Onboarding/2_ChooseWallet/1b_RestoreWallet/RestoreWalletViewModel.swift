@@ -12,7 +12,7 @@ import RxCocoa
 import RxSwift
 import SwiftValidator
 
-// MARK: - RestoreWalletNavigation
+/// Navigation from RestoreWallet
 enum RestoreWalletNavigation: TrackedUserAction {
     case userInitiatedRestorationOfWallet(Wallet)
 }
@@ -23,6 +23,7 @@ final class RestoreWalletViewModel: AbstractViewModel<
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output
 > {
+    
     private let useCase: WalletUseCase
     
     init(useCase: WalletUseCase) {
@@ -91,7 +92,6 @@ final class RestoreWalletViewModel: AbstractViewModel<
 extension RestoreWalletViewModel {
     
     struct InputFromView {
-        let validator: Validator
         let privateKey: Driver<String>
         let keystoreText: Driver<String>
         
