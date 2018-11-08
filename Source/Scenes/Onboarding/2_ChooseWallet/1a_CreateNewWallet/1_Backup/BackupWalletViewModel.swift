@@ -29,6 +29,7 @@ final class BackupWalletViewModel: AbstractViewModel<
         self.useCase = useCase
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
 
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()

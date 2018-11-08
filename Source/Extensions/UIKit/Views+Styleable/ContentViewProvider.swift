@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ContentViewProvider {
     func makeContentView() -> UIView
 }
@@ -18,5 +17,3 @@ extension ContentViewProvider where Self: StackViewStyling {
         return UIStackView(style: stackViewStyle)
     }
 }
-
-

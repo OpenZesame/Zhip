@@ -10,7 +10,6 @@ import Zesame
 
 import RxCocoa
 import RxSwift
-import SwiftValidator
 
 /// Navigation from RestoreWallet
 enum RestoreWalletNavigation: TrackedUserAction {
@@ -30,6 +29,7 @@ final class RestoreWalletViewModel: AbstractViewModel<
         self.useCase = useCase
     }
     
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         
         let fromView = input.fromView
@@ -62,7 +62,6 @@ final class RestoreWalletViewModel: AbstractViewModel<
         }
         
         let keyRestoration = Driver.merge(keyRestorationKeystore, keyRestorationPrivateKey)
-        
         
         let wallet = keyRestoration.filterNil().flatMapLatest {
             self.useCase.restoreWallet(from: $0)

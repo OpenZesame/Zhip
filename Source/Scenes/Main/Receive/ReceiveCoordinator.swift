@@ -28,7 +28,6 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
     }
 }
 
-
 // MARK: - Navigate
 private extension ReceiveCoordinator {
 

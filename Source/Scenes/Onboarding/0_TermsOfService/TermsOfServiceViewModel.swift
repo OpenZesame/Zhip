@@ -21,6 +21,7 @@ final class TermsOfServiceViewModel: AbstractViewModel<
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output
 > {
+    
     override func transform(input: Input) -> Output {
 
         let fromView = input.fromView

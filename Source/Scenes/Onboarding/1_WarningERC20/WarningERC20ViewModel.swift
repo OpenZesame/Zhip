@@ -22,6 +22,7 @@ final class WarningERC20ViewModel: AbstractViewModel<
     WarningERC20ViewModel.InputFromView,
     WarningERC20ViewModel.Output
 > {
+
     override func transform(input: Input) -> Output {
         bag <~ [
             input.fromView.accept.do(onNext: { [unowned stepper] in

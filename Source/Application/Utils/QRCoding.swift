@@ -28,7 +28,7 @@ extension QRCoder: QRCoding {
         return generateImage(content: content, size: size)
     }
 
-    func decode(cgImage: CGImage) -> Transaction?{
+    func decode(cgImage: CGImage) -> Transaction? {
         guard
             let scannedContentStrings = EFQRCode.recognize(image: cgImage),
             let scannedContentString = scannedContentStrings.first,

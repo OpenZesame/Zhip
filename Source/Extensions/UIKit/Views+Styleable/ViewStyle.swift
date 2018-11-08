@@ -17,5 +17,3 @@ public class ViewStyle: ViewStyling {
         self.backgroundColor = backgroundColor
     }
 }
-
-

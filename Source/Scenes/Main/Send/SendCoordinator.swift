@@ -53,7 +53,7 @@ private extension SendCoordinator {
 
         present(type: Send.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
-            case .userInitiatedTransaction: break;
+            case .userInitiatedTransaction: break
             case .userSelectedSeeTransactionDetailsInBrowser(let transactionId): self.openBrowser(viewTxDetailsFor: transactionId)
 
             }

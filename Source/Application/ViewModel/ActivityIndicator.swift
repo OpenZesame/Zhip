@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 public class ActivityIndicator: SharedSequenceConvertibleType {
+    // swiftlint:disable:next type_name
     public typealias E = Bool
     public typealias SharingStrategy = DriverSharingStrategy
 

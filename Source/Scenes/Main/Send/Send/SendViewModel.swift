@@ -33,6 +33,7 @@ final class SendViewModel: AbstractViewModel<
         self.deepLinkedTransaction = deepLinkedTransaction.asDriverOnErrorReturnEmpty()
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
@@ -104,8 +105,6 @@ final class SendViewModel: AbstractViewModel<
                     .drive()
         ]
 
-
-
         let isEncryptionPassphraseCorrect: Driver<Bool> = Driver.combineLatest(fromView.encryptionPassphrase, wallet) { (passphrase: $0, wallet: $1) }
             .flatMapLatest {
                 self.walletUseCase.verify(passhrase: $0.passphrase, forWallet: $0.wallet).asDriverOnErrorReturnEmpty()
@@ -141,7 +140,6 @@ extension SendViewModel {
         let encryptionPassphrase: Driver<String>
         let openTransactionDetailsInBrowserTrigger: Driver<Void>
     }
-
 
     struct Output {
         let isFetchingBalance: Driver<Bool>

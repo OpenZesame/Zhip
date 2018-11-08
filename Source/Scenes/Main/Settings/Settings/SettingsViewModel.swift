@@ -22,6 +22,7 @@ final class SettingsViewModel: AbstractViewModel<
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
+
     override func transform(input: Input) -> Output {
 
         let fromView = input.fromView
@@ -34,7 +35,7 @@ final class SettingsViewModel: AbstractViewModel<
             fromView.backupWalletTrigger
                 .do(onNext: { [unowned stepper] in
                     stepper.step(.userSelectedBackupWallet)
-                }).drive(),
+                }).drive()
         ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()

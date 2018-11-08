@@ -1,6 +1,5 @@
 #include "../../../Configurations/zupreme-shared.xcconfig"
 #include "../../../Configurations/base_apps.xcconfig"
-#include "../../../Configurations/Carthage.xcconfig"
 
 SDKROOT = iphoneos
 

@@ -1,0 +1,113 @@
+PODS:
+  - APIKit (4.0.0):
+    - Result (~> 4.0)
+  - BigInt (3.1.0):
+    - SipHash (~> 1.2)
+  - CryptoSwift (0.13.0)
+  - EFQRCode (4.4.1):
+    - swift_qrcodejs (~> 1.0.1)
+  - EllipticCurveKit (0.0.1):
+    - BigInt (~> 3.1)
+    - CryptoSwift (~> 0.12)
+  - IQKeyboardManagerSwift (6.2.0)
+  - JSONRPCKit (4.0.0):
+    - Result (~> 4.0.0)
+  - KeychainSwift (13.0.0)
+  - Result (4.0.0)
+  - RxAtomic (4.4.0)
+  - RxBlocking (4.4.0):
+    - RxAtomic (~> 4.4)
+    - RxSwift (~> 4.0)
+  - RxCocoa (4.4.0):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.4.0):
+    - RxAtomic (~> 4.4)
+  - RxTest (4.4.0):
+    - RxAtomic (~> 4.4)
+    - RxSwift (~> 4.0)
+  - SipHash (1.2.2)
+  - swift_qrcodejs (1.0.1)
+  - SwiftLint (0.27.0)
+  - SwiftyBeaver (1.6.1)
+  - TinyConstraints (3.3.1)
+  - Zesame (0.0.2):
+    - APIKit
+    - EllipticCurveKit
+    - JSONRPCKit
+    - RxSwift
+
+DEPENDENCIES:
+  - EFQRCode
+  - IQKeyboardManagerSwift
+  - JSONRPCKit (from `https://github.com/ollitapa/JSONRPCKit.git`, branch `master`)
+  - KeychainSwift
+  - RxBlocking
+  - RxCocoa
+  - RxTest
+  - SwiftLint
+  - SwiftyBeaver
+  - TinyConstraints
+  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `master`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - APIKit
+    - BigInt
+    - CryptoSwift
+    - EFQRCode
+    - EllipticCurveKit
+    - IQKeyboardManagerSwift
+    - KeychainSwift
+    - Result
+    - RxAtomic
+    - RxBlocking
+    - RxCocoa
+    - RxSwift
+    - RxTest
+    - SipHash
+    - swift_qrcodejs
+    - SwiftLint
+    - SwiftyBeaver
+    - TinyConstraints
+
+EXTERNAL SOURCES:
+  JSONRPCKit:
+    :branch: master
+    :git: https://github.com/ollitapa/JSONRPCKit.git
+  Zesame:
+    :branch: master
+    :git: https://github.com/OpenZesame/Zesame.git
+
+CHECKOUT OPTIONS:
+  JSONRPCKit:
+    :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
+    :git: https://github.com/ollitapa/JSONRPCKit.git
+  Zesame:
+    :commit: 9921ec4b27f162e20d39d6be35eb7c3b9eb04be8
+    :git: https://github.com/OpenZesame/Zesame.git
+
+SPEC CHECKSUMS:
+  APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
+  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
+  EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
+  IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
+  JSONRPCKit: ce08ee53ac1afd6150351531836e0ab842cf567e
+  KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
+  Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
+  RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
+  RxBlocking: 138ad53217434444d6eeeb4fb406a45431d92e31
+  RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
+  RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
+  RxTest: 19d03286bdc0a3aaea5d61d4cde31fdf4bb8a5ba
+  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
+  swift_qrcodejs: c181fe5c849d30c699546a23762d7e3dd143ab37
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+  TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
+  Zesame: 488b866abf950a24a67079211de1a620e78e3663
+
+PODFILE CHECKSUM: 98f35ff546e04dc429f39d2ccc47bd2f3b38f9b9
+
+COCOAPODS: 1.5.3

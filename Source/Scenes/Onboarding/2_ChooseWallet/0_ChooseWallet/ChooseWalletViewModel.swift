@@ -21,6 +21,7 @@ final class ChooseWalletViewModel: AbstractViewModel<
     ChooseWalletViewModel.InputFromView,
     ChooseWalletViewModel.Output
 > {
+
     override func transform(input: Input) -> Output {
         let fromView = input.fromView
 

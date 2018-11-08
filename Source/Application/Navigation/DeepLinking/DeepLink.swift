@@ -27,7 +27,7 @@ extension DeepLink {
 
     init?(url: URL) {
         guard
-            let components = URLComponents(url: url,  resolvingAgainstBaseURL: true),
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
             let urlHost = components.host,
             let params = components.queryItems,
             let deepLinkPath = DeepLink.Path(rawValue: urlHost)

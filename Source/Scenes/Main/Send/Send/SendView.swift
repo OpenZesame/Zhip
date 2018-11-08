@@ -11,7 +11,6 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-
 // MARK: - SendView
 final class SendView: ScrollingStackView, PullToRefreshCapable {
 
@@ -21,7 +20,6 @@ final class SendView: ScrollingStackView, PullToRefreshCapable {
     private lazy var amountToSendField = UITextField.Style("Amount", text: "11").make()
     private lazy var gasLimitField = UITextField.Style("Gas limit", text: "1").make()
     private lazy var gasPriceField = UITextField.Style("Gas price", text: "1").make()
-
 
     private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", isSecureTextEntry: true).make()
     private lazy var sendButton = UIButton.Style("Send", isEnabled: false).make()

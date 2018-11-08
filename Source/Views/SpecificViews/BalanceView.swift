@@ -30,10 +30,9 @@ final class BalanceView: UIStackView, StackViewStyling {
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
         balanceLabels,
-        nonceLabels,
-        ], spacing: 16, margin: 0)
+        nonceLabels
+    ], spacing: 16, margin: 0)
 }
-
 
 extension BalanceView {
 

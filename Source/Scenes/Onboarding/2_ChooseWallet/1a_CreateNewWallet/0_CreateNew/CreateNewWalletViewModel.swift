@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import FormValidatorSwift
 import Zesame
 
 // MARK: - CreateNewWalletNavigator
@@ -30,6 +29,7 @@ AbstractViewModel<
         self.useCase = useCase
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         let fromView = input.fromView
 
@@ -52,7 +52,6 @@ AbstractViewModel<
             .do(onNext: { [unowned stepper] in stepper.step(.userInitiatedCreationOfWallet($0)) })
             .drive()
             .disposed(by: bag)
-
 
         return Output(
             encryptionPassphrasePlaceholder: .just("Encryption passphrase (min \(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)) chars)"),

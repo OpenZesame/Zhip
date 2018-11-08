@@ -32,7 +32,6 @@ extension Stepper {
     }
 }
 
-
 extension Stepper: Tracking {
     func track(event: TrackableEvent) {
         tracker.track(event: event)
