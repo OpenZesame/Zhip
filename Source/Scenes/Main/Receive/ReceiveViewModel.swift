@@ -81,6 +81,4 @@ extension ReceiveViewModel {
         let receivingAddress: Driver<String>
         let qrImage: Driver<UIImage?>
     }
-
-
 }
