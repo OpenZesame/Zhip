@@ -14,11 +14,11 @@ final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinat
         case finishedRestoring(wallet: Wallet)
     }
 
-    private let useCase: ChooseWalletUseCase
+    private let useCase: WalletUseCase
 
-    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase) {
+    init(presenter: Presenter?, useCase: WalletUseCase) {
         self.useCase = useCase
-        super.init(presenter: navigationController)
+        super.init(presenter: presenter)
     }
 
     override func start() {

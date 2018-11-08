@@ -1,5 +1,5 @@
 //
-//  ChooseWalletUseCase.swift
+//  WalletUseCase.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-09-08.
@@ -10,6 +10,9 @@ import RxSwift
 import Zesame
 
 protocol UseCaseProvider {
-    func makeTransactionsUseCase() -> TransactionsUseCase
     func makeOnboardingUseCase() -> OnboardingUseCase
+    func makeWalletUseCase() -> WalletUseCase
+
+    func makeTransactionsUseCase() -> TransactionsUseCase
+
 }

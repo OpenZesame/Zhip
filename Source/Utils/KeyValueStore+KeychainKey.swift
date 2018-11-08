@@ -18,6 +18,10 @@ extension KeyValueStore where KeyType == KeychainKey {
         return wallet
     }
 
+    var hasWalletConfigured: Bool {
+        return wallet != nil
+    }
+
     func save(wallet: Wallet) {
         guard let walletJson = try? JSONEncoder().encode(wallet) else { return }
         save(value: walletJson, for: .keystore)

@@ -14,22 +14,22 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     enum Step {}
 
     private weak var window: UIWindow?
-    private let services: UseCaseProvider
-    private let securePersistence: SecurePersistence
+    private let useCaseProvider: UseCaseProvider
     private let deepLinkHandler: DeepLinkHandler
 
-    init(window: UIWindow?, deepLinkHandler: DeepLinkHandler, services: UseCaseProvider, securePersistence: SecurePersistence) {
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+
+    init(window: UIWindow?, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
         self.deepLinkHandler = deepLinkHandler
-        self.services = services
-        self.securePersistence = securePersistence
+        self.useCaseProvider = useCaseProvider
         super.init(presenter: nil)
         setupDeepLinkNavigationHandling()
     }
 
     override func start() {
-        if let wallet = securePersistence.wallet {
-            toMain(wallet: wallet)
+        if walletUseCase.hasWalletConfigured {
+            toMain()
         } else {
             toOnboarding()
         }
@@ -61,28 +61,25 @@ private extension AppCoordinator {
         window?.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(
-            navigationController: navigationController,
-            preferences: KeyValueStore(UserDefaults.standard),
-            securePersistence: securePersistence,
-            useCase: services.makeOnboardingUseCase()
+            presenter: navigationController,
+            useCaseProvider: useCaseProvider
         )
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .userFinishedChoosing(let wallet): self.toMain(wallet: wallet)
+            case .userFinishedOnboording: self.toMain()
             }
         }
     }
 
-    func toMain(wallet: Wallet) {
+    func toMain() {
         let tabBarController = UITabBarController()
         window?.rootViewController = tabBarController
 
         let main = MainCoordinator(
             tabBarController: tabBarController,
             deepLinkGenerator: DeepLinkGenerator(),
-            services: services,
-            securePersistence: securePersistence
+            useCaseProvider: useCaseProvider
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in

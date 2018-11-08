@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
 import Zesame
 
 final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
@@ -17,11 +16,12 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
         case walletWasRemovedByUser
     }
 
-    private let securePersistence: SecurePersistence
+    private let useCaseProvider: UseCaseProvider
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(navigationController: UINavigationController, securePersistence: SecurePersistence) {
-        self.securePersistence = securePersistence
-        super.init(presenter: navigationController)
+    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+        super.init(presenter: presenter)
     }
 
     override func start() {
@@ -33,13 +33,13 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
 private extension SettingsCoordinator {
 
     func toChooseWallet() {
-        securePersistence.deleteWallet()
+        walletUseCase.deleteWallet()
         stepper.step(.walletWasRemovedByUser)
     }
 
     func toBackupWallet() {
-        guard let wallet = securePersistence.wallet else { return }
-        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet), presentation: .present(animated: true)) { [unowned self] in
+        let viewModel = BackupWalletViewModel(useCase: walletUseCase)
+        present(type: BackupWallet.self, viewModel: viewModel, presentation: .present(animated: true)) { [unowned self] in
             switch $0 {
             case .userSelectedBackupIsDone: self.presenter?.dismiss(animated: true)
             }
@@ -47,7 +47,8 @@ private extension SettingsCoordinator {
     }
 
     func toSettings() {
-        present(type: Settings.self, viewModel: SettingsViewModel()) { [unowned self] in
+        let viewModel = SettingsViewModel()
+        present(type: Settings.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
             case .userSelectedRemoveWallet: self.toChooseWallet()
             case .userSelectedBackupWallet: self.toBackupWallet()

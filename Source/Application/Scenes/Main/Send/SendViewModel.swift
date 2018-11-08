@@ -23,17 +23,18 @@ final class SendViewModel: AbstractViewModel<
     SendViewModel.InputFromView,
     SendViewModel.Output
 > {
-    private let useCase: TransactionsUseCase
-    private let wallet: Driver<Wallet>
+    private let transactionUseCase: TransactionsUseCase
+    private let walletUseCase: WalletUseCase
     private let deepLinkedTransaction: Driver<Transaction>
 
-    init(wallet: Driver<Wallet>, useCase: TransactionsUseCase, deepLinkedTransaction: Observable<Transaction>) {
-        self.useCase = useCase
-        self.wallet = wallet
+    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Observable<Transaction>) {
+        self.walletUseCase = walletUseCase
+        self.transactionUseCase = transactionUseCase
         self.deepLinkedTransaction = deepLinkedTransaction.asDriverOnErrorReturnEmpty()
     }
 
     override func transform(input: Input) -> Output {
+        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let fromView = input.fromView
 
@@ -44,7 +45,7 @@ final class SendViewModel: AbstractViewModel<
         let fetchTrigger = Driver.merge(fromView.pullToRefreshTrigger, fetchBalanceSubject.asDriverOnErrorReturnEmpty(), wallet.mapToVoid())
 
         let balanceResponse: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
-            self.useCase
+            self.transactionUseCase
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
@@ -81,7 +82,7 @@ final class SendViewModel: AbstractViewModel<
         bag <~ [fromView.sendTrigger
             .withLatestFrom(Driver.combineLatest(payment.filterNil(), wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
             .flatMapLatest {
-                self.useCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
+                self.transactionUseCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
                     .asDriverOnErrorReturnEmpty()
                     // Trigger fetching of balance after successfull send
                     .do(onNext: { [unowned self] _ in
@@ -107,7 +108,7 @@ final class SendViewModel: AbstractViewModel<
 
         let isEncryptionPassphraseCorrect: Driver<Bool> = Driver.combineLatest(fromView.encryptionPassphrase, wallet) { (passphrase: $0, wallet: $1) }
             .flatMapLatest {
-                self.useCase.verify(passhrase: $0.passphrase, forWallet: $0.wallet).asDriverOnErrorReturnEmpty()
+                self.walletUseCase.verify(passhrase: $0.passphrase, forWallet: $0.wallet).asDriverOnErrorReturnEmpty()
         }
 
         let isSendButtonEnabled: Driver<Bool> = Driver.combineLatest(payment.map { $0 != nil }, isEncryptionPassphraseCorrect) { $0 && $1 }

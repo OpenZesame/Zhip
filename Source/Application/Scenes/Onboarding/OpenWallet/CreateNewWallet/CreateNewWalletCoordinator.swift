@@ -14,11 +14,12 @@ import RxCocoa
 
 final class CreateNewWalletCoordinator: AbstractCoordinator<CreateNewWalletCoordinator.Step> {
 
-    private let useCase: ChooseWalletUseCase
+    private let useCaseProvider: UseCaseProvider
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase) {
-        self.useCase = useCase
-        super.init(presenter: navigationController)
+    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+        super.init(presenter: presenter)
     }
 
     override func start() {
@@ -40,7 +41,8 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toBackupWallet(wallet: Wallet) {
-        present(type: BackupWallet.self, viewModel: BackupWalletViewModel(wallet: wallet)) { [unowned self] in
+        let viewModel = BackupWalletViewModel(useCase: walletUseCase)
+        present(type: BackupWallet.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
             case .userSelectedBackupIsDone(let wallet): self.toMain(wallet: wallet)
             }
@@ -50,7 +52,7 @@ private extension CreateNewWalletCoordinator {
     func toCreateWallet() {
         present(
             type: CreateNewWallet.self,
-            viewModel: CreateNewWalletViewModel(useCase: useCase)
+            viewModel: CreateNewWalletViewModel(useCase: walletUseCase)
         ) { [unowned self] in
             switch $0 {
             case .userInitiatedCreationOfWallet(let wallet): self.toBackupWallet(wallet: wallet)

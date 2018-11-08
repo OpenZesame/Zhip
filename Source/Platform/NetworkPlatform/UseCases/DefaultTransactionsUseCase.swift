@@ -12,18 +12,15 @@ import RxSwift
 
 final class DefaultTransactionsUseCase {
     private let zilliqaService: ZilliqaServiceReactive
+    let securePersistence: SecurePersistence
 
-    init(zilliqaService: ZilliqaServiceReactive) {
+    init(zilliqaService: ZilliqaServiceReactive, securePersistence: SecurePersistence) {
         self.zilliqaService = zilliqaService
+        self.securePersistence = securePersistence
     }
 }
 
 extension DefaultTransactionsUseCase: TransactionsUseCase {
-
-    /// Checks if the passed `passphrase` was used to encypt the Keystore
-    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool> {
-        return zilliqaService.verifyThat(encryptionPasshrase: passhrase, canDecryptKeystore: keystore)
-    }
 
     func getBalance(for address: Address) -> Observable<BalanceResponse> {
         return zilliqaService.getBalance(for: address)

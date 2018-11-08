@@ -18,14 +18,12 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 
     private let tabBarController: UITabBarController
 
-    private let services: UseCaseProvider
-    private let securePersistence: SecurePersistence
+    private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
 
-    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, services: UseCaseProvider, securePersistence: SecurePersistence) {
-        self.services = services
+    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
-        self.securePersistence = securePersistence
         self.tabBarController = tabBarController
         super.init(presenter: nil)
         setupTabBar()
@@ -50,20 +48,19 @@ private extension MainCoordinator {
         ]
 
         let send = SendCoordinator(
-            navigationController: sendNavigationController,
-            wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil(),
-            services: services
+            presenter: sendNavigationController,
+            useCaseProvider: useCaseProvider
         )
 
         let receive = ReceiveCoordinator(
-            navigationController: receiveNavigationController,
-            wallet: Driver<Wallet?>.of(securePersistence.wallet).filterNil(),
+            presenter: receiveNavigationController,
+            useCase: useCaseProvider.makeWalletUseCase(),
             deepLinkGenerator: deepLinkGenerator
         )
 
         let settings = SettingsCoordinator(
-            navigationController: settingsNavigationController,
-            securePersistence: securePersistence
+            presenter: settingsNavigationController,
+            useCaseProvider: useCaseProvider
         )
 
         start(coordinator: send, transition: .doNothing) {
