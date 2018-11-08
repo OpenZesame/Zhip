@@ -23,9 +23,9 @@ final class RestoreWalletViewModel: AbstractViewModel<
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output
 > {
-    private let useCase: ChooseWalletUseCase
+    private let useCase: WalletUseCase
     
-    init(useCase: ChooseWalletUseCase) {
+    init(useCase: WalletUseCase) {
         self.useCase = useCase
     }
     

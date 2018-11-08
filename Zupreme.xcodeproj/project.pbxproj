@@ -15,12 +15,13 @@
 		4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE72218369A7002734C8 /* UITextField+Rx.swift */; };
 		4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE9521837F5F002734C8 /* QRCoding.swift */; };
 		4806AE9821838137002734C8 /* EFQRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4806AE9721838137002734C8 /* EFQRCode.framework */; };
+		4833C34D219211AA00D7D312 /* Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4833C34C219211AA00D7D312 /* Bootstrap.swift */; };
+		4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4833C34E219221BC00D7D312 /* WalletUseCase.swift */; };
 		48348FF2218F1BBC0005FEE1 /* AbstractTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */; };
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
 		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
 		4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */; };
-		4847EDD1215FE93D002FF978 /* DefaultChooseWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD0215FE93D002FF978 /* DefaultChooseWalletUseCase.swift */; };
-		4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD2215FEA68002FF978 /* ChooseWalletUseCase.swift */; };
+		4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD0215FE93D002FF978 /* DefaultWalletUseCase.swift */; };
 		4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD4215FEA7C002FF978 /* TransactionsUseCase.swift */; };
 		4847EDDC215FEC06002FF978 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDDB215FEC06002FF978 /* OnboardingCoordinator.swift */; };
 		4847EDDE216006C7002FF978 /* WarningERC20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDDD216006C7002FF978 /* WarningERC20.swift */; };
@@ -160,12 +161,13 @@
 		4806AE9721838137002734C8 /* EFQRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EFQRCode.framework; path = Carthage/Build/iOS/EFQRCode.framework; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
 		4811BA2121860B53005FB01C /* Zupreme.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Zupreme.xcconfig; sourceTree = "<group>"; };
+		4833C34C219211AA00D7D312 /* Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bootstrap.swift; sourceTree = "<group>"; };
+		4833C34E219221BC00D7D312 /* WalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUseCase.swift; sourceTree = "<group>"; };
 		48348FF1218F1BBC0005FEE1 /* AbstractTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTarget.swift; sourceTree = "<group>"; };
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
-		4847EDD0215FE93D002FF978 /* DefaultChooseWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultChooseWalletUseCase.swift; sourceTree = "<group>"; };
-		4847EDD2215FEA68002FF978 /* ChooseWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletUseCase.swift; sourceTree = "<group>"; };
+		4847EDD0215FE93D002FF978 /* DefaultWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWalletUseCase.swift; sourceTree = "<group>"; };
 		4847EDD4215FEA7C002FF978 /* TransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsUseCase.swift; sourceTree = "<group>"; };
 		4847EDDB215FEC06002FF978 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		4847EDDD216006C7002FF978 /* WarningERC20.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningERC20.swift; sourceTree = "<group>"; };
@@ -360,7 +362,7 @@
 			isa = PBXGroup;
 			children = (
 				4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */,
-				4847EDD0215FE93D002FF978 /* DefaultChooseWalletUseCase.swift */,
+				4847EDD0215FE93D002FF978 /* DefaultWalletUseCase.swift */,
 				4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */,
 				4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */,
 			);
@@ -511,6 +513,7 @@
 				48C8A000214335E70063B0FA /* AppCoordinator.swift */,
 				48AC6CC82145AF1B00B4D036 /* MainCoordinator.swift */,
 				484B068520BA0D8800C4E50A /* AppDelegate.swift */,
+				4833C34C219211AA00D7D312 /* Bootstrap.swift */,
 				484B067E20BA0D8800C4E50A /* LaunchScreen.storyboard */,
 				484B068620BA0D8800C4E50A /* Zupreme-Info.plist */,
 			);
@@ -751,8 +754,8 @@
 			children = (
 				48C89FDA214331050063B0FA /* UseCaseProvider.swift */,
 				4847EDF82160FA53002FF978 /* OnboardingUseCase.swift */,
+				4833C34E219221BC00D7D312 /* WalletUseCase.swift */,
 				4847EDD4215FEA7C002FF978 /* TransactionsUseCase.swift */,
-				4847EDD2215FEA68002FF978 /* ChooseWalletUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				484F7D7821441BF20023C6D4 /* SendView.swift in Sources */,
 				484F7D7721441BF20023C6D4 /* SendCoordinator.swift in Sources */,
+				4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */,
 				48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */,
 				4847EDEC2160078C002FF978 /* Presentable.swift in Sources */,
 				48C89FEA214331DA0063B0FA /* CreateNewWalletView.swift in Sources */,
@@ -1068,9 +1072,10 @@
 				48A63FFF2186237F00B08C67 /* ConfigurationDetection.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				48C8A0072143CD6F0063B0FA /* RestoreWalletView.swift in Sources */,
+				4833C34D219211AA00D7D312 /* Bootstrap.swift in Sources */,
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
 				4806AE6D2183690B002734C8 /* ReceiveView.swift in Sources */,
-				4847EDD1215FE93D002FF978 /* DefaultChooseWalletUseCase.swift in Sources */,
+				4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */,
 				48C89FCB21432E220063B0FA /* ViewModelType.swift in Sources */,
 				48B16E3021452A2600177434 /* Never.swift in Sources */,
 				48C8A00B2143CDB50063B0FA /* RestoreWalletCoordinator.swift in Sources */,
@@ -1108,7 +1113,6 @@
 				4806AE6E2183690B002734C8 /* ReceiveCoordinator.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F832EC2185C39A00EDAD40 /* AbstractViewModel.swift in Sources */,
-				4847EDD3215FEA68002FF978 /* ChooseWalletUseCase.swift in Sources */,
 				48F832DF2184D78D00EDAD40 /* Navigatable.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
@@ -1175,7 +1179,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 			};
 			name = Debug;
 		};
@@ -1183,7 +1186,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4811BA2121860B53005FB01C /* Zupreme.xcconfig */;
 			buildSettings = {
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 			};
 			name = Release;
 		};

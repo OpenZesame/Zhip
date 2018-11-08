@@ -22,13 +22,16 @@ final class ReceiveViewModel: AbstractViewModel<
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
-    private let wallet: Driver<Wallet>
 
-    init(wallet: Driver<Wallet>) {
-        self.wallet = wallet
+    private let useCase: WalletUseCase
+
+    init(useCase: WalletUseCase) {
+        self.useCase = useCase
     }
 
     override func transform(input: Input) -> Output {
+
+        let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let receivingAmount = input.fromView.amountToReceive
             .map { Double($0) }

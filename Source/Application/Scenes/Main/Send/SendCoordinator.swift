@@ -15,14 +15,12 @@ import Zesame
 final class SendCoordinator: AbstractCoordinator<SendCoordinator.Step> {
     enum Step {}
 
-    private let wallet: Driver<Wallet>
-    private let services: UseCaseProvider
+    private let useCaseProvider: UseCaseProvider
     private let deepLinkTransactionSubject = PublishSubject<Transaction>()
 
-    init(navigationController: UINavigationController, wallet: Driver<Wallet>, services: UseCaseProvider) {
-        self.wallet = wallet
-        self.services = services
-        super.init(presenter: navigationController)
+    init(presenter: Presenter, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+        super.init(presenter: presenter)
     }
 
     override func start() {
@@ -34,8 +32,8 @@ private extension SendCoordinator {
     func toSend() {
 
         let viewModel = SendViewModel(
-            wallet: wallet,
-            useCase: services.makeTransactionsUseCase(),
+            walletUseCase: useCaseProvider.makeWalletUseCase(),
+            transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             deepLinkedTransaction: deepLinkTransactionSubject.asObservable()
         )
 

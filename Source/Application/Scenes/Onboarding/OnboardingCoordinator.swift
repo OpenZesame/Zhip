@@ -12,18 +12,17 @@ import Zesame
 
 final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
     enum Step {
-        case userFinishedChoosing(wallet: Wallet)
+        case userFinishedOnboording
     }
 
-    private let useCase: OnboardingUseCase
-    private let preferences: Preferences
-    private let securePersistence: SecurePersistence
+    private let useCaseProvider: UseCaseProvider
+    
+    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(navigationController: UINavigationController, preferences: Preferences, securePersistence: SecurePersistence, useCase: OnboardingUseCase) {
-        self.preferences = preferences
-        self.securePersistence = securePersistence
-        self.useCase = useCase
-        super.init(presenter: navigationController)
+    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+        super.init(presenter: presenter)
     }
 
     override func start() {
@@ -34,26 +33,26 @@ final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Ste
 private extension OnboardingCoordinator {
 
     func toNextStep() {
-        guard preferences.isTrue(.hasAcceptedTermsOfService) else {
+        guard onboardingUseCase.hasAcceptedTermsOfService else {
             return toTermsOfService()
         }
 
-        guard preferences.isTrue(.skipShowingERC20Warning) else {
+        guard onboardingUseCase.hasAskedToSkipERC20Warning else {
             return toWarningERC20()
         }
 
-        guard let wallet = securePersistence.wallet else {
+        guard walletUseCase.hasWalletConfigured else {
             return toChooseWallet()
         }
-        
-        toMain(wallet: wallet)
+
+        finish()
     }
 
     func toTermsOfService() {
         present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [unowned self] in
             switch $0 {
             case .userAcceptedTerms:
-                self.useCase.didAcceptTermsOfService()
+                self.onboardingUseCase.didAcceptTermsOfService()
                 self.toWarningERC20()
             }
         }
@@ -63,7 +62,7 @@ private extension OnboardingCoordinator {
         present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [unowned self] in
             switch $0 {
             case .userSelectedRisksAreUnderstoodDoNotShowAgain:
-                self.useCase.doNotShowERC20WarningAgain()
+                self.onboardingUseCase.doNotShowERC20WarningAgain()
                 fallthrough
             case .userSelectedRisksAreUnderstood: self.toChooseWallet()
             }
@@ -71,21 +70,19 @@ private extension OnboardingCoordinator {
     }
 
     func toChooseWallet() {
-        start(
-            coordinator:
-            ChooseWalletCoordinator(
-                navigationController: presenter as! UINavigationController,
-                useCase: useCase.makeChooseWalletUseCase(),
-                securePersistence: securePersistence
-            )
-        ) { [unowned self] in
+        let coordinator = ChooseWalletCoordinator(
+            presenter: presenter,
+            useCaseProvider: useCaseProvider
+        )
+
+        start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .userFinishedChoosing(let wallet): self.toMain(wallet: wallet)
+            case .userFinishedChoosingWallet: self.finish()
             }
         }
     }
 
-    func toMain(wallet: Wallet) {
-        stepper.step(.userFinishedChoosing(wallet: wallet))
+    func finish() {
+        stepper.step(.userFinishedOnboording)
     }
 }

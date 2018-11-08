@@ -7,9 +7,6 @@
 //
 
 import UIKit
-import Zesame
-import KeychainSwift
-import IQKeyboardManagerSwift
 
 let log = Logger()
 
@@ -20,17 +17,14 @@ class AppDelegate: UIResponder {
     private lazy var appCoordinator = AppCoordinator(
         window: window,
         deepLinkHandler: DeepLinkHandler(),
-        services: DefaultUseCaseProvider.shared,
-        securePersistence: KeyValueStore(KeychainSwift())
+        useCaseProvider:DefaultUseCaseProvider.shared
     )
 }
 
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         appCoordinator.start()
-
-        IQKeyboardManager.shared.enable = true
-
+        bootstrap()
         return true
     }
 

@@ -11,15 +11,24 @@ import Zesame
 
 final class DefaultOnboardingUseCase {
     private let preferences: Preferences
+    let securePersistence: SecurePersistence
     private let zilliqaService: ZilliqaServiceReactive
 
-    init(zilliqaService: ZilliqaServiceReactive, preferences: Preferences) {
+    init(zilliqaService: ZilliqaServiceReactive, preferences: Preferences, securePersistence: SecurePersistence) {
         self.zilliqaService = zilliqaService
         self.preferences = preferences
+        self.securePersistence = securePersistence
     }
 }
 
 extension DefaultOnboardingUseCase: OnboardingUseCase {
+    var hasAcceptedTermsOfService: Bool {
+        return preferences.isTrue(.hasAcceptedTermsOfService)
+    }
+
+    var hasAskedToSkipERC20Warning: Bool {
+        return preferences.isTrue(.skipShowingERC20Warning)
+    }
 
     func didAcceptTermsOfService() {
         preferences.save(value: true, for: .hasAcceptedTermsOfService)
@@ -27,9 +36,5 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
 
     func doNotShowERC20WarningAgain() {
         preferences.save(value: true, for: .skipShowingERC20Warning)
-    }
-
-    func makeChooseWalletUseCase() -> ChooseWalletUseCase {
-        return DefaultChooseWalletUseCase(zilliqaService: zilliqaService)
     }
 }

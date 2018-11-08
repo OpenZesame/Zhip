@@ -22,13 +22,17 @@ final class BackupWalletViewModel: AbstractViewModel<
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
-    private let wallet: Driver<Wallet>
 
-    init(wallet: Wallet) {
-        self.wallet = .just(wallet)
+    private let useCase: WalletUseCase
+
+    init(useCase: WalletUseCase) {
+        self.useCase = useCase
     }
 
     override func transform(input: Input) -> Output {
+
+        let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+
         let keystoreText = wallet.map {
             try? JSONEncoder(outputFormatting: .prettyPrinted).encode($0.keystore)
         }.filterNil().map {

@@ -14,13 +14,13 @@ import Zesame
 final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
     enum Step {}
 
-    private let wallet: Driver<Wallet>
     private let deepLinkGenerator: DeepLinkGenerator
+    private let useCase: WalletUseCase
 
-    init(navigationController: UINavigationController, wallet: Driver<Wallet>, deepLinkGenerator: DeepLinkGenerator) {
-        self.wallet = wallet
+    init(presenter: Presenter?, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
+        self.useCase = useCase
         self.deepLinkGenerator = deepLinkGenerator
-        super.init(presenter: navigationController)
+        super.init(presenter: presenter)
     }
 
    override func start() {
@@ -40,7 +40,7 @@ private extension ReceiveCoordinator {
 private extension ReceiveCoordinator {
 
     func toReceive() {
-        present(type: Receive.self, viewModel: ReceiveViewModel(wallet: wallet)) { [unowned self] in
+        present(type: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] in
             switch $0 {
             case .userWouldLikeToReceive(let transactionToReceive): self.share(transaction: transactionToReceive)
             }

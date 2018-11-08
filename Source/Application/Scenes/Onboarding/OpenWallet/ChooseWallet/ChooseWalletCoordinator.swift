@@ -12,16 +12,15 @@ import Zesame
 
 final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator.Step> {
     enum Step {
-        case userFinishedChoosing(wallet: Wallet)
+        case userFinishedChoosingWallet
     }
 
-    private let useCase: ChooseWalletUseCase
-    private let securePersistence: SecurePersistence
+    private let useCaseProvider: UseCaseProvider
+    private lazy var useCase = useCaseProvider.makeWalletUseCase()
 
-    init(navigationController: UINavigationController, useCase: ChooseWalletUseCase, securePersistence: SecurePersistence) {
-        self.securePersistence = securePersistence
-        self.useCase = useCase
-        super.init(presenter: navigationController)
+    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+        super.init(presenter: presenter)
     }
 
     override func start() {
@@ -33,9 +32,9 @@ final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator
 // MARK: Private
 private extension ChooseWalletCoordinator {
 
-    func toMain(wallet: Wallet) {
-        securePersistence.save(wallet: wallet)
-        stepper.step(.userFinishedChoosing(wallet: wallet))
+    func userFinishedChoosing(wallet: Wallet) {
+        useCase.save(wallet: wallet)
+        stepper.step(.userFinishedChoosingWallet)
     }
 
     func toChooseWallet() {
@@ -48,23 +47,21 @@ private extension ChooseWalletCoordinator {
     }
 
     func toCreateNewWallet() {
-        start(
-            coordinator:
-            CreateNewWalletCoordinator(navigationController: presenter as! UINavigationController, useCase: useCase)
-        ) { [unowned self] in
+        let coordinator = CreateNewWalletCoordinator(presenter: presenter, useCaseProvider: useCaseProvider)
+
+        start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .didCreate(let wallet): self.toMain(wallet: wallet)
+            case .didCreate(let wallet): self.userFinishedChoosing(wallet: wallet)
             }
         }
     }
 
     func toRestoreWallet() {
-        start(
-            coordinator:
-            RestoreWalletCoordinator(navigationController: presenter as! UINavigationController, useCase: useCase)
-        ) { [unowned self] in
+        let coordinator = RestoreWalletCoordinator(presenter: presenter, useCase: useCase)
+
+        start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .finishedRestoring(let wallet): self.toMain(wallet: wallet)
+            case .finishedRestoring(let wallet): self.userFinishedChoosing(wallet: wallet)
             }
         }
     }

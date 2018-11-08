@@ -11,8 +11,10 @@ import RxSwift
 
 protocol OnboardingUseCase {
 
+    var hasAcceptedTermsOfService: Bool { get }
     func didAcceptTermsOfService()
+
+    var hasAskedToSkipERC20Warning: Bool { get }
     func doNotShowERC20WarningAgain()
-    func makeChooseWalletUseCase() -> ChooseWalletUseCase
-    
+
 }
