@@ -1,1 +1,2 @@
 _APP_NAME = Zupreme
+PRODUCT_NAME = $(_APP_NAME)

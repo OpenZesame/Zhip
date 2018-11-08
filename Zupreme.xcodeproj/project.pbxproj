@@ -231,7 +231,7 @@
 		4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView_Extensions.swift; sourceTree = "<group>"; };
 		4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_Extensions.swift; sourceTree = "<group>"; };
 		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		484B064A20BA0C2F00C4E50A /* .xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = .xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZilliqaSDK-iOS-Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
 		484F7D7321441BF20023C6D4 /* SendCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendCoordinator.swift; sourceTree = "<group>"; };
@@ -608,7 +608,7 @@
 			isa = PBXGroup;
 			children = (
 				484B063620BA0C2D00C4E50A /* Zupreme.app */,
-				484B064A20BA0C2F00C4E50A /* .xctest */,
+				484B064A20BA0C2F00C4E50A /* Zupreme.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -979,7 +979,7 @@
 			);
 			name = ZupremeTests;
 			productName = ZilliqaSDKiOSZupremeTests;
-			productReference = 484B064A20BA0C2F00C4E50A /* .xctest */;
+			productReference = 484B064A20BA0C2F00C4E50A /* Zupreme.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -988,7 +988,7 @@
 		484B062E20BA0C2D00C4E50A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Open Zesame";
 				TargetAttributes = {
