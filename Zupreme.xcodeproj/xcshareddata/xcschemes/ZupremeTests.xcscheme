@@ -17,7 +17,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "484B064920BA0C2F00C4E50A"
-               BuildableName = "Zupreme.xctest"
+               BuildableName = ".xctest"
                BlueprintName = "ZupremeTests"
                ReferencedContainer = "container:Zupreme.xcodeproj">
             </BuildableReference>
