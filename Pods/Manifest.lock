@@ -1,0 +1,92 @@
+PODS:
+  - APIKit (3.2.1):
+    - Result (~> 3.0)
+  - BigInt (3.1.0):
+    - SipHash (~> 1.2)
+  - CryptoSwift (0.13.0)
+  - EFQRCode (4.3.0)
+  - EllipticCurveKit (0.0.1):
+    - BigInt (~> 3.1)
+    - CryptoSwift (~> 0.12)
+  - IQKeyboardManagerSwift (6.2.0)
+  - JSONRPCKit (3.0.0):
+    - Result (~> 3.2.0)
+  - KeychainSwift (13.0.0)
+  - Result (3.2.4)
+  - RxBlocking (4.3.1):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.3.1)
+  - RxTest (4.3.1):
+    - RxSwift (~> 4.0)
+  - SipHash (1.2.2)
+  - SwiftLint (0.27.0)
+  - SwiftyBeaver (1.6.1)
+  - TinyConstraints (3.3.1)
+  - Zesame (0.0.2):
+    - APIKit
+    - EllipticCurveKit
+    - JSONRPCKit
+    - RxSwift
+
+DEPENDENCIES:
+  - EFQRCode
+  - IQKeyboardManagerSwift
+  - KeychainSwift
+  - RxBlocking
+  - RxTest
+  - SwiftLint
+  - SwiftyBeaver
+  - TinyConstraints
+  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `master`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - APIKit
+    - BigInt
+    - CryptoSwift
+    - EFQRCode
+    - EllipticCurveKit
+    - IQKeyboardManagerSwift
+    - JSONRPCKit
+    - KeychainSwift
+    - Result
+    - RxBlocking
+    - RxSwift
+    - RxTest
+    - SipHash
+    - SwiftLint
+    - SwiftyBeaver
+    - TinyConstraints
+
+EXTERNAL SOURCES:
+  Zesame:
+    :branch: master
+    :git: https://github.com/OpenZesame/Zesame.git
+
+CHECKOUT OPTIONS:
+  Zesame:
+    :commit: 9921ec4b27f162e20d39d6be35eb7c3b9eb04be8
+    :git: https://github.com/OpenZesame/Zesame.git
+
+SPEC CHECKSUMS:
+  APIKit: a39ff72ac44efc15513fd1b98800f63c525be61b
+  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  EFQRCode: 51b67bd10952da9ef619ae0a396abb746b94263f
+  EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
+  IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
+  JSONRPCKit: 50e0dc5e7f873e87f81562feb8836b7d1974da6d
+  KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  RxBlocking: 64c051285261ca2339481e91b5f70eb06b03660a
+  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
+  RxTest: ea97a208826906f3904c0debdd09575ebcbfe216
+  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+  TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
+  Zesame: 488b866abf950a24a67079211de1a620e78e3663
+
+PODFILE CHECKSUM: 6b93a282447c629cb4c1383fdb553e5fb6d3846e
+
+COCOAPODS: 1.5.3
