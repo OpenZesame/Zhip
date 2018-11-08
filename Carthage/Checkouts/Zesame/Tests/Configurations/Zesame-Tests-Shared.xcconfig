@@ -1,6 +1,0 @@
-#include "../../Configurations/base_tests.xcconfig"
-#include "../../Configurations/Carthage.xcconfig"
-
-INFOPLIST_FILE = Tests/SupportingFiles/ZesameTests-Info.plist
-PRODUCT_BUNDLE_IDENTIFIER = cyon.alex.ZesameTests
-PRODUCT_NAME = ZesameTests

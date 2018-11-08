@@ -1,1 +1,0 @@
-# ViewComposer CHANGELOG
