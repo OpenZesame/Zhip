@@ -976,7 +976,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Open Zesame";
 				TargetAttributes = {
 					484B063520BA0C2D00C4E50A = {
