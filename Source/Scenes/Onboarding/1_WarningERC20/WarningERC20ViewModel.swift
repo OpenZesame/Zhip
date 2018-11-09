@@ -13,7 +13,6 @@ import RxCocoa
 // MARK: - WarningERC20Navigation
 enum WarningERC20Navigation: String, TrackedUserAction {
     case userSelectedRisksAreUnderstood
-    case userSelectedRisksAreUnderstoodDoNotShowAgain
 }
 
 // MARK: - WarningERC20ViewModel
@@ -23,14 +22,21 @@ final class WarningERC20ViewModel: AbstractViewModel<
     WarningERC20ViewModel.Output
 > {
 
+    private let useCase: OnboardingUseCase
+
+    init(useCase: OnboardingUseCase) {
+        self.useCase = useCase
+    }
+
     override func transform(input: Input) -> Output {
         bag <~ [
             input.fromView.accept.do(onNext: { [unowned stepper] in
                 stepper.step(.userSelectedRisksAreUnderstood)
             }).drive(),
-            
-            input.fromView.doNotShowAgain.do(onNext: { [unowned stepper] in
-                stepper.step(.userSelectedRisksAreUnderstoodDoNotShowAgain)
+
+            input.fromView.doNotShowAgain.do(onNext: { [unowned self] in
+                self.useCase.doNotShowERC20WarningAgain()
+                self.stepper.step(.userSelectedRisksAreUnderstood)
             }).drive()
         ]
         return Output()

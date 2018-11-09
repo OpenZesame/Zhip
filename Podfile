@@ -28,6 +28,8 @@ def shared
   pod 'IQKeyboardManagerSwift'
 
   pod 'JSONRPCKit', :git => 'https://github.com/ollitapa/JSONRPCKit.git', :branch => 'master'
+
+  pod 'SwiftGen'
 end
 
 target 'Zupreme' do

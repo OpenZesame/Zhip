@@ -13,10 +13,12 @@ import RxCocoa
 import UIKit
 import WebKit
 
+private typealias € = L10n.Scene.TermsOfService
+
 final class TermsOfServiceView: ScrollingStackView {
 
     private lazy var htmlView = WKWebView(file: "TermsOfService")
-    private lazy var acceptTermsButton = UIButton.Style("Accept", isEnabled: false).make()
+    private lazy var acceptTermsButton = UIButton.Style(€.Button.accept, isEnabled: false).make()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

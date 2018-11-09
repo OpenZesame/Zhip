@@ -21,6 +21,12 @@ final class TermsOfServiceViewModel: AbstractViewModel<
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output
 > {
+
+    private let useCase: OnboardingUseCase
+
+    init(useCase: OnboardingUseCase) {
+        self.useCase = useCase
+    }
     
     override func transform(input: Input) -> Output {
 
@@ -29,8 +35,9 @@ final class TermsOfServiceViewModel: AbstractViewModel<
         let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
 
         bag <~ [
-            fromView.didAcceptTerms.do(onNext: { [unowned stepper] in
-                stepper.step(.userAcceptedTerms)
+            fromView.didAcceptTerms.do(onNext: { [unowned self] in
+                self.useCase.didAcceptTermsOfService()
+                self.stepper.step(.userAcceptedTerms)
             }).drive()
         ]
 

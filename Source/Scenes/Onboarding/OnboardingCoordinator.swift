@@ -49,21 +49,18 @@ private extension OnboardingCoordinator {
     }
 
     func toTermsOfService() {
-        present(type: TermsOfService.self, viewModel: TermsOfServiceViewModel()) { [unowned self] in
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
+        present(type: TermsOfService.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
-            case .userAcceptedTerms:
-                self.onboardingUseCase.didAcceptTermsOfService()
-                self.toWarningERC20()
+            case .userAcceptedTerms: self.toWarningERC20()
             }
         }
     }
 
     func toWarningERC20() {
-        present(type: WarningERC20.self, viewModel: WarningERC20ViewModel()) { [unowned self] in
+        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
+        present(type: WarningERC20.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
-            case .userSelectedRisksAreUnderstoodDoNotShowAgain:
-                self.onboardingUseCase.doNotShowERC20WarningAgain()
-                fallthrough
             case .userSelectedRisksAreUnderstood: self.toChooseWallet()
             }
         }

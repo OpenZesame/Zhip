@@ -9,6 +9,8 @@
 import UIKit
 import EFQRCode
 
+private typealias Image = Asset
+
 protocol QRCoding: AnyObject {
     func encode(transaction: Transaction, size: CGFloat) -> UIImage?
     func decode(cgImage: CGImage) -> Transaction?
@@ -41,7 +43,13 @@ extension QRCoder: QRCoding {
 
 // MARK: - Private
 private extension QRCoding {
-    func generateImage(content: String, size cgFloatSize: CGFloat, backgroundColor: UIColor = .white, foregroundColor: UIColor = .black, watermarkImage: UIImage? = UIImage(named: "zilliqa_logo")) -> UIImage? {
+    func generateImage(
+        content: String,
+        size cgFloatSize: CGFloat,
+        backgroundColor: UIColor = .white,
+        foregroundColor: UIColor = .black,
+        watermarkImage: UIImage? = Image.zilliqaLogo.image
+        ) -> UIImage? {
         let intSize = Int(cgFloatSize)
         let size = EFIntSize(width: intSize, height: intSize)
 
