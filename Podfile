@@ -39,3 +39,27 @@ target 'Zupreme' do
     pod 'RxBlocking'
   end
 end
+
+pods_lacking_swift_version_build_setting = [
+  'BigInt',
+  'IQKeyboardManagerSwift',
+  'JSONRPCKit',
+  'RxAtomic',
+  'RxBlocking',
+  'RxCocoa',
+  'RxSwift',
+  'RxTest',
+  'SipHash',
+  'SwiftyBeaver',
+  'TinyConstraints',
+]
+    
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+          if pods_lacking_swift_version_build_setting.include?(target.name)
+            config.build_settings['SWIFT_VERSION'] = '4.2'
+          end
+        end
+    end
+end
