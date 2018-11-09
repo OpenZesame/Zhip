@@ -35,25 +35,6 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     }
 }
 
-// MARK: - DeepLink Handler
-extension AppCoordinator {
-    
-    /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
-    func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        return deepLinkHandler.handle(url: url, options: options)
-    }
-
-    func setupDeepLinkNavigationHandling() {
-        let deepLinkStepper = Stepper<DeepLink>()
-        deepLinkHandler.set(stepper: deepLinkStepper)
-        bag <~ deepLinkStepper.navigation.do(onNext: { [unowned self] in
-            switch $0 {
-            case .send(let transaction): self.toSend(prefilTransaction: transaction)
-            }
-        }).drive()
-    }
-}
-
 // MARK: - Private
 private extension AppCoordinator {
 
@@ -88,6 +69,25 @@ private extension AppCoordinator {
             case .didRemoveWallet: self.toOnboarding()
             }
         }
+    }
+}
+
+// MARK: - DeepLink Handler
+extension AppCoordinator {
+
+    /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
+    func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        return deepLinkHandler.handle(url: url, options: options)
+    }
+
+    func setupDeepLinkNavigationHandling() {
+        let deepLinkStepper = Stepper<DeepLink>()
+        deepLinkHandler.set(stepper: deepLinkStepper)
+        bag <~ deepLinkStepper.navigation.do(onNext: { [unowned self] in
+            switch $0 {
+            case .send(let transaction): self.toSend(prefilTransaction: transaction)
+            }
+        }).drive()
     }
 }
 

@@ -27,6 +27,7 @@ PODS:
     - RxSwift (~> 4.0)
   - SipHash (1.2.2)
   - swift_qrcodejs (1.0.1)
+  - SwiftGen (6.0.2)
   - SwiftLint (0.27.0)
   - SwiftyBeaver (1.6.1)
   - TinyConstraints (3.3.1)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - RxBlocking
   - RxCocoa
   - RxTest
+  - SwiftGen
   - SwiftLint
   - SwiftyBeaver
   - TinyConstraints
@@ -66,6 +68,7 @@ SPEC REPOS:
     - RxTest
     - SipHash
     - swift_qrcodejs
+    - SwiftGen
     - SwiftLint
     - SwiftyBeaver
     - TinyConstraints
@@ -103,11 +106,12 @@ SPEC CHECKSUMS:
   RxTest: 19d03286bdc0a3aaea5d61d4cde31fdf4bb8a5ba
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   swift_qrcodejs: c181fe5c849d30c699546a23762d7e3dd143ab37
+  SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
   Zesame: 488b866abf950a24a67079211de1a620e78e3663
 
-PODFILE CHECKSUM: 31f2e09941ad78890e3b095aa06b8085284f5c13
+PODFILE CHECKSUM: fa5c8d90eea7443fc883314a638609f25a4c14d9
 
 COCOAPODS: 1.5.3
