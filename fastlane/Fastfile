@@ -11,7 +11,7 @@ platform :ios do
       match(type: "appstore", readonly: true)
   
       build_number = increase_build_number_using_plist
-      commit_version_bump(message:"[ci-skip] Version Bump to #{build_number}")
+      git_commit(path: $plist_path, message:"[ci-skip] Version Bump to #{build_number}")
   
       # Push commited build number bump even if build might fail, in order to
       # ensure build number always being unique.
@@ -39,7 +39,7 @@ platform :ios do
 
   # Helper lanes
   lane :increase_build_number_using_plist do
-    return increment_plist_value_by_one(for_key:'CFBundleVersion')
+    increment_plist_value_by_one(for_key: 'CFBundleVersion')
   end
 
 end
@@ -60,7 +60,8 @@ def increment_plist_value_by_one(for_key:)
     
     puts "⬆️  1️⃣   Increased value for '#{for_key}' by one, new value: `#{new_value}` (using 'set_info_plist_value')"
 
-    return new_value
+    # return the value
+    new_value
 end
 
 # Fastlane actions wrappers
