@@ -117,9 +117,9 @@ final class SendViewModel: AbstractViewModel<
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
-            balance: balance.map { "\($0.balance.amount) ZILs" },
-            nonce: balance.map { "\($0.nonce.nonce)" },
-            amount: amountFromDeepLinkedTransaction.map { "\($0)" },
+            balance: balance.map { €.Label.balance($0.balance.amount.description) },
+            nonce: balance.map { $0.nonce.nonce.description },
+            amount: amountFromDeepLinkedTransaction.map { $0.description },
             recipient: recipient.map { $0.checksummedHex },
             isRecipientAddressValid: isRecipientAddressValid,
             transactionId: transactionId.map { $0 ?? "No tx id" },
@@ -127,6 +127,8 @@ final class SendViewModel: AbstractViewModel<
         )
     }
 }
+
+private typealias € = L10n.Scene.Send
 
 extension SendViewModel {
 

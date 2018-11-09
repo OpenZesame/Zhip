@@ -12,9 +12,9 @@ enum DeepLink {
 }
 
 extension DeepLink {
-    static var scheme: String {
-        return "zupreme://"
-    }
+    
+    static let scheme: String = "zupreme://"
+
     enum Path: String, CaseIterable {
         case send
     }

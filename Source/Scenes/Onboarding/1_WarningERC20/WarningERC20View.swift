@@ -8,19 +8,14 @@
 
 import UIKit
 
+private typealias € = L10n.Scene.WarningERC20
+
 final class WarningERC20View: ScrollingStackView {
 
-    private lazy var warningTextView = UITextView.Style("""
-        ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️
-        This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.
+    private lazy var warningTextView = UITextView.Style(€.Text.warningERC20, textAlignment: .center, isEditable: false).make()
 
-        Zilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.
-
-        Transferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.
-    """, textAlignment: .center, isEditable: false).make()
-
-    private lazy var acceptButton = UIButton.Style("I understand", textColor: .white, colorNormal: .black).make()
-    private lazy var doNotShowThisAgainButton = UIButton.Style("Do not show this again", textColor: .gray, colorNormal: .clear).make()
+    private lazy var acceptButton = UIButton.Style(€.Button.accept, textColor: .white, colorNormal: .black).make()
+    private lazy var doNotShowThisAgainButton = UIButton.Style(€.Button.doNotShowAgain, textColor: .gray, colorNormal: .clear).make()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

@@ -25,7 +25,5 @@ class AbstractCoordinator<Step>: Coordinator {
     }
 
     // MARK: - Overridable
-    func start() {
-        fatalError("override me")
-    }
+    func start() { abstract }
 }

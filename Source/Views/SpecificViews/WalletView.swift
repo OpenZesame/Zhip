@@ -12,10 +12,12 @@ import Zesame
 import RxSwift
 import RxCocoa
 
+private typealias € = L10n.View.Wallet
+
 final class WalletView: UIStackView, StackViewStyling {
 
     fileprivate lazy var addressLabels = LabelsView(
-        titleStyle: "Your Public Address",
+        title: €.Label.yourAddress,
         valueStyle: UILabel.Style(numberOfLines: 0)
     )
 

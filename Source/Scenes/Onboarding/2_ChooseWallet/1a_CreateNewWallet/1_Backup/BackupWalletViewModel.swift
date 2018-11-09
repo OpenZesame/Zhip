@@ -11,6 +11,8 @@ import RxCocoa
 import RxSwift
 import Zesame
 
+private typealias € = L10n.Scene.BackupWallet
+
 // MARK: - BackupWalletNavigation
 enum BackupWalletNavigation: TrackedUserAction {
     case userSelectedBackupIsDone(wallet: Wallet)
@@ -46,7 +48,7 @@ final class BackupWalletViewModel: AbstractViewModel<
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(keystoreText)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext("✅ Copied keystore")
+                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyKeystore))
                 }).drive(),
 
             input.fromView.doneTrigger.withLatestFrom(understandsRisks)

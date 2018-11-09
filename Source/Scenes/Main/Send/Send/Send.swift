@@ -8,9 +8,10 @@
 
 import UIKit
 
-final class Send: Scene<SendView> {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Send Zillings"
-    }
+private typealias € = L10n.Scene.Send
+
+final class Send: Scene<SendView> {}
+
+extension Send {
+    static let title = €.title
 }

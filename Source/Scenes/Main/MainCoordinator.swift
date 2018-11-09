@@ -11,6 +11,8 @@ import Zesame
 import RxCocoa
 import RxSwift
 
+private typealias € = L10n.Scene
+
 final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
     enum Step {
         case didRemoveWallet
@@ -38,9 +40,9 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 private extension MainCoordinator {
     // swiftlint:disable:next function_body_length
     func setupTabBar() {
-        let sendNavigationController = UINavigationController(tabBarTitle: "Send")
-        let receiveNavigationController = UINavigationController(tabBarTitle: "Receive")
-        let settingsNavigationController = UINavigationController(tabBarTitle: "Settings")
+        let sendNavigationController = UINavigationController()
+        let receiveNavigationController = UINavigationController()
+        let settingsNavigationController = UINavigationController()
 
         tabBarController.viewControllers = [
             sendNavigationController,

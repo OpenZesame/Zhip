@@ -5,4 +5,76 @@
 "Generic.Next" = "Next";
 "Generic.Back" = "Back";
 
+"View.PullToRefreshControl.Title" = "Pull to refresh";
+"View.Balance.Label.Balance" = "Balance";
+"View.Balance.Label.Nonce" = "Current wallet nonce";
+"View.Wallet.Label.YourAddress" = "Your Public Address";
+
+// MARK: - Onboarding
+
+// MARK: TermsOfService
 "Scene.TermsOfService.Button.Accept" = "Accept";
+
+// MARK: WarningERC20
+"Scene.WarningERC20.Title" = "⚠️ WARNING ⚠️";
+"Scene.WarningERC20.Text.WarningERC20" = "This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.";
+"Scene.WarningERC20.Button.Accept" = "I understand";
+"Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
+
+// MARK: ChooseWallet
+"Scene.ChooseWallet.Title" = "Add Wallet";
+"Scene.ChooseWallet.Button.NewWallet" = "New Wallet";
+"Scene.ChooseWallet.Button.RestoreWallet" = "Restore Wallet";
+
+// MARK: CreateNewWallet
+"Scene.CreateNewWallet.Title" = "New wallet";
+"Scene.CreateNewWallet.Label.ChooseNewPassphrase" = "Choose new passphrase";
+"Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
+"Scene.CreateNewWallet.Label.UrgeBackup" = "⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.";
+"Scene.CreateNewWallet.SwitchLabel.PassphraseIsBackedUp" = "Passphrase is backed up";
+"Scene.CreateNewWallet.Button.CreateNewWallet" = "Create new wallet";
+
+// MARK: BackupWallet
+"Scene.BackupWallet.Title" = "Backup Wallet";
+"Scene.BackupWallet.Label.StoreKeystoreSecurely" = "Store the keystore + passphrase somewhere safe (e.g. 1Password)";
+"Scene.BackupWallet.Button.CopyKeystore" = "Copy keystore";
+"Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore" = "⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.";
+"Scene.BackupWallet.SwitchLabel.KeystoreIsBackedUp" = "Keystore is backed up";
+"Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
+"Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
+
+"Scene.RestoreWallet.Title" = "Restore Wallet";
+"Scene.RestoreWallet.Field.PrivateKey" = "Private key";
+"Scene.RestoreWallet.Label.OrKeystore" = "Or paste keystore (JSON) below";
+"Scene.RestoreWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
+"Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
+
+
+// MARK: - Main Flow
+// MARK: Send
+"Scene.Send.Title" = "Send Zillings";
+"Scene.Send.Field.Recipient" = "To address";
+"Scene.Send.Field.Amount" = "Amount";
+"Scene.Send.Field.GasLimit" = "Gas limit";
+"Scene.Send.Field.GasPrice" = "Gas price";
+"Scene.Send.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.Send.Button.Send" = "Send";
+"Scene.Send.Label.TransactionId" = "Transaction Id";
+"Scene.Send.Label.Balance" = "%@ ZILs";
+"Scene.Send.Button.SeeTransactionInfo" = "See transaction Info";
+
+// MARK: Recieve
+"Scene.Receive.Title" = "Receive Zillings";
+"Scene.Receive.Button.CopyMyAddress" = "Copy my address";
+"Scene.Receive.Event.Toast.DidCopyAddress" = "Copied address";
+"Scene.Receive.Field.Amount" = "Amount";
+
+// MARK: - Settings
+"Scene.Settings.Title" = "Settings";
+"Scene.Settings.Button.RemoveWallet" = "Remove wallet";
+"Scene.Settings.Button.BackupWallet" = "Backup wallet";
+"Scene.Settings.Label.AppVersion" = "App Version";
+
+

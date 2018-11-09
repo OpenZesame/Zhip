@@ -38,6 +38,20 @@ final class LabelsView: UIStackView {
 }
 
 extension LabelsView {
+    convenience init(
+        title: String,
+        valueStyle: UILabel.Style? = nil,
+        stackViewStyle: UIStackView.Style? = nil
+        ) {
+        self.init(
+            titleStyle: UILabel.Style(title),
+            valueStyle: valueStyle,
+            stackViewStyle: stackViewStyle
+        )
+    }
+}
+
+extension LabelsView {
 
     func setValue(_ value: CustomStringConvertible) {
         valueLabel.text = value.description

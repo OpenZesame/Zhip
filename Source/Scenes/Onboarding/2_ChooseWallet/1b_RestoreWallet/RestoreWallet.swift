@@ -8,9 +8,10 @@
 
 import Foundation
 
-final class RestoreWallet: Scene<RestoreWalletView> {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Restore wallet"
-    }
+private typealias € = L10n.Scene.RestoreWallet
+
+final class RestoreWallet: Scene<RestoreWalletView> {}
+
+extension RestoreWallet {
+    static let title = €.title
 }

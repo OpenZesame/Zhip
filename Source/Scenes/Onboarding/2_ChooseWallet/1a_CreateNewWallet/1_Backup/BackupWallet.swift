@@ -8,4 +8,10 @@
 
 import Foundation
 
-typealias BackupWallet = Scene<BackupWalletView>
+private typealias € = L10n.Scene.BackupWallet
+
+final class BackupWallet: Scene<BackupWalletView> {}
+
+extension BackupWallet {
+    static let title = €.title
+}

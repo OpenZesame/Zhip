@@ -11,6 +11,8 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+private typealias € = L10n.Scene.Receive
+
 // MARK: - ReceiveNavigation
 enum ReceiveNavigation: TrackedUserAction {
     case userWouldLikeToReceive(transaction: Transaction)
@@ -54,7 +56,7 @@ final class ReceiveViewModel: AbstractViewModel<
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext("✅ Copied address")
+                    input.fromController.toastSubject.onNext(Toast("✅ " + €.Event.Toast.didCopyAddress))
                 }).drive(),
 
             input.fromController.rightBarButtonTrigger.withLatestFrom(transactionToReceive)

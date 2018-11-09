@@ -9,14 +9,16 @@
 import UIKit
 import RxSwift
 
+private typealias € = L10n.Scene.RestoreWallet
+
 final class RestoreWalletView: ScrollingStackView {
 
-    private lazy var privateKeyField = UITextField.Style("Private key", isSecureTextEntry: true).make()
-    private lazy var keystoreLabel: UILabel = "Or paste keystore (JSON) below"
+    private lazy var privateKeyField = UITextField.Style(€.Field.privateKey, isSecureTextEntry: true).make()
+    private lazy var keystoreLabel = UILabel.Style(€.Label.orKeystore).make()
     private lazy var keystoreTextView = UITextView.Style("", height: 200).make()
     private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
-    private lazy var confirmEncryptionPassphraseField = UITextField.Style("Confirm encryption passphrase", isSecureTextEntry: true).make()
-    private lazy var restoreWalletButton = UIButton.Style("Restore Wallet", isEnabled: false).make()
+    private lazy var confirmEncryptionPassphraseField = UITextField.Style(€.Field.confirmEncryptionPassphrase, isSecureTextEntry: true).make()
+    private lazy var restoreWalletButton = UIButton.Style(€.Button.restoreWallet, isEnabled: false).make()
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyField,

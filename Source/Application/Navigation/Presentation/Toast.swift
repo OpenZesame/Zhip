@@ -18,7 +18,7 @@ struct Toast {
     private let message: String
     private let dismissing: Dismissing
 
-    init(message: String, dismissing: Dismissing = .after(duration: 2)) {
+    init(_ message: String, dismissing: Dismissing = .after(duration: 2)) {
         self.message = message
         self.dismissing = dismissing
     }
@@ -28,7 +28,7 @@ struct Toast {
 // MARK: ExpressibleByStringLiteral
 extension Toast: ExpressibleByStringLiteral {
     init(stringLiteral message: String) {
-        self.init(message: message)
+        self.init(message)
     }
 }
 
