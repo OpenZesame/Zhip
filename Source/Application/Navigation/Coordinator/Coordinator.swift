@@ -38,7 +38,7 @@ extension BaseCoordinator {
         case .doNothing: break
         }
 
-        coordinator.navigationSteps.do(onNext: {
+        coordinator.stepper.navigation.do(onNext: {
             navigationHandler($0)
         })
             .drive()
