@@ -33,7 +33,5 @@ class AbstractViewModel<Step, InputFromView, OutputType>: ViewModelType, Navigat
 
     typealias Output = OutputType
 
-    func transform(input: Input) -> Output {
-        fatalError("override me")
-    }
+    func transform(input: Input) -> Output { abstract }
 }

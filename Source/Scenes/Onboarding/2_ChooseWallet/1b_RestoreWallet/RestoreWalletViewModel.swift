@@ -11,6 +11,8 @@ import Zesame
 import RxCocoa
 import RxSwift
 
+private typealias € = L10n.Scene.RestoreWallet
+
 /// Navigation from RestoreWallet
 enum RestoreWalletNavigation: TrackedUserAction {
     case userInitiatedRestorationOfWallet(Wallet)
@@ -81,8 +83,10 @@ final class RestoreWalletViewModel: AbstractViewModel<
             validEncryptionPassphrase.map { $0 != nil }
         ) { $0 && $1}
 
+        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+
         return Output(
-            encryptionPassphrasePlaceholder: .just("Encryption passphrase (min \(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)) chars)"),
+            encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
             isRestoreButtonEnabled: isRestoreButtonEnabled
         )
     }

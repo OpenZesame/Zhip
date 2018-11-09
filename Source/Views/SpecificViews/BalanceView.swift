@@ -13,9 +13,11 @@ import Zesame
 import RxSwift
 import RxCocoa
 
+private typealias € = L10n.View.Balance
+
 final class BalanceView: UIStackView, StackViewStyling {
-    private lazy var balanceLabels = LabelsView(titleStyle: "Balance", valueStyle: "🤷‍♀️")
-    private lazy var nonceLabels = LabelsView(titleStyle: "Current wallet nonce", valueStyle: "🤷‍♀️")
+    private lazy var balanceLabels = LabelsView(title: €.Label.balance, valueStyle: "🤷‍♀️")
+    private lazy var nonceLabels = LabelsView(title: €.Label.nonce, valueStyle: "🤷‍♀️")
 
     init() {
         super.init(frame: .zero)

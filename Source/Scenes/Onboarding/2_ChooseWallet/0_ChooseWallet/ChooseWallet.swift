@@ -8,4 +8,10 @@
 
 import UIKit
 
-typealias ChooseWallet = Scene<ChooseWalletView>
+private typealias € = L10n.Scene.ChooseWallet
+
+final class ChooseWallet: Scene<ChooseWalletView> {}
+
+extension ChooseWallet {
+    static let title = €.title
+}

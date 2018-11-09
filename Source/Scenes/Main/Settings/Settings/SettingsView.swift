@@ -10,15 +10,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+private typealias € = L10n.Scene.Settings
+
 // MARK: - SettingsView
 final class SettingsView: ScrollingStackView {
 
-    private lazy var removeWalletButton = UIButton.Style("Remove Wallet", colorNormal: .red).make()
-    private lazy var backupWalletButton: UIButton = "Backup Wallet"
+    private lazy var removeWalletButton = UIButton.Style(€.Button.removeWallet, colorNormal: .red).make()
+    private lazy var backupWalletButton = UIButton.Style(€.Button.backupWallet).make()
 
     private lazy var appVersionLabels = LabelsView(
-        titleStyle: "App Version",
-        valueStyle: "🤷‍♀️",
+        title: €.Label.appVersion,
         stackViewStyle: UIStackView.Style(alignment: .center)
     )
 

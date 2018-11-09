@@ -8,11 +8,16 @@
 
 import UIKit
 
+private typealias € = L10n.Scene.Receive
+
 final class Receive: Scene<ReceiveView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Receive Zillings"
         navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .action, target: rightBarButtonAbtractTarget, action: #selector(AbstractTarget.pressed))
     }
+}
+
+extension Receive {
+    static let title = €.title
 }

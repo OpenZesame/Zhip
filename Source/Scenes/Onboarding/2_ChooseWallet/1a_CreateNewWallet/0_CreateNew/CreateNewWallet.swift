@@ -8,9 +8,10 @@
 
 import Foundation
 
-final class CreateNewWallet: Scene<CreateNewWalletView> {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Choose new passphrase"
-    }
+private typealias € = L10n.Scene.CreateNewWallet
+
+final class CreateNewWallet: Scene<CreateNewWalletView> {}
+
+extension CreateNewWallet {
+    static let title = €.title
 }

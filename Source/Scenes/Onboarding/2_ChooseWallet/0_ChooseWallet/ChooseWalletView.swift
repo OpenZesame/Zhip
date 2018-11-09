@@ -9,10 +9,12 @@
 import UIKit
 import RxSwift
 
+private typealias € = L10n.Scene.ChooseWallet
+
 final class ChooseWalletView: ScrollingStackView {
 
-    private lazy var createNewWalletButton: UIButton = "New Wallet"
-    private lazy var restoreWalletButton = UIButton.Style("Restore Wallet", textColor: .white, colorNormal: .blue).make()
+    private lazy var createNewWalletButton = UIButton.Style(€.Button.newWallet).make()
+    private lazy var restoreWalletButton = UIButton.Style(€.Button.restoreWallet, textColor: .white, colorNormal: .blue).make()
 
     lazy var stackViewStyle: UIStackView.Style = [
         createNewWalletButton,

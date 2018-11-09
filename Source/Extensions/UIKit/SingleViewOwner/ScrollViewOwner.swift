@@ -8,6 +8,8 @@
 
 import UIKit
 
+private typealias € = L10n.View.PullToRefreshControl
+
 protocol PullToRefreshCapable {}
 
 typealias ScrollingStackView = ScrollView & StackViewStyling
@@ -45,14 +47,14 @@ private extension ScrollView {
     }
 
     func makeView() -> UIView {
-        guard let viewProvider = self as? ContentViewProvider else { fatalError("should conform to `ContentViewProvider`") }
+        guard let viewProvider = self as? ContentViewProvider else { incorrectImplementation("should conform to `ContentViewProvider`") }
         return viewProvider.makeContentView()
     }
 
     func setupRefreshControl() {
         alwaysBounceVertical = true
         let refreshControl = UIRefreshControl(frame: .zero)
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.attributedTitle = NSAttributedString(string: €.title)
         self.refreshControl = refreshControl
     }
 }

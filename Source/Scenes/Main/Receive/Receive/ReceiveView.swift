@@ -11,14 +11,16 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+private typealias € = L10n.Scene.Receive
+
 // MARK: - ReceiveView
 private let stackViewMargin: CGFloat = 16
 final class ReceiveView: ScrollingStackView {
 
     private lazy var walletView = WalletView()
 
-    private lazy var copyMyAddressButton: UIButton = "Copy my address"
-    private lazy var amountToReceiveField = UITextField.Style("Amount", text: "237").make()
+    private lazy var copyMyAddressButton = UIButton.Style(€.Button.copyMyAddress).make()
+    private lazy var amountToReceiveField = UITextField.Style(€.Field.amount, text: "237").make()
     private lazy var qrImageView = UIImageView()
 
     // MARK: - StackViewStyling

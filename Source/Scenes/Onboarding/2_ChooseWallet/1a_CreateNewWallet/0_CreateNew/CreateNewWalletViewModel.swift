@@ -11,6 +11,8 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+private typealias € = L10n.Scene.CreateNewWallet
+
 // MARK: - CreateNewWalletNavigator
 enum CreateNewWalletNavigator: TrackedUserAction {
      case userInitiatedCreationOfWallet(Wallet)
@@ -53,8 +55,10 @@ AbstractViewModel<
             .drive()
             .disposed(by: bag)
 
+        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+
         return Output(
-            encryptionPassphrasePlaceholder: .just("Encryption passphrase (min \(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)) chars)"),
+            encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
             isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
         )
     }

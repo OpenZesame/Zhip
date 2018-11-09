@@ -11,20 +11,22 @@ import RxSwift
 import RxCocoa
 import Zesame
 
+private typealias € = L10n.Scene.Send
+
 // MARK: - SendView
 final class SendView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var balanceView = BalanceView()
 
-    private lazy var recipientAddressField = UITextField.Style("To address", text: "74C544A11795905C2C9808F9E78D8156159D32E4").make()
-    private lazy var amountToSendField = UITextField.Style("Amount", text: "11").make()
-    private lazy var gasLimitField = UITextField.Style("Gas limit", text: "1").make()
-    private lazy var gasPriceField = UITextField.Style("Gas price", text: "1").make()
+    private lazy var recipientAddressField = UITextField.Style(€.Field.recipient, text: "74C544A11795905C2C9808F9E78D8156159D32E4").make()
+    private lazy var amountToSendField = UITextField.Style(€.Field.amount, text: "11").make()
+    private lazy var gasLimitField = UITextField.Style(€.Field.gasLimit, text: "1").make()
+    private lazy var gasPriceField = UITextField.Style(€.Field.gasPrice, text: "1").make()
 
-    private lazy var encryptionPassphraseField = UITextField.Style("Encryption passphrase", isSecureTextEntry: true).make()
-    private lazy var sendButton = UIButton.Style("Send", isEnabled: false).make()
-    private lazy var transactionIdLabels = LabelsView(titleStyle: "Transaction Id")
-    private lazy var openTransactionInfoInBrowserButton = UIButton.Style("Transaction Info", textColor: .white, colorNormal: .blue, isEnabled: false).make()
+    private lazy var encryptionPassphraseField = UITextField.Style(€.Field.encryptionPassphrase, isSecureTextEntry: true).make()
+    private lazy var sendButton = UIButton.Style(€.Button.send, isEnabled: false).make()
+    private lazy var transactionIdLabels = LabelsView(title: €.Label.transactionId)
+    private lazy var openTransactionInfoInBrowserButton = UIButton.Style(€.Button.seeTransactionInfo, textColor: .white, colorNormal: .blue, isEnabled: false).make()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

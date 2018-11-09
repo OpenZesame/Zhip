@@ -1,8 +1,0 @@
-// MARK: - Generic
-"Generic.OK" = "OK";
-"Generic.Cancel" = "Avbryt";
-"Generic.Close" = "Stäng";
-"Generic.Next" = "Nästa";
-"Generic.Back" = "Tillbaka";
-
-"Scene.TermsOfService.Button.Accept" = "Acceptera";

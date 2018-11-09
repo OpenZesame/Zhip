@@ -8,8 +8,6 @@
 
 import UIKit
 
-let log = Logger()
-
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default

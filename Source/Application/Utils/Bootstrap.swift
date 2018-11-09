@@ -8,7 +8,13 @@
 
 import Foundation
 import IQKeyboardManagerSwift
+import SwiftyBeaver
+
+let log = SwiftyBeaver.self
 
 func bootstrap() {
     IQKeyboardManager.shared.enable = true
+
+    let console = ConsoleDestination()
+    log.addDestination(console)
 }

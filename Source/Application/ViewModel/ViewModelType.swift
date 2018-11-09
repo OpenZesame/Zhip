@@ -26,7 +26,7 @@ protocol InputType {
 }
 
 extension InputType {
-    var fromController: ControllerInput { fatalError("implement me") }
+    var fromController: ControllerInput { abstract }
 }
 
 protocol ViewModelType {

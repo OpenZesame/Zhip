@@ -15,3 +15,7 @@ var interfaceBuilderSucks: Never {
 func incorrectImplementation(_ message: String) -> Never {
     fatalError("Incorrect implementation - \(message)")
 }
+
+var abstract: Never {
+    fatalError("Override me")
+}

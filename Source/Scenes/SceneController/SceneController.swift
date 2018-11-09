@@ -11,8 +11,17 @@ import UIKit
 import RxSwift
 import TinyConstraints
 
+protocol TitledScene {
+    static var title: String { get }
+}
+
+extension TitledScene {
+    static var title: String { return "" }
+    var sceneTitle: String { return Self.title }
+}
+
 /// Use typealias when you don't require a subclass. If your use case requires subclass, inherit from `SceneController`.
-typealias Scene<View: UIView & ViewModelled> = SceneController<View>
+typealias Scene<View: UIView & ViewModelled> = SceneController<View> & TitledScene
 
 /// The "Single-Line Controller" base class
 class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewModelled {
@@ -40,6 +49,13 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
         view = View()
         view.backgroundColor = .white
         view.bounds = UIScreen.main.bounds
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
+            self.title = sceneTitle
+        }
     }
 }
 

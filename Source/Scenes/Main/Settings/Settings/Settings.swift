@@ -8,9 +8,10 @@
 
 import UIKit
 
-final class Settings: Scene<SettingsView> {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Settings"
-    }
+private typealias € = L10n.Scene.Settings
+
+final class Settings: Scene<SettingsView> {}
+
+extension Settings {
+    static let title = €.title
 }
