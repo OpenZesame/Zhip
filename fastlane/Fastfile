@@ -1,5 +1,7 @@
 default_platform(:ios)
 
+$plist_path = "Source/Application/Zupreme-Info.plist"
+
 platform :ios do
 
   desc "Push a new beta build to TestFlight"
@@ -8,7 +10,7 @@ platform :ios do
       # Update provisioning profiles and certificates
       match(type: "appstore", readonly: true)
   
-      build_number = increment_build_number
+      build_number = increase_build_number_using_plist
       commit_version_bump(message:"[ci-skip] Version Bump to #{build_number}")
   
       # Push commited build number bump even if build might fail, in order to
@@ -34,12 +36,38 @@ platform :ios do
       on_error(exception)
     end
   end
+
+  # Helper lanes
+  lane :increase_build_number_using_plist do
+    return increment_plist_value_by_one(for_key:'CFBundleVersion')
+  end
+
 end
 
-
+# Lane helpers
 def on_error(exception)
   slack(
     message: "Lane failed with exception : #{exception}",
     success: false
   )
+end
+
+# Custom actions
+def increment_plist_value_by_one(for_key:)
+    current_value = get_plist_value_for_key(key: for_key).to_i
+    new_value = (current_value + 1).to_s
+    set_plist(value: new_value, for_key: for_key)
+    
+    puts "⬆️  1️⃣   Increased value for '#{for_key}' by one, new value: `#{new_value}` (using 'set_info_plist_value')"
+
+    return new_value
+end
+
+# Fastlane actions wrappers
+def get_plist_value_for_key(key:)
+  get_info_plist_value(path: $plist_path, key: key)
+end
+
+def set_plist(value:, for_key:)
+  set_info_plist_value(path: $plist_path, key: for_key, value: value)
 end
