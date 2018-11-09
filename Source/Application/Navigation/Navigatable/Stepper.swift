@@ -7,6 +7,8 @@ final class Stepper<Step> {
     private let navigationSubject: PublishSubject<Step>
     private let tracker: Tracking
 
+    lazy var navigation = navigationSubject.asDriverOnErrorReturnEmpty()
+
     init(navigationSubject: PublishSubject<Step> = PublishSubject<Step>(), tracker: Tracking = Tracker()) {
         self.navigationSubject = navigationSubject
         self.tracker = tracker
@@ -14,11 +16,6 @@ final class Stepper<Step> {
 }
 
 extension Stepper {
-
-    var navigationSteps: Driver<Step> {
-        return navigationSubject.asDriverOnErrorReturnEmpty()
-    }
-
     func step(_ step: Step) {
         navigationSubject.onNext(step)
 

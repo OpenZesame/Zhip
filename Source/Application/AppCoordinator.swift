@@ -46,7 +46,7 @@ extension AppCoordinator {
     func setupDeepLinkNavigationHandling() {
         let deepLinkStepper = Stepper<DeepLink>()
         deepLinkHandler.set(stepper: deepLinkStepper)
-        bag <~ deepLinkStepper.navigationSteps.do(onNext: { [unowned self] in
+        bag <~ deepLinkStepper.navigation.do(onNext: { [unowned self] in
             switch $0 {
             case .send(let transaction): self.toSend(prefilTransaction: transaction)
             }

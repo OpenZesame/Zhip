@@ -17,6 +17,8 @@ class AbstractCoordinator<Step>: Coordinator {
     let bag = DisposeBag()
     let presenter: Presenter?
 
+    lazy var navigation = stepper.navigation
+
     // MARK: - Initialization
     init(presenter: Presenter?) {
         self.presenter = presenter
@@ -25,11 +27,5 @@ class AbstractCoordinator<Step>: Coordinator {
     // MARK: - Overridable
     func start() {
         fatalError("override me")
-    }
-}
-
-extension AbstractCoordinator {
-    var navigation: Driver<Step> {
-        return stepper.navigationSteps
     }
 }

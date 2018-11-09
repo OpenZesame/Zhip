@@ -14,7 +14,3 @@ protocol Navigatable: BaseNavigatable {
     associatedtype Step
     var stepper: Stepper<Step> { get }
 }
-
-extension Navigatable {
-    var navigationSteps: Driver<Step> { return stepper.navigationSteps }
-}

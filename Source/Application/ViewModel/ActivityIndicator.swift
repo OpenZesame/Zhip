@@ -15,16 +15,34 @@ public class ActivityIndicator: SharedSequenceConvertibleType {
     public typealias E = Bool
     public typealias SharingStrategy = DriverSharingStrategy
 
-    private let _lock = NSRecursiveLock()
-    private let _variable = Variable(false)
-    private let _loading: SharedSequence<SharingStrategy, Bool>
+    private let lock = NSRecursiveLock()
+    private let subject = BehaviorSubject(value: false)
+    private lazy var isLoading = subject.asDriverOnErrorReturnEmpty().distinctUntilChanged()
 
-    public init() {
-        _loading = _variable.asDriver()
-            .distinctUntilChanged()
+    public init() {}
+}
+
+public extension ActivityIndicator {
+    func asSharedSequence() -> SharedSequence<SharingStrategy, E> {
+        return isLoading
+    }
+}
+
+private extension ActivityIndicator {
+
+    private func subscribed() {
+        lock.lock()
+        subject.onNext(true)
+        lock.unlock()
     }
 
-    fileprivate func trackActivityOfObservable<O: ObservableConvertibleType>(_ source: O) -> Observable<O.E> {
+    private func sendStopLoading() {
+        lock.lock()
+        subject.onNext(false)
+        lock.unlock()
+    }
+
+    func trackActivityOfObservable<O: ObservableConvertibleType>(_ source: O) -> Observable<O.E> {
         return source.asObservable()
             .do(onNext: { _ in
                 self.sendStopLoading()
@@ -35,25 +53,11 @@ public class ActivityIndicator: SharedSequenceConvertibleType {
             }, onSubscribe: subscribed)
     }
 
-    private func subscribed() {
-        _lock.lock()
-        _variable.value = true
-        _lock.unlock()
-    }
-
-    private func sendStopLoading() {
-        _lock.lock()
-        _variable.value = false
-        _lock.unlock()
-    }
-
-    public func asSharedSequence() -> SharedSequence<SharingStrategy, E> {
-        return _loading
-    }
 }
 
-extension ObservableConvertibleType {
-    public func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<E> {
+// MARK: - ObservableConvertibleType + ActivityIndicator
+public extension ObservableConvertibleType {
+     func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<E> {
         return activityIndicator.trackActivityOfObservable(self)
     }
 }
