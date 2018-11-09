@@ -1,28 +1,45 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:ios)
 
 platform :ios do
 
   desc "Push a new beta build to TestFlight"
   lane :beta do
-  	match(type: "appstore", readonly: true)
-    build_app(scheme: "Zupreme")
-    upload_to_testflight(skip_waiting_for_build_processing: true)
-    clean_build_artifacts
-  end
+    begin
+      # Update provisioning profiles and certificates
+      match(type: "appstore", readonly: true)
+  
+      build_number = increment_build_number
+      commit_version_bump(message:"[ci-skip] Version Bump to #{build_number}")
+  
+      # Push commited build number bump even if build might fail, in order to
+      # ensure build number always being unique.
+      push_to_git_remote
+    
+      # Build the IPA
+      build_app(scheme: "Zupreme")
 
+      upload_to_testflight
+
+      slack(
+        message: "AppStore Connect (TestFlight) successfully parsed build",
+        success: true
+      )
+    
+      add_git_tag 
+      push_to_git_remote
+    
+      clean_build_artifacts
+
+    rescue => exception
+      on_error(exception)
+    end
+  end
+end
+
+
+def on_error(exception)
+  slack(
+    message: "Lane failed with exception : #{exception}",
+    success: false
+  )
 end
