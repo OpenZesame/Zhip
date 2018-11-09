@@ -25,7 +25,6 @@ extension UIStackView: Styling, StaticEmptyInitializable {
         let spacing: CGFloat?
         let margin: CGFloat?
 
-
         public init(
             _ views: [UIView]? = nil,
             axis: NSLayoutConstraint.Axis? = nil,

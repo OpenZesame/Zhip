@@ -9,6 +9,9 @@
 import UIKit
 import Zesame
 
+import RxSwift
+import RxCocoa
+
 final class WalletView: UIStackView, StackViewStyling {
 
     fileprivate lazy var addressLabels = LabelsView(
@@ -32,9 +35,6 @@ final class WalletView: UIStackView, StackViewStyling {
     ], spacing: 16, margin: 0)
 }
 
-
-import RxSwift
-import RxCocoa
 extension Reactive where Base == WalletView {
     var address: Binder<String> {
         return Binder(base) {

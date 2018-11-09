@@ -33,7 +33,7 @@ extension DeepLinkHandler {
     /// Handles incoming `url`, e.g. `zupreme://send?to=0x1a2b3c&amount=1337`
     ///
     /// return: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
-    func handle(url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+    func handle(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         track(event: .receivedLinkFrom)
 
         if let sendingAppID = options[.sourceApplication] as? String {

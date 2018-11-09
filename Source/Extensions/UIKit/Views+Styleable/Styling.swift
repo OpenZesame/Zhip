@@ -27,7 +27,7 @@ extension Styling where Self: UIView, Self: StaticEmptyInitializable, Self.Empty
     }
 }
 
-extension Styling where Self: UIView, Self: StaticEmptyInitializable, Self.Empty == Self, Style: ExpressibleByStringLiteral, Self.Style.StringLiteralType == String  {
+extension Styling where Self: UIView, Self: StaticEmptyInitializable, Self.Empty == Self, Style: ExpressibleByStringLiteral, Self.Style.StringLiteralType == String {
 
     public init(stringLiteral value: String) {
         let style = Style.init(stringLiteral: value)

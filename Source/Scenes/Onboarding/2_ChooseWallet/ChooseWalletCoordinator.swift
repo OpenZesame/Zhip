@@ -28,7 +28,6 @@ final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator
     }
 }
 
-
 // MARK: Private
 private extension ChooseWalletCoordinator {
 

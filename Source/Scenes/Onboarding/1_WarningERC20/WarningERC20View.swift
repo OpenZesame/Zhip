@@ -26,7 +26,7 @@ final class WarningERC20View: ScrollingStackView {
     lazy var stackViewStyle: UIStackView.Style = [
         warningTextView,
         acceptButton,
-        doNotShowThisAgainButton,
+        doNotShowThisAgainButton
     ]
 }
 

@@ -15,7 +15,9 @@ extension WKWebView {
         self.init(frame: .zero, configuration: WKWebViewConfiguration())
         translatesAutoresizingMaskIntoConstraints = false
         let htmlFile = Bundle.main.path(forResource: file, ofType: "html")!
-        let html = try! String(contentsOfFile: htmlFile, encoding: String.Encoding.utf8)
+        guard let html = try? String(contentsOfFile: htmlFile, encoding: .utf8) else {
+            incorrectImplementation("Bad HTML file, fix it please.")
+        }
         loadHTMLString(html, baseURL: nil)
     }
 }

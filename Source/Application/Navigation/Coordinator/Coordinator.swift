@@ -14,7 +14,7 @@ import RxCocoa
 protocol BaseCoordinator: AnyObject, BaseNavigatable {
     func start()
     var bag: DisposeBag { get }
-    var childCoordinators: [BaseCoordinator] { set get }
+    var childCoordinators: [BaseCoordinator] { get set }
     func start<C>(coordinator: C, transition: CoordinatorTransition, navigationHandler: @escaping (C.Step) -> Void) where C: Coordinator & Navigatable
 }
 

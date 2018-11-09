@@ -27,8 +27,7 @@ extension Presenting {
         _present(presentable, presentation: presentation, navigation: presentable.navigationSteps, navigationHandler: navigationHandler)
     }
 
-    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
-    {
+    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V> {
         let scene = S.init(viewModel: viewModel)
         _present(scene, presentation: presentation, navigation: viewModel.navigationSteps, navigationHandler: navigationHandler)
     }

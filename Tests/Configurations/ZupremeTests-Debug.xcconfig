@@ -1,0 +1,3 @@
+#include "ZupremeTests.xcconfig"
+
+#include "Pods/Target Support Files/Pods-ZupremeTests/Pods-ZupremeTests.debug.xcconfig"

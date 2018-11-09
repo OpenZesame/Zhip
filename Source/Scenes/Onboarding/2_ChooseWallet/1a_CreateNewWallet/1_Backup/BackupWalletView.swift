@@ -22,7 +22,6 @@ final class BackupWalletView: ScrollingStackView {
     private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
     private lazy var doneButton = UIButton.Style("I've backed up, proceed", isEnabled: false).make()
 
-
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         beSafeLabel,

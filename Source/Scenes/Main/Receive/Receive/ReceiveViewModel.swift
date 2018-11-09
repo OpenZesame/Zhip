@@ -31,6 +31,7 @@ final class ReceiveViewModel: AbstractViewModel<
         self.qrCoder = qrCoder
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
 
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()

@@ -36,6 +36,7 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 
 // MARK: - Private
 private extension MainCoordinator {
+    // swiftlint:disable:next function_body_length
     func setupTabBar() {
         let sendNavigationController = UINavigationController(tabBarTitle: "Send")
         let receiveNavigationController = UINavigationController(tabBarTitle: "Receive")

@@ -39,7 +39,7 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
 extension AppCoordinator {
     
     /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
-    func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+    func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         return deepLinkHandler.handle(url: url, options: options)
     }
 

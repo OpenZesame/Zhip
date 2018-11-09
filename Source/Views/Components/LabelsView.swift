@@ -28,7 +28,6 @@ final class LabelsView: UIStackView {
         self.titleLabel = titleStyle.merged(other: defaultTitleStyle, mode: .overrideOther).make()
         self.valueLabel = valueStyle.merged(other: defaultvalueStyle, mode: .overrideOther).make()
 
-
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         apply(style: stackViewStyle.merged(other: defaultStackViewStyle, mode: .overrideOther))
