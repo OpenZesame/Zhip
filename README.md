@@ -10,6 +10,5 @@ This is an open source, iOS Wallet for Zilliqa. It uses the [Zilliqa Swift SDK "
 4.  [Carthage](https://github.com/Carthage/Carthage#quick-start)
 
 ### Get started
-0.  `git clone` this repo, `cd` to the newly cloned folder 
-1.  `carthage bootstrap --platform ios --no-use-binaries`
-2.  `open Zupreme.xcodeproj`
+1.  `git clone` this repo, `cd` to the newly cloned folder 
+2.  `open Zupreme.xcworkspace`
