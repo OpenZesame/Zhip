@@ -10,13 +10,13 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-enum ChoosePincodeNavigation: TrackedUserAction {
-    case userChoseUnconfirmedPincode(Pincode)
-    case userWannaSkipChoosingPincode
+enum ChoosePincodeUserAction: TrackedUserAction {
+    case chosePincode(Pincode)
+    case skip
 }
 
 final class ChoosePincodeViewModel: BaseViewModel<
-    ChoosePincodeNavigation,
+    ChoosePincodeUserAction,
     ChoosePincodeViewModel.InputFromView,
     ChoosePincodeViewModel.Output
 > {
@@ -28,11 +28,11 @@ final class ChoosePincodeViewModel: BaseViewModel<
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(pincode.filterNil())
             .do(onNext: { [unowned self] in
-                self.stepper.step(.userChoseUnconfirmedPincode($0))
+                self.stepper.step(.chosePincode($0))
             }).drive(),
 
             input.fromController.rightBarButtonTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.userWannaSkipChoosingPincode)
+                stepper.step(.skip)
             }).drive()
         ]
 

@@ -13,15 +13,15 @@ import Zesame
 
 private typealias € = L10n.Scene.CreateNewWallet
 
-// MARK: - CreateNewWalletNavigator
-enum CreateNewWalletNavigator: TrackedUserAction {
-     case userInitiatedCreationOfWallet(Wallet)
+// MARK: - CreateNewWalletUserAction
+enum CreateNewWalletUserAction: TrackedUserAction {
+     case createWallet(Wallet)
 }
 
 // MARK: - CreateNewWalletViewModel
 final class CreateNewWalletViewModel:
 BaseViewModel<
-    CreateNewWalletNavigator,
+    CreateNewWalletUserAction,
     CreateNewWalletViewModel.InputFromView,
     CreateNewWalletViewModel.Output
 > {
@@ -51,7 +51,7 @@ BaseViewModel<
                 self.useCase.createNewWallet(encryptionPassphrase: $0)
                     .asDriverOnErrorReturnEmpty()
             }
-            .do(onNext: { [unowned stepper] in stepper.step(.userInitiatedCreationOfWallet($0)) })
+            .do(onNext: { [unowned stepper] in stepper.step(.createWallet($0)) })
             .drive()
             .disposed(by: bag)
 

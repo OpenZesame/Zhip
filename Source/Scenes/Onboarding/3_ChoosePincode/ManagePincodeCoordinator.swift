@@ -48,9 +48,9 @@ private extension ManagePincodeCoordinator {
 
     func toConfirmExisting() {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: useCase, userWantsToRemovePincode: intent.userWantsToRemovePincode)
-        present(type: UnlockAppWithPincode.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userAbortedRemovalOfPin, .userDidUnlockApp, .userRemovedPincode: self.finish()
+        present(type: UnlockAppWithPincode.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .cancelPincodeRemoval, .unlockApp, .removePincode: self.finish()
             }
         }
     }
@@ -58,20 +58,20 @@ private extension ManagePincodeCoordinator {
     func toChoosePincode() {
         present(type: ChoosePincode.self, viewModel: ChoosePincodeViewModel(), configureNavigationItem: {
             $0.hidesBackButton = true
-        }, navigationHandler: { [unowned self] in
-            switch $0 {
-            case .userChoseUnconfirmedPincode(let unconfirmedPincode): self.toConfirmPincode(unconfirmedPincode: unconfirmedPincode)
-            case .userWannaSkipChoosingPincode: self.skipPincode()
+        }, navigationHandler: { [unowned self] userDid in
+            switch userDid {
+            case .chosePincode(let unconfirmedPincode): self.toConfirmPincode(unconfirmedPincode: unconfirmedPincode)
+            case .skip: self.skipPincode()
             }
         })
     }
 
     func toConfirmPincode(unconfirmedPincode: Pincode) {
         let viewModel = ConfirmNewPincodeViewModel(useCase: useCase, confirm: unconfirmedPincode)
-        present(type: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userWannaSkipChoosingPincode: self.skipPincode()
-            case .userFinishedChoosingPincode: self.finish()
+        present(type: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .skip: self.skipPincode()
+            case .confirmPincode: self.finish()
             }
         }
     }

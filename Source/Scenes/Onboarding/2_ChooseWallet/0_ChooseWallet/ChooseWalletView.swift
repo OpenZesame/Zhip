@@ -27,8 +27,8 @@ extension ChooseWalletView: ViewModelled {
     typealias ViewModel = ChooseWalletViewModel
     var inputFromView: InputFromView {
         return InputFromView(
-            createNewTrigger: createNewWalletButton.rx.tap.asDriver(),
-            restoreTrigger: restoreWalletButton.rx.tap.asDriver()
+            createNewWalletTrigger: createNewWalletButton.rx.tap.asDriver(),
+            restoreWalletTrigger: restoreWalletButton.rx.tap.asDriver()
         )
     }
 }

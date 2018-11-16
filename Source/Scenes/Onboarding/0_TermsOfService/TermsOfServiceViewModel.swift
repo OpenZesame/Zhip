@@ -11,8 +11,8 @@ import RxSwift
 import RxCocoa
 
 // MARK: TermsOfServiceNavigation
-enum TermsOfServiceNavigation: String, TrackedUserAction {
-    case userAcceptedTerms
+enum TermsOfServiceNavigation: TrackedUserAction {
+    case acceptTermsOfService
 }
 
 // MARK: - TermsOfServiceViewModel
@@ -29,15 +29,16 @@ final class TermsOfServiceViewModel: BaseViewModel<
     }
     
     override func transform(input: Input) -> Output {
+        func userDid(_ userAction: Step) {
+            stepper.step(userAction)
+        }
 
-        let fromView = input.fromView
-
-        let isAcceptButtonEnabled = fromView.didScrollToBottom.map { true }
+        let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
 
         bag <~ [
-            fromView.didAcceptTerms.do(onNext: { [unowned self] in
+            input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
                 self.useCase.didAcceptTermsOfService()
-                self.stepper.step(.userAcceptedTerms)
+                userDid(.acceptTermsOfService)
             }).drive()
         ]
 

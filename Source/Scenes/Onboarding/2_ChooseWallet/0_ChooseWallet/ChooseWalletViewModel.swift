@@ -9,30 +9,32 @@
 import RxSwift
 import RxCocoa
 
-// MARK: - ChooseWalletNavigation
-enum ChooseWalletNavigation: String, TrackedUserAction {
-    case userSelectedCreateNewWallet
-    case userSelectedRestoreWallet
+// MARK: - ChooseWalletUserAction
+enum ChooseWalletUserAction: TrackedUserAction {
+    case createNewWallet
+    case restoreWallet
 }
 
 // MARK: - ChooseWalletViewModel
 final class ChooseWalletViewModel: BaseViewModel<
-    ChooseWalletNavigation,
+    ChooseWalletUserAction,
     ChooseWalletViewModel.InputFromView,
     ChooseWalletViewModel.Output
 > {
 
     override func transform(input: Input) -> Output {
-        let fromView = input.fromView
+        func userIntends(to intention: Step) {
+            stepper.step(intention)
+        }
 
         bag <~ [
-            fromView.createNewTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.userSelectedCreateNewWallet)
-            }).drive(),
+            input.fromView.createNewWalletTrigger
+                .do(onNext: { userIntends(to: .createNewWallet) })
+                .drive(),
 
-            fromView.restoreTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.userSelectedRestoreWallet)
-            }).drive()
+            input.fromView.restoreWalletTrigger
+                .do(onNext: { userIntends(to: .restoreWallet) })
+                .drive()
         ]
         return Output()
     }
@@ -41,8 +43,8 @@ final class ChooseWalletViewModel: BaseViewModel<
 extension ChooseWalletViewModel {
 
     struct InputFromView {
-        let createNewTrigger: Driver<Void>
-        let restoreTrigger: Driver<Void>
+        let createNewWalletTrigger: Driver<Void>
+        let restoreWalletTrigger: Driver<Void>
     }
 
     struct Output {}

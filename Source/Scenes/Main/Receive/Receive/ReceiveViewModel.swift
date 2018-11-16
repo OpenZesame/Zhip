@@ -13,14 +13,14 @@ import Zesame
 
 private typealias € = L10n.Scene.Receive
 
-// MARK: - ReceiveNavigation
-enum ReceiveNavigation: TrackedUserAction {
-    case userWouldLikeToReceive(transaction: Transaction)
+// MARK: - ReceiveUserAction
+enum ReceiveUserAction: TrackedUserAction {
+    case requestTransaction(Transaction)
 }
 
 // MARK: - ReceiveViewModel
 final class ReceiveViewModel: BaseViewModel<
-    ReceiveNavigation,
+    ReceiveUserAction,
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
@@ -35,6 +35,9 @@ final class ReceiveViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userDid(_ userAction: Step) {
+            stepper.step(userAction)
+        }
 
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
@@ -60,9 +63,8 @@ final class ReceiveViewModel: BaseViewModel<
                 }).drive(),
 
             input.fromController.rightBarButtonTrigger.withLatestFrom(transactionToReceive)
-                .do(onNext: { [unowned stepper] in
-                    stepper.step(.userWouldLikeToReceive(transaction: $0))
-            }).drive()
+                .do(onNext: { userDid(.requestTransaction($0)) })
+                .drive()
         ]
 
         return Output(

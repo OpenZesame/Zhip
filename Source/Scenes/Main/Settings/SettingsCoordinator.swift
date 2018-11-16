@@ -35,6 +35,26 @@ final class SettingsCoordinator: AbstractCoordinator<SettingsCoordinator.Step> {
 // MARK: - Navigate
 private extension SettingsCoordinator {
 
+    func toSettings() {
+        let viewModel = SettingsViewModel(useCase: pincodeUseCase)
+        present(type: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+            switch userIntendsTo {
+            case .setPincode: self.toSetPincode()
+            case .removePincode: self.toRemovePincode()
+            case .backupWallet: self.toBackupWallet()
+            case .removeWallet: self.toChooseWallet()
+            }
+        }
+    }
+
+    func toSetPincode() {
+        stepper.step(.userWantsToSetPincode)
+    }
+
+    func toRemovePincode() {
+        stepper.step(.userWantsToRemovePincode)
+    }
+
     func toChooseWallet() {
         walletUseCase.deleteWallet()
         pincodeUseCase.deletePincode()
@@ -43,23 +63,13 @@ private extension SettingsCoordinator {
 
     func toBackupWallet() {
         let viewModel = BackupWalletViewModel(useCase: walletUseCase)
-        present(type: BackupWallet.self, viewModel: viewModel, presentation: .animatedPresent) { [unowned self] in
-            switch $0 {
-            case .userSelectedBackupIsDone: self.presenter?.dismiss(animated: true, completion: nil)
+        present(type: BackupWallet.self, viewModel: viewModel, presentation: .animatedPresent) { [unowned self] userDid in
+            switch userDid {
+            case .backupWallet: self.presenter?.dismiss(animated: true, completion: nil)
             }
         }
     }
 
-    func toSettings() {
-        let viewModel = SettingsViewModel(useCase: pincodeUseCase)
-        present(type: Settings.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userSelectedSetPincode: self.stepper.step(.userWantsToSetPincode)
-            case .userSelectedRemovePincode: self.stepper.step(.userWantsToRemovePincode)
-            case .userSelectedBackupWallet: self.toBackupWallet()
-            case .userSelectedRemoveWallet: self.toChooseWallet()
-            }
-        }
-    }
+
 
 }

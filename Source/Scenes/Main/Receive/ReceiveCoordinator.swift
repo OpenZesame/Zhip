@@ -32,9 +32,9 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
 private extension ReceiveCoordinator {
 
     func toReceive() {
-        present(type: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] in
-            switch $0 {
-            case .userWouldLikeToReceive(let transactionToReceive): self.share(transaction: transactionToReceive)
+        present(type: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] userDid in
+            switch userDid {
+            case .requestTransaction(let requestedTransaction): self.share(transaction: requestedTransaction)
             }
         }
     }

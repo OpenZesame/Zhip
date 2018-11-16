@@ -15,7 +15,7 @@ private typealias € = L10n.Scene.RestoreWallet
 
 /// Navigation from RestoreWallet
 enum RestoreWalletNavigation: TrackedUserAction {
-    case userInitiatedRestorationOfWallet(Wallet)
+    case restoreWallet(Wallet)
 }
 
 // MARK: - RestoreWalletViewModel
@@ -33,7 +33,10 @@ final class RestoreWalletViewModel: BaseViewModel<
     
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        
+        func userIntends(to intention: Step) {
+            stepper.step(intention)
+        }
+
         let fromView = input.fromView
 
         let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
@@ -72,9 +75,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         
         bag <~ [
             fromView.restoreTrigger
-                .withLatestFrom(wallet).do(onNext: { [unowned stepper] in
-                    stepper.step(.userInitiatedRestorationOfWallet($0))
-                })
+                .withLatestFrom(wallet).do(onNext: { userIntends(to: .restoreWallet($0)) })
                 .drive()
         ]
 

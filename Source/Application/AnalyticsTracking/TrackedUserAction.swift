@@ -8,5 +8,14 @@
 
 import Foundation
 
-/// A trackable event that was directly or indirectly initiated by the user
+/// A trackable event that was directly or indirectly initiated by the user.
+/// You should probably make this an enum. And you _SHOULD_ name the cases
+/// like they where prefix with the words "user did".
+///
+/// Example:
+/// For `ChoosePincodeUserAction` we have the the two cases:
+///   * skip
+///   * chosePincode
+/// Which should read out like "user did skip" and "user did chose pincode"
+/// respectively.
 protocol TrackedUserAction: TrackableEvent {}

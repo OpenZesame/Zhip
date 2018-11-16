@@ -13,14 +13,14 @@ import Zesame
 
 private typealias € = L10n.Scene.BackupWallet
 
-// MARK: - BackupWalletNavigation
-enum BackupWalletNavigation: TrackedUserAction {
-    case userSelectedBackupIsDone(wallet: Wallet)
+// MARK: - BackupWalletUserAction
+enum BackupWalletUserAction: TrackedUserAction {
+    case backupWallet(Wallet)
 }
 
 // MARK: - BackupWalletViewModel
 final class BackupWalletViewModel: BaseViewModel<
-    BackupWalletNavigation,
+    BackupWalletUserAction,
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
@@ -54,7 +54,7 @@ final class BackupWalletViewModel: BaseViewModel<
             input.fromView.doneTrigger.withLatestFrom(understandsRisks)
                 .filter { $0 }
                 .withLatestFrom(wallet)
-                .do(onNext: { [unowned stepper] in stepper.step(.userSelectedBackupIsDone(wallet: $0)) })
+                .do(onNext: { [unowned stepper] in stepper.step(.backupWallet($0)) })
                 .drive()
         ]
 

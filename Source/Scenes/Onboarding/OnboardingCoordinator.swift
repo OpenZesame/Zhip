@@ -55,9 +55,9 @@ private extension OnboardingCoordinator {
 
     func toTermsOfService() {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-        present(type: TermsOfService.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userAcceptedTerms: self.toWarningERC20()
+        present(type: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .acceptTermsOfService: self.toWarningERC20()
             }
         }
     }
@@ -66,7 +66,7 @@ private extension OnboardingCoordinator {
         let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
         present(type: WarningERC20.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
-            case .userSelectedRisksAreUnderstood: self.toChooseWallet()
+            case .understandRisks: self.toChooseWallet()
             }
         }
     }

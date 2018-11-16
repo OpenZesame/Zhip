@@ -51,10 +51,10 @@ private extension SendCoordinator {
             deepLinkedTransaction: deepLinkTransactionSubject.asObservable()
         )
 
-        present(type: Send.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userInitiatedTransaction: break
-            case .userSelectedSeeTransactionDetailsInBrowser(let transactionId): self.openBrowser(viewTxDetailsFor: transactionId)
+        present(type: Send.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+            switch userIntendsTo {
+            case .send: break
+            case .seeTransactionDetailsInBrowser(let transactionId): self.openBrowser(viewTxDetailsFor: transactionId)
 
             }
         }

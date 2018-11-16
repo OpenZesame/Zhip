@@ -42,9 +42,9 @@ private extension CreateNewWalletCoordinator {
 
     func toBackupWallet(wallet: Wallet) {
         let viewModel = BackupWalletViewModel(useCase: walletUseCase)
-        present(type: BackupWallet.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
-            case .userSelectedBackupIsDone(let wallet): self.toMain(wallet: wallet)
+        present(type: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .backupWallet(let wallet): self.toMain(wallet: wallet)
             }
         }
     }
@@ -53,9 +53,9 @@ private extension CreateNewWalletCoordinator {
         present(
             type: CreateNewWallet.self,
             viewModel: CreateNewWalletViewModel(useCase: walletUseCase)
-        ) { [unowned self] in
-            switch $0 {
-            case .userInitiatedCreationOfWallet(let wallet): self.toBackupWallet(wallet: wallet)
+        ) { [unowned self] userDid in
+            switch userDid {
+            case .createWallet(let wallet): self.toBackupWallet(wallet: wallet)
             }
         }
     }
