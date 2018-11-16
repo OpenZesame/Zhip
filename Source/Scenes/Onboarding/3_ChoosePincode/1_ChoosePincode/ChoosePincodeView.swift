@@ -15,12 +15,14 @@ final class ChoosePincodeView: ScrollingStackView {
 
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
-    private lazy var confirmPincodeButton = UIButton.Style(€.Button.confirmPincode, isEnabled: false).make()
+    private lazy var pinOnlyLocksAppTextView = UITextView.Style(€.Text.pincodeOnlyLocksApp, isEditable: false, isSelectable: false).make()
+
+    private lazy var proceedWithConfirmationButton = UIButton.Style(€.Button.proceedWithConfirmation, isEnabled: false).make()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
-        confirmPincodeButton,
-        .spacer
+        pinOnlyLocksAppTextView,
+        proceedWithConfirmationButton
     ]
 }
 
@@ -30,13 +32,13 @@ extension ChoosePincodeView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             pincode: inputPincodeView.pincode,
-            confirmedTrigger: confirmPincodeButton.rx.tap.asDriver()
+            confirmedTrigger: proceedWithConfirmationButton.rx.tap.asDriver()
         )
     }
 
     func populate(with viewModel: ChoosePincodeViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isConfirmPincodeEnabled --> confirmPincodeButton.rx.isEnabled
+            viewModel.isConfirmPincodeEnabled --> proceedWithConfirmationButton.rx.isEnabled
         ]
     }
 }

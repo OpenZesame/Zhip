@@ -28,12 +28,14 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         self.unconfirmedPincode = unconfirmedPincode
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         let unconfirmedPincode = self.unconfirmedPincode
         let confirmedPincode = input.fromView.pincode.map { pincode -> Pincode? in
             guard pincode == unconfirmedPincode else { return nil }
             return pincode
         }
+        let isConfirmPincodeEnabled = Driver.combineLatest(confirmedPincode.map { $0 != nil }, input.fromView.haveBackedUpPincode) { $0 && $1 }
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(confirmedPincode.filterNil())
@@ -48,7 +50,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         ]
 
         return Output(
-            isConfirmPincodeEnabled: confirmedPincode.map { $0 != nil }
+            isConfirmPincodeEnabled: isConfirmPincodeEnabled
         )
     }
 }
@@ -56,6 +58,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 extension ConfirmNewPincodeViewModel {
     struct InputFromView {
         let pincode: Driver<Pincode?>
+        let haveBackedUpPincode: Driver<Bool>
         let confirmedTrigger: Driver<Void>
     }
 

@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral {
+    static let defaultHeight: CGFloat = 64
 
     public static func createEmpty() -> UIButton {
         return UIButton(type: .custom)
@@ -43,7 +44,7 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
             self.colorSelected = colorSelected
             self.font = font
             self.isEnabled = isEnabled
-            super.init(height: height ?? .defaultHeight, backgroundColor: nil)
+            super.init(height: height ?? defaultHeight, backgroundColor: nil)
         }
 
         public convenience init(stringLiteral title: String) {
