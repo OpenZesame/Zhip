@@ -20,7 +20,7 @@ enum CreateNewWalletNavigator: TrackedUserAction {
 
 // MARK: - CreateNewWalletViewModel
 final class CreateNewWalletViewModel:
-AbstractViewModel<
+BaseViewModel<
     CreateNewWalletNavigator,
     CreateNewWalletViewModel.InputFromView,
     CreateNewWalletViewModel.Output

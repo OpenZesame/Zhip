@@ -12,6 +12,17 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
+  internal enum Flow {
+    internal enum Pincode {
+      internal enum Event {
+        internal enum Toast {
+          /// Pincode removed
+          internal static let didRemovePincode = L10n.tr("Localizable", "Flow.Pincode.Event.Toast.DidRemovePincode")
+        }
+      }
+    }
+  }
+
   internal enum Generic {
     /// Back
     internal static let back = L10n.tr("Localizable", "Generic.Back")
@@ -23,6 +34,8 @@ internal enum L10n {
     internal static let next = L10n.tr("Localizable", "Generic.Next")
     /// OK
     internal static let ok = L10n.tr("Localizable", "Generic.OK")
+    /// Skip
+    internal static let skip = L10n.tr("Localizable", "Generic.Skip")
   }
 
   internal enum Scene {
@@ -52,6 +65,18 @@ internal enum L10n {
         internal static let keystoreIsBackedUp = L10n.tr("Localizable", "Scene.BackupWallet.SwitchLabel.KeystoreIsBackedUp")
       }
     }
+    internal enum ChoosePincode {
+      /// Set app PIN
+      internal static let title = L10n.tr("Localizable", "Scene.ChoosePincode.Title")
+      internal enum Button {
+        /// Proceed
+        internal static let proceedWithConfirmation = L10n.tr("Localizable", "Scene.ChoosePincode.Button.ProceedWithConfirmation")
+      }
+      internal enum Text {
+        /// This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet
+        internal static let pincodeOnlyLocksApp = L10n.tr("Localizable", "Scene.ChoosePincode.Text.PincodeOnlyLocksApp")
+      }
+    }
     internal enum ChooseWallet {
       /// Add Wallet
       internal static let title = L10n.tr("Localizable", "Scene.ChooseWallet.Title")
@@ -60,6 +85,18 @@ internal enum L10n {
         internal static let newWallet = L10n.tr("Localizable", "Scene.ChooseWallet.Button.NewWallet")
         /// Restore Wallet
         internal static let restoreWallet = L10n.tr("Localizable", "Scene.ChooseWallet.Button.RestoreWallet")
+      }
+    }
+    internal enum ConfirmNewPincode {
+      /// Confirm app PIN
+      internal static let title = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Title")
+      internal enum Button {
+        /// Confirm
+        internal static let confirmPincode = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Button.ConfirmPincode")
+      }
+      internal enum SwitchLabel {
+        /// I've backed up my PIN code
+        internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp")
       }
     }
     internal enum CreateNewWallet {
@@ -164,8 +201,12 @@ internal enum L10n {
       internal enum Button {
         /// Backup wallet
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Button.BackupWallet")
+        /// Remove pincode
+        internal static let removePincode = L10n.tr("Localizable", "Scene.Settings.Button.RemovePincode")
         /// Remove wallet
         internal static let removeWallet = L10n.tr("Localizable", "Scene.Settings.Button.RemoveWallet")
+        /// Set pincode
+        internal static let setPincode = L10n.tr("Localizable", "Scene.Settings.Button.SetPincode")
       }
       internal enum Label {
         /// App Version
@@ -176,6 +217,14 @@ internal enum L10n {
       internal enum Button {
         /// Accept
         internal static let accept = L10n.tr("Localizable", "Scene.TermsOfService.Button.Accept")
+      }
+    }
+    internal enum UnlockAppWithPincode {
+      internal enum Title {
+        /// Unlock to remove
+        internal static let removePincode = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.RemovePincode")
+        /// Unlock app
+        internal static let resumeApp = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.ResumeApp")
       }
     }
     internal enum WarningERC20 {

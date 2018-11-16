@@ -48,4 +48,8 @@ extension DefaultUseCaseProvider: UseCaseProvider {
     func makeWalletUseCase() -> WalletUseCase {
         return DefaultWalletUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence)
     }
+
+    func makePincodeUseCase() -> PincodeUseCase {
+        return DefaultPincodeUseCase(preferences: preferences, securePersistence: securePersistence)
+    }
 }

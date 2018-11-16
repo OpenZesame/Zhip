@@ -17,4 +17,5 @@ protocol OnboardingUseCase {
     var hasAskedToSkipERC20Warning: Bool { get }
     func doNotShowERC20WarningAgain()
 
+    var shouldPromptUserToChosePincode: Bool { get }
 }

@@ -27,10 +27,12 @@ extension WalletEncryptionPassphrase {
     }
 }
 
-// MARK: - Error {
-enum Error: Swift.Error {
-    case passphrasesDoesNotMatch
-    case passphraseIsTooShort
+// MARK: - Error
+extension WalletEncryptionPassphrase {
+    enum Error: Swift.Error {
+        case passphrasesDoesNotMatch
+        case passphraseIsTooShort
+    }
 }
 
 // MARK: - Mode

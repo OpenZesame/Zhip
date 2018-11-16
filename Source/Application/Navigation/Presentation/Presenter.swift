@@ -10,7 +10,7 @@ import UIKit
 
 protocol Presenter: AnyObject {
     func present(_ presentable: Presentable, presentation: PresentationMode)
-    func dismiss(animated: Bool)
+    func dismiss(animated: Bool, completion: PresentationCompletion?)
 }
 
 extension UIViewController: Presenter {
@@ -20,7 +20,7 @@ extension UIViewController: Presenter {
         if let navigationController = self as? UINavigationController {
             switch presentation {
             case .push(let animated): navigationController.pushViewController(controllerToPresent, animated: animated)
-            case .present(let animated): navigationController.present(controllerToPresent, animated: animated, completion: nil)
+            case .present(let animated, let completion): navigationController.present(controllerToPresent, animated: animated, completion: completion)
             }
         } else {
             switch presentation {
@@ -30,13 +30,9 @@ extension UIViewController: Presenter {
                 } else {
                     incorrectImplementation("Unable to push without a navigation controller")
                 }
-            case .present(let animated):
-                present(controllerToPresent, animated: animated, completion: nil)
+            case .present(let animated, let completion):
+                present(controllerToPresent, animated: animated, completion: completion)
             }
         }
-    }
-
-    func dismiss(animated: Bool) {
-        dismiss(animated: animated, completion: nil)
     }
 }

@@ -16,7 +16,7 @@ enum WarningERC20Navigation: String, TrackedUserAction {
 }
 
 // MARK: - WarningERC20ViewModel
-final class WarningERC20ViewModel: AbstractViewModel<
+final class WarningERC20ViewModel: BaseViewModel<
     WarningERC20Navigation,
     WarningERC20ViewModel.InputFromView,
     WarningERC20ViewModel.Output

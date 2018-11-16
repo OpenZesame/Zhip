@@ -26,7 +26,7 @@ protocol WalletUseCase: AnyObject {
     /// Checks if the passed `passphrase` was used to encypt the Keystore
     func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool>
     func loadWallet() -> Wallet?
-    var hasWalletConfigured: Bool { get }
+    var hasConfiguredWallet: Bool { get }
 }
 
 extension WalletUseCase {
@@ -51,8 +51,8 @@ extension WalletUseCase where Self: SecurePersisting {
         securePersistence.save(wallet: wallet)
     }
 
-    var hasWalletConfigured: Bool {
-        return securePersistence.hasWalletConfigured
+    var hasConfiguredWallet: Bool {
+        return securePersistence.hasConfiguredWallet
     }
 }
 

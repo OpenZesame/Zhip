@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 import Zesame
 
 final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
@@ -17,6 +18,7 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+    private let lockAppSubject = ReplaySubject<Void>.create(bufferSize: 1)
 
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
@@ -27,7 +29,8 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     }
 
     override func start() {
-        if walletUseCase.hasWalletConfigured {
+        if walletUseCase.hasConfiguredWallet {
+            lockApp()
             toMain()
         } else {
             toOnboarding()
@@ -61,7 +64,8 @@ private extension AppCoordinator {
         let main = MainCoordinator(
             tabBarController: tabBarController,
             deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider
+            useCaseProvider: useCaseProvider,
+            lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
@@ -69,6 +73,17 @@ private extension AppCoordinator {
             case .didRemoveWallet: self.toOnboarding()
             }
         }
+    }
+}
+
+// MARK: - App forground/background + Pincode
+extension AppCoordinator {
+    func appWillEnterForeground() {
+        lockApp()
+    }
+
+    private func lockApp() {
+        lockAppSubject.onNext(())
     }
 }
 

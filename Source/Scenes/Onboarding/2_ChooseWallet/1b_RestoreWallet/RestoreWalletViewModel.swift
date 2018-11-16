@@ -19,7 +19,7 @@ enum RestoreWalletNavigation: TrackedUserAction {
 }
 
 // MARK: - RestoreWalletViewModel
-final class RestoreWalletViewModel: AbstractViewModel<
+final class RestoreWalletViewModel: BaseViewModel<
     RestoreWalletNavigation,
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output

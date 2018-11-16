@@ -3,6 +3,7 @@
 "Generic.Cancel" = "Cancel";
 "Generic.Close" = "Close";
 "Generic.Next" = "Next";
+"Generic.Skip" = "Skip";
 "Generic.Back" = "Back";
 
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -44,6 +45,7 @@
 "Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
 "Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
+// MARK: RestoreWallet
 "Scene.RestoreWallet.Title" = "Restore Wallet";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
 "Scene.RestoreWallet.Label.OrKeystore" = "Or paste keystore (JSON) below";
@@ -51,8 +53,26 @@
 "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
 
+// MARK: ChoosePincode
+"Scene.ChoosePincode.Title" = "Set app PIN";
+"Scene.ChoosePincode.Button.ProceedWithConfirmation" = "Proceed";
+"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet";
+
+
+// MARK: ConfirmNewPincode
+"Scene.ConfirmNewPincode.Title" = "Confirm app PIN";
+"Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp" = "I've backed up my PIN code";
+"Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm";
+
 
 // MARK: - Main Flow
+
+// MARK: Unlock App
+"Scene.UnlockAppWithPincode.Title.ResumeApp" = "Unlock app";
+"Scene.UnlockAppWithPincode.Title.RemovePincode" = "Unlock to remove";
+
+"Flow.Pincode.Event.Toast.DidRemovePincode" = "Pincode removed";
+
 // MARK: Send
 "Scene.Send.Title" = "Send Zillings";
 "Scene.Send.Field.Recipient" = "To address";
@@ -73,8 +93,10 @@
 
 // MARK: - Settings
 "Scene.Settings.Title" = "Settings";
-"Scene.Settings.Button.RemoveWallet" = "Remove wallet";
+"Scene.Settings.Button.SetPincode" = "Set pincode";
+"Scene.Settings.Button.RemovePincode" = "Remove pincode";
 "Scene.Settings.Button.BackupWallet" = "Backup wallet";
+"Scene.Settings.Button.RemoveWallet" = "Remove wallet";
 "Scene.Settings.Label.AppVersion" = "App Version";
 
 

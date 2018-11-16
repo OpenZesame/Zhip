@@ -22,17 +22,25 @@ final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         self.tabBarController = tabBarController
         super.init(presenter: nil)
         setupTabBar()
+        bag <~ lockApp.do(onNext: { [unowned self] in
+            self.toUnlockAppWithPincodeIfNeeded()
+        }).drive()
     }
 
     override func start() {
         focusSendTab()
+    }
+
+    override var presenter: Presenter? {
+        return tabBarController.selectedViewController
     }
 }
 
@@ -74,9 +82,11 @@ private extension MainCoordinator {
             switch $0 {}
         }
 
-        start(coordinator: settings, transition: .doNothing) { [unowned stepper] in
+        start(coordinator: settings, transition: .doNothing) { [unowned self] in
             switch $0 {
-            case .walletWasRemovedByUser: stepper.step(.didRemoveWallet)
+            case .walletWasRemovedByUser: self.stepper.step(.didRemoveWallet)
+            case .userWantsToSetPincode: self.toPincode(intent: .setPincode)
+            case .userWantsToRemovePincode: self.toPincode(intent: .unlockApp(toRemovePincode: true))
             }
         }
 
@@ -95,5 +105,30 @@ extension MainCoordinator {
         guard let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) else { return }
         focusSendTab()
         sendCoordinator.toSend(prefilTransaction: transaction)
+    }
+
+    func toUnlockAppWithPincodeIfNeeded() {
+        guard pincodeUseCase.hasConfiguredPincode else { return }
+        toPincode(intent: .unlockApp(toRemovePincode: false))
+    }
+
+    func toPincode(intent: ManagePincodeCoordinator.Intent) {
+        guard let presenter = presenter else {
+            incorrectImplementation("Should be able to present pincode")
+        }
+        let navigationController = UINavigationController()
+        let coordinator = ManagePincodeCoordinator(
+            intent: intent,
+            presenter: navigationController,
+            useCase: useCaseProvider.makePincodeUseCase()
+        )
+        presenter.present(navigationController, presentation: .present(animated: false, completion: nil))
+        start(coordinator: coordinator) { [unowned self] in
+            switch $0 {
+            case .userFinishedChoosingOrRemovingPincode:
+                navigationController.dismiss(animated: true)
+                self.childCoordinators.removeLast()
+            }
+        }
     }
 }

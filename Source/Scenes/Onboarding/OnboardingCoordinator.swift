@@ -19,6 +19,7 @@ final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Ste
     
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
     init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
@@ -41,8 +42,12 @@ private extension OnboardingCoordinator {
             return toWarningERC20()
         }
 
-        guard walletUseCase.hasWalletConfigured else {
+        guard walletUseCase.hasConfiguredWallet else {
             return toChooseWallet()
+        }
+
+        guard !onboardingUseCase.shouldPromptUserToChosePincode else {
+            return toChoosePincode()
         }
 
         finish()
@@ -74,7 +79,21 @@ private extension OnboardingCoordinator {
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .userFinishedChoosingWallet: self.finish()
+            case .userFinishedChoosingWallet: self.toChoosePincode()
+            }
+        }
+    }
+
+    func toChoosePincode() {
+        let coordinator = ManagePincodeCoordinator(
+            intent: .setPincode,
+            presenter: presenter,
+            useCase: useCaseProvider.makePincodeUseCase()
+        )
+
+        start(coordinator: coordinator) { [unowned self] in
+            switch $0 {
+            case .userFinishedChoosingOrRemovingPincode: self.finish()
             }
         }
     }

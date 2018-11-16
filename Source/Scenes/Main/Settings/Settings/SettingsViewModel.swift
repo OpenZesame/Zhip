@@ -12,35 +12,62 @@ import RxCocoa
 
 // MARK: SettingsNavigation
 enum SettingsNavigation: String, TrackedUserAction {
-    case userSelectedRemoveWallet
+    case userSelectedSetPincode
+    case userSelectedRemovePincode
     case userSelectedBackupWallet
+    case userSelectedRemoveWallet
 }
 
 // MARK: SettingsViewModel
-final class SettingsViewModel: AbstractViewModel<
+final class SettingsViewModel: BaseViewModel<
     SettingsNavigation,
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
 
+    private let useCase: PincodeUseCase
+
+    init(useCase: PincodeUseCase) {
+        self.useCase = useCase
+    }
+
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+
+        let isRemovePincodeButtonEnabled = input.fromController.viewWillAppear.map { [unowned self] in
+            self.useCase.hasConfiguredPincode
+        }
+        
+        let isSetPincodeButtonEnabled = isRemovePincodeButtonEnabled.map { !$0 }
 
         let fromView = input.fromView
         bag <~ [
-            fromView.removeWalletTrigger
+            fromView.setPincodeTrigger
                 .do(onNext: { [unowned stepper] in
-                    stepper.step(.userSelectedRemoveWallet)
+                    stepper.step(.userSelectedSetPincode)
+                }).drive(),
+
+            fromView.removePincodeTrigger
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedRemovePincode)
                 }).drive(),
 
             fromView.backupWalletTrigger
                 .do(onNext: { [unowned stepper] in
                     stepper.step(.userSelectedBackupWallet)
+                }).drive(),
+
+            fromView.removeWalletTrigger
+                .do(onNext: { [unowned stepper] in
+                    stepper.step(.userSelectedRemoveWallet)
                 }).drive()
         ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
 
         return Output(
+            isSetPincodeButtonEnabled: isSetPincodeButtonEnabled,
+            isRemovePincodeButtonEnabled: isRemovePincodeButtonEnabled,
             appVersion: appVersion
         )
     }
@@ -48,11 +75,15 @@ final class SettingsViewModel: AbstractViewModel<
 
 extension SettingsViewModel {
     struct InputFromView {
-        let removeWalletTrigger: Driver<Void>
+        let setPincodeTrigger: Driver<Void>
+        let removePincodeTrigger: Driver<Void>
         let backupWalletTrigger: Driver<Void>
+        let removeWalletTrigger: Driver<Void>
     }
 
     struct Output {
+        let isSetPincodeButtonEnabled: Driver<Bool>
+        let isRemovePincodeButtonEnabled: Driver<Bool>
         let appVersion: Driver<String>
     }
 }

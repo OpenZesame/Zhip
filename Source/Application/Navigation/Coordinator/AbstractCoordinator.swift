@@ -15,7 +15,7 @@ class AbstractCoordinator<Step>: Coordinator {
     var childCoordinators = [BaseCoordinator]()
     let stepper = Stepper<Step>()
     let bag = DisposeBag()
-    let presenter: Presenter?
+    private(set) var presenter: Presenter?
 
     lazy var navigation = stepper.navigation
 

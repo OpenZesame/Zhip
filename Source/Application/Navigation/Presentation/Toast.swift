@@ -17,10 +17,12 @@ struct Toast {
 
     private let message: String
     private let dismissing: Dismissing
+    private let completion: PresentationCompletion?
 
-    init(_ message: String, dismissing: Dismissing = .after(duration: 2)) {
+    init(_ message: String, dismissing: Dismissing = .after(duration: 1.2), completion: PresentationCompletion? = nil) {
         self.message = message
         self.dismissing = dismissing
+        self.completion = completion
     }
 
 }
@@ -34,25 +36,24 @@ extension Toast: ExpressibleByStringLiteral {
 
 // MARK: - Toast + Presentation
 extension Toast {
-    func present(using presenter: Presenter) {
+    func present(using presenter: Presenter, dismissedCompletion: PresentationCompletion? = nil) {
+        let dismissedCompletion = dismissedCompletion ?? self.completion
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        var dismissAction: (() -> Void)?
 
         switch dismissing {
         case .manual(let dismissTitle):
-            let dismissAction = UIAlertAction(title: dismissTitle, style: .default, handler: nil)
+            let dismissAction = UIAlertAction(title: dismissTitle, style: .default) { _ in
+                dismissedCompletion?()
+            }
             alert.addAction(dismissAction)
         case .after(let duration):
-            dismissAction = {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) {
-                    alert.dismiss(animated: true, completion: nil)
-                }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) {
+                alert.dismiss(animated: true, completion: dismissedCompletion)
             }
         }
 
         DispatchQueue.main.async {
-            presenter.present(alert, presentation: .present(animated: true))
-            dismissAction?()
+            presenter.present(alert, presentation: .animatedPresent)
         }
     }
 }

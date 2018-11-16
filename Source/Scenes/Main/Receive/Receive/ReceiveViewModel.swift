@@ -19,7 +19,7 @@ enum ReceiveNavigation: TrackedUserAction {
 }
 
 // MARK: - ReceiveViewModel
-final class ReceiveViewModel: AbstractViewModel<
+final class ReceiveViewModel: BaseViewModel<
     ReceiveNavigation,
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output

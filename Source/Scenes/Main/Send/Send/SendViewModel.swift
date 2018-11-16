@@ -18,7 +18,7 @@ enum SendNavigation: TrackedUserAction {
 }
 
 // MARK: - SendViewModel
-final class SendViewModel: AbstractViewModel<
+final class SendViewModel: BaseViewModel<
     SendNavigation,
     SendViewModel.InputFromView,
     SendViewModel.Output

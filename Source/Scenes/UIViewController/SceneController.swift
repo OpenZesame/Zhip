@@ -11,28 +11,12 @@ import UIKit
 import RxSwift
 import TinyConstraints
 
-protocol TitledScene {
-    static var title: String { get }
-}
-
-extension TitledScene {
-    static var title: String { return "" }
-    var sceneTitle: String { return Self.title }
-}
-
-/// Use typealias when you don't require a subclass. If your use case requires subclass, inherit from `SceneController`.
-typealias Scene<View: UIView & ViewModelled> = SceneController<View> & TitledScene
-
 /// The "Single-Line Controller" base class
-class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewModelled {
-    typealias View = ViewType
+class SceneController<View: ContentView>: AbstractController where View.ViewModel.Input.FromController == ControllerInput {
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
     private let viewModel: ViewModel
-
-    private let rightBarButtonSubject = PublishSubject<Void>()
-    lazy var rightBarButtonAbtractTarget = AbstractTarget(triggerSubject: rightBarButtonSubject)
 
     // MARK: - Initialization
     required init(viewModel: ViewModel) {
@@ -56,28 +40,52 @@ class SceneController<ViewType>: UIViewController where ViewType: UIView & ViewM
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
         }
+        if let barButtonMaker = self as? RightBarButtonMaking {
+            barButtonMaker.setRightBarButton(for: self)
+        }
     }
 }
 
 // MARK: Private
 private extension SceneController {
+    // swiftlint:disable:next function_body_length
     func bindViewToViewModel() {
         guard let contentView = view as? View else { return }
 
+        let titleSubject = PublishSubject<String>()
+        let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
+        let rightBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let toastSubject = PublishSubject<Toast>()
 
         let controllerInput = ControllerInput(
             viewDidLoad: rx.viewDidLoad,
             viewWillAppear: rx.viewWillAppear,
             viewDidAppear: rx.viewDidAppear,
+            leftBarButtonTrigger: leftBarButtonSubject.asDriverOnErrorReturnEmpty(),
             rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
+            titleSubject: titleSubject,
+            leftBarButtonContentSubject: leftBarButtonContentSubject,
+            rightBarButtonContentSubject: rightBarButtonContentSubject,
             toastSubject: toastSubject
         )
 
-        toastSubject.asDriverOnErrorReturnEmpty()
-            .do(onNext: { [unowned self] in
+        bag <~ [
+            titleSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
+                self.title = $0
+            }).drive(),
+
+            toastSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
                 $0.present(using: self)
-            }).drive().disposed(by: bag)
+            }).drive(),
+
+            leftBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
+                self.setLeftBarButtonUsing(content: $0)
+            }).drive(),
+
+            rightBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
+                self.setRightBarButtonUsing(content: $0)
+            }).drive()
+        ]
 
         let input = ViewModel.Input(fromView: contentView.inputFromView, fromController: controllerInput)
 

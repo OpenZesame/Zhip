@@ -20,12 +20,14 @@ extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral
 
         public let text: String?
         public let textColor: UIColor?
+        public let textAlignment: NSTextAlignment?
         public let font: UIFont?
         public let numberOfLines: Int?
 
         public init(
             _ text: String? = nil,
             height: CGFloat? = nil,
+            textAlignment: NSTextAlignment? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             numberOfLines: Int? = nil,
@@ -33,6 +35,7 @@ extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral
             ) {
             self.text = text
             self.textColor = textColor
+            self.textAlignment = textAlignment
             self.font = font
             self.numberOfLines = numberOfLines
             super.init(height: height, backgroundColor: backgroundColor)
@@ -54,6 +57,7 @@ extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral
             return Style(
                 merge(\.text),
                 height: merge(\.height),
+                textAlignment: merge(\.textAlignment),
                 font: merge(\.font),
                 textColor: merge(\.textColor),
                 numberOfLines: merge(\.numberOfLines),
@@ -67,6 +71,7 @@ extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral
         font = style.font ?? .default
         textColor = style.textColor ?? .defaultText
         numberOfLines = style.numberOfLines ?? 1
+        textAlignment = style.textAlignment ?? .left
     }
 }
 public enum MergeMode {

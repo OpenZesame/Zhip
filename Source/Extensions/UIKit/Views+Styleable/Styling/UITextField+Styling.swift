@@ -10,6 +10,7 @@ import UIKit
 import TinyConstraints
 
 extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, ExpressibleByStringLiteral {
+    static let defaultHeight: CGFloat = 44
 
     public static func createEmpty() -> UITextField {
         return UITextField(frame: .zero)
@@ -39,7 +40,7 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
             self.font = font
             self.textColor = textColor
             self.isSecureTextEntry = isSecureTextEntry
-            super.init(height: height ?? .defaultHeight, backgroundColor: backgroundColor)
+            super.init(height: height ?? defaultHeight, backgroundColor: backgroundColor)
         }
 
         public convenience init(stringLiteral placeholder: String) {
@@ -71,8 +72,4 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
         isSecureTextEntry = style.isSecureTextEntry ?? false
         addBorder()
     }
-}
-
-public extension CGFloat {
-    static var defaultHeight: CGFloat { return 44 }
 }
