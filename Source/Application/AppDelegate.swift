@@ -11,7 +11,6 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
-
     private lazy var appCoordinator = AppCoordinator(
         window: window!,
         deepLinkHandler: DeepLinkHandler(),
@@ -28,5 +27,9 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         return appCoordinator.handleDeepLink(url, options: options)
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        appCoordinator.appWillEnterForeground()
     }
 }

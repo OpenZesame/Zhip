@@ -16,7 +16,7 @@ enum TermsOfServiceNavigation: String, TrackedUserAction {
 }
 
 // MARK: - TermsOfServiceViewModel
-final class TermsOfServiceViewModel: AbstractViewModel<
+final class TermsOfServiceViewModel: BaseViewModel<
     TermsOfServiceNavigation,
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output

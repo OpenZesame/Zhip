@@ -16,5 +16,6 @@ func bootstrap() {
     IQKeyboardManager.shared.enable = true
 
     let console = ConsoleDestination()
+    console.minLevel = .debug
     log.addDestination(console)
 }

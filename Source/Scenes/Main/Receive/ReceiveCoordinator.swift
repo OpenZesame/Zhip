@@ -47,6 +47,6 @@ private extension ReceiveCoordinator {
         let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
         activityVC.modalPresentationStyle = .popover
         activityVC.popoverPresentationController?.barButtonItem = (presenter as? UINavigationController)?.navigationItem.rightBarButtonItem
-        presenter?.present(activityVC, presentation: PresentationMode.present(animated: true))
+        presenter?.present(activityVC, presentation: .animatedPresent)
     }
 }

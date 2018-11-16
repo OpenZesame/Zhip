@@ -16,7 +16,7 @@ enum ChooseWalletNavigation: String, TrackedUserAction {
 }
 
 // MARK: - ChooseWalletViewModel
-final class ChooseWalletViewModel: AbstractViewModel<
+final class ChooseWalletViewModel: BaseViewModel<
     ChooseWalletNavigation,
     ChooseWalletViewModel.InputFromView,
     ChooseWalletViewModel.Output

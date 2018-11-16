@@ -18,3 +18,10 @@ protocol ViewModelled: EmptyInitializable {
 extension ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] { return [] }
 }
+
+struct NoControllerInput {}
+extension ViewModelled where ViewModel.Input.FromController == NoControllerInput {
+    var input: ViewModel.Input {
+        return ViewModel.Input.init(fromView: inputFromView, fromController: NoControllerInput())
+    }
+}

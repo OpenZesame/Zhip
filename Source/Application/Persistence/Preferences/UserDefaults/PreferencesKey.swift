@@ -13,6 +13,7 @@ enum PreferencesKey: String, KeyConvertible {
     case hasAcceptedTermsOfService
     case hasAcceptedAnalyticsTracking
     case skipShowingERC20Warning
+    case skipPincodeSetup
 }
 
 /// Abstraction of UserDefaults

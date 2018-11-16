@@ -37,4 +37,9 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
     func doNotShowERC20WarningAgain() {
         preferences.save(value: true, for: .skipShowingERC20Warning)
     }
+
+    var shouldPromptUserToChosePincode: Bool {
+        guard preferences.isFalse(.skipPincodeSetup) else { return false }
+        return !securePersistence.hasConfiguredPincode
+    }
 }

@@ -12,8 +12,8 @@ var interfaceBuilderSucks: Never {
     fatalError("interfaceBuilderSucks")
 }
 
-func incorrectImplementation(_ message: String) -> Never {
-    fatalError("Incorrect implementation - \(message)")
+func incorrectImplementation(_ message: CustomStringConvertible) -> Never {
+    fatalError("Incorrect implementation - \(message.description)")
 }
 
 var abstract: Never {

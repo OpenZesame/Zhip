@@ -33,10 +33,30 @@ extension KeyValueStoring {
     }
 }
 
+// MARK: - Codable
+extension KeyValueStoring {
+    func loadCodable<C>(_ modelType: C.Type, for key: Key) -> C? where C: Codable {
+        guard
+            let json: Data = loadValue(for: key),
+            let model = try? JSONDecoder().decode(C.self, from: json)
+            else { return nil }
+        return model
+    }
+
+    func saveCodable<C>(_ model: C, for key: Key) where C: Codable {
+        guard let json = try? JSONEncoder().encode(model) else { return }
+        save(value: json, for: key)
+    }
+}
+
 // MARK: Convenience
 extension KeyValueStoring {
     func isTrue(_ key: Key) -> Bool {
         guard let bool: Bool = loadValue(for: key) else { return false }
         return bool == true
+    }
+
+    func isFalse(_ key: Key) -> Bool {
+        return !isTrue(key)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  AbstractViewModel.swift
+//  BaseViewModel.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-10-28.
@@ -10,22 +10,27 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-/// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug
-/// read more: https://bugs.swift.org/browse/SR-9160
-class AbstractViewModel<Step, InputFromView, OutputType>: ViewModelType, Navigatable {
-    let bag = DisposeBag()
+class BaseViewModel<Step, InputFromView, OutputType>: AbstractViewModel<InputFromView, ControllerInput, OutputType>, Navigatable {
     let stepper: Stepper<Step>
 
     init(stepper: Stepper<Step> = Stepper<Step>()) {
         self.stepper = stepper
     }
+}
+
+/// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug
+/// read more: https://bugs.swift.org/browse/SR-9160
+class AbstractViewModel<InputFromView, InputFromController, OutputType>: ViewModelType {
+    let bag = DisposeBag()
 
     struct Input: InputType {
         typealias FromView = InputFromView
-        let fromController: ControllerInput
+        typealias FromController = InputFromController
+
+        let fromController: FromController
         let fromView: FromView
 
-        init(fromView: FromView, fromController: ControllerInput) {
+        init(fromView: FromView, fromController: FromController) {
             self.fromView = fromView
             self.fromController = fromController
         }

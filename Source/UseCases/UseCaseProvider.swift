@@ -12,7 +12,6 @@ import Zesame
 protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase
-
     func makeTransactionsUseCase() -> TransactionsUseCase
-
+    func makePincodeUseCase() -> PincodeUseCase
 }

@@ -19,7 +19,7 @@ enum BackupWalletNavigation: TrackedUserAction {
 }
 
 // MARK: - BackupWalletViewModel
-final class BackupWalletViewModel: AbstractViewModel<
+final class BackupWalletViewModel: BaseViewModel<
     BackupWalletNavigation,
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output

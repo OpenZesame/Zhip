@@ -9,25 +9,40 @@
 import Foundation
 import Zesame
 
+// MARK: - Wallet
 extension KeyValueStore where KeyType == KeychainKey {
     var wallet: Wallet? {
-        guard
-            let walletJson: Data = loadValue(for: .keystore),
-            let wallet = try? JSONDecoder().decode(Wallet.self, from: walletJson)
-            else { return nil }
-        return wallet
+        return loadCodable(Wallet.self, for: .keystore)
     }
 
-    var hasWalletConfigured: Bool {
+    var hasConfiguredWallet: Bool {
         return wallet != nil
     }
 
     func save(wallet: Wallet) {
-        guard let walletJson = try? JSONEncoder().encode(wallet) else { return }
-        save(value: walletJson, for: .keystore)
+        saveCodable(wallet, for: .keystore)
     }
 
     func deleteWallet() {
         deleteValue(for: .keystore)
+    }
+}
+
+extension KeyValueStore where KeyType == KeychainKey {
+
+    var pincode: Pincode? {
+        return loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
+    }
+
+    var hasConfiguredPincode: Bool {
+        return pincode != nil
+    }
+
+    func save(pincode: Pincode) {
+        saveCodable(pincode, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
+    }
+
+    func deletePincode() {
+        deleteValue(for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
     }
 }

@@ -18,7 +18,14 @@ protocol Presenting: AnyObject {
 
     func present<P>(_ presentable: P, presentation: PresentationMode, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable
 
-    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
+    // swiftlint:disable:next function_parameter_count
+    func present<S, V>(
+        type: S.Type,
+        viewModel: V.ViewModel,
+        presentation: PresentationMode,
+        configureNavigationItem: ((UINavigationItem) -> Void)?,
+        navigationHandler: @escaping (V.ViewModel.Step) -> Void
+    ) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V>
 }
 
 // MARK: - Default Implementation
@@ -27,8 +34,15 @@ extension Presenting {
         _present(presentable, presentation: presentation, navigation: presentable.stepper.navigation, navigationHandler: navigationHandler)
     }
 
-    func present<S, V>(type: S.Type, viewModel: V.ViewModel, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (V.ViewModel.Step) -> Void) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V> {
+    func present<S, V>(
+        type: S.Type,
+        viewModel: V.ViewModel,
+        presentation: PresentationMode = .animatedPush,
+        configureNavigationItem: ((UINavigationItem) -> Void)? = nil,
+        navigationHandler: @escaping (V.ViewModel.Step) -> Void
+    ) where V: UIView & ViewModelled, V.ViewModel: Navigatable, S: Scene<V> {
         let scene = S.init(viewModel: viewModel)
+        configureNavigationItem?(scene.navigationItem)
         _present(scene, presentation: presentation, navigation: viewModel.stepper.navigation, navigationHandler: navigationHandler)
     }
 }
