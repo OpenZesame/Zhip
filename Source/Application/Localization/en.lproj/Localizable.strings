@@ -54,12 +54,16 @@
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
 
 // MARK: ChoosePincode
-"Scene.ChoosePincode.Title" = "Choose pincode";
-"Scene.ChoosePincode.Button.ConfirmPincode" = "Confirm Pincode";
+"Scene.ChoosePincode.Title" = "Set app PIN";
+"Scene.ChoosePincode.Button.ProceedWithConfirmation" = "Proceed";
+"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet";
+
 
 // MARK: ConfirmNewPincode
-"Scene.ConfirmNewPincode.Title" = "Confirm pincode";
-"Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm Pincode";
+"Scene.ConfirmNewPincode.Title" = "Confirm app PIN";
+"Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp" = "I've backed up my PIN code";
+"Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm";
+
 
 // MARK: - Main Flow
 

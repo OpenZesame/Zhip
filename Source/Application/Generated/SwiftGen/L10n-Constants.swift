@@ -66,11 +66,15 @@ internal enum L10n {
       }
     }
     internal enum ChoosePincode {
-      /// Choose pincode
+      /// Set app PIN
       internal static let title = L10n.tr("Localizable", "Scene.ChoosePincode.Title")
       internal enum Button {
-        /// Confirm Pincode
-        internal static let confirmPincode = L10n.tr("Localizable", "Scene.ChoosePincode.Button.ConfirmPincode")
+        /// Proceed
+        internal static let proceedWithConfirmation = L10n.tr("Localizable", "Scene.ChoosePincode.Button.ProceedWithConfirmation")
+      }
+      internal enum Text {
+        /// This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet
+        internal static let pincodeOnlyLocksApp = L10n.tr("Localizable", "Scene.ChoosePincode.Text.PincodeOnlyLocksApp")
       }
     }
     internal enum ChooseWallet {
@@ -84,11 +88,15 @@ internal enum L10n {
       }
     }
     internal enum ConfirmNewPincode {
-      /// Confirm pincode
+      /// Confirm app PIN
       internal static let title = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Title")
       internal enum Button {
-        /// Confirm Pincode
+        /// Confirm
         internal static let confirmPincode = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Button.ConfirmPincode")
+      }
+      internal enum SwitchLabel {
+        /// I've backed up my PIN code
+        internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp")
       }
     }
     internal enum CreateNewWallet {
