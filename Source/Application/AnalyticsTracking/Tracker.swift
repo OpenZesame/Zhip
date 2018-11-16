@@ -21,10 +21,7 @@ struct Tracker {
 // MARK: - Tracking
 extension Tracker: Tracking {
     func track(event: TrackableEvent) {
-        let eventName = "event: '\(event.eventName)'"
-        guard preferences.isTrue(.hasAcceptedAnalyticsTracking) else {
-            return log.verbose("User haven't accepted analytics tracker, omitting \(eventName)")
-        }
-        log.verbose("tracked \(eventName) 🌍")
+        guard preferences.isTrue(.hasAcceptedAnalyticsTracking) else { return }
+        log.verbose("🌍 Tracked: \(event.eventContext):\(event.eventName)")
     }
 }

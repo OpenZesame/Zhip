@@ -11,6 +11,7 @@ import Foundation
 /// Trackable event, most likely user interaction, i.e, button tap.
 protocol TrackableEvent {
     var eventName: String { get }
+    var eventContext: String { get }
 }
 
 // MARK: Default Implementation of `enum SomeEnum: String`
@@ -29,6 +30,10 @@ extension TrackableEvent {
         } else {
             incorrectImplementation("You need to conform to `TrackableEvent`")
         }
+    }
+
+    var eventContext: String {
+        return String(describing: type(of: self))
     }
 }
 
