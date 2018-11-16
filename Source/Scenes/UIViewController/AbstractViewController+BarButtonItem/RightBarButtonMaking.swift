@@ -15,14 +15,17 @@ protocol RightBarButtonMaking {
 extension RightBarButtonMaking {
     func setRightBarButton(for viewController: AbstractController) {
         viewController.setRightBarButtonUsing(content: Self.makeRight.content)
-
     }
-
 }
 
 extension AbstractController {
     func setRightBarButtonUsing(content barButtonContent: BarButtonContent) {
         let item = barButtonContent.makeBarButtonItem(target: self.rightBarButtonAbtractTarget, selector: #selector(AbstractTarget.pressed))
         navigationItem.rightBarButtonItem = item
+    }
+
+    func setLeftBarButtonUsing(content barButtonContent: BarButtonContent) {
+        let item = barButtonContent.makeBarButtonItem(target: self.leftBarButtonAbtractTarget, selector: #selector(AbstractTarget.pressed))
+        navigationItem.leftBarButtonItem = item
     }
 }

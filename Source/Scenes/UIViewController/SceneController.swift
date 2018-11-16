@@ -53,6 +53,7 @@ private extension SceneController {
         guard let contentView = view as? View else { return }
 
         let titleSubject = PublishSubject<String>()
+        let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let rightBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let toastSubject = PublishSubject<Toast>()
 
@@ -63,6 +64,7 @@ private extension SceneController {
             leftBarButtonTrigger: leftBarButtonSubject.asDriverOnErrorReturnEmpty(),
             rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
             titleSubject: titleSubject,
+            leftBarButtonContentSubject: leftBarButtonContentSubject,
             rightBarButtonContentSubject: rightBarButtonContentSubject,
             toastSubject: toastSubject
         )
@@ -74,6 +76,10 @@ private extension SceneController {
 
             toastSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
                 $0.present(using: self)
+            }).drive(),
+
+            leftBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
+                self.setLeftBarButtonUsing(content: $0)
             }).drive(),
 
             rightBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in

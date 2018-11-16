@@ -50,7 +50,7 @@ private extension ManagePincodeCoordinator {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: useCase, userWantsToRemovePincode: intent.userWantsToRemovePincode)
         present(type: UnlockAppWithPincode.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
-            case .userFinished: self.finish()
+            case .userAbortedRemovalOfPin, .userDidUnlockApp, .userRemovedPincode: self.finish()
             }
         }
     }

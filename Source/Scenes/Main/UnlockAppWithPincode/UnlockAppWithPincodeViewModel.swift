@@ -12,8 +12,10 @@ import RxSwift
 
 private typealias € = L10n.Scene.UnlockAppWithPincode.Title
 
-enum UnlockAppWithPincodeNavigation: TrackedUserAction {
-    case userFinished
+enum UnlockAppWithPincodeNavigation: String, TrackedUserAction {
+    case userDidUnlockApp
+    case userAbortedRemovalOfPin
+    case userRemovedPincode
 }
 
 final class UnlockAppWithPincodeViewModel: BaseViewModel<
@@ -34,10 +36,10 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
     override func transform(input: Input) -> Output {
 
         if isSkippable {
-            input.fromController.rightBarButtonContentSubject.onBarButton(.skip)
+            input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
 
-            bag <~ input.fromController.rightBarButtonTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.userFinished)
+            bag <~ input.fromController.leftBarButtonTrigger.do(onNext: { [unowned stepper] in
+                stepper.step(.userAbortedRemovalOfPin)
             }).drive()
         }
 
@@ -50,17 +52,14 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
         bag <~ [
             matchingPincode.do(onNext: { [unowned self] in
-                func finish() {
-                    self.stepper.step(.userFinished)
-                }
                 if self.userWantsToRemovePincode {
                     self.useCase.deletePincode()
-                    let tost = Toast(L10n.Flow.Pincode.Event.Toast.didRemovePincode) {
-                        finish()
+                    let toast = Toast(L10n.Flow.Pincode.Event.Toast.didRemovePincode) {
+                        self.stepper.step(.userRemovedPincode)
                     }
-                    input.fromController.toastSubject.onNext(tost)
+                    input.fromController.toastSubject.onNext(toast)
                 } else {
-                    finish()
+                    self.stepper.step(.userDidUnlockApp)
                 }
             }).drive()
         ]

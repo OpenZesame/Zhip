@@ -20,6 +20,7 @@ struct ControllerInput {
     let rightBarButtonTrigger: Driver<Void>
 
     let titleSubject: PublishSubject<String>
+    let leftBarButtonContentSubject: PublishSubject<BarButtonContent>
     let rightBarButtonContentSubject: PublishSubject<BarButtonContent>
     let toastSubject: PublishSubject<Toast>
 }
