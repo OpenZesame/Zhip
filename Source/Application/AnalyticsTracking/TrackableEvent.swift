@@ -14,13 +14,6 @@ protocol TrackableEvent {
     var eventContext: String { get }
 }
 
-// MARK: Default Implementation of `enum SomeEnum: String`
-extension TrackableEvent where Self: RawRepresentable, Self.RawValue == String {
-    var eventName: String {
-        return rawValue
-    }
-}
-
 // MARK: Default Implemtation for `enum` that do not have RawTypes, using reflection
 extension TrackableEvent {
     var eventName: String {
