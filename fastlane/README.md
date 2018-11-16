@@ -15,12 +15,16 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-## iOS
-### ios beta
+### beta
 ```
-fastlane ios beta
+fastlane beta
 ```
 Push a new beta build to TestFlight
+### test
+```
+fastlane test
+```
+Run unit tests for each opened pull request
 
 ----
 

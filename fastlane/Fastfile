@@ -2,46 +2,36 @@ default_platform(:ios)
 
 $plist_path = "Source/Application/Zupreme-Info.plist"
 
-platform :ios do
+desc "Push a new beta build to TestFlight"
+lane :beta do
+  begin
+    # Update provisioning profiles and certificates
+    match(type: "appstore", readonly: true)
+    
+    # Build the IPA
+    build_app(scheme: "Zupreme")
 
-  desc "Push a new beta build to TestFlight"
-  lane :beta do
-    begin
-      # Update provisioning profiles and certificates
-      match(type: "appstore", readonly: true)
+    upload_to_testflight
+
+    slack(
+      message: "AppStore Connect (TestFlight) successfully parsed build",
+      success: true
+    )
   
-      build_number = increase_build_number_using_plist
-      git_commit(path: $plist_path, message:"[ci-skip] Version Bump to #{build_number}")
-  
-      # Push commited build number bump even if build might fail, in order to
-      # ensure build number always being unique.
-      push_to_git_remote
-    
-      # Build the IPA
-      build_app(scheme: "Zupreme")
+    clean_build_artifacts
 
-      upload_to_testflight
-
-      slack(
-        message: "AppStore Connect (TestFlight) successfully parsed build",
-        success: true
-      )
-    
-      add_git_tag 
-      push_to_git_remote
-    
-      clean_build_artifacts
-
-    rescue => exception
-      on_error(exception)
-    end
+  rescue => exception
+    on_error(exception)
   end
+end
 
-  # Helper lanes
-  lane :increase_build_number_using_plist do
-    increment_plist_value_by_one(for_key: 'CFBundleVersion')
-  end
-
+desc "Run unit tests for each opened pull request"
+lane :test do
+  run_tests(
+    scheme: "ZupremeTests",
+    clean: false,
+    slack_only_on_failure: true
+  )
 end
 
 # Lane helpers
@@ -50,25 +40,5 @@ def on_error(exception)
     message: "Lane failed with exception : #{exception}",
     success: false
   )
-end
-
-# Custom actions
-def increment_plist_value_by_one(for_key:)
-    current_value = get_plist_value_for_key(key: for_key).to_i
-    new_value = (current_value + 1).to_s
-    set_plist(value: new_value, for_key: for_key)
-    
-    puts "⬆️  1️⃣   Increased value for '#{for_key}' by one, new value: `#{new_value}` (using 'set_info_plist_value')"
-
-    # return the value
-    new_value
-end
-
-# Fastlane actions wrappers
-def get_plist_value_for_key(key:)
-  get_info_plist_value(path: $plist_path, key: key)
-end
-
-def set_plist(value:, for_key:)
-  set_info_plist_value(path: $plist_path, key: for_key, value: value)
+  raise exception
 end
