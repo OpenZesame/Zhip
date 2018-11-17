@@ -10,14 +10,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-// MARK: - WarningERC20Navigation
-enum WarningERC20Navigation: String, TrackedUserAction {
-    case userSelectedRisksAreUnderstood
+// MARK: - WarningERC20UserAction
+enum WarningERC20UserAction: TrackedUserAction {
+    case understandRisks
 }
 
 // MARK: - WarningERC20ViewModel
 final class WarningERC20ViewModel: BaseViewModel<
-    WarningERC20Navigation,
+    WarningERC20UserAction,
     WarningERC20ViewModel.InputFromView,
     WarningERC20ViewModel.Output
 > {
@@ -29,16 +29,18 @@ final class WarningERC20ViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
+        let understandsRisks = Driver.merge(input.fromView.accept, input.fromView.doNotShowAgain)
+
         bag <~ [
-            input.fromView.accept.do(onNext: { [unowned stepper] in
-                stepper.step(.userSelectedRisksAreUnderstood)
+            understandsRisks.do(onNext: { [unowned stepper] in
+                stepper.step(.understandRisks)
             }).drive(),
 
             input.fromView.doNotShowAgain.do(onNext: { [unowned self] in
                 self.useCase.doNotShowERC20WarningAgain()
-                self.stepper.step(.userSelectedRisksAreUnderstood)
             }).drive()
         ]
+        
         return Output()
     }
 }

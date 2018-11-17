@@ -11,15 +11,15 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-// MARK: - SendNavigation
-enum SendNavigation: TrackedUserAction {
-    case userInitiatedTransaction
-    case userSelectedSeeTransactionDetailsInBrowser(transactionId: String)
+// MARK: - SendUserAction
+enum SendUserAction: TrackedUserAction {
+    case send
+    case seeTransactionDetailsInBrowser(transactionId: String)
 }
 
 // MARK: - SendViewModel
 final class SendViewModel: BaseViewModel<
-    SendNavigation,
+    SendUserAction,
     SendViewModel.InputFromView,
     SendViewModel.Output
 > {
@@ -35,6 +35,9 @@ final class SendViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userIntends(to intention: Step) {
+            stepper.step(intention)
+        }
         let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let fromView = input.fromView
@@ -86,9 +89,9 @@ final class SendViewModel: BaseViewModel<
                 self.transactionUseCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
                     .asDriverOnErrorReturnEmpty()
                     // Trigger fetching of balance after successfull send
-                    .do(onNext: { [unowned self] _ in
+                    .do(onNext: { _ in
                         transactionIdSubject.onNext(nil)
-                        self.stepper.step(.userInitiatedTransaction)
+                        userIntends(to: .send)
                         // TODO: poll API using transaction ID later on
                         DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
                             fetchBalanceSubject.onNext(())
@@ -99,8 +102,8 @@ final class SendViewModel: BaseViewModel<
             .drive(),
 
                 fromView.openTransactionDetailsInBrowserTrigger.withLatestFrom(transactionId.filterNil())
-                    .do(onNext: { [unowned stepper] in
-                        stepper.step(.userSelectedSeeTransactionDetailsInBrowser(transactionId: $0))
+                    .do(onNext: {
+                        userIntends(to: .seeTransactionDetailsInBrowser(transactionId: $0))
                     })
                     .drive()
         ]

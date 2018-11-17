@@ -10,16 +10,17 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-private typealias € = L10n.Scene.UnlockAppWithPincode.Title
-
-enum UnlockAppWithPincodeNavigation: String, TrackedUserAction {
-    case userDidUnlockApp
-    case userAbortedRemovalOfPin
-    case userRemovedPincode
+// MARK: - UnlockAppWithPincodeUserAction
+enum UnlockAppWithPincodeUserAction: TrackedUserAction {
+    case unlockApp
+    case cancelPincodeRemoval
+    case removePincode
 }
 
+// MARK: - UnlockAppWithPincodeViewModel
+private typealias € = L10n.Scene.UnlockAppWithPincode.Title
 final class UnlockAppWithPincodeViewModel: BaseViewModel<
-    UnlockAppWithPincodeNavigation,
+    UnlockAppWithPincodeUserAction,
     UnlockAppWithPincodeViewModel.InputFromView,
     UnlockAppWithPincodeViewModel.Output
 > {
@@ -34,12 +35,15 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userDid(_ userAction: Step) {
+            stepper.step(userAction)
+        }
 
         if isSkippable {
             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
 
-            bag <~ input.fromController.leftBarButtonTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.userAbortedRemovalOfPin)
+            bag <~ input.fromController.leftBarButtonTrigger.do(onNext: {
+                userDid(.cancelPincodeRemoval)
             }).drive()
         }
 
@@ -55,11 +59,11 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
                 if self.userWantsToRemovePincode {
                     self.useCase.deletePincode()
                     let toast = Toast(L10n.Flow.Pincode.Event.Toast.didRemovePincode) {
-                        self.stepper.step(.userRemovedPincode)
+                        userDid(.removePincode)
                     }
                     input.fromController.toastSubject.onNext(toast)
                 } else {
-                    self.stepper.step(.userDidUnlockApp)
+                    userDid(.unlockApp)
                 }
             }).drive()
         ]

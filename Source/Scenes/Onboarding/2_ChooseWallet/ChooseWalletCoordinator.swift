@@ -37,10 +37,10 @@ private extension ChooseWalletCoordinator {
     }
 
     func toChooseWallet() {
-        present(type: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] in
-            switch $0 {
-            case .userSelectedCreateNewWallet: self.toCreateNewWallet()
-            case .userSelectedRestoreWallet: self.toRestoreWallet()
+        present(type: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] userIntendsTo in
+            switch userIntendsTo {
+            case .createNewWallet: self.toCreateNewWallet()
+            case .restoreWallet: self.toRestoreWallet()
             }
         }
     }

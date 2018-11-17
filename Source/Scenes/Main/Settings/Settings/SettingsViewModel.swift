@@ -11,11 +11,11 @@ import RxSwift
 import RxCocoa
 
 // MARK: SettingsNavigation
-enum SettingsNavigation: String, TrackedUserAction {
-    case userSelectedSetPincode
-    case userSelectedRemovePincode
-    case userSelectedBackupWallet
-    case userSelectedRemoveWallet
+enum SettingsNavigation: TrackedUserAction {
+    case setPincode
+    case removePincode
+    case backupWallet
+    case removeWallet
 }
 
 // MARK: SettingsViewModel
@@ -33,6 +33,9 @@ final class SettingsViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userIntends(to intention: Step) {
+            stepper.step(intention)
+        }
 
         let isRemovePincodeButtonEnabled = input.fromController.viewWillAppear.map { [unowned self] in
             self.useCase.hasConfiguredPincode
@@ -43,24 +46,20 @@ final class SettingsViewModel: BaseViewModel<
         let fromView = input.fromView
         bag <~ [
             fromView.setPincodeTrigger
-                .do(onNext: { [unowned stepper] in
-                    stepper.step(.userSelectedSetPincode)
-                }).drive(),
+                .do(onNext: { userIntends(to: .setPincode) })
+                .drive(),
 
             fromView.removePincodeTrigger
-                .do(onNext: { [unowned stepper] in
-                    stepper.step(.userSelectedRemovePincode)
-                }).drive(),
+                .do(onNext: { userIntends(to: .removePincode) })
+                .drive(),
 
             fromView.backupWalletTrigger
-                .do(onNext: { [unowned stepper] in
-                    stepper.step(.userSelectedBackupWallet)
-                }).drive(),
+                .do(onNext: { userIntends(to: .backupWallet) })
+                .drive(),
 
             fromView.removeWalletTrigger
-                .do(onNext: { [unowned stepper] in
-                    stepper.step(.userSelectedRemoveWallet)
-                }).drive()
+                .do(onNext: { userIntends(to: .removeWallet) })
+                .drive()
         ]
 
         let appVersion = Driver<String?>.just(appVersionString).filterNil()
