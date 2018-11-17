@@ -61,7 +61,7 @@ private extension ScrollView {
 
 import RxSwift
 import RxCocoa
-extension Reactive where Base: ScrollingStackView {
+extension Reactive where Base: ScrollingStackView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
         return base.refreshControl!.rx.isRefreshing
     }

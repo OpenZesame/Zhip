@@ -11,8 +11,10 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
-    enum Step {}
+final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
+    enum Step {
+        case finish
+    }
 
     private let deepLinkGenerator: DeepLinkGenerator
     private let useCase: WalletUseCase
@@ -21,11 +23,10 @@ final class ReceiveCoordinator: AbstractCoordinator<ReceiveCoordinator.Step> {
         self.useCase = useCase
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)
-    }
-
-   override func start() {
         toReceive()
     }
+
+   override func start() {}
 }
 
 // MARK: - Navigate
@@ -35,8 +36,13 @@ private extension ReceiveCoordinator {
         present(type: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] userDid in
             switch userDid {
             case .requestTransaction(let requestedTransaction): self.share(transaction: requestedTransaction)
+            case .finish: self.finish()
             }
         }
+    }
+
+    func finish() {
+        stepper.step(.finish)
     }
 }
 

@@ -15,14 +15,21 @@ final class BackupWalletView: ScrollingStackView {
 
     private lazy var beSafeLabel = UILabel.Style(€.Label.storeKeystoreSecurely, font: .boldSystemFont(ofSize: 18), numberOfLines: 0).make()
     private lazy var keystoreTextView = ScrollableContentSizedTextView(style: UITextView.Style(font: .systemFont(ofSize: 10), isEditable: false))
-    private lazy var copyKeystoreButton = UIButton.Style(€.Button.copyKeystore, textColor: .white, colorNormal: .blue, colorSelected: .cyan).make()
+
+    private lazy var copyKeystoreButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.copyKeystore)
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel.Style(€.Label.urgeSecureBackupOfKeystore, numberOfLines: 0).make()
 
     private lazy var understandsRisksSwitch = UISwitch()
     private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.keystoreIsBackedUp).make()
     private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
-    private lazy var doneButton = UIButton.Style(€.Button.haveBackedUpProceed, isEnabled: false).make()
+
+    private lazy var doneButton = UIButton(type: .custom)
+        .withStyle(.secondary)
+        .titled(normal: €.Button.haveBackedUpProceed)
+        .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

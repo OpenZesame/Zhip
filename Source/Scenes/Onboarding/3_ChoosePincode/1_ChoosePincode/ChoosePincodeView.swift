@@ -9,6 +9,13 @@
 import UIKit
 import RxSwift
 
+extension UIButton {
+    func disabled() -> UIButton {
+        isEnabled = false
+        return self
+    }
+}
+
 private typealias € = L10n.Scene.ChoosePincode
 
 final class ChoosePincodeView: ScrollingStackView {
@@ -17,7 +24,10 @@ final class ChoosePincodeView: ScrollingStackView {
 
     private lazy var pinOnlyLocksAppTextView = UITextView.Style(€.Text.pincodeOnlyLocksApp, isEditable: false, isSelectable: false).make()
 
-    private lazy var proceedWithConfirmationButton = UIButton.Style(€.Button.proceedWithConfirmation, isEnabled: false).make()
+    private lazy var proceedWithConfirmationButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.proceedWithConfirmation)
+        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,

@@ -8,70 +8,45 @@
 
 import UIKit
 
-extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral {
-    static let defaultHeight: CGFloat = 64
+extension UIButton {
+    public struct Style {
 
-    public static func createEmpty() -> UIButton {
-        return UIButton(type: .custom)
-    }
-
-    public final class Style: ViewStyle, Makeable, ExpressibleByStringLiteral {
-
-        public typealias View = UIButton
-
-        let text: String?
+        let height: CGFloat?
         let textColor: UIColor?
         let colorNormal: UIColor?
         let colorDisabled: UIColor?
         let colorSelected: UIColor?
         let font: UIFont?
         let isEnabled: Bool?
+        let borderNormal: Border?
 
         init(
-            _ text: String? = nil,
             height: CGFloat? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             colorNormal: UIColor? = nil,
             colorDisabled: UIColor? = nil,
             colorSelected: UIColor? = nil,
+            borderNormal: Border? = nil,
             isEnabled: Bool? = nil
             ) {
-            self.text = text
+            self.height = height
             self.textColor = textColor
             self.colorNormal = colorNormal
             self.colorDisabled = colorDisabled
             self.colorSelected = colorSelected
             self.font = font
             self.isEnabled = isEnabled
-            super.init(height: height ?? defaultHeight, backgroundColor: nil)
-        }
-
-        public convenience init(stringLiteral title: String) {
-            self.init(title)
-        }
-
-        public func merged(other: Style, mode: MergeMode) -> Style {
-            func merge<T>(_ attributePath: KeyPath<Style, T?>) -> T? {
-                return mergeAttribute(other: other, path: attributePath, mode: mode)
-            }
-
-            return Style(
-                merge(\.text),
-                height: merge(\.height),
-                font: merge(\.font),
-                textColor: merge(\.textColor),
-                colorNormal: merge(\.colorNormal),
-                colorDisabled: merge(\.colorDisabled),
-                isEnabled: merge(\.isEnabled)
-            )
+            self.borderNormal = borderNormal
         }
     }
 
-    public func apply(style: Style) {
-        setTitle(style.text, for: UIControl.State())
+    private func apply(style: Style) {
+        if let height = style.height {
+            self.height(height)
+        }
         setTitleColor(style.textColor ?? .defaultText, for: UIControl.State())
-        titleLabel?.font = style.font ?? .default
+        titleLabel?.font = style.font ?? UIFont.Button.primary
         let colorNormal = style.colorNormal ?? .green
         let colorDisabled = style.colorDisabled ?? .gray
         let colorSelected = style.colorSelected ?? colorNormal
@@ -79,6 +54,68 @@ extension UIButton: Styling, StaticEmptyInitializable, ExpressibleByStringLitera
         setBackgroundColor(colorDisabled, for: .disabled)
         setBackgroundColor(colorSelected, for: .selected)
         isEnabled = style.isEnabled ?? true
+        if let borderNormal = style.borderNormal {
+            addBorder(borderNormal)
+        }
+    }
+}
+
+private extension CGFloat {
+    static let defaultHeight: CGFloat = 64
+}
+
+extension UIButton {
+    func withStyle(_ style: UIButton.Style) -> UIButton {
+        translatesAutoresizingMaskIntoConstraints = false
+        self.apply(style: style)
+        return self
+    }
+
+    func titled(normal: String) -> UIButton {
+        setTitle(normal, for: .normal)
+        return self
+    }
+}
+
+
+extension UIButton.Style {
+
+    static var hollow: UIButton.Style {
+        let color: UIColor = .zilliqaCyan
+        return UIButton.Style(
+            height: .defaultHeight,
+            font: UIFont.Button.primary,
+            textColor: color,
+            colorNormal: .clear,
+            colorDisabled: .black,
+            colorSelected: nil,
+            borderNormal: UIView.Border(color: color, width: 2),
+            isEnabled: true
+        )
+    }
+
+    static var primary: UIButton.Style {
+        return UIButton.Style(
+            height: .defaultHeight,
+            font: UIFont.Button.primary,
+            textColor: .white,
+            colorNormal: .zilliqaCyan,
+            colorDisabled: .gray,
+            colorSelected: nil,
+            isEnabled: true
+        )
+    }
+
+    static var secondary: UIButton.Style {
+        return UIButton.Style(
+            height: .defaultHeight,
+            font: UIFont.Button.seconday,
+            textColor: .white,
+            colorNormal: .zilliqaDarkBlue,
+            colorDisabled: .gray,
+            colorSelected: nil,
+            isEnabled: true
+        )
     }
 }
 

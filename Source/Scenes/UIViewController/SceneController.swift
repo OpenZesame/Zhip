@@ -40,7 +40,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
         }
-        if let barButtonMaker = self as? RightBarButtonMaking {
+        if let barButtonMaker = self as? RightBarButtonContentMaking {
             barButtonMaker.setRightBarButton(for: self)
         }
     }

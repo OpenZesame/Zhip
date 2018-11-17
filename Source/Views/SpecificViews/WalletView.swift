@@ -14,34 +14,29 @@ import RxCocoa
 
 private typealias € = L10n.View.Wallet
 
-final class WalletView: UIStackView, StackViewStyling {
+final class WalletView: LabelsView {
+    override init(
+        titleStyle: UILabel.Style? = nil,
+        valueStyle: UILabel.Style? = nil,
+        stackViewStyle: UIStackView.Style? = nil
+        ) {
 
-    fileprivate lazy var addressLabels = LabelsView(
-        title: €.Label.yourAddress,
-        valueStyle: UILabel.Style(numberOfLines: 0)
-    )
+        super.init(
+            titleStyle: titleStyle.merged(other: UILabel.Style(€.Label.yourAddress), mode: .overrideOther),
+            valueStyle: valueStyle.merged(other: UILabel.Style(numberOfLines: 0), mode: .overrideOther),
+            stackViewStyle: stackViewStyle.merged(other: UIStackView.Style(spacing: 0), mode: .overrideOther)
+        )
 
-    init() {
-        super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        apply(style: stackViewStyle)
     }
 
     required init(coder aDecoder: NSCoder) {
         interfaceBuilderSucks
     }
-
-    // MARK: - StackViewStyling
-    lazy var stackViewStyle = UIStackView.Style([
-        addressLabels
-    ], spacing: 16, margin: 0)
 }
 
 extension Reactive where Base == WalletView {
-    var address: Binder<String> {
-        return Binder(base) {
-            $0.addressLabels.setValue($1)
-        }
+    var address: Binder<String?> {
+        return value
     }
 }
 

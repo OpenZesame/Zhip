@@ -19,7 +19,10 @@ final class ConfirmNewPincodeView: ScrollingStackView {
     private lazy var haveBackedUpPincodeShortLabel = UILabel.Style(€.SwitchLabel.pincodeIsBackedUp).make()
     private lazy var haveBackedUpPincodeStackView = UIStackView.Style([haveBackedUpPincodeSwitch, haveBackedUpPincodeShortLabel], axis: .horizontal, margin: 0).make()
 
-    private lazy var confirmPincodeButton = UIButton.Style(€.Button.confirmPincode, isEnabled: false).make()
+    private lazy var confirmPincodeButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.confirmPincode)
+        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,

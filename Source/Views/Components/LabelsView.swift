@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LabelsView: UIStackView {
+class LabelsView: UIStackView {
 
     fileprivate let titleLabel: UILabel
     fileprivate let valueLabel: UILabel
@@ -21,8 +21,8 @@ final class LabelsView: UIStackView {
         stackViewStyle: UIStackView.Style? = nil
         ) {
 
-        let defaultTitleStyle = UILabel.Style(font: .boldSystemFont(ofSize: 16), textColor: .black)
-        let defaultvalueStyle = UILabel.Style(font: .systemFont(ofSize: 12), textColor: .darkGray)
+        let defaultTitleStyle = UILabel.Style(font: UIFont.Label.title, textColor: .black)
+        let defaultvalueStyle = UILabel.Style(font: UIFont.Label.value, textColor: .darkGray)
         let defaultStackViewStyle = UIStackView.Style(spacing: 8, margin: 0)
 
         self.titleLabel = titleStyle.merged(other: defaultTitleStyle, mode: .overrideOther).make()
@@ -59,7 +59,7 @@ extension LabelsView {
 
 }
 
-extension Reactive where Base == LabelsView {
+extension Reactive where Base: LabelsView {
     var title: Binder<String?> { return base.titleLabel.rx.text }
     var value: Binder<String?> { return base.valueLabel.rx.text }
 }

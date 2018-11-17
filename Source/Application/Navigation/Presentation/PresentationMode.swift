@@ -13,6 +13,7 @@ typealias PresentationCompletion = () -> Void
 enum PresentationMode {
     case push(animated: Bool)
     case present(animated: Bool, completion: PresentationCompletion?)
+    case none
 }
 
 extension PresentationMode {

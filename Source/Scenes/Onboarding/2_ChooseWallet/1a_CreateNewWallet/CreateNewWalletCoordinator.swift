@@ -12,7 +12,7 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class CreateNewWalletCoordinator: AbstractCoordinator<CreateNewWalletCoordinator.Step> {
+final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.Step> {
 
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()

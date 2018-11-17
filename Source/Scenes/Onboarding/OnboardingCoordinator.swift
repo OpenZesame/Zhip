@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class OnboardingCoordinator: AbstractCoordinator<OnboardingCoordinator.Step> {
+final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Step> {
     enum Step {
         case userFinishedOnboording
     }
@@ -91,9 +91,9 @@ private extension OnboardingCoordinator {
             useCase: useCaseProvider.makePincodeUseCase()
         )
 
-        start(coordinator: coordinator) { [unowned self] in
-            switch $0 {
-            case .userFinishedChoosingOrRemovingPincode: self.finish()
+        start(coordinator: coordinator) { [unowned self] userDid in
+            switch userDid {
+            case .finish: self.finish()
             }
         }
     }

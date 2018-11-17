@@ -15,10 +15,25 @@ private typealias € = L10n.Scene.Settings
 // MARK: - SettingsView
 final class SettingsView: ScrollingStackView {
 
-    private lazy var setPincodeButton = UIButton.Style(€.Button.setPincode, textColor: .white, colorNormal: .blue, isEnabled: false).make()
-    private lazy var removePincodeButton = UIButton.Style(€.Button.removePincode, colorNormal: .red, isEnabled: false).make()
-    private lazy var backupWalletButton = UIButton.Style(€.Button.backupWallet).make()
-    private lazy var removeWalletButton = UIButton.Style(€.Button.removeWallet, colorNormal: .red).make()
+    private lazy var setPincodeButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.setPincode)
+        .disabled()
+
+    private lazy var removePincodeButton = UIButton(type: .custom)
+        .withStyle(.secondary)
+        .titled(normal: €.Button.removePincode)
+        .disabled()
+
+    private lazy var backupWalletButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.backupWallet)
+        .disabled()
+
+    private lazy var removeWalletButton = UIButton(type: .custom)
+        .withStyle(.secondary)
+        .titled(normal: €.Button.removeWallet)
+        .disabled()
 
     private lazy var appVersionLabels = LabelsView(
         title: €.Label.appVersion,
@@ -43,7 +58,7 @@ extension SettingsView: ViewModelled {
         return [
             viewModel.isSetPincodeButtonEnabled     --> setPincodeButton.rx.isEnabled,
             viewModel.isRemovePincodeButtonEnabled  --> removePincodeButton.rx.isEnabled,
-        	viewModel.appVersion                    --> appVersionLabels
+            viewModel.appVersion                    --> appVersionLabels
 
         ]
     }

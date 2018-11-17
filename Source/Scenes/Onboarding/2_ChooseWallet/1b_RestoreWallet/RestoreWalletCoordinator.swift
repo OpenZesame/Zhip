@@ -9,7 +9,7 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator: AbstractCoordinator<RestoreWalletCoordinator.Step> {
+final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.Step> {
     enum Step {
         case finishedRestoring(wallet: Wallet)
     }

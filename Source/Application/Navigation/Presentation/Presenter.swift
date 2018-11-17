@@ -21,6 +21,7 @@ extension UIViewController: Presenter {
             switch presentation {
             case .push(let animated): navigationController.pushViewController(controllerToPresent, animated: animated)
             case .present(let animated, let completion): navigationController.present(controllerToPresent, animated: animated, completion: completion)
+            case .none: navigationController.viewControllers = [controllerToPresent]
             }
         } else {
             switch presentation {
@@ -32,6 +33,7 @@ extension UIViewController: Presenter {
                 }
             case .present(let animated, let completion):
                 present(controllerToPresent, animated: animated, completion: completion)
+            case .none: incorrectImplementation("Incorrect use of presentation")
             }
         }
     }

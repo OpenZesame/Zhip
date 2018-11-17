@@ -8,13 +8,23 @@
 
 import UIKit
 
-protocol RightBarButtonMaking {
+protocol RightBarButtonContentMaking {
+    static var makeRightContent: BarButtonContent { get }
+}
+
+protocol RightBarButtonMaking: RightBarButtonContentMaking {
     static var makeRight: BarButton { get }
 }
 
 extension RightBarButtonMaking {
+    static var makeRightContent: BarButtonContent {
+        return makeRight.content
+    }
+}
+
+extension RightBarButtonContentMaking {
     func setRightBarButton(for viewController: AbstractController) {
-        viewController.setRightBarButtonUsing(content: Self.makeRight.content)
+        viewController.setRightBarButtonUsing(content: Self.makeRightContent)
     }
 }
 

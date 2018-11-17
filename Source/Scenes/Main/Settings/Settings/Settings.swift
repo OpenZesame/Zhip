@@ -15,3 +15,7 @@ final class Settings: Scene<SettingsView> {}
 extension Settings {
     static let title = €.title
 }
+
+extension Settings: RightBarButtonMaking {
+    static let makeRight: BarButton = .done
+}

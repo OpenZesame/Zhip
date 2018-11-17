@@ -12,6 +12,7 @@ import RxCocoa
 
 // MARK: SettingsNavigation
 enum SettingsNavigation: TrackedUserAction {
+    case closeSettings
     case setPincode
     case removePincode
     case backupWallet
@@ -43,21 +44,24 @@ final class SettingsViewModel: BaseViewModel<
         
         let isSetPincodeButtonEnabled = isRemovePincodeButtonEnabled.map { !$0 }
 
-        let fromView = input.fromView
         bag <~ [
-            fromView.setPincodeTrigger
+            input.fromController.rightBarButtonTrigger.do(onNext: {
+                userIntends(to: .closeSettings)
+            }).drive(),
+
+            input.fromView.setPincodeTrigger
                 .do(onNext: { userIntends(to: .setPincode) })
                 .drive(),
 
-            fromView.removePincodeTrigger
+            input.fromView.removePincodeTrigger
                 .do(onNext: { userIntends(to: .removePincode) })
                 .drive(),
 
-            fromView.backupWalletTrigger
+            input.fromView.backupWalletTrigger
                 .do(onNext: { userIntends(to: .backupWallet) })
                 .drive(),
 
-            fromView.removeWalletTrigger
+            input.fromView.removeWalletTrigger
                 .do(onNext: { userIntends(to: .removeWallet) })
                 .drive()
         ]

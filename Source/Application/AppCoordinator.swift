@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
+final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     enum Step {}
 
     private unowned let window: UIWindow
@@ -58,11 +58,11 @@ private extension AppCoordinator {
     }
 
     func toMain() {
-        let tabBarController = UITabBarController()
-        window.rootViewController = tabBarController
+        let navigationController = UINavigationController()
+        window.rootViewController = navigationController
 
         let main = MainCoordinator(
-            tabBarController: tabBarController,
+            presenter: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider,
             lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
@@ -110,6 +110,6 @@ extension AppCoordinator {
 private extension AppCoordinator {
     func toSend(prefilTransaction transaction: Transaction) {
         guard let mainCoordinator = anyCoordinatorOf(type: MainCoordinator.self) else { return }
-        mainCoordinator.toSend(prefilTransaction: transaction)
+        mainCoordinator.toSendPrefilTransaction(transaction)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class ChooseWalletCoordinator: AbstractCoordinator<ChooseWalletCoordinator.Step> {
+final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Step> {
     enum Step {
         case userFinishedChoosingWallet
     }

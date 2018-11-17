@@ -1,6 +1,5 @@
 // MARK: - Generic
 "Generic.OK" = "OK";
-"Generic.Cancel" = "Cancel";
 "Generic.Close" = "Close";
 "Generic.Next" = "Next";
 "Generic.Skip" = "Skip";
@@ -67,27 +66,39 @@
 
 // MARK: - Main Flow
 
+// MARK: Main
+"Scene.Main.Label.Balance.Title" = "Your balance";
+"Scene.Main.Label.Balance.Value" = "%@ ZILs";
+"Scene.Main.Button.Send" = "Send";
+"Scene.Main.Button.Receive" = "Receive";
+
 // MARK: Unlock App
 "Scene.UnlockAppWithPincode.Title.ResumeApp" = "Unlock app";
 "Scene.UnlockAppWithPincode.Title.RemovePincode" = "Unlock to remove";
 
 "Flow.Pincode.Event.Toast.DidRemovePincode" = "Pincode removed";
 
-// MARK: Send
-"Scene.Send.Title" = "Send Zillings";
-"Scene.Send.Field.Recipient" = "To address";
-"Scene.Send.Field.Amount" = "Amount";
-"Scene.Send.Field.GasLimit" = "Gas limit";
-"Scene.Send.Field.GasPrice" = "Gas price";
-"Scene.Send.Field.EncryptionPassphrase" = "Encryption passphrase";
-"Scene.Send.Button.Send" = "Send";
-"Scene.Send.Label.TransactionId" = "Transaction Id";
-"Scene.Send.Label.Balance" = "%@ ZILs";
-"Scene.Send.Button.SeeTransactionInfo" = "See transaction Info";
+// MARK: PrepareTransaction
+"Scene.PrepareTransaction.Title" = "PrepareTransaction Zillings";
+"Scene.PrepareTransaction.Field.Recipient" = "To address";
+"Scene.PrepareTransaction.Field.Amount" = "Amount";
+"Scene.PrepareTransaction.Field.GasLimit" = "Gas limit";
+"Scene.PrepareTransaction.Field.GasPrice" = "Gas price";
+"Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.PrepareTransaction.Button.Send" = "Send";
+"Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
+"Scene.PrepareTransaction.Label.Balance" = "%@ ZILs";
+"Scene.PrepareTransaction.Button.SeeTransactionInfo" = "See transaction Info";
+
+// MARK: SignTransaction
+"Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase" = "Confirm transaction with your passphrase";
+"Scene.SignTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.SignTransaction.Button.Confirm" = "Confirm";
 
 // MARK: Recieve
 "Scene.Receive.Title" = "Receive Zillings";
-"Scene.Receive.Button.CopyMyAddress" = "Copy my address";
+"Scene.Receive.Button.CopyMyAddress" = "Copy address";
+"Scene.Receive.Button.Share" = "Share address";
 "Scene.Receive.Event.Toast.DidCopyAddress" = "Copied address";
 "Scene.Receive.Field.Amount" = "Amount";
 

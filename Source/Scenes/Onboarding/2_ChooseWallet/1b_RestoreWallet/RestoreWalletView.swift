@@ -18,7 +18,11 @@ final class RestoreWalletView: ScrollingStackView {
     private lazy var keystoreTextView = UITextView.Style("", height: 200).make()
     private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
     private lazy var confirmEncryptionPassphraseField = UITextField.Style(€.Field.confirmEncryptionPassphrase, isSecureTextEntry: true).make()
-    private lazy var restoreWalletButton = UIButton.Style(€.Button.restoreWallet, isEnabled: false).make()
+
+    private lazy var restoreWalletButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.restoreWallet)
+        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyField,

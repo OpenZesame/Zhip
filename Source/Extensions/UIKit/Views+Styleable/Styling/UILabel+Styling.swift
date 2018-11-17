@@ -68,7 +68,7 @@ extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral
 
     public func apply(style: Style) {
         text = style.text
-        font = style.font ?? .default
+        font = style.font ?? UIFont.Label.value
         textColor = style.textColor ?? .defaultText
         numberOfLines = style.numberOfLines ?? 1
         textAlignment = style.textAlignment ?? .left

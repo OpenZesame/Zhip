@@ -20,7 +20,11 @@ final class CreateNewWalletView: ScrollingStackView {
     private lazy var understandsRisksSwitch = UISwitch()
     private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.passphraseIsBackedUp).make()
     private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
-    private lazy var createNewWalletButton = UIButton.Style(€.Button.createNewWallet, isEnabled: false).make()
+
+    private lazy var createNewWalletButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.createNewWallet)
+        .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

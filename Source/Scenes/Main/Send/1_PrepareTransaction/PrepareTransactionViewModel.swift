@@ -1,5 +1,5 @@
 //
-//  SendViewModel.swift
+//  PrepareTransactionViewModel.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-09-08.
@@ -11,26 +11,27 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-// MARK: - SendUserAction
-enum SendUserAction: TrackedUserAction {
-    case send
-    case seeTransactionDetailsInBrowser(transactionId: String)
+// MARK: - PrepareTransactionUserAction
+enum PrepareTransactionUserAction: TrackedUserAction {
+    case cancel
+    case signPayment(Payment)
 }
 
-// MARK: - SendViewModel
-final class SendViewModel: BaseViewModel<
-    SendUserAction,
-    SendViewModel.InputFromView,
-    SendViewModel.Output
+// MARK: - PrepareTransactionViewModel
+private typealias € = L10n.Scene.PrepareTransaction
+final class PrepareTransactionViewModel: BaseViewModel<
+    PrepareTransactionUserAction,
+    PrepareTransactionViewModel.InputFromView,
+    PrepareTransactionViewModel.Output
 > {
     private let transactionUseCase: TransactionsUseCase
     private let walletUseCase: WalletUseCase
     private let deepLinkedTransaction: Driver<Transaction>
 
-    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Observable<Transaction>) {
+    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Driver<Transaction>) {
         self.walletUseCase = walletUseCase
         self.transactionUseCase = transactionUseCase
-        self.deepLinkedTransaction = deepLinkedTransaction.asDriverOnErrorReturnEmpty()
+        self.deepLinkedTransaction = deepLinkedTransaction
     }
 
     // swiftlint:disable:next function_body_length
@@ -79,61 +80,28 @@ final class SendViewModel: BaseViewModel<
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
         }
 
-        let transactionIdSubject = BehaviorSubject<String?>(value: nil)
-
-        let transactionId = transactionIdSubject.asDriverOnErrorReturnEmpty()
-
-        bag <~ [fromView.sendTrigger
-            .withLatestFrom(Driver.combineLatest(payment.filterNil(), wallet, fromView.encryptionPassphrase) { (payment: $0, wallet: $1, passphrase: $2) })
-            .flatMapLatest {
-                self.transactionUseCase.sendTransaction(for: $0.payment, wallet: $0.wallet, encryptionPassphrase: $0.passphrase)
-                    .asDriverOnErrorReturnEmpty()
-                    // Trigger fetching of balance after successfull send
-                    .do(onNext: { _ in
-                        transactionIdSubject.onNext(nil)
-                        userIntends(to: .send)
-                        // TODO: poll API using transaction ID later on
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
-                            fetchBalanceSubject.onNext(())
-                        }
-                    })
-            }
-            .do(onNext: { transactionIdSubject.onNext($0.transactionIdentifier) })
-            .drive(),
-
-                fromView.openTransactionDetailsInBrowserTrigger.withLatestFrom(transactionId.filterNil())
-                    .do(onNext: {
-                        userIntends(to: .seeTransactionDetailsInBrowser(transactionId: $0))
-                    })
-                    .drive()
+        bag <~ [
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userIntends(to: .cancel) })
+                .drive()
         ]
 
-        let isEncryptionPassphraseCorrect: Driver<Bool> = Driver.combineLatest(fromView.encryptionPassphrase, wallet) { (passphrase: $0, wallet: $1) }
-            .flatMapLatest {
-                self.walletUseCase.verify(passhrase: $0.passphrase, forWallet: $0.wallet).asDriverOnErrorReturnEmpty()
-        }
-
-        let isSendButtonEnabled: Driver<Bool> = Driver.combineLatest(payment.map { $0 != nil }, isEncryptionPassphraseCorrect) { $0 && $1 }
-
         let isRecipientAddressValid = Driver.merge(recipientFromField.map { $0 != nil }, recipientFromDeepLinkedTransaction.map { _ in true })
+
+        let isSendButtonEnabled = payment.map { $0 != nil }
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
             balance: balance.map { €.Label.balance($0.balance.amount.description) },
-            nonce: balance.map { $0.nonce.nonce.description },
             amount: amountFromDeepLinkedTransaction.map { $0.description },
             recipient: recipient.map { $0.checksummedHex },
-            isRecipientAddressValid: isRecipientAddressValid,
-            transactionId: transactionId.map { $0 ?? "No tx id" },
-            isTxInfoButtonEnabled: transactionId.map { $0 != nil }
+            isRecipientAddressValid: isRecipientAddressValid
         )
     }
 }
 
-private typealias € = L10n.Scene.Send
-
-extension SendViewModel {
+extension PrepareTransactionViewModel {
 
     struct InputFromView {
         let pullToRefreshTrigger: Driver<Void>
@@ -142,19 +110,14 @@ extension SendViewModel {
         let amountToSend: Driver<String>
         let gasLimit: Driver<String>
         let gasPrice: Driver<String>
-        let encryptionPassphrase: Driver<String>
-        let openTransactionDetailsInBrowserTrigger: Driver<Void>
     }
 
     struct Output {
         let isFetchingBalance: Driver<Bool>
         let isSendButtonEnabled: Driver<Bool>
         let balance: Driver<String>
-        let nonce: Driver<String>
         let amount: Driver<String>
         let recipient: Driver<String>
         let isRecipientAddressValid: Driver<Bool>
-        let transactionId: Driver<String>
-        let isTxInfoButtonEnabled: Driver<Bool>
     }
 }

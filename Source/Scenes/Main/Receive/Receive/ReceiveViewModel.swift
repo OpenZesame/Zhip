@@ -15,6 +15,7 @@ private typealias € = L10n.Scene.Receive
 
 // MARK: - ReceiveUserAction
 enum ReceiveUserAction: TrackedUserAction {
+    case finish
     case requestTransaction(Transaction)
 }
 
@@ -56,13 +57,17 @@ final class ReceiveViewModel: BaseViewModel<
         let receivingAddress = wallet.map { $0.address.checksummedHex }
 
         bag <~ [
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.finish) })
+                .drive(),
+
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject.onNext(Toast("✅ " + €.Event.Toast.didCopyAddress))
                 }).drive(),
 
-            input.fromController.rightBarButtonTrigger.withLatestFrom(transactionToReceive)
+            input.fromView.shareTrigger.withLatestFrom(transactionToReceive)
                 .do(onNext: { userDid(.requestTransaction($0)) })
                 .drive()
         ]
@@ -78,6 +83,7 @@ extension ReceiveViewModel {
 
     struct InputFromView {
         let copyMyAddressTrigger: Driver<Void>
+        let shareTrigger: Driver<Void>
         let qrCodeImageWidth: CGFloat
         let amountToReceive: Driver<String>
     }

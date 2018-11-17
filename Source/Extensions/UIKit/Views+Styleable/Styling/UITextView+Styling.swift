@@ -73,7 +73,7 @@ extension UITextView: Styling, StaticEmptyInitializable, ExpressibleByStringLite
     public func apply(style: Style) {
         text = style.text
         textAlignment = style.textAlignment ?? .left
-        font = style.font ?? .default
+        font = style.font ?? UIFont.small
         textColor = style.textColor ?? .defaultText
         isEditable = style.isEditable ?? true
         isSelectable = style.isSelectable ?? true

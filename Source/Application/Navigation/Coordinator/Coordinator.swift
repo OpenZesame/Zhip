@@ -11,27 +11,34 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol BaseCoordinator: AnyObject, BaseNavigatable {
+protocol AbstractCoordinator: AnyObject, BaseNavigatable {
     func start()
     var bag: DisposeBag { get }
-    var childCoordinators: [BaseCoordinator] { get set }
+    var childCoordinators: [AbstractCoordinator] { get set }
     func start<C>(coordinator: C, transition: CoordinatorTransition, navigationHandler: @escaping (C.Step) -> Void) where C: Coordinator & Navigatable
 }
 
-extension BaseCoordinator {
-    func anyCoordinatorOf<C>(type: C.Type) -> C? where C: BaseCoordinator {
+extension AbstractCoordinator {
+    func anyCoordinatorOf<C>(type: C.Type) -> C? where C: AbstractCoordinator {
         guard let coordinator = childCoordinators.compactMap({ $0 as? C }).first else {
             log.error("Coordinator has no child coordinator of type: `\(String(describing: type))`")
             return nil
         }
         return coordinator
     }
+
+    func remove(childCoordinator: AbstractCoordinator) {
+        guard let index = childCoordinators.firstIndex(where: { $0 === childCoordinator }) else { return }
+        childCoordinators.remove(at: index)
+    }
 }
 
-protocol Coordinator: BaseCoordinator, Navigatable, Presenting {}
+protocol Coordinator: AbstractCoordinator, Navigatable, Presenting {}
 
-extension BaseCoordinator {
-    func start<C>(coordinator: C, transition: CoordinatorTransition = .append, navigationHandler: @escaping (C.Step) -> Void) where C: BaseCoordinator & Navigatable {
+
+extension AbstractCoordinator {
+
+    func start<C>(coordinator: C, transition: CoordinatorTransition = .append, navigationHandler: @escaping (C.Step) -> Void) where C: AbstractCoordinator & Navigatable {
         switch transition {
         case .replace: childCoordinators = [coordinator]
         case .append: childCoordinators.append(coordinator)

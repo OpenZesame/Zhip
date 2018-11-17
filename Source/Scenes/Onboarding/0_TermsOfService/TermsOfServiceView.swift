@@ -18,7 +18,11 @@ private typealias € = L10n.Scene.TermsOfService
 final class TermsOfServiceView: ScrollingStackView {
 
     private lazy var htmlView = WKWebView(file: "TermsOfService")
-    private lazy var acceptTermsButton = UIButton.Style(€.Button.accept, isEnabled: false).make()
+    
+    private lazy var acceptTermsButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.accept)
+        .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

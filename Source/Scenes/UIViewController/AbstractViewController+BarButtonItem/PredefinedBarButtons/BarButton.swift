@@ -9,7 +9,7 @@
 import Foundation
 
 enum BarButton {
-    case skip, cancel
+    case skip, cancel, done
 }
 
 // MARK: BarButtonContent
@@ -17,7 +17,8 @@ extension BarButton {
     var content: BarButtonContent {
         switch self {
         case .skip: return BarButtonContent(title: L10n.Generic.skip)
-        case .cancel: return BarButtonContent(title: L10n.Generic.cancel)
+        case .cancel: return BarButtonContent(system: .cancel)
+        case .done: return BarButtonContent(system: .done)
         }
     }
 }

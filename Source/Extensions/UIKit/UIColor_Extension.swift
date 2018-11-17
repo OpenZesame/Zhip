@@ -22,8 +22,8 @@ extension UIColor {
 }
 
 extension UIColor {
-    @nonobjc static let zilliqaCyan = UIColor(hex: .zilliqaCyan)
-    @nonobjc static let zilliqaDarkBlue = UIColor(hex: .zilliqaDarkBlue)
+    static let zilliqaCyan = UIColor(hex: .zilliqaCyan)
+    static let zilliqaDarkBlue = UIColor(hex: .zilliqaDarkBlue)
 }
 
 // MARK: - Private

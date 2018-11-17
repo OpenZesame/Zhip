@@ -8,9 +8,9 @@
 
 import Foundation
 
-final class ManagePincodeCoordinator: AbstractCoordinator<ManagePincodeCoordinator.Step> {
+final class ManagePincodeCoordinator: BaseCoordinator<ManagePincodeCoordinator.Step> {
     enum Step {
-        case userFinishedChoosingOrRemovingPincode
+        case finish
     }
     enum Intent {
         case setPincode
@@ -24,9 +24,7 @@ final class ManagePincodeCoordinator: AbstractCoordinator<ManagePincodeCoordinat
         self.useCase = useCase
         self.intent = intent
         super.init(presenter: presenter)
-    }
 
-    override func start() {
         if useCase.hasConfiguredPincode {
             switch intent {
             case .unlockApp: toConfirmExisting()
@@ -40,6 +38,10 @@ final class ManagePincodeCoordinator: AbstractCoordinator<ManagePincodeCoordinat
                 incorrectImplementation("Never ever lock the app if the user has not set a pincode. That would shut them out from their wallet")
             }
         }
+    }
+
+    override func start() {
+
     }
 }
 
@@ -82,7 +84,7 @@ private extension ManagePincodeCoordinator {
     }
 
     func finish() {
-        stepper.step(.userFinishedChoosingOrRemovingPincode)
+        stepper.step(.finish)
     }
 }
 

@@ -14,8 +14,13 @@ final class WarningERC20View: ScrollingStackView {
 
     private lazy var warningTextView = UITextView.Style(€.Text.warningERC20, textAlignment: .center, isEditable: false).make()
 
-    private lazy var acceptButton = UIButton.Style(€.Button.accept, textColor: .white, colorNormal: .black).make()
-    private lazy var doNotShowThisAgainButton = UIButton.Style(€.Button.doNotShowAgain, textColor: .gray, colorNormal: .clear).make()
+    private lazy var acceptButton = UIButton(type: .custom)
+        .withStyle(.primary)
+        .titled(normal: €.Button.accept)
+
+    private lazy var doNotShowThisAgainButton = UIButton(type: .custom)
+        .withStyle(.hollow)
+        .titled(normal: €.Button.doNotShowAgain)
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

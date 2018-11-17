@@ -10,14 +10,13 @@ import UIKit
 
 private typealias € = L10n.Scene.Receive
 
-final class Receive: Scene<ReceiveView> {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .action, target: rightBarButtonAbtractTarget, action: #selector(AbstractTarget.pressed))
-    }
-}
+final class Receive: Scene<ReceiveView> {}
 
 extension Receive {
     static let title = €.title
 }
+
+extension Receive: RightBarButtonMaking {
+    static let makeRight: BarButton = .done
+}
+

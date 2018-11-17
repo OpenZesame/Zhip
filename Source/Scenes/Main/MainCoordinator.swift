@@ -13,98 +13,83 @@ import RxSwift
 
 private typealias € = L10n.Scene
 
-final class MainCoordinator: AbstractCoordinator<MainCoordinator.Step> {
+final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     enum Step {
         case didRemoveWallet
     }
 
-    private let tabBarController: UITabBarController
-
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+    private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(tabBarController: UITabBarController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
+    init(presenter: Presenter?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
-        self.tabBarController = tabBarController
-        super.init(presenter: nil)
-        setupTabBar()
+        super.init(presenter: presenter)
         bag <~ lockApp.do(onNext: { [unowned self] in
             self.toUnlockAppWithPincodeIfNeeded()
         }).drive()
     }
 
     override func start() {
-        focusSendTab()
-    }
-
-    override var presenter: Presenter? {
-        return tabBarController.selectedViewController
-    }
-}
-
-// MARK: - Private
-private extension MainCoordinator {
-    // swiftlint:disable:next function_body_length
-    func setupTabBar() {
-        let sendNavigationController = UINavigationController()
-        let receiveNavigationController = UINavigationController()
-        let settingsNavigationController = UINavigationController()
-
-        tabBarController.viewControllers = [
-            sendNavigationController,
-            receiveNavigationController,
-            settingsNavigationController
-        ]
-
-        let send = SendCoordinator(
-            presenter: sendNavigationController,
-            useCaseProvider: useCaseProvider
-        )
-
-        let receive = ReceiveCoordinator(
-            presenter: receiveNavigationController,
-            useCase: useCaseProvider.makeWalletUseCase(),
-            deepLinkGenerator: deepLinkGenerator
-        )
-
-        let settings = SettingsCoordinator(
-            presenter: settingsNavigationController,
-            useCaseProvider: useCaseProvider
-        )
-
-        start(coordinator: send, transition: .doNothing) {
-            switch $0 {} // nothing to do yet
-        }
-
-        start(coordinator: receive, transition: .doNothing) {
-            switch $0 {}
-        }
-
-        start(coordinator: settings, transition: .doNothing) { [unowned self] in
-            switch $0 {
-            case .walletWasRemovedByUser: self.stepper.step(.didRemoveWallet)
-            case .userWantsToSetPincode: self.toPincode(intent: .setPincode)
-            case .userWantsToRemovePincode: self.toPincode(intent: .unlockApp(toRemovePincode: true))
-            }
-        }
-
-        childCoordinators = [send, receive, settings]
-    }
-
-    private func focusSendTab() {
-        tabBarController.selectedIndex = 0
+        toMain()
     }
 }
 
 // MARK: - Deep Link Navigation
 extension MainCoordinator {
+    func toSendPrefilTransaction(_ transaction: Transaction) {
+        deepLinkedTransactionSubject.onNext(transaction)
+    }
+}
 
-    func toSend(prefilTransaction transaction: Transaction) {
-        guard let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) else { return }
-        focusSendTab()
-        sendCoordinator.toSend(prefilTransaction: transaction)
+// MARK: - Navigation
+private extension MainCoordinator {
+
+    func toMain() {
+
+        let viewModel = MainViewModel(
+            transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
+            walletUseCase: useCaseProvider.makeWalletUseCase()
+        )
+
+        present(type: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+            switch userIntendsTo {
+            case .send: self.toSend()
+            case .receive: self.toReceive()
+            case .goToSettings: self.toSettings()
+            }
+        }
+    }
+
+    func toSend() {
+        presentModalCoordinator(
+            makeCoordinator: { SendCoordinator(
+                presenter: $0,
+                useCaseProvider: useCaseProvider,
+                deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty()
+                )
+        },
+            navigationHandler: { userDid, dismissModalFlow in
+                switch userDid {
+                case .finish: dismissModalFlow(true)
+                }
+        })
+    }
+
+    func toReceive() {
+        presentModalCoordinator(
+            makeCoordinator: { ReceiveCoordinator(
+                presenter: $0,
+                useCase: useCaseProvider.makeWalletUseCase(),
+                deepLinkGenerator: deepLinkGenerator)
+        },
+            navigationHandler: { userIntendsTo, dismissModalFlow in
+                switch userIntendsTo {
+                case .finish: dismissModalFlow(true)
+                }
+        })
     }
 
     func toUnlockAppWithPincodeIfNeeded() {
@@ -113,22 +98,23 @@ extension MainCoordinator {
     }
 
     func toPincode(intent: ManagePincodeCoordinator.Intent) {
-        guard let presenter = presenter else {
-            incorrectImplementation("Should be able to present pincode")
-        }
-        let navigationController = UINavigationController()
-        let coordinator = ManagePincodeCoordinator(
-            intent: intent,
-            presenter: navigationController,
-            useCase: useCaseProvider.makePincodeUseCase()
-        )
-        presenter.present(navigationController, presentation: .present(animated: false, completion: nil))
-        start(coordinator: coordinator) { [unowned self] in
-            switch $0 {
-            case .userFinishedChoosingOrRemovingPincode:
-                navigationController.dismiss(animated: true)
-                self.childCoordinators.removeLast()
-            }
-        }
+        presentModalCoordinator(
+            makeCoordinator: { ManagePincodeCoordinator(intent: intent, presenter: $0, useCase: useCaseProvider.makePincodeUseCase()) },
+            navigationHandler: { userDid, dismissModalFlow in
+                switch userDid {
+                case .finish: dismissModalFlow(true)
+                }
+        })
+    }
+
+    func toSettings() {
+        presentModalCoordinator(
+            makeCoordinator: { SettingsCoordinator(presenter: $0, useCaseProvider: useCaseProvider) },
+            navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
+                switch userIntendsTo {
+                case .removeWallet: self.stepper.step(.didRemoveWallet)
+                case .closeSettings: dismissModalFlow(true)
+                }
+        })
     }
 }
