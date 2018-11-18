@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class LabelsView: UIStackView {
+final class LabelsView: UIStackView {
 
     fileprivate let titleLabel: UILabel
     fileprivate let valueLabel: UILabel
@@ -52,12 +52,16 @@ extension LabelsView {
 }
 
 extension LabelsView {
-
     func setValue(_ value: CustomStringConvertible) {
         valueLabel.text = value.description
     }
 
+    func titled(_ text: CustomStringConvertible) -> LabelsView {
+        titleLabel.text = text.description
+        return self
+    }
 }
+
 
 extension Reactive where Base: LabelsView {
     var title: Binder<String?> { return base.titleLabel.rx.text }

@@ -14,10 +14,10 @@ private typealias € = L10n.Scene.Main
 
 final class MainView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceView = BalanceView(
-        titleStyle: UILabel.Style(font: UIFont.Large),
-        valueStyle: UILabel.Style(font: UIFont.huge)
-    )
+    private lazy var balanceLabels = LabelsView(
+        titleStyle: .Large,
+        valueStyle: .huge
+        ).titled(€.Label.Balance.title)
 
     private lazy var sendButton = UIButton(type: .custom)
         .withStyle(.primary)
@@ -28,7 +28,7 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
         .titled(normal: €.Button.receive)
 
     lazy var stackViewStyle = UIStackView.Style([
-        balanceView,
+        balanceLabels,
         .spacer(verticalContentHuggingPriority: .defaultHigh),
         sendButton,
         receiveButton
@@ -48,7 +48,7 @@ extension MainView: ViewModelled {
 
     func populate(with viewModel: MainViewModel.Output) -> [Disposable] {
         return [
-            viewModel.balance --> balanceView.rx.balance
+            viewModel.balance --> balanceLabels.rx.value
         ]
     }
 }

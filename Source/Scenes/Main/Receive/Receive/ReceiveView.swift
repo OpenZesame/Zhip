@@ -19,7 +19,11 @@ final class ReceiveView: ScrollingStackView {
 
     private lazy var qrImageView = UIImageView()
 
-    private lazy var walletView = WalletView()
+    private lazy var addressView = LabelsView(
+        title: €.Label.myPublicAddress,
+        valueStyle: UILabel.Style(numberOfLines: 0),
+        stackViewStyle: UIStackView.Style(spacing: 0)
+    )
 
     private lazy var amountToReceiveField = UITextField.Style(€.Field.amount, text: "237").make()
 
@@ -36,7 +40,7 @@ final class ReceiveView: ScrollingStackView {
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
         qrImageView,
-        walletView,
+        addressView,
         amountToReceiveField,
         buttonsStackView
     ], margin: stackViewMargin)
@@ -64,7 +68,7 @@ extension ReceiveView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
-            viewModel.receivingAddress      --> walletView.rx.address,
+            viewModel.receivingAddress      --> addressView.rx.value,
             viewModel.qrImage               --> qrImageView.rx.image
         ]
     }

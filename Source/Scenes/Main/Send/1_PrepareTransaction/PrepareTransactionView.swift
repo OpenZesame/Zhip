@@ -16,7 +16,7 @@ private typealias € = L10n.Scene.PrepareTransaction
 // MARK: - PrepareTransactionView
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceView = BalanceView()
+    private lazy var balanceLabels = LabelsView(title: €.Labels.Balance.title)
 
     private lazy var recipientAddressField = UITextField.Style(€.Field.recipient, text: "74C544A11795905C2C9808F9E78D8156159D32E4").make()
 
@@ -27,14 +27,13 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var gasFields = UIStackView.Style([gasPriceField, gasLimitField], axis: .horizontal, distribution: .fillEqually, margin: 0).make()
 
-    private lazy var sendButton = UIButton(type: .custom)
-        .withStyle(.primary)
+    private lazy var sendButton = UIButton().withStyle(.primary)
         .titled(normal: €.Button.send)
         .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        balanceView,
+        balanceLabels,
         recipientAddressField,
         amountToSendField,
         gasFields,
@@ -65,7 +64,7 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.amount                    --> amountToSendField.rx.text,
             viewModel.recipient                 --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled       --> sendButton.rx.isEnabled,
-            viewModel.balance                   --> balanceView.rx.balance,
+            viewModel.balance                   --> balanceLabels.rx.value,
             viewModel.isRecipientAddressValid   --> recipientAddressField.rx.isValid
         ]
     }

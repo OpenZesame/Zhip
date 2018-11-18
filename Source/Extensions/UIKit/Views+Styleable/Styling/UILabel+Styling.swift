@@ -85,3 +85,13 @@ extension Optional where Wrapped: Makeable {
         return `self`.merged(other: other, mode: mode)
     }
 }
+
+extension UILabel.Style {
+    static var Large: UILabel.Style {
+        return UILabel.Style(font: UIFont.Large)
+    }
+
+    static var huge: UILabel.Style {
+        return UILabel.Style(font: UIFont.huge)
+    }
+}

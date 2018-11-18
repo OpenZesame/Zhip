@@ -5,10 +5,8 @@
 "Generic.Skip" = "Skip";
 "Generic.Back" = "Back";
 
+// MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
-"View.Balance.Label.Balance" = "Balance";
-"View.Balance.Label.Nonce" = "Current wallet nonce";
-"View.Wallet.Label.YourAddress" = "Your Public Address";
 
 // MARK: - Onboarding
 
@@ -79,7 +77,7 @@
 "Flow.Pincode.Event.Toast.DidRemovePincode" = "Pincode removed";
 
 // MARK: PrepareTransaction
-"Scene.PrepareTransaction.Title" = "PrepareTransaction Zillings";
+"Scene.PrepareTransaction.Title" = "Send";
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
 "Scene.PrepareTransaction.Field.GasLimit" = "Gas limit";
@@ -87,7 +85,8 @@
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
-"Scene.PrepareTransaction.Label.Balance" = "%@ ZILs";
+"Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
+"Scene.PrepareTransaction.Labels.Balance.Value" = "%@ ZILs";
 "Scene.PrepareTransaction.Button.SeeTransactionInfo" = "See transaction Info";
 
 // MARK: SignTransaction
@@ -96,7 +95,8 @@
 "Scene.SignTransaction.Button.Confirm" = "Confirm";
 
 // MARK: Recieve
-"Scene.Receive.Title" = "Receive Zillings";
+"Scene.Receive.Title" = "Receive";
+"Scene.Receive.Label.MyPublicAddress" = "My public address";
 "Scene.Receive.Button.CopyMyAddress" = "Copy address";
 "Scene.Receive.Button.Share" = "Share address";
 "Scene.Receive.Event.Toast.DidCopyAddress" = "Copied address";

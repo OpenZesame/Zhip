@@ -93,7 +93,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
-            balance: balance.map { €.Label.balance($0.balance.amount.description) },
+            balance: balance.map { €.Labels.Balance.value($0.balance.amount.description) },
             amount: amountFromDeepLinkedTransaction.map { $0.description },
             recipient: recipient.map { $0.checksummedHex },
             isRecipientAddressValid: isRecipientAddressValid

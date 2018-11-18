@@ -8,25 +8,27 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 private typealias € = L10n.View.PullToRefreshControl
 
-protocol PullToRefreshCapable {}
-
-typealias ScrollingStackView = ScrollView & StackViewStyling
-
+// MARK: - ScrollView
 class ScrollView: UIScrollView {
 
+    // MARK: Initialization
     init() {
         super.init(frame: .zero)
         privateSetup()
     }
 
-    // Subclass me
-    func setup() {}
-
     required init?(coder: NSCoder) { interfaceBuilderSucks }
+
+    // MARK: Overrideable
+    func setup() { /* subclass me */ }
 }
 
+// MARK: - Private
 private extension ScrollView {
     func privateSetup() {
         setupContentView()
@@ -59,8 +61,7 @@ private extension ScrollView {
     }
 }
 
-import RxSwift
-import RxCocoa
+// MARK: - Rx
 extension Reactive where Base: ScrollingStackView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
         return base.refreshControl!.rx.isRefreshing
