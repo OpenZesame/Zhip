@@ -18,7 +18,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private let lockAppSubject = PublishSubject<Void>() //ReplaySubject<Void>.create(bufferSize: 1)
+    private let lockAppSubject = PublishSubject<Void>()
 
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
@@ -83,7 +83,7 @@ extension AppCoordinator {
     }
 
     private func lockApp() {
-        
+
         lockAppSubject.onNext(())
     }
 }
