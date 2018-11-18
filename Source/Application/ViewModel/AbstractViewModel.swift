@@ -16,6 +16,10 @@ class BaseViewModel<Step, InputFromView, OutputType>: AbstractViewModel<InputFro
     init(stepper: Stepper<Step> = Stepper<Step>()) {
         self.stepper = stepper
     }
+
+    deinit {
+        log.verbose("💣 \(type(of: self))")
+    }
 }
 
 /// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug

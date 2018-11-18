@@ -29,7 +29,7 @@ extension AppDelegate: UIApplicationDelegate {
         return appCoordinator.handleDeepLink(url, options: options)
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        appCoordinator.appWillEnterForeground()
+    func applicationWillResignActive(_ application: UIApplication) {
+        appCoordinator.appWillResignActive()
     }
 }

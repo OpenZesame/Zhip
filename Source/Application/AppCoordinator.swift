@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
+final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     enum Step {}
 
     private unowned let window: UIWindow
@@ -18,23 +18,32 @@ final class AppCoordinator: AbstractCoordinator<AppCoordinator.Step> {
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private let lockAppSubject = ReplaySubject<Void>.create(bufferSize: 1)
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+
+    // TODO replace this with navigation stack logic looking at the topmost controller (which I earlier failed to do.)
+    private var isCurrentlyPresentingLockScene = false
 
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
         self.deepLinkHandler = deepLinkHandler
         self.useCaseProvider = useCaseProvider
-        super.init(presenter: nil)
+
+        let neverUsedNavigationController = UINavigationController()
+
+        super.init(navigationController: neverUsedNavigationController)
         setupDeepLinkNavigationHandling()
     }
 
     override func start() {
         if walletUseCase.hasConfiguredWallet {
-            lockApp()
-            toMain()
+            toMain(lockIfNeeded: true)
         } else {
             toOnboarding()
         }
+    }
+
+    override var navigationController: UINavigationController {
+        incorrectImplementation("This is a special case, the AppCoordinator should use the `window` and set its rootViewController")
     }
 }
 
@@ -46,7 +55,7 @@ private extension AppCoordinator {
         window.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(
-            presenter: navigationController,
+            navigationController: navigationController,
             useCaseProvider: useCaseProvider
         )
 
@@ -57,15 +66,15 @@ private extension AppCoordinator {
         }
     }
 
-    func toMain() {
-        let tabBarController = UITabBarController()
-        window.rootViewController = tabBarController
+    func toMain(lockIfNeeded lock: Bool = false) {
+        defer { if lock { lockApp() } }
+        let navigationController = UINavigationController()
+        window.rootViewController = navigationController
 
         let main = MainCoordinator(
-            tabBarController: tabBarController,
+            navigationController: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider,
-            lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
+            useCaseProvider: useCaseProvider
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
@@ -74,17 +83,56 @@ private extension AppCoordinator {
             }
         }
     }
+
+    func toUnlockAppWithPincodeIfNeeded() {
+        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
+        guard let topMostNavgationController = findTopMostNavigationController() else { incorrectImplementation("should have a navigationController") }
+        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        isCurrentlyPresentingLockScene = true
+        modallyPresent(
+            scene: UnlockAppWithPincode.self,
+            viewModel: viewModel,
+            navigationController: topMostNavgationController
+        ) { [unowned self] userDid, dismissScene in
+            switch userDid {
+            case .unlockApp:
+                self.isCurrentlyPresentingLockScene = false
+                dismissScene(true)
+            }
+        }
+    }
 }
 
-// MARK: - App forground/background + Pincode
+// MARK: - Lock app with pincode
 extension AppCoordinator {
-    func appWillEnterForeground() {
+    func appWillResignActive() {
         lockApp()
     }
+}
 
-    private func lockApp() {
-        lockAppSubject.onNext(())
+// MARK: - Private Lock app with pincode
+private extension AppCoordinator {
+    func lockApp() {
+        toUnlockAppWithPincodeIfNeeded()
     }
+
+    func findTopMostViewController() -> UIViewController? {
+        guard var topController = window.rootViewController else { return nil }
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        return topController
+    }
+
+    func findTopMostNavigationController() -> UINavigationController? {
+        guard let topController = findTopMostViewController() else { return nil }
+        if let navigationController = topController as? UINavigationController {
+            return navigationController
+        } else {
+            return topController.navigationController
+        }
+    }
+
 }
 
 // MARK: - DeepLink Handler
@@ -110,6 +158,6 @@ extension AppCoordinator {
 private extension AppCoordinator {
     func toSend(prefilTransaction transaction: Transaction) {
         guard let mainCoordinator = anyCoordinatorOf(type: MainCoordinator.self) else { return }
-        mainCoordinator.toSend(prefilTransaction: transaction)
+        mainCoordinator.toSendPrefilTransaction(transaction)
     }
 }

@@ -12,22 +12,9 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
-  internal enum Flow {
-    internal enum Pincode {
-      internal enum Event {
-        internal enum Toast {
-          /// Pincode removed
-          internal static let didRemovePincode = L10n.tr("Localizable", "Flow.Pincode.Event.Toast.DidRemovePincode")
-        }
-      }
-    }
-  }
-
   internal enum Generic {
     /// Back
     internal static let back = L10n.tr("Localizable", "Generic.Back")
-    /// Cancel
-    internal static let cancel = L10n.tr("Localizable", "Generic.Cancel")
     /// Close
     internal static let close = L10n.tr("Localizable", "Generic.Close")
     /// Next
@@ -125,12 +112,68 @@ internal enum L10n {
         internal static let passphraseIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.SwitchLabel.PassphraseIsBackedUp")
       }
     }
+    internal enum Main {
+      internal enum Button {
+        /// Receive
+        internal static let receive = L10n.tr("Localizable", "Scene.Main.Button.Receive")
+        /// Send
+        internal static let send = L10n.tr("Localizable", "Scene.Main.Button.Send")
+      }
+      internal enum Label {
+        internal enum Balance {
+          /// Your balance
+          internal static let title = L10n.tr("Localizable", "Scene.Main.Label.Balance.Title")
+          /// %@ ZILs
+          internal static func value(_ p1: String) -> String {
+            return L10n.tr("Localizable", "Scene.Main.Label.Balance.Value", p1)
+          }
+        }
+      }
+    }
+    internal enum PrepareTransaction {
+      /// Send
+      internal static let title = L10n.tr("Localizable", "Scene.PrepareTransaction.Title")
+      internal enum Button {
+        /// See transaction Info
+        internal static let seeTransactionInfo = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.SeeTransactionInfo")
+        /// Send
+        internal static let send = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.Send")
+      }
+      internal enum Field {
+        /// Amount
+        internal static let amount = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount")
+        /// Encryption passphrase
+        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassphrase")
+        /// Gas limit
+        internal static let gasLimit = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasLimit")
+        /// Gas price
+        internal static let gasPrice = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice")
+        /// To address
+        internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
+      }
+      internal enum Label {
+        /// Transaction Id
+        internal static let transactionId = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.TransactionId")
+      }
+      internal enum Labels {
+        internal enum Balance {
+          /// Current balance
+          internal static let title = L10n.tr("Localizable", "Scene.PrepareTransaction.Labels.Balance.Title")
+          /// %@ ZILs
+          internal static func value(_ p1: String) -> String {
+            return L10n.tr("Localizable", "Scene.PrepareTransaction.Labels.Balance.Value", p1)
+          }
+        }
+      }
+    }
     internal enum Receive {
-      /// Receive Zillings
+      /// Receive
       internal static let title = L10n.tr("Localizable", "Scene.Receive.Title")
       internal enum Button {
-        /// Copy my address
+        /// Copy address
         internal static let copyMyAddress = L10n.tr("Localizable", "Scene.Receive.Button.CopyMyAddress")
+        /// Share address
+        internal static let share = L10n.tr("Localizable", "Scene.Receive.Button.Share")
       }
       internal enum Event {
         internal enum Toast {
@@ -141,6 +184,20 @@ internal enum L10n {
       internal enum Field {
         /// Amount
         internal static let amount = L10n.tr("Localizable", "Scene.Receive.Field.Amount")
+      }
+      internal enum Label {
+        /// My public address
+        internal static let myPublicAddress = L10n.tr("Localizable", "Scene.Receive.Label.MyPublicAddress")
+      }
+    }
+    internal enum RemovePincode {
+      /// Unlock to remove
+      internal static let title = L10n.tr("Localizable", "Scene.RemovePincode.Title")
+      internal enum Event {
+        internal enum Toast {
+          /// Pincode removed
+          internal static let didRemovePincode = L10n.tr("Localizable", "Scene.RemovePincode.Event.Toast.DidRemovePincode")
+        }
       }
     }
     internal enum RestoreWallet {
@@ -165,36 +222,6 @@ internal enum L10n {
         internal static let orKeystore = L10n.tr("Localizable", "Scene.RestoreWallet.Label.OrKeystore")
       }
     }
-    internal enum Send {
-      /// Send Zillings
-      internal static let title = L10n.tr("Localizable", "Scene.Send.Title")
-      internal enum Button {
-        /// See transaction Info
-        internal static let seeTransactionInfo = L10n.tr("Localizable", "Scene.Send.Button.SeeTransactionInfo")
-        /// Send
-        internal static let send = L10n.tr("Localizable", "Scene.Send.Button.Send")
-      }
-      internal enum Field {
-        /// Amount
-        internal static let amount = L10n.tr("Localizable", "Scene.Send.Field.Amount")
-        /// Encryption passphrase
-        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.Send.Field.EncryptionPassphrase")
-        /// Gas limit
-        internal static let gasLimit = L10n.tr("Localizable", "Scene.Send.Field.GasLimit")
-        /// Gas price
-        internal static let gasPrice = L10n.tr("Localizable", "Scene.Send.Field.GasPrice")
-        /// To address
-        internal static let recipient = L10n.tr("Localizable", "Scene.Send.Field.Recipient")
-      }
-      internal enum Label {
-        /// %@ ZILs
-        internal static func balance(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.Send.Label.Balance", p1)
-        }
-        /// Transaction Id
-        internal static let transactionId = L10n.tr("Localizable", "Scene.Send.Label.TransactionId")
-      }
-    }
     internal enum Settings {
       /// Settings
       internal static let title = L10n.tr("Localizable", "Scene.Settings.Title")
@@ -213,6 +240,20 @@ internal enum L10n {
         internal static let appVersion = L10n.tr("Localizable", "Scene.Settings.Label.AppVersion")
       }
     }
+    internal enum SignTransaction {
+      internal enum Button {
+        /// Confirm
+        internal static let confirm = L10n.tr("Localizable", "Scene.SignTransaction.Button.Confirm")
+      }
+      internal enum Field {
+        /// Encryption passphrase
+        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.SignTransaction.Field.EncryptionPassphrase")
+      }
+      internal enum Label {
+        /// Confirm transaction with your passphrase
+        internal static let signTransactionWithEncryptionPassphrase = L10n.tr("Localizable", "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase")
+      }
+    }
     internal enum TermsOfService {
       internal enum Button {
         /// Accept
@@ -220,12 +261,8 @@ internal enum L10n {
       }
     }
     internal enum UnlockAppWithPincode {
-      internal enum Title {
-        /// Unlock to remove
-        internal static let removePincode = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.RemovePincode")
-        /// Unlock app
-        internal static let resumeApp = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.ResumeApp")
-      }
+      /// Unlock app
+      internal static let title = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title")
     }
     internal enum WarningERC20 {
       /// ⚠️ WARNING ⚠️
@@ -244,23 +281,9 @@ internal enum L10n {
   }
 
   internal enum View {
-    internal enum Balance {
-      internal enum Label {
-        /// Balance
-        internal static let balance = L10n.tr("Localizable", "View.Balance.Label.Balance")
-        /// Current wallet nonce
-        internal static let nonce = L10n.tr("Localizable", "View.Balance.Label.Nonce")
-      }
-    }
     internal enum PullToRefreshControl {
       /// Pull to refresh
       internal static let title = L10n.tr("Localizable", "View.PullToRefreshControl.Title")
-    }
-    internal enum Wallet {
-      internal enum Label {
-        /// Your Public Address
-        internal static let yourAddress = L10n.tr("Localizable", "View.Wallet.Label.YourAddress")
-      }
     }
   }
 }

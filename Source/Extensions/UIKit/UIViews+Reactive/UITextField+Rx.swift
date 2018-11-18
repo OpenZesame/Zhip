@@ -11,6 +11,13 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: UITextField {
+
+    var placeholder: Binder<String?> {
+        return Binder(base) {
+            $0.placeholder = $1
+        }
+    }
+
     var isValid: Binder<Bool> {
         return Binder<Bool>(base) {
             $0.mark(isValid: $1)

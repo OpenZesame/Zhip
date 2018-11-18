@@ -67,7 +67,7 @@ extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, Ex
     public func apply(style: Style) {
         placeholder = style.placeholder
         textColor = style.textColor ?? .defaultText
-        font = style.font ?? .default
+        font = style.font ?? UIFont.Field.text
         text = style.text
         isSecureTextEntry = style.isSecureTextEntry ?? false
         addBorder()

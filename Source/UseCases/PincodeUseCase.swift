@@ -12,6 +12,6 @@ protocol PincodeUseCase: AnyObject {
     func userChoose(pincode: Pincode)
     func skipSettingUpPincode()
     func deletePincode()
-    func doesPincodeMatchChosen(_ pincode: Pincode) -> Bool
+    func doesPincodeMatchChosen(_ pincode: Pincode?) -> Bool
     var hasConfiguredPincode: Bool { get }
 }

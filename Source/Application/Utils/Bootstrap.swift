@@ -24,6 +24,6 @@ private func setupKeyboardHiding() {
 
 private func setupLogging() {
     let console = ConsoleDestination()
-    console.minLevel = .debug
+    console.minLevel = .verbose
     log.addDestination(console)
 }

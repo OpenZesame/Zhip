@@ -25,6 +25,11 @@ extension WalletEncryptionPassphrase {
     static func minimumLenght(mode: Mode) -> Int {
         return mode.mimimumPassphraseLength
     }
+
+    static var minimumLenght: Int {
+        let lengths = Mode.allCases.map { minimumLenght(mode: $0) }
+        return lengths.min() ?? lengths[0]
+    }
 }
 
 // MARK: - Error
@@ -37,7 +42,7 @@ extension WalletEncryptionPassphrase {
 
 // MARK: - Mode
 extension WalletEncryptionPassphrase {
-    enum Mode {
+    enum Mode: CaseIterable {
         case new
         case restore
     }

@@ -36,7 +36,7 @@ extension Toast: ExpressibleByStringLiteral {
 
 // MARK: - Toast + Presentation
 extension Toast {
-    func present(using presenter: Presenter, dismissedCompletion: PresentationCompletion? = nil) {
+    func present(using navigationController: UIViewController, dismissedCompletion: PresentationCompletion? = nil) {
         let dismissedCompletion = dismissedCompletion ?? self.completion
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
@@ -53,7 +53,7 @@ extension Toast {
         }
 
         DispatchQueue.main.async {
-            presenter.present(alert, presentation: .animatedPresent)
+            navigationController.present(alert, animated: true, completion: nil)
         }
     }
 }
