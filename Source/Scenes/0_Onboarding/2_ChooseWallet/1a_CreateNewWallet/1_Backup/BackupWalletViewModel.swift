@@ -25,24 +25,20 @@ final class BackupWalletViewModel: BaseViewModel<
     BackupWalletViewModel.Output
 > {
 
-    private let useCase: WalletUseCase
+    private let wallet: Driver<Wallet>
 
-    init(useCase: WalletUseCase) {
-        self.useCase = useCase
+    init(wallet: Driver<Wallet>) {
+        self.wallet = wallet
     }
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-
-        let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let keystoreText = wallet.map {
             try? JSONEncoder(outputFormatting: .prettyPrinted).encode($0.keystore)
         }.filterNil().map {
             String(data: $0, encoding: .utf8)
         }
-
-        let understandsRisks = input.fromView.understandsRisk
 
         bag <~ [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(keystoreText)
@@ -51,7 +47,7 @@ final class BackupWalletViewModel: BaseViewModel<
                     input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyKeystore))
                 }).drive(),
 
-            input.fromView.doneTrigger.withLatestFrom(understandsRisks)
+            input.fromView.proceedTrigger.withLatestFrom(input.fromView.understandsRisk)
                 .filter { $0 }
                 .withLatestFrom(wallet)
                 .do(onNext: { [unowned stepper] in stepper.step(.backupWallet($0)) })
@@ -60,7 +56,7 @@ final class BackupWalletViewModel: BaseViewModel<
 
         return Output(
             keystoreText: keystoreText,
-            isDoneButtonEnabled: understandsRisks
+            isProceedButtonEnabled: input.fromView.understandsRisk
         )
     }
 }
@@ -70,11 +66,11 @@ extension BackupWalletViewModel {
     struct InputFromView {
         let copyKeystoreToPasteboardTrigger: Driver<Void>
         let understandsRisk: Driver<Bool>
-        let doneTrigger: Driver<Void>
+        let proceedTrigger: Driver<Void>
     }
 
     struct Output {
         let keystoreText: Driver<String?>
-        let isDoneButtonEnabled: Driver<Bool>
+        let isProceedButtonEnabled: Driver<Bool>
     }
 }

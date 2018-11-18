@@ -18,7 +18,7 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Ste
     private let useCaseProvider: UseCaseProvider
     private lazy var useCase = useCaseProvider.makeWalletUseCase()
 
-    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }
@@ -31,13 +31,8 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Ste
 // MARK: Private
 private extension ChooseWalletCoordinator {
 
-    func userFinishedChoosing(wallet: Wallet) {
-        useCase.save(wallet: wallet)
-        stepper.step(.userFinishedChoosingWallet)
-    }
-
     func toChooseWallet() {
-        present(type: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] userIntendsTo in
+        present(scene: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .createNewWallet: self.toCreateNewWallet()
             case .restoreWallet: self.toRestoreWallet()
@@ -65,4 +60,8 @@ private extension ChooseWalletCoordinator {
         }
     }
 
+    func userFinishedChoosing(wallet: Wallet) {
+        useCase.save(wallet: wallet)
+        stepper.step(.userFinishedChoosingWallet)
+    }
 }

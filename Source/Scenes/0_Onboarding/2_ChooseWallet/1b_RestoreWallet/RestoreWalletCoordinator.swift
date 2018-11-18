@@ -16,7 +16,7 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.S
 
     private let useCase: WalletUseCase
 
-    init(presenter: Presenter?, useCase: WalletUseCase) {
+    init(presenter: UINavigationController?, useCase: WalletUseCase) {
         self.useCase = useCase
         super.init(presenter: presenter)
     }
@@ -34,7 +34,7 @@ private extension RestoreWalletCoordinator {
     }
 
     func toRestoreWallet() {
-        present(type: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [unowned self] userIntendsTo in
+        present(scene: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .restoreWallet(let wallet): self.toMain(restoredWallet: wallet)
             }

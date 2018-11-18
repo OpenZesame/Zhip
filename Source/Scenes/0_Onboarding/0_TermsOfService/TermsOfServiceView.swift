@@ -33,6 +33,13 @@ final class TermsOfServiceView: ScrollingStackView {
 
 extension TermsOfServiceView: ViewModelled {
     typealias ViewModel = TermsOfServiceViewModel
+
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
+        ]
+    }
+
     var inputFromView: InputFromView {
 
         let nearBottom = htmlView.scrollView.rx.didScroll.map { [unowned self] in
@@ -45,11 +52,5 @@ extension TermsOfServiceView: ViewModelled {
             didScrollToBottom: didScrollToBottom,
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
-        ]
     }
 }

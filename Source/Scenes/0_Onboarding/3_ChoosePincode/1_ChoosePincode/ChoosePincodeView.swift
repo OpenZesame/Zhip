@@ -10,9 +10,10 @@ import UIKit
 import RxSwift
 
 extension UIButton {
-    func disabled() -> UIButton {
+    func disabled<B>() -> B where B: UIButton {
         isEnabled = false
-        return self
+        guard let button = self as? B else { incorrectImplementation("Bad cast") }
+        return button
     }
 }
 
@@ -34,6 +35,10 @@ final class ChoosePincodeView: ScrollingStackView {
         pinOnlyLocksAppTextView,
         proceedWithConfirmationButton
     ]
+
+    override func setup() {
+        inputPincodeView.becomeFirstResponder()
+    }
 }
 
 extension ChoosePincodeView: ViewModelled {

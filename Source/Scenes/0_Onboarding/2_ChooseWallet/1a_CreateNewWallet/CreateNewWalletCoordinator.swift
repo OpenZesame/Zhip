@@ -17,7 +17,7 @@ final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinat
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }
@@ -36,22 +36,9 @@ extension CreateNewWalletCoordinator {
 // MARK: Private
 private extension CreateNewWalletCoordinator {
 
-    func toMain(wallet: Wallet) {
-        stepper.step(.didCreate(wallet: wallet))
-    }
-
-    func toBackupWallet(wallet: Wallet) {
-        let viewModel = BackupWalletViewModel(useCase: walletUseCase)
-        present(type: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .backupWallet(let wallet): self.toMain(wallet: wallet)
-            }
-        }
-    }
-
     func toCreateWallet() {
         present(
-            type: CreateNewWallet.self,
+            scene: CreateNewWallet.self,
             viewModel: CreateNewWalletViewModel(useCase: walletUseCase)
         ) { [unowned self] userDid in
             switch userDid {
@@ -59,4 +46,18 @@ private extension CreateNewWalletCoordinator {
             }
         }
     }
+
+    func toBackupWallet(wallet: Wallet) {
+        let viewModel = BackupWalletViewModel(wallet: .just(wallet))
+        present(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .backupWallet(let wallet): self.toMain(wallet: wallet)
+            }
+        }
+    }
+
+    func toMain(wallet: Wallet) {
+        stepper.step(.didCreate(wallet: wallet))
+    }
+
 }

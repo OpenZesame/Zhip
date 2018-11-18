@@ -10,17 +10,17 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class BaseCoordinator<Step>: Coordinator {
+class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
 
-    var childCoordinators = [AbstractCoordinator]()
+    var childCoordinators = [AnyCoordinator]()
     let stepper = Stepper<Step>()
     let bag = DisposeBag()
-    private(set) var presenter: Presenter?
+    private(set) var presenter: UINavigationController?
 
     lazy var navigation = stepper.navigation
 
     // MARK: - Initialization
-    init(presenter: Presenter?) {
+    init(presenter: UINavigationController?) {
         self.presenter = presenter
     }
 
@@ -28,31 +28,45 @@ class BaseCoordinator<Step>: Coordinator {
     func start() { abstract }
 }
 
+// MARK: - Start Child Coordinator
 extension BaseCoordinator {
+
+    func start<C>(
+        coordinator: C,
+        transition: CoordinatorTransition = .append,
+        shouldStartCoordinator: Bool = true,
+        navigationHandler: @escaping (C.Step) -> Void
+    ) where C: AnyCoordinator & Navigatable {
+
+        switch transition {
+        case .replace: childCoordinators = [coordinator]
+        case .append: childCoordinators.append(coordinator)
+        case .doNothing: break
+        }
+
+        coordinator.stepper.navigation.do(onNext: {
+            navigationHandler($0)
+        })
+            .drive()
+            .disposed(by: bag)
+
+        if shouldStartCoordinator {
+            coordinator.start()
+        }
+    }
+
+
     typealias Animated = Bool
     typealias DismissModalFlow = (Animated) -> Void
-
     func presentModalCoordinator<C>(
         makeCoordinator: (UINavigationController) -> C,
         navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
-        ) where C: AbstractCoordinator & Navigatable {
+        ) where C: AnyCoordinator & Navigatable {
 
         let navigationController = UINavigationController()
 
         let coordinator = makeCoordinator(navigationController)
-
-        presentModal(coordinator: coordinator, navigationController: navigationController, navigationHandler: navigationHandler)
-    }
-
-}
-
-// MARK: - Private
-private extension BaseCoordinator {
-    func presentModal<C>(
-        coordinator: C,
-        navigationController: UINavigationController,
-        navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
-        ) where C: AbstractCoordinator & Navigatable {
+        coordinator.start()
 
         guard let presenter = presenter else { incorrectImplementation("Should have a presenter") }
 
@@ -61,8 +75,8 @@ private extension BaseCoordinator {
             self.remove(childCoordinator: coordinator)
         }
 
-        presenter.present(navigationController, presentation: .present(animated: true, completion: { [unowned self] in
-            self.start(coordinator: coordinator, transition: .append) {
+        presenter.present(viewController: navigationController, presentation: .present(animated: true, completion: { [unowned self] in
+            self.start(coordinator: coordinator, transition: .append, shouldStartCoordinator: false) {
                 navigationHandler($0, dismissModalFlow)
             }
         }))

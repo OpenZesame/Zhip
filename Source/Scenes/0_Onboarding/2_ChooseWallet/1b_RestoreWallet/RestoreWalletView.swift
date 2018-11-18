@@ -19,8 +19,7 @@ final class RestoreWalletView: ScrollingStackView {
     private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
     private lazy var confirmEncryptionPassphraseField = UITextField.Style(€.Field.confirmEncryptionPassphrase, isSecureTextEntry: true).make()
 
-    private lazy var restoreWalletButton = UIButton(type: .custom)
-        .withStyle(.primary)
+    private lazy var restoreWalletButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
         .titled(normal: €.Button.restoreWallet)
         .disabled()
 
@@ -56,7 +55,8 @@ extension RestoreWalletView: ViewModelled {
     func populate(with viewModel: RestoreWalletViewModel.Output) -> [Disposable] {
         return [
             viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
-            viewModel.isRestoreButtonEnabled            --> restoreWalletButton.rx.isEnabled
+            viewModel.isRestoreButtonEnabled            --> restoreWalletButton.rx.isEnabled,
+            viewModel.isRestoreButtonLoading            --> restoreWalletButton.rx.isLoading
         ]
     }
 }

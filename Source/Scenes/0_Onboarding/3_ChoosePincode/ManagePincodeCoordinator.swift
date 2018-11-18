@@ -6,7 +6,7 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class ManagePincodeCoordinator: BaseCoordinator<ManagePincodeCoordinator.Step> {
     enum Step {
@@ -21,14 +21,15 @@ final class ManagePincodeCoordinator: BaseCoordinator<ManagePincodeCoordinator.S
     private let useCase: PincodeUseCase
     private let intent: Intent
 
-    init(intent: Intent, presenter: Presenter?, useCase: PincodeUseCase) {
+    init(intent: Intent, presenter: UINavigationController?, useCase: PincodeUseCase) {
         self.useCase = useCase
         self.intent = intent
         super.init(presenter: presenter)
-        toNextStep()
     }
 
-    override func start() {}
+    override func start() {
+        toNextStep()
+    }
 }
 
 // MARK: Private
@@ -48,7 +49,7 @@ private extension ManagePincodeCoordinator {
 
     func toUnlockApp() {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: useCase)
-        present(type: UnlockAppWithPincode.self, viewModel: viewModel) { [unowned self] userDid in
+        present(scene: UnlockAppWithPincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .unlockApp: self.finish()
             }
@@ -57,7 +58,7 @@ private extension ManagePincodeCoordinator {
 
     func toRemovePincode() {
         let viewModel = RemovePincodeViewModel(useCase: useCase)
-        present(type: RemovePincode.self, viewModel: viewModel) { [unowned self] userDid in
+        present(scene: RemovePincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .cancelPincodeRemoval, .removePincode: self.finish()
             }
@@ -65,7 +66,7 @@ private extension ManagePincodeCoordinator {
     }
 
     func toChoosePincode() {
-        present(type: ChoosePincode.self, viewModel: ChoosePincodeViewModel(), configureNavigationItem: {
+        present(scene: ChoosePincode.self, viewModel: ChoosePincodeViewModel(), configureNavigationItem: {
             $0.hidesBackButton = true
         }, navigationHandler: { [unowned self] userDid in
             switch userDid {
@@ -77,7 +78,7 @@ private extension ManagePincodeCoordinator {
 
     func toConfirmPincode(unconfirmedPincode: Pincode) {
         let viewModel = ConfirmNewPincodeViewModel(useCase: useCase, confirm: unconfirmedPincode)
-        present(type: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid in
+        present(scene: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .skip: self.skipPincode()
             case .confirmPincode: self.finish()

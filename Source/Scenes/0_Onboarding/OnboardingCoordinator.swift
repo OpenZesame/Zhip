@@ -21,7 +21,7 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Step> {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(presenter: Presenter?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }
@@ -55,7 +55,7 @@ private extension OnboardingCoordinator {
 
     func toTermsOfService() {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-        present(type: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
+        present(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .acceptTermsOfService: self.toWarningERC20()
             }
@@ -64,7 +64,7 @@ private extension OnboardingCoordinator {
 
     func toWarningERC20() {
         let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
-        present(type: WarningERC20.self, viewModel: viewModel) { [unowned self] in
+        present(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] in
             switch $0 {
             case .understandRisks: self.toChooseWallet()
             }

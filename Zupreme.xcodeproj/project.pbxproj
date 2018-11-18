@@ -24,17 +24,14 @@
 		483CE9CD2194E9E300BED31C /* TrackableEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9972194E9E300BED31C /* TrackableEvent.swift */; };
 		483CE9CE2194E9E300BED31C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 483CE9982194E9E300BED31C /* Assets.xcassets */; };
 		483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99B2194E9E300BED31C /* AppCoordinator.swift */; };
-		483CE9D02194E9E300BED31C /* AbstractCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99C2194E9E300BED31C /* AbstractCoordinator.swift */; };
-		483CE9D12194E9E300BED31C /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99D2194E9E300BED31C /* Coordinator.swift */; };
+		483CE9D02194E9E300BED31C /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99C2194E9E300BED31C /* BaseCoordinator.swift */; };
 		483CE9D22194E9E300BED31C /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99F2194E9E300BED31C /* Navigatable.swift */; };
 		483CE9D32194E9E300BED31C /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A02194E9E300BED31C /* Stepper.swift */; };
 		483CE9D42194E9E300BED31C /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A22194E9E300BED31C /* DeepLink.swift */; };
 		483CE9D52194E9E300BED31C /* DeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A32194E9E300BED31C /* DeepLinkHandler.swift */; };
 		483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A42194E9E300BED31C /* DeepLinkGenerator.swift */; };
-		483CE9D72194E9E300BED31C /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A62194E9E300BED31C /* Presentable.swift */; };
-		483CE9D82194E9E300BED31C /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A72194E9E300BED31C /* Presenter.swift */; };
+		483CE9D82194E9E300BED31C /* UIViewController+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A72194E9E300BED31C /* UIViewController+Present.swift */; };
 		483CE9D92194E9E300BED31C /* PresentationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A82194E9E300BED31C /* PresentationMode.swift */; };
-		483CE9DA2194E9E300BED31C /* Presenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A92194E9E300BED31C /* Presenting.swift */; };
 		483CE9DB2194E9E300BED31C /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9AA2194E9E300BED31C /* Toast.swift */; };
 		483CE9DC2194E9E300BED31C /* Never.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9AC2194E9E300BED31C /* Never.swift */; };
 		483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9AD2194E9E300BED31C /* Enum+Reflection.swift */; };
@@ -171,6 +168,11 @@
 		48ECF5FF21A18F5B0078D659 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5FE21A18F5B0078D659 /* MainCoordinator.swift */; };
 		48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60021A1A8160078D659 /* AbstractController+BarButtonContent.swift */; };
 		48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60221A1A83D0078D659 /* LeftBarButtonMaking.swift */; };
+		48ECF60521A1CA050078D659 /* ButtonWithSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */; };
+		48ECF60821A1CFCD0078D659 /* AnyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60721A1CFCD0078D659 /* AnyCoordinator.swift */; };
+		48ECF60A21A1CFF30078D659 /* BaseCoordinator+Children.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60921A1CFF30078D659 /* BaseCoordinator+Children.swift */; };
+		48ECF60C21A1D0170078D659 /* CoordinatorTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60B21A1D0170078D659 /* CoordinatorTransition.swift */; };
+		48ECF60E21A1D0AC0078D659 /* BaseCoordinator+Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60D21A1D0AC0078D659 /* BaseCoordinator+Scene.swift */; };
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* Transaction.swift */; };
@@ -208,17 +210,14 @@
 		483CE9972194E9E300BED31C /* TrackableEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackableEvent.swift; sourceTree = "<group>"; };
 		483CE9982194E9E300BED31C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		483CE99B2194E9E300BED31C /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		483CE99C2194E9E300BED31C /* AbstractCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractCoordinator.swift; sourceTree = "<group>"; };
-		483CE99D2194E9E300BED31C /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		483CE99C2194E9E300BED31C /* BaseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		483CE99F2194E9E300BED31C /* Navigatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
 		483CE9A02194E9E300BED31C /* Stepper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		483CE9A22194E9E300BED31C /* DeepLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		483CE9A32194E9E300BED31C /* DeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
 		483CE9A42194E9E300BED31C /* DeepLinkGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinkGenerator.swift; sourceTree = "<group>"; };
-		483CE9A62194E9E300BED31C /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
-		483CE9A72194E9E300BED31C /* Presenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		483CE9A72194E9E300BED31C /* UIViewController+Present.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Present.swift"; sourceTree = "<group>"; };
 		483CE9A82194E9E300BED31C /* PresentationMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationMode.swift; sourceTree = "<group>"; };
-		483CE9A92194E9E300BED31C /* Presenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presenting.swift; sourceTree = "<group>"; };
 		483CE9AA2194E9E300BED31C /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		483CE9AC2194E9E300BED31C /* Never.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Never.swift; sourceTree = "<group>"; };
 		483CE9AD2194E9E300BED31C /* Enum+Reflection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Enum+Reflection.swift"; sourceTree = "<group>"; };
@@ -363,6 +362,11 @@
 		48ECF5FE21A18F5B0078D659 /* MainCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		48ECF60021A1A8160078D659 /* AbstractController+BarButtonContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractController+BarButtonContent.swift"; sourceTree = "<group>"; };
 		48ECF60221A1A83D0078D659 /* LeftBarButtonMaking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftBarButtonMaking.swift; sourceTree = "<group>"; };
+		48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithSpinner.swift; sourceTree = "<group>"; };
+		48ECF60721A1CFCD0078D659 /* AnyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCoordinator.swift; sourceTree = "<group>"; };
+		48ECF60921A1CFF30078D659 /* BaseCoordinator+Children.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseCoordinator+Children.swift"; sourceTree = "<group>"; };
+		48ECF60B21A1D0170078D659 /* CoordinatorTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorTransition.swift; sourceTree = "<group>"; };
+		48ECF60D21A1D0AC0078D659 /* BaseCoordinator+Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseCoordinator+Scene.swift"; sourceTree = "<group>"; };
 		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
 		48F37D6D21918F6F008A2DA4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
@@ -477,8 +481,9 @@
 		483CE99A2194E9E300BED31C /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				483CE99C2194E9E300BED31C /* AbstractCoordinator.swift */,
-				483CE99D2194E9E300BED31C /* Coordinator.swift */,
+				48ECF60621A1CFBD0078D659 /* BaseCoordinator */,
+				48ECF60721A1CFCD0078D659 /* AnyCoordinator.swift */,
+				48ECF60B21A1D0170078D659 /* CoordinatorTransition.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -505,10 +510,8 @@
 		483CE9A52194E9E300BED31C /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				483CE9A62194E9E300BED31C /* Presentable.swift */,
-				483CE9A72194E9E300BED31C /* Presenter.swift */,
+				483CE9A72194E9E300BED31C /* UIViewController+Present.swift */,
 				483CE9A82194E9E300BED31C /* PresentationMode.swift */,
-				483CE9A92194E9E300BED31C /* Presenting.swift */,
 				483CE9AA2194E9E300BED31C /* Toast.swift */,
 			);
 			path = Presentation;
@@ -709,6 +712,7 @@
 				48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */,
 				48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */,
 				48ECF4B121A06C4D0078D659 /* SpinnerView.swift */,
+				48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */,
 			);
 			path = SpecificViews;
 			sourceTree = "<group>";
@@ -1115,6 +1119,16 @@
 			path = 1_Backup;
 			sourceTree = "<group>";
 		};
+		48ECF60621A1CFBD0078D659 /* BaseCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				483CE99C2194E9E300BED31C /* BaseCoordinator.swift */,
+				48ECF60D21A1D0AC0078D659 /* BaseCoordinator+Scene.swift */,
+				48ECF60921A1CFF30078D659 /* BaseCoordinator+Children.swift */,
+			);
+			path = BaseCoordinator;
+			sourceTree = "<group>";
+		};
 		DEA4890CF1DEE89F5F357C1B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1344,8 +1358,10 @@
 				48ECF5EF21A18F140078D659 /* RestoreWalletViewModel.swift in Sources */,
 				48ECF5DA21A18F140078D659 /* ReceiveView.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
+				48ECF60821A1CFCD0078D659 /* AnyCoordinator.swift in Sources */,
 				48ECF5C321A18F140078D659 /* BarButton.swift in Sources */,
 				483CE9CD2194E9E300BED31C /* TrackableEvent.swift in Sources */,
+				48ECF60A21A1CFF30078D659 /* BaseCoordinator+Children.swift in Sources */,
 				48ECF5E021A18F140078D659 /* UnlockAppWithPincode.swift in Sources */,
 				48ECF5C521A18F140078D659 /* BarButtonContent.swift in Sources */,
 				48ECF5D821A18F140078D659 /* Main.swift in Sources */,
@@ -1394,7 +1410,6 @@
 				48ECF5F621A18F140078D659 /* ChooseWalletCoordinator.swift in Sources */,
 				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
-				483CE9D12194E9E300BED31C /* Coordinator.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
 				48ECF5EB21A18F140078D659 /* ManagePincodeCoordinator.swift in Sources */,
@@ -1406,7 +1421,6 @@
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
-				483CE9D72194E9E300BED31C /* Presentable.swift in Sources */,
 				483DDECE219CB877009D3F4C /* ControllerInput.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
 				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,
@@ -1425,6 +1439,7 @@
 				48ECF5D121A18F140078D659 /* Settings.swift in Sources */,
 				48BA52F22180EC47009775D5 /* UIView+Border.swift in Sources */,
 				48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */,
+				48ECF60E21A1D0AC0078D659 /* BaseCoordinator+Scene.swift in Sources */,
 				48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
@@ -1433,6 +1448,7 @@
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,
 				483CE9E12194E9E300BED31C /* ConfigurationDetection.swift in Sources */,
 				4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */,
+				48ECF60521A1CA050078D659 /* ButtonWithSpinner.swift in Sources */,
 				48ECF5ED21A18F140078D659 /* WarningERC20ViewModel.swift in Sources */,
 				48C89FFD2143353C0063B0FA /* UIFont_Extension.swift in Sources */,
 				483CE9E92194E9E300BED31C /* KeyValueStore.swift in Sources */,
@@ -1484,7 +1500,8 @@
 				48ECF5FD21A18F140078D659 /* BackupWallet.swift in Sources */,
 				48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */,
 				48ECF5E321A18F140078D659 /* TermsOfServiceView.swift in Sources */,
-				483CE9D02194E9E300BED31C /* AbstractCoordinator.swift in Sources */,
+				48ECF60C21A1D0170078D659 /* CoordinatorTransition.swift in Sources */,
+				483CE9D02194E9E300BED31C /* BaseCoordinator.swift in Sources */,
 				48ECF5C621A18F140078D659 /* AbstractController.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
 				483CE9DB2194E9E300BED31C /* Toast.swift in Sources */,
@@ -1492,11 +1509,10 @@
 				48ECF5EC21A18F140078D659 /* WarningERC20View.swift in Sources */,
 				483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */,
 				48ECF5D321A18F140078D659 /* RemovePincodeViewModel.swift in Sources */,
-				483CE9DA2194E9E300BED31C /* Presenting.swift in Sources */,
 				48ECF5EE21A18F140078D659 /* WarningERC20.swift in Sources */,
 				48ECF5FF21A18F5B0078D659 /* MainCoordinator.swift in Sources */,
 				483CE9C72194E9E300BED31C /* AbstractTarget.swift in Sources */,
-				483CE9D82194E9E300BED31C /* Presenter.swift in Sources */,
+				483CE9D82194E9E300BED31C /* UIViewController+Present.swift in Sources */,
 				48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */,
 				48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,

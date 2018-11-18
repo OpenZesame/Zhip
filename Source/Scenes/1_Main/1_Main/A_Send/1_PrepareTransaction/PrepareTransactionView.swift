@@ -46,17 +46,6 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 extension PrepareTransactionView: ViewModelled {
     typealias ViewModel = PrepareTransactionViewModel
 
-    var inputFromView: InputFromView {
-        return InputFromView(
-            pullToRefreshTrigger: rx.pullToRefreshTrigger,
-            sendTrigger: sendButton.rx.tap.asDriver(),
-            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
-            amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
-            gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
-            gasPrice: gasPriceField.rx.text.orEmpty.asDriver()
-        )
-    }
-
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
@@ -67,5 +56,16 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.balance                   --> balanceLabels.rx.value,
             viewModel.isRecipientAddressValid   --> recipientAddressField.rx.isValid
         ]
+    }
+
+    var inputFromView: InputFromView {
+        return InputFromView(
+            pullToRefreshTrigger: rx.pullToRefreshTrigger,
+            sendTrigger: sendButton.rx.tap.asDriver(),
+            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
+            amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
+            gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
+            gasPrice: gasPriceField.rx.text.orEmpty.asDriver()
+        )
     }
 }

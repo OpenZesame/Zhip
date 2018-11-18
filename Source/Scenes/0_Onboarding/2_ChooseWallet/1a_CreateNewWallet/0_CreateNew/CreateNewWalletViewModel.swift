@@ -46,9 +46,12 @@ BaseViewModel<
 
         let isCreateWalletButtonEnabled = Driver.combineLatest(validEncryptionPassphrase.map { $0 != nil }, input.fromView.understandsRisk) { $0 && $1 }
 
+        let activityIndicatorSpinningButton = ActivityIndicator()
+
         fromView.createWalletTrigger.withLatestFrom(validEncryptionPassphrase.filterNil()) { $1 }
             .flatMapLatest {
                 self.useCase.createNewWallet(encryptionPassphrase: $0)
+                    .trackActivity(activityIndicatorSpinningButton)
                     .asDriverOnErrorReturnEmpty()
             }
             .do(onNext: { [unowned stepper] in stepper.step(.createWallet($0)) })
@@ -59,7 +62,8 @@ BaseViewModel<
 
         return Output(
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
-            isCreateWalletButtonEnabled: isCreateWalletButtonEnabled
+            isCreateWalletButtonEnabled: isCreateWalletButtonEnabled,
+            isButtonLoading: activityIndicatorSpinningButton.asDriver()
         )
     }
 }
@@ -77,5 +81,6 @@ extension CreateNewWalletViewModel {
     struct Output {
         let encryptionPassphrasePlaceholder: Driver<String>
         let isCreateWalletButtonEnabled: Driver<Bool>
+        let isButtonLoading: Driver<Bool>
     }
 }

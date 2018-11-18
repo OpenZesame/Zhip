@@ -14,30 +14,20 @@ private typealias € = L10n.Scene.SignTransaction
 
 final class SignTransactionView: ScrollingStackView {
 
-    private lazy var loadingView = SpinnerView()
-
     private lazy var confirmTransactionLabel = UILabel.Style(€.Label.signTransactionWithEncryptionPassphrase).make()
 
     private lazy var encryptionPassphraseField = UITextField.Style(€.Field.encryptionPassphrase, isSecureTextEntry: true).make()
 
-    private lazy var confirmButton = UIButton(type: .custom)
-        .withStyle(.primary)
+    private lazy var signButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
         .titled(normal: €.Button.confirm)
         .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,
         encryptionPassphraseField,
-        confirmButton,
+        signButton,
         .spacer
     ]
-
-    override func setup() {
-        addSubview(loadingView)
-        loadingView.centerInSuperview()
-        loadingView.height(200)
-        loadingView.width(200)
-    }
 }
 
 extension SignTransactionView: ViewModelled {
@@ -45,14 +35,15 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isConfirmButtonEnabled --> confirmButton.rx.isEnabled
+            viewModel.isSignButtonEnabled --> signButton.rx.isEnabled,
+            viewModel.isSignButtonLoading --> signButton.rx.isLoading
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
-            signAndSendTrigger: confirmButton.rx.tap.asDriverOnErrorReturnEmpty()
+            signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
 }

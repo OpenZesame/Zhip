@@ -20,15 +20,15 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkedTransaction: Driver<Transaction>
 
-    init(presenter: Presenter?, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
+    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkedTransaction = deepLinkedTransaction
         super.init(presenter: presenter)
-        toPrepareTransaction()
-
     }
 
-    override func start() {}
+    override func start() {
+        toPrepareTransaction()
+    }
 }
 
 // MARK: - Navigate
@@ -41,7 +41,7 @@ private extension SendCoordinator {
             deepLinkedTransaction: deepLinkedTransaction
         )
 
-        present(type: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+        present(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .cancel: self.finish()
             case .signPayment(let payment): self.toSignPayment(payment)
@@ -60,7 +60,7 @@ private extension SendCoordinator {
             transactionUseCase: useCaseProvider.makeTransactionsUseCase()
         )
 
-        present(type: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
+        present(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .sign(let transactionResponse): self.finish()
             }

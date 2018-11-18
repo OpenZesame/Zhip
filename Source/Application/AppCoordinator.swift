@@ -31,7 +31,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     override func start() {
         if walletUseCase.hasConfiguredWallet {
             lockApp()
-            toMain()
+            toMain(fromOnboarding: false)
         } else {
             toOnboarding()
         }
@@ -52,20 +52,22 @@ private extension AppCoordinator {
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .userFinishedOnboording: self.toMain()
+            case .userFinishedOnboording: self.toMain(fromOnboarding: true)
             }
         }
     }
 
-    func toMain() {
+    func toMain(fromOnboarding: Bool) {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
+
+        let lockApp = lockAppSubject.asDriverOnErrorReturnEmpty().skip(fromOnboarding ? 1 : 0)
 
         let main = MainCoordinator(
             presenter: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider,
-            lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
+            lockApp: lockApp
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
@@ -78,7 +80,7 @@ private extension AppCoordinator {
 
 // MARK: - App forground/background + Pincode
 extension AppCoordinator {
-    func appWillEnterForeground() {
+    func appWillResignActive() {
         lockApp()
     }
 

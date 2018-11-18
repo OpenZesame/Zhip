@@ -13,8 +13,8 @@ private typealias € = L10n.Scene.BackupWallet
 
 final class BackupWalletView: ScrollingStackView {
 
-    private lazy var beSafeLabel = UILabel.Style(€.Label.storeKeystoreSecurely, font: .boldSystemFont(ofSize: 18), numberOfLines: 0).make()
-    private lazy var keystoreTextView = ScrollableContentSizedTextView(style: UITextView.Style(font: .systemFont(ofSize: 10), isEditable: false))
+    private lazy var beSafeLabel = UILabel.Style(€.Label.storeKeystoreSecurely, font: UIFont.Label.title, numberOfLines: 0).make()
+    private lazy var keystoreTextView = ScrollableContentSizedTextView(style: UITextView.Style(font: .tiny, isEditable: false))
 
     private lazy var copyKeystoreButton = UIButton(type: .custom)
         .withStyle(.primary)
@@ -26,7 +26,7 @@ final class BackupWalletView: ScrollingStackView {
     private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.keystoreIsBackedUp).make()
     private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
 
-    private lazy var doneButton = UIButton(type: .custom)
+    private lazy var haveBackedUpProceedButton = UIButton(type: .custom)
         .withStyle(.secondary)
         .titled(normal: €.Button.haveBackedUpProceed)
         .disabled()
@@ -38,7 +38,7 @@ final class BackupWalletView: ScrollingStackView {
         copyKeystoreButton,
         urgeUserToSecurlyBackupPassphraseLabel,
         riskStackView,
-        doneButton,
+        haveBackedUpProceedButton,
         .spacer
     ]
 
@@ -50,18 +50,19 @@ final class BackupWalletView: ScrollingStackView {
 
 extension BackupWalletView: ViewModelled {
     typealias ViewModel = BackupWalletViewModel
+
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.keystoreText              --> keystoreTextView,
+            viewModel.isProceedButtonEnabled    --> haveBackedUpProceedButton.rx.isEnabled
+        ]
+    }
+
     var inputFromView: InputFromView {
         return InputFromView(
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
             understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
-            doneTrigger: doneButton.rx.tap.asDriver()
+            proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
         )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.keystoreText --> keystoreTextView,
-            viewModel.isDoneButtonEnabled --> doneButton.rx.isEnabled
-        ]
     }
 }

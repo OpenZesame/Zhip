@@ -19,21 +19,22 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
     private let deepLinkGenerator: DeepLinkGenerator
     private let useCase: WalletUseCase
 
-    init(presenter: Presenter?, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
+    init(presenter: UINavigationController?, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
         self.useCase = useCase
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)
-        toReceive()
     }
 
-   override func start() {}
+   override func start() {
+        toReceive()
+    }
 }
 
 // MARK: - Navigate
 private extension ReceiveCoordinator {
 
     func toReceive() {
-        present(type: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] userDid in
+        present(scene: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] userDid in
             switch userDid {
             case .requestTransaction(let requestedTransaction): self.share(transaction: requestedTransaction)
             case .finish: self.finish()
@@ -52,7 +53,7 @@ private extension ReceiveCoordinator {
         let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
         let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
         activityVC.modalPresentationStyle = .popover
-        activityVC.popoverPresentationController?.barButtonItem = (presenter as? UINavigationController)?.navigationItem.rightBarButtonItem
-        presenter?.present(activityVC, presentation: .animatedPresent)
+        activityVC.popoverPresentationController?.barButtonItem = presenter?.navigationItem.rightBarButtonItem
+        presenter?.present(viewController: activityVC, presentation: .animatedPresent)
     }
 }

@@ -40,20 +40,14 @@ final class SignTransactionViewModel: BaseViewModel<
         guard let _wallet = walletUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }
         let _payment = payment
 
-        let activityIndicator = ActivityIndicator()
-
-        let isEncryptionPassphraseCorrect = input.fromView.encryptionPassphrase.flatMapLatest {
-            self.walletUseCase.verify(passhrase: $0, forWallet: _wallet)
-                .trackActivity(activityIndicator)
-                .asDriverOnErrorReturnEmpty()
-        }
+        let activityIndicatorLoadingButton = ActivityIndicator()
 
         bag <~ [
             input.fromView.signAndSendTrigger
                 .withLatestFrom(input.fromView.encryptionPassphrase)
                 .flatMapLatest {
                     self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassphrase: $0)
-                        .trackActivity(activityIndicator)
+                        .trackActivity(activityIndicatorLoadingButton)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userDid(.sign($0)) })
@@ -61,7 +55,8 @@ final class SignTransactionViewModel: BaseViewModel<
         ]
 
         return Output(
-            isConfirmButtonEnabled: isEncryptionPassphraseCorrect
+            isSignButtonEnabled: input.fromView.encryptionPassphrase.map { $0.count >= WalletEncryptionPassphrase.minimumLenght },
+            isSignButtonLoading: activityIndicatorLoadingButton.asDriver()
         )
     }
 
@@ -73,6 +68,7 @@ extension SignTransactionViewModel {
         let signAndSendTrigger: Driver<Void>
     }
     struct Output {
-        let isConfirmButtonEnabled: Driver<Bool>
+        let isSignButtonEnabled: Driver<Bool>
+        let isSignButtonLoading: Driver<Bool>
     }
 }

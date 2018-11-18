@@ -52,6 +52,13 @@ final class ReceiveView: ScrollingStackView {
 extension ReceiveView: ViewModelled {
     typealias ViewModel = ReceiveViewModel
 
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.receivingAddress      --> addressView.rx.value,
+            viewModel.qrImage               --> qrImageView.rx.image
+        ]
+    }
+
     var inputFromView: InputFromView {
         return InputFromView(
             copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
@@ -59,13 +66,5 @@ extension ReceiveView: ViewModelled {
             qrCodeImageWidth: UIScreen.main.bounds.width - 2 * stackViewMargin,
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-
-        return [
-            viewModel.receivingAddress      --> addressView.rx.value,
-            viewModel.qrImage               --> qrImageView.rx.image
-        ]
     }
 }

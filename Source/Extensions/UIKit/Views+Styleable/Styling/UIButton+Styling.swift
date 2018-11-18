@@ -41,7 +41,8 @@ extension UIButton {
         }
     }
 
-    private func apply(style: Style) {
+    func apply(style: Style) {
+        translatesAutoresizingMaskIntoConstraints = false
         if let height = style.height {
             self.height(height)
         }
@@ -66,14 +67,14 @@ private extension CGFloat {
 
 extension UIButton {
     func withStyle(_ style: UIButton.Style) -> UIButton {
-        translatesAutoresizingMaskIntoConstraints = false
         self.apply(style: style)
         return self
     }
 
-    func titled(normal: String) -> UIButton {
+    func titled<B>(normal: String) -> B where B: UIButton {
         setTitle(normal, for: .normal)
-        return self
+        guard let button = self as? B else { incorrectImplementation("Bad cast") }
+        return button
     }
 }
 

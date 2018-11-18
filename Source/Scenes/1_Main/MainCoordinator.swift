@@ -23,7 +23,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(presenter: Presenter?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
+    init(presenter: UINavigationController?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)
@@ -54,7 +54,7 @@ private extension MainCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase()
         )
 
-        present(type: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+        present(scene: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .send: self.toSend()
             case .receive: self.toReceive()
@@ -93,7 +93,7 @@ private extension MainCoordinator {
     }
 
     func toUnlockAppWithPincodeIfNeeded() {
-        guard pincodeUseCase.hasConfiguredPincode else { return }
+        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingUnlockScene else { return }
         toPincode(intent: .unlockApp)
     }
 
@@ -116,5 +116,14 @@ private extension MainCoordinator {
                 case .closeSettings: dismissModalFlow(true)
                 }
         })
+    }
+}
+
+private extension MainCoordinator {
+    var isCurrentlyPresentingUnlockScene: Bool {
+        guard let last = childCoordinators.last, type(of: last) == ManagePincodeCoordinator.self else {
+            return false
+        }
+        return true
     }
 }

@@ -21,8 +21,7 @@ final class CreateNewWalletView: ScrollingStackView {
     private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.passphraseIsBackedUp).make()
     private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
 
-    private lazy var createNewWalletButton = UIButton(type: .custom)
-        .withStyle(.primary)
+    private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
         .titled(normal: €.Button.createNewWallet)
         .disabled()
 
@@ -44,8 +43,16 @@ final class CreateNewWalletView: ScrollingStackView {
 
 // MARK: - ViewModelled
 extension CreateNewWalletView: ViewModelled {
-
     typealias ViewModel = CreateNewWalletViewModel
+
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
+            viewModel.isCreateWalletButtonEnabled       --> createNewWalletButton.rx.isEnabled,
+            viewModel.isButtonLoading                   --> createNewWalletButton.rx.isLoading
+        ]
+    }
+
     var inputFromView: InputFromView {
         return InputFromView(
             newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
@@ -53,21 +60,5 @@ extension CreateNewWalletView: ViewModelled {
             understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
             createWalletTrigger: createNewWalletButton.rx.tap.asDriver()
         )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
-            viewModel.isCreateWalletButtonEnabled       --> createNewWalletButton.rx.isEnabled
-        ]
-    }
-}
-
-import RxCocoa
-extension Reactive where Base: UITextField {
-    var placeholder: Binder<String?> {
-        return Binder(base) {
-            $0.placeholder = $1
-        }
     }
 }

@@ -28,12 +28,10 @@ final class SettingsView: ScrollingStackView {
     private lazy var backupWalletButton = UIButton(type: .custom)
         .withStyle(.primary)
         .titled(normal: €.Button.backupWallet)
-        .disabled()
 
     private lazy var removeWalletButton = UIButton(type: .custom)
         .withStyle(.secondary)
         .titled(normal: €.Button.removeWallet)
-        .disabled()
 
     private lazy var appVersionLabels = TitledValueView(
         title: €.Label.appVersion,
@@ -51,7 +49,6 @@ final class SettingsView: ScrollingStackView {
 }
 
 extension SettingsView: ViewModelled {
-    
     typealias ViewModel = SettingsViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
@@ -59,7 +56,6 @@ extension SettingsView: ViewModelled {
             viewModel.isSetPincodeButtonEnabled     --> setPincodeButton.rx.isEnabled,
             viewModel.isRemovePincodeButtonEnabled  --> removePincodeButton.rx.isEnabled,
             viewModel.appVersion                    --> appVersionLabels
-
         ]
     }
 

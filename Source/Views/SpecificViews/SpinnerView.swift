@@ -16,9 +16,9 @@ class SpinnerView: UIView {
     private(set) var isAnimating = false
     var animationDuration: TimeInterval = 2
 
-    init(strokeColor: UIColor = .zilliqaCyan) {
+    init(strokeColor: UIColor? = nil) {
         super.init(frame: .zero)
-        setup(strokeColor: strokeColor)
+        setup(strokeColor: strokeColor ?? .zilliqaCyan)
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }

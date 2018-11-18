@@ -30,6 +30,10 @@ final class ConfirmNewPincodeView: ScrollingStackView {
         confirmPincodeButton,
         .spacer
     ]
+
+    override func setup() {
+        inputPincodeView.becomeFirstResponder()
+    }
 }
 
 extension ConfirmNewPincodeView: ViewModelled {
