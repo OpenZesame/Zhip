@@ -18,7 +18,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private let lockAppSubject = ReplaySubject<Void>.create(bufferSize: 1)
+    private let lockAppSubject = PublishSubject<Void>() //ReplaySubject<Void>.create(bufferSize: 1)
 
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
@@ -31,7 +31,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     override func start() {
         if walletUseCase.hasConfiguredWallet {
             lockApp()
-            toMain(fromOnboarding: false)
+            toMain()
         } else {
             toOnboarding()
         }
@@ -52,22 +52,20 @@ private extension AppCoordinator {
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] in
             switch $0 {
-            case .userFinishedOnboording: self.toMain(fromOnboarding: true)
+            case .userFinishedOnboording: self.toMain()
             }
         }
     }
 
-    func toMain(fromOnboarding: Bool) {
+    func toMain() {
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
-
-        let lockApp = lockAppSubject.asDriverOnErrorReturnEmpty().skip(fromOnboarding ? 1 : 0)
 
         let main = MainCoordinator(
             presenter: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider,
-            lockApp: lockApp
+            lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
@@ -85,6 +83,7 @@ extension AppCoordinator {
     }
 
     private func lockApp() {
+        
         lockAppSubject.onNext(())
     }
 }
