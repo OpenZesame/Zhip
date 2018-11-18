@@ -13,6 +13,26 @@ public protocol Makeable: ViewStyling {
     func merged(other: Self, mode: MergeMode) -> Self
 }
 
+extension Makeable {
+    func merge(yieldingTo other: Self?) -> Self {
+        guard let other = other else { return self }
+        return merge(yieldingTo: other)
+    }
+
+    func merge(yieldingTo other: Self) -> Self {
+        return merged(other: other, mode: .yieldToOther)
+    }
+
+    func merge(overridingOther other: Self?) -> Self {
+        guard let other = other else { return self }
+        return merge(overridingOther: other)
+    }
+
+    func merge(overridingOther other: Self) -> Self {
+        return merged(other: other, mode: .overrideOther)
+    }
+}
+
 public extension Makeable {
     func mergeAttribute<T>(other: Self, path attributePath: KeyPath<Self, T?>, mode: MergeMode) -> T? {
         let selfAttribute = self[keyPath: attributePath]

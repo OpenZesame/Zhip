@@ -71,10 +71,11 @@
 "Scene.Main.Button.Receive" = "Receive";
 
 // MARK: Unlock App
-"Scene.UnlockAppWithPincode.Title.ResumeApp" = "Unlock app";
-"Scene.UnlockAppWithPincode.Title.RemovePincode" = "Unlock to remove";
+"Scene.UnlockAppWithPincode.Title" = "Unlock app";
 
-"Flow.Pincode.Event.Toast.DidRemovePincode" = "Pincode removed";
+// MARK: Remove Pincode
+"Scene.RemovePincode.Title" = "Unlock to remove";
+"Scene.RemovePincode.Event.Toast.DidRemovePincode" = "Pincode removed";
 
 // MARK: PrepareTransaction
 "Scene.PrepareTransaction.Title" = "Send";

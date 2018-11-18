@@ -15,6 +15,8 @@ extension UIStackView: Styling, StaticEmptyInitializable {
     }
 
     public final class Style: ViewStyle, Makeable, ExpressibleByArrayLiteral {
+        public static let defaultSpacing: CGFloat = 16
+        public static let defaultMargin: CGFloat = 16
 
         public typealias View = UIStackView
 
@@ -24,14 +26,16 @@ extension UIStackView: Styling, StaticEmptyInitializable {
         let views: [UIView]?
         let spacing: CGFloat?
         let margin: CGFloat?
+        let isLayoutMarginsRelativeArrangement: Bool?
 
         public init(
             _ views: [UIView]? = nil,
             axis: NSLayoutConstraint.Axis? = nil,
             alignment: UIStackView.Alignment? = nil,
             distribution: UIStackView.Distribution? = nil,
-            spacing: CGFloat? = 16,
-            margin: CGFloat? = 16
+            spacing: CGFloat? = defaultSpacing,
+            margin: CGFloat? = defaultMargin,
+            isLayoutMarginsRelativeArrangement: Bool? = nil
         ) {
             self.views = views
             self.axis = axis
@@ -39,6 +43,7 @@ extension UIStackView: Styling, StaticEmptyInitializable {
             self.distribution = distribution
             self.spacing = spacing
             self.margin = margin
+            self.isLayoutMarginsRelativeArrangement = isLayoutMarginsRelativeArrangement
 
             // background color is irrelevant for stackviews
             super.init(height: nil, backgroundColor: nil)
@@ -77,7 +82,9 @@ extension UIStackView: Styling, StaticEmptyInitializable {
         spacing = style.spacing ?? 0
         if let margin = style.margin {
             layoutMargins = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
-            isLayoutMarginsRelativeArrangement = true
+            isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? true
+        } else {
+            isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? false
         }
     }
 }

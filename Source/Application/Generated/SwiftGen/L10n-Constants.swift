@@ -12,17 +12,6 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
-  internal enum Flow {
-    internal enum Pincode {
-      internal enum Event {
-        internal enum Toast {
-          /// Pincode removed
-          internal static let didRemovePincode = L10n.tr("Localizable", "Flow.Pincode.Event.Toast.DidRemovePincode")
-        }
-      }
-    }
-  }
-
   internal enum Generic {
     /// Back
     internal static let back = L10n.tr("Localizable", "Generic.Back")
@@ -201,6 +190,16 @@ internal enum L10n {
         internal static let myPublicAddress = L10n.tr("Localizable", "Scene.Receive.Label.MyPublicAddress")
       }
     }
+    internal enum RemovePincode {
+      /// Unlock to remove
+      internal static let title = L10n.tr("Localizable", "Scene.RemovePincode.Title")
+      internal enum Event {
+        internal enum Toast {
+          /// Pincode removed
+          internal static let didRemovePincode = L10n.tr("Localizable", "Scene.RemovePincode.Event.Toast.DidRemovePincode")
+        }
+      }
+    }
     internal enum RestoreWallet {
       /// Restore Wallet
       internal static let title = L10n.tr("Localizable", "Scene.RestoreWallet.Title")
@@ -262,12 +261,8 @@ internal enum L10n {
       }
     }
     internal enum UnlockAppWithPincode {
-      internal enum Title {
-        /// Unlock to remove
-        internal static let removePincode = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.RemovePincode")
-        /// Unlock app
-        internal static let resumeApp = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title.ResumeApp")
-      }
+      /// Unlock app
+      internal static let title = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title")
     }
     internal enum WarningERC20 {
       /// ⚠️ WARNING ⚠️

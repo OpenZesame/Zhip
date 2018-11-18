@@ -43,11 +43,7 @@ func --> (driver: Driver<String?>, textView: UITextView) -> Disposable {
     return driver --> textView.rx.text.asObserver()
 }
 
-func --> (driver: Driver<String>, labels: LabelsView) -> Disposable {
-    return driver --> labels.rx.value
-}
-
-func --> (driver: Driver<String?>, labels: LabelsView) -> Disposable {
+func --> (driver: Driver<String>, labels: TitledValueView) -> Disposable {
     return driver --> labels.rx.value
 }
 

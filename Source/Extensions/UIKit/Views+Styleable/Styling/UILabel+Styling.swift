@@ -80,7 +80,15 @@ public enum MergeMode {
 }
 
 extension Optional where Wrapped: Makeable {
-    func merged(other: Wrapped, mode: MergeMode) -> Wrapped {
+    func merge(overridingOther other: Wrapped) -> Wrapped {
+        return merged(other: other, mode: .overrideOther)
+    }
+
+    func merge(yieldingTo other: Wrapped) -> Wrapped {
+        return merged(other: other, mode: .yieldToOther)
+    }
+
+    private func merged(other: Wrapped, mode: MergeMode) -> Wrapped {
         guard let `self` = self else { return other }
         return `self`.merged(other: other, mode: mode)
     }
@@ -89,9 +97,5 @@ extension Optional where Wrapped: Makeable {
 extension UILabel.Style {
     static var Large: UILabel.Style {
         return UILabel.Style(font: UIFont.Large)
-    }
-
-    static var huge: UILabel.Style {
-        return UILabel.Style(font: UIFont.huge)
     }
 }

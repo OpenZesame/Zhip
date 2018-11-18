@@ -35,7 +35,6 @@ extension AbstractCoordinator {
 
 protocol Coordinator: AbstractCoordinator, Navigatable, Presenting {}
 
-
 extension AbstractCoordinator {
 
     func start<C>(coordinator: C, transition: CoordinatorTransition = .append, navigationHandler: @escaping (C.Step) -> Void) where C: AbstractCoordinator & Navigatable {
