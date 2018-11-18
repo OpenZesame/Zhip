@@ -77,7 +77,6 @@ extension UIButton {
     }
 }
 
-
 extension UIButton.Style {
 
     static var hollow: UIButton.Style {

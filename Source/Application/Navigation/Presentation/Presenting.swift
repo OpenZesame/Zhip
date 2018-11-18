@@ -16,8 +16,6 @@ protocol Presenting: AnyObject {
     var presenter: Presenter? { get }
     var bag: DisposeBag { get }
 
-    func present<P>(_ presentable: P, presentation: PresentationMode, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable
-
     // swiftlint:disable:next function_parameter_count
     func present<S, V>(
         type: S.Type,
@@ -30,10 +28,7 @@ protocol Presenting: AnyObject {
 
 // MARK: - Default Implementation
 extension Presenting {
-    func present<P>(_ presentable: P, presentation: PresentationMode = .animatedPush, navigationHandler: @escaping (P.Step) -> Void) where P: Presentable & Navigatable {
-        _present(presentable, presentation: presentation, navigation: presentable.stepper.navigation, navigationHandler: navigationHandler)
-    }
-
+    
     func present<S, V>(
         type: S.Type,
         viewModel: V.ViewModel,
