@@ -19,7 +19,7 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
     private let deepLinkGenerator: DeepLinkGenerator
     private let useCase: WalletUseCase
 
-    init(presenter: UINavigationController?, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
+    init(presenter: UINavigationController, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
         self.useCase = useCase
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)
@@ -55,7 +55,7 @@ private extension ReceiveCoordinator {
         let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
         let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
         activityVC.modalPresentationStyle = .popover
-        activityVC.popoverPresentationController?.barButtonItem = presenter?.navigationItem.rightBarButtonItem
-        presenter?.present(activityVC, animated: true, completion: nil)
+        activityVC.popoverPresentationController?.barButtonItem = presenter.navigationItem.rightBarButtonItem
+        presenter.present(activityVC, animated: true, completion: nil)
     }
 }

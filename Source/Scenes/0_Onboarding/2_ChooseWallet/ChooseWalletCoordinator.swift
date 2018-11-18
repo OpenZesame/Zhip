@@ -18,7 +18,7 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Ste
     private let useCaseProvider: UseCaseProvider
     private lazy var useCase = useCaseProvider.makeWalletUseCase()
 
-    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }

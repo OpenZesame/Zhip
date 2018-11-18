@@ -16,12 +16,12 @@ class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
 
     let stepper = Stepper<Step>()
     let bag = DisposeBag()
-    private(set) var presenter: UINavigationController?
+    private(set) var presenter: UINavigationController
 
     lazy var navigation = stepper.navigation
 
     // MARK: - Initialization
-    init(presenter: UINavigationController?) {
+    init(presenter: UINavigationController) {
         self.presenter = presenter
     }
 
@@ -61,13 +61,11 @@ extension BaseCoordinator {
         navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
-        guard let presenter = presenter else { incorrectImplementation("Should have a presenter") }
-
         let navigationController = UINavigationController()
         let coordinator = makeCoordinator(navigationController)
 
         log.verbose("\(self) presents \(coordinator)")
-        
+
         childCoordinators.append(coordinator)
         coordinator.start()
         presenter.present(navigationController, animated: true, completion: nil)

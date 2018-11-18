@@ -24,7 +24,10 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
         self.window = window
         self.deepLinkHandler = deepLinkHandler
         self.useCaseProvider = useCaseProvider
-        super.init(presenter: nil)
+
+        let neverUsedNavigationController = UINavigationController()
+
+        super.init(presenter: neverUsedNavigationController)
         setupDeepLinkNavigationHandling()
     }
 

@@ -21,7 +21,7 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.Step> {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }

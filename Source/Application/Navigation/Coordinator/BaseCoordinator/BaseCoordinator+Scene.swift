@@ -64,9 +64,8 @@ private extension BaseCoordinator {
         presenter customPresenter: UINavigationController? = nil,
         navigationHandler: @escaping (NavigationStep, DismissScene) -> Void
         ) {
-        guard let presenter = (customPresenter ?? presenter) else { incorrectImplementation("Should have a navigationController") }
 
-        presenter.present(viewController: viewController, presentation: presentation)
+        (customPresenter ?? presenter).present(viewController: viewController, presentation: presentation)
 
         navigation.do(onNext: {
             navigationHandler($0, { [unowned viewController] animated in

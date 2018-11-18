@@ -20,7 +20,7 @@ final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinat
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    init(presenter: UINavigationController?, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         super.init(presenter: presenter)
     }

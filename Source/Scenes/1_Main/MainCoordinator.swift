@@ -23,7 +23,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(presenter: UINavigationController?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+    init(presenter: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)

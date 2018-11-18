@@ -11,7 +11,7 @@ import UIKit
 protocol AnyCoordinator: AnyObject, CustomStringConvertible {
     var childCoordinators: [AnyCoordinator] { get set }
     func start()
-    var presenter: UINavigationController? { get }
+    var presenter: UINavigationController { get }
 }
 
 extension AnyCoordinator {
