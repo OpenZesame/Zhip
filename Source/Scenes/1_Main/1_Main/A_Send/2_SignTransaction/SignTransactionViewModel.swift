@@ -40,14 +40,14 @@ final class SignTransactionViewModel: BaseViewModel<
         guard let _wallet = walletUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }
         let _payment = payment
 
-        let activityIndicatorLoadingButton = ActivityIndicator()
+        let activityIndicator = ActivityIndicator()
 
         bag <~ [
             input.fromView.signAndSendTrigger
                 .withLatestFrom(input.fromView.encryptionPassphrase)
                 .flatMapLatest {
                     self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassphrase: $0)
-                        .trackActivity(activityIndicatorLoadingButton)
+                        .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userDid(.sign($0)) })
@@ -56,7 +56,7 @@ final class SignTransactionViewModel: BaseViewModel<
 
         return Output(
             isSignButtonEnabled: input.fromView.encryptionPassphrase.map { $0.count >= WalletEncryptionPassphrase.minimumLenght },
-            isSignButtonLoading: activityIndicatorLoadingButton.asDriver()
+            isSignButtonLoading: activityIndicator.asDriver()
         )
     }
 

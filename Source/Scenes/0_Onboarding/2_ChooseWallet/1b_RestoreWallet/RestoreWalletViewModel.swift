@@ -68,14 +68,14 @@ final class RestoreWalletViewModel: BaseViewModel<
         
         let keyRestoration = Driver.merge(keyRestorationKeystore, keyRestorationPrivateKey)
 
-        let activityIndicatorLoadingButton = ActivityIndicator()
+        let activityIndicator = ActivityIndicator()
 
         bag <~ [
             fromView.restoreTrigger
                 .withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
                     self.useCase.restoreWallet(from: $0)
-                        .trackActivity(activityIndicatorLoadingButton)
+                        .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userIntends(to: .restoreWallet($0)) })
@@ -92,7 +92,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         return Output(
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
             isRestoreButtonEnabled: isRestoreButtonEnabled,
-            isRestoreButtonLoading: activityIndicatorLoadingButton.asDriver()
+            isRestoreButtonLoading: activityIndicator.asDriver()
         )
     }
 }
