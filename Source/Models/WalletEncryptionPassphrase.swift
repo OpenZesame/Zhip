@@ -45,7 +45,6 @@ extension WalletEncryptionPassphrase {
     enum Mode: CaseIterable {
         case new
         case restore
-        var allCaeses: [Mode] { return [.new, .restore] }
     }
 }
 
