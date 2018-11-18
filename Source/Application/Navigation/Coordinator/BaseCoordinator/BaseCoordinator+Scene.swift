@@ -29,11 +29,17 @@ extension BaseCoordinator {
         )
     }
 
+    /// This method is used to modally present a Scene. In all most all cases
+    /// you should NOT pass a custom `presenter` to this method, but rather
+    /// pass `nil` which will use this coordinators presenter, the only time
+    /// you should pass a presenter is if you which be able to push the scene
+    /// on the topmost navigationContorller, e.g. when locking the app with
+    /// pincode.
     func modallyPresent<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        configureNavigationItem: ((UINavigationItem) -> Void)? = nil,
+        presenter customPresenter: UINavigationController? = nil,
         navigationHandler h: @escaping (V.ViewModel.Step, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
@@ -44,7 +50,7 @@ extension BaseCoordinator {
             viewController: navigationController,
             navigation: viewModel.stepper.navigation,
             presentation: .present(animated: true, completion: nil),
-            configureNavigationItem: configureNavigationItem,
+            presenter: customPresenter,
             navigationHandler: h)
     }
 }
@@ -55,13 +61,10 @@ private extension BaseCoordinator {
         viewController: UIViewController,
         navigation: Driver<NavigationStep>,
         presentation: PresentationMode,
-        configureNavigationItem: ((UINavigationItem) -> Void)? = nil,
+        presenter customPresenter: UINavigationController? = nil,
         navigationHandler: @escaping (NavigationStep, DismissScene) -> Void
         ) {
-
-        guard let presenter = presenter else { incorrectImplementation("Should have a navigationController") }
-
-        configureNavigationItem?(viewController.navigationItem)
+        guard let presenter = (customPresenter ?? presenter) else { incorrectImplementation("Should have a navigationController") }
 
         presenter.present(viewController: viewController, presentation: presentation)
 

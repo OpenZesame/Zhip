@@ -6,11 +6,12 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol AnyCoordinator: AnyObject, CustomStringConvertible {
     var childCoordinators: [AnyCoordinator] { get set }
     func start()
+    var presenter: UINavigationController? { get }
 }
 
 extension AnyCoordinator {

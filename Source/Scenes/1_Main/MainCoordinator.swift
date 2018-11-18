@@ -23,13 +23,10 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(presenter: UINavigationController?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, lockApp: Driver<Void>) {
+    init(presenter: UINavigationController?, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         super.init(presenter: presenter)
-        bag <~ lockApp.do(onNext: { [unowned self] in
-            self.toUnlockAppWithPincodeIfNeeded()
-        }).drive()
     }
 
     override func start() {
@@ -92,20 +89,6 @@ private extension MainCoordinator {
         })
     }
 
-    func toUnlockAppWithPincodeIfNeeded() {
-        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingUnlockScene else { return }
-
-        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
-        modallyPresent(
-            scene: UnlockAppWithPincode.self,
-            viewModel: viewModel
-        ) { userDid, dismissScene in
-            switch userDid {
-            case .unlockApp: dismissScene(true)
-            }
-        }
-    }
-
     func toSettings() {
         presentModalCoordinator(
             makeCoordinator: { SettingsCoordinator(presenter: $0, useCaseProvider: useCaseProvider) },
@@ -115,14 +98,5 @@ private extension MainCoordinator {
                 case .closeSettings: dismissModalFlow(true)
                 }
         })
-    }
-}
-
-private extension MainCoordinator {
-    var isCurrentlyPresentingUnlockScene: Bool {
-        guard let last = childCoordinators.last, type(of: last) == SetPincodeCoordinator.self else {
-            return false
-        }
-        return true
     }
 }

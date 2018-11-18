@@ -18,7 +18,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private let lockAppSubject = PublishSubject<Void>()
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
@@ -64,8 +64,7 @@ private extension AppCoordinator {
         let main = MainCoordinator(
             presenter: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider,
-            lockApp: lockAppSubject.asDriverOnErrorReturnEmpty()
+            useCaseProvider: useCaseProvider
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] in
@@ -74,17 +73,55 @@ private extension AppCoordinator {
             }
         }
     }
+
+    func toUnlockAppWithPincodeIfNeeded() {
+        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingUnlockScene else { return }
+        guard let topMostPresenter = findTopMostPresenter() else { incorrectImplementation("should have a presenter") }
+        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        modallyPresent(
+            scene: UnlockAppWithPincode.self,
+            viewModel: viewModel,
+            presenter: topMostPresenter
+        ) { userDid, dismissScene in
+            switch userDid {
+            case .unlockApp: dismissScene(true)
+            }
+        }
+    }
 }
 
-// MARK: - App forground/background + Pincode
+// MARK: - Lock app with pincode
 extension AppCoordinator {
     func appWillResignActive() {
         lockApp()
     }
+}
 
-    private func lockApp() {
-        lockAppSubject.onNext(())
+// MARK: - Private Lock app with pincode
+private extension AppCoordinator {
+    var isCurrentlyPresentingUnlockScene: Bool {
+        guard let last = childCoordinators.last, type(of: last) == SetPincodeCoordinator.self else {
+            return false
+        }
+        return true
     }
+
+    func lockApp() {
+        toUnlockAppWithPincodeIfNeeded()
+    }
+
+    func findTopMostPresenter() -> UINavigationController? {
+        guard var topController = window.rootViewController else { return nil }
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        if let navigationController = topController as? UINavigationController {
+            return navigationController
+        } else {
+            return topController.navigationController
+        }
+    }
+
 }
 
 // MARK: - DeepLink Handler
