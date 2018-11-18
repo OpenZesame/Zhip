@@ -36,7 +36,8 @@ private extension SettingsCoordinator {
 
     func toSettings() {
         let viewModel = SettingsViewModel(useCase: pincodeUseCase)
-        present(scene: Settings.self, viewModel: viewModel, presentation: .none) { [unowned self] userIntendsTo in
+
+        push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .closeSettings: self.finish()
             case .setPincode: self.toSetPincode()
@@ -48,11 +49,23 @@ private extension SettingsCoordinator {
     }
 
     func toSetPincode() {
-        toPincode(intent: .setPincode)
+        presentModalCoordinator(
+            makeCoordinator: { SetPincodeCoordinator(presenter: $0, useCase: useCaseProvider.makePincodeUseCase()) },
+            navigationHandler: { userDid, dismissModalFlow in
+                switch userDid {
+                case .setPincode: dismissModalFlow(true)
+                }
+        })
     }
 
     func toRemovePincode() {
-        toPincode(intent: .removePincode)
+        let viewModel = RemovePincodeViewModel(useCase: pincodeUseCase)
+
+        modallyPresent(scene: RemovePincode.self, viewModel: viewModel) { userDid, dismissScene in
+            switch userDid {
+            case .cancelPincodeRemoval, .removePincode: dismissScene(true)
+            }
+        }
     }
 
     func toChooseWallet() {
@@ -62,26 +75,17 @@ private extension SettingsCoordinator {
     }
 
     func toBackupWallet() {
-        let wallet = walletUseCase.wallet.asDriverOnErrorReturnEmpty().map { (wallet: Wallet?) -> Wallet in
-            guard let wallet = wallet else { incorrectImplementation("Should have a wallet") }
-            return wallet
+        guard let wallet = walletUseCase.loadWallet() else {
+            incorrectImplementation("Should have a wallet")
         }
-        let viewModel = BackupWalletViewModel(wallet: wallet)
-        present(scene: BackupWallet.self, viewModel: viewModel, presentation: .animatedPresent) { [unowned self] userDid in
+
+        let viewModel = BackupWalletViewModel(wallet: .just(wallet))
+
+        modallyPresent(scene: BackupWallet.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .backupWallet: self.presenter?.dismiss(animated: true, completion: nil)
+            case .backupWallet: dismissScene(true)
             }
         }
-    }
-
-    func toPincode(intent: ManagePincodeCoordinator.Intent) {
-        presentModalCoordinator(
-            makeCoordinator: { ManagePincodeCoordinator(intent: intent, presenter: $0, useCase: useCaseProvider.makePincodeUseCase()) },
-            navigationHandler: { userDid, dismissModalFlow in
-                switch userDid {
-                case .finish: dismissModalFlow(true)
-                }
-        })
     }
 
     func finish() {

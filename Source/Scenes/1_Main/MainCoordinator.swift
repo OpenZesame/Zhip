@@ -54,7 +54,7 @@ private extension MainCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase()
         )
 
-        present(scene: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+        push(scene: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .send: self.toSend()
             case .receive: self.toReceive()
@@ -94,17 +94,16 @@ private extension MainCoordinator {
 
     func toUnlockAppWithPincodeIfNeeded() {
         guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingUnlockScene else { return }
-        toPincode(intent: .unlockApp)
-    }
 
-    func toPincode(intent: ManagePincodeCoordinator.Intent) {
-        presentModalCoordinator(
-            makeCoordinator: { ManagePincodeCoordinator(intent: intent, presenter: $0, useCase: useCaseProvider.makePincodeUseCase()) },
-            navigationHandler: { userDid, dismissModalFlow in
-                switch userDid {
-                case .finish: dismissModalFlow(true)
-                }
-        })
+        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        modallyPresent(
+            scene: UnlockAppWithPincode.self,
+            viewModel: viewModel
+        ) { userDid, dismissScene in
+            switch userDid {
+            case .unlockApp: dismissScene(true)
+            }
+        }
     }
 
     func toSettings() {
@@ -121,7 +120,7 @@ private extension MainCoordinator {
 
 private extension MainCoordinator {
     var isCurrentlyPresentingUnlockScene: Bool {
-        guard let last = childCoordinators.last, type(of: last) == ManagePincodeCoordinator.self else {
+        guard let last = childCoordinators.last, type(of: last) == SetPincodeCoordinator.self else {
             return false
         }
         return true

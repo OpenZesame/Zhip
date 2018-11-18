@@ -28,6 +28,10 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
+    deinit {
+        log.verbose("💣 \(type(of: self))")
+    }
+
     // MARK: View Lifecycle
     override func loadView() {
         view = View()

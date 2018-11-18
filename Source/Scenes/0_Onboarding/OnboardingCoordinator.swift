@@ -55,7 +55,8 @@ private extension OnboardingCoordinator {
 
     func toTermsOfService() {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-        present(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
+
+        push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
             case .acceptTermsOfService: self.toWarningERC20()
             }
@@ -64,8 +65,9 @@ private extension OnboardingCoordinator {
 
     func toWarningERC20() {
         let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
-        present(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] in
-            switch $0 {
+
+        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid, _ in
+            switch userDid {
             case .understandRisks: self.toChooseWallet()
             }
         }
@@ -79,21 +81,20 @@ private extension OnboardingCoordinator {
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .userFinishedChoosingWallet: self.toChoosePincode()
+            case .finishChoosingWallet: self.toChoosePincode()
             }
         }
     }
 
     func toChoosePincode() {
-        let coordinator = ManagePincodeCoordinator(
-            intent: .setPincode,
+        let coordinator = SetPincodeCoordinator(
             presenter: presenter,
             useCase: useCaseProvider.makePincodeUseCase()
         )
 
         start(coordinator: coordinator) { [unowned self] userDid in
             switch userDid {
-            case .finish: self.finish()
+            case .setPincode: self.finish()
             }
         }
     }

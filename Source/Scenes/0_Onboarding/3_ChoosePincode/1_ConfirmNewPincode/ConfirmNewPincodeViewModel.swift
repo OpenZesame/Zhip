@@ -52,7 +52,8 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         ]
 
         return Output(
-            isConfirmPincodeEnabled: isConfirmPincodeEnabled
+            isConfirmPincodeEnabled: isConfirmPincodeEnabled,
+            inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
     }
 }
@@ -66,6 +67,7 @@ extension ConfirmNewPincodeViewModel {
 
     struct Output {
         let isConfirmPincodeEnabled: Driver<Bool>
+        let inputBecomeFirstResponder: Driver<Void>
     }
 
 }

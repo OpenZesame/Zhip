@@ -35,10 +35,6 @@ final class ChoosePincodeView: ScrollingStackView {
         pinOnlyLocksAppTextView,
         proceedWithConfirmationButton
     ]
-
-    override func setup() {
-        inputPincodeView.becomeFirstResponder()
-    }
 }
 
 extension ChoosePincodeView: ViewModelled {
@@ -53,6 +49,7 @@ extension ChoosePincodeView: ViewModelled {
 
     func populate(with viewModel: ChoosePincodeViewModel.Output) -> [Disposable] {
         return [
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
             viewModel.isConfirmPincodeEnabled --> proceedWithConfirmationButton.rx.isEnabled
         ]
     }

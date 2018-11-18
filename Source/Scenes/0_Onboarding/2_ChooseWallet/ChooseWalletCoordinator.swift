@@ -12,7 +12,7 @@ import Zesame
 
 final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Step> {
     enum Step {
-        case userFinishedChoosingWallet
+        case finishChoosingWallet
     }
 
     private let useCaseProvider: UseCaseProvider
@@ -32,14 +32,16 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Ste
 private extension ChooseWalletCoordinator {
 
     func toChooseWallet() {
-        present(scene: ChooseWallet.self, viewModel: ChooseWalletViewModel()) { [unowned self] userIntendsTo in
+        let viewModel = ChooseWalletViewModel()
+
+        push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .createNewWallet: self.toCreateNewWallet()
             case .restoreWallet: self.toRestoreWallet()
             }
         }
     }
-
+    
     func toCreateNewWallet() {
         let coordinator = CreateNewWalletCoordinator(presenter: presenter, useCaseProvider: useCaseProvider)
 
@@ -62,6 +64,6 @@ private extension ChooseWalletCoordinator {
 
     func userFinishedChoosing(wallet: Wallet) {
         useCase.save(wallet: wallet)
-        stepper.step(.userFinishedChoosingWallet)
+        stepper.step(.finishChoosingWallet)
     }
 }

@@ -25,7 +25,7 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
         super.init(presenter: presenter)
     }
 
-   override func start() {
+    override func start() {
         toReceive()
     }
 }
@@ -34,7 +34,9 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
 private extension ReceiveCoordinator {
 
     func toReceive() {
-        present(scene: Receive.self, viewModel: ReceiveViewModel(useCase: useCase)) { [unowned self] userDid in
+        let viewModel = ReceiveViewModel(useCase: useCase)
+
+        push(scene: Receive.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
             case .requestTransaction(let requestedTransaction): self.share(transaction: requestedTransaction)
             case .finish: self.finish()
@@ -54,6 +56,6 @@ private extension ReceiveCoordinator {
         let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
         activityVC.modalPresentationStyle = .popover
         activityVC.popoverPresentationController?.barButtonItem = presenter?.navigationItem.rightBarButtonItem
-        presenter?.present(viewController: activityVC, presentation: .animatedPresent)
+        presenter?.present(activityVC, animated: true, completion: nil)
     }
 }

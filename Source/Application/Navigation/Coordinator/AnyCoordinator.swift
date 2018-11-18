@@ -8,6 +8,13 @@
 
 import Foundation
 
-protocol AnyCoordinator: AnyObject {
+protocol AnyCoordinator: AnyObject, CustomStringConvertible {
+    var childCoordinators: [AnyCoordinator] { get set }
     func start()
+}
+
+extension AnyCoordinator {
+    var description: String {
+        return "\(type(of: self)), #\(childCoordinators.count) children"
+    }
 }

@@ -34,14 +34,13 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
 // MARK: - Navigate
 private extension SendCoordinator {
     func toPrepareTransaction() {
-
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             deepLinkedTransaction: deepLinkedTransaction
         )
 
-        present(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+        push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .cancel: self.finish()
             case .signPayment(let payment): self.toSignPayment(payment)
@@ -60,7 +59,7 @@ private extension SendCoordinator {
             transactionUseCase: useCaseProvider.makeTransactionsUseCase()
         )
 
-        present(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
+        push(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
             case .sign(let transactionResponse): self.finish()
             }

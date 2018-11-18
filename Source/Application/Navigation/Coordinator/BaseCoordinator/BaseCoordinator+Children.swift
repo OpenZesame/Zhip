@@ -18,7 +18,9 @@ extension BaseCoordinator {
     }
 
     func remove(childCoordinator: AnyCoordinator) {
-        guard let index = childCoordinators.firstIndex(where: { $0 === childCoordinator }) else { return }
+        guard let index = childCoordinators.firstIndex(where: { $0 === childCoordinator }) else {
+            incorrectImplementation("Should and must be able to find child coordinator and remove it in order to avoid memory leaks.")
+        }
         childCoordinators.remove(at: index)
     }
 }

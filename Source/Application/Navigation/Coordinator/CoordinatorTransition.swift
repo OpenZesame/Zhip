@@ -11,5 +11,4 @@ import Foundation
 enum CoordinatorTransition {
     case append
     case replace
-    case doNothing
 }

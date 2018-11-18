@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 private typealias € = L10n.Scene.ConfirmNewPincode
 
@@ -30,10 +31,6 @@ final class ConfirmNewPincodeView: ScrollingStackView {
         confirmPincodeButton,
         .spacer
     ]
-
-    override func setup() {
-        inputPincodeView.becomeFirstResponder()
-    }
 }
 
 extension ConfirmNewPincodeView: ViewModelled {
@@ -49,7 +46,8 @@ extension ConfirmNewPincodeView: ViewModelled {
 
     func populate(with viewModel: ConfirmNewPincodeViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isConfirmPincodeEnabled --> confirmPincodeButton.rx.isEnabled
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
+            viewModel.isConfirmPincodeEnabled   --> confirmPincodeButton.rx.isEnabled
         ]
     }
 }

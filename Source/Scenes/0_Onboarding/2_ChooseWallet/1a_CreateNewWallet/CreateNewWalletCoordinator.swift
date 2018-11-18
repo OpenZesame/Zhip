@@ -13,6 +13,9 @@ import RxSwift
 import RxCocoa
 
 final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.Step> {
+    enum Step {
+        case didCreate(wallet: Wallet)
+    }
 
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
@@ -27,20 +30,13 @@ final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinat
     }
 }
 
-extension CreateNewWalletCoordinator {
-    enum Step {
-        case didCreate(wallet: Wallet)
-    }
-}
-
 // MARK: Private
 private extension CreateNewWalletCoordinator {
 
     func toCreateWallet() {
-        present(
-            scene: CreateNewWallet.self,
-            viewModel: CreateNewWalletViewModel(useCase: walletUseCase)
-        ) { [unowned self] userDid in
+        let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
+
+        push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
             case .createWallet(let wallet): self.toBackupWallet(wallet: wallet)
             }
@@ -49,7 +45,8 @@ private extension CreateNewWalletCoordinator {
 
     func toBackupWallet(wallet: Wallet) {
         let viewModel = BackupWalletViewModel(wallet: .just(wallet))
-        present(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
+
+        push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
             case .backupWallet(let wallet): self.toMain(wallet: wallet)
             }

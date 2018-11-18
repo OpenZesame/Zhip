@@ -53,7 +53,7 @@ extension Toast {
         }
 
         DispatchQueue.main.async {
-            presenter.present(viewController: alert, presentation: .animatedPresent)
+            presenter.present(alert, animated: true, completion: nil)
         }
     }
 }

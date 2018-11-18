@@ -19,14 +19,16 @@ final class UnlockAppWithPincodeView: ScrollingStackView {
         inputPincodeView,
         .spacer
     ]
-
-    override func setup() {
-        inputPincodeView.becomeFirstResponder()
-    }
 }
 
 extension UnlockAppWithPincodeView: ViewModelled {
     typealias ViewModel = UnlockAppWithPincodeViewModel
+
+    func populate(with viewModel: UnlockAppWithPincodeViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder
+        ]
+    }
 
     var inputFromView: InputFromView {
         return InputFromView(

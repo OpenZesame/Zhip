@@ -37,6 +37,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
         ]
 
         return Output(
+            inputBecomeFirstResponder: input.fromController.viewWillAppear,
             isConfirmPincodeEnabled: pincode.map { $0 != nil }
         )
     }
@@ -49,6 +50,7 @@ extension ChoosePincodeViewModel {
     }
 
     struct Output {
+        let inputBecomeFirstResponder: Driver<Void>
         let isConfirmPincodeEnabled: Driver<Bool>
     }
 

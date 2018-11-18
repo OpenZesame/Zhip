@@ -29,15 +29,17 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.S
 // MARK: - Private
 private extension RestoreWalletCoordinator {
 
-    func toMain(restoredWallet: Wallet) {
-        stepper.step(.finishedRestoring(wallet: restoredWallet))
-    }
-
     func toRestoreWallet() {
-        present(scene: RestoreWallet.self, viewModel: RestoreWalletViewModel(useCase: useCase)) { [unowned self] userIntendsTo in
+        let viewModel = RestoreWalletViewModel(useCase: useCase)
+
+        push(scene: RestoreWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .restoreWallet(let wallet): self.toMain(restoredWallet: wallet)
             }
         }
+    }
+
+    func toMain(restoredWallet: Wallet) {
+        stepper.step(.finishedRestoring(wallet: restoredWallet))
     }
 }

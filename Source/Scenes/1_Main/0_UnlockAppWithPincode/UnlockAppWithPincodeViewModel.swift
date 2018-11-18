@@ -40,7 +40,9 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
         bag <~ matchingPincode.do(onNext: { userDid(.unlockApp) }).drive()
 
-        return Output()
+        return Output(
+            inputBecomeFirstResponder: input.fromController.viewWillAppear
+        )
     }
 }
 
@@ -49,5 +51,7 @@ extension UnlockAppWithPincodeViewModel {
         let pincode: Driver<Pincode?>
     }
 
-    struct Output {}
+    struct Output {
+        let inputBecomeFirstResponder: Driver<Void>
+    }
 }

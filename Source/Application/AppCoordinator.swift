@@ -30,8 +30,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
 
     override func start() {
         if walletUseCase.hasConfiguredWallet {
-            lockApp()
-            toMain()
+            toMain(lockIfNeeded: true)
         } else {
             toOnboarding()
         }
@@ -57,7 +56,8 @@ private extension AppCoordinator {
         }
     }
 
-    func toMain() {
+    func toMain(lockIfNeeded lock: Bool = false) {
+        defer { if lock { lockApp() } }
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
 
@@ -83,7 +83,6 @@ extension AppCoordinator {
     }
 
     private func lockApp() {
-
         lockAppSubject.onNext(())
     }
 }

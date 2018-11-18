@@ -24,6 +24,10 @@ class ScrollView: UIScrollView {
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
+    deinit {
+        log.verbose("💣 \(type(of: self))")
+    }
+
     // MARK: Overrideable
     func setup() { /* subclass me */ }
 }
