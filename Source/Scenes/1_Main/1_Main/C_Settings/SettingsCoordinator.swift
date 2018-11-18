@@ -21,9 +21,9 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.Step> {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {
@@ -50,7 +50,7 @@ private extension SettingsCoordinator {
 
     func toSetPincode() {
         presentModalCoordinator(
-            makeCoordinator: { SetPincodeCoordinator(presenter: $0, useCase: useCaseProvider.makePincodeUseCase()) },
+            makeCoordinator: { SetPincodeCoordinator(navigationController: $0, useCase: useCaseProvider.makePincodeUseCase()) },
             navigationHandler: { userDid, dismissModalFlow in
                 switch userDid {
                 case .setPincode: dismissModalFlow(true)

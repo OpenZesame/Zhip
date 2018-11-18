@@ -18,9 +18,9 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Ste
     private let useCaseProvider: UseCaseProvider
     private lazy var useCase = useCaseProvider.makeWalletUseCase()
 
-    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {
@@ -43,7 +43,7 @@ private extension ChooseWalletCoordinator {
     }
     
     func toCreateNewWallet() {
-        let coordinator = CreateNewWalletCoordinator(presenter: presenter, useCaseProvider: useCaseProvider)
+        let coordinator = CreateNewWalletCoordinator(navigationController: navigationController, useCaseProvider: useCaseProvider)
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
@@ -53,7 +53,7 @@ private extension ChooseWalletCoordinator {
     }
 
     func toRestoreWallet() {
-        let coordinator = RestoreWalletCoordinator(presenter: presenter, useCase: useCase)
+        let coordinator = RestoreWalletCoordinator(navigationController: navigationController, useCase: useCase)
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {

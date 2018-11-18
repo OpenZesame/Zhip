@@ -15,9 +15,9 @@ final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.Step> {
 
     private let useCase: PincodeUseCase
 
-    init(presenter: UINavigationController, useCase: PincodeUseCase) {
+    init(navigationController: UINavigationController, useCase: PincodeUseCase) {
         self.useCase = useCase
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {

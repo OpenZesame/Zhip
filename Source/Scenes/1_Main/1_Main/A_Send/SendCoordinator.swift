@@ -20,10 +20,10 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkedTransaction: Driver<Transaction>
 
-    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkedTransaction = deepLinkedTransaction
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {

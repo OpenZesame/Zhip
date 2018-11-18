@@ -16,13 +16,13 @@ class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
 
     let stepper = Stepper<Step>()
     let bag = DisposeBag()
-    private(set) var presenter: UINavigationController
+    private(set) var navigationController: UINavigationController
 
     lazy var navigation = stepper.navigation
 
     // MARK: - Initialization
-    init(presenter: UINavigationController) {
-        self.presenter = presenter
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
     }
 
     // MARK: - Overridable
@@ -61,18 +61,18 @@ extension BaseCoordinator {
         navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
-        let navigationController = UINavigationController()
-        let coordinator = makeCoordinator(navigationController)
+        let newModalNavigationController = UINavigationController()
+        let coordinator = makeCoordinator(newModalNavigationController)
 
         log.verbose("\(self) presents \(coordinator)")
 
         childCoordinators.append(coordinator)
         coordinator.start()
-        presenter.present(navigationController, animated: true, completion: nil)
+        self.navigationController.present(newModalNavigationController, animated: true, completion: nil)
 
-        bag <~ coordinator.stepper.navigation.do(onNext: { [unowned self, unowned navigationController, unowned coordinator] navigationStep in
+        bag <~ coordinator.stepper.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in
             navigationHandler(navigationStep, { animated in
-                navigationController.dismiss(animated: animated, completion: nil)
+                newModalNavigationController.dismiss(animated: animated, completion: nil)
                 self.remove(childCoordinator: coordinator)
             })
         }).drive()

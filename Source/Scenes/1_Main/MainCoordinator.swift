@@ -23,10 +23,10 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(presenter: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {
@@ -63,7 +63,7 @@ private extension MainCoordinator {
     func toSend() {
         presentModalCoordinator(
             makeCoordinator: { SendCoordinator(
-                presenter: $0,
+                navigationController: $0,
                 useCaseProvider: useCaseProvider,
                 deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty()
                 )
@@ -78,7 +78,7 @@ private extension MainCoordinator {
     func toReceive() {
         presentModalCoordinator(
             makeCoordinator: { ReceiveCoordinator(
-                presenter: $0,
+                navigationController: $0,
                 useCase: useCaseProvider.makeWalletUseCase(),
                 deepLinkGenerator: deepLinkGenerator)
         },
@@ -91,7 +91,7 @@ private extension MainCoordinator {
 
     func toSettings() {
         presentModalCoordinator(
-            makeCoordinator: { SettingsCoordinator(presenter: $0, useCaseProvider: useCaseProvider) },
+            makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
                 case .removeWallet: self.stepper.step(.didRemoveWallet)

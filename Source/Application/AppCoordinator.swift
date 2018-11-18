@@ -20,6 +20,9 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
+    // TODO replace this with navigation stack logic looking at the topmost controller (which I earlier failed to do.)
+    private var isCurrentlyPresentingLockScene = false
+
     init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.window = window
         self.deepLinkHandler = deepLinkHandler
@@ -27,7 +30,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
 
         let neverUsedNavigationController = UINavigationController()
 
-        super.init(presenter: neverUsedNavigationController)
+        super.init(navigationController: neverUsedNavigationController)
         setupDeepLinkNavigationHandling()
     }
 
@@ -37,6 +40,10 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
         } else {
             toOnboarding()
         }
+    }
+
+    override var navigationController: UINavigationController {
+        incorrectImplementation("This is a special case, the AppCoordinator should use the `window` and set its rootViewController")
     }
 }
 
@@ -48,7 +55,7 @@ private extension AppCoordinator {
         window.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(
-            presenter: navigationController,
+            navigationController: navigationController,
             useCaseProvider: useCaseProvider
         )
 
@@ -65,7 +72,7 @@ private extension AppCoordinator {
         window.rootViewController = navigationController
 
         let main = MainCoordinator(
-            presenter: navigationController,
+            navigationController: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider
         )
@@ -78,16 +85,19 @@ private extension AppCoordinator {
     }
 
     func toUnlockAppWithPincodeIfNeeded() {
-        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingUnlockScene else { return }
-        guard let topMostPresenter = findTopMostPresenter() else { incorrectImplementation("should have a presenter") }
+        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
+        guard let topMostNavgationController = findTopMostNavigationController() else { incorrectImplementation("should have a navigationController") }
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        isCurrentlyPresentingLockScene = true
         modallyPresent(
             scene: UnlockAppWithPincode.self,
             viewModel: viewModel,
-            presenter: topMostPresenter
-        ) { userDid, dismissScene in
+            navigationController: topMostNavgationController
+        ) { [unowned self] userDid, dismissScene in
             switch userDid {
-            case .unlockApp: dismissScene(true)
+            case .unlockApp:
+                self.isCurrentlyPresentingLockScene = false
+                dismissScene(true)
             }
         }
     }
@@ -102,22 +112,20 @@ extension AppCoordinator {
 
 // MARK: - Private Lock app with pincode
 private extension AppCoordinator {
-    var isCurrentlyPresentingUnlockScene: Bool {
-        guard let last = childCoordinators.last, type(of: last) == SetPincodeCoordinator.self else {
-            return false
-        }
-        return true
-    }
-
     func lockApp() {
         toUnlockAppWithPincodeIfNeeded()
     }
 
-    func findTopMostPresenter() -> UINavigationController? {
+    func findTopMostViewController() -> UIViewController? {
         guard var topController = window.rootViewController else { return nil }
         while let presentedViewController = topController.presentedViewController {
             topController = presentedViewController
         }
+        return topController
+    }
+
+    func findTopMostNavigationController() -> UINavigationController? {
+        guard let topController = findTopMostViewController() else { return nil }
         if let navigationController = topController as? UINavigationController {
             return navigationController
         } else {

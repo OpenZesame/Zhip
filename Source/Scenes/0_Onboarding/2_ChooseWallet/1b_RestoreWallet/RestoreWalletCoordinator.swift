@@ -16,9 +16,9 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.S
 
     private let useCase: WalletUseCase
 
-    init(presenter: UINavigationController, useCase: WalletUseCase) {
+    init(navigationController: UINavigationController, useCase: WalletUseCase) {
         self.useCase = useCase
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {

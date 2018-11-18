@@ -21,9 +21,9 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Step> {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(presenter: UINavigationController, useCaseProvider: UseCaseProvider) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
-        super.init(presenter: presenter)
+        super.init(navigationController: navigationController)
     }
 
     override func start() {
@@ -75,7 +75,7 @@ private extension OnboardingCoordinator {
 
     func toChooseWallet() {
         let coordinator = ChooseWalletCoordinator(
-            presenter: presenter,
+            navigationController: navigationController,
             useCaseProvider: useCaseProvider
         )
 
@@ -88,7 +88,7 @@ private extension OnboardingCoordinator {
 
     func toChoosePincode() {
         let coordinator = SetPincodeCoordinator(
-            presenter: presenter,
+            navigationController: navigationController,
             useCase: useCaseProvider.makePincodeUseCase()
         )
 

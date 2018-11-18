@@ -16,7 +16,7 @@ extension BaseCoordinator {
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        navigationHandler h: @escaping (V.ViewModel.Step, DismissScene) -> Void
+        navigationHandler: @escaping (V.ViewModel.Step, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         let scene = S.init(viewModel: viewModel)
@@ -25,22 +25,22 @@ extension BaseCoordinator {
             viewController: scene,
             navigation: viewModel.stepper.navigation,
             presentation: .setRootIfEmptyElsePush(animated: animated),
-            navigationHandler: h
+            navigationHandler: navigationHandler
         )
     }
 
     /// This method is used to modally present a Scene. In all most all cases
-    /// you should NOT pass a custom `presenter` to this method, but rather
-    /// pass `nil` which will use this coordinators presenter, the only time
-    /// you should pass a presenter is if you which be able to push the scene
+    /// you should NOT pass a custom `navigationController` to this method, but rather
+    /// pass `nil` which will use this coordinators navigationController, the only time
+    /// you should pass a navigationController is if you which be able to push the scene
     /// on the topmost navigationContorller, e.g. when locking the app with
     /// pincode.
     func modallyPresent<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        presenter customPresenter: UINavigationController? = nil,
-        navigationHandler h: @escaping (V.ViewModel.Step, DismissScene) -> Void
+        navigationController customNavigationController: UINavigationController? = nil,
+        navigationHandler: @escaping (V.ViewModel.Step, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         let scene = S.init(viewModel: viewModel)
@@ -50,8 +50,9 @@ extension BaseCoordinator {
             viewController: navigationController,
             navigation: viewModel.stepper.navigation,
             presentation: .present(animated: true, completion: nil),
-            presenter: customPresenter,
-            navigationHandler: h)
+            navigationController: customNavigationController,
+            navigationHandler: navigationHandler
+        )
     }
 }
 
@@ -61,11 +62,11 @@ private extension BaseCoordinator {
         viewController: UIViewController,
         navigation: Driver<NavigationStep>,
         presentation: PresentationMode,
-        presenter customPresenter: UINavigationController? = nil,
+        navigationController customNavigationController: UINavigationController? = nil,
         navigationHandler: @escaping (NavigationStep, DismissScene) -> Void
         ) {
 
-        (customPresenter ?? presenter).present(viewController: viewController, presentation: presentation)
+        (customNavigationController ?? navigationController).present(viewController: viewController, presentation: presentation)
 
         navigation.do(onNext: {
             navigationHandler($0, { [unowned viewController] animated in
