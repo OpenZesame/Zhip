@@ -59,4 +59,9 @@ extension KeyValueStoring {
     func isFalse(_ key: Key) -> Bool {
         return !isTrue(key)
     }
+
+    func hasValue(for key: Key) -> Bool {
+        let value: Any? = loadValue(for: key)
+        return value != nil
+    }
 }

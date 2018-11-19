@@ -38,6 +38,10 @@ private extension OnboardingCoordinator {
             return toTermsOfService()
         }
 
+        guard onboardingUseCase.hasOptedForAnalyticsPermissions else {
+            return toAnalyticsPermission()
+        }
+
         guard onboardingUseCase.hasAskedToSkipERC20Warning else {
             return toWarningERC20()
         }
@@ -58,7 +62,17 @@ private extension OnboardingCoordinator {
 
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
-            case .acceptTermsOfService: self.toWarningERC20()
+            case .acceptTermsOfService: self.toAnalyticsPermission()
+            }
+        }
+    }
+    
+    func toAnalyticsPermission() {
+        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+        
+        push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid, _ in
+            switch userDid {
+            case .userOptedForAnalyticsPermissions: self.toWarningERC20()
             }
         }
     }
