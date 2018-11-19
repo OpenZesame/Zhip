@@ -13,6 +13,13 @@
 // MARK: TermsOfService
 "Scene.TermsOfService.Button.Accept" = "Accept";
 
+// MARK: AskForAnalyticsPermissions
+"Scene.AskForAnalyticsPermissions.Title" = "Analytics disclaimer";
+"Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+"Scene.AskForAnalyticsPermissions.SwitchLabel.ReadDisclaimer" = "I have read the analytics disclaimer";
+"Scene.AskForAnalyticsPermissions.Button.Accept" = "Accept";
+"Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";
+
 // MARK: WarningERC20
 "Scene.WarningERC20.Title" = "⚠️ WARNING ⚠️";
 "Scene.WarningERC20.Text.WarningERC20" = "This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.";

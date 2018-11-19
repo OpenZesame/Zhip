@@ -26,6 +26,24 @@ internal enum L10n {
   }
 
   internal enum Scene {
+    internal enum AskForAnalyticsPermissions {
+      /// Analytics disclaimer
+      internal static let title = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Title")
+      internal enum Button {
+        /// Accept
+        internal static let accept = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Accept")
+        /// Decline
+        internal static let decline = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Decline")
+      }
+      internal enum SwitchLabel {
+        /// I have read the analytics disclaimer
+        internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.SwitchLabel.ReadDisclaimer")
+      }
+      internal enum Text {
+        /// Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        internal static let disclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Text.Disclaimer")
+      }
+    }
     internal enum BackupWallet {
       /// Backup Wallet
       internal static let title = L10n.tr("Localizable", "Scene.BackupWallet.Title")
