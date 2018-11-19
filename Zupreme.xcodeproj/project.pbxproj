@@ -177,6 +177,9 @@
 		48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* Transaction.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
+		5BF394D121A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394CE21A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift */; };
+		5BF394D221A2CA510037ED30 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394CF21A2CA510037ED30 /* AskForAnalyticsPermissions.swift */; };
+		5BF394D321A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394D021A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift */; };
 		7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */; };
 /* End PBXBuildFile section */
 
@@ -370,6 +373,9 @@
 		48F37D6D21918F6F008A2DA4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
+		5BF394CE21A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
+		5BF394CF21A2CA510037ED30 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
+		5BF394D021A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
 		71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZupremeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zupreme.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -997,9 +1003,10 @@
 			children = (
 				48ECF59921A18F140078D659 /* OnboardingCoordinator.swift */,
 				48ECF59A21A18F140078D659 /* 0_TermsOfService */,
-				48ECF5A821A18F140078D659 /* 1_WarningERC20 */,
-				48ECF5AC21A18F140078D659 /* 2_ChooseWallet */,
-				48ECF59E21A18F140078D659 /* 3_ChoosePincode */,
+				5BF394CD21A2CA510037ED30 /* 1_AskForAnalyticsPermissions */,
+				48ECF5A821A18F140078D659 /* 2_WarningERC20 */,
+				48ECF5AC21A18F140078D659 /* 3_ChooseWallet */,
+				48ECF59E21A18F140078D659 /* 4_ChoosePincode */,
 			);
 			path = 0_Onboarding;
 			sourceTree = "<group>";
@@ -1014,14 +1021,14 @@
 			path = 0_TermsOfService;
 			sourceTree = "<group>";
 		};
-		48ECF59E21A18F140078D659 /* 3_ChoosePincode */ = {
+		48ECF59E21A18F140078D659 /* 4_ChoosePincode */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */,
 				48ECF5A321A18F140078D659 /* 0_ChoosePincode */,
 				48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */,
 			);
-			path = 3_ChoosePincode;
+			path = 4_ChoosePincode;
 			sourceTree = "<group>";
 		};
 		48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */ = {
@@ -1044,17 +1051,17 @@
 			path = 0_ChoosePincode;
 			sourceTree = "<group>";
 		};
-		48ECF5A821A18F140078D659 /* 1_WarningERC20 */ = {
+		48ECF5A821A18F140078D659 /* 2_WarningERC20 */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A921A18F140078D659 /* WarningERC20View.swift */,
 				48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */,
 				48ECF5AB21A18F140078D659 /* WarningERC20.swift */,
 			);
-			path = 1_WarningERC20;
+			path = 2_WarningERC20;
 			sourceTree = "<group>";
 		};
-		48ECF5AC21A18F140078D659 /* 2_ChooseWallet */ = {
+		48ECF5AC21A18F140078D659 /* 3_ChooseWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */,
@@ -1062,6 +1069,7 @@
 				48ECF5B721A18F140078D659 /* 1a_CreateNewWallet */,
 				48ECF5AD21A18F140078D659 /* 1b_RestoreWallet */,
 			);
+			name = 3_ChooseWallet;
 			path = 2_ChooseWallet;
 			sourceTree = "<group>";
 		};
@@ -1124,6 +1132,16 @@
 				48ECF60921A1CFF30078D659 /* BaseCoordinator+Children.swift */,
 			);
 			path = BaseCoordinator;
+			sourceTree = "<group>";
+		};
+		5BF394CD21A2CA510037ED30 /* 1_AskForAnalyticsPermissions */ = {
+			isa = PBXGroup;
+			children = (
+				5BF394CE21A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift */,
+				5BF394D021A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift */,
+				5BF394CF21A2CA510037ED30 /* AskForAnalyticsPermissions.swift */,
+			);
+			path = 1_AskForAnalyticsPermissions;
 			sourceTree = "<group>";
 		};
 		DEA4890CF1DEE89F5F357C1B /* Pods */ = {
@@ -1388,6 +1406,7 @@
 				48BAC4E02195D83000A626FD /* L10n-Constants.swift in Sources */,
 				48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
+				5BF394D321A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift in Sources */,
 				48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */,
 				48ECF5CC21A18F140078D659 /* SignTransactionView.swift in Sources */,
 				483DDEAB219B6456009D3F4C /* DefaultPincodeUseCase.swift in Sources */,
@@ -1456,6 +1475,7 @@
 				4898FB4521542333009501DC /* StackViewStyling.swift in Sources */,
 				483CE9EC2194E9E300BED31C /* AppDelegate.swift in Sources */,
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
+				5BF394D221A2CA510037ED30 /* AskForAnalyticsPermissions.swift in Sources */,
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
 				48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */,
 				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
@@ -1488,6 +1508,7 @@
 				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
+				5BF394D121A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift in Sources */,
 				483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */,
 				48ECF5F721A18F140078D659 /* CreateNewWalletCoordinator.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
