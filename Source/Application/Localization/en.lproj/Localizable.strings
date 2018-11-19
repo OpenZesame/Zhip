@@ -105,10 +105,17 @@
 
 // MARK: - Settings
 "Scene.Settings.Title" = "Settings";
-"Scene.Settings.Button.SetPincode" = "Set pincode";
-"Scene.Settings.Button.RemovePincode" = "Remove pincode";
-"Scene.Settings.Button.BackupWallet" = "Backup wallet";
-"Scene.Settings.Button.RemoveWallet" = "Remove wallet";
-"Scene.Settings.Label.AppVersion" = "App Version";
+
+"Scene.Settings.Cell.RemovePincode" = "Remove pincode";
+"Scene.Settings.Cell.SetPincode" = "Set pincode";
+
+"Scene.Settings.Cell.StarUsOnGithub" = "Star us on Github";
+"Scene.Settings.Cell.ReportIssueOnGithub" = "Report issue on Github";
+"Scene.Settings.Cell.Acknowledgements" = "Acknowledgements";
+"Scene.Settings.Cell.Terms of service" = "Terms of service";
+"Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";
+"Scene.Settings.Cell.BackupWallet" = "Backup wallet";
+"Scene.Settings.Cell.RemoveWallet" = "Remove wallet";
+"Scene.Settings.Cell.AppVersion" = "Version";
 
 

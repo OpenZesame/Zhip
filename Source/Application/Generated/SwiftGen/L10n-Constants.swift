@@ -225,19 +225,27 @@ internal enum L10n {
     internal enum Settings {
       /// Settings
       internal static let title = L10n.tr("Localizable", "Scene.Settings.Title")
-      internal enum Button {
+      internal enum Cell {
+        /// Acknowledgements
+        internal static let acknowledgements = L10n.tr("Localizable", "Scene.Settings.Cell.Acknowledgements")
+        /// Version
+        internal static let appVersion = L10n.tr("Localizable", "Scene.Settings.Cell.AppVersion")
         /// Backup wallet
-        internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Button.BackupWallet")
+        internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
+        /// Read ERC-20 warning
+        internal static let readERC20Warning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadERC20Warning")
         /// Remove pincode
-        internal static let removePincode = L10n.tr("Localizable", "Scene.Settings.Button.RemovePincode")
+        internal static let removePincode = L10n.tr("Localizable", "Scene.Settings.Cell.RemovePincode")
         /// Remove wallet
-        internal static let removeWallet = L10n.tr("Localizable", "Scene.Settings.Button.RemoveWallet")
+        internal static let removeWallet = L10n.tr("Localizable", "Scene.Settings.Cell.RemoveWallet")
+        /// Report issue on Github
+        internal static let reportIssueOnGithub = L10n.tr("Localizable", "Scene.Settings.Cell.ReportIssueOnGithub")
         /// Set pincode
-        internal static let setPincode = L10n.tr("Localizable", "Scene.Settings.Button.SetPincode")
-      }
-      internal enum Label {
-        /// App Version
-        internal static let appVersion = L10n.tr("Localizable", "Scene.Settings.Label.AppVersion")
+        internal static let setPincode = L10n.tr("Localizable", "Scene.Settings.Cell.SetPincode")
+        /// Star us on Github
+        internal static let starUsOnGithub = L10n.tr("Localizable", "Scene.Settings.Cell.StarUsOnGithub")
+        /// Terms of service
+        internal static let termsOfService = L10n.tr("Localizable", "Scene.Settings.Cell.Terms of service")
       }
     }
     internal enum SignTransaction {

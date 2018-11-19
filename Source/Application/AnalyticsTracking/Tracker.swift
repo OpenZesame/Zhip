@@ -19,9 +19,21 @@ struct Tracker {
 }
 
 // MARK: - Tracking
+struct NoContext {}
 extension Tracker: Tracking {
-    func track(event: TrackableEvent) {
+    func track(event: TrackableEvent, context overridingContext: Any = NoContext()) {
         guard preferences.isTrue(.hasAcceptedAnalyticsTracking) else { return }
-        log.verbose("🌍 Tracked: \(event.eventContext):\(event.eventName)")
+
+        let context: String
+        if !(overridingContext is NoContext) {
+            if let contextString = overridingContext as? CustomStringConvertible {
+                context = contextString.description
+            } else {
+                context = "\(type(of: overridingContext))"
+            }
+        } else {
+            context = event.eventContext
+        }
+        log.verbose("🌍 Tracked: \(context):\(event.eventName)")
     }
 }

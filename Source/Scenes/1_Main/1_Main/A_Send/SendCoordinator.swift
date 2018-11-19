@@ -61,7 +61,9 @@ private extension SendCoordinator {
 
         push(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
-            case .sign(let transactionResponse): self.finish()
+            case .sign(let transactionResponse):
+                log.info("Doing nothing with tx with id \(transactionResponse.transactionIdentifier)")
+                self.finish()
             }
         }
     }

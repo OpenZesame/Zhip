@@ -60,11 +60,15 @@ pods_lacking_swift_version_build_setting = [
 ]
     
 post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-          if pods_lacking_swift_version_build_setting.include?(target.name)
-            config.build_settings['SWIFT_VERSION'] = '4.2'
-          end
+  # Acknowledgments: https://github.com/CocoaPods/CocoaPods/wiki/Acknowledgements
+  require 'fileutils'
+  FileUtils.cp_r('Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme-acknowledgements.plist', 'Source/Application/Assets/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+
+  installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        if pods_lacking_swift_version_build_setting.include?(target.name)
+          config.build_settings['SWIFT_VERSION'] = '4.2'
         end
-    end
+      end
+  end
 end

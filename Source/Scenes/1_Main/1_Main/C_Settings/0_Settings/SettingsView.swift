@@ -13,39 +13,13 @@ import RxCocoa
 private typealias € = L10n.Scene.Settings
 
 // MARK: - SettingsView
-final class SettingsView: ScrollingStackView {
+final class SettingsView: HeaderlessTableView<SettingsTableViewCell>, EmptyInitializable {
 
-    private lazy var setPincodeButton = UIButton(type: .custom)
-        .withStyle(.primary)
-        .titled(normal: €.Button.setPincode)
-        .disabled()
+    init() {
+        super.init(style: .grouped)
+    }
 
-    private lazy var removePincodeButton = UIButton(type: .custom)
-        .withStyle(.secondary)
-        .titled(normal: €.Button.removePincode)
-        .disabled()
-
-    private lazy var backupWalletButton = UIButton(type: .custom)
-        .withStyle(.primary)
-        .titled(normal: €.Button.backupWallet)
-
-    private lazy var removeWalletButton = UIButton(type: .custom)
-        .withStyle(.secondary)
-        .titled(normal: €.Button.removeWallet)
-
-    private lazy var appVersionLabels = TitledValueView(
-        title: €.Label.appVersion,
-        stackViewStyle: UIStackView.Style(alignment: .center)
-    )
-
-    lazy var stackViewStyle: UIStackView.Style = [
-        setPincodeButton,
-        removePincodeButton,
-        backupWalletButton,
-        removeWalletButton,
-        appVersionLabels,
-        .spacer
-    ]
+    required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
 extension SettingsView: ViewModelled {
@@ -53,18 +27,13 @@ extension SettingsView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isSetPincodeButtonEnabled     --> setPincodeButton.rx.isEnabled,
-            viewModel.isRemovePincodeButtonEnabled  --> removePincodeButton.rx.isEnabled,
-            viewModel.appVersion                    --> appVersionLabels
+            viewModel.sections.drive(sections)
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
-            setPincodeTrigger: setPincodeButton.rx.tap.asDriver(),
-            removePincodeTrigger: removePincodeButton.rx.tap.asDriver(),
-            backupWalletTrigger: backupWalletButton.rx.tap.asDriver(),
-            removeWalletTrigger: removeWalletButton.rx.tap.asDriver()
+            selectedIndedPath: rx.itemSelected.asDriver()
         )
     }
 }

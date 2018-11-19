@@ -10,5 +10,6 @@ import Foundation
 
 /// A type that can track events that are trackable
 protocol Tracking {
-    func track(event: TrackableEvent)
+    /// `context` should be made optional in your implementation, by using `NoContext`
+    func track(event: TrackableEvent, context: Any)
 }
