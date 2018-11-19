@@ -9,6 +9,9 @@ def shared
   # RxSwift made this app
   pod 'RxCocoa'
 
+  # Reactive Table and CollectionView
+  pod 'RxDataSources'
+
   # Code convention linter
   pod 'SwiftLint'
 
