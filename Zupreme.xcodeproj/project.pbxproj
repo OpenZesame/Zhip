@@ -185,6 +185,9 @@
 		48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* Transaction.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
+		5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */; };
+		5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */; };
+		5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */; };
 		7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */; };
 /* End PBXBuildFile section */
 
@@ -386,6 +389,9 @@
 		48F37D6D21918F6F008A2DA4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
+		5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
+		5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
+		5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
 		71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZupremeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zupreme.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1019,9 +1025,10 @@
 			children = (
 				48ECF59921A18F140078D659 /* OnboardingCoordinator.swift */,
 				48ECF59A21A18F140078D659 /* 0_TermsOfService */,
-				48ECF5A821A18F140078D659 /* 1_WarningERC20 */,
-				48ECF5AC21A18F140078D659 /* 2_ChooseWallet */,
-				48ECF59E21A18F140078D659 /* 3_ChoosePincode */,
+				5BF1DFA621A4288E00FE8068 /* 1_AskForAnalyticsPermissions */,
+				48ECF5A821A18F140078D659 /* 2_WarningERC20 */,
+				48ECF5AC21A18F140078D659 /* 3_ChooseWallet */,
+				48ECF59E21A18F140078D659 /* 4_ChoosePincode */,
 			);
 			path = 0_Onboarding;
 			sourceTree = "<group>";
@@ -1036,14 +1043,14 @@
 			path = 0_TermsOfService;
 			sourceTree = "<group>";
 		};
-		48ECF59E21A18F140078D659 /* 3_ChoosePincode */ = {
+		48ECF59E21A18F140078D659 /* 4_ChoosePincode */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */,
 				48ECF5A321A18F140078D659 /* 0_ChoosePincode */,
 				48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */,
 			);
-			path = 3_ChoosePincode;
+			path = 4_ChoosePincode;
 			sourceTree = "<group>";
 		};
 		48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */ = {
@@ -1066,17 +1073,17 @@
 			path = 0_ChoosePincode;
 			sourceTree = "<group>";
 		};
-		48ECF5A821A18F140078D659 /* 1_WarningERC20 */ = {
+		48ECF5A821A18F140078D659 /* 2_WarningERC20 */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A921A18F140078D659 /* WarningERC20View.swift */,
 				48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */,
 				48ECF5AB21A18F140078D659 /* WarningERC20.swift */,
 			);
-			path = 1_WarningERC20;
+			path = 2_WarningERC20;
 			sourceTree = "<group>";
 		};
-		48ECF5AC21A18F140078D659 /* 2_ChooseWallet */ = {
+		48ECF5AC21A18F140078D659 /* 3_ChooseWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */,
@@ -1084,6 +1091,7 @@
 				48ECF5B721A18F140078D659 /* 1a_CreateNewWallet */,
 				48ECF5AD21A18F140078D659 /* 1b_RestoreWallet */,
 			);
+			name = 3_ChooseWallet;
 			path = 2_ChooseWallet;
 			sourceTree = "<group>";
 		};
@@ -1164,6 +1172,16 @@
 			children = (
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		5BF1DFA621A4288E00FE8068 /* 1_AskForAnalyticsPermissions */ = {
+			isa = PBXGroup;
+			children = (
+				5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */,
+				5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */,
+				5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */,
+			);
+			path = 1_AskForAnalyticsPermissions;
 			sourceTree = "<group>";
 		};
 		DEA4890CF1DEE89F5F357C1B /* Pods */ = {
@@ -1509,6 +1527,7 @@
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
 				48ECF5D221A18F140078D659 /* RemovePincodeView.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder+Extensions.swift in Sources */,
+				5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
 				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,
@@ -1517,9 +1536,11 @@
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
 				48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
+				5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */,
 				48ECF4B821A17B7A0078D659 /* TitledValueView.swift in Sources */,
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
+				5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */,
 				48ECF62821A356A50078D659 /* TrackedError.swift in Sources */,
 				48ECF5CE21A18F140078D659 /* SignTransactionViewModel.swift in Sources */,
 				483CE9E52194E9E300BED31C /* KeyConvertible.swift in Sources */,

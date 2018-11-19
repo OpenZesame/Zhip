@@ -40,7 +40,7 @@ final class WarningERC20ViewModel: BaseViewModel<
                 self.useCase.doNotShowERC20WarningAgain()
             }).drive()
         ]
-        
+
         return Output()
     }
 }
