@@ -14,6 +14,9 @@ protocol OnboardingUseCase {
     var hasAcceptedTermsOfService: Bool { get }
     func didAcceptTermsOfService()
 
+    var hasOptedForAnalyticsPermissions: Bool { get }
+    func optedForAnalyticsPermissions(acceptsTracking: Bool)
+
     var hasAskedToSkipERC20Warning: Bool { get }
     func doNotShowERC20WarningAgain()
 
