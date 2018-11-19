@@ -180,6 +180,8 @@
 		5BF394D121A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394CE21A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift */; };
 		5BF394D221A2CA510037ED30 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394CF21A2CA510037ED30 /* AskForAnalyticsPermissions.swift */; };
 		5BF394D321A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394D021A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift */; };
+		5BF394D521A33D510037ED30 /* UIView+RoundingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394D421A33D510037ED30 /* UIView+RoundingStrategy.swift */; };
+		5BF394D721A34EDD0037ED30 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF394D621A34EDD0037ED30 /* AssociatedObject.swift */; };
 		7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */; };
 /* End PBXBuildFile section */
 
@@ -376,6 +378,8 @@
 		5BF394CE21A2CA510037ED30 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
 		5BF394CF21A2CA510037ED30 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
 		5BF394D021A2CA510037ED30 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
+		5BF394D421A33D510037ED30 /* UIView+RoundingStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RoundingStrategy.swift"; sourceTree = "<group>"; };
+		5BF394D621A34EDD0037ED30 /* AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZupremeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zupreme.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -530,6 +534,7 @@
 				483CE9AF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift */,
 				483CE9B02194E9E300BED31C /* Bootstrap.swift */,
 				483CE9B12194E9E300BED31C /* ConfigurationDetection.swift */,
+				5BF394D621A34EDD0037ED30 /* AssociatedObject.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -771,6 +776,7 @@
 				48C89FED214331FE0063B0FA /* ViewModelled.swift */,
 				48C89FF72143327A0063B0FA /* Styling */,
 				48BA52F12180EC47009775D5 /* UIView+Border.swift */,
+				5BF394D421A33D510037ED30 /* UIView+RoundingStrategy.swift */,
 			);
 			path = "Views+Styleable";
 			sourceTree = "<group>";
@@ -1420,6 +1426,7 @@
 				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
 				4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */,
+				5BF394D521A33D510037ED30 /* UIView+RoundingStrategy.swift in Sources */,
 				48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */,
 				4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */,
 				487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */,
@@ -1455,6 +1462,7 @@
 				48ECF5D121A18F140078D659 /* Settings.swift in Sources */,
 				48BA52F22180EC47009775D5 /* UIView+Border.swift in Sources */,
 				48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */,
+				5BF394D721A34EDD0037ED30 /* AssociatedObject.swift in Sources */,
 				48ECF60E21A1D0AC0078D659 /* BaseCoordinator+Scene.swift in Sources */,
 				48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,

@@ -53,7 +53,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
         topImageView.backgroundColor = .lightGray
         topImageView.clipsToBounds = true
         topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
-        topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
+        topImageView.addRoundingStrategy()
         titleLabel.textAlignment = .center
     }
 }
