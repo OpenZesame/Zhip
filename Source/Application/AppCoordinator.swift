@@ -59,9 +59,9 @@ private extension AppCoordinator {
             useCaseProvider: useCaseProvider
         )
 
-        start(coordinator: onboarding, transition: .replace) { [unowned self] in
-            switch $0 {
-            case .userFinishedOnboording: self.toMain()
+        start(coordinator: onboarding, transition: .replace) { [unowned self] userDid in
+            switch userDid {
+            case .finishOnboording: self.toMain()
             }
         }
     }
@@ -77,9 +77,9 @@ private extension AppCoordinator {
             useCaseProvider: useCaseProvider
         )
 
-        start(coordinator: main, transition: .replace) { [unowned self] in
-            switch $0 {
-            case .didRemoveWallet: self.toOnboarding()
+        start(coordinator: main, transition: .replace) { [unowned self] userDid in
+            switch userDid {
+            case .removeWallet: self.toOnboarding()
             }
         }
     }

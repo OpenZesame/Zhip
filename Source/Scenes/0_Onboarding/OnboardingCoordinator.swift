@@ -12,7 +12,7 @@ import Zesame
 
 final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Step> {
     enum Step {
-        case userFinishedOnboording
+        case finishOnboording
     }
 
     private let useCaseProvider: UseCaseProvider
@@ -100,6 +100,6 @@ private extension OnboardingCoordinator {
     }
 
     func finish() {
-        stepper.step(.userFinishedOnboording)
+        stepper.step(.finishOnboording)
     }
 }
