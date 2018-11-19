@@ -97,30 +97,30 @@ private extension SettingsViewModel {
         let hasPin = useCase.hasConfiguredPincode
 
         sections += [
-            SettingsItem.whenSelectedNavigate(
+            .whenSelectedNavigate(
                 to: hasPin ? .removePincode : .setPincode,
                 titled: hasPin ? €.removePincode : €.setPincode
             )
         ]
 
         sections += [
-            SettingsItem.whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub),
-            SettingsItem.whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub),
-            SettingsItem.whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements)
+            .whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub),
+            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub),
+            .whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements)
         ]
 
         sections += [
-            SettingsItem.whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService),
-            SettingsItem.whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning)
+            .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService),
+            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning)
         ]
 
         sections += [
-            SettingsItem.whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet),
-            SettingsItem.whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, style: .destructive)
+            .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet),
+            .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, style: .destructive)
         ]
 
         sections += [
-            SettingsItem.whenSelectedNavigate(to: .openAppStore, titled: appVersionString)
+            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString)
         ]
 
         return sections
