@@ -42,8 +42,13 @@ extension MainCoordinator {
     func toSendPrefilTransaction(_ transaction: Transaction) {
         if let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) {
             sendCoordinator.prefillTranscaction(transaction)
-        } else {
+            return
+        }
+
+        if childCoordinators.isEmpty {
             toSend(prefillTransaction: transaction)
+        } else {
+            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
         }
     }
 }

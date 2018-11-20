@@ -38,7 +38,6 @@ extension SendCoordinator {
     }
 }
 
-
 // MARK: - Navigate
 private extension SendCoordinator {
     func toPrepareTransaction() {
