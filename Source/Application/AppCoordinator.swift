@@ -61,7 +61,7 @@ private extension AppCoordinator {
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] userDid in
             switch userDid {
-            case .finishOnboording: self.toMain()
+            case .finishOnboarding: self.toMain()
             }
         }
     }
