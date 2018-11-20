@@ -98,6 +98,7 @@
 		48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
 		48CA6981218352FF00C05F5F /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */; };
+		48CA7BCE21A4A17C00E131C2 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA7BCD21A4A17C00E131C2 /* UIViewController.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
 		48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */; };
 		48ECF4B621A16B9D0078D659 /* ScrollingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */; };
@@ -302,6 +303,7 @@
 		48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayoutPriority+ExpressibleByIntegerLiteral.swift"; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
 		48CA6980218352FF00C05F5F /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
+		48CA7BCD21A4A17C00E131C2 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
 		48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingStackView.swift; sourceTree = "<group>"; };
@@ -828,6 +830,7 @@
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
 				48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */,
 				48F832ED2185DE0200EDAD40 /* UIWindow.swift */,
+				48CA7BCD21A4A17C00E131C2 /* UIViewController.swift */,
 				48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */,
 				4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */,
 				4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */,
@@ -1525,6 +1528,7 @@
 				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
 				48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
+				48CA7BCE21A4A17C00E131C2 /* UIViewController.swift in Sources */,
 				48ECF5D221A18F140078D659 /* RemovePincodeView.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder+Extensions.swift in Sources */,
 				5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */,

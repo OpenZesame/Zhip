@@ -10,6 +10,15 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// MARK: - Looking through the navigation stack
+extension BaseCoordinator {
+    func isTopmost<Scene>(scene: Scene.Type) -> Bool where Scene: UIViewController {
+        guard navigationController.topViewController is Scene else { return false }
+        return true
+    }
+}
+
+// MARK: - Presentation
 extension BaseCoordinator {
 
     func push<S, V>(
@@ -69,8 +78,8 @@ private extension BaseCoordinator {
         (customNavigationController ?? navigationController).present(viewController: viewController, presentation: presentation)
 
         navigation.do(onNext: {
-            navigationHandler($0, { [unowned viewController] animated in
-                viewController.dismiss(animated: animated, completion: nil)
+            navigationHandler($0, { [unowned viewController] animated, navigationCompletion in
+                viewController.dismiss(animated: animated, completion: navigationCompletion)
             })
         }).drive().disposed(by: bag)
     }
@@ -78,7 +87,7 @@ private extension BaseCoordinator {
 
 typealias PresentationCompletion = () -> Void
 typealias IsAnimated = Bool
-typealias DismissScene = (IsAnimated) -> Void
+typealias DismissScene = (IsAnimated, PresentationCompletion?) -> Void
 
 private enum PresentationMode {
     case present(animated: Bool, completion: PresentationCompletion?)

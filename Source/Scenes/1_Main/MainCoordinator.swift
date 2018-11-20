@@ -20,13 +20,16 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-    private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
 
-    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+
+    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         super.init(navigationController: navigationController)
+        bag <~ deeplinkedTransaction.do(onNext: { [unowned self] in
+            self.toSendPrefilTransaction($0)
+        }).drive()
     }
 
     override func start() {
@@ -37,7 +40,11 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
 // MARK: - Deep Link Navigation
 extension MainCoordinator {
     func toSendPrefilTransaction(_ transaction: Transaction) {
-        deepLinkedTransactionSubject.onNext(transaction)
+        if let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) {
+            sendCoordinator.prefillTranscaction(transaction)
+        } else {
+            toSend(prefillTransaction: transaction)
+        }
     }
 }
 
@@ -60,12 +67,12 @@ private extension MainCoordinator {
         }
     }
 
-    func toSend() {
+    func toSend(prefillTransaction: Transaction? = nil) {
         presentModalCoordinator(
             makeCoordinator: { SendCoordinator(
                 navigationController: $0,
                 useCaseProvider: useCaseProvider,
-                deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty()
+                prefilledTransaction: prefillTransaction
                 )
         },
             navigationHandler: { userDid, dismissModalFlow in

@@ -31,7 +31,6 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
         let neverUsedNavigationController = UINavigationController()
 
         super.init(navigationController: neverUsedNavigationController)
-        setupDeepLinkNavigationHandling()
     }
 
     override func start() {
@@ -74,7 +73,8 @@ private extension AppCoordinator {
         let main = MainCoordinator(
             navigationController: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider
+            useCaseProvider: useCaseProvider,
+            deeplinkedTransaction: deepLinkHandler.navigation.map { $0.transaction }.filterNil()
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] userDid in
@@ -86,9 +86,12 @@ private extension AppCoordinator {
 
     func toUnlockAppWithPincodeIfNeeded() {
         guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
-        guard let topMostNavgationController = findTopMostNavigationController() else { incorrectImplementation("should have a navigationController") }
+        guard let topMostNavgationController = window.rootViewController?.findTopMostNavigationController() else { incorrectImplementation("should have a navigationController") }
+
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+
         isCurrentlyPresentingLockScene = true
+        deepLinkHandler.appIsLockedBufferDeeplinks()
         modallyPresent(
             scene: UnlockAppWithPincode.self,
             viewModel: viewModel,
@@ -97,7 +100,9 @@ private extension AppCoordinator {
             switch userDid {
             case .unlockApp:
                 self.isCurrentlyPresentingLockScene = false
-                dismissScene(true)
+                dismissScene(true, { [unowned self] in
+                    self.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
+                })
             }
         }
     }
@@ -115,24 +120,6 @@ private extension AppCoordinator {
     func lockApp() {
         toUnlockAppWithPincodeIfNeeded()
     }
-
-    func findTopMostViewController() -> UIViewController? {
-        guard var topController = window.rootViewController else { return nil }
-        while let presentedViewController = topController.presentedViewController {
-            topController = presentedViewController
-        }
-        return topController
-    }
-
-    func findTopMostNavigationController() -> UINavigationController? {
-        guard let topController = findTopMostViewController() else { return nil }
-        if let navigationController = topController as? UINavigationController {
-            return navigationController
-        } else {
-            return topController.navigationController
-        }
-    }
-
 }
 
 // MARK: - DeepLink Handler
@@ -141,23 +128,5 @@ extension AppCoordinator {
     /// returns: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
     func handleDeepLink(_ url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         return deepLinkHandler.handle(url: url, options: options)
-    }
-
-    func setupDeepLinkNavigationHandling() {
-        let deepLinkStepper = Stepper<DeepLink>()
-        deepLinkHandler.set(stepper: deepLinkStepper)
-        bag <~ deepLinkStepper.navigation.do(onNext: { [unowned self] in
-            switch $0 {
-            case .send(let transaction): self.toSend(prefilTransaction: transaction)
-            }
-        }).drive()
-    }
-}
-
-// MARK: Private DeepLink navigation
-private extension AppCoordinator {
-    func toSend(prefilTransaction transaction: Transaction) {
-        guard let mainCoordinator = anyCoordinatorOf(type: MainCoordinator.self) else { return }
-        mainCoordinator.toSendPrefilTransaction(transaction)
     }
 }

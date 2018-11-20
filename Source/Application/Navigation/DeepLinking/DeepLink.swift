@@ -7,8 +7,17 @@
 //
 
 import Foundation
+
 enum DeepLink {
     case send(Transaction)
+}
+
+extension DeepLink {
+    var transaction: Transaction? {
+        switch self {
+        case .send(let transaction): return transaction
+        }
+    }
 }
 
 extension DeepLink {

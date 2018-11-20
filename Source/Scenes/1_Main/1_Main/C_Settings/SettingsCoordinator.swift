@@ -79,7 +79,7 @@ private extension SettingsCoordinator {
 
         modallyPresent(scene: RemovePincode.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .cancelPincodeRemoval, .removePincode: dismissScene(true)
+            case .cancelPincodeRemoval, .removePincode: dismissScene(true, nil)
             }
         }
     }
@@ -111,7 +111,7 @@ private extension SettingsCoordinator {
 
         modallyPresent(scene: WarningERC20.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .understandRisks: dismissScene(true)
+            case .understandRisks: dismissScene(true, nil)
             }
         }
     }
@@ -121,7 +121,7 @@ private extension SettingsCoordinator {
 
         modallyPresent(scene: TermsOfService.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .acceptTermsOfService: dismissScene(true)
+            case .acceptTermsOfService: dismissScene(true, nil)
             }
         }
     }
@@ -135,7 +135,7 @@ private extension SettingsCoordinator {
 
         modallyPresent(scene: BackupWallet.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .backupWallet: dismissScene(true)
+            case .backupWallet: dismissScene(true, nil)
             }
         }
     }

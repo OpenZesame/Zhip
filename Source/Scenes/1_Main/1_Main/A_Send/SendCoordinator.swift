@@ -18,11 +18,11 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     }
 
     private let useCaseProvider: UseCaseProvider
-    private let deepLinkedTransaction: Driver<Transaction>
+    private let deepLinkedTransactionSubject: BehaviorSubject<Transaction?>
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, prefilledTransaction: Transaction?) {
         self.useCaseProvider = useCaseProvider
-        self.deepLinkedTransaction = deepLinkedTransaction
+        deepLinkedTransactionSubject = BehaviorSubject<Transaction?>(value: prefilledTransaction)
         super.init(navigationController: navigationController)
     }
 
@@ -31,13 +31,21 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     }
 }
 
+extension SendCoordinator {
+    func prefillTranscaction(_ transaction: Transaction) {
+        guard isTopmost(scene: PrepareTransaction.self) else { return }
+        deepLinkedTransactionSubject.onNext(transaction)
+    }
+}
+
+
 // MARK: - Navigate
 private extension SendCoordinator {
     func toPrepareTransaction() {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            deepLinkedTransaction: deepLinkedTransaction
+            deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty().filterNil()
         )
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
