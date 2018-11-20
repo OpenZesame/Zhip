@@ -12,7 +12,7 @@ import RxCocoa
 
 // MARK: - AnalyticsPermissionNavigation
 enum AskForAnalyticsPermissionsNavigation: TrackedUserAction {
-    case userOptedForAnalyticsPermissions
+    case answerQuestionAboutAnalyticsPermission
 }
 
 // MARK: - AnalyticsPermissionViewModel
@@ -33,28 +33,29 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
             stepper.step(userAction)
         }
 
-        let readDisclaimerTrigger = input.fromView.readDisclaimerTrigger
+        let haveReadDisclaimerTrigger = input.fromView.haveReadDisclaimerTrigger
 
+        let hasAnsweredAnalyticsPermissionsQuestionTrigger = Driver.merge(
+            input.fromView.acceptTrigger.map { true },
+            input.fromView.declineTrigger.map { false }
+        )
+        
         bag <~ [
-            input.fromView.acceptTrigger.do(onNext: { [unowned self] in
-                self.useCase.optedForAnalyticsPermissions(acceptsTracking: true)
-                userDid(.userOptedForAnalyticsPermissions)
-            }).drive(),
-
-            input.fromView.declineTrigger.do(onNext: { [unowned self] in
-                self.useCase.optedForAnalyticsPermissions(acceptsTracking: false)
-                userDid(.userOptedForAnalyticsPermissions)
+            hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
+                self.useCase.answeredAnalyticsPermissionsQuestion(acceptsTracking: $0)
+                self.stepper.step(.answerQuestionAboutAnalyticsPermission)
             }).drive()
         ]
+        
         return Output(
-            areButtonsEnabled: readDisclaimerTrigger
+            areButtonsEnabled: haveReadDisclaimerTrigger
         )
     }
 }
 
 extension AskForAnalyticsPermissionsViewModel {
     struct InputFromView {
-        let readDisclaimerTrigger: Driver<Bool>
+        let haveReadDisclaimerTrigger: Driver<Bool>
         let acceptTrigger: Driver<Void>
         let declineTrigger: Driver<Void>
     }

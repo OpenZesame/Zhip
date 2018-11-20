@@ -26,8 +26,8 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         return preferences.isTrue(.hasAcceptedTermsOfService)
     }
 
-    var hasOptedForAnalyticsPermissions: Bool {
-        return preferences.hasValue(for: .hasAcceptedAnalyticsTracking)
+    var hasAnsweredAnalyticsPermissionsQuestion: Bool {
+        return preferences.isTrue(.hasAnsweredAnalyticsPermissionsQuestion)
     }
 
     var hasAskedToSkipERC20Warning: Bool {
@@ -38,7 +38,8 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         preferences.save(value: true, for: .hasAcceptedTermsOfService)
     }
 
-    func optedForAnalyticsPermissions(acceptsTracking: Bool) {
+    func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
+        preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
         preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)
     }
 

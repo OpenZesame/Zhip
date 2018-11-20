@@ -38,7 +38,7 @@ private extension OnboardingCoordinator {
             return toTermsOfService()
         }
 
-        guard onboardingUseCase.hasOptedForAnalyticsPermissions else {
+        guard onboardingUseCase.hasAnsweredAnalyticsPermissionsQuestion else {
             return toAnalyticsPermission()
         }
 
@@ -72,7 +72,7 @@ private extension OnboardingCoordinator {
 
         push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid, _ in
             switch userDid {
-            case .userOptedForAnalyticsPermissions: self.toWarningERC20()
+            case .answerQuestionAboutAnalyticsPermission: self.toWarningERC20()
             }
         }
     }

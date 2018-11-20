@@ -19,7 +19,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
     private lazy var topImageView = UIImageView()
     private lazy var topImageViewContainerStackView = UIStackView.Style([topImageView], alignment: .center).make()
 
-    private lazy var titleLabel = UILabel.Style(€.title, font: .boldSystemFont(ofSize: 20)).make()
+    private lazy var titleLabel = UILabel.Style(€.title, textAlignment: .center, font: .boldSystemFont(ofSize: 20)).make()
 
     private lazy var disclaimerTextView = UITextView.Style(€.Text.disclaimer, textAlignment: .left, font: .systemFont(ofSize: 17), textColor: .lightGray, isEditable: false).make()
 
@@ -53,7 +53,6 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
         topImageView.clipsToBounds = true
         topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
         topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
-        titleLabel.textAlignment = .center
     }
 }
 
@@ -69,7 +68,7 @@ extension AskForAnalyticsPermissionsView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            readDisclaimerTrigger: readDisclaimerSwitch.rx.isOn.asDriver(),
+            haveReadDisclaimerTrigger: readDisclaimerSwitch.rx.isOn.asDriver(),
             acceptTrigger: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
             declineTrigger: declineButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
