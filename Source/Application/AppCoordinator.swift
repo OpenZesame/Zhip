@@ -74,7 +74,7 @@ private extension AppCoordinator {
             navigationController: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider,
-            deeplinkedTransaction: deepLinkHandler.navigation.map { $0.transaction }.filterNil()
+            deeplinkedTransaction: deepLinkHandler.navigation.map { $0.asTransaction }.filterNil()
         )
 
         start(coordinator: main, transition: .replace) { [unowned self] userDid in

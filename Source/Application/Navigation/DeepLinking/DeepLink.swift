@@ -13,7 +13,7 @@ enum DeepLink {
 }
 
 extension DeepLink {
-    var transaction: Transaction? {
+    var asTransaction: Transaction? {
         switch self {
         case .send(let transaction): return transaction
         }
