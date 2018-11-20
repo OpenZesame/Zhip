@@ -2,7 +2,7 @@ This project uses [Bitrise](https://app.bitrise.io/users/sign_up?referrer=88c745
 
 | Develop       |
 | ------------- |
-| [![Build Status](https://app.bitrise.io/app/99d6edff17fc06da/status.svg?token=DEc8YmqP0wb2jm1cWHYmFg&branch=develop)](https://app.bitrise.io/app/99d6edff17fc06da)    |
+| [![Build Status](https://app.bitrise.io/app/257ea698a1e55eec/status.svg?token=dTwfBkYmTSddL8n0rXjwZA&branch=develop)](https://app.bitrise.io/app/257ea698a1e55eec)    |
 
 
 # Zupreme
