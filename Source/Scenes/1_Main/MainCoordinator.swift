@@ -15,7 +15,7 @@ private typealias € = L10n.Scene
 
 final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     enum Step {
-        case didRemoveWallet
+        case removeWallet
     }
 
     private let useCaseProvider: UseCaseProvider
@@ -94,7 +94,7 @@ private extension MainCoordinator {
             makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
-                case .removeWallet: self.stepper.step(.didRemoveWallet)
+                case .removeWallet: self.stepper.step(.removeWallet)
                 case .closeSettings: dismissModalFlow(true)
                 }
         })

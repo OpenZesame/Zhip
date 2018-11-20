@@ -4,6 +4,7 @@ PODS:
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CryptoSwift (0.13.0)
+  - Differentiator (3.1.0)
   - EFQRCode (4.4.1):
     - swift_qrcodejs (~> 1.0.1)
   - EllipticCurveKit (0.0.1):
@@ -19,6 +20,10 @@ PODS:
     - RxAtomic (~> 4.4)
     - RxSwift (~> 4.0)
   - RxCocoa (4.4.0):
+    - RxSwift (~> 4.0)
+  - RxDataSources (3.1.0):
+    - Differentiator (~> 3.0)
+    - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
   - RxSwift (4.4.0):
     - RxAtomic (~> 4.4)
@@ -44,6 +49,7 @@ DEPENDENCIES:
   - KeychainSwift
   - RxBlocking
   - RxCocoa
+  - RxDataSources
   - RxTest
   - SwiftGen
   - SwiftLint
@@ -56,6 +62,7 @@ SPEC REPOS:
     - APIKit
     - BigInt
     - CryptoSwift
+    - Differentiator
     - EFQRCode
     - EllipticCurveKit
     - IQKeyboardManagerSwift
@@ -64,6 +71,7 @@ SPEC REPOS:
     - RxAtomic
     - RxBlocking
     - RxCocoa
+    - RxDataSources
     - RxSwift
     - RxTest
     - SipHash
@@ -93,6 +101,7 @@ SPEC CHECKSUMS:
   APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
@@ -102,6 +111,7 @@ SPEC CHECKSUMS:
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
   RxBlocking: 138ad53217434444d6eeeb4fb406a45431d92e31
   RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
+  RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
   RxTest: 19d03286bdc0a3aaea5d61d4cde31fdf4bb8a5ba
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
@@ -112,6 +122,6 @@ SPEC CHECKSUMS:
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
   Zesame: 488b866abf950a24a67079211de1a620e78e3663
 
-PODFILE CHECKSUM: fa5c8d90eea7443fc883314a638609f25a4c14d9
+PODFILE CHECKSUM: 7d9898d2801e33ae666d6520983cbff9a48d567f
 
 COCOAPODS: 1.5.3

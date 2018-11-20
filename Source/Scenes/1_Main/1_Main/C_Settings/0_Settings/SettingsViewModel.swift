@@ -9,15 +9,34 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 // MARK: SettingsNavigation
 enum SettingsNavigation: TrackedUserAction {
+    // Navigation Bar
     case closeSettings
-    case setPincode
-    case removePincode
+
+    // Section 0
+    case removePincode, setPincode
+
+    // Section 1
+    case starUsOnGithub
+    case reportIssueOnGithub
+    case acknowledgments
+
+    // Section 2
+    case readTermsOfService
+    case readERC20Warning
+
+    // Section 3
     case backupWallet
     case removeWallet
+
+    // Section 4
+    case openAppStore
 }
+
+private typealias € = L10n.Scene.Settings.Cell
 
 // MARK: SettingsViewModel
 final class SettingsViewModel: BaseViewModel<
@@ -32,72 +51,91 @@ final class SettingsViewModel: BaseViewModel<
         self.useCase = useCase
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userIntends(to intention: Step) {
+        func userWantsToNavigate(to intention: Step) {
             stepper.step(intention)
         }
 
-        let isRemovePincodeButtonEnabled = input.fromController.viewWillAppear.map { [unowned self] in
-            self.useCase.hasConfiguredPincode
+        let sections = input.fromController.viewWillAppear
+            .map { [unowned self] _ in return self.makeSections() }
+
+        let selectedCell: Driver<SettingsItem> = input.fromView.selectedIndedPath.withLatestFrom(sections) {
+            $1[$0.section].items[$0.row]
         }
-        
-        let isSetPincodeButtonEnabled = isRemovePincodeButtonEnabled.map { !$0 }
 
         bag <~ [
-            input.fromController.rightBarButtonTrigger.do(onNext: {
-                userIntends(to: .closeSettings)
-            }).drive(),
-
-            input.fromView.setPincodeTrigger
-                .do(onNext: { userIntends(to: .setPincode) })
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userWantsToNavigate(to: .closeSettings) })
                 .drive(),
 
-            input.fromView.removePincodeTrigger
-                .do(onNext: { userIntends(to: .removePincode) })
-                .drive(),
-
-            input.fromView.backupWalletTrigger
-                .do(onNext: { userIntends(to: .backupWallet) })
-                .drive(),
-
-            input.fromView.removeWalletTrigger
-                .do(onNext: { userIntends(to: .removeWallet) })
-                .drive()
+            selectedCell.do(onNext: {
+                userWantsToNavigate(to: $0.destination)
+            }).drive()
         ]
 
-        let appVersion = Driver<String?>.just(appVersionString).filterNil()
-
         return Output(
-            isSetPincodeButtonEnabled: isSetPincodeButtonEnabled,
-            isRemovePincodeButtonEnabled: isRemovePincodeButtonEnabled,
-            appVersion: appVersion
+            sections: sections
         )
     }
 }
 
 extension SettingsViewModel {
     struct InputFromView {
-        let setPincodeTrigger: Driver<Void>
-        let removePincodeTrigger: Driver<Void>
-        let backupWalletTrigger: Driver<Void>
-        let removeWalletTrigger: Driver<Void>
+        let selectedIndedPath: Driver<IndexPath>
     }
 
     struct Output {
-        let isSetPincodeButtonEnabled: Driver<Bool>
-        let isRemovePincodeButtonEnabled: Driver<Bool>
-        let appVersion: Driver<String>
+        let sections: Driver<[SectionModel<Void, SettingsItem>]>
     }
 }
 
 private extension SettingsViewModel {
-    var appVersionString: String? {
+
+    // swiftlint:disable:next function_body_length
+    func makeItemMatrix() -> [[SettingsItem]] {
+        var sections = [[SettingsItem]]()
+        let hasPin = useCase.hasConfiguredPincode
+
+        sections += [
+            .whenSelectedNavigate(
+                to: hasPin ? .removePincode : .setPincode,
+                titled: hasPin ? €.removePincode : €.setPincode
+            )
+        ]
+
+        sections += [
+            .whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub),
+            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub),
+            .whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements)
+        ]
+
+        sections += [
+            .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService),
+            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning)
+        ]
+
+        sections += [
+            .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet),
+            .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, style: .destructive)
+        ]
+
+        sections += [
+            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString)
+        ]
+
+        return sections
+    }
+
+    func makeSections() -> [SectionModel<Void, SettingsItem>] {
+        return makeItemMatrix().map { array in return SectionModel(model: (), items: array) }
+    }
+
+    var appVersionString: String {
         let bundle = Bundle.main
         guard
             let version = bundle.version,
             let build = bundle.build
-            else { return nil }
+            else { incorrectImplementation("Should be able to read version and build number") }
         return "\(version) (\(build))"
     }
 }

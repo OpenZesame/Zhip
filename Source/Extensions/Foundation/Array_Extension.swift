@@ -13,3 +13,7 @@ extension Array {
         return map { _ in () }
     }
 }
+
+func += <E>(array: inout [E], element: E) {
+    array.append(element)
+}

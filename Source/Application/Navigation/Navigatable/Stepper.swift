@@ -30,7 +30,7 @@ extension Stepper {
 }
 
 extension Stepper: Tracking {
-    func track(event: TrackableEvent) {
-        tracker.track(event: event)
+    func track(event: TrackableEvent, context: Any = NoContext()) {
+        tracker.track(event: event, context: context)
     }
 }
