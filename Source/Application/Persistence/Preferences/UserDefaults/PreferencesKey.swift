@@ -11,6 +11,7 @@ import Foundation
 /// Insensitive values to be stored into e.g. `UserDefaults`, such as `hasAcceptedTermsOfService`
 enum PreferencesKey: String, KeyConvertible {
     case hasAcceptedTermsOfService
+    case hasAnsweredAnalyticsPermissionsQuestion
     case hasAcceptedAnalyticsTracking
     case skipShowingERC20Warning
     case skipPincodeSetup

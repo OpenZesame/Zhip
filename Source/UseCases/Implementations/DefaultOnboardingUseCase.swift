@@ -26,12 +26,21 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         return preferences.isTrue(.hasAcceptedTermsOfService)
     }
 
+    var hasAnsweredAnalyticsPermissionsQuestion: Bool {
+        return preferences.isTrue(.hasAnsweredAnalyticsPermissionsQuestion)
+    }
+
     var hasAskedToSkipERC20Warning: Bool {
         return preferences.isTrue(.skipShowingERC20Warning)
     }
 
     func didAcceptTermsOfService() {
         preferences.save(value: true, for: .hasAcceptedTermsOfService)
+    }
+
+    func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
+        preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
+        preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)
     }
 
     func doNotShowERC20WarningAgain() {
