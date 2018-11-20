@@ -188,6 +188,7 @@
 		5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */; };
 		5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */; };
 		5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */; };
+		5BF1DFAE21A42E9500FE8068 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFAD21A42E9500FE8068 /* RoundedImageView.swift */; };
 		7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */; };
 /* End PBXBuildFile section */
 
@@ -392,6 +393,7 @@
 		5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
 		5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
 		5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
+		5BF1DFAD21A42E9500FE8068 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZupremeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zupreme.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -736,6 +738,7 @@
 				48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */,
 				48ECF4B121A06C4D0078D659 /* SpinnerView.swift */,
 				48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */,
+				5BF1DFAD21A42E9500FE8068 /* RoundedImageView.swift */,
 			);
 			path = SpecificViews;
 			sourceTree = "<group>";
@@ -1555,6 +1558,7 @@
 				483CE9E42194E9E300BED31C /* UserDefaults+KeyValueStoring.swift in Sources */,
 				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
+				5BF1DFAE21A42E9500FE8068 /* RoundedImageView.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
 				483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */,
 				48ECF5F721A18F140078D659 /* CreateNewWalletCoordinator.swift in Sources */,

@@ -17,7 +17,7 @@ private let acceptDeclineButtonsHeight: CGFloat = 60
 
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
-    private lazy var topImageView = UIImageView()
+    private lazy var topImageView = RoundedImageView()
     private lazy var topImageViewContainerStackView = UIStackView.Style([topImageView], alignment: .center).make()
 
     private lazy var titleLabel = UILabel.Style(€.title, font: .boldSystemFont(ofSize: 20)).make()
@@ -53,7 +53,6 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
         topImageView.backgroundColor = .lightGray
         topImageView.clipsToBounds = true
         topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
-        topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
         titleLabel.textAlignment = .center
     }
 }
