@@ -18,23 +18,16 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     }
 
     private let useCaseProvider: UseCaseProvider
-    private let deepLinkedTransactionSubject: BehaviorSubject<Transaction?>
+    private let deeplinkedTransaction: Driver<Transaction>
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, prefilledTransaction: Transaction?) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
-        deepLinkedTransactionSubject = BehaviorSubject<Transaction?>(value: prefilledTransaction)
+        self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
     }
 
     override func start() {
         toPrepareTransaction()
-    }
-}
-
-extension SendCoordinator {
-    func prefillTranscaction(_ transaction: Transaction) {
-        guard isTopmost(scene: PrepareTransaction.self) else { return }
-        deepLinkedTransactionSubject.onNext(transaction)
     }
 }
 
@@ -44,7 +37,13 @@ private extension SendCoordinator {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty().filterNil()
+            deepLinkedTransaction: deeplinkedTransaction.filter { [unowned self] _ in
+                guard self.isTopmost(scene: PrepareTransaction.self) else {
+                    log.verbose("Prevented deeplinked transaction since it is not the active scene.")
+                    return false
+                }
+                return true
+            }
         )
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in

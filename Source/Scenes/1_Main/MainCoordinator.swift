@@ -20,16 +20,16 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
+    private let deeplinkedTransaction: Driver<Transaction>
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
     init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
+        self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        bag <~ deeplinkedTransaction.do(onNext: { [unowned self] in
-            self.toSendPrefilTransaction($0)
-        }).drive()
+        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in self.toSendPrefilTransaction() }).drive()
     }
 
     override func start() {
@@ -37,19 +37,14 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     }
 }
 
-// MARK: - Deep Link Navigation
-extension MainCoordinator {
-    func toSendPrefilTransaction(_ transaction: Transaction) {
-        if let sendCoordinator = anyCoordinatorOf(type: SendCoordinator.self) {
-            sendCoordinator.prefillTranscaction(transaction)
+//// MARK: - Deep Link Navigation
+private extension MainCoordinator {
+    func toSendPrefilTransaction() {
+        guard childCoordinators.isEmpty else {
+            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
             return
         }
-
-        if childCoordinators.isEmpty {
-            toSend(prefillTransaction: transaction)
-        } else {
-            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
-        }
+        toSend()
     }
 }
 
@@ -72,12 +67,12 @@ private extension MainCoordinator {
         }
     }
 
-    func toSend(prefillTransaction: Transaction? = nil) {
+    func toSend() {
         presentModalCoordinator(
             makeCoordinator: { SendCoordinator(
                 navigationController: $0,
                 useCaseProvider: useCaseProvider,
-                prefilledTransaction: prefillTransaction
+                deeplinkedTransaction: deeplinkedTransaction
                 )
         },
             navigationHandler: { userDid, dismissModalFlow in
