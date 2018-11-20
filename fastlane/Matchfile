@@ -1,8 +1,5 @@
 # For all available options run `fastlane match --help`
 
-git_url("git@github.com:Sajjon/zilliqa-wallet-certificates.git")
-
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 
 app_identifier("org.openzesame.Zupreme")
-team_id("7A6XYE8ZR7")
