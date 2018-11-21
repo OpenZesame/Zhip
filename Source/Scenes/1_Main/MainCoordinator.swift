@@ -20,13 +20,16 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-    private let deepLinkedTransactionSubject = PublishSubject<Transaction>()
+    private let deeplinkedTransaction: Driver<Transaction>
 
-    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider) {
+    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+
+    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
+        self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
+        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in self.toSendPrefilTransaction() }).drive()
     }
 
     override func start() {
@@ -34,10 +37,14 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
     }
 }
 
-// MARK: - Deep Link Navigation
-extension MainCoordinator {
-    func toSendPrefilTransaction(_ transaction: Transaction) {
-        deepLinkedTransactionSubject.onNext(transaction)
+//// MARK: - Deep Link Navigation
+private extension MainCoordinator {
+    func toSendPrefilTransaction() {
+        guard childCoordinators.isEmpty else {
+            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
+            return
+        }
+        toSend()
     }
 }
 
@@ -65,7 +72,7 @@ private extension MainCoordinator {
             makeCoordinator: { SendCoordinator(
                 navigationController: $0,
                 useCaseProvider: useCaseProvider,
-                deepLinkedTransaction: deepLinkedTransactionSubject.asDriverOnErrorReturnEmpty()
+                deeplinkedTransaction: deeplinkedTransaction
                 )
         },
             navigationHandler: { userDid, dismissModalFlow in

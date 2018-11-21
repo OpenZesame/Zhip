@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class DeepLinkHandler {
     enum AnalyticsEvent: TrackableEvent {
@@ -16,18 +18,29 @@ final class DeepLinkHandler {
     }
 
     private let tracker: Tracker
-    private var stepper: Stepper<DeepLink>?
+    private let stepper: Stepper<DeepLink>
 
-    init(tracker: Tracker = Tracker()) {
+    /// This buffered link gets set when the app is locked with a PIN code
+    private var bufferedLink: DeepLink?
+    private var appIsLockedSoBufferLink = false
+
+    init(tracker: Tracker = Tracker(), stepper: Stepper<DeepLink> = Stepper<DeepLink>()) {
         self.tracker = tracker
+        self.stepper = stepper
+    }
+
+    func appIsLockedBufferDeeplinks() {
+        appIsLockedSoBufferLink = true
+    }
+    func appIsUnlockedEmitBufferedDeeplinks() {
+        defer { bufferedLink = nil }
+        appIsLockedSoBufferLink = false
+        guard let link = bufferedLink else { return }
+        navigate(to: link)
     }
 }
 
 extension DeepLinkHandler {
-
-    func set(stepper: Stepper<DeepLink>) {
-        self.stepper = stepper
-    }
 
     /// Read more: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app
     /// Handles incoming `url`, e.g. `zupreme://send?to=0x1a2b3c&amount=1337`
@@ -48,13 +61,21 @@ extension DeepLinkHandler {
         navigate(to: destination)
         return true
     }
+
+    var navigation: Driver<DeepLink> {
+        return stepper.navigation.filter { [unowned self] _ in return !self.appIsLockedSoBufferLink }
+    }
+
 }
 
 // MARK: Private
 private extension DeepLinkHandler {
     func navigate(to destination: DeepLink) {
-        guard let stepper = stepper else { return log.error("Unable to step, no stepper") }
-        stepper.step(destination)
+        if appIsLockedSoBufferLink {
+            bufferedLink = destination
+        } else {
+            stepper.step(destination)
+        }
     }
 
     func track(event: AnalyticsEvent) {

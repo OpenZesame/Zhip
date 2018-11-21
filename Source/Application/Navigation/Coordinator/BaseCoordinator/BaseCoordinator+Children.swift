@@ -11,7 +11,7 @@ import Foundation
 extension BaseCoordinator {
     func anyCoordinatorOf<C>(type: C.Type) -> C? where C: AnyCoordinator {
         guard let coordinator = childCoordinators.compactMap({ $0 as? C }).first else {
-            log.error("Coordinator has no child coordinator of type: `\(String(describing: type))`")
+            log.verbose("Coordinator has no child coordinator of type: `\(String(describing: type))`")
             return nil
         }
         return coordinator

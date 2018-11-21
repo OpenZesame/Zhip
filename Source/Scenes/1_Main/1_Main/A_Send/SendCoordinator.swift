@@ -18,11 +18,11 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
     }
 
     private let useCaseProvider: UseCaseProvider
-    private let deepLinkedTransaction: Driver<Transaction>
+    private let deeplinkedTransaction: Driver<Transaction>
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkedTransaction: Driver<Transaction>) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
         self.useCaseProvider = useCaseProvider
-        self.deepLinkedTransaction = deepLinkedTransaction
+        self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
     }
 
@@ -37,7 +37,13 @@ private extension SendCoordinator {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            deepLinkedTransaction: deepLinkedTransaction
+            deepLinkedTransaction: deeplinkedTransaction.filter { [unowned self] _ in
+                guard self.isTopmost(scene: PrepareTransaction.self) else {
+                    log.verbose("Prevented deeplinked transaction since it is not the active scene.")
+                    return false
+                }
+                return true
+            }
         )
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
