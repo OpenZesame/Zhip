@@ -31,11 +31,13 @@ PODS:
     - RxAtomic (~> 4.4)
     - RxSwift (~> 4.0)
   - SipHash (1.2.2)
+  - SkyFloatingLabelTextField (3.6.0)
   - swift_qrcodejs (1.0.1)
   - SwiftGen (6.0.2)
   - SwiftLint (0.27.0)
   - SwiftyBeaver (1.6.1)
   - TinyConstraints (3.3.1)
+  - Validator (3.1.1)
   - Zesame (0.0.2):
     - APIKit
     - EllipticCurveKit
@@ -51,10 +53,12 @@ DEPENDENCIES:
   - RxCocoa
   - RxDataSources
   - RxTest
+  - SkyFloatingLabelTextField
   - SwiftGen
   - SwiftLint
   - SwiftyBeaver
   - TinyConstraints
+  - Validator
   - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `master`)
 
 SPEC REPOS:
@@ -75,11 +79,13 @@ SPEC REPOS:
     - RxSwift
     - RxTest
     - SipHash
+    - SkyFloatingLabelTextField
     - swift_qrcodejs
     - SwiftGen
     - SwiftLint
     - SwiftyBeaver
     - TinyConstraints
+    - Validator
 
 EXTERNAL SOURCES:
   JSONRPCKit:
@@ -115,13 +121,15 @@ SPEC CHECKSUMS:
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
   RxTest: 19d03286bdc0a3aaea5d61d4cde31fdf4bb8a5ba
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
+  SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
   swift_qrcodejs: c181fe5c849d30c699546a23762d7e3dd143ab37
   SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
+  Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: 488b866abf950a24a67079211de1a620e78e3663
 
-PODFILE CHECKSUM: 7d9898d2801e33ae666d6520983cbff9a48d567f
+PODFILE CHECKSUM: e24cde31d18556e3bc3f98ed4a95274f7cb3c086
 
 COCOAPODS: 1.5.3
