@@ -1,9 +1,6 @@
+![Build Status](https://app.bitrise.io/app/257ea698a1e55eec/status.svg?token=Cy4YjEgbtcNYxkJqTtNX3Q&branch=develop)
+
 This project uses [Bitrise](https://app.bitrise.io/users/sign_up?referrer=88c745a0e3bea9de) for CI.
-
-| Develop       |
-| ------------- |
-| [![Build Status](https://app.bitrise.io/app/257ea698a1e55eec/status.svg?token=dTwfBkYmTSddL8n0rXjwZA&branch=develop)](https://app.bitrise.io/app/257ea698a1e55eec)    |
-
 
 # Zupreme
 This is an open source, iOS Wallet for Zilliqa. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame).
