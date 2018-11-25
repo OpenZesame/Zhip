@@ -13,13 +13,11 @@ private typealias € = L10n.Scene.ChooseWallet
 
 final class ChooseWalletView: ScrollingStackView {
 
-    private lazy var createNewWalletButton = UIButton(type: .custom)
+    private lazy var createNewWalletButton = UIButton(title: €.Button.newWallet)
         .withStyle(.primary)
-        .titled(normal: €.Button.newWallet)
 
-    private lazy var restoreWalletButton = UIButton(type: .custom)
+    private lazy var restoreWalletButton = UIButton(title: €.Button.restoreWallet)
         .withStyle(.secondary)
-        .titled(normal: €.Button.restoreWallet)
 
     lazy var stackViewStyle: UIStackView.Style = [
         createNewWalletButton,

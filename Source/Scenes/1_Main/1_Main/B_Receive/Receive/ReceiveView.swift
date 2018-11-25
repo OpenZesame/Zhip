@@ -21,17 +21,16 @@ final class ReceiveView: ScrollingStackView {
 
     private lazy var addressView = TitledValueView().titled(€.Label.myPublicAddress)
 
-    private lazy var amountToReceiveField = UITextField.Style(€.Field.amount, text: "237").make()
+    private lazy var amountToReceiveField = TextField(placeholder: €.Field.amount, type: .decimal).withStyle(.decimal)
 
-    private lazy var shareButton = UIButton(type: .custom)
+    private lazy var shareButton = UIButton(title: €.Button.share)
         .withStyle(.secondary)
-        .titled(normal: €.Button.share)
 
-    private lazy var copyMyAddressButton = UIButton(type: .custom)
+    private lazy var copyMyAddressButton = UIButton(title: €.Button.copyMyAddress)
         .withStyle(.primary)
-        .titled(normal: €.Button.copyMyAddress)
 
-    private lazy var buttonsStackView = UIStackView.Style([shareButton, copyMyAddressButton], axis: .horizontal, distribution: .fillEqually, margin: 0).make()
+    private lazy var buttonsStackView = UIStackView(arrangedSubviews: [shareButton, copyMyAddressButton])
+        .withStyle(.horizontalFillingEqually)
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([

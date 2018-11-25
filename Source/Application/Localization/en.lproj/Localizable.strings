@@ -5,6 +5,13 @@
 "Generic.Skip" = "Skip";
 "Generic.Back" = "Back";
 
+"Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
+"Error.Input.Address.TooShort" = "Address is too short, should be %d";
+"Error.Input.Address.TooLoong" = "Address is too long, should be %d";
+
+"Error.Input.Amount.TooSmall" = "Amount must be greater than %@";
+"Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
+
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
 

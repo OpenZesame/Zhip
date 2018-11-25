@@ -10,14 +10,13 @@ import UIKit
 
 extension UIButton {
     public struct Style {
-
         let height: CGFloat?
         let textColor: UIColor?
         let colorNormal: UIColor?
         let colorDisabled: UIColor?
         let colorSelected: UIColor?
         let font: UIFont?
-        let isEnabled: Bool?
+        var isEnabled: Bool?
         let borderNormal: Border?
 
         init(
@@ -40,6 +39,13 @@ extension UIButton {
             self.borderNormal = borderNormal
         }
     }
+}
+
+private extension CGFloat {
+    static let defaultHeight: CGFloat = 64
+}
+
+extension UIButton {
 
     func apply(style: Style) {
         translatesAutoresizingMaskIntoConstraints = false
@@ -59,25 +65,28 @@ extension UIButton {
             addBorder(borderNormal)
         }
     }
-}
 
-private extension CGFloat {
-    static let defaultHeight: CGFloat = 64
-}
-
-extension UIButton {
-    func withStyle(_ style: UIButton.Style) -> UIButton {
-        self.apply(style: style)
-        return self
-    }
-
-    func titled<B>(normal: String) -> B where B: UIButton {
-        setTitle(normal, for: .normal)
+    @discardableResult
+    func withStyle<B>(_ style: UIButton.Style, customize: ((UIButton.Style) -> UIButton.Style)? = nil) -> B where B: UIButton {
+        translatesAutoresizingMaskIntoConstraints = false
+        let style = customize?(style) ?? style
+        apply(style: style)
         guard let button = self as? B else { incorrectImplementation("Bad cast") }
         return button
     }
 }
 
+// MARK: - Style + Customizing
+extension UIButton.Style {
+    @discardableResult
+    func disabled() -> UIButton.Style {
+        var style = self
+        style.isEnabled = false
+        return style
+    }
+}
+
+// MARK: - Style Presets
 extension UIButton.Style {
 
     static var hollow: UIButton.Style {
@@ -117,16 +126,4 @@ extension UIButton.Style {
             isEnabled: true
         )
     }
-}
-
-extension UIButton {
-    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
-        UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
-        UIGraphicsGetCurrentContext()!.setFillColor(color.cgColor)
-        UIGraphicsGetCurrentContext()!.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
-        let colorImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        self.setBackgroundImage(colorImage, for: state)
-    }
-
 }

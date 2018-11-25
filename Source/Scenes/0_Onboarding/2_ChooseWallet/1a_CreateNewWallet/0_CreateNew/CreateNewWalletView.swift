@@ -13,17 +13,23 @@ private typealias € = L10n.Scene.CreateNewWallet
 
 final class CreateNewWalletView: ScrollingStackView {
 
-    private lazy var chooseNewPassphraseLabel = UILabel.Style(€.Label.chooseNewPassphrase).make()
-    private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
-    private lazy var confirmEncryptionPassphraseField = UITextField.Style(€.Field.confirmEncryptionPassphrase, isSecureTextEntry: true).make()
-    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel.Style(€.Label.urgeBackup, numberOfLines: 0).make()
-    private lazy var understandsRisksSwitch = UISwitch()
-    private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.passphraseIsBackedUp).make()
-    private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
+    private lazy var chooseNewPassphraseLabel = UILabel(text: €.Label.chooseNewPassphrase).withStyle(.title)
 
-    private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
-        .titled(normal: €.Button.createNewWallet)
-        .disabled()
+    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
+    private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
+
+    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeBackup).withStyle(.body)
+    private lazy var understandsRisksSwitch = UISwitch()
+
+    private lazy var understandsRisksShortLabel = UILabel(text: €.SwitchLabel.passphraseIsBackedUp).withStyle(.checkbox)
+
+    private lazy var riskStackView = UIStackView(arrangedSubviews: [understandsRisksSwitch, understandsRisksShortLabel]).withStyle(.horizontal)
+
+    private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.createNewWallet)
+        .withStyle(.primary) { customizableStyle in
+            customizableStyle.disabled()
+        }
+//        .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [

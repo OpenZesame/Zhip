@@ -19,13 +19,11 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
         valueStyle: .huge
         ).titled(€.Label.Balance.title)
 
-    private lazy var sendButton = UIButton(type: .custom)
+    private lazy var sendButton = UIButton(title: €.Button.send)
         .withStyle(.primary)
-        .titled(normal: €.Button.send)
 
-    private lazy var receiveButton = UIButton(type: .custom)
+    private lazy var receiveButton = UIButton(title: €.Button.receive)
         .withStyle(.secondary)
-        .titled(normal: €.Button.receive)
 
     lazy var stackViewStyle = UIStackView.Style([
         balanceLabels,

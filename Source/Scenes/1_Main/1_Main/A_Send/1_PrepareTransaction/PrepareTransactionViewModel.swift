@@ -39,6 +39,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         func userIntends(to intention: Step) {
             stepper.step(intention)
         }
+
         let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let fromView = input.fromView
@@ -80,6 +81,31 @@ final class PrepareTransactionViewModel: BaseViewModel<
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
         }
 
+        let isSendButtonEnabled = payment.map { $0 != nil }
+
+        let validator = InputValidator()
+
+        let recipientAddressValidation = Driver.merge(
+            // Validate input from view
+            input.fromView.recepientAddress.map { validator.validateRecipient($0) },
+            // All addresses from DeepLinked recipient are always valid
+            recipientFromDeepLinkedTransaction.mapToVoid().map { InputValidationResult.valid }
+        )
+
+        let amountValidation = Driver.merge(
+            input.fromView.amountToSend,
+            amountFromDeepLinkedTransaction.map { $0.description }
+        ).map { validator.validateAmount($0) }
+
+        let gasLimitValidation = fromView.gasLimit.map { validator.validateGasLimit($0) }
+        let gasPriceValidation = fromView.gasPrice.map { validator.validateGasPrice($0) }
+
+        // Only validate when the field loses focus
+        let recipientAddressValidationResult = fromView.recipientAddressDidEndEditing.withLatestFrom(recipientAddressValidation) { $1 }
+        let amountValidationResult = fromView.amountDidEndEditing.withLatestFrom(amountValidation) { $1 }
+        let gasLimitValidationResult = fromView.gasLimitDidEndEditing.withLatestFrom(gasLimitValidation) { $1 }
+        let gasPriceValidationResult = fromView.gasPriceDidEndEditing.withLatestFrom(gasPriceValidation) { $1 }
+
         bag <~ [
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userIntends(to: .cancel) })
@@ -90,17 +116,19 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let isRecipientAddressValid = Driver.merge(recipientFromField.map { $0 != nil }, recipientFromDeepLinkedTransaction.map { _ in true })
-
-        let isSendButtonEnabled = payment.map { $0 != nil }
-
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
             balance: balance.map { €.Labels.Balance.value($0.balance.amount.description) },
-            amount: amountFromDeepLinkedTransaction.map { $0.description },
+
             recipient: recipient.map { $0.checksummedHex },
-            isRecipientAddressValid: isRecipientAddressValid
+            recipientAddressValidationResult: recipientAddressValidationResult,
+
+            amount: amountFromDeepLinkedTransaction.map { $0.description },
+            amountValidationResult: amountValidationResult,
+
+            gasPriceValidationResult: gasPriceValidationResult,
+            gasLimitValidationResult: gasLimitValidationResult
         )
     }
 }
@@ -110,18 +138,57 @@ extension PrepareTransactionViewModel {
     struct InputFromView {
         let pullToRefreshTrigger: Driver<Void>
         let sendTrigger: Driver<Void>
+
         let recepientAddress: Driver<String>
+        let recipientAddressDidEndEditing: Driver<Void>
+
         let amountToSend: Driver<String>
+        let amountDidEndEditing: Driver<Void>
+
         let gasLimit: Driver<String>
+        let gasLimitDidEndEditing: Driver<Void>
+
         let gasPrice: Driver<String>
+        let gasPriceDidEndEditing: Driver<Void>
     }
 
     struct Output {
         let isFetchingBalance: Driver<Bool>
         let isSendButtonEnabled: Driver<Bool>
         let balance: Driver<String>
-        let amount: Driver<String>
+
         let recipient: Driver<String>
-        let isRecipientAddressValid: Driver<Bool>
+        let recipientAddressValidationResult: Driver<InputValidationResult>
+
+        let amount: Driver<String>
+        let amountValidationResult: Driver<InputValidationResult>
+
+        let gasPriceValidationResult: Driver<InputValidationResult>
+        let gasLimitValidationResult: Driver<InputValidationResult>
+    }
+}
+
+// MARK: - Field Validation
+import Validator
+extension PrepareTransactionViewModel {
+    struct InputValidator {
+        private let addressValidator = AddressValidator()
+        private let amountValidator = AmountValidator()
+
+        func validateRecipient(_ recipient: String?) -> InputValidationResult {
+            return addressValidator.validate(input: recipient)
+        }
+
+        func validateAmount(_ amount: String?) -> InputValidationResult {
+            return amountValidator.validate(string: amount)
+        }
+
+        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult {
+            return amountValidator.validate(string: gasLimit)
+        }
+
+        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult {
+            return amountValidator.validate(string: gasPrice)
+        }
     }
 }

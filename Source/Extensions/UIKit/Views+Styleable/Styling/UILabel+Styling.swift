@@ -8,94 +8,97 @@
 
 import UIKit
 
-extension UILabel: Styling, StaticEmptyInitializable, ExpressibleByStringLiteral {
+// MARK: - Style
+extension UILabel {
+    struct Style: Mergeable {
+        let textColor: UIColor?
+        let textAlignment: NSTextAlignment?
+        let font: UIFont?
+        let numberOfLines: Int?
+        let backgroundColor: UIColor?
 
-    public static func createEmpty() -> UILabel {
-        return UILabel()
-    }
-
-    public final class Style: ViewStyle, Makeable, ExpressibleByStringLiteral {
-
-        public typealias View = UILabel
-
-        public let text: String?
-        public let textColor: UIColor?
-        public let textAlignment: NSTextAlignment?
-        public let font: UIFont?
-        public let numberOfLines: Int?
-
-        public init(
-            _ text: String? = nil,
-            height: CGFloat? = nil,
+        init(
             textAlignment: NSTextAlignment? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             numberOfLines: Int? = nil,
             backgroundColor: UIColor? = nil
             ) {
-            self.text = text
             self.textColor = textColor
             self.textAlignment = textAlignment
             self.font = font
             self.numberOfLines = numberOfLines
-            super.init(height: height, backgroundColor: backgroundColor)
-        }
-
-        public convenience init(stringLiteral title: String) {
-            self.init(title)
-        }
-
-        static var `default`: Style {
-            return Style()
-        }
-
-        public func merged(other: Style, mode: MergeMode) -> Style {
-            func merge<T>(_ attributePath: KeyPath<Style, T?>) -> T? {
-                return mergeAttribute(other: other, path: attributePath, mode: mode)
-            }
-
-            return Style(
-                merge(\.text),
-                height: merge(\.height),
-                textAlignment: merge(\.textAlignment),
-                font: merge(\.font),
-                textColor: merge(\.textColor),
-                numberOfLines: merge(\.numberOfLines),
-                backgroundColor: merge(\.backgroundColor)
-            )
+            self.backgroundColor = backgroundColor
         }
     }
+}
 
-    public func apply(style: Style) {
-        text = style.text
+// MARK: Apply Style
+extension UILabel {
+    func apply(style: Style) {
         font = style.font ?? UIFont.Label.value
         textColor = style.textColor ?? .defaultText
         numberOfLines = style.numberOfLines ?? 1
         textAlignment = style.textAlignment ?? .left
-    }
-}
-public enum MergeMode {
-    case overrideOther
-    case yieldToOther
-}
-
-extension Optional where Wrapped: Makeable {
-    func merge(overridingOther other: Wrapped) -> Wrapped {
-        return merged(other: other, mode: .overrideOther)
+        backgroundColor = style.backgroundColor ?? .white
     }
 
-    func merge(yieldingTo other: Wrapped) -> Wrapped {
-        return merged(other: other, mode: .yieldToOther)
-    }
-
-    private func merged(other: Wrapped, mode: MergeMode) -> Wrapped {
-        guard let `self` = self else { return other }
-        return `self`.merged(other: other, mode: mode)
+    @discardableResult
+    func withStyle(_ style: UILabel.Style) -> UILabel {
+        translatesAutoresizingMaskIntoConstraints = false
+        apply(style: style)
+        return self
     }
 }
 
+// MARK: - Style Presets
 extension UILabel.Style {
+    static var title: UILabel.Style {
+        return UILabel.Style(
+            textAlignment: .center,
+            font: UIFont.Label.title,
+            numberOfLines: 0
+        )
+    }
+
+    static var body: UILabel.Style {
+        return UILabel.Style(
+            font: UIFont.Label.value,
+            numberOfLines: 0
+        )
+    }
+
+    static var checkbox: UILabel.Style {
+        return UILabel.Style(
+            font: UIFont.Label.value
+        )
+    }
+
     static var Large: UILabel.Style {
         return UILabel.Style(font: UIFont.Large)
+    }
+
+    static var huge: UILabel.Style {
+        return UILabel.Style(
+            textAlignment: .center,
+            font: UIFont.huge
+        )
+    }
+}
+
+// MARK: - Style + Merging
+extension UILabel.Style {
+    func merged(other: UILabel.Style, mode: MergeMode) -> UILabel.Style {
+        func merge<T>(_ attributePath: KeyPath<UILabel.Style, T?>) -> T? {
+            return mergeAttribute(other: other, path: attributePath, mode: mode)
+        }
+
+        return UILabel.Style(
+            textAlignment: merge(\.textAlignment),
+            font: merge(\.font),
+            textColor: merge(\.textColor),
+            numberOfLines: merge(\.numberOfLines),
+            backgroundColor: merge(\.backgroundColor)
+        )
     }
 }

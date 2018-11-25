@@ -17,8 +17,7 @@ final class TitledValueView: UIStackView {
 
     init(
         titleStyle: UILabel.Style? = nil,
-        valueStyle: UITextView.Style? = nil,
-        stackViewStyle: UIStackView.Style? = nil
+        valueStyle: UITextView.Style? = nil
         ) {
 
         let defaultTitleStyle = UILabel.Style(font: UIFont.Label.title, textColor: .black)
@@ -34,29 +33,18 @@ final class TitledValueView: UIStackView {
 
         let defaultStackViewStyle = UIStackView.Style(spacing: 8, margin: 0, isLayoutMarginsRelativeArrangement: false)
 
-        self.titleLabel = defaultTitleStyle.merge(yieldingTo: titleStyle).make()
-        self.valueTextView = defaultValueStyle.merge(yieldingTo: valueStyle).make()
+        let mergedTitleStyle = defaultTitleStyle.merge(yieldingTo: titleStyle)
+        let mergedValueStyle = defaultValueStyle.merge(yieldingTo: valueStyle)
+
+        self.titleLabel = UILabel(frame: .zero).withStyle(mergedTitleStyle)
+        self.valueTextView = UITextView(frame: .zero).withStyle(mergedValueStyle)
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        apply(style: defaultStackViewStyle.merge(yieldingTo: stackViewStyle))
+        apply(style: defaultStackViewStyle)
         [valueTextView, titleLabel].forEach { insertArrangedSubview($0, at: 0) }
     }
 
     required init(coder: NSCoder) { interfaceBuilderSucks }
-}
-
-extension TitledValueView {
-    convenience init(
-        title: String,
-        valueStyle: UITextView.Style? = nil,
-        stackViewStyle: UIStackView.Style? = nil
-        ) {
-        self.init(
-            titleStyle: UILabel.Style(title),
-            valueStyle: valueStyle,
-            stackViewStyle: stackViewStyle
-        )
-    }
 }
 
 extension TitledValueView {

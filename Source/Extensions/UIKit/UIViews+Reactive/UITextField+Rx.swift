@@ -17,10 +17,26 @@ extension Reactive where Base: UITextField {
             $0.placeholder = $1
         }
     }
+}
 
-    var isValid: Binder<Bool> {
-        return Binder<Bool>(base) {
-            $0.mark(isValid: $1)
+extension TextField {
+    func updateWith(inputValdation validationResult: InputValidationResult) {
+
+        switch validationResult {
+        case .valid: errorMessage = nil
+        case .invalid(let invalid):
+            switch invalid {
+            case .empty: errorMessage = nil
+            case .error(let errorMessage): self.errorMessage = errorMessage
+            }
+        }
+    }
+}
+
+extension Reactive where Base: TextField {
+    var validation: Binder<InputValidationResult> {
+        return Binder<InputValidationResult>(base) {
+            $0.updateWith(inputValdation: $1)
         }
     }
 }

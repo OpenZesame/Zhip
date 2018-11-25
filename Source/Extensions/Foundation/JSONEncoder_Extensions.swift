@@ -1,5 +1,5 @@
 //
-//  JSONEncoder+Extensions.swift
+//  JSONEncoder_Extensions.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-10-26.

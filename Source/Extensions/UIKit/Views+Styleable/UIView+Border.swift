@@ -17,14 +17,10 @@ extension UIView {
             self.width = width
         }
     }
-    
+
     func addBorder(_ border: Border = .default) {
         layer.borderWidth = border.width
         layer.borderColor = border.color
-    }
-
-    func mark(isValid: Bool) {
-        addBorder(isValid ? .default : .error)
     }
 }
 
@@ -33,9 +29,4 @@ extension UIView.Border {
     static var `default`: UIView.Border {
         return UIView.Border(color: UIColor.gray.withAlphaComponent(0.3), width: 0.5)
     }
-
-    static var error: UIView.Border {
-        return UIView.Border(color: .red, width: 2)
-    }
-
 }

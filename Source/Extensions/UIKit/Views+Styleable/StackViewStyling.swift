@@ -14,6 +14,6 @@ protocol StackViewStyling: ContentViewProvider {
 
 extension ContentViewProvider where Self: StackViewStyling {
     func makeContentView() -> UIView {
-        return UIStackView(style: stackViewStyle)
+        return UIStackView(frame: .zero).withStyle(stackViewStyle)
     }
 }

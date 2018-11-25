@@ -14,13 +14,15 @@ private typealias € = L10n.Scene.SignTransaction
 
 final class SignTransactionView: ScrollingStackView {
 
-    private lazy var confirmTransactionLabel = UILabel.Style(€.Label.signTransactionWithEncryptionPassphrase).make()
+    private lazy var confirmTransactionLabel = UILabel(text: €.Label.signTransactionWithEncryptionPassphrase).withStyle(.title)
 
-    private lazy var encryptionPassphraseField = UITextField.Style(€.Field.encryptionPassphrase, isSecureTextEntry: true).make()
+    private lazy var encryptionPassphraseField = TextField(placeholder: €.Field.encryptionPassphrase, type: .text).withStyle(.password)
 
-    private lazy var signButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
-        .titled(normal: €.Button.confirm)
-        .disabled()
+    private lazy var signButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.confirm)
+        .withStyle(.primary) { customizableStyle in
+            customizableStyle.disabled()
+        }
+//        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,

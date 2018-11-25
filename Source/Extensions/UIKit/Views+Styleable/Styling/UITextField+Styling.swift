@@ -9,67 +9,54 @@
 import UIKit
 import TinyConstraints
 
-extension UITextField: EmptyInitializable, Styling, StaticEmptyInitializable, ExpressibleByStringLiteral {
-    static let defaultHeight: CGFloat = 44
+extension UITextField {
+    struct Style {
+        let textColor: UIColor?
+        let font: UIFont?
+        let isSecureTextEntry: Bool?
+        let keyboardType: UIKeyboardType?
+        let backgroundColor: UIColor?
 
-    public static func createEmpty() -> UITextField {
-        return UITextField(frame: .zero)
-    }
-
-    public final class Style: ViewStyle, Makeable, ExpressibleByStringLiteral {
-
-        public typealias View = UITextField
-
-        public let placeholder: String?
-        public let text: String?
-        public let textColor: UIColor?
-        public let font: UIFont?
-        public let isSecureTextEntry: Bool?
-
-        public init(
-            _ placeholder: String? = nil,
-            text: String? = nil,
-            height: CGFloat? = nil,
+        init(
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             backgroundColor: UIColor? = nil,
-            isSecureTextEntry: Bool? = nil
+            isSecureTextEntry: Bool? = nil,
+            keyboardType: UIKeyboardType? = nil
             ) {
-            self.placeholder = placeholder
-            self.text = text
             self.font = font
             self.textColor = textColor
             self.isSecureTextEntry = isSecureTextEntry
-            super.init(height: height ?? defaultHeight, backgroundColor: backgroundColor)
-        }
-
-        public convenience init(stringLiteral placeholder: String) {
-            self.init(placeholder)
-        }
-
-        public func merged(other: Style, mode: MergeMode) -> Style {
-            func merge<T>(_ attributePath: KeyPath<Style, T?>) -> T? {
-                return mergeAttribute(other: other, path: attributePath, mode: mode)
-            }
-
-            return Style(
-                merge(\.placeholder),
-                text: merge(\.text),
-                height: merge(\.height),
-                font: merge(\.font),
-                textColor: merge(\.textColor),
-                backgroundColor: merge(\.backgroundColor),
-                isSecureTextEntry: merge(\.isSecureTextEntry)
-            )
+            self.keyboardType = keyboardType
+            self.backgroundColor = backgroundColor
         }
     }
+}
 
-    public func apply(style: Style) {
-        placeholder = style.placeholder
+// MARK: - Apply Syyle
+extension UITextField {
+    func apply(style: Style) {
         textColor = style.textColor ?? .defaultText
         font = style.font ?? UIFont.Field.text
-        text = style.text
         isSecureTextEntry = style.isSecureTextEntry ?? false
-        addBorder()
+        if let keyboardType = style.keyboardType {
+            self.keyboardType = keyboardType
+        }
+        backgroundColor = style.backgroundColor ?? .white
+    }
+}
+
+// MARK: - Style Presets
+extension UITextField.Style {
+    static var `default`: UITextField.Style {
+        return UITextField.Style()
+    }
+
+    static var password: UITextField.Style {
+        return UITextField.Style(isSecureTextEntry: true)
+    }
+
+    static var decimal: UITextField.Style {
+        return UITextField.Style(keyboardType: .decimalPad)
     }
 }

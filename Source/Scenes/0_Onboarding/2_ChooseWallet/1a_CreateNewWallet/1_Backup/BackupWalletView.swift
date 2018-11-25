@@ -11,24 +11,37 @@ import RxSwift
 
 private typealias € = L10n.Scene.BackupWallet
 
+extension UILabel {
+    convenience init(text: CustomStringConvertible) {
+        self.init(frame: .zero)
+        self.text = text.description
+    }
+}
+
 final class BackupWalletView: ScrollingStackView {
 
-    private lazy var beSafeLabel = UILabel.Style(€.Label.storeKeystoreSecurely, font: UIFont.Label.title, numberOfLines: 0).make()
-    private lazy var keystoreTextView = ScrollableContentSizedTextView(style: UITextView.Style(font: .tiny, isEditable: false))
+    private lazy var beSafeLabel = UILabel(text: €.Label.storeKeystoreSecurely).withStyle(.title)
 
-    private lazy var copyKeystoreButton = UIButton(type: .custom)
+    private lazy var keystoreTextView = ScrollableContentSizedTextView().withStyle(.nonEditable) { customizableSTyle in
+        customizableSTyle
+            .textAlignment(.left)
+            .font(.tiny)
+    }
+
+    private lazy var copyKeystoreButton = UIButton(title: €.Button.copyKeystore)
         .withStyle(.primary)
-        .titled(normal: €.Button.copyKeystore)
 
-    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel.Style(€.Label.urgeSecureBackupOfKeystore, numberOfLines: 0).make()
+    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
+        .withStyle(.body)
 
     private lazy var understandsRisksSwitch = UISwitch()
-    private lazy var understandsRisksShortLabel = UILabel.Style(€.SwitchLabel.keystoreIsBackedUp).make()
-    private lazy var riskStackView = UIStackView.Style([understandsRisksSwitch, understandsRisksShortLabel], axis: .horizontal, margin: 0).make()
+    private lazy var understandsRisksShortLabel = UILabel(text: €.SwitchLabel.keystoreIsBackedUp).withStyle(.checkbox)
 
-    private lazy var haveBackedUpProceedButton = UIButton(type: .custom)
+    private lazy var riskStackView = UIStackView(arrangedSubviews: [understandsRisksSwitch, understandsRisksShortLabel])
+        .withStyle(.horizontal)
+
+    private lazy var haveBackedUpProceedButton = UIButton(title: €.Button.haveBackedUpProceed)
         .withStyle(.secondary)
-        .titled(normal: €.Button.haveBackedUpProceed)
         .disabled()
 
     // MARK: - StackViewStyling

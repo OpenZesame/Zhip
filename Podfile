@@ -21,6 +21,12 @@ def shared
   # Autolayout easy
   pod 'TinyConstraints'
 
+  # UITextField with placeholder that animates on top of the field
+  pod 'SkyFloatingLabelTextField'
+
+  # UIView agnostic aggregatable rules for valdation in input 
+  pod 'Validator'
+
   # Generate QR code
   pod 'EFQRCode'
 
@@ -45,7 +51,7 @@ target 'Zupreme' do
   end
 end
 
-pods_lacking_swift_version_build_setting = [
+pods_to_set_swift_verstion_to_42 = [
   'BigInt',
   'IQKeyboardManagerSwift',
   'JSONRPCKit',
@@ -66,9 +72,11 @@ post_install do |installer|
 
   installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
-        if pods_lacking_swift_version_build_setting.include?(target.name)
+
+        if pods_to_set_swift_verstion_to_42.include?(target.name)
           config.build_settings['SWIFT_VERSION'] = '4.2'
         end
+
       end
   end
 end

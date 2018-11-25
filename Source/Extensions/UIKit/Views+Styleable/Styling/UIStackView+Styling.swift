@@ -8,27 +8,21 @@
 
 import UIKit
 
-extension UIStackView: Styling, StaticEmptyInitializable {
+// MARK: - Style
+extension UIStackView {
+    struct Style {
+        static let defaultSpacing: CGFloat = 16
+        static let defaultMargin: CGFloat = 16
 
-    public static func createEmpty() -> UIStackView {
-        return UIStackView(arrangedSubviews: [])
-    }
+        var views: [UIView]?
+        var axis: NSLayoutConstraint.Axis?
+        var alignment: UIStackView.Alignment?
+        var distribution: UIStackView.Distribution?
+        var spacing: CGFloat?
+        var margin: CGFloat?
+        var isLayoutMarginsRelativeArrangement: Bool?
 
-    public final class Style: ViewStyle, Makeable, ExpressibleByArrayLiteral {
-        public static let defaultSpacing: CGFloat = 16
-        public static let defaultMargin: CGFloat = 16
-
-        public typealias View = UIStackView
-
-        let axis: NSLayoutConstraint.Axis?
-        let alignment: UIStackView.Alignment?
-        let distribution: UIStackView.Distribution?
-        let views: [UIView]?
-        let spacing: CGFloat?
-        let margin: CGFloat?
-        let isLayoutMarginsRelativeArrangement: Bool?
-
-        public init(
+        init(
             _ views: [UIView]? = nil,
             axis: NSLayoutConstraint.Axis? = nil,
             alignment: UIStackView.Alignment? = nil,
@@ -36,7 +30,7 @@ extension UIStackView: Styling, StaticEmptyInitializable {
             spacing: CGFloat? = defaultSpacing,
             margin: CGFloat? = defaultMargin,
             isLayoutMarginsRelativeArrangement: Bool? = nil
-        ) {
+            ) {
             self.views = views
             self.axis = axis
             self.alignment = alignment
@@ -44,35 +38,20 @@ extension UIStackView: Styling, StaticEmptyInitializable {
             self.spacing = spacing
             self.margin = margin
             self.isLayoutMarginsRelativeArrangement = isLayoutMarginsRelativeArrangement
-
-            // background color is irrelevant for stackviews
-            super.init(height: nil, backgroundColor: nil)
-        }
-
-        public convenience init(arrayLiteral views: UIView...) {
-            self.init(views)
-        }
-
-        public static var `default`: Style {
-            return Style()
-        }
-
-        public func merged(other: Style, mode: MergeMode) -> Style {
-            func merge<T>(_ attributePath: KeyPath<Style, T?>) -> T? {
-                return mergeAttribute(other: other, path: attributePath, mode: mode)
-            }
-
-            return Style(
-                merge(\.views),
-                axis: merge(\.axis),
-                alignment: merge(\.alignment),
-                distribution: merge(\.distribution),
-                spacing: merge(\.spacing)
-            )
         }
     }
+}
 
-    public func apply(style: Style) {
+// MARK: Style + ExpressibleByArrayLiteral
+extension UIStackView.Style: ExpressibleByArrayLiteral {
+    init(arrayLiteral views: UIView...) {
+        self.init(views)
+    }
+}
+
+// MARK: - Apply Style
+extension UIStackView {
+    func apply(style: Style) {
         if let views = style.views, !views.isEmpty {
             views.reversed().forEach { self.insertArrangedSubview($0, at: 0) }
         }
@@ -86,5 +65,52 @@ extension UIStackView: Styling, StaticEmptyInitializable {
         } else {
             isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? false
         }
+    }
+
+    @discardableResult
+    func withStyle(_ style: UIStackView.Style, customize: ((UIStackView.Style) -> UIStackView.Style)? = nil) -> UIStackView {
+        translatesAutoresizingMaskIntoConstraints = false
+        let style = customize?(style) ?? style
+        apply(style: style)
+        return self
+    }
+}
+
+// MARK: - Style + Customizing
+extension UIStackView.Style {
+
+    @discardableResult
+    func alignment(_ alignment: UIStackView.Alignment) -> UIStackView.Style {
+        var style = self
+        style.alignment = alignment
+        return style
+    }
+}
+
+// MARK: - Style Presets
+extension UIStackView.Style {
+    static var `default`: UIStackView.Style {
+        return UIStackView.Style()
+    }
+
+    static var horizontalEqualCentering: UIStackView.Style {
+        return UIStackView.Style(
+            axis: .horizontal,
+            alignment: .center,
+            distribution: .equalCentering,
+            spacing: 0,
+            margin: 0
+        )
+    }
+
+    static var horizontal: UIStackView.Style {
+        return UIStackView.Style(axis: .horizontal, margin: 0)
+    }
+
+    static var horizontalFillingEqually: UIStackView.Style {
+        return UIStackView.Style(
+            axis: .horizontal,
+            distribution: .fillEqually,
+            margin: 0)
     }
 }

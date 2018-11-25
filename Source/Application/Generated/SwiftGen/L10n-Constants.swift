@@ -12,6 +12,33 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
+  internal enum Error {
+    internal enum Input {
+      internal enum Address {
+        /// Only 0-9 and A-F allowed
+        internal static let containsNonHexadecimal = L10n.tr("Localizable", "Error.Input.Address.ContainsNonHexadecimal")
+        /// Address is too long, should be %d
+        internal static func tooLoong(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "Error.Input.Address.TooLoong", p1)
+        }
+        /// Address is too short, should be %d
+        internal static func tooShort(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "Error.Input.Address.TooShort", p1)
+        }
+      }
+      internal enum Amount {
+        /// Amount must be smaller than %@
+        internal static func tooLarge(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", p1)
+        }
+        /// Amount must be greater than %@
+        internal static func tooSmall(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
+        }
+      }
+    }
+  }
+
   internal enum Generic {
     /// Back
     internal static let back = L10n.tr("Localizable", "Generic.Back")
