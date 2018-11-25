@@ -13,15 +13,22 @@ private typealias € = L10n.Scene.RestoreWallet
 
 final class RestoreWalletView: ScrollingStackView {
 
-    private lazy var privateKeyField = UITextField.Style(€.Field.privateKey, isSecureTextEntry: true).make()
-    private lazy var keystoreLabel = UILabel.Style(€.Label.orKeystore).make()
-    private lazy var keystoreTextView = UITextView.Style("", height: 200).make()
-    private lazy var encryptionPassphraseField = UITextField.Style(isSecureTextEntry: true).make()
-    private lazy var confirmEncryptionPassphraseField = UITextField.Style(€.Field.confirmEncryptionPassphrase, isSecureTextEntry: true).make()
+    private lazy var privateKeyField = TextField(placeholder: €.Field.privateKey, type: .hexadecimal)
+        .withStyle(.password)
 
-    private lazy var restoreWalletButton: ButtonWithSpinner = ButtonWithSpinner(style: .primary)
-        .titled(normal: €.Button.restoreWallet)
-        .disabled()
+    private lazy var keystoreLabel = UILabel(text: €.Label.orKeystore).withStyle(.title)
+
+    private lazy var keystoreTextView = UITextView(frame: .zero).withStyle(.editable)
+
+    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
+
+    private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
+
+    private lazy var restoreWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.restoreWallet)
+        .withStyle(.primary) { customizableStyle in
+            customizableStyle.disabled()
+    }
+    //        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyField,
@@ -35,6 +42,7 @@ final class RestoreWalletView: ScrollingStackView {
 
     override func setup() {
         keystoreTextView.addBorder()
+        keystoreTextView.height(200)
     }
 }
 

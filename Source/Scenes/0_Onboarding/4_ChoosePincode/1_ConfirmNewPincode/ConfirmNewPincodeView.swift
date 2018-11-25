@@ -17,12 +17,12 @@ final class ConfirmNewPincodeView: ScrollingStackView {
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
     private lazy var haveBackedUpPincodeSwitch = UISwitch()
-    private lazy var haveBackedUpPincodeShortLabel = UILabel.Style(€.SwitchLabel.pincodeIsBackedUp).make()
-    private lazy var haveBackedUpPincodeStackView = UIStackView.Style([haveBackedUpPincodeSwitch, haveBackedUpPincodeShortLabel], axis: .horizontal, margin: 0).make()
+    private lazy var haveBackedUpPincodeShortLabel = UILabel(text: €.SwitchLabel.pincodeIsBackedUp).withStyle(.checkbox)
 
-    private lazy var confirmPincodeButton = UIButton(type: .custom)
+    private lazy var haveBackedUpPincodeStackView = UIStackView(arrangedSubviews: [haveBackedUpPincodeSwitch, haveBackedUpPincodeShortLabel]).withStyle(.horizontal)
+
+    private lazy var confirmPincodeButton = UIButton(title: €.Button.confirmPincode)
         .withStyle(.primary)
-        .titled(normal: €.Button.confirmPincode)
         .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [

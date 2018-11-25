@@ -19,9 +19,8 @@ final class TermsOfServiceView: ScrollingStackView {
 
     private lazy var htmlView = WKWebView(file: "TermsOfService")
     
-    private lazy var acceptTermsButton = UIButton(type: .custom)
+    private lazy var acceptTermsButton = UIButton(title: €.Button.accept)
         .withStyle(.primary)
-        .titled(normal: €.Button.accept)
         .disabled()
 
     // MARK: - StackViewStyling

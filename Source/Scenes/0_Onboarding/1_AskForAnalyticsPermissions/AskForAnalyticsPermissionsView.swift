@@ -17,36 +17,40 @@ private let topImageViewWidthHeight: CGFloat = 80
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     private lazy var topImageView = UIImageView()
-    private lazy var topImageViewContainerStackView = UIStackView.Style([topImageView], alignment: .center).make()
 
-    private lazy var titleLabel = UILabel.Style(€.title, textAlignment: .center, font: .boldSystemFont(ofSize: 20)).make()
+    private lazy var topImageViewContainerStackView = UIStackView(arrangedSubviews: [topImageView])
+        .withStyle(.default) { customizableStyle in
+            customizableStyle.alignment(.center)
+    }
 
-    private lazy var disclaimerTextView = UITextView.Style(€.Text.disclaimer, textAlignment: .left, font: .systemFont(ofSize: 17), textColor: .lightGray, isEditable: false).make()
+    private lazy var titleLabel = UILabel(text: €.title).withStyle(.title)
+
+    private lazy var disclaimerTextView = UITextView(text: €.Text.disclaimer).withStyle(.nonEditable)
 
     private lazy var readDisclaimerSwitch = UISwitch()
-    private lazy var readDisclaimerLabel = UILabel.Style(€.SwitchLabel.readDisclaimer).make()
-    private lazy var readDisclaimerStackView = UIStackView.Style([readDisclaimerSwitch, readDisclaimerLabel], axis: .horizontal, margin: 0).make()
+    private lazy var readDisclaimerLabel = UILabel(text: €.SwitchLabel.readDisclaimer).withStyle(.checkbox)
 
-    private lazy var declineButton = UIButton(type: .custom)
+    private lazy var readDisclaimerStackView = UIStackView(arrangedSubviews: [readDisclaimerSwitch, readDisclaimerLabel]).withStyle(.horizontal)
+
+    private lazy var declineButton = UIButton(title: €.Button.decline)
         .withStyle(.primary)
-        .titled(normal: €.Button.decline)
         .disabled()
 
-    private lazy var acceptButton = UIButton(type: .custom)
+    private lazy var acceptButton = UIButton(title: €.Button.accept)
         .withStyle(.primary)
-        .titled(normal: €.Button.accept)
         .disabled()
 
-    private lazy var buttonsStackView = UIStackView.Style([declineButton, acceptButton], axis: .horizontal, distribution: .fillEqually).make()
+    private lazy var buttonsStackView = UIStackView(arrangedSubviews: [declineButton, acceptButton])
+        .withStyle(.horizontalFillingEqually)
 
     // MARK: - StackViewStyling
-    lazy var stackViewStyle = UIStackView.Style([
+    lazy var stackViewStyle: UIStackView.Style = [
         topImageViewContainerStackView,
         titleLabel,
         disclaimerTextView,
         readDisclaimerStackView,
         buttonsStackView
-    ])
+    ]
 
     override func setup() {
         topImageView.backgroundColor = .lightGray

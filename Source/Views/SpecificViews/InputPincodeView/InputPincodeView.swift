@@ -14,13 +14,7 @@ import TinyConstraints
 
 final class InputPincodeView: UITextField {
 
-    private let digitLabelsStackView = UIStackView.Style(
-        axis: .horizontal,
-        alignment: .center,
-        distribution: .equalCentering,
-        spacing: 0,
-        margin: 0
-    ).make()
+    private let digitLabelsStackView = UIStackView(frame: .zero).withStyle(.horizontalEqualCentering)
 
     private let mode: Mode
     private let length = Pincode.length
@@ -167,7 +161,7 @@ enum Digit: String, Codable, Equatable {
 extension InputPincodeView {
     private final class DigitView: UIView {
 
-        fileprivate lazy var label = UILabel.Style(height: nil, textAlignment: .center, font: .boldSystemFont(ofSize: 60)).make()
+        fileprivate lazy var label = UILabel(frame: .zero).withStyle(.huge)
 
         private lazy var underline: UIView = {
             let view = UIView(frame: .zero)
@@ -177,10 +171,7 @@ extension InputPincodeView {
             return view
         }()
 
-        lazy var stackView = UIStackView.Style([
-            label,
-            underline
-            ], spacing: 4, margin: 0).make()
+        lazy var stackView = UIStackView(arrangedSubviews: [label, underline]).withStyle(UIStackView.Style(spacing: 4, margin: 0))
 
         init() {
             super.init(frame: .zero)

@@ -23,11 +23,11 @@ final class ChoosePincodeView: ScrollingStackView {
 
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
-    private lazy var pinOnlyLocksAppTextView = UITextView.Style(€.Text.pincodeOnlyLocksApp, isEditable: false, isSelectable: false).make()
+    private lazy var pinOnlyLocksAppTextView = UITextView(text: €.Text.pincodeOnlyLocksApp)
+        .withStyle(.nonSelectable)
 
-    private lazy var proceedWithConfirmationButton = UIButton(type: .custom)
+    private lazy var proceedWithConfirmationButton = UIButton(title: €.Button.proceedWithConfirmation)
         .withStyle(.primary)
-        .titled(normal: €.Button.proceedWithConfirmation)
         .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [

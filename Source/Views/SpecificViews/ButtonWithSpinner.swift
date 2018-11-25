@@ -11,22 +11,27 @@ import RxSwift
 import RxCocoa
 
 final class ButtonWithSpinner: UIButton {
-    private let spinnerView: SpinnerView
-    init(style: UIButton.Style) {
-        spinnerView = SpinnerView(strokeColor: style.textColor)
+
+    private lazy var spinnerView: SpinnerView = {
+        let spinnerView = _spinnerView ?? SpinnerView(strokeColor: titleColor(for: .normal))
+        addSubview(spinnerView)
+        spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+        return spinnerView
+    }()
+    private var _spinnerView: SpinnerView?
+
+    init(title: CustomStringConvertible? = nil, strokeColor: UIColor? = nil) {
+        if let strokeColor = strokeColor {
+            _spinnerView = SpinnerView(strokeColor: strokeColor)
+        }
         super.init(frame: .zero)
-        setup()
-        apply(style: style)
+        setTitle(title?.description, for: .normal)
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
 private extension ButtonWithSpinner {
-    func setup() {
-        addSubview(spinnerView)
-        spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
-    }
 
     func beginRefreshing() {
         titleLabel?.layer.opacity = 0

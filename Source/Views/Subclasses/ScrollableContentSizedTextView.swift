@@ -10,10 +10,14 @@ import UIKit
 
 final class ScrollableContentSizedTextView: UITextView {
 
-    init(style: UITextView.Style) {
+    init() {
         super.init(frame: .zero, textContainer: nil)
-        apply(style: style)
     }
+
+//    init(style: UITextView.Style) {
+//        super.init(frame: .zero, textContainer: nil)
+//        apply(style: style)
+//    }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
