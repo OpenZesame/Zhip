@@ -36,7 +36,7 @@ private extension CreateNewWalletCoordinator {
     func toCreateWallet() {
         let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
 
-        push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .createWallet(let wallet): self.toBackupWallet(wallet: wallet)
             }
@@ -46,7 +46,7 @@ private extension CreateNewWalletCoordinator {
     func toBackupWallet(wallet: Wallet) {
         let viewModel = BackupWalletViewModel(wallet: .just(wallet))
 
-        push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .backupWallet(let wallet): self.toMain(wallet: wallet)
             }

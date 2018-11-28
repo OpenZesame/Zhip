@@ -34,7 +34,7 @@ private extension ChooseWalletCoordinator {
     func toChooseWallet() {
         let viewModel = ChooseWalletViewModel()
 
-        push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
+        push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .createNewWallet: self.toCreateNewWallet()
             case .restoreWallet: self.toRestoreWallet()

@@ -58,7 +58,7 @@ private extension MainCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase()
         )
 
-        push(scene: Main.self, viewModel: viewModel, navigationPresentationCompletion: didStart) { [unowned self] userIntendsTo, _ in
+        push(scene: Main.self, viewModel: viewModel, navigationPresentationCompletion: didStart) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .send: self.toSend()
             case .receive: self.toReceive()

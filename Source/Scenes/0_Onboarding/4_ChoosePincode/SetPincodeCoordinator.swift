@@ -35,7 +35,7 @@ private extension SetPincodeCoordinator {
     func toChoosePincode() {
         let viewModel = ChoosePincodeViewModel()
 
-        push(scene: ChoosePincode.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: ChoosePincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .chosePincode(let unconfirmedPincode): self.toConfirmPincode(unconfirmedPincode: unconfirmedPincode)
             case .skip: self.skipPincode()
@@ -46,7 +46,7 @@ private extension SetPincodeCoordinator {
     func toConfirmPincode(unconfirmedPincode: Pincode) {
         let viewModel = ConfirmNewPincodeViewModel(useCase: useCase, confirm: unconfirmedPincode)
 
-        push(scene: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .skip: self.skipPincode()
             case .confirmPincode: self.finish()

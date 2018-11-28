@@ -46,7 +46,7 @@ private extension SettingsCoordinator {
     func toSettings() {
         let viewModel = SettingsViewModel(useCase: pincodeUseCase)
 
-        push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
+        push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             // Navigation bar
             case .closeSettings: self.finish()
