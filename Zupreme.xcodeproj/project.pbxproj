@@ -51,7 +51,7 @@
 		483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483DDEA8219B6448009D3F4C /* PincodeUseCase.swift */; };
 		483DDEAB219B6456009D3F4C /* DefaultPincodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483DDEAA219B6456009D3F4C /* DefaultPincodeUseCase.swift */; };
 		483DDECC219CB860009D3F4C /* InputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483DDECB219CB860009D3F4C /* InputType.swift */; };
-		483DDECE219CB877009D3F4C /* ControllerInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483DDECD219CB877009D3F4C /* ControllerInput.swift */; };
+		483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483DDECD219CB877009D3F4C /* InputFromController.swift */; };
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
 		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
 		4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */; };
@@ -256,7 +256,7 @@
 		483DDEA8219B6448009D3F4C /* PincodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PincodeUseCase.swift; sourceTree = "<group>"; };
 		483DDEAA219B6456009D3F4C /* DefaultPincodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPincodeUseCase.swift; sourceTree = "<group>"; };
 		483DDECB219CB860009D3F4C /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
-		483DDECD219CB877009D3F4C /* ControllerInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerInput.swift; sourceTree = "<group>"; };
+		483DDECD219CB877009D3F4C /* InputFromController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFromController.swift; sourceTree = "<group>"; };
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
@@ -497,7 +497,7 @@
 				48379C6A21AE923900B95DB9 /* BaseClasses */,
 				483CE98F2194E9E300BED31C /* AbstractTarget.swift */,
 				483CE9902194E9E300BED31C /* ViewModelType.swift */,
-				483DDECD219CB877009D3F4C /* ControllerInput.swift */,
+				483DDECD219CB877009D3F4C /* InputFromController.swift */,
 				483DDECB219CB860009D3F4C /* InputType.swift */,
 			);
 			path = ViewModel;
@@ -1549,7 +1549,7 @@
 				485AACA221AAE764005C56CC /* InputValidator.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
-				483DDECE219CB877009D3F4C /* ControllerInput.swift in Sources */,
+				483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
 				48ECF61A21A29FE10078D659 /* CellConfigurable.swift in Sources */,
 				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,

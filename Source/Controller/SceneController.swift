@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 
 /// The "Single-Line Controller" base class
-class SceneController<View: ContentView>: AbstractController where View.ViewModel.Input.FromController == ControllerInput {
+class SceneController<View: ContentView>: AbstractController where View.ViewModel.Input.FromController == InputFromController {
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
@@ -62,7 +62,7 @@ private extension SceneController {
     }
 
     // swiftlint:disable:next function_body_length
-    func makeAndSubscribeToInputFromController() -> ControllerInput {
+    func makeAndSubscribeToInputFromController() -> InputFromController {
         let titleSubject = PublishSubject<String>()
         let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let rightBarButtonContentSubject = PublishSubject<BarButtonContent>()
@@ -85,7 +85,7 @@ private extension SceneController {
                 self.setRightBarButtonUsing(content: $0)
             }).drive()
         ]
-        return ControllerInput(
+        return InputFromController(
             viewDidLoad: rx.viewDidLoad,
             viewWillAppear: rx.viewWillAppear,
             viewDidAppear: rx.viewDidAppear,

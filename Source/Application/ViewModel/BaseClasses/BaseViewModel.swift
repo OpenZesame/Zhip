@@ -14,7 +14,7 @@ import RxCocoa
 /// read more: https://bugs.swift.org/browse/SR-9160
 class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: AbstractViewModel<
     InputFromView,
-    ControllerInput,
+    InputFromController,
     OutputFromViewModel
 > {
     let navigator: Navigator<NavigationStep>
