@@ -26,7 +26,7 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Navigat
         super.init(navigationController: navigationController)
     }
 
-    override func start() {
+    override func start(didStart: CoordinatorDidStart? = nil) {
         toNextStep()
     }
 }

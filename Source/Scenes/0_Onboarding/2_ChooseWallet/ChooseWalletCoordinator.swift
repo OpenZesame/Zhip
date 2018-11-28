@@ -23,7 +23,7 @@ final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.Nav
         super.init(navigationController: navigationController)
     }
 
-    override func start() {
+    override func start(didStart: CoordinatorDidStart? = nil) {
         toChooseWallet()
     }
 }
