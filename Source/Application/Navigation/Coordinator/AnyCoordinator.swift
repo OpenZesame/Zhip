@@ -8,9 +8,25 @@
 
 import UIKit
 
+/// Base protocol for any Coordinator. The coordinator is responsible for the navigation logic in the app.
+/// Since it has no `associatedtype` we can use it as the element for a `childCoordinators` array, which contains
+/// all the children of any coordinator.
+///
+/// ### References
+/// [Coordinators Redux] By Khanlou (2015)
+///
+/// [Coordinators Redux]:
+/// http://khanlou.com/2015/10/coordinators-redux/
+///
 protocol AnyCoordinator: AnyObject, CustomStringConvertible {
+
+    /// Coordinator stack, any child Coordinator should be appended to new array in order to retain it and handle its life cycle.
     var childCoordinators: [AnyCoordinator] { get set }
+
+    /// This method is invoked by parent coodinator when this coordinator has been retained and presented.
     func start(didStart: CoordinatorDidStart?)
+
+    /// The NavigationController responsible for retaining and presenting Scenes (`UIViewController`s).
     var navigationController: UINavigationController { get }
 }
 

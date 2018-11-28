@@ -10,15 +10,20 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+/// Base class for our coordinators.
 class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
 
+    /// Coordinator stack, any child Coordinator should be appended to new array in order to retain it and handle its life cycle.
     var childCoordinators = [AnyCoordinator]()
 
+    /// The coordinators navigator is used for navigation logic between coordinators. A child coordinator could possible finish
+    /// with to different navigation steps. The parent will then handle this logic and coordinate the next navigation step.
     let navigator = Navigator<NavigationStep>()
-    let bag = DisposeBag()
-    private(set) var navigationController: UINavigationController
 
-    lazy var navigation = navigator.navigation
+    /// Dispose bag used for disposing of Disposables from navigation subscription of child coordinators navigation.
+    let bag = DisposeBag()
+
+    private(set) var navigationController: UINavigationController
 
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
@@ -26,6 +31,9 @@ class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
     }
 
     // MARK: - Overridable
+
+    /// Method to be overriden by coordinator implementations. This method is invoked by parent coodinator when this
+    /// coordinator has been retained and presented.
     func start(didStart: CoordinatorDidStart? = nil) { abstract }
 
     deinit {
@@ -57,11 +65,12 @@ extension BaseCoordinator {
     ///       has finished presentation of its root ViewController. In most cases this is not needed.
     ///   - navigationHandler: **Required** closure in which you should handle all navigation steps emitted by
     ///       the new child coordinator.
+    ///   - step: The navigation step emitted by this new child coordinator. Handled by `navigationHandler` in this parent coordinator.
     func start<C>(
         coordinator child: C,
         transition: CoordinatorTransition = .append,
         didStart: CoordinatorDidStart? = nil,
-        navigationHandler: @escaping (C.NavigationStep) -> Void
+        navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         // Add the child coordinator to the childCoordinator array
@@ -103,16 +112,18 @@ extension BaseCoordinator {
     /// - Parameters:
     ///   - makeCoordinator: **Required** closure in which you should initialize the new child coordinator using the
     ///       `UINavigationController` being created by this function, passed as an argument in the closure.
+    ///   - newNC: The new `UINavigationController` created by this function, used when creating the child Coordinator.
     ///   - didStart: Optional Closure in which you can pass logic to be executed when the new child coordinator
     ///       has finished presentation of its root ViewController. In most cases this is not needed.
     ///   - navigationHandler: **Required** closure in which you should handle all navigation steps emitted by the
-    ///       new child coordinator. This closure has two arguments, the first being the navigation step and the second
-    ///       being a closure you **should** call when you want to end this temporary flow, which dismisses the navigation
-    ///       stack and removes the child coordinator from its parent (the coordinator instance you called this method on).
+    ///       new child coordinator. This closure has two arguments:
+    ///   - step: The navigation step emitted by this new child coordinator. Handled by `navigationHandler` in this parent coordinator.
+    ///   - dismiss: Closure you **should** call when you want to end this temporary flow, which dismisses the navigation
+    ///           stack and removes the child coordinator from its parent (the coordinator instance you called this method on).
     func presentModalCoordinator<C>(
-        makeCoordinator: (UINavigationController) -> C,
+        makeCoordinator: (_ newNC: UINavigationController) -> C,
         didStart: CoordinatorDidStart? = nil,
-        navigationHandler: @escaping (C.NavigationStep, DismissModalFlow) -> Void
+        navigationHandler: @escaping (_ step: C.NavigationStep, _ dismiss: DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         // Initialize a new NavigationController to be passed to the new child coordinator

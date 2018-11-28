@@ -32,13 +32,14 @@ extension BaseCoordinator {
     ///       is convenient when you want to present any other scene after this
     ///       scene.
     ///   - navigationHandler: **Required** closure for handling navigation steps
-    ///       by the scenes ViewModel.
+    ///       from the ViewModel.
+    ///   - step: Navigation step emitted by the scene's `viewModel`
     func push<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
         navigationPresentationCompletion: PresentationCompletion? = nil,
-        navigationHandler: @escaping (V.ViewModel.NavigationStep) -> Void
+        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
@@ -70,15 +71,15 @@ extension BaseCoordinator {
     ///   - customNavigationController: Optional instance of a `UINavigationController` that you would
     ///       like to present the scene on, instead of using the coordinators own
     ///       navigationController. **In most cases you should pass `nil`.**
-    ///   - navigationHandler: **Required** closure handling the navigation steps emitted by the scenes ViewModel.
-    ///       the first argument of the closure is the navigation steps emitted by the viewmodel, and
-    ///       the second argument is a closure you **should** invoke when you want to dimiss the scene.
+    ///   - navigationHandler: **Required** closure handling the navigation steps emitted by the scene's ViewModel.
+    ///   - step: The navigation steps emitted by the `viewmodel`
+    ///   - dismiss: Closure you **should** invoke when you want to dimiss the scene.
     func modallyPresent<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
         navigationController customNavigationController: UINavigationController? = nil,
-        navigationHandler: @escaping (V.ViewModel.NavigationStep, DismissScene) -> Void
+        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
