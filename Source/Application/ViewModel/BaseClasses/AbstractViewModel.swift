@@ -10,8 +10,12 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class BaseViewModel<Step, InputFromView, OutputType>: AbstractViewModel<InputFromView, ControllerInput, OutputType>, Navigatable {
-    let stepper: Stepper<Step>
+class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: AbstractViewModel<
+    InputFromView,
+    ControllerInput,
+    OutputFromViewModel
+> {
+    let stepper: Stepper<NavigationStep>
 
     init(stepper: Stepper<Step> = Stepper<Step>()) {
         self.stepper = stepper
@@ -22,14 +26,14 @@ class BaseViewModel<Step, InputFromView, OutputType>: AbstractViewModel<InputFro
     }
 }
 
+extension BaseViewModel: Navigatable {}
+
 /// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug
 /// read more: https://bugs.swift.org/browse/SR-9160
-class AbstractViewModel<InputFromView, InputFromController, OutputType>: ViewModelType {
+class AbstractViewModel<FromView, FromController, Output> {
     let bag = DisposeBag()
 
     struct Input: InputType {
-        typealias FromView = InputFromView
-        typealias FromController = InputFromController
 
         let fromController: FromController
         let fromView: FromView
@@ -40,7 +44,7 @@ class AbstractViewModel<InputFromView, InputFromController, OutputType>: ViewMod
         }
     }
 
-    typealias Output = OutputType
-
     func transform(input: Input) -> Output { abstract }
 }
+
+extension AbstractViewModel: ViewModelType {}
