@@ -33,7 +33,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
         super.init(navigationController: neverUsedNavigationController)
     }
 
-    override func start() {
+    override func start(didStart: CoordinatorDidStart? = nil) {
         if walletUseCase.hasConfiguredWallet {
             toMain(lockIfNeeded: true)
         } else {
@@ -66,7 +66,6 @@ private extension AppCoordinator {
     }
 
     func toMain(lockIfNeeded lock: Bool = false) {
-        defer { if lock { lockApp() } }
         let navigationController = UINavigationController()
         window.rootViewController = navigationController
 
@@ -77,11 +76,13 @@ private extension AppCoordinator {
             deeplinkedTransaction: deepLinkHandler.navigation.map { $0.asTransaction }.filterNil()
         )
 
-        start(coordinator: main, transition: .replace) { [unowned self] userDid in
+        start(coordinator: main, transition: .replace, didStart: { [unowned self] in
+            if lock { self.lockApp() }
+        }, navigationHandler: { [unowned self] userDid in
             switch userDid {
             case .removeWallet: self.toOnboarding()
             }
-        }
+        })
     }
 
     func toUnlockAppWithPincodeIfNeeded() {

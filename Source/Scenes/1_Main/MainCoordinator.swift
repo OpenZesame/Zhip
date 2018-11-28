@@ -32,8 +32,8 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
         bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in self.toSendPrefilTransaction() }).drive()
     }
 
-    override func start() {
-        toMain()
+    override func start(didStart: CoordinatorDidStart? = nil) {
+        toMain(didStart: didStart)
     }
 }
 
@@ -51,14 +51,14 @@ private extension MainCoordinator {
 // MARK: - Navigation
 private extension MainCoordinator {
 
-    func toMain() {
+    func toMain(didStart: CoordinatorDidStart? = nil) {
 
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             walletUseCase: useCaseProvider.makeWalletUseCase()
         )
 
-        push(scene: Main.self, viewModel: viewModel) { [unowned self] userIntendsTo, _ in
+        push(scene: Main.self, viewModel: viewModel, navigationPresentationCompletion: didStart) { [unowned self] userIntendsTo, _ in
             switch userIntendsTo {
             case .send: self.toSend()
             case .receive: self.toReceive()

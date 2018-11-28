@@ -26,7 +26,7 @@ class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
     }
 
     // MARK: - Overridable
-    func start() { abstract }
+    func start(didStart: CoordinatorDidStart? = nil) { abstract }
 
     deinit {
         log.verbose("💣 \(String(describing: self))")
@@ -34,11 +34,13 @@ class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
 }
 
 // MARK: - Start Child Coordinator
+typealias CoordinatorDidStart = () -> Void
 extension BaseCoordinator {
 
     func start<C>(
         coordinator: C,
         transition: CoordinatorTransition = .append,
+        didStart: CoordinatorDidStart? = nil,
         navigationHandler: @escaping (C.NavigationStep) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
@@ -51,13 +53,14 @@ extension BaseCoordinator {
             navigationHandler($0)
         }).drive()
 
-        coordinator.start()
+        coordinator.start(didStart: didStart)
     }
 
     typealias Animated = Bool
     typealias DismissModalFlow = (Animated) -> Void
     func presentModalCoordinator<C>(
         makeCoordinator: (UINavigationController) -> C,
+        didStart: CoordinatorDidStart? = nil,
         navigationHandler: @escaping (C.NavigationStep, DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
@@ -67,7 +70,7 @@ extension BaseCoordinator {
         log.verbose("\(self) presents \(coordinator)")
 
         childCoordinators.append(coordinator)
-        coordinator.start()
+        coordinator.start(didStart: didStart)
         self.navigationController.present(newModalNavigationController, animated: true, completion: nil)
 
         bag <~ coordinator.navigator.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in

@@ -26,7 +26,7 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
         super.init(navigationController: navigationController)
     }
 
-    override func start() {
+    override func start(didStart: CoordinatorDidStart? = nil) {
         toPrepareTransaction()
     }
 }

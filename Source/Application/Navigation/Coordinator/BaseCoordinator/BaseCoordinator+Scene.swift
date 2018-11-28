@@ -25,6 +25,7 @@ extension BaseCoordinator {
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
+        navigationPresentationCompletion: PresentationCompletion? = nil,
         navigationHandler: @escaping (V.ViewModel.NavigationStep, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
@@ -34,6 +35,7 @@ extension BaseCoordinator {
             viewController: scene,
             navigation: viewModel.navigator.navigation,
             presentation: .setRootIfEmptyElsePush(animated: animated),
+            navigationPresentationCompletion: navigationPresentationCompletion,
             navigationHandler: navigationHandler
         )
     }
@@ -58,7 +60,7 @@ extension BaseCoordinator {
         startDismissable(
             viewController: navigationController,
             navigation: viewModel.navigator.navigation,
-            presentation: .present(animated: true, completion: nil),
+            presentation: .present(animated: true),
             navigationController: customNavigationController,
             navigationHandler: navigationHandler
         )
@@ -72,10 +74,11 @@ private extension BaseCoordinator {
         navigation: Driver<NavigationStep>,
         presentation: PresentationMode,
         navigationController customNavigationController: UINavigationController? = nil,
+        navigationPresentationCompletion: PresentationCompletion? = nil,
         navigationHandler: @escaping (NavigationStep, DismissScene) -> Void
         ) {
 
-        (customNavigationController ?? navigationController).present(viewController: viewController, presentation: presentation)
+        (customNavigationController ?? navigationController).present(viewController: viewController, presentation: presentation, completion: navigationPresentationCompletion)
 
         navigation.do(onNext: {
             navigationHandler($0, { [unowned viewController] animated, navigationCompletion in
@@ -90,20 +93,27 @@ typealias IsAnimated = Bool
 typealias DismissScene = (IsAnimated, PresentationCompletion?) -> Void
 
 private enum PresentationMode {
-    case present(animated: Bool, completion: PresentationCompletion?)
+    case present(animated: Bool)
     case setRootIfEmptyElsePush(animated: Bool)
 }
 
 extension UINavigationController {
-    fileprivate func present(viewController: UIViewController, presentation: PresentationMode) {
+    fileprivate func present(viewController: UIViewController, presentation: PresentationMode, completion: PresentationCompletion? = nil) {
         switch presentation {
-        case .present(let animated, let completion): present(viewController, animated: animated, completion: completion)
+        case .present(let animated): present(viewController, animated: animated, completion: completion)
         case .setRootIfEmptyElsePush(let animated):
             if viewControllers.isEmpty {
                 viewControllers = [viewController]
             } else {
                 pushViewController(viewController, animated: animated)
             }
+            guard let completion = completion else { return }
+
+            guard animated, let coordinator = transitionCoordinator else {
+                DispatchQueue.main.async { completion() }
+                return
+            }
+            coordinator.animate(alongsideTransition: nil) { _ in completion() }
         }
     }
 }
