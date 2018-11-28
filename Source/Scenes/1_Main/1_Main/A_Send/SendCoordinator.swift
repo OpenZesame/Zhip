@@ -55,7 +55,7 @@ private extension SendCoordinator {
     }
 
     func finish() {
-        stepper.step(.finish)
+        navigator.next(.finish)
     }
 
     func toSignPayment(_ payment: Payment) {

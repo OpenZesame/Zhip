@@ -30,7 +30,7 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+            navigator.next(userAction)
         }
 
         let haveReadDisclaimerTrigger = input.fromView.haveReadDisclaimerTrigger
@@ -43,7 +43,7 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
         bag <~ [
             hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
                 self.useCase.answeredAnalyticsPermissionsQuestion(acceptsTracking: $0)
-                self.stepper.step(.answerQuestionAboutAnalyticsPermission)
+                self.navigator.next(.answerQuestionAboutAnalyticsPermission)
             }).drive()
         ]
         

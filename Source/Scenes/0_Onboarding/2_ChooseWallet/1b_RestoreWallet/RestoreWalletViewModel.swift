@@ -34,7 +34,7 @@ final class RestoreWalletViewModel: BaseViewModel<
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userIntends(to intention: Step) {
-            stepper.step(intention)
+            navigator.next(intention)
         }
 
         let fromView = input.fromView

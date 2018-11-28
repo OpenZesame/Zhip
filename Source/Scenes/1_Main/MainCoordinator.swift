@@ -101,7 +101,7 @@ private extension MainCoordinator {
             makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
-                case .removeWallet: self.stepper.step(.removeWallet)
+                case .removeWallet: self.navigator.next(.removeWallet)
                 case .closeSettings: dismissModalFlow(true)
                 }
         })

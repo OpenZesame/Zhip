@@ -114,6 +114,6 @@ private extension OnboardingCoordinator {
     }
 
     func finish() {
-        stepper.step(.finishOnboarding)
+        navigator.next(.finishOnboarding)
     }
 }

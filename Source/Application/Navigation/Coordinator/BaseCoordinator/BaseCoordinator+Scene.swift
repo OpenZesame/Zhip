@@ -32,7 +32,7 @@ extension BaseCoordinator {
 
         startDismissable(
             viewController: scene,
-            navigation: viewModel.stepper.navigation,
+            navigation: viewModel.navigator.navigation,
             presentation: .setRootIfEmptyElsePush(animated: animated),
             navigationHandler: navigationHandler
         )
@@ -57,7 +57,7 @@ extension BaseCoordinator {
 
         startDismissable(
             viewController: navigationController,
-            navigation: viewModel.stepper.navigation,
+            navigation: viewModel.navigator.navigation,
             presentation: .present(animated: true, completion: nil),
             navigationController: customNavigationController,
             navigationHandler: navigationHandler

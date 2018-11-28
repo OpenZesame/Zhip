@@ -14,11 +14,11 @@ class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
 
     var childCoordinators = [AnyCoordinator]()
 
-    let stepper = Stepper<Step>()
+    let navigator = Navigator<Step>()
     let bag = DisposeBag()
     private(set) var navigationController: UINavigationController
 
-    lazy var navigation = stepper.navigation
+    lazy var navigation = navigator.navigation
 
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
@@ -47,7 +47,7 @@ extension BaseCoordinator {
         case .append: childCoordinators.append(coordinator)
         }
 
-        bag <~ coordinator.stepper.navigation.do(onNext: {
+        bag <~ coordinator.navigator.navigation.do(onNext: {
             navigationHandler($0)
         }).drive()
 
@@ -70,7 +70,7 @@ extension BaseCoordinator {
         coordinator.start()
         self.navigationController.present(newModalNavigationController, animated: true, completion: nil)
 
-        bag <~ coordinator.stepper.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in
+        bag <~ coordinator.navigator.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in
             navigationHandler(navigationStep, { animated in
                 newModalNavigationController.dismiss(animated: animated, completion: nil)
                 self.remove(childCoordinator: coordinator)

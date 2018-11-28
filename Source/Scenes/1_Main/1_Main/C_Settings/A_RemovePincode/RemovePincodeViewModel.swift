@@ -33,7 +33,7 @@ final class RemovePincodeViewModel: BaseViewModel<
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+            navigator.next(userAction)
         }
 
         let matchingPincode = input.fromView.pincode.map { [unowned useCase] in

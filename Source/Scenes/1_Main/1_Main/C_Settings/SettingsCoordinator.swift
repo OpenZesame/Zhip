@@ -155,6 +155,6 @@ private extension SettingsCoordinator {
     }
 
     func userIntends(to intention: Step) {
-        stepper.step(intention)
+        navigator.next(intention)
     }
 }

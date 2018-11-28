@@ -54,7 +54,7 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toMain(wallet: Wallet) {
-        stepper.step(.didCreate(wallet: wallet))
+        navigator.next(.didCreate(wallet: wallet))
     }
 
 }

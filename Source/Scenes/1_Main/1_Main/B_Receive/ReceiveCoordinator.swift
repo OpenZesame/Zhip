@@ -45,7 +45,7 @@ private extension ReceiveCoordinator {
     }
 
     func finish() {
-        stepper.step(.finish)
+        navigator.next(.finish)
     }
 }
 

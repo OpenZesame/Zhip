@@ -64,6 +64,6 @@ private extension ChooseWalletCoordinator {
 
     func userFinishedChoosing(wallet: Wallet) {
         useCase.save(wallet: wallet)
-        stepper.step(.finishChoosingWallet)
+        navigator.next(.finishChoosingWallet)
     }
 }

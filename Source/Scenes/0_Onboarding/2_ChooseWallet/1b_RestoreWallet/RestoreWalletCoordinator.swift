@@ -40,6 +40,6 @@ private extension RestoreWalletCoordinator {
     }
 
     func toMain(restoredWallet: Wallet) {
-        stepper.step(.finishedRestoring(wallet: restoredWallet))
+        navigator.next(.finishedRestoring(wallet: restoredWallet))
     }
 }

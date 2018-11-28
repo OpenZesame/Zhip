@@ -23,7 +23,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
     override func transform(input: Input) -> Output {
         func userDid(_ step: Step) {
-            stepper.step(step)
+            navigator.next(step)
         }
 
         let pincode = input.fromView.pincode

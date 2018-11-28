@@ -60,6 +60,6 @@ private extension SetPincodeCoordinator {
     }
 
     func finish() {
-        stepper.step(.setPincode)
+        navigator.next(.setPincode)
     }
 }

@@ -30,7 +30,7 @@ final class WarningERC20ViewModel: BaseViewModel<
 
     override func transform(input: Input) -> Output {
         func userDo(_ userAction: Step) {
-            stepper.step(userAction)
+            navigator.next(userAction)
         }
 
         let understandsRisks = Driver.merge(input.fromView.accept, input.fromView.doNotShowAgain)
