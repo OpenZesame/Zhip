@@ -2,6 +2,10 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/// A type capable of stepping to `NavigationStep`s, passed as a generic.
+///
+/// Conforming to `Tracking`, thus capable of tracking the steps which are
+/// marked as `Trackable`.
 final class Navigator<NavigationStep> {
 
     private let navigationSubject: PublishSubject<NavigationStep>
