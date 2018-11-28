@@ -12,8 +12,8 @@ import RxCocoa
 import Zesame
 
 // MARK: - SendCoordinator
-final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
-    enum Step {
+final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finish
     }
 
@@ -55,7 +55,7 @@ private extension SendCoordinator {
     }
 
     func finish() {
-        stepper.step(.finish)
+        navigator.next(.finish)
     }
 
     func toSignPayment(_ payment: Payment) {

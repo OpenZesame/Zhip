@@ -8,8 +8,8 @@
 
 import UIKit
 
-final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.Step> {
-    enum Step {
+final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.NavigationStep> {
+    enum NavigationStep {
         case setPincode
     }
 
@@ -60,6 +60,6 @@ private extension SetPincodeCoordinator {
     }
 
     func finish() {
-        stepper.step(.setPincode)
+        navigator.next(.setPincode)
     }
 }

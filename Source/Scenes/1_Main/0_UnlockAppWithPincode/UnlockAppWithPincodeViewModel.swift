@@ -30,8 +30,8 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+        func userDid(_ userAction: NavigationStep) {
+            navigator.next(userAction)
         }
 
         let matchingPincode = input.fromView.pincode.map { [unowned useCase] in

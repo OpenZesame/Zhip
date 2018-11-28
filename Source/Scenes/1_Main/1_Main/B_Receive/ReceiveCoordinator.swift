@@ -11,8 +11,8 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.Step> {
-    enum Step {
+final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finish
     }
 
@@ -45,7 +45,7 @@ private extension ReceiveCoordinator {
     }
 
     func finish() {
-        stepper.step(.finish)
+        navigator.next(.finish)
     }
 }
 

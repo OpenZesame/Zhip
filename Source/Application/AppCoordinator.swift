@@ -10,8 +10,8 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class AppCoordinator: BaseCoordinator<AppCoordinator.Step> {
-    enum Step {}
+final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
+    enum NavigationStep {}
 
     private unowned let window: UIWindow
     private let useCaseProvider: UseCaseProvider

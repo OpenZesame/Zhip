@@ -1,5 +1,5 @@
 //
-//  ControllerInput.swift
+//  InputFromController.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-11-14.
@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-struct ControllerInput {
+struct InputFromController {
 
     let viewDidLoad: Driver<Void>
     let viewWillAppear: Driver<Void>

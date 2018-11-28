@@ -32,8 +32,8 @@ final class RemovePincodeViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+        func userDid(_ userAction: NavigationStep) {
+            navigator.next(userAction)
         }
 
         let matchingPincode = input.fromView.pincode.map { [unowned useCase] in
@@ -45,8 +45,8 @@ final class RemovePincodeViewModel: BaseViewModel<
                 userDid(.cancelPincodeRemoval)
             }).drive(),
 
-            matchingPincode.do(onNext: { [unowned self] in
-                self.useCase.deletePincode()
+            matchingPincode.do(onNext: { [unowned useCase] in
+                useCase.deletePincode()
                 let toast = Toast(€.Event.Toast.didRemovePincode) {
                     userDid(.removePincode)
                 }

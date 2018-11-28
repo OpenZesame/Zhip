@@ -10,15 +10,15 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
+class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
 
     var childCoordinators = [AnyCoordinator]()
 
-    let stepper = Stepper<Step>()
+    let navigator = Navigator<NavigationStep>()
     let bag = DisposeBag()
     private(set) var navigationController: UINavigationController
 
-    lazy var navigation = stepper.navigation
+    lazy var navigation = navigator.navigation
 
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
@@ -39,7 +39,7 @@ extension BaseCoordinator {
     func start<C>(
         coordinator: C,
         transition: CoordinatorTransition = .append,
-        navigationHandler: @escaping (C.Step) -> Void
+        navigationHandler: @escaping (C.NavigationStep) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         switch transition {
@@ -47,7 +47,7 @@ extension BaseCoordinator {
         case .append: childCoordinators.append(coordinator)
         }
 
-        bag <~ coordinator.stepper.navigation.do(onNext: {
+        bag <~ coordinator.navigator.navigation.do(onNext: {
             navigationHandler($0)
         }).drive()
 
@@ -58,7 +58,7 @@ extension BaseCoordinator {
     typealias DismissModalFlow = (Animated) -> Void
     func presentModalCoordinator<C>(
         makeCoordinator: (UINavigationController) -> C,
-        navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
+        navigationHandler: @escaping (C.NavigationStep, DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         let newModalNavigationController = UINavigationController()
@@ -70,7 +70,7 @@ extension BaseCoordinator {
         coordinator.start()
         self.navigationController.present(newModalNavigationController, animated: true, completion: nil)
 
-        bag <~ coordinator.stepper.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in
+        bag <~ coordinator.navigator.navigation.do(onNext: { [unowned newModalNavigationController, unowned coordinator] navigationStep in
             navigationHandler(navigationStep, { animated in
                 newModalNavigationController.dismiss(animated: animated, completion: nil)
                 self.remove(childCoordinator: coordinator)

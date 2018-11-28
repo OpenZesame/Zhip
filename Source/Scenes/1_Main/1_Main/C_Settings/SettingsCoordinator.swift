@@ -16,8 +16,8 @@ let githubUrlString = "https://github.com/OpenZesame/Zupreme"
 // This is the app id for the iOS app "Apple Store" in the iOS App Store
 let appStoreUrlString = "itms://itunes.apple.com/us/app/apple-store/id375380948?mt=8"
 
-final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.Step> {
-    enum Step {
+final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationStep> {
+    enum NavigationStep {
         case removeWallet
         case closeSettings
     }
@@ -154,7 +154,7 @@ private extension SettingsCoordinator {
         userIntends(to: .closeSettings)
     }
 
-    func userIntends(to intention: Step) {
-        stepper.step(intention)
+    func userIntends(to intention: NavigationStep) {
+        navigator.next(intention)
     }
 }

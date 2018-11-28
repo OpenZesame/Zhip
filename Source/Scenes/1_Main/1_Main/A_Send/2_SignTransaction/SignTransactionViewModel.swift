@@ -33,8 +33,8 @@ final class SignTransactionViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+        func userDid(_ userAction: NavigationStep) {
+            navigator.next(userAction)
         }
 
         guard let _wallet = walletUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }

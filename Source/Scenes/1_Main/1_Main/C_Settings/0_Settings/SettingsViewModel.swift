@@ -52,8 +52,8 @@ final class SettingsViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
-        func userWantsToNavigate(to intention: Step) {
-            stepper.step(intention)
+        func userWantsToNavigate(to intention: NavigationStep) {
+            navigator.next(intention)
         }
 
         let sections = input.fromController.viewWillAppear

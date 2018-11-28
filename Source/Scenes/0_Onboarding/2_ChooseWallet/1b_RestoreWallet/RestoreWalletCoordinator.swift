@@ -9,8 +9,8 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.Step> {
-    enum Step {
+final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finishedRestoring(wallet: Wallet)
     }
 
@@ -40,6 +40,6 @@ private extension RestoreWalletCoordinator {
     }
 
     func toMain(restoredWallet: Wallet) {
-        stepper.step(.finishedRestoring(wallet: restoredWallet))
+        navigator.next(.finishedRestoring(wallet: restoredWallet))
     }
 }

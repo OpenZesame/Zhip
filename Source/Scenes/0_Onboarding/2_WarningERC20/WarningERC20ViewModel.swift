@@ -29,15 +29,18 @@ final class WarningERC20ViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
+        func userDo(_ userAction: NavigationStep) {
+            navigator.next(userAction)
+        }
+
         let understandsRisks = Driver.merge(input.fromView.accept, input.fromView.doNotShowAgain)
 
         bag <~ [
-            understandsRisks.do(onNext: { [unowned stepper] in
-                stepper.step(.understandRisks)
-            }).drive(),
+            understandsRisks.do(onNext: { userDo(.understandRisks) })
+                .drive(),
 
-            input.fromView.doNotShowAgain.do(onNext: { [unowned self] in
-                self.useCase.doNotShowERC20WarningAgain()
+            input.fromView.doNotShowAgain.do(onNext: { [unowned useCase] in
+                useCase.doNotShowERC20WarningAgain()
             }).drive()
         ]
 

@@ -2,21 +2,21 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class Stepper<Step> {
+final class Navigator<NavigationStep> {
 
-    private let navigationSubject: PublishSubject<Step>
+    private let navigationSubject: PublishSubject<NavigationStep>
     private let tracker: Tracking
 
     lazy var navigation = navigationSubject.asDriverOnErrorReturnEmpty()
 
-    init(navigationSubject: PublishSubject<Step> = PublishSubject<Step>(), tracker: Tracking = Tracker()) {
+    init(navigationSubject: PublishSubject<NavigationStep> = PublishSubject<NavigationStep>(), tracker: Tracking = Tracker()) {
         self.navigationSubject = navigationSubject
         self.tracker = tracker
     }
 }
 
-extension Stepper {
-    func step(_ step: Step) {
+extension Navigator {
+    func next(_ step: NavigationStep) {
         navigationSubject.onNext(step)
 
         if let userAction = step as? TrackedUserAction {
@@ -29,7 +29,7 @@ extension Stepper {
     }
 }
 
-extension Stepper: Tracking {
+extension Navigator: Tracking {
     func track(event: TrackableEvent, context: Any = NoContext()) {
         tracker.track(event: event, context: context)
     }

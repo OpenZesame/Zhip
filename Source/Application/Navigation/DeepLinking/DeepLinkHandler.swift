@@ -18,15 +18,15 @@ final class DeepLinkHandler {
     }
 
     private let tracker: Tracker
-    private let stepper: Stepper<DeepLink>
+    private let navigator: Navigator<DeepLink>
 
     /// This buffered link gets set when the app is locked with a PIN code
     private var bufferedLink: DeepLink?
     private var appIsLockedSoBufferLink = false
 
-    init(tracker: Tracker = Tracker(), stepper: Stepper<DeepLink> = Stepper<DeepLink>()) {
+    init(tracker: Tracker = Tracker(), navigator: Navigator<DeepLink> = Navigator<DeepLink>()) {
         self.tracker = tracker
-        self.stepper = stepper
+        self.navigator = navigator
     }
 
     func appIsLockedBufferDeeplinks() {
@@ -63,7 +63,7 @@ extension DeepLinkHandler {
     }
 
     var navigation: Driver<DeepLink> {
-        return stepper.navigation.filter { [unowned self] _ in return !self.appIsLockedSoBufferLink }
+        return navigator.navigation.filter { [unowned self] _ in return !self.appIsLockedSoBufferLink }
     }
 
 }
@@ -74,7 +74,7 @@ private extension DeepLinkHandler {
         if appIsLockedSoBufferLink {
             bufferedLink = destination
         } else {
-            stepper.step(destination)
+            navigator.next(destination)
         }
     }
 

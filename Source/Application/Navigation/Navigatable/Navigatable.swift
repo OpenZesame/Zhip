@@ -11,6 +11,6 @@ import RxCocoa
 
 protocol BaseNavigatable {}
 protocol Navigatable: BaseNavigatable {
-    associatedtype Step
-    var stepper: Stepper<Step> { get }
+    associatedtype NavigationStep
+    var navigator: Navigator<NavigationStep> { get }
 }

@@ -29,8 +29,8 @@ final class TermsOfServiceViewModel: BaseViewModel<
     }
     
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
-            stepper.step(userAction)
+        func userDid(_ userAction: NavigationStep) {
+            navigator.next(userAction)
         }
 
         let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }

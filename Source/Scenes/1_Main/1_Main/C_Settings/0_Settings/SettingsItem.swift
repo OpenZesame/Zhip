@@ -10,7 +10,7 @@ import UIKit
 
 struct SettingsItem {
 
-    typealias Destination = SettingsViewModel.Step
+    typealias Destination = SettingsViewModel.NavigationStep
     let title: String
     let destination: Destination
     let style: Style

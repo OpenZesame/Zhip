@@ -36,8 +36,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userIntends(to intention: Step) {
-            stepper.step(intention)
+        func userIntends(to intention: NavigationStep) {
+            navigator.next(intention)
         }
 
         let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()

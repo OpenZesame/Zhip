@@ -33,6 +33,9 @@ final class BackupWalletViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userDid(_ userAction: NavigationStep) {
+            navigator.next(userAction)
+        }
 
         let keystoreText = wallet.map {
             try? JSONEncoder(outputFormatting: .prettyPrinted).encode($0.keystore)
@@ -50,7 +53,7 @@ final class BackupWalletViewModel: BaseViewModel<
             input.fromView.proceedTrigger.withLatestFrom(input.fromView.understandsRisk)
                 .filter { $0 }
                 .withLatestFrom(wallet)
-                .do(onNext: { [unowned stepper] in stepper.step(.backupWallet($0)) })
+                .do(onNext: { userDid(.backupWallet($0)) })
                 .drive()
         ]
 
