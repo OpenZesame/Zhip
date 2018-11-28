@@ -45,8 +45,8 @@ final class RemovePincodeViewModel: BaseViewModel<
                 userDid(.cancelPincodeRemoval)
             }).drive(),
 
-            matchingPincode.do(onNext: { [unowned self] in
-                self.useCase.deletePincode()
+            matchingPincode.do(onNext: { [unowned useCase] in
+                useCase.deletePincode()
                 let toast = Toast(€.Event.Toast.didRemovePincode) {
                     userDid(.removePincode)
                 }

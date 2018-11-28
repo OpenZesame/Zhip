@@ -33,6 +33,10 @@ BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userDid(_ userAction: Step) {
+            stepper.step(userAction)
+        }
+
         let fromView = input.fromView
 
         let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .new
@@ -54,7 +58,7 @@ BaseViewModel<
                     .trackActivity(activityIndicator)
                     .asDriverOnErrorReturnEmpty()
             }
-            .do(onNext: { [unowned stepper] in stepper.step(.createWallet($0)) })
+            .do(onNext: { userDid(.createWallet($0)) })
             .drive()
             .disposed(by: bag)
 

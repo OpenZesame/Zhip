@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-protocol OnboardingUseCase {
+protocol OnboardingUseCase: AnyObject {
 
     var hasAcceptedTermsOfService: Bool { get }
     func didAcceptTermsOfService()

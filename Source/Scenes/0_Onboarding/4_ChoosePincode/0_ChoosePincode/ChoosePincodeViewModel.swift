@@ -22,18 +22,20 @@ final class ChoosePincodeViewModel: BaseViewModel<
 > {
 
     override func transform(input: Input) -> Output {
+        func userDid(_ step: Step) {
+            stepper.step(step)
+        }
 
         let pincode = input.fromView.pincode
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(pincode.filterNil())
-            .do(onNext: { [unowned self] in
-                self.stepper.step(.chosePincode($0))
-            }).drive(),
+            .do(onNext: { userDid(.chosePincode($0)) })
+                .drive(),
 
-            input.fromController.rightBarButtonTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.skip)
-            }).drive()
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.skip) })
+                .drive()
         ]
 
         return Output(

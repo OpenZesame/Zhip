@@ -32,6 +32,10 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
+        func userDid(_ step: Step) {
+            stepper.step(step)
+        }
+
         let unconfirmedPincode = self.unconfirmedPincode
         let confirmedPincode = input.fromView.pincode.map { pincode -> Pincode? in
             guard pincode == unconfirmedPincode else { return nil }
@@ -41,14 +45,14 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(confirmedPincode.filterNil())
-                .do(onNext: { [unowned self] in
-                self.useCase.userChoose(pincode: $0)
-                self.stepper.step(.confirmPincode)
+            .do(onNext: { [unowned useCase] in
+                useCase.userChoose(pincode: $0)
+                userDid(.confirmPincode)
             }).drive(),
 
-            input.fromController.rightBarButtonTrigger.do(onNext: { [unowned stepper] in
-                stepper.step(.skip)
-            }).drive()
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.skip) })
+                .drive()
         ]
 
         return Output(
