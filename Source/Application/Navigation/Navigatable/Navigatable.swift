@@ -6,9 +6,6 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import Foundation
-import RxCocoa
-
 protocol Navigatable {
     associatedtype NavigationStep
     var navigator: Navigator<NavigationStep> { get }
