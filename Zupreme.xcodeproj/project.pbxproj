@@ -26,7 +26,7 @@
 		483CE9CE2194E9E300BED31C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 483CE9982194E9E300BED31C /* Assets.xcassets */; };
 		483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99B2194E9E300BED31C /* AppCoordinator.swift */; };
 		483CE9D02194E9E300BED31C /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99C2194E9E300BED31C /* BaseCoordinator.swift */; };
-		483CE9D22194E9E300BED31C /* Navigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99F2194E9E300BED31C /* Navigatable.swift */; };
+		483CE9D22194E9E300BED31C /* Navigating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE99F2194E9E300BED31C /* Navigating.swift */; };
 		483CE9D32194E9E300BED31C /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A02194E9E300BED31C /* Navigator.swift */; };
 		483CE9D42194E9E300BED31C /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A22194E9E300BED31C /* DeepLink.swift */; };
 		483CE9D52194E9E300BED31C /* DeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CE9A32194E9E300BED31C /* DeepLinkHandler.swift */; };
@@ -230,7 +230,7 @@
 		483CE9982194E9E300BED31C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		483CE99B2194E9E300BED31C /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		483CE99C2194E9E300BED31C /* BaseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
-		483CE99F2194E9E300BED31C /* Navigatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigatable.swift; sourceTree = "<group>"; };
+		483CE99F2194E9E300BED31C /* Navigating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigating.swift; sourceTree = "<group>"; };
 		483CE9A02194E9E300BED31C /* Navigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		483CE9A22194E9E300BED31C /* DeepLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		483CE9A32194E9E300BED31C /* DeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
@@ -519,7 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				483CE99A2194E9E300BED31C /* Coordinator */,
-				483CE99E2194E9E300BED31C /* Navigatable */,
+				483CE99E2194E9E300BED31C /* Navigating */,
 				483CE9A12194E9E300BED31C /* DeepLinking */,
 				483CE9A52194E9E300BED31C /* Presentation */,
 				48ECF62921A356DA0078D659 /* OpenUrl.swift */,
@@ -537,13 +537,13 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		483CE99E2194E9E300BED31C /* Navigatable */ = {
+		483CE99E2194E9E300BED31C /* Navigating */ = {
 			isa = PBXGroup;
 			children = (
-				483CE99F2194E9E300BED31C /* Navigatable.swift */,
+				483CE99F2194E9E300BED31C /* Navigating.swift */,
 				483CE9A02194E9E300BED31C /* Navigator.swift */,
 			);
-			path = Navigatable;
+			path = Navigating;
 			sourceTree = "<group>";
 		};
 		483CE9A12194E9E300BED31C /* DeepLinking */ = {
@@ -1522,7 +1522,7 @@
 				48ECF5C921A18F140078D659 /* PrepareTransactionViewModel.swift in Sources */,
 				48ECF5DC21A18F140078D659 /* Receive.swift in Sources */,
 				483CE9CC2194E9E300BED31C /* Tracker.swift in Sources */,
-				483CE9D22194E9E300BED31C /* Navigatable.swift in Sources */,
+				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
 				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,

@@ -36,7 +36,7 @@ private extension ReceiveCoordinator {
     func toReceive() {
         let viewModel = ReceiveViewModel(useCase: useCase)
 
-        push(scene: Receive.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: Receive.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .requestTransaction(let requestedTransaction): self.share(transaction: requestedTransaction)
             case .finish: self.finish()

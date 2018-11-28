@@ -60,7 +60,7 @@ private extension OnboardingCoordinator {
     func toTermsOfService() {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
 
-        push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .acceptTermsOfService: self.toAnalyticsPermission()
             }
@@ -70,7 +70,7 @@ private extension OnboardingCoordinator {
     func toAnalyticsPermission() {
         let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
 
-        push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .answerQuestionAboutAnalyticsPermission: self.toWarningERC20()
             }
@@ -80,7 +80,7 @@ private extension OnboardingCoordinator {
     func toWarningERC20() {
         let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
 
-        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid, _ in
+        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .understandRisks: self.toChooseWallet()
             }
