@@ -9,8 +9,8 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.Step> {
-    enum Step {
+final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finishedRestoring(wallet: Wallet)
     }
 

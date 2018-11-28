@@ -12,8 +12,8 @@ import RxCocoa
 import Zesame
 
 // MARK: - SendCoordinator
-final class SendCoordinator: BaseCoordinator<SendCoordinator.Step> {
-    enum Step {
+final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finish
     }
 

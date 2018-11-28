@@ -32,7 +32,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userDid(_ step: Step) {
+        func userDid(_ step: NavigationStep) {
             navigator.next(step)
         }
 

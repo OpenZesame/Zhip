@@ -12,8 +12,8 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.Step> {
-    enum Step {
+final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.NavigationStep> {
+    enum NavigationStep {
         case didCreate(wallet: Wallet)
     }
 

@@ -29,7 +29,7 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
+        func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 

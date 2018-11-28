@@ -33,7 +33,7 @@ final class SignTransactionViewModel: BaseViewModel<
 
     // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userDid(_ userAction: Step) {
+        func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 

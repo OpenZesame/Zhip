@@ -8,8 +8,8 @@
 
 import UIKit
 
-final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.Step> {
-    enum Step {
+final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.NavigationStep> {
+    enum NavigationStep {
         case setPincode
     }
 

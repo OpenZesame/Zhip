@@ -25,7 +25,7 @@ extension BaseCoordinator {
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        navigationHandler: @escaping (V.ViewModel.Step, DismissScene) -> Void
+        navigationHandler: @escaping (V.ViewModel.NavigationStep, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         let scene = S.init(viewModel: viewModel)
@@ -49,7 +49,7 @@ extension BaseCoordinator {
         viewModel: V.ViewModel,
         animated: Bool = true,
         navigationController customNavigationController: UINavigationController? = nil,
-        navigationHandler: @escaping (V.ViewModel.Step, DismissScene) -> Void
+        navigationHandler: @escaping (V.ViewModel.NavigationStep, DismissScene) -> Void
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
 
         let scene = S.init(viewModel: viewModel)

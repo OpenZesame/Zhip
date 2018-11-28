@@ -10,8 +10,8 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Step> {
-    enum Step {
+final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.NavigationStep> {
+    enum NavigationStep {
         case finishOnboarding
     }
 

@@ -13,8 +13,8 @@ import RxSwift
 
 private typealias € = L10n.Scene
 
-final class MainCoordinator: BaseCoordinator<MainCoordinator.Step> {
-    enum Step {
+final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
+    enum NavigationStep {
         case removeWallet
     }
 

@@ -22,7 +22,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
 > {
 
     override func transform(input: Input) -> Output {
-        func userDid(_ step: Step) {
+        func userDid(_ step: NavigationStep) {
             navigator.next(step)
         }
 

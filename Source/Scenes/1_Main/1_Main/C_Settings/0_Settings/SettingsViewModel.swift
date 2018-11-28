@@ -52,7 +52,7 @@ final class SettingsViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
-        func userWantsToNavigate(to intention: Step) {
+        func userWantsToNavigate(to intention: NavigationStep) {
             navigator.next(intention)
         }
 

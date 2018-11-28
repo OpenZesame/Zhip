@@ -29,7 +29,7 @@ final class WarningERC20ViewModel: BaseViewModel<
     }
 
     override func transform(input: Input) -> Output {
-        func userDo(_ userAction: Step) {
+        func userDo(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 

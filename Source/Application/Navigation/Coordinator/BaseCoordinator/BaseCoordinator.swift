@@ -10,11 +10,11 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class BaseCoordinator<Step>: AnyCoordinator, Navigatable {
+class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
 
     var childCoordinators = [AnyCoordinator]()
 
-    let navigator = Navigator<Step>()
+    let navigator = Navigator<NavigationStep>()
     let bag = DisposeBag()
     private(set) var navigationController: UINavigationController
 
@@ -39,7 +39,7 @@ extension BaseCoordinator {
     func start<C>(
         coordinator: C,
         transition: CoordinatorTransition = .append,
-        navigationHandler: @escaping (C.Step) -> Void
+        navigationHandler: @escaping (C.NavigationStep) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         switch transition {
@@ -58,7 +58,7 @@ extension BaseCoordinator {
     typealias DismissModalFlow = (Animated) -> Void
     func presentModalCoordinator<C>(
         makeCoordinator: (UINavigationController) -> C,
-        navigationHandler: @escaping (C.Step, DismissModalFlow) -> Void
+        navigationHandler: @escaping (C.NavigationStep, DismissModalFlow) -> Void
         ) where C: AnyCoordinator & Navigatable {
 
         let newModalNavigationController = UINavigationController()
