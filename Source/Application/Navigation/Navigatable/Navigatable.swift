@@ -9,8 +9,7 @@
 import Foundation
 import RxCocoa
 
-protocol BaseNavigatable {}
-protocol Navigatable: BaseNavigatable {
+protocol Navigatable {
     associatedtype NavigationStep
     var navigator: Navigator<NavigationStep> { get }
 }
