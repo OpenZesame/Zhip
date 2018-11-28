@@ -9,7 +9,6 @@
 import UIKit
 
 import RxSwift
-import TinyConstraints
 
 /// The "Single-Line Controller" base class
 class SceneController<View: ContentView>: AbstractController where View.ViewModel.Input.FromController == ControllerInput {
@@ -22,8 +21,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        bindViewToViewModel()
-        edgesForExtendedLayout = .bottom
+        setup()
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
@@ -36,6 +34,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override func loadView() {
         view = View()
         view.backgroundColor = .white
+        // We should not use autolayout here, but this works.
         view.bounds = UIScreen.main.bounds
     }
 
@@ -56,26 +55,18 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 
 // MARK: Private
 private extension SceneController {
-    // swiftlint:disable:next function_body_length
-    func bindViewToViewModel() {
-        guard let contentView = view as? View else { return }
 
+    func setup() {
+        bindViewToViewModel()
+        edgesForExtendedLayout = .bottom
+    }
+
+    // swiftlint:disable:next function_body_length
+    func makeAndSubscribeToInputFromController() -> ControllerInput {
         let titleSubject = PublishSubject<String>()
         let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let rightBarButtonContentSubject = PublishSubject<BarButtonContent>()
         let toastSubject = PublishSubject<Toast>()
-
-        let controllerInput = ControllerInput(
-            viewDidLoad: rx.viewDidLoad,
-            viewWillAppear: rx.viewWillAppear,
-            viewDidAppear: rx.viewDidAppear,
-            leftBarButtonTrigger: leftBarButtonSubject.asDriverOnErrorReturnEmpty(),
-            rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
-            titleSubject: titleSubject,
-            leftBarButtonContentSubject: leftBarButtonContentSubject,
-            rightBarButtonContentSubject: rightBarButtonContentSubject,
-            toastSubject: toastSubject
-        )
 
         bag <~ [
             titleSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
@@ -94,11 +85,33 @@ private extension SceneController {
                 self.setRightBarButtonUsing(content: $0)
             }).drive()
         ]
+        return ControllerInput(
+            viewDidLoad: rx.viewDidLoad,
+            viewWillAppear: rx.viewWillAppear,
+            viewDidAppear: rx.viewDidAppear,
+            leftBarButtonTrigger: leftBarButtonSubject.asDriverOnErrorReturnEmpty(),
+            rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
+            titleSubject: titleSubject,
+            leftBarButtonContentSubject: leftBarButtonContentSubject,
+            rightBarButtonContentSubject: rightBarButtonContentSubject,
+            toastSubject: toastSubject
+        )
+    }
 
-        let input = ViewModel.Input(fromView: contentView.inputFromView, fromController: controllerInput)
+    func bindViewToViewModel() {
+        guard let contentView = view as? View else { return }
 
+        let inputFromView = contentView.inputFromView
+        let inputFromController = makeAndSubscribeToInputFromController()
+
+        let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
+
+        // Transform input from view and controller into output used to update UI
+        // Navigatoin logic is handled by the Coordinator listening to navigation
+        // steps in passed to the ViewModels `navigator` (`Stepper`).
         let output = viewModel.transform(input: input)
 
+        // Update UI, dispose the array of `Disposable`s
         contentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
 }
