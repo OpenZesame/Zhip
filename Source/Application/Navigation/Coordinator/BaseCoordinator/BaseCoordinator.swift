@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 
 /// Base class for our coordinators.
-class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigatable {
+class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigating {
 
     /// Coordinator stack, any child Coordinator should be appended to new array in order to retain it and handle its life cycle.
     var childCoordinators = [AnyCoordinator]()
@@ -71,7 +71,7 @@ extension BaseCoordinator {
         transition: CoordinatorTransition = .append,
         didStart: CoordinatorDidStart? = nil,
         navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
-        ) where C: AnyCoordinator & Navigatable {
+        ) where C: AnyCoordinator & Navigating {
 
         // Add the child coordinator to the childCoordinator array
         switch transition {
@@ -124,7 +124,7 @@ extension BaseCoordinator {
         makeCoordinator: (_ newNC: UINavigationController) -> C,
         didStart: CoordinatorDidStart? = nil,
         navigationHandler: @escaping (_ step: C.NavigationStep, _ dismiss: DismissModalFlow) -> Void
-        ) where C: AnyCoordinator & Navigatable {
+        ) where C: AnyCoordinator & Navigating {
 
         // Initialize a new NavigationController to be passed to the new child coordinator
         let newModalNavigationController = UINavigationController()

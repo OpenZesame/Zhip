@@ -40,7 +40,7 @@ extension BaseCoordinator {
         animated: Bool = true,
         navigationPresentationCompletion: PresentationCompletion? = nil,
         navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep) -> Void
-        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)
@@ -80,7 +80,7 @@ extension BaseCoordinator {
         animated: Bool = true,
         navigationController customNavigationController: UINavigationController? = nil,
         navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
-        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigatable {
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)

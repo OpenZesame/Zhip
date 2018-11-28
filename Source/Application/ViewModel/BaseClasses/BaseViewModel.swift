@@ -28,4 +28,4 @@ class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: Abstrac
     }
 }
 
-extension BaseViewModel: Navigatable {}
+extension BaseViewModel: Navigating {}
