@@ -1,95 +1,18 @@
 //
-//  BaseCoordinator.swift
+//  Coordinating+Child+ModalPresent.swift
 //  Zupreme
 //
-//  Created by Alexander Cyon on 2018-10-27.
+//  Created by Alexander Cyon on 2018-11-30.
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
 import UIKit
-import RxCocoa
-import RxSwift
-
-/// Base class for our coordinators.
-class BaseCoordinator<NavigationStep>: AnyCoordinator, Navigating {
-
-    /// Coordinator stack, any child Coordinator should be appended to new array in order to retain it and handle its life cycle.
-    var childCoordinators = [AnyCoordinator]()
-
-    /// The coordinators navigator is used for navigation logic between coordinators. A child coordinator could possible finish
-    /// with to different navigation steps. The parent will then handle this logic and coordinate the next navigation step.
-    let navigator = Navigator<NavigationStep>()
-
-    /// Dispose bag used for disposing of Disposables from navigation subscription of child coordinators navigation.
-    let bag = DisposeBag()
-
-    private(set) var navigationController: UINavigationController
-
-    // MARK: - Initialization
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
-
-    // MARK: - Overridable
-
-    /// Method to be overriden by coordinator implementations. This method is invoked by parent coodinator when this
-    /// coordinator has been retained and presented.
-    func start(didStart: CoordinatorDidStart? = nil) { abstract }
-
-    deinit {
-        log.verbose("💣 \(String(describing: self))")
-    }
-}
 
 // MARK: - Start Child Coordinator
 typealias CoordinatorDidStart = () -> Void
-typealias Animated = Bool
-typealias DismissModalFlow = (Animated) -> Void
+typealias PresentationCompletion = () -> Void
 
-extension BaseCoordinator {
-
-    /// Starts a child coordinator which might be part of a flow of mutiple coordinators.
-    /// Use this method when you know that you will finish the root coordinator at some
-    /// point, which also will finish this new child coordinator.
-    ///
-    /// If you intend to start a single temporary coordinator that you will finish from
-    /// the parent (the coordinator instance you called this method on) then please use
-    /// `presentModalCoordinator` instead.
-    ///
-    /// - Parameters:
-    ///   - coordinator: Child coordinator to start, either a perpertual coordinator or part of
-    ///       a flow which root coordonator will finish.
-    ///   - transition: Whether to replace replace the childCoordinator array with this the new
-    ///       child coordinator or if it should be appended.
-    ///   - didStart: Optional closure in which you can pass logic to be executed when the new child coordinator
-    ///       has finished presentation of its root ViewController. In most cases this is not needed.
-    ///   - navigationHandler: **Required** closure in which you should handle all navigation steps emitted by
-    ///       the new child coordinator.
-    ///   - step: The navigation step emitted by this new child coordinator. Handled by `navigationHandler` in this parent coordinator.
-    func start<C>(
-        coordinator child: C,
-        transition: CoordinatorTransition = .append,
-        didStart: CoordinatorDidStart? = nil,
-        navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
-        ) where C: AnyCoordinator & Navigating {
-
-        // Add the child coordinator to the childCoordinator array
-        switch transition {
-        case .replace: childCoordinators = [child]
-        case .append: childCoordinators.append(child)
-        }
-
-        // Subscribe to the navigation steps emitted by the child coordinator
-        // And invoke the navigationHandler closure passed in to this method
-        bag <~ child.navigator.navigation.do(onNext: {
-            navigationHandler($0)
-        }).drive()
-
-        // Start the child coordinator (which is responsible for setting up its root UIViewController and presenting it)
-        // and pass along the `didStart` closure, which the child should invoke or delegate to invoke.
-        child.start(didStart: didStart)
-    }
-
+extension Coordinating {
     /// Starts a new temporary flow with a new Coordinator.
     ///
     /// "Temporary" meaning that it's expected that the new coordinator (the "child")
@@ -122,9 +45,9 @@ extension BaseCoordinator {
     ///           stack and removes the child coordinator from its parent (the coordinator instance you called this method on).
     func presentModalCoordinator<C>(
         makeCoordinator: (_ newNC: UINavigationController) -> C,
-        didStart: CoordinatorDidStart? = nil,
-        navigationHandler: @escaping (_ step: C.NavigationStep, _ dismiss: DismissModalFlow) -> Void
-        ) where C: AnyCoordinator & Navigating {
+        didStart: (() -> Void)? = nil,
+        navigationHandler: @escaping (_ step: C.NavigationStep, _ dismiss: ((_ animateDismiss: Bool) -> Void)) -> Void
+        ) where C: Coordinating & Navigating {
 
         // Initialize a new NavigationController to be passed to the new child coordinator
         let newModalNavigationController = UINavigationController()
@@ -132,8 +55,6 @@ extension BaseCoordinator {
         // Initialize the new child coordinator, by invoking the `makeCoordinator` closure,
         // passing the newly created NavigationController
         let child = makeCoordinator(newModalNavigationController)
-
-        log.verbose("\(self) presents \(child)")
 
         // Add the child coordinator to the parents arrray of childen.
         childCoordinators.append(child)
@@ -148,7 +69,7 @@ extension BaseCoordinator {
         // Subscribe to the navigation steps emitted by the child coordinator
         // And invoke the `navigationHandler` closure passed in to this method.
         // When invoking the `navigationHandler` besides passing the `navigationStep`
-        // from the `child.navigator` we also pass a trailing closure, the `DismissModalFlow`
+        // from the `child.navigator` we also pass a trailing closure, the `((_ animateDismiss: Bool) -> Void)`
         // closure, which the parent coordinator _SHOULD_ invoke when it wants to finish this
         // temporary child coordinator.
         bag <~ child.navigator.navigation.do(onNext: { [unowned self, unowned newModalNavigationController, unowned child] navigationStep in

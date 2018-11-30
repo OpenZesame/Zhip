@@ -87,16 +87,15 @@ private extension AppCoordinator {
 
     func toUnlockAppWithPincodeIfNeeded() {
         guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
-        guard let topMostNavgationController = window.rootViewController?.findTopMostNavigationController() else { incorrectImplementation("should have a navigationController") }
 
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
 
         isCurrentlyPresentingLockScene = true
         deepLinkHandler.appIsLockedBufferDeeplinks()
-        modallyPresent(
+
+        topMostCoordinator.modallyPresent(
             scene: UnlockAppWithPincode.self,
-            viewModel: viewModel,
-            navigationController: topMostNavgationController
+            viewModel: viewModel
         ) { [unowned self] userDid, dismissScene in
             switch userDid {
             case .unlockApp:
