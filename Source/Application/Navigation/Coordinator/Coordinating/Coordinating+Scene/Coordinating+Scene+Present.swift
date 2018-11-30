@@ -11,7 +11,8 @@ import RxSwift
 import RxCocoa
 
 // MARK: Modally present
-typealias DismissScene = (_ animatedDismiss: Bool, _ presentationCompletion: (() -> Void)?) -> Void
+typealias Completion = () -> Void
+typealias DismissScene = (_ animatedDismiss: Bool, _ presentationCompletion: Completion?) -> Void
 
 extension Coordinating {
     /// This method is used to modally present a Scene.
@@ -28,7 +29,7 @@ extension Coordinating {
         viewModel: V.ViewModel,
         animated: Bool = true,
         navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
-        ) where S: Scene<V>, V: UIView & ViewModelled, V.ViewModel: Navigating {
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)

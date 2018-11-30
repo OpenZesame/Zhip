@@ -34,5 +34,5 @@ class BaseCoordinator<NavigationStep>: Coordinating, Navigating {
 
     /// Method to be overriden by coordinator implementations. This method is invoked by parent coodinator when this
     /// coordinator has been retained and presented.
-    func start(didStart: (() -> Void)? = nil) { abstract }
+    func start(didStart: Completion? = nil) { abstract }
 }

@@ -30,9 +30,9 @@ extension Coordinating {
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        navigationPresentationCompletion: (() -> Void)? = nil,
+        navigationPresentationCompletion: Completion? = nil,
         navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep) -> Void
-        ) where S: Scene<V>, V: UIView & ViewModelled, V.ViewModel: Navigating {
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)
@@ -56,7 +56,7 @@ private extension UINavigationController {
     func setRootViewControllerIfEmptyElsePush(
         viewController: UIViewController,
         animated: Bool,
-        completion: (() -> Void)? = nil
+        completion: Completion? = nil
         ) {
 
         if viewControllers.isEmpty {

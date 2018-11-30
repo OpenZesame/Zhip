@@ -25,7 +25,7 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.NavigationSte
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: CoordinatorDidStart? = nil) {
+    override func start(didStart: Completion? = nil) {
         toReceive()
     }
 }

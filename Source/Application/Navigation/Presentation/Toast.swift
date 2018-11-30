@@ -17,9 +17,9 @@ struct Toast {
 
     private let message: String
     private let dismissing: Dismissing
-    private let completion: PresentationCompletion?
+    private let completion: Completion?
 
-    init(_ message: String, dismissing: Dismissing = .after(duration: 1.2), completion: PresentationCompletion? = nil) {
+    init(_ message: String, dismissing: Dismissing = .after(duration: 1.2), completion: Completion? = nil) {
         self.message = message
         self.dismissing = dismissing
         self.completion = completion
@@ -36,7 +36,7 @@ extension Toast: ExpressibleByStringLiteral {
 
 // MARK: - Toast + Presentation
 extension Toast {
-    func present(using navigationController: UIViewController, dismissedCompletion: PresentationCompletion? = nil) {
+    func present(using navigationController: UIViewController, dismissedCompletion: Completion? = nil) {
         let dismissedCompletion = dismissedCompletion ?? self.completion
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 

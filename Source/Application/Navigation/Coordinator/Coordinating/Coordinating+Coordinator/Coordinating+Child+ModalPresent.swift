@@ -9,9 +9,6 @@
 import UIKit
 
 // MARK: - Start Child Coordinator
-typealias CoordinatorDidStart = () -> Void
-typealias PresentationCompletion = () -> Void
-
 extension Coordinating {
     /// Starts a new temporary flow with a new Coordinator.
     ///
@@ -35,7 +32,7 @@ extension Coordinating {
     /// - Parameters:
     ///   - makeCoordinator: **Required** closure in which you should initialize the new child coordinator using the
     ///       `UINavigationController` being created by this function, passed as an argument in the closure.
-    ///   - newNC: The new `UINavigationController` created by this function, used when creating the child Coordinator.
+    ///   - newNavController: The new `UINavigationController` created by this function, used when creating the child Coordinator.
     ///   - didStart: Optional Closure in which you can pass logic to be executed when the new child coordinator
     ///       has finished presentation of its root ViewController. In most cases this is not needed.
     ///   - navigationHandler: **Required** closure in which you should handle all navigation steps emitted by the
@@ -44,8 +41,8 @@ extension Coordinating {
     ///   - dismiss: Closure you **should** call when you want to end this temporary flow, which dismisses the navigation
     ///           stack and removes the child coordinator from its parent (the coordinator instance you called this method on).
     func presentModalCoordinator<C>(
-        makeCoordinator: (_ newNC: UINavigationController) -> C,
-        didStart: (() -> Void)? = nil,
+        makeCoordinator: (_ newNavController: UINavigationController) -> C,
+        didStart: Completion? = nil,
         navigationHandler: @escaping (_ step: C.NavigationStep, _ dismiss: ((_ animateDismiss: Bool) -> Void)) -> Void
         ) where C: Coordinating & Navigating {
 

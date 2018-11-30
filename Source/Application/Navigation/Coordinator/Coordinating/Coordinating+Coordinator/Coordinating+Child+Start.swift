@@ -31,7 +31,7 @@ extension Coordinating {
     func start<C>(
         coordinator child: C,
         transition: CoordinatorTransition = .append,
-        didStart: (() -> Void)? = nil,
+        didStart: Completion? = nil,
         navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
         ) where C: Coordinating & Navigating {
 

@@ -33,7 +33,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
         super.init(navigationController: neverUsedNavigationController)
     }
 
-    override func start(didStart: CoordinatorDidStart? = nil) {
+    override func start(didStart: Completion? = nil) {
         if walletUseCase.hasConfiguredWallet {
             toMain(lockIfNeeded: true)
         } else {

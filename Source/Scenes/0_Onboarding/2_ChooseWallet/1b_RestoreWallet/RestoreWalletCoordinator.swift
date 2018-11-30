@@ -21,7 +21,7 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.N
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: CoordinatorDidStart? = nil) {
+    override func start(didStart: Completion? = nil) {
         toRestoreWallet()
     }
 }

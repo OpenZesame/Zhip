@@ -27,7 +27,7 @@ protocol Coordinating: AnyObject, CustomStringConvertible {
     var bag: DisposeBag { get }
 
     /// This method is invoked by parent coodinator when this coordinator has been retained and presented.
-    func start(didStart: CoordinatorDidStart?)
+    func start(didStart: Completion?)
 
     /// The NavigationController responsible for retaining and presenting Scenes (`UIViewController`s).
     var navigationController: UINavigationController { get }
