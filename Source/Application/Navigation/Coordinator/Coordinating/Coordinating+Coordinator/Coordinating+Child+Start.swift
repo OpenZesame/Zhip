@@ -37,7 +37,11 @@ extension Coordinating {
 
         // Add the child coordinator to the childCoordinator array
         switch transition {
-        case .replace: childCoordinators = [child]
+        case .replace:
+            if !navigationController.viewControllers.isEmpty {
+                navigationController.setViewControllers([], animated: false)
+            }
+            childCoordinators = [child]
         case .append: childCoordinators.append(child)
         }
 

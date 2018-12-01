@@ -16,6 +16,7 @@
 		48241B4F21B158B60054ED8E /* Coordinating+NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */; };
 		48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */; };
 		48241B5321B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B5221B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift */; };
+		48241B5521B2BCB50054ED8E /* Coordinating+DebugPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B5421B2BCB50054ED8E /* Coordinating+DebugPrinting.swift */; };
 		4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4833C34E219221BC00D7D312 /* WalletUseCase.swift */; };
 		48379C6C21AE925400B95DB9 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48379C6B21AE925400B95DB9 /* BaseViewModel.swift */; };
 		483C0BE0219ECF89006947C7 /* ObserverType+BarButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483C0BDF219ECF89006947C7 /* ObserverType+BarButtonContent.swift */; };
@@ -222,6 +223,7 @@
 		48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+NavigationStack.swift"; sourceTree = "<group>"; };
 		48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Child+Start.swift"; sourceTree = "<group>"; };
 		48241B5221B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Child+ModalPresent.swift"; sourceTree = "<group>"; };
+		48241B5421B2BCB50054ED8E /* Coordinating+DebugPrinting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Coordinating+DebugPrinting.swift"; path = "Coordinating+Coordinator/Coordinating+DebugPrinting.swift"; sourceTree = "<group>"; };
 		4833C34E219221BC00D7D312 /* WalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUseCase.swift; sourceTree = "<group>"; };
 		48379C6B21AE925400B95DB9 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		483C0BDF219ECF89006947C7 /* ObserverType+BarButtonContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObserverType+BarButtonContent.swift"; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 			isa = PBXGroup;
 			children = (
 				48ECF60721A1CFCD0078D659 /* Coordinating.swift */,
+				48241B5421B2BCB50054ED8E /* Coordinating+DebugPrinting.swift */,
 				48241B4D21B158220054ED8E /* Coordinating+Stack */,
 				48241B4C21B157D80054ED8E /* Coordinating+Coordinator */,
 				48241B4B21B157B60054ED8E /* Coordinating+Scene */,
@@ -1548,6 +1551,7 @@
 				48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
 				48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */,
+				48241B5521B2BCB50054ED8E /* Coordinating+DebugPrinting.swift in Sources */,
 				48ECF5CC21A18F140078D659 /* SignTransactionView.swift in Sources */,
 				483DDEAB219B6456009D3F4C /* DefaultPincodeUseCase.swift in Sources */,
 				48ECF61021A1F4AB0078D659 /* UIControl+Rx.swift in Sources */,
