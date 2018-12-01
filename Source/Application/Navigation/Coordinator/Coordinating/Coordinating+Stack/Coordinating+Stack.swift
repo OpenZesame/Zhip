@@ -6,6 +6,8 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
+import UIKit
+
 extension Coordinating {
 
     func firstIndexOf(child: Coordinating) -> Int? {
@@ -26,5 +28,17 @@ extension Coordinating {
     var topMostCoordinator: Coordinating {
         guard let last = childCoordinators.last else { return self }
         return last.topMostCoordinator
+    }
+
+    var topMostScene: AbstractController? {
+        if let presentedController = topMostCoordinator.navigationController.presentedViewController {
+            if let presentedNavigationController = presentedController as? UINavigationController {
+                return presentedNavigationController.topViewController as? AbstractController
+            } else {
+                return presentedController as? AbstractController
+            }
+        } else {
+            return topMostCoordinator.navigationController.topViewController as? AbstractController
+        }
     }
 }

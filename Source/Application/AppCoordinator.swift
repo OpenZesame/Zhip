@@ -13,24 +13,17 @@ import Zesame
 final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
     enum NavigationStep {}
 
-    private unowned let window: UIWindow
     private let useCaseProvider: UseCaseProvider
     private let deepLinkHandler: DeepLinkHandler
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    // TODO replace this with navigation stack logic looking at the topmost controller (which I earlier failed to do.)
-    private var isCurrentlyPresentingLockScene = false
-
-    init(window: UIWindow, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
-        self.window = window
+    init(navigationController: UINavigationController, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
         self.deepLinkHandler = deepLinkHandler
         self.useCaseProvider = useCaseProvider
 
-        let neverUsedNavigationController = UINavigationController()
-
-        super.init(navigationController: neverUsedNavigationController)
+        super.init(navigationController: navigationController)
     }
 
     override func start(didStart: Completion? = nil) {
@@ -40,18 +33,12 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
             toOnboarding()
         }
     }
-
-    override var navigationController: UINavigationController {
-        incorrectImplementation("This is a special case, the AppCoordinator should use the `window` and set its rootViewController")
-    }
 }
 
 // MARK: - Private
 private extension AppCoordinator {
 
     func toOnboarding() {
-        let navigationController = UINavigationController()
-        window.rootViewController = navigationController
 
         let onboarding = OnboardingCoordinator(
             navigationController: navigationController,
@@ -66,8 +53,6 @@ private extension AppCoordinator {
     }
 
     func toMain(lockIfNeeded lock: Bool = false) {
-        let navigationController = UINavigationController()
-        window.rootViewController = navigationController
 
         let main = MainCoordinator(
             navigationController: navigationController,
@@ -77,11 +62,13 @@ private extension AppCoordinator {
         )
 
         start(coordinator: main, transition: .replace, didStart: { [unowned self] in
-            if lock { self.lockApp() }
-        }, navigationHandler: { [unowned self] userDid in
-            switch userDid {
-            case .removeWallet: self.toOnboarding()
-            }
+                if lock {
+                    self.lockApp()
+                }
+            }, navigationHandler: { [unowned self] userDid in
+                switch userDid {
+                case .removeWallet: self.toOnboarding()
+                }
         })
     }
 
@@ -90,7 +77,6 @@ private extension AppCoordinator {
 
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
 
-        isCurrentlyPresentingLockScene = true
         deepLinkHandler.appIsLockedBufferDeeplinks()
 
         topMostCoordinator.modallyPresent(
@@ -99,7 +85,6 @@ private extension AppCoordinator {
         ) { [unowned self] userDid, dismissScene in
             switch userDid {
             case .unlockApp:
-                self.isCurrentlyPresentingLockScene = false
                 dismissScene(true, { [unowned self] in
                     self.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
                 })
@@ -119,6 +104,10 @@ extension AppCoordinator {
 private extension AppCoordinator {
     func lockApp() {
         toUnlockAppWithPincodeIfNeeded()
+    }
+
+    var isCurrentlyPresentingLockScene: Bool {
+        return topMostScene is UnlockAppWithPincode
     }
 }
 

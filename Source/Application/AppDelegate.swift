@@ -11,11 +11,17 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
-    private lazy var appCoordinator = AppCoordinator(
-        window: window!,
-        deepLinkHandler: DeepLinkHandler(),
-        useCaseProvider: DefaultUseCaseProvider.shared
-    )
+
+    fileprivate lazy var appCoordinator: AppCoordinator = {
+        let navigationController = UINavigationController()
+        window?.rootViewController = navigationController
+
+        return AppCoordinator(
+            navigationController: navigationController,
+            deepLinkHandler: DeepLinkHandler(),
+            useCaseProvider: DefaultUseCaseProvider.shared
+        )
+    }()
 }
 
 extension AppDelegate: UIApplicationDelegate {
@@ -31,5 +37,15 @@ extension AppDelegate: UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         appCoordinator.appWillResignActive()
+    }
+}
+
+// MARK: Debugging
+extension UIApplication {
+    static func printCoordinatorStack() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            incorrectImplementation("UIApplication.shared.delegate should be AppDelegate")
+        }
+        log.debug(appDelegate.appCoordinator)
     }
 }

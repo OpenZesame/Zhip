@@ -35,6 +35,6 @@ protocol Coordinating: AnyObject, CustomStringConvertible {
 
 extension Coordinating {
     var description: String {
-        return "\(type(of: self)), #\(childCoordinators.count) children"
+        return stringRepresentation(level: 1)
     }
 }

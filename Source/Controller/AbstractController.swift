@@ -16,3 +16,9 @@ class AbstractController: UIViewController {
     lazy var rightBarButtonAbtractTarget = AbstractTarget(triggerSubject: rightBarButtonSubject)
     lazy var leftBarButtonAbtractTarget = AbstractTarget(triggerSubject: leftBarButtonSubject)
 }
+
+extension AbstractController {
+    override var description: String {
+        return "\(type(of: self))"
+    }
+}
