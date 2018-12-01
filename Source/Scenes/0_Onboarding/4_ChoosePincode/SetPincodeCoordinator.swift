@@ -20,7 +20,7 @@ final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.Navigat
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: CoordinatorDidStart? = nil) {
+    override func start(didStart: Completion? = nil) {
         guard !useCase.hasConfiguredPincode else {
             incorrectImplementation("Changing a pincode is not supported, make changes in UI so that user need to remove wallet first, then present user with the option to set a (new) pincode.")
         }

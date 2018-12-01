@@ -32,7 +32,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
         bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in self.toSendPrefilTransaction() }).drive()
     }
 
-    override func start(didStart: CoordinatorDidStart? = nil) {
+    override func start(didStart: Completion? = nil) {
         toMain(didStart: didStart)
     }
 }
@@ -51,7 +51,7 @@ private extension MainCoordinator {
 // MARK: - Navigation
 private extension MainCoordinator {
 
-    func toMain(didStart: CoordinatorDidStart? = nil) {
+    func toMain(didStart: Completion? = nil) {
 
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
