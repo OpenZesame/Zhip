@@ -35,16 +35,20 @@ extension Coordinating {
         navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
         ) where C: Coordinating & Navigating {
 
+        // Start the child coordinator (which is responsible for setting up its root UIViewController and presenting it)
+        // and pass along the `didStart` closure, which the child should invoke or delegate to invoke.
+        let startChild = { [unowned child] in
+            child.start(didStart: didStart)
+        }
+
         // Add the child coordinator to the childCoordinator array
         switch transition {
         case .replace:
             childCoordinators = [child]
-            navigationController.removeAllViewControllers { [unowned child] in
-                child.start(didStart: didStart)
-            }
+            navigationController.removeAllViewControllers { startChild() }
         case .append:
             childCoordinators.append(child)
-            child.start(didStart: didStart)
+            startChild()
         }
 
         // Subscribe to the navigation steps emitted by the child coordinator
