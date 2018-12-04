@@ -6,7 +6,7 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension Coordinating {
 
@@ -35,14 +35,20 @@ extension Coordinating {
         navigationHandler: @escaping (_ step: C.NavigationStep) -> Void
         ) where C: Coordinating & Navigating {
 
+        // Start the child coordinator (which is responsible for setting up its root UIViewController and presenting it)
+        // and pass along the `didStart` closure, which the child should invoke or delegate to invoke.
+        let startChild = { [unowned child] in
+            child.start(didStart: didStart)
+        }
+
         // Add the child coordinator to the childCoordinator array
         switch transition {
         case .replace:
-            if !navigationController.viewControllers.isEmpty {
-                navigationController.setViewControllers([], animated: false)
-            }
             childCoordinators = [child]
-        case .append: childCoordinators.append(child)
+            navigationController.removeAllViewControllers { startChild() }
+        case .append:
+            childCoordinators.append(child)
+            startChild()
         }
 
         // Subscribe to the navigation steps emitted by the child coordinator
@@ -50,9 +56,24 @@ extension Coordinating {
         bag <~ child.navigator.navigation.do(onNext: {
             navigationHandler($0)
         }).drive()
+    }
+}
 
-        // Start the child coordinator (which is responsible for setting up its root UIViewController and presenting it)
-        // and pass along the `didStart` closure, which the child should invoke or delegate to invoke.
-        child.start(didStart: didStart)
+extension UINavigationController {
+    fileprivate func removeAllViewControllers(animated: Bool = true, completion: @escaping Completion) {
+        func removeAllViewControllers() {
+            if !viewControllers.isEmpty {
+                viewControllers = []
+            }
+            DispatchQueue.main.async { completion() }
+        }
+
+        if let presented = presentedViewController {
+            presented.dismiss(animated: animated) {
+                removeAllViewControllers()
+            }
+        } else {
+            removeAllViewControllers()
+        }
     }
 }

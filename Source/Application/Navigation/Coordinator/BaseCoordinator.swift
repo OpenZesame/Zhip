@@ -23,7 +23,7 @@ class BaseCoordinator<NavigationStep>: Coordinating, Navigating {
     /// Dispose bag used for disposing of Disposables from navigation subscription of child coordinators navigation.
     let bag = DisposeBag()
 
-    private(set) var navigationController: UINavigationController
+    let navigationController: UINavigationController
 
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
