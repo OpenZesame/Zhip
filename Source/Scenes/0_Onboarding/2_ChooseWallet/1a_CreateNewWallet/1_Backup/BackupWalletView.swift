@@ -12,9 +12,9 @@ import RxSwift
 private typealias € = L10n.Scene.BackupWallet
 
 extension UILabel {
-    convenience init(text: CustomStringConvertible) {
+    convenience init(text: CustomStringConvertible?) {
         self.init(frame: .zero)
-        self.text = text.description
+        self.text = text?.description
     }
 }
 
@@ -34,11 +34,7 @@ final class BackupWalletView: ScrollingStackView {
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
         .withStyle(.body)
 
-    private lazy var understandsRisksSwitch = UISwitch()
-    private lazy var understandsRisksShortLabel = UILabel(text: €.SwitchLabel.keystoreIsBackedUp).withStyle(.checkbox)
-
-    private lazy var riskStackView = UIStackView(arrangedSubviews: [understandsRisksSwitch, understandsRisksShortLabel])
-        .withStyle(.horizontal)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.keystoreIsBackedUp)
 
     private lazy var haveBackedUpProceedButton = UIButton(title: €.Button.haveBackedUpProceed)
         .withStyle(.secondary)
@@ -50,13 +46,12 @@ final class BackupWalletView: ScrollingStackView {
         keystoreTextView,
         copyKeystoreButton,
         urgeUserToSecurlyBackupPassphraseLabel,
-        riskStackView,
+        understandsRisksCheckbox,
         haveBackedUpProceedButton,
         .spacer
     ]
 
     override func setup() {
-        understandsRisksSwitch.translatesAutoresizingMaskIntoConstraints = false
         keystoreTextView.addBorder()
     }
 }
@@ -74,7 +69,7 @@ extension BackupWalletView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
-            understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
+            isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
         )
     }

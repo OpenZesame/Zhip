@@ -19,17 +19,13 @@ final class CreateNewWalletView: ScrollingStackView {
     private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeBackup).withStyle(.body)
-    private lazy var understandsRisksSwitch = UISwitch()
 
-    private lazy var understandsRisksShortLabel = UILabel(text: €.SwitchLabel.passphraseIsBackedUp).withStyle(.checkbox)
-
-    private lazy var riskStackView = UIStackView(arrangedSubviews: [understandsRisksSwitch, understandsRisksShortLabel]).withStyle(.horizontal)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.passphraseIsBackedUp)
 
     private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.createNewWallet)
         .withStyle(.primary) { customizableStyle in
             customizableStyle.disabled()
         }
-//        .disabled()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -37,14 +33,10 @@ final class CreateNewWalletView: ScrollingStackView {
         encryptionPassphraseField,
         confirmEncryptionPassphraseField,
         urgeUserToSecurlyBackupPassphraseLabel,
-        riskStackView,
+        understandsRisksCheckbox,
         createNewWalletButton,
         .spacer
     ]
-
-    override func setup() {
-        understandsRisksSwitch.translatesAutoresizingMaskIntoConstraints = false
-    }
 }
 
 // MARK: - ViewModelled
@@ -63,7 +55,7 @@ extension CreateNewWalletView: ViewModelled {
         return InputFromView(
             newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
             confirmedNewEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            understandsRisk: understandsRisksSwitch.rx.isOn.asDriver(),
+            isUnderstandRisksCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             createWalletTrigger: createNewWalletButton.rx.tap.asDriver()
         )
     }

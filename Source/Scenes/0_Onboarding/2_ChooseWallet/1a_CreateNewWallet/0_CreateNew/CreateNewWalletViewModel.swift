@@ -48,7 +48,7 @@ BaseViewModel<
             try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1, mode: encryptionPassphraseMode)
             }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
 
-        let isCreateWalletButtonEnabled = Driver.combineLatest(validEncryptionPassphrase.map { $0 != nil }, input.fromView.understandsRisk) { $0 && $1 }
+        let isCreateWalletButtonEnabled = Driver.combineLatest(validEncryptionPassphrase.map { $0 != nil }, input.fromView.isUnderstandRisksCheckboxChecked) { $0 && $1 }
 
         let activityIndicator = ActivityIndicator()
 
@@ -78,7 +78,7 @@ extension CreateNewWalletViewModel {
         let newEncryptionPassphrase: Driver<String>
         let confirmedNewEncryptionPassphrase: Driver<String>
         
-        let understandsRisk: Driver<Bool>
+        let isUnderstandRisksCheckboxChecked: Driver<Bool>
         let createWalletTrigger: Driver<Void>
     }
 
