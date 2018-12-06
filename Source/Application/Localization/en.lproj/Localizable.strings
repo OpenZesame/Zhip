@@ -23,7 +23,7 @@
 // MARK: AskForAnalyticsPermissions
 "Scene.AskForAnalyticsPermissions.Title" = "Analytics disclaimer";
 "Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-"Scene.AskForAnalyticsPermissions.SwitchLabel.ReadDisclaimer" = "I have read the analytics disclaimer";
+"Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer" = "I have read the analytics disclaimer";
 "Scene.AskForAnalyticsPermissions.Button.Accept" = "Accept";
 "Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";
 
@@ -44,7 +44,7 @@
 "Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
 "Scene.CreateNewWallet.Label.UrgeBackup" = "⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.CreateNewWallet.SwitchLabel.PassphraseIsBackedUp" = "Passphrase is backed up";
+"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "Passphrase is backed up";
 "Scene.CreateNewWallet.Button.CreateNewWallet" = "Create new wallet";
 
 // MARK: BackupWallet
@@ -52,7 +52,7 @@
 "Scene.BackupWallet.Label.StoreKeystoreSecurely" = "Store the keystore + passphrase somewhere safe (e.g. 1Password)";
 "Scene.BackupWallet.Button.CopyKeystore" = "Copy keystore";
 "Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore" = "⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.BackupWallet.SwitchLabel.KeystoreIsBackedUp" = "Keystore is backed up";
+"Scene.BackupWallet.Checkbox.KeystoreIsBackedUp" = "Keystore is backed up";
 "Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
 "Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
@@ -72,7 +72,7 @@
 
 // MARK: ConfirmNewPincode
 "Scene.ConfirmNewPincode.Title" = "Confirm app PIN";
-"Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp" = "I've backed up my PIN code";
+"Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp" = "I've backed up my PIN code";
 "Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm";
 
 

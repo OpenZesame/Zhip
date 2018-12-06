@@ -39,6 +39,8 @@ def shared
   pod 'JSONRPCKit', :git => 'https://github.com/ollitapa/JSONRPCKit.git', :branch => 'master'
 
   pod 'SwiftGen'
+
+  pod 'M13Checkbox'
 end
 
 target 'Zupreme' do

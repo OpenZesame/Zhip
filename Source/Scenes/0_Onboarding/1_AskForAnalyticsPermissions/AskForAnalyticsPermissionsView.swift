@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import RxSwift
+
 import TinyConstraints
+import RxSwift
 
 private typealias € = L10n.Scene.AskForAnalyticsPermissions
-
 private let topImageViewWidthHeight: CGFloat = 80
 
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
@@ -27,10 +27,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     private lazy var disclaimerTextView = UITextView(text: €.Text.disclaimer).withStyle(.nonEditable)
 
-    private lazy var readDisclaimerSwitch = UISwitch()
-    private lazy var readDisclaimerLabel = UILabel(text: €.SwitchLabel.readDisclaimer).withStyle(.checkbox)
-
-    private lazy var readDisclaimerStackView = UIStackView(arrangedSubviews: [readDisclaimerSwitch, readDisclaimerLabel]).withStyle(.horizontal)
+    private lazy var hasReadDisclaimerCheckbox = CheckboxWithLabel(titled: €.Checkbox.readDisclaimer)
 
     private lazy var declineButton = UIButton(title: €.Button.decline)
         .withStyle(.primary)
@@ -48,7 +45,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
         topImageViewContainerStackView,
         titleLabel,
         disclaimerTextView,
-        readDisclaimerStackView,
+        hasReadDisclaimerCheckbox,
         buttonsStackView
     ]
 
@@ -60,6 +57,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
     }
 }
 
+// MARK: - ViewModelled
 extension AskForAnalyticsPermissionsView: ViewModelled {
     typealias ViewModel = AskForAnalyticsPermissionsViewModel
 
@@ -72,7 +70,7 @@ extension AskForAnalyticsPermissionsView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            haveReadDisclaimerTrigger: readDisclaimerSwitch.rx.isOn.asDriver(),
+            isHaveReadDisclaimerCheckboxChecked: hasReadDisclaimerCheckbox.rx.isChecked.asDriver(),
             acceptTrigger: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
             declineTrigger: declineButton.rx.tap.asDriverOnErrorReturnEmpty()
         )

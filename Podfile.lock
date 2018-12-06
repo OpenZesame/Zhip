@@ -14,6 +14,7 @@ PODS:
   - JSONRPCKit (4.0.0):
     - Result (~> 4.0.0)
   - KeychainSwift (13.0.0)
+  - M13Checkbox (3.2.2)
   - Result (4.0.0)
   - RxAtomic (4.4.0)
   - RxBlocking (4.4.0):
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - JSONRPCKit (from `https://github.com/ollitapa/JSONRPCKit.git`, branch `master`)
   - KeychainSwift
+  - M13Checkbox
   - RxBlocking
   - RxCocoa
   - RxDataSources
@@ -71,6 +73,7 @@ SPEC REPOS:
     - EllipticCurveKit
     - IQKeyboardManagerSwift
     - KeychainSwift
+    - M13Checkbox
     - Result
     - RxAtomic
     - RxBlocking
@@ -113,6 +116,7 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
   JSONRPCKit: ce08ee53ac1afd6150351531836e0ab842cf567e
   KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
+  M13Checkbox: a8c2491cfbbca10797925fd0b9154a782bf40d89
   Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
   RxBlocking: 138ad53217434444d6eeeb4fb406a45431d92e31
@@ -130,6 +134,6 @@ SPEC CHECKSUMS:
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: 488b866abf950a24a67079211de1a620e78e3663
 
-PODFILE CHECKSUM: e24cde31d18556e3bc3f98ed4a95274f7cb3c086
+PODFILE CHECKSUM: 51f266579f7cbaf4446515965fcb0b735d5f5a4b
 
 COCOAPODS: 1.5.3

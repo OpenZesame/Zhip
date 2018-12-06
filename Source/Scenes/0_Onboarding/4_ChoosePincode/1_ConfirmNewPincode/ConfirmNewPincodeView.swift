@@ -16,10 +16,7 @@ final class ConfirmNewPincodeView: ScrollingStackView {
 
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
-    private lazy var haveBackedUpPincodeSwitch = UISwitch()
-    private lazy var haveBackedUpPincodeShortLabel = UILabel(text: €.SwitchLabel.pincodeIsBackedUp).withStyle(.checkbox)
-
-    private lazy var haveBackedUpPincodeStackView = UIStackView(arrangedSubviews: [haveBackedUpPincodeSwitch, haveBackedUpPincodeShortLabel]).withStyle(.horizontal)
+    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel(titled: €.Checkbox.pincodeIsBackedUp)
 
     private lazy var confirmPincodeButton = UIButton(title: €.Button.confirmPincode)
         .withStyle(.primary)
@@ -27,7 +24,7 @@ final class ConfirmNewPincodeView: ScrollingStackView {
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
-        haveBackedUpPincodeStackView,
+        haveBackedUpPincodeCheckbox,
         confirmPincodeButton,
         .spacer
     ]
@@ -39,7 +36,7 @@ extension ConfirmNewPincodeView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             pincode: inputPincodeView.pincode,
-            haveBackedUpPincode: haveBackedUpPincodeSwitch.rx.value.asDriverOnErrorReturnEmpty(),
+            isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.rx.isChecked.asDriverOnErrorReturnEmpty(),
             confirmedTrigger: confirmPincodeButton.rx.tap.asDriver()
         )
     }

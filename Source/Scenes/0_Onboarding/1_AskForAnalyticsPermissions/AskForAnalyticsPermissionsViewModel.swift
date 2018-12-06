@@ -33,8 +33,6 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let haveReadDisclaimerTrigger = input.fromView.haveReadDisclaimerTrigger
-
         let hasAnsweredAnalyticsPermissionsQuestionTrigger = Driver.merge(
             input.fromView.acceptTrigger.map { true },
             input.fromView.declineTrigger.map { false }
@@ -48,14 +46,14 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
         ]
         
         return Output(
-            areButtonsEnabled: haveReadDisclaimerTrigger
+            areButtonsEnabled: input.fromView.isHaveReadDisclaimerCheckboxChecked
         )
     }
 }
 
 extension AskForAnalyticsPermissionsViewModel {
     struct InputFromView {
-        let haveReadDisclaimerTrigger: Driver<Bool>
+        let isHaveReadDisclaimerCheckboxChecked: Driver<Bool>
         let acceptTrigger: Driver<Void>
         let declineTrigger: Driver<Void>
     }

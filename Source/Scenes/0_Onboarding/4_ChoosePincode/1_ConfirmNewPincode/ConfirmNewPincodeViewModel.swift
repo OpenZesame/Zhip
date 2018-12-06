@@ -41,7 +41,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
             guard pincode == unconfirmedPincode else { return nil }
             return pincode
         }
-        let isConfirmPincodeEnabled = Driver.combineLatest(confirmedPincode.map { $0 != nil }, input.fromView.haveBackedUpPincode) { $0 && $1 }
+        let isConfirmPincodeEnabled = Driver.combineLatest(confirmedPincode.map { $0 != nil }, input.fromView.isHaveBackedUpPincodeCheckboxChecked) { $0 && $1 }
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(confirmedPincode.filterNil())
@@ -65,7 +65,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 extension ConfirmNewPincodeViewModel {
     struct InputFromView {
         let pincode: Driver<Pincode?>
-        let haveBackedUpPincode: Driver<Bool>
+        let isHaveBackedUpPincodeCheckboxChecked: Driver<Bool>
         let confirmedTrigger: Driver<Void>
     }
 

@@ -43,6 +43,8 @@ final class BackupWalletViewModel: BaseViewModel<
             String(data: $0, encoding: .utf8)
         }
 
+        let isUnderstandsRiskCheckboxChecked = input.fromView.isUnderstandsRiskCheckboxChecked
+
         bag <~ [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(keystoreText)
                 .do(onNext: {
@@ -50,7 +52,7 @@ final class BackupWalletViewModel: BaseViewModel<
                     input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyKeystore))
                 }).drive(),
 
-            input.fromView.proceedTrigger.withLatestFrom(input.fromView.understandsRisk)
+            input.fromView.proceedTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }
                 .withLatestFrom(wallet)
                 .do(onNext: { userDid(.backupWallet($0)) })
@@ -59,7 +61,7 @@ final class BackupWalletViewModel: BaseViewModel<
 
         return Output(
             keystoreText: keystoreText,
-            isProceedButtonEnabled: input.fromView.understandsRisk
+            isProceedButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }
 }
@@ -68,7 +70,7 @@ extension BackupWalletViewModel {
 
     struct InputFromView {
         let copyKeystoreToPasteboardTrigger: Driver<Void>
-        let understandsRisk: Driver<Bool>
+        let isUnderstandsRiskCheckboxChecked: Driver<Bool>
         let proceedTrigger: Driver<Void>
     }
 
