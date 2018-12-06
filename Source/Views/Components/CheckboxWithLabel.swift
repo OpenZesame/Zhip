@@ -47,6 +47,7 @@ private extension CheckboxWithLabel {
     func setupConstraints(height: CGFloat) {
         stackView.edgesToSuperview()
         self.height(height)
+        checkbox.width(height)
     }
 
     func setupCheckbox() {
@@ -55,8 +56,6 @@ private extension CheckboxWithLabel {
         checkbox.cornerRadius = 5
         checkbox.boxLineWidth = 3
         checkbox.checkmarkLineWidth = 3
-        
-//        checkbox.stateChangeAnimation = .stroke
 
         // Color of box line in disabled state
         checkbox.secondaryTintColor = .gray
