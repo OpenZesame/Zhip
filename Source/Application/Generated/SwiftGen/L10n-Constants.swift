@@ -62,9 +62,9 @@ internal enum L10n {
         /// Decline
         internal static let decline = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Decline")
       }
-      internal enum SwitchLabel {
+      internal enum Checkbox {
         /// I have read the analytics disclaimer
-        internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.SwitchLabel.ReadDisclaimer")
+        internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer")
       }
       internal enum Text {
         /// Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -80,6 +80,10 @@ internal enum L10n {
         /// I've backed up, proceed
         internal static let haveBackedUpProceed = L10n.tr("Localizable", "Scene.BackupWallet.Button.HaveBackedUpProceed")
       }
+      internal enum Checkbox {
+        /// Keystore is backed up
+        internal static let keystoreIsBackedUp = L10n.tr("Localizable", "Scene.BackupWallet.Checkbox.KeystoreIsBackedUp")
+      }
       internal enum Event {
         internal enum Toast {
           /// Copied keystore
@@ -91,10 +95,6 @@ internal enum L10n {
         internal static let storeKeystoreSecurely = L10n.tr("Localizable", "Scene.BackupWallet.Label.StoreKeystoreSecurely")
         /// ⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.
         internal static let urgeSecureBackupOfKeystore = L10n.tr("Localizable", "Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore")
-      }
-      internal enum SwitchLabel {
-        /// Keystore is backed up
-        internal static let keystoreIsBackedUp = L10n.tr("Localizable", "Scene.BackupWallet.SwitchLabel.KeystoreIsBackedUp")
       }
     }
     internal enum ChoosePincode {
@@ -126,9 +126,9 @@ internal enum L10n {
         /// Confirm
         internal static let confirmPincode = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Button.ConfirmPincode")
       }
-      internal enum SwitchLabel {
+      internal enum Checkbox {
         /// I've backed up my PIN code
-        internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.SwitchLabel.PincodeIsBackedUp")
+        internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp")
       }
     }
     internal enum CreateNewWallet {
@@ -137,6 +137,10 @@ internal enum L10n {
       internal enum Button {
         /// Create new wallet
         internal static let createNewWallet = L10n.tr("Localizable", "Scene.CreateNewWallet.Button.CreateNewWallet")
+      }
+      internal enum Checkbox {
+        /// Passphrase is backed up
+        internal static let passphraseIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp")
       }
       internal enum Field {
         /// Confirm encryption passphrase
@@ -151,10 +155,6 @@ internal enum L10n {
         internal static let chooseNewPassphrase = L10n.tr("Localizable", "Scene.CreateNewWallet.Label.ChooseNewPassphrase")
         /// ⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.
         internal static let urgeBackup = L10n.tr("Localizable", "Scene.CreateNewWallet.Label.UrgeBackup")
-      }
-      internal enum SwitchLabel {
-        /// Passphrase is backed up
-        internal static let passphraseIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.SwitchLabel.PassphraseIsBackedUp")
       }
     }
     internal enum Main {

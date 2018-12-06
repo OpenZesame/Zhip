@@ -27,7 +27,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     private lazy var disclaimerTextView = UITextView(text: €.Text.disclaimer).withStyle(.nonEditable)
 
-    private lazy var hasReadDisclaimerCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.readDisclaimer)
+    private lazy var hasReadDisclaimerCheckbox = CheckboxWithLabel(titled: €.Checkbox.readDisclaimer)
 
     private lazy var declineButton = UIButton(title: €.Button.decline)
         .withStyle(.primary)

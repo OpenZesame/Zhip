@@ -16,7 +16,7 @@ final class ConfirmNewPincodeView: ScrollingStackView {
 
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
-    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.pincodeIsBackedUp)
+    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel(titled: €.Checkbox.pincodeIsBackedUp)
 
     private lazy var confirmPincodeButton = UIButton(title: €.Button.confirmPincode)
         .withStyle(.primary)

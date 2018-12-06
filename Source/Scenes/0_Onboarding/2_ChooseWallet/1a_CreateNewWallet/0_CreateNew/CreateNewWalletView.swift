@@ -20,7 +20,7 @@ final class CreateNewWalletView: ScrollingStackView {
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeBackup).withStyle(.body)
 
-    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.passphraseIsBackedUp)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.Checkbox.passphraseIsBackedUp)
 
     private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.createNewWallet)
         .withStyle(.primary) { customizableStyle in

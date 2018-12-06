@@ -34,7 +34,7 @@ final class BackupWalletView: ScrollingStackView {
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
         .withStyle(.body)
 
-    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.SwitchLabel.keystoreIsBackedUp)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.Checkbox.keystoreIsBackedUp)
 
     private lazy var haveBackedUpProceedButton = UIButton(title: €.Button.haveBackedUpProceed)
         .withStyle(.secondary)
