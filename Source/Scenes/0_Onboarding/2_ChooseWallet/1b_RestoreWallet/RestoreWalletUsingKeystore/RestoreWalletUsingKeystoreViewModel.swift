@@ -18,7 +18,6 @@ final class RestoreWalletUsingKeystoreViewModel {
 
     let output: Output
 
-    // swiftlint:disable:next function_body_length
     init(inputFromView: InputFromView) {
         let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
 
