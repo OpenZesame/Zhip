@@ -104,8 +104,8 @@ private extension RestoreWalletView {
         restorationMethodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         restorationMethodSegmentedControl.topToSuperview(offset: 8)
         restorationMethodSegmentedControl.centerXToSuperview()
-        restorationMethodSegmentedControl.insertSegment(withTitle: "Private key", at: 0, animated: false)
-        restorationMethodSegmentedControl.insertSegment(withTitle: "Keystore", at: 1, animated: false)
+        restorationMethodSegmentedControl.insertSegment(withTitle: €.Segment.privateKey, at: 0, animated: false)
+        restorationMethodSegmentedControl.insertSegment(withTitle: €.Segment.keystore, at: 1, animated: false)
 
         restorationMethodSegmentedControl.rx.value
             .asDriver()
@@ -159,7 +159,6 @@ extension RestoreWalletView: ViewModelled {
             viewModel.isRestoring --> restoreUsingKeyStoreView.restoreWalletButton.rx.isLoading,
 
             keyRestoration.do(onNext: { [unowned self] in
-                log.debug("Keyrestoration")
                 self.keyRestorationSubject.onNext($0)
             }).drive()
         ]

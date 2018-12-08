@@ -262,9 +262,11 @@ internal enum L10n {
         /// Private key
         internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Field.PrivateKey")
       }
-      internal enum Label {
-        /// Or paste keystore (JSON) below
-        internal static let orKeystore = L10n.tr("Localizable", "Scene.RestoreWallet.Label.OrKeystore")
+      internal enum Segment {
+        /// Keystore
+        internal static let keystore = L10n.tr("Localizable", "Scene.RestoreWallet.Segment.Keystore")
+        /// Private key
+        internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Segment.PrivateKey")
       }
     }
     internal enum Settings {

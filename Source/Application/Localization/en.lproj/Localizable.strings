@@ -58,8 +58,9 @@
 
 // MARK: RestoreWallet
 "Scene.RestoreWallet.Title" = "Restore Wallet";
+"Scene.RestoreWallet.Segment.PrivateKey" = "Private key";
+"Scene.RestoreWallet.Segment.Keystore" = "Keystore";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
-"Scene.RestoreWallet.Label.OrKeystore" = "Or paste keystore (JSON) below";
 "Scene.RestoreWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";

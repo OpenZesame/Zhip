@@ -33,7 +33,6 @@ final class RestoreWalletViewModel: BaseViewModel<
         self.useCase = useCase
     }
     
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userIntends(to intention: NavigationStep) {
             navigator.next(intention)
