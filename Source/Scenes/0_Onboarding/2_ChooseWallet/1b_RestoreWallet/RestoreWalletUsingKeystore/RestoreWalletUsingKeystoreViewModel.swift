@@ -14,40 +14,30 @@ import RxSwift
 private typealias € = L10n.Scene.RestoreWallet
 
 // MARK: - RestoreWalletViewModel
-final class RestoreWalletUsingKeystoreViewModel: SubViewModel<
-    RestoreWalletUsingKeystoreViewModel.InputFromView,
-    RestoreWalletUsingKeystoreViewModel.Output
-> {
+final class RestoreWalletUsingKeystoreViewModel {
+
+    let output: Output
 
     // swiftlint:disable:next function_body_length
-    override func transform(input: Input) -> Output {
-
-        let fromView = input.fromView
-
+    init(inputFromView: InputFromView) {
         let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
 
         let validEncryptionPassphrase: Driver<String?> =
-            fromView.encryptionPassphrase.map {
+            inputFromView.encryptionPassphrase.map {
             try? WalletEncryptionPassphrase(passphrase: $0, confirm: $0, mode: encryptionPassphraseMode)
             }.map { $0?.validPassphrase }
             .distinctUntilChanged()
 
-        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(fromView.keystoreText, validEncryptionPassphrase) {
+        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(inputFromView.keystoreText, validEncryptionPassphrase) {
             guard let newEncryptionPassphrase = $1 else { return nil }
             return try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: newEncryptionPassphrase)
         }
 
-        let isRestoreButtonEnabled = Driver.combineLatest(
-            keyRestoration.map { $0 != nil },
-            validEncryptionPassphrase.map { $0 != nil }
-        ) { $0 && $1}
-
         let encryptionPassphrasePlaceHolder = Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
 
-        return Output(
+        self.output = Output(
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
-            isRestoreButtonEnabled: isRestoreButtonEnabled,
-            keyRestoration: fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
+            keyRestoration: keyRestoration
         )
     }
 }
@@ -56,15 +46,11 @@ extension RestoreWalletUsingKeystoreViewModel {
 
     struct InputFromView {
         let keystoreText: Driver<String>
-
         let encryptionPassphrase: Driver<String>
-
-        let restoreTrigger: Driver<Void>
     }
 
     struct Output {
         let encryptionPassphrasePlaceholder: Driver<String>
-        let isRestoreButtonEnabled: Driver<Bool>
-        let keyRestoration: Driver<KeyRestoration>
+        let keyRestoration: Driver<KeyRestoration?>
     }
 }

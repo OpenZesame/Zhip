@@ -26,20 +26,3 @@ class AbstractViewModel<FromView, FromController, Output>: ViewModelType {
 
     func transform(input: Input) -> Output { abstract }
 }
-
-class SubViewModel<FromView, Output>: ViewModelType {
-    let bag = DisposeBag()
-
-    struct Input: InputType {
-
-        let fromController: NoControllerInput
-        let fromView: FromView
-
-        init(fromView: FromView, fromController: NoControllerInput = NoControllerInput()) {
-            self.fromView = fromView
-            self.fromController = fromController
-        }
-    }
-
-    func transform(input: Input) -> Output { abstract }
-}

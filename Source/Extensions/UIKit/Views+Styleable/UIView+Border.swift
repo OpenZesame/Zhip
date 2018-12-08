@@ -27,6 +27,6 @@ extension UIView {
 extension UIView.Border {
 
     static var `default`: UIView.Border {
-        return UIView.Border(color: UIColor.gray.withAlphaComponent(0.3), width: 0.5)
+        return UIView.Border(color: UIColor.gray.withAlphaComponent(0.4), width: 1)
     }
 }

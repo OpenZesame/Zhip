@@ -195,6 +195,8 @@
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* Transaction.swift */; };
+		48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096A21BBB503001C499F /* RestoreUsingKeystoreView.swift */; };
+		48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096C21BBB547001C499F /* RestoreUsingPrivateKeyView.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
 		48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562721B632E50026690E /* CheckboxWithLabel.swift */; };
@@ -414,6 +416,8 @@
 		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
 		48F37D6D21918F6F008A2DA4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		48F4096A21BBB503001C499F /* RestoreUsingKeystoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreUsingKeystoreView.swift; sourceTree = "<group>"; };
+		48F4096C21BBB547001C499F /* RestoreUsingPrivateKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreUsingPrivateKeyView.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		48FD562721B632E50026690E /* CheckboxWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabel.swift; sourceTree = "<group>"; };
@@ -1287,6 +1291,7 @@
 			isa = PBXGroup;
 			children = (
 				48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */,
+				48F4096C21BBB547001C499F /* RestoreUsingPrivateKeyView.swift */,
 			);
 			path = RestoreWalletUsingPrivateKey;
 			sourceTree = "<group>";
@@ -1295,6 +1300,7 @@
 			isa = PBXGroup;
 			children = (
 				48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */,
+				48F4096A21BBB503001C499F /* RestoreUsingKeystoreView.swift */,
 			);
 			path = RestoreWalletUsingKeystore;
 			sourceTree = "<group>";
@@ -1660,6 +1666,7 @@
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,
 				48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */,
+				48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */,
 				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
 				48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
@@ -1696,6 +1703,7 @@
 				483CE9E42194E9E300BED31C /* UserDefaults+KeyValueStoring.swift in Sources */,
 				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
 				485AAC9121AAC63C005C56CC /* Amount_Extension.swift in Sources */,
+				48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
 				483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */,
@@ -1784,7 +1792,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */;
 			buildSettings = {
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};

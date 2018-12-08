@@ -26,13 +26,12 @@ final class RestoreWalletViewModel: BaseViewModel<
 > {
     
     private let useCase: WalletUseCase
-    private let restoreUsingPrivateKeyViewModel = RestoreWalletUsingPrivateKeyViewModel()
-    private let restoreUsingKeyStoreViewModel = RestoreWalletUsingKeystoreViewModel()
-    
+
     init(useCase: WalletUseCase) {
         self.useCase = useCase
     }
-    
+
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userIntends(to intention: NavigationStep) {
             navigator.next(intention)
@@ -40,8 +39,15 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         let activityIndicator = ActivityIndicator()
 
+        let keyRestoration: Driver<KeyRestoration?> = input.fromView.selectedSegment.flatMapLatest {
+            switch $0 {
+            case .keystore: return input.fromView.keyRestorationUsingKeystore
+            case .privateKey: return input.fromView.keyRestorationUsingPrivateKey
+            }
+        }
+
         bag <~ [
-            input.fromView.keyRestoration
+            input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
                     self.useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
@@ -52,8 +58,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         ]
 
         return Output(
-            restoreUsingPrivateKeyViewModel: restoreUsingPrivateKeyViewModel,
-            restoreUsingKeyStoreViewModel: restoreUsingKeyStoreViewModel,
+            isRestoreButtonEnabled: keyRestoration.map { $0 != nil },
             isRestoring: activityIndicator.asDriver()
         )
     }
@@ -62,12 +67,17 @@ final class RestoreWalletViewModel: BaseViewModel<
 extension RestoreWalletViewModel {
     
     struct InputFromView {
-        let keyRestoration: Driver<KeyRestoration>
+        enum Segment: Int {
+            case privateKey, keystore
+        }
+        let selectedSegment: Driver<Segment>
+        let keyRestorationUsingPrivateKey: Driver<KeyRestoration?>
+        let keyRestorationUsingKeystore: Driver<KeyRestoration?>
+        let restoreTrigger: Driver<Void>
     }
     
     struct Output {
-        let restoreUsingPrivateKeyViewModel: RestoreWalletUsingPrivateKeyViewModel
-        let restoreUsingKeyStoreViewModel: RestoreWalletUsingKeystoreViewModel
+        let isRestoreButtonEnabled: Driver<Bool>
         let isRestoring: Driver<Bool>
     }
 }

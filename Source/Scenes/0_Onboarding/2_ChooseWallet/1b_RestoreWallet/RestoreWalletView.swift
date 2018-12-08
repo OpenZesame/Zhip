@@ -14,61 +14,21 @@ import RxSwift
 import RxCocoa
 
 private typealias € = L10n.Scene.RestoreWallet
+private typealias Segment = RestoreWalletViewModel.InputFromView.Segment
 
-private func makeRestoreButton() -> ButtonWithSpinner {
-    return ButtonWithSpinner(title: €.Button.restoreWallet)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-    }
-}
-
+// MARK: - RestoreWalletView
 final class RestoreWalletView: UIView, EmptyInitializable {
 
-    // MARK: - RestoreWithPrivateKeyView
-    final class RestoreUsingPrivateKeyView: ScrollingStackView {
-        private lazy var privateKeyField = TextField(placeholder: €.Field.privateKey, type: .hexadecimal)
-            .withStyle(.password)
-        private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
-
-        private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
-
-        fileprivate lazy var restoreWalletButton = makeRestoreButton()
-
-        lazy var stackViewStyle: UIStackView.Style = [
-            privateKeyField,
-            encryptionPassphraseField,
-            confirmEncryptionPassphraseField,
-            restoreWalletButton,
-            .spacer
-        ]
-    }
-
-    // MARK: - RestoreWithKeystoreView
-    final class RestoreUsingKeystoreView: ScrollingStackView {
-        private lazy var keystoreTextView = UITextView(frame: .zero).withStyle(.editable)
-
-        private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
-
-        fileprivate lazy var restoreWalletButton = makeRestoreButton()
-
-        lazy var stackViewStyle: UIStackView.Style = [
-            keystoreTextView,
-            encryptionPassphraseField,
-            restoreWalletButton,
-            .spacer
-        ]
-        override func setup() {
-            keystoreTextView.addBorder()
-            keystoreTextView.height(200)
-        }
-    }
+    private let bag = DisposeBag()
 
     // MARK: - Subviews
-    private let bag = DisposeBag()
-    private let keyRestorationSubject = PublishSubject<KeyRestoration>()
     private lazy var restorationMethodSegmentedControl = UISegmentedControl(frame: .zero)
     private lazy var restoreUsingPrivateKeyView = RestoreUsingPrivateKeyView()
     private lazy var restoreUsingKeyStoreView = RestoreUsingKeystoreView()
+    private lazy var restoreWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.restoreWallet)
+        .withStyle(.primary) { customizableStyle in
+            customizableStyle.disabled()
+        }
 
     // MARK: - Initialization
     init() {
@@ -81,15 +41,22 @@ final class RestoreWalletView: UIView, EmptyInitializable {
     }
 }
 
+// MARK: - Private
 private extension RestoreWalletView {
     func setup() {
 
         addSubview(restorationMethodSegmentedControl)
+        addSubview(restoreWalletButton)
+        restoreWalletButton.bottomToSuperview(offset: -50)
+        restoreWalletButton.centerXToSuperview()
+
         func setupSubview(_ view: UIView) {
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
-            view.edgesToSuperview(excluding: [.top])
+            view.leadingToSuperview()
+            view.trailingToSuperview()
             view.topToBottom(of: restorationMethodSegmentedControl)
+            view.bottomToTop(of: restoreWalletButton, offset: 10)
             view.isHidden = true
         }
 
@@ -100,12 +67,18 @@ private extension RestoreWalletView {
         setupSegmentedControl()
     }
 
+    // swiftlint:disable:next function_body_length
     func setupSegmentedControl() {
         restorationMethodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         restorationMethodSegmentedControl.topToSuperview(offset: 8)
         restorationMethodSegmentedControl.centerXToSuperview()
-        restorationMethodSegmentedControl.insertSegment(withTitle: €.Segment.privateKey, at: 0, animated: false)
-        restorationMethodSegmentedControl.insertSegment(withTitle: €.Segment.keystore, at: 1, animated: false)
+
+        func add(segment: Segment, titled title: String) {
+            restorationMethodSegmentedControl.insertSegment(withTitle: title, at: segment.rawValue, animated: false)
+        }
+
+        add(segment: .privateKey, titled: €.Segment.privateKey)
+        add(segment: .keystore, titled: €.Segment.keystore)
 
         restorationMethodSegmentedControl.rx.value
             .asDriver()
@@ -113,12 +86,12 @@ private extension RestoreWalletView {
             .do(onNext: { [unowned self] in self.selectedSegment(at: $0) })
             .drive().disposed(by: bag)
 
-        func startSegmentedControl(at index: Int) {
-            restorationMethodSegmentedControl.selectedSegmentIndex = index
-            selectedSegment(at: index)
+        func startSegmentedControl(at segment: Segment) {
+            restorationMethodSegmentedControl.selectedSegmentIndex = segment.rawValue
+            selectedSegment(at: segment.rawValue)
         }
 
-        startSegmentedControl(at: 0)
+        startSegmentedControl(at: .privateKey)
     }
 
     func selectedSegment(at index: Int) {
@@ -134,72 +107,23 @@ private extension RestoreWalletView {
     }
 }
 
+// MARK: - ViewModelled
 extension RestoreWalletView: ViewModelled {
     typealias ViewModel = RestoreWalletViewModel
+    
     var inputFromView: InputFromView {
         return InputFromView(
-            keyRestoration: keyRestorationSubject.asDriverOnErrorReturnEmpty()
-        )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        let privateKeyViewModel = viewModel.restoreUsingPrivateKeyViewModel
-        let keystoreViewModel = viewModel.restoreUsingKeyStoreViewModel
-
-        let privateKeyOutput = privateKeyViewModel.transform(input: restoreUsingPrivateKeyView.input)
-        let keystoreOutput = keystoreViewModel.transform(input: restoreUsingKeyStoreView.input)
-
-        let keyRestoration = Driver.merge(privateKeyOutput.keyRestoration, keystoreOutput.keyRestoration)
-
-        return [
-            restoreUsingPrivateKeyView.populate(with: privateKeyOutput),
-            restoreUsingKeyStoreView.populate(with: keystoreOutput)
-        ].flatMap { $0 } + [
-            viewModel.isRestoring --> restoreUsingPrivateKeyView.restoreWalletButton.rx.isLoading,
-            viewModel.isRestoring --> restoreUsingKeyStoreView.restoreWalletButton.rx.isLoading,
-
-            keyRestoration.do(onNext: { [unowned self] in
-                self.keyRestorationSubject.onNext($0)
-            }).drive()
-        ]
-    }
-}
-
-extension RestoreWalletView.RestoreUsingKeystoreView: ViewModelled {
-    typealias ViewModel = RestoreWalletUsingKeystoreViewModel
-    var inputFromView: InputFromView {
-
-        return InputFromView(
-            keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            selectedSegment: restorationMethodSegmentedControl.rx.value.asDriver().map { Segment(rawValue: $0) }.filterNil(),
+            keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
+            keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
             restoreTrigger: restoreWalletButton.rx.tap.asDriver()
         )
     }
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
-            viewModel.isRestoreButtonEnabled            --> restoreWalletButton.rx.isEnabled
-        ]
-    }
-}
-
-extension RestoreWalletView.RestoreUsingPrivateKeyView: ViewModelled {
-    typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
-    var inputFromView: InputFromView {
-
-        return InputFromView(
-            privateKey: privateKeyField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            confirmEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            restoreTrigger: restoreWalletButton.rx.tap.asDriver()
-        )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.encryptionPassphrasePlaceholder   --> encryptionPassphraseField.rx.placeholder,
-            viewModel.isRestoreButtonEnabled            --> restoreWalletButton.rx.isEnabled
+            viewModel.isRestoring               --> restoreWalletButton.rx.isLoading,
+            viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled
         ]
     }
 }
