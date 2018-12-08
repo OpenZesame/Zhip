@@ -38,7 +38,8 @@ private extension SendCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             deepLinkedTransaction: deeplinkedTransaction.filter { [unowned self] _ in
-                guard self.isTopmost(scene: PrepareTransaction.self) else {
+                let prepareTransactionIsCurrentScene = self.navigationController.viewControllers.isEmpty || self.isTopmost(scene: PrepareTransaction.self)
+                guard prepareTransactionIsCurrentScene else {
                     log.verbose("Prevented deeplinked transaction since it is not the active scene.")
                     return false
                 }

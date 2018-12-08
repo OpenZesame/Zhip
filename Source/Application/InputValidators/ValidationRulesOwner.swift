@@ -9,6 +9,6 @@
 import Validator
 
 protocol ValidationRulesOwner {
-    associatedtype InputType: Validatable
-    var rules: ValidationRuleSet<InputType> { get }
+    associatedtype RuleInput: Validatable
+    var rules: ValidationRuleSet<RuleInput> { get }
 }

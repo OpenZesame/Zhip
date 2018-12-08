@@ -10,33 +10,30 @@ import Zesame
 
 import Validator
 
-struct AddressValidator: InputValidator, ValidationRulesOwner {
+struct AddressValidator: InputValidator {
+    typealias Input = String
+    typealias Output = Address
+    typealias Error = Address.Error
 
-    enum Error {
-        case containsNonHexadecimalCharacters
-        case addressTooShort
-        case addressTooLong
-    }
-
-    private let onlyHexChars = ValidationRuleHexadecimalCharacters(error: Error.containsNonHexadecimalCharacters)
-    private let lengthMin = ValidationRuleLength(min: Address.lengthOfValidAddresses, error: Error.addressTooShort)
-    private let lengthMax = ValidationRuleLength(max: Address.lengthOfValidAddresses, error: Error.addressTooLong)
-
-    var rules: ValidationRuleSet<String> {
-        var rules = ValidationRuleSet<String>(rules: [onlyHexChars])
-        [lengthMin, lengthMax].forEach { rules.add(rule: $0) }
-        return rules
+    func validate(input: Input) -> InputValidationResult<Output> {
+        do {
+            return .valid(try Address(hexString: input))
+        } catch let addressError as Address.Error {
+            return .invalid(.error(message: addressError.errorMessage))
+        } catch {
+            incorrectImplementation("Address.Error should cover all errors")
+        }
     }
 }
 
-extension AddressValidator.Error: InputError {
+extension Address.Error: InputError {
     var errorMessage: String {
         let Message = L10n.Error.Input.Address.self
 
         switch self {
-        case .containsNonHexadecimalCharacters: return Message.containsNonHexadecimal
-        case .addressTooLong: return Message.tooLoong(Address.lengthOfValidAddresses)
-        case .addressTooShort: return Message.tooShort(Address.lengthOfValidAddresses)
+        case .containsInvalidCharacters: return Message.containsNonHexadecimal
+        case .tooLong: return Message.tooLoong(Address.lengthOfValidAddresses)
+        case .tooShort: return Message.tooShort(Address.lengthOfValidAddresses)
         }
     }
 }

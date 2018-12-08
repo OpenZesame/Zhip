@@ -9,25 +9,26 @@
 import Validator
 
 protocol InputValidator {
-    associatedtype InputType: Validatable
+    associatedtype Input: Validatable
+    associatedtype Output
     associatedtype Error: InputError
-    func validate(input: InputType?) -> InputValidationResult<InputType>
-    func validate(input: InputType) -> InputValidationResult<InputType>
+    func validate(input: Input?) -> InputValidationResult<Output>
+    func validate(input: Input) -> InputValidationResult<Output>
 }
 
 extension InputValidator {
-    func validate(input: InputType?) -> InputValidationResult<InputType> {
+    func validate(input: Input?) -> InputValidationResult<Output> {
         guard let input = input else { return .invalid(.empty) }
         return validate(input: input)
     }
 
-    func error(_ error: Error) -> InputValidationResult<InputType> {
+    func error(_ error: Error) -> InputValidationResult<Output> {
         return .invalid(.error(message: error.errorMessage))
     }
 }
 
-extension InputValidator where Self: ValidationRulesOwner {
-    func validate(input: InputType) -> InputValidationResult<InputType> {
+extension InputValidator where Self: ValidationRulesOwner, Self.RuleInput == Input, Output == Input {
+    func validate(input: Input) -> InputValidationResult<Output> {
         let validationResult = input.validate(rules: rules)
         switch validationResult {
         case .valid: return .valid(input)
@@ -39,8 +40,8 @@ extension InputValidator where Self: ValidationRulesOwner {
 }
 
 // MARK: - String to Double
-extension InputValidator where InputType == Double {
-    func validate(string: String?) -> InputValidationResult<InputType> {
+extension InputValidator where Input == Double, Output == Double {
+    func validate(string: String?) -> InputValidationResult<Output> {
         guard let input = string, let double = Double(input) else { return InputValidationResult.invalid(.empty) }
         return validate(input: double)
     }

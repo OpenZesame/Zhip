@@ -19,15 +19,15 @@ enum InputValidationResult<Value> {
 }
 
 extension InputValidationResult {
+
     var errorMessage: String? {
-        switch self {
-        case .invalid(let invalid):
-            switch invalid {
-            case .error(let errorMessage): return errorMessage
-            case .empty: return nil
-            }
-        case .valid: return nil
-        }
+        guard case .invalid(.error(let errorMessage)) = self else { return nil }
+        return errorMessage
+    }
+
+    var value: Value? {
+        guard case .valid(let value) = self else { return nil }
+        return value
     }
 }
 
