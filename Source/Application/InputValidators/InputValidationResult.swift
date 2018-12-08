@@ -18,6 +18,19 @@ enum InputValidationResult<Value> {
     }
 }
 
+extension InputValidationResult {
+    var errorMessage: String? {
+        switch self {
+        case .invalid(let invalid):
+            switch invalid {
+            case .error(let errorMessage): return errorMessage
+            case .empty: return nil
+            }
+        case .valid: return nil
+        }
+    }
+}
+
 protocol InputError: Swift.Error {
     var errorMessage: String { get }
 }

@@ -20,23 +20,15 @@ extension Reactive where Base: UITextField {
 }
 
 extension TextField {
-    func updateWith<Value>(inputValdation validationResult: InputValidationResult<Value>) {
-
-        switch validationResult {
-        case .valid: errorMessage = nil
-        case .invalid(let invalid):
-            switch invalid {
-            case .empty: errorMessage = nil
-            case .error(let errorMessage): self.errorMessage = errorMessage
-            }
-        }
+    func updateWith(validationErrorMessage: String?) {
+        errorMessage = validationErrorMessage
     }
 }
 
 extension Reactive where Base: TextField {
-    func validation<Value>() -> Binder<InputValidationResult<Value>> {
-        return Binder<InputValidationResult<Value>>(base) {
-            $0.updateWith(inputValdation: $1)
+    var validation: Binder<String?> {
+        return Binder<String?>(base) {
+            $0.updateWith(validationErrorMessage: $1)
         }
     }
 }

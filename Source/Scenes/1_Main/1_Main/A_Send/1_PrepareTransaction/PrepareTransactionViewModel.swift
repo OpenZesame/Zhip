@@ -85,26 +85,26 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let validator = InputValidator()
 
-        let recipientAddressValidation = Driver.merge(
+        // Only validate when the field loses focus
+        let recipientAddressValidationResult = fromView.recipientAddressDidEndEditing.withLatestFrom(Driver.merge(
             // Validate input from view
             input.fromView.recepientAddress.map { validator.validateRecipient($0) },
             // All addresses from DeepLinked recipient are always valid
             recipientFromDeepLinkedTransaction.map { InputValidationResult.valid($0.checksummedHex) }
-        )
+        )) { $1 }
 
-        let amountValidation = Driver.merge(
-            input.fromView.amountToSend,
-            amountFromDeepLinkedTransaction.map { $0.description }
-        ).map { validator.validateAmount($0) }
+        let amountValidationResult = fromView.amountDidEndEditing.withLatestFrom(
+            Driver.merge(
+                input.fromView.amountToSend,
+                amountFromDeepLinkedTransaction.map { $0.description }
+            )
+        ) { $1 }.map { validator.validateAmount($0) }
 
-        let gasLimitValidation = fromView.gasLimit.map { validator.validateGasLimit($0) }
-        let gasPriceValidation = fromView.gasPrice.map { validator.validateGasPrice($0) }
+        let gasLimitValidationResult = fromView.gasLimitDidEndEditing.withLatestFrom(fromView.gasLimit) { $1 }
+            .map { validator.validateGasLimit($0) }
 
-        // Only validate when the field loses focus
-        let recipientAddressValidationResult = fromView.recipientAddressDidEndEditing.withLatestFrom(recipientAddressValidation) { $1 }
-        let amountValidationResult = fromView.amountDidEndEditing.withLatestFrom(amountValidation) { $1 }
-        let gasLimitValidationResult = fromView.gasLimitDidEndEditing.withLatestFrom(gasLimitValidation) { $1 }
-        let gasPriceValidationResult = fromView.gasPriceDidEndEditing.withLatestFrom(gasPriceValidation) { $1 }
+        let gasPriceValidationResult = fromView.gasPriceDidEndEditing.withLatestFrom(fromView.gasPrice) { $1 }
+            .map { validator.validateGasPrice($0) }
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -122,13 +122,13 @@ final class PrepareTransactionViewModel: BaseViewModel<
             balance: balance.map { €.Labels.Balance.value($0.balance.amount.description) },
 
             recipient: recipient.map { $0.checksummedHex },
-            recipientAddressValidationResult: recipientAddressValidationResult,
+            recipientAddressValidation: recipientAddressValidationResult.map { $0.errorMessage },
 
             amount: amountFromDeepLinkedTransaction.map { $0.description },
-            amountValidationResult: amountValidationResult,
+            amountValidation: amountValidationResult.map { $0.errorMessage },
 
-            gasPriceValidationResult: gasPriceValidationResult,
-            gasLimitValidationResult: gasLimitValidationResult
+            gasPriceValidation: gasPriceValidationResult.map { $0.errorMessage },
+            gasLimitValidation: gasLimitValidationResult.map { $0.errorMessage }
         )
     }
 }
@@ -158,13 +158,13 @@ extension PrepareTransactionViewModel {
         let balance: Driver<String>
 
         let recipient: Driver<String>
-        let recipientAddressValidationResult: Driver<TextInputValidation>
+        let recipientAddressValidation: Driver<String?>
 
         let amount: Driver<String>
-        let amountValidationResult: Driver<InputToDoubleValidation>
+        let amountValidation: Driver<String?>
 
-        let gasPriceValidationResult: Driver<InputToDoubleValidation>
-        let gasLimitValidationResult: Driver<InputToDoubleValidation>
+        let gasPriceValidation: Driver<String?>
+        let gasLimitValidation: Driver<String?>
     }
 }
 
