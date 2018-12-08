@@ -26,6 +26,8 @@ final class RestoreWalletViewModel: BaseViewModel<
 > {
     
     private let useCase: WalletUseCase
+    private let restoreUsingPrivateKeyViewModel = RestoreWalletUsingPrivateKeyViewModel()
+    private let restoreUsingKeyStoreViewModel = RestoreWalletUsingKeystoreViewModel()
     
     init(useCase: WalletUseCase) {
         self.useCase = useCase
@@ -37,42 +39,10 @@ final class RestoreWalletViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let fromView = input.fromView
-
-        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
-        
-        let validEncryptionPassphrase: Driver<String?> = Observable.combineLatest(
-            fromView.encryptionPassphrase.asObservable(),
-            fromView.confirmEncryptionPassphrase.asObservable()
-        ) {
-            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1, mode: encryptionPassphraseMode)
-            }.map { $0?.validPassphrase }.asDriverOnErrorReturnEmpty()
-
-        let validPrivateKey: Driver<String?> = fromView.privateKey.map {
-            guard
-                case let key = $0,
-                key.count <= 64
-                else { return nil }
-            return key
-        }
-        
-        let keyRestorationKeystore: Driver<KeyRestoration?> = Driver.combineLatest(fromView.keystoreText, validEncryptionPassphrase) {
-            guard let newEncryptionPassphrase = $1 else { return nil }
-            return try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: newEncryptionPassphrase)
-        }
-        
-        let keyRestorationPrivateKey: Driver<KeyRestoration?> = Driver.combineLatest(validPrivateKey, validEncryptionPassphrase) {
-            guard let privateKeyHex = $0, let newEncryptionPassphrase = $1 else { return nil }
-            return try? KeyRestoration(privateKeyHexString: privateKeyHex, encryptBy: newEncryptionPassphrase)
-        }
-        
-        let keyRestoration = Driver.merge(keyRestorationKeystore, keyRestorationPrivateKey)
-
         let activityIndicator = ActivityIndicator()
 
         bag <~ [
-            fromView.restoreTrigger
-                .withLatestFrom(keyRestoration.filterNil()) { $1 }
+            input.fromView.keyRestoration
                 .flatMapLatest { [unowned self] in
                     self.useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
@@ -82,17 +52,10 @@ final class RestoreWalletViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let isRestoreButtonEnabled = Driver.combineLatest(
-            keyRestoration.map { $0 != nil },
-            validEncryptionPassphrase.map { $0 != nil }
-        ) { $0 && $1}
-
-        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
-
         return Output(
-            encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
-            isRestoreButtonEnabled: isRestoreButtonEnabled,
-            isRestoreButtonLoading: activityIndicator.asDriver()
+            restoreUsingPrivateKeyViewModel: restoreUsingPrivateKeyViewModel,
+            restoreUsingKeyStoreViewModel: restoreUsingKeyStoreViewModel,
+            isRestoring: activityIndicator.asDriver()
         )
     }
 }
@@ -100,18 +63,12 @@ final class RestoreWalletViewModel: BaseViewModel<
 extension RestoreWalletViewModel {
     
     struct InputFromView {
-        let privateKey: Driver<String>
-        let keystoreText: Driver<String>
-        
-        let encryptionPassphrase: Driver<String>
-        let confirmEncryptionPassphrase: Driver<String>
-        
-        let restoreTrigger: Driver<Void>
+        let keyRestoration: Driver<KeyRestoration>
     }
     
     struct Output {
-        let encryptionPassphrasePlaceholder: Driver<String>
-        let isRestoreButtonEnabled: Driver<Bool>
-        let isRestoreButtonLoading: Driver<Bool>
+        let restoreUsingPrivateKeyViewModel: RestoreWalletUsingPrivateKeyViewModel
+        let restoreUsingKeyStoreViewModel: RestoreWalletUsingKeystoreViewModel
+        let isRestoring: Driver<Bool>
     }
 }

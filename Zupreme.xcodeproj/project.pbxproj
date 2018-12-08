@@ -198,6 +198,8 @@
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
 		48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562721B632E50026690E /* CheckboxWithLabel.swift */; };
+		48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */; };
+		48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */; };
 		5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */; };
 		5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */; };
 		5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */; };
@@ -415,6 +417,8 @@
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		48FD562721B632E50026690E /* CheckboxWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabel.swift; sourceTree = "<group>"; };
+		48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingPrivateKeyViewModel.swift; sourceTree = "<group>"; };
+		48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingKeystoreViewModel.swift; sourceTree = "<group>"; };
 		5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
 		5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
 		5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
@@ -1211,6 +1215,8 @@
 		48ECF5AD21A18F140078D659 /* 1b_RestoreWallet */ = {
 			isa = PBXGroup;
 			children = (
+				48FD562C21B92F060026690E /* RestoreWalletUsingKeystore */,
+				48FD562921B929EB0026690E /* RestoreWalletUsingPrivateKey */,
 				48ECF5AE21A18F140078D659 /* RestoreWalletViewModel.swift */,
 				48ECF5AF21A18F140078D659 /* RestoreWalletView.swift */,
 				48ECF5B021A18F140078D659 /* RestoreWallet.swift */,
@@ -1275,6 +1281,22 @@
 			children = (
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		48FD562921B929EB0026690E /* RestoreWalletUsingPrivateKey */ = {
+			isa = PBXGroup;
+			children = (
+				48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */,
+			);
+			path = RestoreWalletUsingPrivateKey;
+			sourceTree = "<group>";
+		};
+		48FD562C21B92F060026690E /* RestoreWalletUsingKeystore */ = {
+			isa = PBXGroup;
+			children = (
+				48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */,
+			);
+			path = RestoreWalletUsingKeystore;
 			sourceTree = "<group>";
 		};
 		5BF1DFA621A4288E00FE8068 /* 1_AskForAnalyticsPermissions */ = {
@@ -1561,6 +1583,7 @@
 				48ECF61021A1F4AB0078D659 /* UIControl+Rx.swift in Sources */,
 				485AACA021AAE752005C56CC /* ValidationRulesOwner.swift in Sources */,
 				48ECF5C921A18F140078D659 /* PrepareTransactionViewModel.swift in Sources */,
+				48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
 				48ECF5DC21A18F140078D659 /* Receive.swift in Sources */,
 				483CE9CC2194E9E300BED31C /* Tracker.swift in Sources */,
 				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
@@ -1647,6 +1670,7 @@
 				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
 				485AACA421AAF3B3005C56CC /* TextField.swift in Sources */,
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,
+				48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
 				483CE9CA2194E9E300BED31C /* TrackedUserAction.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,

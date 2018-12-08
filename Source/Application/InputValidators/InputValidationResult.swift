@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum InputValidationResult {
-    case valid
+enum InputValidationResult<Value> {
+    case valid(Value)
     case invalid(Invalid)
 
     enum Invalid {

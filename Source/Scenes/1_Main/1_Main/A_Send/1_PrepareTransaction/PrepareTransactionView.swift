@@ -64,10 +64,10 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.recipient                         --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled               --> sendButton.rx.isEnabled,
             viewModel.balance                           --> balanceLabels.rx.value,
-            viewModel.recipientAddressValidationResult  --> recipientAddressField.rx.validation,
-            viewModel.amountValidationResult            --> amountToSendField.rx.validation,
-            viewModel.gasLimitValidationResult          --> gasLimitField.rx.validation,
-            viewModel.gasPriceValidationResult          --> gasPriceField.rx.validation
+            viewModel.recipientAddressValidationResult  --> recipientAddressField.rx.validation(),
+            viewModel.amountValidationResult            --> amountToSendField.rx.validation(),
+            viewModel.gasLimitValidationResult          --> gasLimitField.rx.validation(),
+            viewModel.gasPriceValidationResult          --> gasPriceField.rx.validation()
         ]
     }
 

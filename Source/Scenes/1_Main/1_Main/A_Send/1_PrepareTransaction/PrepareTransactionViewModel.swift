@@ -89,7 +89,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             // Validate input from view
             input.fromView.recepientAddress.map { validator.validateRecipient($0) },
             // All addresses from DeepLinked recipient are always valid
-            recipientFromDeepLinkedTransaction.mapToVoid().map { InputValidationResult.valid }
+            recipientFromDeepLinkedTransaction.map { InputValidationResult.valid($0.checksummedHex) }
         )
 
         let amountValidation = Driver.merge(
@@ -158,36 +158,38 @@ extension PrepareTransactionViewModel {
         let balance: Driver<String>
 
         let recipient: Driver<String>
-        let recipientAddressValidationResult: Driver<InputValidationResult>
+        let recipientAddressValidationResult: Driver<TextInputValidation>
 
         let amount: Driver<String>
-        let amountValidationResult: Driver<InputValidationResult>
+        let amountValidationResult: Driver<InputToDoubleValidation>
 
-        let gasPriceValidationResult: Driver<InputValidationResult>
-        let gasLimitValidationResult: Driver<InputValidationResult>
+        let gasPriceValidationResult: Driver<InputToDoubleValidation>
+        let gasLimitValidationResult: Driver<InputToDoubleValidation>
     }
 }
 
 // MARK: - Field Validation
 import Validator
+typealias TextInputValidation = InputValidationResult<String>
+typealias InputToDoubleValidation = InputValidationResult<Double>
 extension PrepareTransactionViewModel {
     struct InputValidator {
         private let addressValidator = AddressValidator()
         private let amountValidator = AmountValidator()
 
-        func validateRecipient(_ recipient: String?) -> InputValidationResult {
+        func validateRecipient(_ recipient: String?) -> TextInputValidation {
             return addressValidator.validate(input: recipient)
         }
 
-        func validateAmount(_ amount: String?) -> InputValidationResult {
+        func validateAmount(_ amount: String?) -> InputToDoubleValidation {
             return amountValidator.validate(string: amount)
         }
 
-        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult {
+        func validateGasLimit(_ gasLimit: String?) -> InputToDoubleValidation {
             return amountValidator.validate(string: gasLimit)
         }
 
-        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult {
+        func validateGasPrice(_ gasPrice: String?) -> InputToDoubleValidation {
             return amountValidator.validate(string: gasPrice)
         }
     }

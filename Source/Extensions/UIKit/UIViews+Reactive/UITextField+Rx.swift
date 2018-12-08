@@ -20,7 +20,7 @@ extension Reactive where Base: UITextField {
 }
 
 extension TextField {
-    func updateWith(inputValdation validationResult: InputValidationResult) {
+    func updateWith<Value>(inputValdation validationResult: InputValidationResult<Value>) {
 
         switch validationResult {
         case .valid: errorMessage = nil
@@ -34,8 +34,8 @@ extension TextField {
 }
 
 extension Reactive where Base: TextField {
-    var validation: Binder<InputValidationResult> {
-        return Binder<InputValidationResult>(base) {
+    func validation<Value>() -> Binder<InputValidationResult<Value>> {
+        return Binder<InputValidationResult<Value>>(base) {
             $0.updateWith(inputValdation: $1)
         }
     }
