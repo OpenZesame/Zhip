@@ -22,14 +22,17 @@ final class BackupWalletView: ScrollingStackView {
 
     private lazy var beSafeLabel = UILabel(text: €.Label.storeKeystoreSecurely).withStyle(.title)
 
-    private lazy var keystoreTextView = ScrollableContentSizedTextView().withStyle(.nonEditable) { customizableSTyle in
-        customizableSTyle
-            .textAlignment(.left)
-            .font(.tiny)
-    }
-
     private lazy var copyKeystoreButton = UIButton(title: €.Button.copyKeystore)
         .withStyle(.primary)
+
+    private lazy var revealKeystoreButton = UIButton(title: €.Button.revealKeystore)
+        .withStyle(.secondary)
+
+    private lazy var keystoreButtons = UIStackView(arrangedSubviews: [copyKeystoreButton, revealKeystoreButton])
+        .withStyle(.horizontal)
+
+    private lazy var revealPrivateKeyButton = UIButton(title: €.Button.revealPrivateKey)
+        .withStyle(.secondary)
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
         .withStyle(.body)
@@ -43,17 +46,13 @@ final class BackupWalletView: ScrollingStackView {
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         beSafeLabel,
-        keystoreTextView,
-        copyKeystoreButton,
+        keystoreButtons,
+        revealPrivateKeyButton,
         urgeUserToSecurlyBackupPassphraseLabel,
         understandsRisksCheckbox,
         haveBackedUpProceedButton,
         .spacer
     ]
-
-    override func setup() {
-        keystoreTextView.addBorder()
-    }
 }
 
 extension BackupWalletView: ViewModelled {
@@ -61,7 +60,6 @@ extension BackupWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.keystoreText              --> keystoreTextView,
             viewModel.isProceedButtonEnabled    --> haveBackedUpProceedButton.rx.isEnabled
         ]
     }
@@ -69,6 +67,8 @@ extension BackupWalletView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
+            revealKeystoreTrigger: revealKeystoreButton.rx.tap.asDriver(),
+            revealPrivateKeyTrigger: revealPrivateKeyButton.rx.tap.asDriver(),
             isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
         )

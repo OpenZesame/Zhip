@@ -25,6 +25,7 @@ protocol WalletUseCase: AnyObject {
 
     /// Checks if the passed `passphrase` was used to encypt the Keystore
     func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair>
     func loadWallet() -> Wallet?
     var hasConfiguredWallet: Bool { get }
 }
@@ -34,6 +35,10 @@ extension WalletUseCase {
     /// Checks if the passed `passphrase` was used to encypt the Keystore inside the Wallet
     func verify(passhrase: String, forWallet wallet: Wallet) -> Observable<Bool> {
         return verify(passhrase: passhrase, forKeystore: wallet.keystore)
+    }
+
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: passphrase)
     }
 }
 

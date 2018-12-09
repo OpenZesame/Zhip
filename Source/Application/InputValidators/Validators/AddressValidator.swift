@@ -8,8 +8,6 @@
 
 import Zesame
 
-import Validator
-
 struct AddressValidator: InputValidator {
     typealias Input = String
     typealias Output = Address
@@ -32,7 +30,7 @@ extension Address.Error: InputError {
 
         switch self {
         case .containsInvalidCharacters: return Message.containsNonHexadecimal
-        case .tooLong: return Message.tooLoong(Address.lengthOfValidAddresses)
+        case .tooLong: return Message.tooLong(Address.lengthOfValidAddresses)
         case .tooShort: return Message.tooShort(Address.lengthOfValidAddresses)
         }
     }

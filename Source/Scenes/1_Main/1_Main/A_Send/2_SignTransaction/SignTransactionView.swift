@@ -22,7 +22,6 @@ final class SignTransactionView: ScrollingStackView {
         .withStyle(.primary) { customizableStyle in
             customizableStyle.disabled()
         }
-//        .disabled()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,

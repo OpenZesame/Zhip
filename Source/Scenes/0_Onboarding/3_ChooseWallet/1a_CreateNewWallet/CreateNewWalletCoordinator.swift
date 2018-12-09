@@ -44,11 +44,15 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toBackupWallet(wallet: Wallet) {
-        let viewModel = BackupWalletViewModel(wallet: .just(wallet))
+        let coordinator = BackupWalletCoordinator(
+            navigationController: navigationController,
+            useCase: useCaseProvider.makeWalletUseCase(),
+            wallet: .just(wallet)
+        )
 
-        push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .backupWallet(let wallet): self.toMain(wallet: wallet)
+        start(coordinator: coordinator) { [unowned self] userFinished in
+            switch userFinished {
+            case .abort, .backUp: self.toMain(wallet: wallet)
             }
         }
     }
