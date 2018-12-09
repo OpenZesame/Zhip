@@ -22,12 +22,6 @@ final class BackupWalletView: ScrollingStackView {
 
     private lazy var beSafeLabel = UILabel(text: €.Label.storeKeystoreSecurely).withStyle(.title)
 
-//    private lazy var keystoreTextView = ScrollableContentSizedTextView().withStyle(.nonEditable) { customizableSTyle in
-//        customizableSTyle
-//            .textAlignment(.left)
-//            .font(.tiny)
-//    }
-
     private lazy var copyKeystoreButton = UIButton(title: €.Button.copyKeystore)
         .withStyle(.primary)
 
@@ -37,14 +31,8 @@ final class BackupWalletView: ScrollingStackView {
     private lazy var keystoreButtons = UIStackView(arrangedSubviews: [copyKeystoreButton, revealKeystoreButton])
         .withStyle(.horizontal)
 
-//    private lazy var copyPrivateKeyButton = UIButton(title: €.Button.copyPrivateKey)
-//        .withStyle(.primary)
-
     private lazy var revealPrivateKeyButton = UIButton(title: €.Button.revealPrivateKey)
         .withStyle(.secondary)
-
-//    private lazy var privateKeyButtons = UIStackView(arrangedSubviews: [copyPrivateKeyButton, revealPrivateKeyButton])
-//        .withStyle(.horizontal)
 
     private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
         .withStyle(.body)
@@ -72,7 +60,6 @@ extension BackupWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-//            viewModel.keystoreText              --> keystoreTextView,
             viewModel.isProceedButtonEnabled    --> haveBackedUpProceedButton.rx.isEnabled
         ]
     }
@@ -81,7 +68,6 @@ extension BackupWalletView: ViewModelled {
         return InputFromView(
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
             revealKeystoreTrigger: revealKeystoreButton.rx.tap.asDriver(),
-//            copyPrivateKeyToPasteboardTrigger: copyPrivateKeyButton.rx.tap.asDriver(),
             revealPrivateKeyTrigger: revealPrivateKeyButton.rx.tap.asDriver(),
             isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
