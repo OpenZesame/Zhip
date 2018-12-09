@@ -1,5 +1,5 @@
 //
-//  DecryptKeystoreToRevealKeyPairCoordinator.swift
+//  DecryptKeystoreCoordinator.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-12-09.
@@ -14,7 +14,7 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class DecryptKeystoreToRevealKeyPairCoordinator: BaseCoordinator<DecryptKeystoreToRevealKeyPairCoordinator.NavigationStep> {
+final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinator.NavigationStep> {
     enum NavigationStep {
         case /* "user finished" */ backingUpKeyPair
     }
@@ -44,8 +44,7 @@ final class DecryptKeystoreToRevealKeyPairCoordinator: BaseCoordinator<DecryptKe
 }
 
 // MARK: Private
-private extension DecryptKeystoreToRevealKeyPairCoordinator {
-
+private extension DecryptKeystoreCoordinator {
 
     func toDecryptKeystore() {
         let viewModel = DecryptKeystoreToRevealKeyPairViewModel(useCase: useCase, wallet: wallet)

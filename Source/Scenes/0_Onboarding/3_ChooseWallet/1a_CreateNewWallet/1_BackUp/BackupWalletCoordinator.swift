@@ -64,7 +64,7 @@ private extension BackupWalletCoordinator {
 
     func toDecryptKeystoreToRevealKeyPair() {
         presentModalCoordinator(makeCoordinator: {
-            DecryptKeystoreToRevealKeyPairCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
+            DecryptKeystoreCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
         },
             navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {

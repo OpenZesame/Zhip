@@ -44,7 +44,6 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
-//            encryptionPassphraseDidEndEditing: encryptionPassphraseField.rx.didEndEditing,
             revealTrigger: revealButton.rx.tap.asDriver()
         )
     }
