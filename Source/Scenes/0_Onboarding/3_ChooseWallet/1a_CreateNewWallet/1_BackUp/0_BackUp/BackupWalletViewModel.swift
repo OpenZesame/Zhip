@@ -100,7 +100,6 @@ extension BackupWalletViewModel {
     struct InputFromView {
         let copyKeystoreToPasteboardTrigger: Driver<Void>
         let revealKeystoreTrigger: Driver<Void>
-//        let copyPrivateKeyToPasteboardTrigger: Driver<Void>
         let revealPrivateKeyTrigger: Driver<Void>
         let isUnderstandsRiskCheckboxChecked: Driver<Bool>
         let proceedTrigger: Driver<Void>

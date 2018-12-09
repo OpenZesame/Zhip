@@ -75,6 +75,11 @@
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPrivateKey" = "Copied private key";
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPublicKey" = "Copied public key";
 
+// MARK: BackUp Keystore
+"Scene.BackUpKeystore.Title" = "Keystore";
+"Scene.BackUpKeystore.Button.Copy" = "Copy";
+"Scene.BackUpKeystore.Event.Toast.DidCopyKeystore" = "Copied keystore";
+
 // MARK: RestoreWallet
 "Scene.RestoreWallet.Title" = "Restore Wallet";
 "Scene.RestoreWallet.Segment.PrivateKey" = "Private key";

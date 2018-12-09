@@ -206,6 +206,9 @@
 		48F4098721BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098421BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift */; };
 		48F4098821BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098521BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift */; };
 		48F4098B21BD08C5001C499F /* DecryptKeystoreToRevealKeyPairCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098A21BD08C5001C499F /* DecryptKeystoreToRevealKeyPairCoordinator.swift */; };
+		48F4098D21BD270B001C499F /* BackUpKeystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098C21BD270B001C499F /* BackUpKeystore.swift */; };
+		48F4098F21BD2726001C499F /* BackUpKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098E21BD2726001C499F /* BackUpKeystoreView.swift */; };
+		48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
 		48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562721B632E50026690E /* CheckboxWithLabel.swift */; };
@@ -436,6 +439,9 @@
 		48F4098421BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPairViewModel.swift; sourceTree = "<group>"; };
 		48F4098521BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPair.swift; sourceTree = "<group>"; };
 		48F4098A21BD08C5001C499F /* DecryptKeystoreToRevealKeyPairCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPairCoordinator.swift; sourceTree = "<group>"; };
+		48F4098C21BD270B001C499F /* BackUpKeystore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystore.swift; sourceTree = "<group>"; };
+		48F4098E21BD2726001C499F /* BackUpKeystoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystoreView.swift; sourceTree = "<group>"; };
+		48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystoreViewModel.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		48FD562721B632E50026690E /* CheckboxWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabel.swift; sourceTree = "<group>"; };
@@ -1319,6 +1325,9 @@
 		48F4096F21BBBF1F001C499F /* 1a_BackUpKeystore */ = {
 			isa = PBXGroup;
 			children = (
+				48F4098C21BD270B001C499F /* BackUpKeystore.swift */,
+				48F4098E21BD2726001C499F /* BackUpKeystoreView.swift */,
+				48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */,
 			);
 			path = 1a_BackUpKeystore;
 			sourceTree = "<group>";
@@ -1683,6 +1692,7 @@
 				48ECF5DF21A18F140078D659 /* UnlockAppWithPincodeViewModel.swift in Sources */,
 				48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */,
 				483CE9D52194E9E300BED31C /* DeepLinkHandler.swift in Sources */,
+				48F4098F21BD2726001C499F /* BackUpKeystoreView.swift in Sources */,
 				485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */,
 				483CE9EB2194E9E300BED31C /* KeyValueStoring.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
@@ -1699,6 +1709,7 @@
 				483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */,
 				48F4097A21BCD560001C499F /* EncryptionPassphraseValidator.swift in Sources */,
 				48ECF61721A29F9E0078D659 /* SettingsTableViewCell.swift in Sources */,
+				48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */,
 				48F4098621BCEE96001C499F /* DecryptKeystoreToRevealKeyPairView.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				48ECF5C721A18F140078D659 /* SceneController.swift in Sources */,
@@ -1741,6 +1752,7 @@
 				48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */,
 				48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */,
 				48F4098B21BD08C5001C499F /* DecryptKeystoreToRevealKeyPairCoordinator.swift in Sources */,
+				48F4098D21BD270B001C499F /* BackUpKeystore.swift in Sources */,
 				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
 				48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,

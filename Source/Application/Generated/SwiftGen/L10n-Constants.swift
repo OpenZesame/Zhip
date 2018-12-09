@@ -77,6 +77,20 @@ internal enum L10n {
         internal static let disclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Text.Disclaimer")
       }
     }
+    internal enum BackUpKeystore {
+      /// Keystore
+      internal static let title = L10n.tr("Localizable", "Scene.BackUpKeystore.Title")
+      internal enum Button {
+        /// Copy
+        internal static let copy = L10n.tr("Localizable", "Scene.BackUpKeystore.Button.Copy")
+      }
+      internal enum Event {
+        internal enum Toast {
+          /// Copied keystore
+          internal static let didCopyKeystore = L10n.tr("Localizable", "Scene.BackUpKeystore.Event.Toast.DidCopyKeystore")
+        }
+      }
+    }
     internal enum BackUpRevealedKeyPair {
       /// Backup key pair
       internal static let title = L10n.tr("Localizable", "Scene.BackUpRevealedKeyPair.Title")

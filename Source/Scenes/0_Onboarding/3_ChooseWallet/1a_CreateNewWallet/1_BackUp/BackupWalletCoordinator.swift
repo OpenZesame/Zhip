@@ -74,7 +74,13 @@ private extension BackupWalletCoordinator {
     }
 
     func toRevealKeystore() {
-        log.debug("reveal key store")
+        let viewModel = BackUpKeystoreViewModel(wallet: wallet)
+
+        modallyPresent(scene: BackUpKeystore.self, viewModel: viewModel) { userDid, dismissScene in
+            switch userDid {
+            case .finished: dismissScene(true, nil)
+            }
+        }
     }
 
     func finish() {
