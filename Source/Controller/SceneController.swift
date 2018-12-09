@@ -50,6 +50,10 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         if let leftButtonMaker = self as? LeftBarButtonContentMaking {
             leftButtonMaker.setLeftBarButton(for: self)
         }
+
+        if self is BackButtonHiding {
+            navigationItem.hidesBackButton = true
+        }
     }
 }
 

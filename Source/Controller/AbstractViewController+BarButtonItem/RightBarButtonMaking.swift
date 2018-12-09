@@ -27,3 +27,5 @@ extension RightBarButtonContentMaking {
         viewController.setRightBarButtonUsing(content: Self.makeRightContent)
     }
 }
+
+protocol BackButtonHiding {}

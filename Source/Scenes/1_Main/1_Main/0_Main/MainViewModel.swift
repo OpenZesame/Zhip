@@ -46,20 +46,15 @@ final class MainViewModel: BaseViewModel<
 
         let fetchTrigger = Driver.merge(input.fromView.pullToRefreshTrigger, wallet.mapToVoid())
 
-        let balanceResponse: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
+        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.transactionUseCase
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
         }
 
-        let zeroBalance = wallet.map { WalletBalance(wallet: $0) }
-
-        let balanceFromApi = Driver.combineLatest(wallet, balanceResponse) {
-            WalletBalance(wallet: $0, balance: $1.balance, nonce: $1.nonce)
-        }
-
-        let balance = Driver.merge(zeroBalance, balanceFromApi)
+        // Format output
+        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(0)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -77,7 +72,7 @@ final class MainViewModel: BaseViewModel<
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: balance.map { €.Label.Balance.value($0.balance.amount.description) }
+            balance: latestBalanceOrZero.map { €.Label.Balance.value($0.amount.description) }
         )
     }
 }

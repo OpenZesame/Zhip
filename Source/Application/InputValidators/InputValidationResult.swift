@@ -29,6 +29,10 @@ extension InputValidationResult {
         guard case .valid(let value) = self else { return nil }
         return value
     }
+
+    var isValid: Bool {
+        return value != nil
+    }
 }
 
 protocol InputError: Swift.Error {
