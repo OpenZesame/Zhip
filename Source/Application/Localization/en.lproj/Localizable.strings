@@ -7,10 +7,14 @@
 
 "Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
-"Error.Input.Address.TooLoong" = "Address is too long, should be %d";
+"Error.Input.Address.TooLong" = "Address is too long, should be %d";
 
 "Error.Input.Amount.TooSmall" = "Amount must be greater than %@";
 "Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
+
+"Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
+
+
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -51,15 +55,36 @@
 "Scene.BackupWallet.Title" = "Backup Wallet";
 "Scene.BackupWallet.Label.StoreKeystoreSecurely" = "Store the keystore + passphrase somewhere safe (e.g. 1Password)";
 "Scene.BackupWallet.Button.CopyKeystore" = "Copy keystore";
+"Scene.BackupWallet.Button.RevealKeystore" = "Reveal keystore";
+"Scene.BackupWallet.Button.RevealPrivateKey" = "Reveal private key";
 "Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore" = "⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.";
 "Scene.BackupWallet.Checkbox.KeystoreIsBackedUp" = "Keystore is backed up";
 "Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
 "Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
+// MARK: Backup KeyPair
+"Scene.DecryptKeystoreToRevealKeyPair.Title" = "Decrypt keystore";
+"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal" = "Reveal";
+
+"Scene.BackUpRevealedKeyPair.Title" = "Backup key pair";
+"Scene.BackUpRevealedKeyPair.Label.PrivateKey" = "Private key";
+"Scene.BackUpRevealedKeyPair.Label.UncompressedPublicKey" = "Uncompressed public key";
+"Scene.BackUpRevealedKeyPair.Button.CopyPrivateKey" = "Copy private key";
+"Scene.BackUpRevealedKeyPair.Button.CopyPublicKey" = "Copy public key";
+"Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPrivateKey" = "Copied private key";
+"Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPublicKey" = "Copied public key";
+
+// MARK: BackUp Keystore
+"Scene.BackUpKeystore.Title" = "Keystore";
+"Scene.BackUpKeystore.Button.Copy" = "Copy";
+"Scene.BackUpKeystore.Event.Toast.DidCopyKeystore" = "Copied keystore";
+
 // MARK: RestoreWallet
 "Scene.RestoreWallet.Title" = "Restore Wallet";
+"Scene.RestoreWallet.Segment.PrivateKey" = "Private key";
+"Scene.RestoreWallet.Segment.Keystore" = "Keystore";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
-"Scene.RestoreWallet.Label.OrKeystore" = "Or paste keystore (JSON) below";
 "Scene.RestoreWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";

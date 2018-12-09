@@ -32,6 +32,16 @@ extension Observable where Element: OptionalType {
             }
         }
     }
+
+    func errorOnNil(error: Swift.Error) -> Observable<Element.Wrapped> {
+        return flatMap { (element) -> Observable<Element.Wrapped> in
+            if let value = element.value {
+                return .just(value)
+            } else {
+                return Observable<Element.Wrapped>.error(error)
+            }
+        }
+    }
 }
 
 extension SharedSequence where S == DriverSharingStrategy, Element: OptionalType {

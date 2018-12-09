@@ -8,13 +8,30 @@
 
 import Foundation
 
-enum InputValidationResult {
-    case valid
+enum InputValidationResult<Value> {
+    case valid(Value)
     case invalid(Invalid)
 
     enum Invalid {
         case empty
         case error(message: String)
+    }
+}
+
+extension InputValidationResult {
+
+    var errorMessage: String? {
+        guard case .invalid(.error(let errorMessage)) = self else { return nil }
+        return errorMessage
+    }
+
+    var value: Value? {
+        guard case .valid(let value) = self else { return nil }
+        return value
+    }
+
+    var isValid: Bool {
+        return value != nil
     }
 }
 

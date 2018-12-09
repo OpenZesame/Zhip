@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class AbstractViewModel<FromView, FromController, Output> {
+class AbstractViewModel<FromView, FromController, Output>: ViewModelType {
     let bag = DisposeBag()
 
     struct Input: InputType {
@@ -26,5 +26,3 @@ class AbstractViewModel<FromView, FromController, Output> {
 
     func transform(input: Input) -> Output { abstract }
 }
-
-extension AbstractViewModel: ViewModelType {}

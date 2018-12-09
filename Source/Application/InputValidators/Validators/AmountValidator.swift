@@ -16,10 +16,10 @@ struct AmountValidator: InputValidator {
         case amountTooLarge
     }
 
-    func validate(input amount: Double) -> InputValidationResult {
+    func validate(input amount: Double) -> InputValidationResult<Double> {
         guard amount >= Amount.minimumAsDouble else { return error(Error.amountTooSmall) }
         guard amount <= Amount.maximumAsDouble else { return error(Error.amountTooLarge) }
-        return .valid
+        return .valid(amount)
     }
 }
 

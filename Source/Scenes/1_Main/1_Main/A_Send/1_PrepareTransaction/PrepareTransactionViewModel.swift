@@ -41,71 +41,69 @@ final class PrepareTransactionViewModel: BaseViewModel<
         }
 
         let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
-
-        let fromView = input.fromView
-
-        let fetchBalanceSubject = BehaviorSubject<Void>(value: ())
-
         let activityIndicator = ActivityIndicator()
 
-        let fetchTrigger = Driver.merge(fromView.pullToRefreshTrigger, fetchBalanceSubject.asDriverOnErrorReturnEmpty(), wallet.mapToVoid())
+        let fetchTrigger = Driver.merge(
+            input.fromView.pullToRefreshTrigger,
+            wallet.mapToVoid()
+        )
 
-        let balanceResponse: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
+        // Fetch latest balance from API
+        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.transactionUseCase
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
         }
 
-        let zeroBalance = wallet.map { WalletBalance(wallet: $0) }
+        // MARK: - Validate input (only validate fields when they loose focus)
+        let validator = InputValidator()
 
-        let walletBalance: Driver<WalletBalance> = Driver.combineLatest(wallet, balanceResponse) {
-            WalletBalance(wallet: $0, balance: $1.balance, nonce: $1.nonce)
-        }
+        let recipientAddressValidationResult = Driver.merge(
+            input.fromView.recipientAddressDidEndEditing
+                .withLatestFrom(input.fromView.recepientAddress) { $1 }
+                // Validate input from view
+                .map { validator.validateRecipient($0) },
 
-        let balance = Driver.merge(zeroBalance, walletBalance)
+            // Address from DeepLinked transaction should be valid
+            deepLinkedTransaction.map { .valid($0.recipient) }
+        )
 
-        let recipientFromField = fromView.recepientAddress.map {
-            try? Address(hexString: $0)
-        }
+        let amountValidationResult = Driver.merge(
+            input.fromView.amountDidEndEditing
+                .withLatestFrom(input.fromView.amountToSend) { $1 }
+                // Validate input from view
+                .map { validator.validateAmount($0) },
 
-        let recipientFromDeepLinkedTransaction = deepLinkedTransaction.map { $0.recipient }
+            // Amount from DeepLinked transaction should be valid
+            deepLinkedTransaction.map { .valid($0.amount) }
+        )
 
-        let recipient = Driver.merge(recipientFromField.filterNil(), recipientFromDeepLinkedTransaction)
-        let amountFromDeepLinkedTransaction = deepLinkedTransaction.map { $0.amount }
-        let amount = Driver.merge(fromView.amountToSend.map { Double($0) }.filterNil(), amountFromDeepLinkedTransaction)
-        let gasLimit = fromView.gasLimit.map { Double($0) }.filterNil()
-        let gasPrice = fromView.gasPrice.map { Double($0) }.filterNil()
+        let gasLimitValidationResult = input.fromView.gasLimitDidEndEditing
+            .withLatestFrom(input.fromView.gasLimit) { $1 }
+            .map { validator.validateGasLimit($0) }
 
-        let payment = Driver.combineLatest(recipient, amount, gasLimit, gasPrice, balanceResponse) {
-            Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4.nonce)
+        let gasPriceValidationResult = input.fromView.gasPriceDidEndEditing
+            .withLatestFrom(input.fromView.gasPrice) { $1 }
+            .map { validator.validateGasPrice($0) }
+
+        // MARK: - Validated values
+        let recipient = recipientAddressValidationResult.map { $0.value }.filterNil()
+        let amount = amountValidationResult.map { $0.value }.filterNil()
+
+        let payment = Driver.combineLatest(
+            recipient,
+            amount,
+            gasLimitValidationResult.map { $0.value }.filterNil(),
+            gasPriceValidationResult.map { $0.value }.filterNil(),
+            latestBalanceAndNonce.map { $0.nonce }
+        ) {
+            Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4)
         }
 
         let isSendButtonEnabled = payment.map { $0 != nil }
 
-        let validator = InputValidator()
-
-        let recipientAddressValidation = Driver.merge(
-            // Validate input from view
-            input.fromView.recepientAddress.map { validator.validateRecipient($0) },
-            // All addresses from DeepLinked recipient are always valid
-            recipientFromDeepLinkedTransaction.mapToVoid().map { InputValidationResult.valid }
-        )
-
-        let amountValidation = Driver.merge(
-            input.fromView.amountToSend,
-            amountFromDeepLinkedTransaction.map { $0.description }
-        ).map { validator.validateAmount($0) }
-
-        let gasLimitValidation = fromView.gasLimit.map { validator.validateGasLimit($0) }
-        let gasPriceValidation = fromView.gasPrice.map { validator.validateGasPrice($0) }
-
-        // Only validate when the field loses focus
-        let recipientAddressValidationResult = fromView.recipientAddressDidEndEditing.withLatestFrom(recipientAddressValidation) { $1 }
-        let amountValidationResult = fromView.amountDidEndEditing.withLatestFrom(amountValidation) { $1 }
-        let gasLimitValidationResult = fromView.gasLimitDidEndEditing.withLatestFrom(gasLimitValidation) { $1 }
-        let gasPriceValidationResult = fromView.gasPriceDidEndEditing.withLatestFrom(gasPriceValidation) { $1 }
-
+        // Setup navigation
         bag <~ [
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userIntends(to: .cancel) })
@@ -116,19 +114,22 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .drive()
         ]
 
+        // Format output
+        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(0)
+
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
-            balance: balance.map { €.Labels.Balance.value($0.balance.amount.description) },
+            balance: latestBalanceOrZero.map { €.Labels.Balance.value($0.amount.description) },
 
             recipient: recipient.map { $0.checksummedHex },
-            recipientAddressValidationResult: recipientAddressValidationResult,
+            recipientAddressValidation: recipientAddressValidationResult.map { $0.errorMessage },
 
-            amount: amountFromDeepLinkedTransaction.map { $0.description },
-            amountValidationResult: amountValidationResult,
+            amount: amount.map { $0.description },
+            amountValidation: amountValidationResult.map { $0.errorMessage },
 
-            gasPriceValidationResult: gasPriceValidationResult,
-            gasLimitValidationResult: gasLimitValidationResult
+            gasPriceValidation: gasPriceValidationResult.map { $0.errorMessage },
+            gasLimitValidation: gasLimitValidationResult.map { $0.errorMessage }
         )
     }
 }
@@ -158,36 +159,35 @@ extension PrepareTransactionViewModel {
         let balance: Driver<String>
 
         let recipient: Driver<String>
-        let recipientAddressValidationResult: Driver<InputValidationResult>
+        let recipientAddressValidation: Driver<String?>
 
         let amount: Driver<String>
-        let amountValidationResult: Driver<InputValidationResult>
+        let amountValidation: Driver<String?>
 
-        let gasPriceValidationResult: Driver<InputValidationResult>
-        let gasLimitValidationResult: Driver<InputValidationResult>
+        let gasPriceValidation: Driver<String?>
+        let gasLimitValidation: Driver<String?>
     }
 }
 
 // MARK: - Field Validation
-import Validator
 extension PrepareTransactionViewModel {
     struct InputValidator {
         private let addressValidator = AddressValidator()
         private let amountValidator = AmountValidator()
 
-        func validateRecipient(_ recipient: String?) -> InputValidationResult {
+        func validateRecipient(_ recipient: String?) -> InputValidationResult<Address> {
             return addressValidator.validate(input: recipient)
         }
 
-        func validateAmount(_ amount: String?) -> InputValidationResult {
+        func validateAmount(_ amount: String) -> InputValidationResult<Double> {
             return amountValidator.validate(string: amount)
         }
 
-        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult {
+        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult<Double> {
             return amountValidator.validate(string: gasLimit)
         }
 
-        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult {
+        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<Double> {
             return amountValidator.validate(string: gasPrice)
         }
     }

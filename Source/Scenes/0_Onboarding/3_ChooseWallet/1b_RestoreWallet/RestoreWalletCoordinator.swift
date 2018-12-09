@@ -34,12 +34,12 @@ private extension RestoreWalletCoordinator {
 
         push(scene: RestoreWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .restoreWallet(let wallet): self.toMain(restoredWallet: wallet)
+            case .restoreWallet(let wallet): self.finishedRestoring(wallet: wallet)
             }
         }
     }
 
-    func toMain(restoredWallet: Wallet) {
-        navigator.next(.finishedRestoring(wallet: restoredWallet))
+    func finishedRestoring(wallet: Wallet) {
+        navigator.next(.finishedRestoring(wallet: wallet))
     }
 }

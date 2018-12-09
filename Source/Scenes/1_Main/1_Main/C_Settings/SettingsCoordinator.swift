@@ -127,17 +127,14 @@ private extension SettingsCoordinator {
     }
 
     func toBackupWallet() {
-        guard let wallet = walletUseCase.loadWallet() else {
-            incorrectImplementation("Should have a wallet")
-        }
-
-        let viewModel = BackupWalletViewModel(wallet: .just(wallet))
-
-        modallyPresent(scene: BackupWallet.self, viewModel: viewModel) { userDid, dismissScene in
-            switch userDid {
-            case .backupWallet: dismissScene(true, nil)
+        presentModalCoordinator(
+            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase)
+        },
+            navigationHandler: { userFinished, dismissModalFlow in
+                switch userFinished {
+                case .abort, .backUp: dismissModalFlow(true)
             }
-        }
+        })
     }
 
     func toChooseWallet() {
