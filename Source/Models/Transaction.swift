@@ -10,11 +10,11 @@ import Foundation
 import Zesame
 
 struct Transaction: Codable {
-    let amount: Double
+    let amount: Amount
     let recipient: Address
 
     init(amount: Amount, to recipient: Address) {
-        self.amount = amount.amount
+        self.amount = amount
         self.recipient = recipient
     }
 }

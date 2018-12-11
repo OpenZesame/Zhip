@@ -101,7 +101,12 @@ final class PrepareTransactionViewModel: BaseViewModel<
             Payment(to: $0, amount: $1, gasLimit: $2, gasPrice: $3, nonce: $4)
         }
 
-        let isSendButtonEnabled = payment.map { $0 != nil }
+        let isSendButtonEnabled = Driver.combineLatest(
+            recipientAddressValidationResult.map { $0.isValid },
+            amountValidationResult.map { $0.isValid },
+            gasLimitValidationResult.map { $0.isValid },
+            gasPriceValidationResult.map { $0.isValid }
+        ) { $0 && $1 && $2 && $3 }
 
         // Setup navigation
         bag <~ [
@@ -109,7 +114,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .do(onNext: { userIntends(to: .cancel) })
                 .drive(),
 
-            input.fromView.sendTrigger.withLatestFrom(payment.filterNil())
+            input.fromView.sendTrigger.withLatestFrom(payment)
                 .do(onNext: { userIntends(to: .signPayment($0)) })
                 .drive()
         ]
@@ -179,16 +184,16 @@ extension PrepareTransactionViewModel {
             return addressValidator.validate(input: recipient)
         }
 
-        func validateAmount(_ amount: String) -> InputValidationResult<Double> {
-            return amountValidator.validate(string: amount)
+        func validateAmount(_ amount: String) -> InputValidationResult<Amount> {
+            return amountValidator.validate(input: amount)
         }
 
-        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult<Double> {
-            return amountValidator.validate(string: gasLimit)
+        func validateGasLimit(_ gasLimit: String?) -> InputValidationResult<Amount> {
+            return amountValidator.validate(input: gasLimit)
         }
 
-        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<Double> {
-            return amountValidator.validate(string: gasPrice)
+        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<Amount> {
+            return amountValidator.validate(input: gasPrice)
         }
     }
 }

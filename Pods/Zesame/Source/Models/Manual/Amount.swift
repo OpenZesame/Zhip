@@ -21,10 +21,15 @@ public struct Amount {
     }
 
     public init(string: String) throws {
-        guard let number = Int(string) else {
+        guard let bigNumber = BigNumber(decimalString: string) else {
             throw Error.nonNumericString
         }
-        try self.init(number: number)
+
+        guard bigNumber <= BigNumber(Amount.totalSupply) else {
+            throw Error.amountExceededTotalSupply
+        }
+
+        try self.init(number: Int(bigNumber))
     }
 
     public enum Error: Int, Swift.Error, Equatable {

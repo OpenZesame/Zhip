@@ -3,7 +3,7 @@ PODS:
     - Result (~> 4.0)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
-  - CryptoSwift (0.13.0)
+  - CryptoSwift (0.13.1)
   - Differentiator (3.1.0)
   - EFQRCode (4.4.1):
     - swift_qrcodejs (~> 1.0.1)
@@ -36,6 +36,7 @@ PODS:
   - swift_qrcodejs (1.0.1)
   - SwiftGen (6.0.2)
   - SwiftLint (0.27.0)
+  - SwiftProtobuf (1.2.0)
   - SwiftyBeaver (1.6.1)
   - TinyConstraints (3.3.1)
   - Validator (3.1.1)
@@ -44,6 +45,7 @@ PODS:
     - EllipticCurveKit
     - JSONRPCKit
     - RxSwift
+    - SwiftProtobuf
 
 DEPENDENCIES:
   - EFQRCode
@@ -86,6 +88,7 @@ SPEC REPOS:
     - swift_qrcodejs
     - SwiftGen
     - SwiftLint
+    - SwiftProtobuf
     - SwiftyBeaver
     - TinyConstraints
     - Validator
@@ -103,13 +106,13 @@ CHECKOUT OPTIONS:
     :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :commit: 9921ec4b27f162e20d39d6be35eb7c3b9eb04be8
+    :commit: 13ee99e2b1c4e5248f00760a2ab377b6c1dec1dc
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:
   APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
@@ -129,10 +132,11 @@ SPEC CHECKSUMS:
   swift_qrcodejs: c181fe5c849d30c699546a23762d7e3dd143ab37
   SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  SwiftProtobuf: 91a9856079044ef4ec762b2344c763cd9e5a73c1
   SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
-  Zesame: 488b866abf950a24a67079211de1a620e78e3663
+  Zesame: 5c5593265a8651adb27822d43b458078cfa687ea
 
 PODFILE CHECKSUM: 51f266579f7cbaf4446515965fcb0b735d5f5a4b
 

@@ -12,7 +12,7 @@ import SkyFloatingLabelTextField
 
 final class TextField: SkyFloatingLabelTextField {
     enum TypeOfInput {
-        case decimal, hexadecimal, text
+        case number, hexadecimal, text
     }
     let typeOfInput: TypeOfInput
 
@@ -47,15 +47,8 @@ extension TextField: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
         // Always allow erasing of digit
         guard !string.isBackspace else { return true }
-        if let decimalSeparator = Locale.current.decimalSeparator, typeOfInput == .decimal, string == decimalSeparator {
-            guard let text = textField.text else { return true }
-
-            // Prevent double decimal separators
-            return !text.contains(decimalSeparator)
-        }
 
         // Dont allow pasting of non numbers
         guard typeOfInput.characterSet.isSuperset(of: CharacterSet(charactersIn: string)) else { return false }
@@ -66,9 +59,9 @@ extension TextField: UITextFieldDelegate {
 extension TextField.TypeOfInput {
     var characterSet: CharacterSet {
         switch self {
-        case .decimal: return .decimalDigits
+        case .number: return .decimalDigits
         case .hexadecimal: return .hexadecimalDigits
-        case .text: return CharacterSet.alphanumerics
+        case .text: return .alphanumerics
         }
     }
 }

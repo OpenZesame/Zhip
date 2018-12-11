@@ -68,7 +68,6 @@
 		4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */; };
 		4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
-		485AAC9121AAC63C005C56CC /* Amount_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9021AAC63C005C56CC /* Amount_Extension.swift */; };
 		485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */; };
 		485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */; };
 		485AAC9821AAC6C9005C56CC /* InputValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */; };
@@ -303,7 +302,6 @@
 		4858D7B32194F91B00030237 /* ZupremeTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B52194F92800030237 /* Zupreme-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Release.xcconfig"; sourceTree = "<group>"; };
-		485AAC9021AAC63C005C56CC /* Amount_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount_Extension.swift; sourceTree = "<group>"; };
 		485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet_Hexadecimal.swift; sourceTree = "<group>"; };
 		485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleHexadecimalCharacters.swift; sourceTree = "<group>"; };
 		485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidationResult.swift; sourceTree = "<group>"; };
@@ -794,14 +792,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		485AAC8F21AAC62E005C56CC /* Zesame */ = {
-			isa = PBXGroup;
-			children = (
-				485AAC9021AAC63C005C56CC /* Amount_Extension.swift */,
-			);
-			path = Zesame;
-			sourceTree = "<group>";
-		};
 		485AAC9421AAC68E005C56CC /* InputValidators */ = {
 			isa = PBXGroup;
 			children = (
@@ -954,7 +944,6 @@
 		48C89FFA214335160063B0FA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				485AAC8F21AAC62E005C56CC /* Zesame */,
 				48CA697F218352E300C05F5F /* Foundation */,
 				489CDBCA2143FF2800318450 /* RxSwift */,
 				48C89FFB214335220063B0FA /* UIKit */,
@@ -1792,7 +1781,6 @@
 				483CE9C92194E9E300BED31C /* AbstractViewModel.swift in Sources */,
 				483CE9E42194E9E300BED31C /* UserDefaults+KeyValueStoring.swift in Sources */,
 				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
-				485AAC9121AAC63C005C56CC /* Amount_Extension.swift in Sources */,
 				48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* Transaction.swift in Sources */,
