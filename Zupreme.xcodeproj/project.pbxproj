@@ -78,6 +78,7 @@
 		485AACA421AAF3B3005C56CC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* TextField.swift */; };
 		485AACA621AAF64B005C56CC /* UITextView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA521AAF64B005C56CC /* UITextView_Extension.swift */; };
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
+		4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */; };
 		487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */; };
 		487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E3219A2F4A00308550 /* Array_Extension.swift */; };
 		487C19E6219A2FCD00308550 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E5219A2FCD00308550 /* Weak.swift */; };
@@ -295,7 +296,6 @@
 		4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_Extensions.swift; sourceTree = "<group>"; };
 		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZilliqaSDK-iOS-Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
 		4850A407214C122900EBB85B /* Mergeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
 		4858D7B22194F91A00030237 /* ZupremeTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Release.xcconfig"; sourceTree = "<group>"; };
@@ -312,6 +312,7 @@
 		485AACA321AAF3B3005C56CC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		485AACA521AAF64B005C56CC /* UITextView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView_Extension.swift; sourceTree = "<group>"; };
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
+		4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+CustomStringConvertible.swift"; sourceTree = "<group>"; };
 		487C19E3219A2F4A00308550 /* Array_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extension.swift; sourceTree = "<group>"; };
 		487C19E5219A2FCD00308550 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
@@ -753,7 +754,7 @@
 		484B067920BA0D2C00C4E50A /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				484B067A20BA0D2C00C4E50A /* ZilliqaSDK-iOS-Zupreme-Tests-Info.plist */,
+				4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -1492,6 +1493,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
