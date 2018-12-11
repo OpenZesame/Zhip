@@ -12,8 +12,8 @@ import JSONRPCKit
 public struct TransactionRequest: JSONRPCKit.Request {
     public typealias Response = TransactionResponse
 
-    public let transaction: Transaction
-    public init(transaction: Transaction) {
+    public let transaction: SignedTransaction
+    public init(transaction: SignedTransaction) {
         self.transaction = transaction
     }
 }
