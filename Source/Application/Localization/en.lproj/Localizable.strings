@@ -9,7 +9,8 @@
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
 "Error.Input.Address.TooLong" = "Address is too long, should be %d";
 
-"Error.Input.Amount.TooSmall" = "Amount must be greater than %@";
+"Error.Input.Amount.NonNumericString" = "String not a number";
+"Error.Input.Amount.WasNegative" = "Amount cannot be negative";
 "Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
 
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";

@@ -27,14 +27,14 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     private lazy var recipientAddressField = TextField(placeholder: €.Field.recipient, type: .hexadecimal)
         .withStyle(.default)
 
-    private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .decimal)
-        .withStyle(.decimal)
+    private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .number)
+        .withStyle(.number)
 
-    private lazy var gasPriceField = TextField(placeholder: €.Field.gasPrice, type: .decimal)
-        .withStyle(.decimal)
+    private lazy var gasPriceField = TextField(placeholder: €.Field.gasPrice, type: .number)
+        .withStyle(.number)
 
-    private lazy var gasLimitField = TextField(placeholder: €.Field.gasLimit, type: .decimal)
-        .withStyle(.decimal)
+    private lazy var gasLimitField = TextField(placeholder: €.Field.gasLimit, type: .number)
+        .withStyle(.number)
 
     private lazy var sendButton = UIButton(title: €.Button.send)
         .withStyle(.primary)
@@ -50,6 +50,26 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
         .spacer,
         sendButton
     ]
+
+    override func setup() {
+        if isDebug {
+            recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
+            amountToSendField.text = Int.random(in: 1...100000).description
+            gasPriceField.text = Int.random(in: 100...200).description
+            gasLimitField.text = Int.random(in: 1...100).description
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
+                    [
+                        self.recipientAddressField,
+                        self.amountToSendField,
+                        self.gasPriceField,
+                        self.gasLimitField
+                    ].forEach {
+                            $0.sendActions(for: .editingDidEnd)
+                    }
+            }
+        }
+    }
 }
 
 // MARK: - SingleContentView

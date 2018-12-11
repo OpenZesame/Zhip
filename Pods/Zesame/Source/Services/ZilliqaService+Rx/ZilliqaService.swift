@@ -23,7 +23,7 @@ public protocol ZilliqaService {
     func exportKeystore(address: Address, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>)
 
     func getBalalance(for address: Address, done: @escaping Done<BalanceResponse>)
-    func send(transaction: Transaction, done: @escaping Done<TransactionResponse>)
+    func send(transaction: SignedTransaction, done: @escaping Done<TransactionResponse>)
 }
 
 public protocol ZilliqaServiceReactive {

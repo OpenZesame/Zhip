@@ -68,7 +68,6 @@ public extension Reactive where Base: (ZilliqaService & AnyObject) {
                     print("⚠️ API request failed, error: '\(error)'")
                     single(.error(error))
                 case .success(let result):
-                    print("🎉 API request successful, response: '\(String(describing: result))'")
                     single(.success(result))
                 }
             })

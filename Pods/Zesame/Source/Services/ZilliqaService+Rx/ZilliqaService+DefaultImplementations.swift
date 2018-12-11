@@ -15,7 +15,7 @@ public extension ZilliqaService {
 
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore, done: @escaping Done<Bool>) {
         background {
-            keystore.decryptPrivateKey(using: encryptionPasshrase) { result in
+            keystore.decryptPrivateKeyWith(passphrase: encryptionPasshrase) { result in
                 main {
                     done(.success(result.value != nil))
                 }
@@ -36,7 +36,7 @@ public extension ZilliqaService {
         background {
             switch restoration {
             case .keystore(let keystore, let passphrase):
-                keystore.decryptPrivateKey(using: passphrase) {
+                keystore.decryptPrivateKeyWith(passphrase: passphrase) {
                     switch $0 {
                     case .failure(let error):
                         main {

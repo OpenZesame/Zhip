@@ -56,7 +56,7 @@ extension UITextField.Style {
         return UITextField.Style(isSecureTextEntry: true)
     }
 
-    static var decimal: UITextField.Style {
-        return UITextField.Style(keyboardType: .decimalPad)
+    static var number: UITextField.Style {
+        return UITextField.Style(keyboardType: .numberPad)
     }
 }

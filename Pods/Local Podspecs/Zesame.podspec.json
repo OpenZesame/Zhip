@@ -32,6 +32,9 @@
     ],
     "RxSwift": [
 
+    ],
+    "SwiftProtobuf": [
+
     ]
   }
 }

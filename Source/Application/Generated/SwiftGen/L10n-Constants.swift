@@ -27,14 +27,14 @@ internal enum L10n {
         }
       }
       internal enum Amount {
+        /// String not a number
+        internal static let nonNumericString = L10n.tr("Localizable", "Error.Input.Amount.NonNumericString")
         /// Amount must be smaller than %@
         internal static func tooLarge(_ p1: String) -> String {
           return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", p1)
         }
-        /// Amount must be greater than %@
-        internal static func tooSmall(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
-        }
+        /// Amount cannot be negative
+        internal static let wasNegative = L10n.tr("Localizable", "Error.Input.Amount.WasNegative")
       }
       internal enum Passphrase {
         /// Passphrase have length >%d

@@ -8,61 +8,56 @@
 
 import EllipticCurveKit
 
-func messageFromUnsignedTransaction(_ tx: UnsignedTransaction, publicKey: PublicKey, hasher: EllipticCurveKit.Hasher = DefaultHasher.sha256) -> Message {
-    let codeHex = formatCodeOrData(from: tx.code)
-    let dataHex = formatCodeOrData(from: tx.data)
+func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, hasher: EllipticCurveKit.Hasher = DefaultHasher.sha256) -> Message {
 
-    let hexString = [
-        hex64I(tx.version),
-        hex64I(tx.nonce),
-        tx.to.case(.upper),
-        publicKey.hex.compressed.case(.lower),
-        hex64D(tx.amount).case(.lower),
-        hex64D(tx.gasPrice),
-        hex64D(tx.gasLimit),
-        eightChar(from: tx.code.count),
-        codeHex,
-        eightChar(from: tx.data.count),
-        dataHex,
-        ].joined()
-    return Message(hashedHex: hexString, hashedBy: hasher)!
-}
-
-extension String {
-    enum Case {
-        case lower, upper
+    func formatCodeOrData(_ string: String) -> Data {
+        return string.data(using: .utf8)!
     }
-    func `case`(_ `case`: Case) -> String {
-        switch `case` {
-        case .lower: return lowercased()
-        case .upper: return uppercased()
-        }
+
+    let protoTransaction = ProtoTransactionCoreInfo.with {
+        $0.version = tx.version
+        $0.nonce = tx.payment.nonce.nonce
+        $0.toaddr = BigNumber(hexString: tx.payment.recipient.checksummedHex)!.asTrimmedData()
+        $0.senderpubkey = publicKey.data.compressed.asByteArray
+        $0.amount = tx.payment.amount.as16BytesLongArray
+        $0.gasprice = tx.payment.gasPrice.as16BytesLongArray
+        $0.gaslimit = UInt64(tx.payment.gasLimit.amount)
+        $0.code = formatCodeOrData(tx.code)
+        $0.data = formatCodeOrData(tx.data)
+    }
+
+    return Message(hashedData: try! protoTransaction.serializedData(), hashedBy: hasher)
+}
+
+// MARK: - Private format helpers
+private extension Amount {
+
+    var asBigNumber: BigNumber {
+        return BigNumber(amount)
+    }
+
+    var asTrimmedData: Data {
+        return asBigNumber.asTrimmedData()
+    }
+
+    var asByteArray: ByteArray {
+        return asTrimmedData.asByteArray
+    }
+
+    var as16BytesLongArray: ByteArray {
+        let data = asBigNumber.as16BytesLongData()
+        return data.asByteArray
     }
 }
 
-private func hex64B(_ number: BigNumber) -> String {
-    let hex = number.asHexStringLength64()
-    assert(hex.count == 64)
-    return hex
+private extension Data {
+    var asByteArray: ByteArray {
+        return ByteArray.with { $0.data = self }
+    }
 }
 
-private func hex64D(_ number: Double) -> String {
-    return hex64B(BigNumber(number))
-}
-
-private func hex64I(_ number: Int) -> String {
-    return hex64D(Double(number))
-}
-
-private func eightChar(from int: Int) -> String {
-    return String(format: "%08d", int)
-}
-
-private func formatCodeOrData(from string: String) -> String {
-    if let data = string.data(using: .utf8) {
-        return data.toHexString()
-    } else {
-        print("Failed to create Swift.Data from `code` or `data` having value: \n`\(string)`")
-        return ""
+private extension BigNumber {
+    func as16BytesLongData() -> Data {
+        return Data(hex: String(asHexStringLength64().suffix(32)))
     }
 }

@@ -43,10 +43,9 @@ final class ReceiveViewModel: BaseViewModel<
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let receivingAmount = input.fromView.amountToReceive
-            .map { Double($0) }
+            .map { try? Amount(string: $0) }
             .filterNil()
             .startWith(0)
-            .map { try? Amount(double: $0) }.filterNil()
 
         let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { Transaction(amount: $0, to: $1) }
 

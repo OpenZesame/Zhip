@@ -21,7 +21,7 @@ final class ReceiveView: ScrollingStackView {
 
     private lazy var addressView = TitledValueView().titled(€.Label.myPublicAddress)
 
-    private lazy var amountToReceiveField = TextField(placeholder: €.Field.amount, type: .decimal).withStyle(.decimal)
+    private lazy var amountToReceiveField = TextField(placeholder: €.Field.amount, type: .number).withStyle(.number)
 
     private lazy var shareButton = UIButton(title: €.Button.share)
         .withStyle(.secondary)

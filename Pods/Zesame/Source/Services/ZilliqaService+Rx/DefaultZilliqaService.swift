@@ -27,7 +27,7 @@ public extension DefaultZilliqaService {
         return apiClient.send(request: BalanceRequest(address: address), done: done)
     }
 
-    func send(transaction: Transaction, done: @escaping Done<TransactionResponse>) {
+    func send(transaction: SignedTransaction, done: @escaping Done<TransactionResponse>) {
         return apiClient.send(request: TransactionRequest(transaction: transaction), done: done)
     }
 }
