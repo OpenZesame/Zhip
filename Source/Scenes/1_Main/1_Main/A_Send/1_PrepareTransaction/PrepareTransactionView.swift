@@ -30,6 +30,9 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .number)
         .withStyle(.number)
 
+    private lazy var gasMeasuredInSmallUnitsLabel = UILabel(text: €.Label.gasInSmallUnits)
+        .withStyle(.body)
+
     private lazy var gasPriceField = TextField(placeholder: €.Field.gasPrice, type: .number)
         .withStyle(.number)
 
@@ -45,6 +48,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
         balanceLabels,
         recipientAddressField,
         amountToSendField,
+        gasMeasuredInSmallUnitsLabel,
         gasPriceField,
         gasLimitField,
         .spacer,
@@ -54,9 +58,9 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     override func setup() {
         if isDebug {
             recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
-            amountToSendField.text = Int.random(in: 1...100000).description
+            amountToSendField.text = Int.random(in: 1...200).description
             gasPriceField.text = Int.random(in: 100...200).description
-            gasLimitField.text = Int.random(in: 1...100).description
+            gasLimitField.text = Int.random(in: 1...10).description
 
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
                     [

@@ -23,9 +23,11 @@ final class WarningERC20ViewModel: BaseViewModel<
 > {
 
     private let useCase: OnboardingUseCase
+    private let allowedToSupress: Bool
 
-    init(useCase: OnboardingUseCase) {
+    init(useCase: OnboardingUseCase, allowedToSupress: Bool = true) {
         self.useCase = useCase
+        self.allowedToSupress = allowedToSupress
     }
 
     override func transform(input: Input) -> Output {
@@ -44,7 +46,9 @@ final class WarningERC20ViewModel: BaseViewModel<
             }).drive()
         ]
 
-        return Output()
+        return Output(
+            isDoNotShowAgainButtonVisible: Driver.just(allowedToSupress)
+        )
     }
 }
 
@@ -54,5 +58,7 @@ extension WarningERC20ViewModel {
         let doNotShowAgain: Driver<Void>
     }
 
-    struct Output {}
+    struct Output {
+        let isDoNotShowAgainButtonVisible: Driver<Bool>
+    }
 }

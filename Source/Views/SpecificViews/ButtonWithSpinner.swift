@@ -18,12 +18,12 @@ final class ButtonWithSpinner: UIButton {
         spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
         return spinnerView
     }()
-    private var _spinnerView: SpinnerView?
+    private let _spinnerView: SpinnerView?
 
     init(title: CustomStringConvertible? = nil, strokeColor: UIColor? = nil) {
         if let strokeColor = strokeColor {
             _spinnerView = SpinnerView(strokeColor: strokeColor)
-        }
+        } else { _spinnerView = nil }
         super.init(frame: .zero)
         setTitle(title?.description, for: .normal)
     }
@@ -33,23 +33,23 @@ final class ButtonWithSpinner: UIButton {
 
 private extension ButtonWithSpinner {
 
-    func beginRefreshing() {
+    func startSpinning() {
         titleLabel?.layer.opacity = 0
         bringSubviewToFront(spinnerView)
-        spinnerView.beginRefreshing()
+        spinnerView.startSpinning()
     }
 
-    func endRefreshing () {
+    func stopSpinning () {
         titleLabel?.layer.opacity = 1
         sendSubviewToBack(spinnerView)
-        spinnerView.endRefreshing()
+        spinnerView.stopSpinning()
     }
 
-    func changeTo(isLoading: Bool) {
-        if isLoading {
-            beginRefreshing()
+    func changeTo(isSpinning: Bool) {
+        if isSpinning {
+            startSpinning()
         } else {
-            endRefreshing()
+            stopSpinning()
         }
     }
 }
@@ -57,7 +57,7 @@ private extension ButtonWithSpinner {
 extension Reactive where Base: ButtonWithSpinner {
     var isLoading: Binder<Bool> {
         return Binder(base) {
-            $0.changeTo(isLoading: $1)
+            $0.changeTo(isSpinning: $1)
         }
     }
 }

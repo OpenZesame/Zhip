@@ -17,24 +17,43 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.NavigationSte
     }
 
     private let deepLinkGenerator: DeepLinkGenerator
-    private let useCase: WalletUseCase
+    private let useCaseProvider: UseCaseProvider
+    private let walletUseCase: WalletUseCase
 
-    init(navigationController: UINavigationController, useCase: WalletUseCase, deepLinkGenerator: DeepLinkGenerator) {
-        self.useCase = useCase
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkGenerator: DeepLinkGenerator) {
+        self.useCaseProvider = useCaseProvider
+        self.walletUseCase = useCaseProvider.makeWalletUseCase()
         self.deepLinkGenerator = deepLinkGenerator
         super.init(navigationController: navigationController)
     }
 
     override func start(didStart: Completion? = nil) {
-        toReceive()
+        toFirst()
     }
 }
 
 // MARK: - Navigate
 private extension ReceiveCoordinator {
 
+    func toFirst() {
+        guard useCaseProvider.makeOnboardingUseCase().hasAskedToSkipERC20Warning else {
+            return toWarningERC20()
+        }
+
+        toReceive()
+    }
+
+    func toWarningERC20() {
+        let viewModel = WarningERC20ViewModel(useCase: useCaseProvider.makeOnboardingUseCase())
+
+        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .understandRisks: self.toReceive()
+            }
+        }
+    }
     func toReceive() {
-        let viewModel = ReceiveViewModel(useCase: useCase)
+        let viewModel = ReceiveViewModel(useCase: walletUseCase)
 
         push(scene: Receive.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {

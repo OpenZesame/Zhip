@@ -1,5 +1,5 @@
 //
-//  UILayoutPriority+ExpressibleByIntegerLiteral.swift
+//  UILayoutPriority+Extension.swift
 //  Zupreme
 //
 //  Created by Alexander Cyon on 2018-10-26.
@@ -17,5 +17,13 @@ extension UILayoutPriority: ExpressibleByFloatLiteral {
 extension UILayoutPriority: ExpressibleByIntegerLiteral {
     public init(integerLiteral intValue: Int) {
         self.init(rawValue: Float(intValue))
+    }
+}
+
+public extension UILayoutPriority {
+    static var medium: UILayoutPriority {
+        let delta = UILayoutPriority.defaultHigh.rawValue - UILayoutPriority.defaultLow.rawValue
+        let valueBetweenLowAndHeigh = UILayoutPriority.defaultLow.rawValue + delta / 2
+        return UILayoutPriority(rawValue: valueBetweenLowAndHeigh)
     }
 }

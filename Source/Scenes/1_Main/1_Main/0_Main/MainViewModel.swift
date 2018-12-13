@@ -27,11 +27,13 @@ final class MainViewModel: BaseViewModel<
 
     private let transactionUseCase: TransactionsUseCase
     private let walletUseCase: WalletUseCase
+    private let updateBalanceTrigger: Driver<Void>
 
     // MARK: - Initialization
-    init(transactionUseCase: TransactionsUseCase, walletUseCase: WalletUseCase) {
+    init(transactionUseCase: TransactionsUseCase, walletUseCase: WalletUseCase, updateBalanceTrigger: Driver<Void>) {
         self.transactionUseCase = transactionUseCase
         self.walletUseCase = walletUseCase
+        self.updateBalanceTrigger = updateBalanceTrigger
     }
 
     // swiftlint:disable:next function_body_length
@@ -44,7 +46,11 @@ final class MainViewModel: BaseViewModel<
 
         let activityIndicator = ActivityIndicator()
 
-        let fetchTrigger = Driver.merge(input.fromView.pullToRefreshTrigger, wallet.mapToVoid())
+        let fetchTrigger = Driver.merge(
+            updateBalanceTrigger,
+            input.fromView.pullToRefreshTrigger,
+            wallet.mapToVoid()
+        )
 
         let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.transactionUseCase

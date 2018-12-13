@@ -14,7 +14,7 @@ import Zesame
 // MARK: - SendCoordinator
 final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
     enum NavigationStep {
-        case finish
+        case finish(fetchBalance: Bool)
     }
 
     private let useCaseProvider: UseCaseProvider
@@ -27,12 +27,31 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
     }
 
     override func start(didStart: Completion? = nil) {
-        toPrepareTransaction()
+        toFirst()
     }
 }
 
 // MARK: - Navigate
 private extension SendCoordinator {
+
+    func toFirst() {
+        guard useCaseProvider.makeOnboardingUseCase().hasAskedToSkipERC20Warning else {
+            return toWarningERC20()
+        }
+
+        toPrepareTransaction()
+    }
+
+    func toWarningERC20() {
+        let viewModel = WarningERC20ViewModel(useCase: useCaseProvider.makeOnboardingUseCase())
+
+        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .understandRisks: self.toPrepareTransaction()
+            }
+        }
+    }
+
     func toPrepareTransaction() {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
@@ -55,8 +74,8 @@ private extension SendCoordinator {
         }
     }
 
-    func finish() {
-        navigator.next(.finish)
+    func finish(triggerBalanceFetching: Bool = false) {
+        navigator.next(.finish(fetchBalance: triggerBalanceFetching))
     }
 
     func toSignPayment(_ payment: Payment) {
@@ -69,18 +88,45 @@ private extension SendCoordinator {
         push(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .sign(let transactionResponse):
-                log.info("Doing nothing with tx with id \(transactionResponse.transactionIdentifier)")
-                self.finish()
+                self.toWaitForReceiptForTransactionWith(id: transactionResponse.transactionIdentifier)
             }
         }
     }
 
-//    // TODO extract this to its own type?
-//    func toTransaction(viewTxDetailsFor transactionId: String) {
-//        let baseURL = "https://dev-test-explorer.aws.z7a.xyz/"
-//        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
-//            return log.error("failed to create url")
-//        }
-//        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-//    }
+    func toWaitForReceiptForTransactionWith(id transactionId: String) {
+        let viewModel = PollTransactionStatusViewModel(
+            useCase: useCaseProvider.makeTransactionsUseCase(),
+            transactionId: transactionId
+        )
+
+        push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .skip, .waitUntilTimeout: self.finish()
+            case .waitUntilReceipt(let receipt): self.toGotTransaction(receipt: receipt)
+            }
+        }
+    }
+
+    func toGotTransaction(receipt: TransactionReceipt) {
+        let viewModel = GotTransactionReceiptViewModel(
+            receipt: receipt
+        )
+
+        push(scene: GotTransactionReceipt.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .viewTransactionDetailsInBrowser(let txId):
+                self.openInBrowserDetailsForTransaction(id: txId)
+            case .finish:
+                self.finish(triggerBalanceFetching: true)
+            }
+        }
+    }
+
+        func openInBrowserDetailsForTransaction(id transactionId: String) {
+            let baseURL = "https://explorer.zilliqa.com/"
+            guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
+                return log.error("failed to create url")
+            }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
 }

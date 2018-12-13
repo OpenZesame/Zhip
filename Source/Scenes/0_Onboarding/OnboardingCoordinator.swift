@@ -78,7 +78,7 @@ private extension OnboardingCoordinator {
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
+        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {

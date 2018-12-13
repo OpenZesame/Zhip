@@ -19,6 +19,8 @@ public enum Error: Swift.Error {
         /// Error while creating `URLRequest` from `Request`.
         case requestError(Swift.Error)
 
+        case timeout
+
         /// Error while creating `Request.Response` from `(Data, URLResponse)`.
         case responseError(Swift.Error)
 

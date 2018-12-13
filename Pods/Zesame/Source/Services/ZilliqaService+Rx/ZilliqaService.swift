@@ -14,7 +14,7 @@ import APIKit
 import RxSwift
 import CryptoSwift
 
-public protocol ZilliqaService {
+public protocol ZilliqaService: AnyObject {
     var apiClient: APIClient { get }
 
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore, done: @escaping Done<Bool>)
@@ -22,7 +22,7 @@ public protocol ZilliqaService {
     func restoreWallet(from restoration: KeyRestoration, done: @escaping Done<Wallet>)
     func exportKeystore(address: Address, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>)
 
-    func getBalalance(for address: Address, done: @escaping Done<BalanceResponse>)
+    func getBalance(for address: Address, done: @escaping Done<BalanceResponse>)
     func send(transaction: SignedTransaction, done: @escaping Done<TransactionResponse>)
 }
 
@@ -36,4 +36,12 @@ public protocol ZilliqaServiceReactive {
     func getBalance(for address: Address) -> Observable<BalanceResponse>
     func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionResponse>
     func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionResponse>
+
+    func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling) -> Observable<TransactionReceipt>
+}
+
+public extension ZilliqaServiceReactive {
+    func hasNetworkReachedConsensusYetForTransactionWith(id: String) -> Observable<TransactionReceipt> {
+        return hasNetworkReachedConsensusYetForTransactionWith(id: id, polling: .twentyTimesLinearBackoff)
+    }
 }

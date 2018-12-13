@@ -23,7 +23,7 @@ public final class DefaultZilliqaService: ZilliqaService, ReactiveCompatible {
 
 public extension DefaultZilliqaService {
 
-    func getBalalance(for address: Address, done: @escaping Done<BalanceResponse>) -> Void {
+    func getBalance(for address: Address, done: @escaping Done<BalanceResponse>) -> Void {
         return apiClient.send(request: BalanceRequest(address: address), done: done)
     }
 

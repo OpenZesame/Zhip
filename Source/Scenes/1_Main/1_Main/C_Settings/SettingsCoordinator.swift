@@ -63,6 +63,7 @@ private extension SettingsCoordinator {
             // Section 2
             case .readTermsOfService: self.toReadTermsOfService()
             case .readERC20Warning: self.toReadERC20Warning()
+            case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
 
             // Section 3
             case .backupWallet: self.toBackupWallet()
@@ -107,11 +108,21 @@ private extension SettingsCoordinator {
     }
 
     func toReadERC20Warning() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase)
+        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
 
         modallyPresent(scene: WarningERC20.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
             case .understandRisks: dismissScene(true, nil)
+            }
+        }
+    }
+
+    func toChangeAnalyticsPermissions() {
+        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+
+        modallyPresent(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { userDid, dismissScene in
+            switch userDid {
+            case .answerQuestionAboutAnalyticsPermission: dismissScene(true, nil)
             }
         }
     }
