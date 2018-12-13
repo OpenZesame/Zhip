@@ -14,16 +14,25 @@ import RxSwift
 import RxCocoa
 
 final class CheckboxWithLabel: UIView {
+
+    static let checkboxSize: CGFloat = 44
+
     fileprivate lazy var checkbox = M13Checkbox(frame: .zero)
     private let label: UILabel
 
-    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label]).withStyle(.horizontal)
+    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label]).withStyle(.horizontal) { customizableStyle in
+        // only by using `.top` alignment together with a label having `numberOfLines` set to 0
+        // can we make the label span the height of the stackview.
+        customizableStyle.alignment(self.label.numberOfLines == 0 ? .top : .fill)
+    }
 
     // MARK: Initialization
-    init(titled: CustomStringConvertible? = nil, height: CGFloat = 44) {
-        label = UILabel(text: titled).withStyle(.checkbox)
+    init(titled: CustomStringConvertible? = nil, numberOfLines: Int = 0) {
+        label = UILabel(text: titled).withStyle(.checkbox) { customizableStyle in
+            customizableStyle.numberOfLines(numberOfLines)
+        }
         super.init(frame: .zero)
-        setup(height: height)
+        setup()
     }
 
     required init?(coder: NSCoder) {
@@ -33,21 +42,22 @@ final class CheckboxWithLabel: UIView {
 
 // MARK: - Private Setup
 private extension CheckboxWithLabel {
-    func setup(height: CGFloat) {
+    func setup() {
         addSubview(stackView)
         translatesAutoresizingMaskIntoConstraints = false
         setupViews()
-        setupConstraints(height: height)
+        setupConstraints()
     }
 
     func setupViews() {
         setupCheckbox()
     }
 
-    func setupConstraints(height: CGFloat) {
+    func setupConstraints() {
         stackView.edgesToSuperview()
-        self.height(height)
-        checkbox.width(height)
+
+        checkbox.height(CheckboxWithLabel.checkboxSize)
+        checkbox.width(CheckboxWithLabel.checkboxSize)
     }
 
     func setupCheckbox() {

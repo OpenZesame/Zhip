@@ -172,4 +172,8 @@
 "Scene.Settings.Cell.RemoveWallet" = "Remove wallet";
 "Scene.Settings.Cell.AppVersion" = "Version";
 
-
+// MARK: - Confirm Wallet Removal
+"Scene.ConfirmWalletRemoval.Title" = "Remove wallet";
+"Scene.ConfirmWalletRemoval.Label.AreYouSure" = "Are you sure you want to remove your wallet?";
+"Scene.ConfirmWalletRemoval.Checkbox.BackUpWallet" = "I understand that I will permanently lose any asset in this wallet if I have not backed up the wallet.";
+"Scene.ConfirmWalletRemoval.Button.Confirm" = "Confirm";
