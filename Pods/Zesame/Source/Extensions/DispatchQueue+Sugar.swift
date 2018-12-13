@@ -8,8 +8,8 @@
 
 import Foundation
 
-func background(work: @escaping () -> ()) {
-    DispatchQueue.global(qos: .userInitiated).async {
+func background(delay: DispatchTimeInterval = .seconds(0), work: @escaping () -> ()) {
+    DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
         work()
     }
 }

@@ -14,8 +14,14 @@ import APIKit
 import Result
 import EllipticCurveKit
 
-extension Reactive: ZilliqaServiceReactive where Base: (ZilliqaService & AnyObject) {}
-public extension Reactive where Base: (ZilliqaService & AnyObject) {
+extension Reactive: ZilliqaServiceReactive where Base: ZilliqaService {}
+public extension Reactive where Base: ZilliqaService {
+
+    func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling) -> Observable<TransactionReceipt> {
+        return callBase {
+            $0.hasNetworkReachedConsensusYetForTransactionWith(id: id, polling: polling, done: $1)
+        }
+    }
 
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
         return callBase {
@@ -43,7 +49,7 @@ public extension Reactive where Base: (ZilliqaService & AnyObject) {
 
     func getBalance(for address: Address) -> Observable<BalanceResponse> {
         return callBase {
-            $0.getBalalance(for: address, done: $1)
+            $0.getBalance(for: address, done: $1)
         }
     }
 
