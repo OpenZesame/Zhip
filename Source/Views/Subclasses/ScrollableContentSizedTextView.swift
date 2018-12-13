@@ -14,11 +14,6 @@ final class ScrollableContentSizedTextView: UITextView {
         super.init(frame: .zero, textContainer: nil)
     }
 
-//    init(style: UITextView.Style) {
-//        super.init(frame: .zero, textContainer: nil)
-//        apply(style: style)
-//    }
-
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
     override var contentSize: CGSize {

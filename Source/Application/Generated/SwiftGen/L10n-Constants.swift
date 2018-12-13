@@ -185,6 +185,22 @@ internal enum L10n {
         internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp")
       }
     }
+    internal enum ConfirmWalletRemoval {
+      /// Remove wallet
+      internal static let title = L10n.tr("Localizable", "Scene.ConfirmWalletRemoval.Title")
+      internal enum Button {
+        /// Confirm
+        internal static let confirm = L10n.tr("Localizable", "Scene.ConfirmWalletRemoval.Button.Confirm")
+      }
+      internal enum Checkbox {
+        /// I understand that I will permanently lose any asset in this wallet if I have not backed up the wallet.
+        internal static let backUpWallet = L10n.tr("Localizable", "Scene.ConfirmWalletRemoval.Checkbox.BackUpWallet")
+      }
+      internal enum Label {
+        /// Are you sure you want to remove your wallet?
+        internal static let areYouSure = L10n.tr("Localizable", "Scene.ConfirmWalletRemoval.Label.AreYouSure")
+      }
+    }
     internal enum CreateNewWallet {
       /// New wallet
       internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Title")

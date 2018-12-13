@@ -67,7 +67,7 @@ private extension SettingsCoordinator {
 
             // Section 3
             case .backupWallet: self.toBackupWallet()
-            case .removeWallet: self.toChooseWallet()
+            case .removeWallet: self.toConfirmWalletRemoval()
 
             // Section 4
             case .openAppStore: self.toAppStore()
@@ -146,6 +146,20 @@ private extension SettingsCoordinator {
                 case .abort, .backUp: dismissModalFlow(true)
             }
         })
+    }
+
+    func toConfirmWalletRemoval() {
+        let viewModel = ConfirmWalletRemovalViewModel(useCase: walletUseCase)
+
+        modallyPresent(scene: ConfirmWalletRemoval.self, viewModel: viewModel) { userDid, dismissScene in
+            switch userDid {
+            case .cancel: dismissScene(true, nil)
+            case .confirm:
+                dismissScene(true) { [unowned self] in
+                    self.toChooseWallet()
+                }
+            }
+        }
     }
 
     func toChooseWallet() {

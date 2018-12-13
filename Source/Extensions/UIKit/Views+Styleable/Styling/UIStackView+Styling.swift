@@ -104,7 +104,10 @@ extension UIStackView.Style {
     }
 
     static var horizontal: UIStackView.Style {
-        return UIStackView.Style(axis: .horizontal, margin: 0)
+        return UIStackView.Style(
+            axis: .horizontal,
+            margin: 0
+        )
     }
 
     static var horizontalFillingEqually: UIStackView.Style {

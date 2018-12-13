@@ -14,7 +14,7 @@ extension UILabel {
         let textColor: UIColor?
         let textAlignment: NSTextAlignment?
         let font: UIFont?
-        let numberOfLines: Int?
+        var numberOfLines: Int?
         let backgroundColor: UIColor?
 
         init(
@@ -44,10 +44,22 @@ extension UILabel {
     }
 
     @discardableResult
-    func withStyle(_ style: UILabel.Style) -> UILabel {
+    func withStyle(_ style: UILabel.Style, customize: ((UILabel.Style) -> UILabel.Style)? = nil) -> UILabel {
         translatesAutoresizingMaskIntoConstraints = false
+        let style = customize?(style) ?? style
         apply(style: style)
         return self
+    }
+}
+
+
+// MARK: - Style + Customizing
+extension UILabel.Style {
+    @discardableResult
+    func numberOfLines(_ numberOfLines: Int) -> UILabel.Style {
+        var style = self
+        style.numberOfLines = numberOfLines
+        return style
     }
 }
 
@@ -70,7 +82,8 @@ extension UILabel.Style {
 
     static var checkbox: UILabel.Style {
         return UILabel.Style(
-            font: UIFont.Label.value
+            font: UIFont.Label.value,
+            numberOfLines: 0
         )
     }
 
