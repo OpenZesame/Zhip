@@ -8,6 +8,9 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 private typealias € = L10n.Scene.WarningERC20
 
 final class WarningERC20View: ScrollingStackView {
@@ -28,6 +31,13 @@ final class WarningERC20View: ScrollingStackView {
 
 extension WarningERC20View: ViewModelled {
     typealias ViewModel = WarningERC20ViewModel
+
+    func populate(with viewModel: WarningERC20ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.isDoNotShowAgainButtonVisible --> doNotShowThisAgainButton.rx.isVisible
+        ]
+    }
+
     var inputFromView: InputFromView {
 
         return InputFromView(

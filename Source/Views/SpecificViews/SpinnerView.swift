@@ -32,14 +32,14 @@ class SpinnerView: UIView {
 }
 
 extension SpinnerView {
-    func beginRefreshing() {
+    func startSpinning() {
         isHidden = false
         guard !isAnimating else { return }
         isAnimating = true
         addAnimation()
     }
 
-    func endRefreshing () {
+    func stopSpinning () {
         isHidden = true
         isAnimating = false
         circleLayer.removeAnimation(forKey: .spinner)
@@ -47,9 +47,9 @@ extension SpinnerView {
 
     func changeTo(isLoading: Bool) {
         if isLoading {
-            beginRefreshing()
+            startSpinning()
         } else {
-            endRefreshing()
+            stopSpinning()
         }
     }
 }
@@ -76,7 +76,7 @@ private extension SpinnerView {
 
         circleLayer.lineCap = .round
 
-        endRefreshing()
+        stopSpinning()
     }
 
     func updateCircleLayer() {

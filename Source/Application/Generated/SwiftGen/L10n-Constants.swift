@@ -36,6 +36,12 @@ internal enum L10n {
         /// Amount cannot be negative
         internal static let wasNegative = L10n.tr("Localizable", "Error.Input.Amount.WasNegative")
       }
+      internal enum GasPrice {
+        /// Gas price should be >%@E-12
+        internal static func tooSmall(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Error.Input.GasPrice.TooSmall", p1)
+        }
+      }
       internal enum Passphrase {
         /// Passphrase have length >%d
         internal static func tooShort(_ p1: Int) -> String {
@@ -219,6 +225,28 @@ internal enum L10n {
         }
       }
     }
+    internal enum GotTransactionReceipt {
+      /// Confirmed
+      internal static let title = L10n.tr("Localizable", "Scene.GotTransactionReceipt.Title")
+      internal enum Button {
+        /// Open details in browser
+        internal static let openDetailsInBrowser = L10n.tr("Localizable", "Scene.GotTransactionReceipt.Button.OpenDetailsInBrowser")
+      }
+      internal enum Label {
+        /// The network has successfully confirmed your transaction.
+        internal static let confirmed = L10n.tr("Localizable", "Scene.GotTransactionReceipt.Label.Confirmed")
+      }
+      internal enum Labels {
+        internal enum Fee {
+          /// Transaction fee
+          internal static let title = L10n.tr("Localizable", "Scene.GotTransactionReceipt.Labels.Fee.Title")
+          /// %@E-12 Zil
+          internal static func value(_ p1: String) -> String {
+            return L10n.tr("Localizable", "Scene.GotTransactionReceipt.Labels.Fee.Value", p1)
+          }
+        }
+      }
+    }
     internal enum Main {
       internal enum Button {
         /// Receive
@@ -237,12 +265,22 @@ internal enum L10n {
         }
       }
     }
+    internal enum PollTransactionStatus {
+      /// Wait for consensus
+      internal static let title = L10n.tr("Localizable", "Scene.PollTransactionStatus.Title")
+      internal enum Button {
+        /// Skip waiting
+        internal static let skip = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.Skip")
+      }
+      internal enum Label {
+        /// Your transaction has successfully been broadcasted to the network. You can either wait a minute or two for the receipt that the network has reached consensus about your transaction or you can close this screen and recheck your balance later.
+        internal static let waitingOnReceipt = L10n.tr("Localizable", "Scene.PollTransactionStatus.Label.WaitingOnReceipt")
+      }
+    }
     internal enum PrepareTransaction {
       /// Send
       internal static let title = L10n.tr("Localizable", "Scene.PrepareTransaction.Title")
       internal enum Button {
-        /// See transaction Info
-        internal static let seeTransactionInfo = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.SeeTransactionInfo")
         /// Send
         internal static let send = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.Send")
       }
@@ -251,14 +289,16 @@ internal enum L10n {
         internal static let amount = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount")
         /// Encryption passphrase
         internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassphrase")
-        /// Gas limit
+        /// Gas limit (E-12 Zil)
         internal static let gasLimit = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasLimit")
-        /// Gas price
+        /// Gas price (E-12 Zil)
         internal static let gasPrice = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice")
         /// To address
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
       }
       internal enum Label {
+        /// Gas limit & price is measured in 10^-12 Zil
+        internal static let gasInSmallUnits = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits")
         /// Transaction Id
         internal static let transactionId = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.TransactionId")
       }
@@ -341,6 +381,8 @@ internal enum L10n {
         internal static let appVersion = L10n.tr("Localizable", "Scene.Settings.Cell.AppVersion")
         /// Backup wallet
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
+        /// Change analytics permissions
+        internal static let changeAnalyticsPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.ChangeAnalyticsPermissions")
         /// Read ERC-20 warning
         internal static let readERC20Warning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadERC20Warning")
         /// Remove pincode

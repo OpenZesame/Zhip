@@ -21,6 +21,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
     private let deeplinkedTransaction: Driver<Transaction>
+    private let updateBalanceSubject = PublishSubject<Void>()
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
@@ -55,7 +56,8 @@ private extension MainCoordinator {
 
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            walletUseCase: useCaseProvider.makeWalletUseCase()
+            walletUseCase: useCaseProvider.makeWalletUseCase(),
+            updateBalanceTrigger: updateBalanceSubject.asDriverOnErrorReturnEmpty()
         )
 
         push(scene: Main.self, viewModel: viewModel, navigationPresentationCompletion: didStart) { [unowned self] userIntendsTo in
@@ -75,9 +77,13 @@ private extension MainCoordinator {
                 deeplinkedTransaction: deeplinkedTransaction
                 )
         },
-            navigationHandler: { userDid, dismissModalFlow in
+            navigationHandler: { [unowned self] userDid, dismissModalFlow in
                 switch userDid {
-                case .finish: dismissModalFlow(true)
+                case .finish(let triggerBalanceFetching):
+                    if triggerBalanceFetching {
+                        self.triggerFetchingOfBalance()
+                    }
+                    dismissModalFlow(true)
                 }
         })
     }
@@ -86,7 +92,7 @@ private extension MainCoordinator {
         presentModalCoordinator(
             makeCoordinator: { ReceiveCoordinator(
                 navigationController: $0,
-                useCase: useCaseProvider.makeWalletUseCase(),
+                useCaseProvider: useCaseProvider,
                 deepLinkGenerator: deepLinkGenerator)
         },
             navigationHandler: { userIntendsTo, dismissModalFlow in
@@ -105,5 +111,12 @@ private extension MainCoordinator {
                 case .closeSettings: dismissModalFlow(true)
                 }
         })
+    }
+}
+
+// MARK: - Private
+private extension MainCoordinator {
+    func triggerFetchingOfBalance() {
+        updateBalanceSubject.onNext(())
     }
 }

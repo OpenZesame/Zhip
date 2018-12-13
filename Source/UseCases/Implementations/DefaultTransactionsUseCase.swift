@@ -29,4 +29,8 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
         return zilliqaService.sendTransaction(for: payment, keystore: wallet.keystore, passphrase: encryptionPassphrase)
     }
+
+    func receiptOfTransaction(byId txId: String, polling: Polling) -> Observable<TransactionReceipt> {
+        return zilliqaService.hasNetworkReachedConsensusYetForTransactionWith(id: txId, polling: polling)
+    }
 }

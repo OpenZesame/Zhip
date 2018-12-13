@@ -13,9 +13,9 @@
 "Error.Input.Amount.WasNegative" = "Amount cannot be negative";
 "Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
 
+"Error.Input.GasPrice.TooSmall" = "Gas price should be >%@E-12";
+
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
-
-
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -121,19 +121,32 @@
 "Scene.PrepareTransaction.Title" = "Send";
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
-"Scene.PrepareTransaction.Field.GasLimit" = "Gas limit";
-"Scene.PrepareTransaction.Field.GasPrice" = "Gas price";
+"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas limit & price is measured in 10^-12 Zil";
+"Scene.PrepareTransaction.Field.GasLimit" = "Gas limit (E-12 Zil)";
+"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (E-12 Zil)";
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
 "Scene.PrepareTransaction.Labels.Balance.Value" = "%@ ZILs";
-"Scene.PrepareTransaction.Button.SeeTransactionInfo" = "See transaction Info";
 
 // MARK: SignTransaction
 "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase" = "Confirm transaction with your passphrase";
 "Scene.SignTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.SignTransaction.Button.Confirm" = "Confirm";
+
+// MARK: PollTransactionStatus
+"Scene.PollTransactionStatus.Title" = "Wait for consensus";
+"Scene.PollTransactionStatus.Label.WaitingOnReceipt" = "Your transaction has successfully been broadcasted to the network. You can either wait a minute or two for the receipt that the network has reached consensus about your transaction or you can close this screen and recheck your balance later.";
+"Scene.PollTransactionStatus.Button.Skip" = "Skip waiting";
+
+// MARK: TransactionConfirmation
+"Scene.GotTransactionReceipt.Title" = "Confirmed";
+"Scene.GotTransactionReceipt.Label.Confirmed" = "The network has successfully confirmed your transaction.";
+"Scene.GotTransactionReceipt.Labels.Fee.Title" = "Transaction fee";
+"Scene.GotTransactionReceipt.Labels.Fee.Value" = "%@E-12 Zil";
+"Scene.GotTransactionReceipt.Button.OpenDetailsInBrowser" = "Open details in browser";
+
 
 // MARK: Recieve
 "Scene.Receive.Title" = "Receive";
@@ -154,6 +167,7 @@
 "Scene.Settings.Cell.Acknowledgements" = "Acknowledgements";
 "Scene.Settings.Cell.Terms of service" = "Terms of service";
 "Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";
+"Scene.Settings.Cell.ChangeAnalyticsPermissions" = "Change analytics permissions";
 "Scene.Settings.Cell.BackupWallet" = "Backup wallet";
 "Scene.Settings.Cell.RemoveWallet" = "Remove wallet";
 "Scene.Settings.Cell.AppVersion" = "Version";

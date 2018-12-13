@@ -12,7 +12,7 @@ private typealias € = L10n.Scene.Receive
 
 final class Receive: Scene<ReceiveView> {}
 
-extension Receive {
+extension Receive: BackButtonHiding {
     static let title = €.title
 }
 

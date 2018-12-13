@@ -27,6 +27,7 @@ enum SettingsNavigation: TrackedUserAction {
     // Section 2
     case readTermsOfService
     case readERC20Warning
+    case changeAnalyticsPermissions
 
     // Section 3
     case backupWallet
@@ -111,7 +112,8 @@ private extension SettingsViewModel {
 
         sections += [
             .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService),
-            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning)
+            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning),
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions)
         ]
 
         sections += [

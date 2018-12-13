@@ -12,6 +12,13 @@
 		4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE9521837F5F002734C8 /* QRCoding.swift */; };
 		4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 480935482195D1BE009CA3FD /* Localizable.strings */; };
 		4809354E2195D1BE009CA3FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4809354B2195D1BE009CA3FD /* LaunchScreen.storyboard */; };
+		4819BD9A21C223B200443F2A /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
+		4819BD9B21C223B200443F2A /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
+		4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
+		4819BDA421C2367500443F2A /* GotTransactionReceiptViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */; };
+		4819BDA521C2367500443F2A /* GotTransactionReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */; };
+		4819BDA621C2367500443F2A /* GotTransactionReceiptController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */; };
+		4819BDA921C2403800443F2A /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA821C2403800443F2A /* UIView+Rx.swift */; };
 		48241B4921B153EA0054ED8E /* Coordinating+Scene+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4821B153EA0054ED8E /* Coordinating+Scene+Present.swift */; };
 		48241B4F21B158B60054ED8E /* Coordinating+NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */; };
 		48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */; };
@@ -109,7 +116,7 @@
 		48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */; };
 		48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */; };
 		48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */; };
-		48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */; };
+		48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
 		48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
@@ -237,6 +244,13 @@
 		480935492195D1BE009CA3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4809354C2195D1BE009CA3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
+		4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusView.swift; sourceTree = "<group>"; };
+		4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusController.swift; sourceTree = "<group>"; };
+		4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusViewModel.swift; sourceTree = "<group>"; };
+		4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptViewModel.swift; sourceTree = "<group>"; };
+		4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptView.swift; sourceTree = "<group>"; };
+		4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptController.swift; sourceTree = "<group>"; };
+		4819BDA821C2403800443F2A /* UIView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rx.swift"; sourceTree = "<group>"; };
 		48241B4821B153EA0054ED8E /* Coordinating+Scene+Present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Scene+Present.swift"; sourceTree = "<group>"; };
 		48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+NavigationStack.swift"; sourceTree = "<group>"; };
 		48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Child+Start.swift"; sourceTree = "<group>"; };
@@ -342,7 +356,7 @@
 		48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Spacer.swift"; sourceTree = "<group>"; };
 		48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Styling.swift"; sourceTree = "<group>"; };
 		48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
-		48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayoutPriority+ExpressibleByIntegerLiteral.swift"; sourceTree = "<group>"; };
+		48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutPriority_Extension.swift; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
 		48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder_Extensions.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
@@ -480,6 +494,7 @@
 			children = (
 				4806AE72218369A7002734C8 /* UITextField+Rx.swift */,
 				48ECF60F21A1F4AB0078D659 /* UIControl+Rx.swift */,
+				4819BDA821C2403800443F2A /* UIView+Rx.swift */,
 			);
 			path = "UIViews+Reactive";
 			sourceTree = "<group>";
@@ -491,6 +506,26 @@
 				4809354B2195D1BE009CA3FD /* LaunchScreen.storyboard */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		4819BD9221C2235500443F2A /* 3_PollTransactionStatus */ = {
+			isa = PBXGroup;
+			children = (
+				4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */,
+				4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */,
+				4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */,
+			);
+			path = 3_PollTransactionStatus;
+			sourceTree = "<group>";
+		};
+		4819BD9D21C235BA00443F2A /* 4_GotTransactionReceipt */ = {
+			isa = PBXGroup;
+			children = (
+				4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */,
+				4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */,
+				4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */,
+			);
+			path = 4_GotTransactionReceipt;
 			sourceTree = "<group>";
 		};
 		48241B4A21B1575A0054ED8E /* Coordinating */ = {
@@ -958,7 +993,7 @@
 				4806AE7121836995002734C8 /* UIViews+Reactive */,
 				48C89FEF2143320B0063B0FA /* Views+Styleable */,
 				48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */,
-				48CA697A2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift */,
+				48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */,
 				48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */,
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
 				48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */,
@@ -1064,6 +1099,8 @@
 				48ECF57A21A18F140078D659 /* SendCoordinator.swift */,
 				48ECF57621A18F140078D659 /* 1_PrepareTransaction */,
 				48ECF57B21A18F140078D659 /* 2_SignTransaction */,
+				4819BD9221C2235500443F2A /* 3_PollTransactionStatus */,
+				4819BD9D21C235BA00443F2A /* 4_GotTransactionReceipt */,
 			);
 			path = A_Send;
 			sourceTree = "<group>";
@@ -1626,6 +1663,7 @@
 				48F4098821BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift in Sources */,
 				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
+				4819BDA521C2367500443F2A /* GotTransactionReceiptView.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
 				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
 				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
@@ -1640,6 +1678,7 @@
 				48ECF61C21A29FF20078D659 /* ClassIdentifiable.swift in Sources */,
 				483CE9D32194E9E300BED31C /* Navigator.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
+				4819BDA921C2403800443F2A /* UIView+Rx.swift in Sources */,
 				483CE9E02194E9E300BED31C /* Bootstrap.swift in Sources */,
 				483CE9C82194E9E300BED31C /* ViewModelType.swift in Sources */,
 				48ECF5F321A18F140078D659 /* ChooseWalletViewModel.swift in Sources */,
@@ -1666,6 +1705,7 @@
 				48ECF5DC21A18F140078D659 /* Receive.swift in Sources */,
 				483CE9CC2194E9E300BED31C /* Tracker.swift in Sources */,
 				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
+				4819BDA621C2367500443F2A /* GotTransactionReceiptController.swift in Sources */,
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
 				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
@@ -1684,16 +1724,18 @@
 				48ECF5EB21A18F140078D659 /* SetPincodeCoordinator.swift in Sources */,
 				4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */,
 				48ECF5DF21A18F140078D659 /* UnlockAppWithPincodeViewModel.swift in Sources */,
-				48CA697B2183529100C05F5F /* UILayoutPriority+ExpressibleByIntegerLiteral.swift in Sources */,
+				48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */,
 				483CE9D52194E9E300BED31C /* DeepLinkHandler.swift in Sources */,
 				48F4098F21BD2726001C499F /* BackUpKeystoreView.swift in Sources */,
 				485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */,
+				4819BD9A21C223B200443F2A /* PollTransactionStatusView.swift in Sources */,
 				483CE9EB2194E9E300BED31C /* KeyValueStoring.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				485AACA221AAE764005C56CC /* InputValidator.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
 				483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */,
+				4819BD9B21C223B200443F2A /* PollTransactionStatusController.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
 				48ECF61A21A29FE10078D659 /* CellConfigurable.swift in Sources */,
 				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,
@@ -1724,6 +1766,7 @@
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
 				4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */,
+				4819BDA421C2367500443F2A /* GotTransactionReceiptViewModel.swift in Sources */,
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,
 				483CE9E12194E9E300BED31C /* ConfigurationDetection.swift in Sources */,
 				4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */,
@@ -1766,6 +1809,7 @@
 				5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */,
 				48ECF4B821A17B7A0078D659 /* TitledValueView.swift in Sources */,
 				48241B5321B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift in Sources */,
+				4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */,
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
 				5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */,

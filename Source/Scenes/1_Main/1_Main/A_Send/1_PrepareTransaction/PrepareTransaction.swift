@@ -12,7 +12,7 @@ private typealias € = L10n.Scene.PrepareTransaction
 
 final class PrepareTransaction: Scene<PrepareTransactionView> {}
 
-extension PrepareTransaction {
+extension PrepareTransaction: BackButtonHiding {
     static let title = €.title
 }
 

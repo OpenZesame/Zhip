@@ -11,17 +11,17 @@ import UIKit
 extension UIView {
 
     static func spacer(
-        verticalCompressionResistancePriority: UILayoutPriority = .defaultLow,
-        verticalContentHuggingPriority: UILayoutPriority = .defaultLow
+        verticalCompressionResistancePriority: UILayoutPriority = .medium,
+        verticalContentHuggingPriority: UILayoutPriority = .medium
         ) -> UIView {
 
         let spacer = UIView()
         spacer.translatesAutoresizingMaskIntoConstraints = false
 
-        spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.medium, for: .horizontal)
         spacer.setContentCompressionResistancePriority(verticalCompressionResistancePriority, for: .vertical)
 
-        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacer.setContentHuggingPriority(.medium, for: .horizontal)
         spacer.setContentHuggingPriority(verticalContentHuggingPriority, for: .vertical)
 
         return spacer
