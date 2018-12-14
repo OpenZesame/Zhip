@@ -30,6 +30,9 @@ def shared
   # Generate QR code
   pod 'EFQRCode'
 
+  # Scan QR Code
+  pod 'QRCodeReader.swift'
+
   # Keychain made simple
   pod 'KeychainSwift'
 

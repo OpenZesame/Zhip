@@ -15,6 +15,7 @@ import Zesame
 enum PrepareTransactionUserAction: TrackedUserAction {
     case cancel
     case signPayment(Payment)
+    case scanQRCode
 }
 
 // MARK: - PrepareTransactionViewModel
@@ -26,9 +27,9 @@ final class PrepareTransactionViewModel: BaseViewModel<
 > {
     private let transactionUseCase: TransactionsUseCase
     private let walletUseCase: WalletUseCase
-    private let deepLinkedTransaction: Driver<Transaction>
+    private let deepLinkedTransaction: Driver<TransactionIntent>
 
-    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Driver<Transaction>) {
+    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Driver<TransactionIntent>) {
         self.walletUseCase = walletUseCase
         self.transactionUseCase = transactionUseCase
         self.deepLinkedTransaction = deepLinkedTransaction
@@ -114,6 +115,10 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .do(onNext: { userIntends(to: .cancel) })
                 .drive(),
 
+            input.fromView.scanQRTrigger
+                .do(onNext: { userIntends(to: .scanQRCode) })
+                .drive(),
+
             input.fromView.sendTrigger.withLatestFrom(payment)
                 .do(onNext: { userIntends(to: .signPayment($0)) })
                 .drive()
@@ -143,6 +148,7 @@ extension PrepareTransactionViewModel {
 
     struct InputFromView {
         let pullToRefreshTrigger: Driver<Void>
+        let scanQRTrigger: Driver<Void>
         let sendTrigger: Driver<Void>
 
         let recepientAddress: Driver<String>

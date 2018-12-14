@@ -9,11 +9,11 @@
 import Foundation
 
 enum DeepLink {
-    case send(Transaction)
+    case send(TransactionIntent)
 }
 
 extension DeepLink {
-    var asTransaction: Transaction? {
+    var asTransaction: TransactionIntent? {
         switch self {
         case .send(let transaction): return transaction
         }
@@ -46,7 +46,7 @@ extension DeepLink {
 
         switch deepLinkPath {
         case .send:
-            if let transaction = Transaction(queryParameters: params) {
+            if let transaction = TransactionIntent(queryParameters: params) {
                 self = .send(transaction)
             } else {
                 return nil
@@ -56,7 +56,7 @@ extension DeepLink {
 }
 
 import Zesame
-private extension Transaction {
+private extension TransactionIntent {
     init?(amount amountString: String, to addresssHex: String) {
         guard
             let amount = try? Amount(string: amountString),

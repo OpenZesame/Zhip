@@ -12,8 +12,8 @@ import EFQRCode
 private typealias Image = Asset
 
 protocol QRCoding: AnyObject {
-    func encode(transaction: Transaction, size: CGFloat) -> UIImage?
-    func decode(cgImage: CGImage) -> Transaction?
+    func encode(transaction: TransactionIntent, size: CGFloat) -> UIImage?
+    func decode(cgImage: CGImage) -> TransactionIntent?
 }
 
 /// A type capable of encoding and decoding Transaction to and from QR codes
@@ -21,7 +21,7 @@ final class QRCoder {}
 
 extension QRCoder: QRCoding {
 
-    func encode(transaction: Transaction, size: CGFloat) -> UIImage? {
+    func encode(transaction: TransactionIntent, size: CGFloat) -> UIImage? {
         guard
             let transactionData = try? JSONEncoder().encode(transaction),
             let content = String(data: transactionData, encoding: .utf8)
@@ -30,12 +30,12 @@ extension QRCoder: QRCoding {
         return generateImage(content: content, size: size)
     }
 
-    func decode(cgImage: CGImage) -> Transaction? {
+    func decode(cgImage: CGImage) -> TransactionIntent? {
         guard
             let scannedContentStrings = EFQRCode.recognize(image: cgImage),
             let scannedContentString = scannedContentStrings.first,
             let jsonData = scannedContentString.data(using: .utf8),
-            let transaction = try? JSONDecoder().decode(Transaction.self, from: jsonData)
+            let transaction = try? JSONDecoder().decode(TransactionIntent.self, from: jsonData)
             else { return nil }
         return transaction
     }

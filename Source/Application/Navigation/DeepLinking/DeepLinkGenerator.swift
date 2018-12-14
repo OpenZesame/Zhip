@@ -16,7 +16,7 @@ final class DeepLinkGenerator {
 }
 
 extension DeepLinkGenerator {
-    func linkTo(transaction: Transaction) -> URL {
+    func linkTo(transaction: TransactionIntent) -> URL {
         guard var urlComponents = URLComponents(string: DeepLink.scheme) else {
             incorrectImplementation("Should be possible to create deep links, control the scheme: '\(DeepLink.scheme)'")
         }

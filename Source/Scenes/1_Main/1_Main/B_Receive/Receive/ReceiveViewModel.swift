@@ -16,7 +16,7 @@ private typealias € = L10n.Scene.Receive
 // MARK: - ReceiveUserAction
 enum ReceiveUserAction: TrackedUserAction {
     case finish
-    case requestTransaction(Transaction)
+    case requestTransaction(TransactionIntent)
 }
 
 // MARK: - ReceiveViewModel
@@ -47,7 +47,7 @@ final class ReceiveViewModel: BaseViewModel<
             .filterNil()
             .startWith(0)
 
-        let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { Transaction(amount: $0, to: $1) }
+        let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
 
         let qrImage = transactionToReceive.map { [unowned qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageWidth)
