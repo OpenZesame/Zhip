@@ -130,6 +130,9 @@
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
 "Scene.PrepareTransaction.Labels.Balance.Value" = "%@ ZILs";
 
+// MARK: ScanQRCode
+"Scene.ScanQRCode.Title" = "Scan QR";
+
 // MARK: SignTransaction
 "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase" = "Confirm transaction with your passphrase";
 "Scene.SignTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";

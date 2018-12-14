@@ -20,12 +20,12 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
-    private let deeplinkedTransaction: Driver<Transaction>
+    private let deeplinkedTransaction: Driver<TransactionIntent>
     private let updateBalanceSubject = PublishSubject<Void>()
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
+    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<TransactionIntent>) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction

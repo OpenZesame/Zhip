@@ -387,6 +387,10 @@ internal enum L10n {
         internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Segment.PrivateKey")
       }
     }
+    internal enum ScanQRCode {
+      /// Scan QR
+      internal static let title = L10n.tr("Localizable", "Scene.ScanQRCode.Title")
+    }
     internal enum Settings {
       /// Settings
       internal static let title = L10n.tr("Localizable", "Scene.Settings.Title")

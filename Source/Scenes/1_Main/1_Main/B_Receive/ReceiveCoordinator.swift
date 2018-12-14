@@ -70,7 +70,7 @@ private extension ReceiveCoordinator {
 
 // MARK: - Share
 private extension ReceiveCoordinator {
-    func share(transaction: Transaction) {
+    func share(transaction: TransactionIntent) {
         let shareUrl = deepLinkGenerator.linkTo(transaction: transaction)
         let activityVC = UIActivityViewController(activityItems: [shareUrl], applicationActivities: nil)
         activityVC.modalPresentationStyle = .popover

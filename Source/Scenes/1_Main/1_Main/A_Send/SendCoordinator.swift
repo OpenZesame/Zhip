@@ -18,11 +18,12 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
     }
 
     private let useCaseProvider: UseCaseProvider
-    private let deeplinkedTransaction: Driver<Transaction>
+    private let transactionIntent: Driver<TransactionIntent>
+    private let scannedQRTransactionSubject = PublishSubject<TransactionIntent>()
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<Transaction>) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<TransactionIntent>) {
         self.useCaseProvider = useCaseProvider
-        self.deeplinkedTransaction = deeplinkedTransaction
+        self.transactionIntent = Driver.merge(deeplinkedTransaction, scannedQRTransactionSubject.asDriverOnErrorReturnEmpty())
         super.init(navigationController: navigationController)
     }
 
@@ -56,7 +57,7 @@ private extension SendCoordinator {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            deepLinkedTransaction: deeplinkedTransaction.filter { [unowned self] _ in
+            deepLinkedTransaction: transactionIntent.filter { [unowned self] _ in
                 let prepareTransactionIsCurrentScene = self.navigationController.viewControllers.isEmpty || self.isTopmost(scene: PrepareTransaction.self)
                 guard prepareTransactionIsCurrentScene else {
                     log.verbose("Prevented deeplinked transaction since it is not the active scene.")
@@ -69,7 +70,21 @@ private extension SendCoordinator {
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             case .cancel: self.finish()
+            case .scanQRCode: self.toScanQRCode()
             case .signPayment(let payment): self.toSignPayment(payment)
+            }
+        }
+    }
+
+    func toScanQRCode() {
+        modallyPresent(scene: ScanQRCode.self, viewModel: ScanQRCodeViewModel()) { [unowned self] userDid, dismissScene in
+            switch userDid {
+            case .scanQRContainingTransaction(let transaction):
+                dismissScene(true) {
+                    self.scannedQRTransactionSubject.onNext(transaction)
+                }
+            case .cancel:
+                dismissScene(true, nil)
             }
         }
     }
@@ -122,11 +137,11 @@ private extension SendCoordinator {
         }
     }
 
-        func openInBrowserDetailsForTransaction(id transactionId: String) {
-            let baseURL = "https://explorer.zilliqa.com/"
-            guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
-                return log.error("failed to create url")
-            }
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    func openInBrowserDetailsForTransaction(id transactionId: String) {
+        let baseURL = "https://explorer.zilliqa.com/"
+        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
+            return log.error("failed to create url")
         }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
 }

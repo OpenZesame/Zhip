@@ -27,6 +27,8 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     private lazy var recipientAddressField = TextField(placeholder: €.Field.recipient, type: .hexadecimal)
         .withStyle(.default)
 
+    private lazy var scanQRButton = UIButton(title: "📷")
+
     private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .number)
         .withStyle(.number)
 
@@ -56,6 +58,9 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     ]
 
     override func setup() {
+        scanQRButton.translatesAutoresizingMaskIntoConstraints = false
+        recipientAddressField.rightView = scanQRButton
+        recipientAddressField.rightViewMode = .always
         if isDebug {
             recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
             amountToSendField.text = Int.random(in: 1...200).description
@@ -98,6 +103,7 @@ extension PrepareTransactionView: ViewModelled {
     var inputFromView: InputFromView {
         return InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
+            scanQRTrigger: scanQRButton.rx.tap.asDriver(),
             sendTrigger: sendButton.rx.tap.asDriver(),
 
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),

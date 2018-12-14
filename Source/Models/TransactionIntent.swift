@@ -9,7 +9,7 @@
 import Foundation
 import Zesame
 
-struct Transaction: Codable {
+struct TransactionIntent: Codable {
     let amount: Amount
     let recipient: Address
 
