@@ -10,10 +10,9 @@
 "Error.Input.Address.TooLong" = "Address is too long, should be %d";
 
 "Error.Input.Amount.NonNumericString" = "String not a number";
-"Error.Input.Amount.WasNegative" = "Amount cannot be negative";
-"Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
-
-"Error.Input.GasPrice.TooSmall" = "Gas price should be >%@E-12";
+"Error.Input.Amount.TooSmall" = "Must be at lest %@";
+"Error.Input.Amount.TooLarge" = "Must be at most %@";
+"Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
 
@@ -121,9 +120,8 @@
 "Scene.PrepareTransaction.Title" = "Send";
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
-"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas limit & price is measured in 10^-12 Zil";
-"Scene.PrepareTransaction.Field.GasLimit" = "Gas limit (E-12 Zil)";
-"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (E-12 Zil)";
+"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in 10^-12 Zil";
+"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";

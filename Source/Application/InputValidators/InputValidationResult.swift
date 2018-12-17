@@ -38,3 +38,14 @@ extension InputValidationResult {
 protocol InputError: Swift.Error {
     var errorMessage: String { get }
 }
+
+extension InputValidationResult: Equatable {
+    static func == <V>(lhs: InputValidationResult<V>, rhs: InputValidationResult<V>) -> Bool {
+        switch (lhs, rhs) {
+        case (.valid, .valid): return true
+        case (.invalid(.empty), .invalid(.empty)): return true
+        case (.invalid(.error(let lhsErrorMsg)), .invalid(.error(let rhsErrorMsg))): return lhsErrorMsg == rhsErrorMsg
+        default: return false
+        }
+    }
+}

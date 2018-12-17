@@ -9,7 +9,7 @@
 import Validator
 
 protocol InputValidator {
-    associatedtype Input: Validatable
+    associatedtype Input
     associatedtype Output
     associatedtype Error: InputError
     func validate(input: Input?) -> InputValidationResult<Output>

@@ -25,6 +25,9 @@
 		4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */; };
 		4819BDB421C27D2900443F2A /* ScanQRCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */; };
 		4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB121C27D2900443F2A /* ScanQRCodeViewModel.swift */; };
+		4819BDBF21C4AB2700443F2A /* GasPriceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */; };
+		4819BDC121C4AE9A00443F2A /* SufficientFundsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */; };
+		4819BDC521C516B100443F2A /* SufficientFundsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDC421C516B100443F2A /* SufficientFundsValidatorTests.swift */; };
 		48241B4921B153EA0054ED8E /* Coordinating+Scene+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4821B153EA0054ED8E /* Coordinating+Scene+Present.swift */; };
 		48241B4F21B158B60054ED8E /* Coordinating+NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */; };
 		48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */; };
@@ -263,6 +266,9 @@
 		4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeView.swift; sourceTree = "<group>"; };
 		4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeController.swift; sourceTree = "<group>"; };
 		4819BDB121C27D2900443F2A /* ScanQRCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewModel.swift; sourceTree = "<group>"; };
+		4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasPriceValidator.swift; sourceTree = "<group>"; };
+		4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SufficientFundsValidator.swift; sourceTree = "<group>"; };
+		4819BDC421C516B100443F2A /* SufficientFundsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SufficientFundsValidatorTests.swift; sourceTree = "<group>"; };
 		48241B4821B153EA0054ED8E /* Coordinating+Scene+Present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Scene+Present.swift"; sourceTree = "<group>"; };
 		48241B4E21B158B60054ED8E /* Coordinating+NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+NavigationStack.swift"; sourceTree = "<group>"; };
 		48241B5021B15C740054ED8E /* Coordinating+Child+Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coordinating+Child+Start.swift"; sourceTree = "<group>"; };
@@ -570,6 +576,16 @@
 			path = 1_ScanQR;
 			sourceTree = "<group>";
 		};
+		4819BDC321C5169200443F2A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */,
+				4819BDC421C516B100443F2A /* SufficientFundsValidatorTests.swift */,
+			);
+			name = Tests;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		48241B4A21B1575A0054ED8E /* Coordinating */ = {
 			isa = PBXGroup;
 			children = (
@@ -821,9 +837,9 @@
 		484B067820BA0D2C00C4E50A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				4819BDC321C5169200443F2A /* Tests */,
 				489CDBA02143E27500318450 /* Configurations */,
 				484B067920BA0D2C00C4E50A /* SupportingFiles */,
-				484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -894,8 +910,10 @@
 			isa = PBXGroup;
 			children = (
 				485AAC9B21AAC6EB005C56CC /* AmountValidator.swift */,
+				4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */,
 				485AAC9D21AAC6FA005C56CC /* AddressValidator.swift */,
 				48F4097921BCD560001C499F /* EncryptionPassphraseValidator.swift */,
+				4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1744,6 +1762,7 @@
 				48ECF5CC21A18F140078D659 /* SignTransactionView.swift in Sources */,
 				483DDEAB219B6456009D3F4C /* DefaultPincodeUseCase.swift in Sources */,
 				48ECF61021A1F4AB0078D659 /* UIControl+Rx.swift in Sources */,
+				4819BDBF21C4AB2700443F2A /* GasPriceValidator.swift in Sources */,
 				485AACA021AAE752005C56CC /* ValidationRulesOwner.swift in Sources */,
 				48ECF5C921A18F140078D659 /* PrepareTransactionViewModel.swift in Sources */,
 				48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
@@ -1868,6 +1887,7 @@
 				48ECF5FB21A18F140078D659 /* BackupWalletView.swift in Sources */,
 				48ECF5F521A18F140078D659 /* ChooseWallet.swift in Sources */,
 				483CE9E72194E9E300BED31C /* KeyValueStore+KeychainKey.swift in Sources */,
+				4819BDC121C4AE9A00443F2A /* SufficientFundsValidator.swift in Sources */,
 				48C0613721BD3107006E3E0A /* Wallet.swift in Sources */,
 				483CE9E62194E9E300BED31C /* KeychainKey.swift in Sources */,
 				48BAC4E32195E5F200A626FD /* ImageConvertible.swift in Sources */,
@@ -1912,6 +1932,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */,
+				4819BDC521C516B100443F2A /* SufficientFundsValidatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

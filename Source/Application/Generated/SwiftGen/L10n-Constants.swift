@@ -27,19 +27,17 @@ internal enum L10n {
         }
       }
       internal enum Amount {
+        /// Insufficient funds
+        internal static let exceedingBalance = L10n.tr("Localizable", "Error.Input.Amount.ExceedingBalance")
         /// String not a number
         internal static let nonNumericString = L10n.tr("Localizable", "Error.Input.Amount.NonNumericString")
-        /// Amount must be smaller than %@
+        /// Must be at most %@
         internal static func tooLarge(_ p1: String) -> String {
           return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", p1)
         }
-        /// Amount cannot be negative
-        internal static let wasNegative = L10n.tr("Localizable", "Error.Input.Amount.WasNegative")
-      }
-      internal enum GasPrice {
-        /// Gas price should be >%@E-12
+        /// Must be at lest %@
         internal static func tooSmall(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Error.Input.GasPrice.TooSmall", p1)
+          return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
         }
       }
       internal enum Passphrase {
@@ -305,15 +303,15 @@ internal enum L10n {
         internal static let amount = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount")
         /// Encryption passphrase
         internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassphrase")
-        /// Gas limit (E-12 Zil)
-        internal static let gasLimit = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasLimit")
-        /// Gas price (E-12 Zil)
-        internal static let gasPrice = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice")
+        /// Gas price (min %@)
+        internal static func gasPrice(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", p1)
+        }
         /// To address
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
       }
       internal enum Label {
-        /// Gas limit & price is measured in 10^-12 Zil
+        /// Gas price is measured in 10^-12 Zil
         internal static let gasInSmallUnits = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits")
         /// Transaction Id
         internal static let transactionId = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.TransactionId")

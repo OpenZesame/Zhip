@@ -86,3 +86,5 @@ private extension Wallet {
         return origin.passphraseMode
     }
 }
+
+extension WalletEncryptionPassphrase: Equatable {}

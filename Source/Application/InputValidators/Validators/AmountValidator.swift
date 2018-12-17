@@ -10,30 +10,34 @@ import Zesame
 
 import Validator
 
+private typealias € = L10n.Error.Input.Amount
+
 struct AmountValidator: InputValidator {
-    typealias Error = Amount.Error
+
+    typealias Error = AmountError
 
     func validate(input: String) -> InputValidationResult<Amount> {
         let amount: Amount
         do {
             amount = try Amount(string: input)
-        } catch let amountError as Error {
+        } catch let amountError as AmountError {
             return self.error(amountError)
         } catch {
-            incorrectImplementation("Address.Error should cover all errors")
+            incorrectImplementation("AmountError should cover all errors")
         }
+
         return .valid(amount)
     }
 }
 
-extension Amount.Error: InputError {
+extension AmountValidator.Error: InputError {
+
     var errorMessage: String {
-        let Message = L10n.Error.Input.Amount.self
 
         switch self {
-        case .amountExceededTotalSupply: return Message.tooLarge(Amount.totalSupply.description)
-        case .amountWasNegative: return Message.wasNegative
-        case .nonNumericString: return Message.nonNumericString
+        case .tooLarge(let max): return €.tooLarge(max.description)
+        case .tooSmall(let min): return €.tooSmall(min.description)
+        case .nonNumericString: return €.nonNumericString
         }
     }
 }

@@ -35,11 +35,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     private lazy var gasMeasuredInSmallUnitsLabel = UILabel(text: €.Label.gasInSmallUnits)
         .withStyle(.body)
 
-    private lazy var gasPriceField = TextField(placeholder: €.Field.gasPrice, type: .number)
-        .withStyle(.number)
-
-    private lazy var gasLimitField = TextField(placeholder: €.Field.gasLimit, type: .number)
-        .withStyle(.number)
+    private lazy var gasPriceField = TextField(type: .number).withStyle(.number)
 
     private lazy var sendButton = UIButton(title: €.Button.send)
         .withStyle(.primary)
@@ -50,9 +46,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
         balanceLabels,
         recipientAddressField,
         amountToSendField,
-        gasMeasuredInSmallUnitsLabel,
         gasPriceField,
-        gasLimitField,
         .spacer,
         sendButton
     ]
@@ -61,23 +55,8 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
         scanQRButton.translatesAutoresizingMaskIntoConstraints = false
         recipientAddressField.rightView = scanQRButton
         recipientAddressField.rightViewMode = .always
-        if isDebug {
-            recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
-            amountToSendField.text = Int.random(in: 1...200).description
-            gasPriceField.text = Int.random(in: 100...200).description
-            gasLimitField.text = Int.random(in: 1...10).description
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
-                    [
-                        self.recipientAddressField,
-                        self.amountToSendField,
-                        self.gasPriceField,
-                        self.gasLimitField
-                    ].forEach {
-                            $0.sendActions(for: .editingDidEnd)
-                    }
-            }
-        }
+        prefillValuesForDebugBuilds()
     }
 }
 
@@ -95,7 +74,7 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.balance                           --> balanceLabels.rx.value,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
-            viewModel.gasLimitValidation                --> gasLimitField.rx.validation,
+            viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
             viewModel.gasPriceValidation                --> gasPriceField.rx.validation
         ]
     }
@@ -112,12 +91,29 @@ extension PrepareTransactionView: ViewModelled {
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
             amountDidEndEditing: amountToSendField.rx.didEndEditing,
 
-            gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
-            gasLimitDidEndEditing: gasLimitField.rx.didEndEditing,
-
             gasPrice: gasPriceField.rx.text.orEmpty.asDriver(),
             gasPriceDidEndEditing: gasPriceField.rx.didEndEditing
         )
+    }
+}
+
+// MARK: - Private
+private extension PrepareTransactionView {
+    func prefillValuesForDebugBuilds() {
+        guard isDebug else { return }
+        recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
+        amountToSendField.text = Int.random(in: 1...200).description
+        gasPriceField.text = Int.random(in: 100...200).description
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
+            [
+                self.recipientAddressField,
+                self.amountToSendField,
+                self.gasPriceField
+                ].forEach {
+                    $0.sendActions(for: .editingDidEnd)
+            }
+        }
     }
 }
 

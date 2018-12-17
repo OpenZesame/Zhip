@@ -78,7 +78,7 @@ final class MainViewModel: BaseViewModel<
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { €.Label.Balance.value($0.amount.description) }
+            balance: latestBalanceOrZero.map { €.Label.Balance.value($0.display) }
         )
     }
 }
