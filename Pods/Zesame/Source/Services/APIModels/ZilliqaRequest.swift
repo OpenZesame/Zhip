@@ -13,13 +13,14 @@ import APIKit
 public struct ZilliqaRequest<Batch: JSONRPCKit.Batch>: APIKit.Request {
     public typealias Response = Batch.Responses
     public let batch: Batch
+    public let baseURL: URL
+    public init(batch: Batch, baseURL: URL) {
+        self.batch = batch
+        self.baseURL = baseURL
+    }
 }
 
 public extension ZilliqaRequest {
-    var baseURL: URL {
-        return URL(string: "https://api.zilliqa.com")!
-    }
-
     var method: HTTPMethod {
         return .post
     }

@@ -38,17 +38,34 @@ extension SignedTransaction: Encodable {
         try container.encode(p.recipient, forKey: .toAddr)
         try container.encode(publicKeyCompressed, forKey: .pubKey)
 
-        let k = CodingKeys.self
         try zip(
-            [p.amount, p.gasPrice, p.gasLimit],
-            [k.amount, k.gasPrice, k.gasLimit]
-            ).forEach { (value, key) in
-                try container.encode(value.description, forKey: key)
+            [p.amount.encodableValue, p.gasPrice.encodableValue, p.gasLimit.encodableValue],
+            [CodingKeys.amount, CodingKeys.gasPrice, CodingKeys.gasLimit]
+        ).forEach {
+            try container.encode($0, forKey: $1)
         }
 
         try container.encode(tx.code, forKey: .code)
         try container.encode(tx.data, forKey: .data)
         try container.encode(signature, forKey: .signature)
+    }
+}
 
+extension ExpressibleByAmount {
+
+    // The API expects integer representation of the significand, so e.g.
+    // `100` for GasPrice.
+    var valueForTransaction: Int {
+        return Int(significand)
+    }
+}
+
+private extension ExpressibleByAmount {
+    var encodableValue: String {
+        // The API expects strings representation of integer values
+        let stringRepresentationOfInteger = valueForTransaction.description
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
+        precondition(!stringRepresentationOfInteger.contains(decimalSeparator), "String should represent an integer")
+        return stringRepresentationOfInteger
     }
 }

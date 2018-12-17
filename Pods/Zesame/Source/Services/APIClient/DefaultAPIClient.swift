@@ -10,17 +10,24 @@ import JSONRPCKit
 import APIKit
 
 public final class DefaultAPIClient: APIClient {
+    private let queueLabel = "Zesame"
     private let batchFactory = BatchFactory(version: "2.0", idGenerator: NumberIdGenerator())
-    public init() {}
+    public let baseURL: URL
+    public init(baseURL: URL = URL(string: "https://api.zilliqa.com")!) {
+        self.baseURL = baseURL
+    }
+
+    private lazy var backgroundDispatchQueue = DispatchQueue(label: queueLabel, qos: .userInitiated)
 }
 
 public extension DefaultAPIClient {
 
     func send<Request>(request: Request, done: @escaping Done<Request.Response>) where Request: JSONRPCKit.Request {
-        let httpRequest = ZilliqaRequest(batch: batchFactory.create(request))
+        let httpRequest = ZilliqaRequest(batch: batchFactory.create(request), baseURL: baseURL)
         let handlerAPIKit = mapHandler(done)
 
-        Session.send(httpRequest, callbackQueue: nil) {
+        Session.send(httpRequest, callbackQueue: .dispatchQueue(backgroundDispatchQueue)) {
+            assert(!Thread.isMainThread, "Should not be running API calls on the main thread")
             switch $0 {
             case .success(let response): handlerAPIKit(.success(response))
             case .failure(let error): handlerAPIKit(.failure(error))
