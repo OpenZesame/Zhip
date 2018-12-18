@@ -20,6 +20,9 @@ struct AmountValidator: InputValidator {
         let amount: Amount
         do {
             amount = try Amount(string: input)
+            guard amount > 0 else {
+               throw Error.tooSmall(min: Amount.minValue)
+            }
         } catch let amountError as AmountError {
             return self.error(amountError)
         } catch {

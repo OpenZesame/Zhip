@@ -70,3 +70,22 @@ extension WalletUseCase {
         .asObservable()
     }
 }
+
+extension WalletUseCase {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        return Observable.create { observer in
+
+            keystore.toKeypair(encryptedBy: passphrase) {
+                switch $0 {
+                case .success(let keyPair):
+                    observer.onNext(keyPair)
+                    observer.onCompleted()
+                case .failure(let error):
+                    observer.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+}
+
