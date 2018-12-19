@@ -65,24 +65,10 @@ extension ViewModelTesting {
         return viewModel.transform(inputFromView: emptyInputFromView)
     }
 
-    func assertEventsFromDefaultOutput<A>(driverAt keyPath: KeyPath<Output, Driver<A>>, equals expected: [A]) where A: Equatable {
-        let output = transformEmptyInputToOutput()
-
-        assertEvents(from: output, driverAt: keyPath, equals: expected)
-    }
-
-    func assertEvents<A>(from output: Output, driverAt keyPath: KeyPath<Output, Driver<A>>, equals expected: [A]) where A: Equatable {
-        let driver: Driver<A> = output[keyPath: keyPath]
-
+    func assertDriverValues(assertions: @escaping (TestScheduler) -> Void) {
         let scheduler: TestScheduler = self.scheduler
         SharingScheduler.mock(scheduler: scheduler) {
-
-            let recordedEvents = scheduler.record(driver)
-            scheduler.start()
-            let recordedValues: [A] = recordedEvents.events.compactMap { $0.value.element }
-            XCTAssertEqual(recordedValues, expected)
-            print(recordedEvents)
+            assertions(scheduler)
         }
-
     }
 }

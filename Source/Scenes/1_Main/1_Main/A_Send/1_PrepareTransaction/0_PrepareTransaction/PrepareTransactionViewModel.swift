@@ -60,54 +60,59 @@ final class PrepareTransactionViewModel: BaseViewModel<
         // MARK: - Validate input (only validate fields when they loose focus)
         let validator = InputValidator()
 
-        let recipientAddressValidationResult = Driver.merge(
-            input.fromView.recipientAddressDidEndEditing
-                .withLatestFrom(input.fromView.recepientAddress) { $1 }
-                // Validate input from view
-                .map { validator.validateRecipient($0) },
+        let recipientAddressValidation = Driver.merge(
+            // Validate input from view
+            input.fromView.recepientAddress.map { validator.validateRecipient($0) },
 
             // Address from DeepLinked transaction should be valid
             deepLinkedTransaction.map { .valid($0.recipient) }
         )
 
-        let amountValidationResult = Driver.merge(
-            input.fromView.amountDidEndEditing
-                .withLatestFrom(input.fromView.amountToSend) { $1 }
-                // Validate input from view
-                .map { validator.validateAmount($0) },
+        let amountValidation = Driver.merge(
+            // Validate input from view
+            input.fromView.amountToSend.map { validator.validateAmount($0) },
 
             // Amount from DeepLinked transaction should be valid
             deepLinkedTransaction.map { .valid($0.amount) }
         )
 
-        let gasPriceValidationResult = input.fromView.gasPriceDidEndEditing
-            .withLatestFrom(input.fromView.gasPrice) { $1 }
-            .map { validator.validateGasPrice($0) }
+        let gasPriceValidation = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
 
         // MARK: - Validated values
-        let recipient = recipientAddressValidationResult.map { $0.value }
-        let amount = amountValidationResult.map { $0.value }
-        let gasPrice = gasPriceValidationResult.map { $0.value }
+        let recipient = recipientAddressValidation.map { $0.value }
+        let amountNotBoundByBalance = amountValidation.map { $0.value }
+        let gasPrice = gasPriceValidation.map { $0.value }
 
-        let balance = latestBalanceAndNonce.map { $0.balance }.startWith(0)
+        let balance = latestBalanceAndNonce.map { $0.balance }
 
-        let sufficientFundsValidationResult: Driver<InputValidationResult<Amount>> = Driver.combineLatest(amount, gasPrice, balance) {
-            guard let amount = $0, let gasPrice = $1, case let balance = $2 else {
-                return .invalid(.empty)
+
+        let sufficientFundsValidationTrigger = Driver.merge(
+            // Amount trigger
+            Driver.merge(
+                input.fromView.amountDidEndEditing,
+                deepLinkedTransaction.map { $0.amount }.distinctUntilChanged().mapToVoid()
+            ),
+            input.fromView.gasPriceDidEndEditing,
+            balance.mapToVoid()
+        )
+
+        let sufficientFundsValidation: Driver<InputValidationResult<Amount>> = sufficientFundsValidationTrigger.withLatestFrom(
+            Driver.combineLatest(amountNotBoundByBalance, gasPrice, balance) {
+                guard let amount = $0, let gasPrice = $1, case let balance = $2 else {
+                    return .invalid(.empty)
+                }
+                return validator.validate(amount: amount, gasPrice: gasPrice, lessThanBalance: balance)
             }
-            return validator.validate(amount: amount, gasPrice: gasPrice, lessThanBalance: balance)
-        }
+        )
 
-        let payment: Driver<Payment?> = Driver.combineLatest(
-            recipient,
-            sufficientFundsValidationResult.map { $0.value },
-            gasPrice,
-            latestBalanceAndNonce.map { $0.nonce }
-        ) {
+        let amount = sufficientFundsValidation.map { $0.value }
+        let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
+
+        let payment: Driver<Payment?> = Driver.combineLatest(recipient, amount, gasPrice, nonce) {
             guard let to = $0, let amount = $1, let price = $2, case let nonce = $3 else {
                 return nil
             }
-            return Payment(to: to, amount: amount, gasLimit: .defaultGasLimit, gasPrice: price, nonce: nonce)
+            return Payment(to: to, amount: amount, gasLimit: 1, gasPrice: price, nonce: nonce)
         }
 
         // Setup navigation
@@ -126,25 +131,38 @@ final class PrepareTransactionViewModel: BaseViewModel<
         ]
 
         // Format output
-        let amountValidation = Driver.merge(
-            amountValidationResult.distinctUntilChanged().map { $0.errorMessage },
-            sufficientFundsValidationResult.map { $0.errorMessage }
-        )
+        let amountErrorMessage = Driver.zip(
+            sufficientFundsValidation.map { $0.errorMessage },
+            amountValidation.map { $0.errorMessage }
+        ) { $0 ?? $1 }
+
+        let gasPriceErrorMessage = input.fromView.gasPriceDidEndEditing
+            .withLatestFrom(gasPriceValidation.map { $0.errorMessage }) { $1 }
+
+        let recipientErrorMessage = input.fromView.recipientAddressDidEndEditing
+            .withLatestFrom(recipientAddressValidation.map { $0.errorMessage }) { $1 }
+
+        let balanceFormatted = balance.map { €.Labels.Balance.value($0.display) }
+        let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
+        let amountFormatted = amount.filterNil().map { $0.display }
+
         let isSendButtonEnabled = payment.map { $0 != nil }
+
+        let gasPricePlaceholder = Driver.just(€.Field.gasPrice(GasPrice.minimum.display))
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
-            balance: balance.map { €.Labels.Balance.value($0.display) },
+            balance: balanceFormatted,
 
-            recipient: recipient.filterNil().map { $0.checksummedHex },
-            recipientAddressValidation: recipientAddressValidationResult.map { $0.errorMessage },
+            recipient: recipientFormatted,
+            recipientAddressValidation: recipientErrorMessage,
 
-            amount: amount.filterNil().map { $0.display },
-            amountValidation: amountValidation,
+            amount: amountFormatted,
+            amountValidation: amountErrorMessage,
 
-            gasPricePlaceholder: Driver.just(€.Field.gasPrice(GasPrice.minimum.display)),
-            gasPriceValidation: gasPriceValidationResult.map { $0.errorMessage }
+            gasPricePlaceholder: gasPricePlaceholder,
+            gasPriceValidation: gasPriceErrorMessage
         )
     }
 }
@@ -211,11 +229,5 @@ extension PrepareTransactionViewModel {
         func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<GasPrice> {
             return gasPriceValidator.validate(input: gasPrice)
         }
-    }
-}
-
-extension Amount {
-    static var defaultGasLimit: Amount {
-        return 1
     }
 }

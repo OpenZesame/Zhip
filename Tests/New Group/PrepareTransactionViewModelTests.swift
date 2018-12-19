@@ -94,11 +94,6 @@ class PrepareTransactionViewModelTests: XCTestCase, ViewModelTesting {
         XCTAssertTrue(mockedWalletUseCase.hasLoadWalletBeenCalled)
     }
 
-    func testTrivialBalance() {
-        mockedTransactionUseCase.mockedBalanceResponse = 237
-        assertEventsFromDefaultOutput(driverAt: \.balance, equals: ["237 ZILs"])
-    }
-
     func testValidRecipient() {
         let to = "F510333720c5dD3c3c08bC8e085E8C981CE74691"
 
@@ -108,27 +103,54 @@ class PrepareTransactionViewModelTests: XCTestCase, ViewModelTesting {
             )
         )
 
-        assertEvents(from: output, driverAt: \.recipient, equals: [to])
+        assertDriverValues {
+            let recordedRecipient = $0.record(output.recipient)
+            $0.start()
+            XCTAssertEqual(recordedRecipient.values, [to])
+        }
     }
 
     func testAmountLessThanAmount() {
         XCTAssertNotNil(viewModel)
 
-        mockedTransactionUseCase.mockedBalanceResponse = 237
-        let amount = "10"
+        mockedTransactionUseCase.mockedBalanceResponse = 25
+
+        let expectedBalance = [
+            "25 ZILs",
+            nil // frankly I have no idea why a `nil` gets emitted.
+        ]
+
+        let expectedAmount = ["10", "20"]
 
         let output = viewModel.transform(inputFromView:
             inputFromView(
                 address:                [.next(1, "F510333720c5dD3c3c08bC8e085E8C981CE74691")],
                 addressDidEndEditing:   [.next(2, void)],
-                amount:                 [.next(3, amount)],
-                amountDidEndEditing:    [.next(4, void)],
+                amount:                 [.next(3, expectedAmount[0]), .next(10, expectedAmount[1]), .next(20, "30")],
+                amountDidEndEditing:    [.next(4, void), .next(11, void), .next(21, void)],
                 gasPrice:               [.next(5, "100")],
                 gasPriceDidEndEditing:  [.next(6, void)]
             )
         )
 
-        assertEvents(from: output, driverAt: \.amount, equals: [amount])
+        assertDriverValues {
+            let recordedBalance = $0.record(output.balance)
+            let recordedAmount = $0.record(output.amount)
+            let recordedAmountValidation = $0.record(output.amountValidation)
+
+            $0.start()
+
+            XCTAssertEqual(recordedBalance.values, expectedBalance)
+            XCTAssertEqual(recordedAmount.values, expectedAmount)
+            XCTAssertEqual(recordedAmountValidation.values, [Optional<String>.none, Optional<String>.none, Optional<String>.some("Insufficient funds")])
+        }
+
+    }
+}
+
+extension TestableObserver {
+    var values: [E?] {
+        return events.map { $0.value.element }
     }
 }
 
