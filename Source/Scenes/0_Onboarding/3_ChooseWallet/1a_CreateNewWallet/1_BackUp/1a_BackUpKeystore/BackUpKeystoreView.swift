@@ -11,13 +11,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.BackUpKeystore
-
 final class BackUpKeystoreView: ScrollingStackView {
 
-    private lazy var keystoreTextView = UITextView().withStyle(.nonEditable)
-
-    private lazy var copyButton = UIButton(title: €.Button.copy).withStyle(.primary)
+    private lazy var keystoreTextView   = UITextView()
+    private lazy var copyButton         = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         keystoreTextView,
@@ -25,7 +22,7 @@ final class BackUpKeystoreView: ScrollingStackView {
     ]
 
     override func setup() {
-        keystoreTextView.textAlignment = .left
+        setupSubviews()
     }
 }
 
@@ -42,5 +39,18 @@ extension BackUpKeystoreView: ViewModelled {
         return InputFromView(
             copyTrigger: copyButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.BackUpKeystore
+private extension BackUpKeystoreView {
+    func setupSubviews() {
+        keystoreTextView.withStyle(.nonEditable) {
+            $0.textAlignment(.left)
+        }
+
+        copyButton.withStyle(.primary) {
+            $0.title(€.Button.copy)
+        }
     }
 }

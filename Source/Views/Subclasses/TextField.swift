@@ -16,11 +16,6 @@ final class TextField: SkyFloatingLabelTextField {
     }
     let typeOfInput: TypeOfInput
 
-    convenience init(placeholder: CustomStringConvertible, type: TypeOfInput) {
-        self.init(type: type)
-        self.placeholder = placeholder.description
-    }
-
     init(type: TypeOfInput) {
         self.typeOfInput = type
         super.init(frame: .zero)
@@ -32,10 +27,12 @@ final class TextField: SkyFloatingLabelTextField {
 
 // MARK: TextField + Styling
 extension TextField {
-    func withStyle(_ style: Style) -> TextField {
+    @discardableResult
+    func withStyle<F>(_ style: UITextField.Style, customize: ((UITextField.Style) -> UITextField.Style)? = nil) -> F where F: UITextField {
         translatesAutoresizingMaskIntoConstraints = false
         apply(style: style)
-        return self
+        guard let field = self as? F else { incorrectImplementation("Bad cast") }
+        return field
     }
 }
 

@@ -14,25 +14,32 @@ import RxSwift
 import RxCocoa
 
 final class CheckboxWithLabel: UIView {
+    struct Style {
+        var labelText: String?
+        var numberOfLines: Int?
+        init(
+            labelText: String? = nil,
+            numberOfLines: Int? = nil
+            ) {
+            self.labelText = labelText
+            self.numberOfLines = numberOfLines
+        }
+    }
 
     static let checkboxSize: CGFloat = 44
 
     fileprivate lazy var checkbox = M13Checkbox(frame: .zero)
-    private let label: UILabel
+    private lazy var label = UILabel()
 
-    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label]).withStyle(.horizontal) { customizableStyle in
-        // only by using `.top` alignment together with a label having `numberOfLines` set to 0
-        // can we make the label span the height of the stackview.
-        customizableStyle.alignment(self.label.numberOfLines == 0 ? .top : .fill)
-    }
+    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label])
 
     // MARK: Initialization
-    init(titled: CustomStringConvertible? = nil, numberOfLines: Int = 0) {
-        label = UILabel(text: titled).withStyle(.checkbox) { customizableStyle in
-            customizableStyle.numberOfLines(numberOfLines)
-        }
+    init() {
+//        label = UILabel().withStyle(.checkbox) { customizableStyle in
+//            customizableStyle.numberOfLines(numberOfLines)
+//        }
         super.init(frame: .zero)
-        setup()
+//        setup()
     }
 
     required init?(coder: NSCoder) {
@@ -40,11 +47,60 @@ final class CheckboxWithLabel: UIView {
     }
 }
 
+extension CheckboxWithLabel {
+
+    func apply(style: Style) {
+    defer { setup() }
+        label.text = style.labelText
+        label.numberOfLines = style.numberOfLines ?? 0
+
+        stackView.withStyle(.horizontal) {
+            // only by using `.top` alignment together with a label having `numberOfLines` set to 0
+            // can we make the label span the height of the stackview.
+            $0.alignment(style.numberOfLines == 0 ? .top : .fill)
+        }
+    }
+
+    @discardableResult
+    func withStyle(_ style: Style, customize: ((Style) -> Style)? = nil) -> CheckboxWithLabel {
+        translatesAutoresizingMaskIntoConstraints = false
+        let style = customize?(style) ?? style
+        apply(style: style)
+        return self
+    }
+}
+
+// MARK: - Style + Customizing
+extension CheckboxWithLabel.Style {
+
+    @discardableResult
+    func text(_ text: String?) -> CheckboxWithLabel.Style {
+        var style = self
+        style.labelText = text
+        return style
+    }
+
+    @discardableResult
+    func numberOfLines(_ numberOfLines: Int) -> CheckboxWithLabel.Style {
+        var style = self
+        style.numberOfLines = numberOfLines
+        return style
+    }
+}
+
+// MARK: - Style Presets
+extension CheckboxWithLabel.Style {
+    static var `default`: CheckboxWithLabel.Style {
+        return CheckboxWithLabel.Style(
+            numberOfLines: 0
+        )
+    }
+}
+
 // MARK: - Private Setup
 private extension CheckboxWithLabel {
     func setup() {
         addSubview(stackView)
-        translatesAutoresizingMaskIntoConstraints = false
         setupViews()
         setupConstraints()
     }

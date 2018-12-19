@@ -12,18 +12,31 @@ import RxCocoa
 
 private typealias € = L10n.Scene.Main
 
+private extension MainView {
+    func setupSubviews() {
+
+        balanceLabels.withStyles(
+            forTitle: .impression,
+            forValue: .header
+        ) {
+            $0.text(€.Label.Balance.title)
+        }
+
+        sendButton.withStyle(.primary) {
+            $0.title(€.Button.send)
+        }
+
+        receiveButton.withStyle(.secondary) {
+            $0.title(€.Button.receive)
+        }
+    }
+}
+
 final class MainView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceLabels = TitledValueView(
-        titleStyle: .Large,
-        valueStyle: .huge
-        ).titled(€.Label.Balance.title)
-
-    private lazy var sendButton = UIButton(title: €.Button.send)
-        .withStyle(.primary)
-
-    private lazy var receiveButton = UIButton(title: €.Button.receive)
-        .withStyle(.secondary)
+    private lazy var balanceLabels  = TitledValueView()
+    private lazy var sendButton     = UIButton()
+    private lazy var receiveButton  = UIButton()
 
     lazy var stackViewStyle = UIStackView.Style([
         balanceLabels,
@@ -31,6 +44,10 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
         sendButton,
         receiveButton
         ], spacing: 8)
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension MainView: ViewModelled {

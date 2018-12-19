@@ -9,7 +9,20 @@
 import UIKit
 
 extension UIButton {
+    func setOptional<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute?>, ifNotNil attribute: Attribute?) {
+        guard let attribute = attribute else { return }
+        self[keyPath: keyPath] = attribute
+    }
+
+    func set<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute>, ifNotNil attribute: Attribute?) {
+        guard let attribute = attribute else { return }
+        self[keyPath: keyPath] = attribute
+    }
+}
+
+extension UIButton {
     public struct Style {
+        fileprivate var titleNormal: String?
         let height: CGFloat?
         let textColor: UIColor?
         let colorNormal: UIColor?
@@ -20,6 +33,7 @@ extension UIButton {
         let borderNormal: Border?
 
         init(
+            titleNormal: String? = nil,
             height: CGFloat? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
@@ -29,6 +43,7 @@ extension UIButton {
             borderNormal: Border? = nil,
             isEnabled: Bool? = nil
             ) {
+            self.titleNormal = titleNormal
             self.height = height
             self.textColor = textColor
             self.colorNormal = colorNormal
@@ -47,13 +62,17 @@ private extension CGFloat {
 
 extension UIButton {
 
+    // swiftlint:disable:next function_body_length
     func apply(style: Style) {
         translatesAutoresizingMaskIntoConstraints = false
         if let height = style.height {
             self.height(height)
         }
+        if let titleNormal = style.titleNormal {
+            setTitle(titleNormal, for: .normal)
+        }
         setTitleColor(style.textColor ?? .defaultText, for: UIControl.State())
-        titleLabel?.font = style.font ?? UIFont.Button.primary
+        titleLabel?.font = style.font ?? UIFont.button
         let colorNormal = style.colorNormal ?? .green
         let colorDisabled = style.colorDisabled ?? .gray
         let colorSelected = style.colorSelected ?? colorNormal
@@ -84,6 +103,13 @@ extension UIButton.Style {
         style.isEnabled = false
         return style
     }
+
+    @discardableResult
+    func title(_ titleNormal: String) -> UIButton.Style {
+        var style = self
+        style.titleNormal = titleNormal
+        return style
+    }
 }
 
 // MARK: - Style Presets
@@ -93,7 +119,6 @@ extension UIButton.Style {
         let color: UIColor = .zilliqaCyan
         return UIButton.Style(
             height: .defaultHeight,
-            font: UIFont.Button.primary,
             textColor: color,
             colorNormal: .clear,
             colorDisabled: .black,
@@ -106,7 +131,6 @@ extension UIButton.Style {
     static var primary: UIButton.Style {
         return UIButton.Style(
             height: .defaultHeight,
-            font: UIFont.Button.primary,
             textColor: .white,
             colorNormal: .zilliqaCyan,
             colorDisabled: .gray,
@@ -118,7 +142,6 @@ extension UIButton.Style {
     static var secondary: UIButton.Style {
         return UIButton.Style(
             height: .defaultHeight,
-            font: UIFont.Button.seconday,
             textColor: .white,
             colorNormal: .zilliqaDarkBlue,
             colorDisabled: .gray,

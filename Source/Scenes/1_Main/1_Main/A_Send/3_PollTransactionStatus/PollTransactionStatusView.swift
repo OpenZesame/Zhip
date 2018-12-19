@@ -10,16 +10,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.PollTransactionStatus
-
 final class PollTransactionStatusView: ScrollingStackView {
 
-    private lazy var waitingOnReceiptLabel = UILabel(text: €.Label.waitingOnReceipt).withStyle(.body)
-
-    private lazy var loadingView = SpinnerView()
-
-    private lazy var skipWaitingButton = UIButton(title: €.Button.skip)
-        .withStyle(.primary)
+    private lazy var waitingOnReceiptLabel  = UILabel()
+    private lazy var loadingView            = SpinnerView()
+    private lazy var skipWaitingButton      = UIButton()
 
     lazy var stackViewStyle = UIStackView.Style([
         waitingOnReceiptLabel,
@@ -28,8 +23,7 @@ final class PollTransactionStatusView: ScrollingStackView {
         ], distribution: .equalSpacing)
 
     override func setup() {
-        loadingView.startSpinning()
-        loadingView.height(200, priority: .medium)
+        setupSubviews()
     }
 }
 
@@ -43,3 +37,18 @@ extension PollTransactionStatusView: ViewModelled {
     }
 }
 
+private typealias € = L10n.Scene.PollTransactionStatus
+private extension PollTransactionStatusView {
+    func setupSubviews() {
+        waitingOnReceiptLabel.withStyle(.body) {
+            $0.text(€.Label.waitingOnReceipt)
+        }
+
+        skipWaitingButton.withStyle(.primary) {
+            $0.title(€.Button.skip)
+        }
+
+        loadingView.startSpinning()
+        loadingView.height(200, priority: .medium)
+    }
+}

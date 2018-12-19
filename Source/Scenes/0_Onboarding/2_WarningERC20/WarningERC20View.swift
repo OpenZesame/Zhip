@@ -11,15 +11,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.WarningERC20
-
 final class WarningERC20View: ScrollingStackView {
 
-    private lazy var warningTextView = UITextView(text: €.Text.warningERC20).withStyle(.nonEditable)
-
-    private lazy var acceptButton = UIButton(title: €.Button.accept).withStyle(.primary)
-
-    private lazy var doNotShowThisAgainButton = UIButton(title: €.Button.doNotShowAgain).withStyle(.hollow)
+    private lazy var warningTextView            = UITextView()
+    private lazy var acceptButton               = UIButton()
+    private lazy var doNotShowThisAgainButton   = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -27,6 +23,10 @@ final class WarningERC20View: ScrollingStackView {
         acceptButton,
         doNotShowThisAgainButton
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension WarningERC20View: ViewModelled {
@@ -45,5 +45,23 @@ extension WarningERC20View: ViewModelled {
             doNotShowAgain: doNotShowThisAgainButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
 
+    }
+}
+
+private typealias € = L10n.Scene.WarningERC20
+private extension WarningERC20View {
+    func setupSubviews() {
+
+        warningTextView.withStyle(.nonEditable) {
+            $0.text(€.Text.warningERC20)
+        }
+
+        acceptButton.withStyle(.primary) {
+            $0.title(€.Button.accept)
+        }
+
+        doNotShowThisAgainButton.withStyle(.hollow) {
+            $0.title(€.Button.doNotShowAgain)
+        }
     }
 }

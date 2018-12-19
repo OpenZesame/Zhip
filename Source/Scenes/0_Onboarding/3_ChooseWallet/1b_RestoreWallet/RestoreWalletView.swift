@@ -22,13 +22,10 @@ final class RestoreWalletView: UIView, EmptyInitializable {
     private let bag = DisposeBag()
 
     // MARK: - Subviews
-    private lazy var restorationMethodSegmentedControl = UISegmentedControl(frame: .zero)
-    private lazy var restoreUsingPrivateKeyView = RestoreUsingPrivateKeyView()
-    private lazy var restoreUsingKeyStoreView = RestoreUsingKeystoreView()
-    private lazy var restoreWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.restoreWallet)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-        }
+    private lazy var restorationMethodSegmentedControl  = UISegmentedControl()
+    private lazy var restoreUsingPrivateKeyView         = RestoreUsingPrivateKeyView()
+    private lazy var restoreUsingKeyStoreView           = RestoreUsingKeystoreView()
+    private lazy var restoreWalletButton                = ButtonWithSpinner()
 
     // MARK: - Initialization
     init() {
@@ -43,6 +40,8 @@ final class RestoreWalletView: UIView, EmptyInitializable {
 
 // MARK: - Private
 private extension RestoreWalletView {
+
+    // swiftlint:disable:next function_body_length
     func setup() {
 
         addSubview(restorationMethodSegmentedControl)
@@ -62,6 +61,11 @@ private extension RestoreWalletView {
 
         [restoreUsingPrivateKeyView, restoreUsingKeyStoreView].forEach {
             setupSubview($0)
+        }
+
+        restoreWalletButton.withStyle(.primary) {
+            $0.title(€.Button.restoreWallet)
+                .disabled()
         }
 
         setupSegmentedControl()

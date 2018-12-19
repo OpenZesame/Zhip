@@ -11,22 +11,22 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.DecryptKeystoreToRevealKeyPair
 
 final class DecryptKeystoreToRevealKeyPairView: ScrollingStackView {
 
-    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
+    private lazy var encryptionPassphraseField = TextField(type: .text)
 
-    private lazy var revealButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.reveal)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-    }
+    private lazy var revealButton = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
         encryptionPassphraseField,
         revealButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
@@ -46,5 +46,17 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
             revealTrigger: revealButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.DecryptKeystoreToRevealKeyPair
+private extension DecryptKeystoreToRevealKeyPairView {
+    func setupSubviews() {
+        encryptionPassphraseField.withStyle(.password)
+
+        revealButton .withStyle(.primary) {
+            $0.title(€.Button.reveal)
+                .disabled()
+        }
     }
 }

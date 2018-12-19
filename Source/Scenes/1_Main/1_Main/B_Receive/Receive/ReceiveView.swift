@@ -11,26 +11,16 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-private typealias € = L10n.Scene.Receive
-
 // MARK: - ReceiveView
 private let stackViewMargin: CGFloat = 16
 final class ReceiveView: ScrollingStackView {
 
-    private lazy var qrImageView = UIImageView()
-
-    private lazy var addressView = TitledValueView().titled(€.Label.myPublicAddress)
-
-    private lazy var amountToReceiveField = TextField(placeholder: €.Field.amount, type: .number).withStyle(.number)
-
-    private lazy var shareButton = UIButton(title: €.Button.share)
-        .withStyle(.secondary)
-
-    private lazy var copyMyAddressButton = UIButton(title: €.Button.copyMyAddress)
-        .withStyle(.primary)
-
-    private lazy var buttonsStackView = UIStackView(arrangedSubviews: [shareButton, copyMyAddressButton])
-        .withStyle(.horizontalFillingEqually)
+    private lazy var qrImageView            = UIImageView()
+    private lazy var addressView            = TitledValueView()
+    private lazy var amountToReceiveField   = TextField(type: .number)
+    private lazy var shareButton            = UIButton()
+    private lazy var copyMyAddressButton    = UIButton()
+    private lazy var buttonsStackView       = UIStackView(arrangedSubviews: [shareButton, copyMyAddressButton])
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
@@ -41,9 +31,7 @@ final class ReceiveView: ScrollingStackView {
         ], distribution: .equalSpacing, margin: stackViewMargin)
 
     override func setup() {
-        qrImageView.translatesAutoresizingMaskIntoConstraints = false
-        qrImageView.contentMode = .scaleAspectFit
-        qrImageView.clipsToBounds = true
+        setupSubviews()
     }
 }
 
@@ -65,5 +53,28 @@ extension ReceiveView: ViewModelled {
             qrCodeImageWidth: UIScreen.main.bounds.width - 2 * stackViewMargin,
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.Receive
+private extension ReceiveView {
+    func setupSubviews() {
+        qrImageView.withStyle(.default)
+
+        addressView.titled(€.Label.myPublicAddress)
+
+        amountToReceiveField.withStyle(.number) {
+            $0.placeholder(€.Field.amount)
+        }
+
+        shareButton.withStyle(.secondary) {
+            $0.title(€.Button.share)
+        }
+
+        copyMyAddressButton.withStyle(.primary) {
+            $0.title(€.Button.copyMyAddress)
+        }
+
+        buttonsStackView.withStyle(.horizontalFillingEqually)
     }
 }

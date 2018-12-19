@@ -9,32 +9,21 @@
 import UIKit
 import RxSwift
 
-extension UIButton {
-    func disabled<B>() -> B where B: UIButton {
-        isEnabled = false
-        guard let button = self as? B else { incorrectImplementation("Bad cast") }
-        return button
-    }
-}
-
-private typealias € = L10n.Scene.ChoosePincode
-
 final class ChoosePincodeView: ScrollingStackView {
 
-    private lazy var inputPincodeView = InputPincodeView(.setNew)
-
-    private lazy var pinOnlyLocksAppTextView = UITextView(text: €.Text.pincodeOnlyLocksApp)
-        .withStyle(.nonSelectable)
-
-    private lazy var proceedWithConfirmationButton = UIButton(title: €.Button.proceedWithConfirmation)
-        .withStyle(.primary)
-        .disabled()
+    private lazy var inputPincodeView               = InputPincodeView(.setNew)
+    private lazy var pinOnlyLocksAppTextView        = UITextView()
+    private lazy var proceedWithConfirmationButton  = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
         pinOnlyLocksAppTextView,
         proceedWithConfirmationButton
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension ChoosePincodeView: ViewModelled {
@@ -52,5 +41,19 @@ extension ChoosePincodeView: ViewModelled {
             viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
             viewModel.isConfirmPincodeEnabled --> proceedWithConfirmationButton.rx.isEnabled
         ]
+    }
+}
+
+private typealias € = L10n.Scene.ChoosePincode
+private extension ChoosePincodeView {
+    func setupSubviews() {
+        pinOnlyLocksAppTextView.withStyle(.nonSelectable) {
+            $0.text(€.Text.pincodeOnlyLocksApp)
+        }
+
+        proceedWithConfirmationButton.withStyle(.primary) {
+            $0.title(€.Button.proceedWithConfirmation)
+                .disabled()
+        }
     }
 }

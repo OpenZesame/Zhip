@@ -10,16 +10,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.GotTransactionReceipt
-
 final class GotTransactionReceiptView: ScrollingStackView {
 
-    private lazy var successLabel = UILabel(text: €.Label.confirmed).withStyle(.title)
-
-    private lazy var transactionFeeLabels = TitledValueView().titled(€.Labels.Fee.title)
-
-    private lazy var openDetailsInBrowserButton = UIButton(title: €.Button.openDetailsInBrowser)
-        .withStyle(.primary)
+    private lazy var successLabel                   = UILabel()
+    private lazy var transactionFeeLabels           = TitledValueView()
+    private lazy var openDetailsInBrowserButton     = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         successLabel,
@@ -27,6 +22,10 @@ final class GotTransactionReceiptView: ScrollingStackView {
         openDetailsInBrowserButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension GotTransactionReceiptView: ViewModelled {
@@ -45,3 +44,17 @@ extension GotTransactionReceiptView: ViewModelled {
     }
 }
 
+private typealias € = L10n.Scene.GotTransactionReceipt
+private extension GotTransactionReceiptView {
+    func setupSubviews() {
+        successLabel.withStyle(.header) {
+            $0.text(€.Label.confirmed)
+        }
+
+        transactionFeeLabels.titled(€.Labels.Fee.title)
+
+        openDetailsInBrowserButton.withStyle(.primary) {
+            $0.title(€.Button.openDetailsInBrowser)
+        }
+    }
+}

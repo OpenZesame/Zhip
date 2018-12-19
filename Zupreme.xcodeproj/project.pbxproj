@@ -91,7 +91,6 @@
 		485AACA021AAE752005C56CC /* ValidationRulesOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9F21AAE752005C56CC /* ValidationRulesOwner.swift */; };
 		485AACA221AAE764005C56CC /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA121AAE764005C56CC /* InputValidator.swift */; };
 		485AACA421AAF3B3005C56CC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* TextField.swift */; };
-		485AACA621AAF64B005C56CC /* UITextView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA521AAF64B005C56CC /* UITextView_Extension.swift */; };
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
 		4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */; };
 		487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */; };
@@ -111,6 +110,11 @@
 		489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */; };
 		489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */; };
 		489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB10021C9066200664AA7 /* ViewModelTestCase.swift */; };
+		489EB10821CA30F200664AA7 /* Barlow-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */; };
+		489EB10921CA30F200664AA7 /* Barlow-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */; };
+		489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */; };
+		489EB10B21CA30F200664AA7 /* Barlow-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10721CA30F200664AA7 /* Barlow-SemiBold.ttf */; };
+		489EB12E21CA459000664AA7 /* UIImageView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB12D21CA459000664AA7 /* UIImageView+Styling.swift */; };
 		489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */; };
 		48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */; };
 		48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */; };
@@ -349,7 +353,6 @@
 		485AAC9F21AAE752005C56CC /* ValidationRulesOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRulesOwner.swift; sourceTree = "<group>"; };
 		485AACA121AAE764005C56CC /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
 		485AACA321AAF3B3005C56CC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		485AACA521AAF64B005C56CC /* UITextView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView_Extension.swift; sourceTree = "<group>"; };
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+CustomStringConvertible.swift"; sourceTree = "<group>"; };
@@ -368,6 +371,11 @@
 		489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestScheduler+Record.swift"; sourceTree = "<group>"; };
 		489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType_Extension.swift; sourceTree = "<group>"; };
 		489EB10021C9066200664AA7 /* ViewModelTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTestCase.swift; sourceTree = "<group>"; };
+		489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Bold.ttf"; sourceTree = "<group>"; };
+		489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Medium.ttf"; sourceTree = "<group>"; };
+		489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Regular.ttf"; sourceTree = "<group>"; };
+		489EB10721CA30F200664AA7 /* Barlow-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-SemiBold.ttf"; sourceTree = "<group>"; };
+		489EB12D21CA459000664AA7 /* UIImageView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Styling.swift"; sourceTree = "<group>"; };
 		489FA4AF217FAB8C00B297D1 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEncryptionPassphrase.swift; sourceTree = "<group>"; };
 		48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarItem_Extension.swift; sourceTree = "<group>"; };
@@ -815,6 +823,7 @@
 		483CE9C22194E9E300BED31C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				489EB10221CA30F200664AA7 /* Fonts */,
 				483CE9C32194E9E300BED31C /* TermsOfService.html */,
 				48ECF62521A34E780078D659 /* Settings.bundle */,
 			);
@@ -999,6 +1008,25 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		489EB10221CA30F200664AA7 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				489EB10321CA30F200664AA7 /* Barlow */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		489EB10321CA30F200664AA7 /* Barlow */ = {
+			isa = PBXGroup;
+			children = (
+				489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */,
+				489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */,
+				489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */,
+				489EB10721CA30F200664AA7 /* Barlow-SemiBold.ttf */,
+			);
+			path = Barlow;
+			sourceTree = "<group>";
+		};
 		48A640002186272900B08C67 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1090,6 +1118,7 @@
 				48C89FF52143326F0063B0FA /* UIButton+Styling.swift */,
 				48C469F421445417008D0DD7 /* UILabel+Styling.swift */,
 				4847EDF62160F520002FF978 /* UITextView+Styling.swift */,
+				489EB12D21CA459000664AA7 /* UIImageView+Styling.swift */,
 				48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */,
 				48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */,
 			);
@@ -1117,7 +1146,6 @@
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
 				48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */,
 				48F832ED2185DE0200EDAD40 /* UIWindow.swift */,
-				485AACA521AAF64B005C56CC /* UITextView_Extension.swift */,
 				485AACA721AAF66E005C56CC /* UIButton_Extension.swift */,
 				48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */,
 				4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */,
@@ -1639,8 +1667,12 @@
 			files = (
 				483CE9CE2194E9E300BED31C /* Assets.xcassets in Resources */,
 				4809354E2195D1BE009CA3FD /* LaunchScreen.storyboard in Resources */,
+				489EB10921CA30F200664AA7 /* Barlow-Medium.ttf in Resources */,
+				489EB10821CA30F200664AA7 /* Barlow-Bold.ttf in Resources */,
+				489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */,
 				48ECF62621A34E780078D659 /* Settings.bundle in Resources */,
 				4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */,
+				489EB10B21CA30F200664AA7 /* Barlow-SemiBold.ttf in Resources */,
 				483CE9ED2194E9E300BED31C /* TermsOfService.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1832,6 +1864,7 @@
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
 				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
+				489EB12E21CA459000664AA7 /* UIImageView+Styling.swift in Sources */,
 				485AAC9C21AAC6EB005C56CC /* AmountValidator.swift in Sources */,
 				4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */,
 				48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */,
@@ -1907,7 +1940,6 @@
 				4898FB4521542333009501DC /* StackViewStyling.swift in Sources */,
 				483CE9EC2194E9E300BED31C /* AppDelegate.swift in Sources */,
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
-				485AACA621AAF64B005C56CC /* UITextView_Extension.swift in Sources */,
 				48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */,
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,

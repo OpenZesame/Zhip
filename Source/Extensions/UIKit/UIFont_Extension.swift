@@ -5,75 +5,91 @@
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
-
 import UIKit
 
-struct Font {
-    let size: FontSize
-    let weight: FontWeight
-    init(_ size: FontSize, _ weight: FontWeight) {
-        self.size = size
-        self.weight = weight
+extension UIFont {
+    // For `UITextField` floating placeholder
+    static let hint = Font(.𝟙𝟞, .medium).make()
+
+    /// For bread text
+    static let body = Font(.𝟙𝟠, .regular).make()
+
+    // `UIViewController`'s `title`, checkboxes, `UIBarButtonItem`, `UITextField`'s placeholder & value
+    static let title = Font(.𝟙𝟠, .semiBold).make()
+
+    // UIButton
+    static let callToAction = Font(.𝟚𝟘, .semiBold).make()
+
+    // First label in a scene
+    static let header = Font(.𝟛𝟜, .bold).make()
+
+    // Welcome, ChoseWallet scene
+    static let impression = Font(.𝟜𝟠, .bold).make()
+}
+
+extension UIFont {
+    static let sceneTitle: UIFont = .title
+    static let checkbox: UIFont = .title
+    static let barButtonItem: UIFont = .title
+    static let button: UIFont = .callToAction
+
+    enum Label {
+        static let impression: UIFont = .impression
+        static let header: UIFont = .header
+        static let body: UIFont = .body
+    }
+
+    enum Field {
+        static let floatingPlaceholder: UIFont = .hint
+        static let textAndPlaceholder: UIFont = .title
     }
 }
 
-// Font size name inspired by LaTeX
-// readmore: https://texblog.org/2012/08/29/changing-the-font-size-in-latex/
-extension UIFont {
-    static let tiny = Font(.𝟙𝟛, .medium).make()
-    static let Tiny = Font(.𝟙𝟞, .regular).make()
-    static let small = Font(.𝟙𝟠, .regular).make()
-    static let Small = Font(.𝟙𝟠, .medium).make()
-    static let large = Font(.𝟚𝟚, .medium).make()
-    static let Large = Font(.𝟛𝟜, .medium).make()
-    static let huge = Font(.𝟞𝟚, .medium).make()
-    static let Huge = Font(.𝟟𝟚, .medium).make()
+enum FontBarlow: String, FontNameExpressible {
+    case regular = "Barlow-Regular"
+    case medium = "Barlow-Medium"
+    case bold = "Barlow-Bold"
+    case semiBold = "Barlow-SemiBold"
+}
+
+struct Font {
+    let size: FontSize
+    fileprivate let name: String
+    init(_ size: FontSize, _ barlow: FontBarlow) {
+        self.size = size
+        self.name = barlow.name
+    }
 }
 
 extension Font {
     enum FontSize: CGFloat {
         // 𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡
-        case 𝟙𝟛 = 13
+
         case 𝟙𝟞 = 16
         case 𝟙𝟠 = 18
-        case 𝟚𝟚 = 22
+        case 𝟚𝟘 = 20
+
         case 𝟛𝟜 = 34
-        case 𝟞𝟚 = 62
-        case 𝟟𝟚 = 72
+
+        case 𝟜𝟠 = 48
     }
-    enum FontWeight {
-        case regular, medium
+}
+
+protocol FontNameExpressible {
+    var name: String { get }
+}
+
+extension FontNameExpressible where Self: RawRepresentable, Self.RawValue == String {
+    var name: String {
+        return rawValue
     }
 }
 
 extension Font {
     func make() -> UIFont {
-        return UIFont.systemFont(ofSize: size.rawValue, weight: weight.weight)
-    }
-}
-
-extension Font.FontWeight {
-    var weight: UIFont.Weight {
-        switch self {
-        case .medium: return .medium
-        case .regular: return .regular
+        guard let customFont = UIFont(name: name, size: size.rawValue) else {
+            incorrectImplementation("Failed to load custom font named: '\(name)'")
         }
-    }
-}
-
-extension UIFont {
-    enum Button {
-        static let primary: UIFont = .large
-        static let seconday: UIFont = .small
-    }
-
-    enum Label {
-        static let title: UIFont = .large
-        static let value: UIFont = .small
-    }
-
-    enum Field {
-        static let placeholder: UIFont = .tiny
-        static let text: UIFont = .Small
+        return customFont
     }
 }

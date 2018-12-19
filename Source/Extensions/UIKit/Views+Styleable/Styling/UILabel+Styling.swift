@@ -11,6 +11,7 @@ import UIKit
 // MARK: - Style
 extension UILabel {
     struct Style: Mergeable {
+        var text: String?
         let textColor: UIColor?
         let textAlignment: NSTextAlignment?
         let font: UIFont?
@@ -18,12 +19,14 @@ extension UILabel {
         let backgroundColor: UIColor?
 
         init(
+            text: String? = nil,
             textAlignment: NSTextAlignment? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             numberOfLines: Int? = nil,
             backgroundColor: UIColor? = nil
             ) {
+            self.text = text
             self.textColor = textColor
             self.textAlignment = textAlignment
             self.font = font
@@ -36,7 +39,8 @@ extension UILabel {
 // MARK: Apply Style
 extension UILabel {
     func apply(style: Style) {
-        font = style.font ?? UIFont.Label.value
+        text = style.text
+        font = style.font ?? UIFont.Label.body
         textColor = style.textColor ?? .defaultText
         numberOfLines = style.numberOfLines ?? 1
         textAlignment = style.textAlignment ?? .left
@@ -52,9 +56,16 @@ extension UILabel {
     }
 }
 
-
 // MARK: - Style + Customizing
 extension UILabel.Style {
+
+    @discardableResult
+    func text(_ text: String) -> UILabel.Style {
+        var style = self
+        style.text = text
+        return style
+    }
+
     @discardableResult
     func numberOfLines(_ numberOfLines: Int) -> UILabel.Style {
         var style = self
@@ -65,36 +76,41 @@ extension UILabel.Style {
 
 // MARK: - Style Presets
 extension UILabel.Style {
-    static var title: UILabel.Style {
+
+    static var impression: UILabel.Style {
+        return UILabel.Style(
+            textAlignment: .left,
+            font: UIFont.Label.impression,
+            numberOfLines: 1
+        )
+    }
+
+    static var header: UILabel.Style {
         return UILabel.Style(
             textAlignment: .center,
-            font: UIFont.Label.title,
+            font: UIFont.Label.header,
             numberOfLines: 0
+        )
+    }
+
+    static var title: UILabel.Style {
+        return UILabel.Style(
+            font: UIFont.title,
+            numberOfLines: 1
         )
     }
 
     static var body: UILabel.Style {
         return UILabel.Style(
-            font: UIFont.Label.value,
+            font: UIFont.Label.body,
             numberOfLines: 0
         )
     }
 
     static var checkbox: UILabel.Style {
         return UILabel.Style(
-            font: UIFont.Label.value,
+            font: UIFont.checkbox,
             numberOfLines: 0
-        )
-    }
-
-    static var Large: UILabel.Style {
-        return UILabel.Style(font: UIFont.Large)
-    }
-
-    static var huge: UILabel.Style {
-        return UILabel.Style(
-            textAlignment: .center,
-            font: UIFont.huge
         )
     }
 }

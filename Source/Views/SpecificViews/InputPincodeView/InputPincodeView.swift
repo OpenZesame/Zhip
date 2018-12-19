@@ -161,7 +161,7 @@ enum Digit: String, Codable, Equatable {
 extension InputPincodeView {
     private final class DigitView: UIView {
 
-        fileprivate lazy var label = UILabel(frame: .zero).withStyle(.huge)
+        fileprivate lazy var label = UILabel()
 
         private lazy var underline: UIView = {
             let view = UIView(frame: .zero)
@@ -175,13 +175,18 @@ extension InputPincodeView {
 
         init() {
             super.init(frame: .zero)
-            translatesAutoresizingMaskIntoConstraints = false
-            addSubview(stackView)
-            stackView.edgesToSuperview()
+            setupSubviews()
         }
 
         required init?(coder: NSCoder) {
             interfaceBuilderSucks
+        }
+
+        private func setupSubviews() {
+            translatesAutoresizingMaskIntoConstraints = false
+            addSubview(stackView)
+            stackView.edgesToSuperview()
+            label.withStyle(.impression)
         }
     }
 }

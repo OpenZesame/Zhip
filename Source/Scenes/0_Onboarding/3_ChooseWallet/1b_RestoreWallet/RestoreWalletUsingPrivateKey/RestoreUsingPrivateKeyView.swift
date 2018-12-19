@@ -10,17 +10,12 @@ import UIKit
 
 import RxSwift
 
-private typealias € = L10n.Scene.RestoreWallet
-
-// MARK: - RestoreWithPrivateKeyView
 final class RestoreUsingPrivateKeyView: ScrollingStackView {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
-    private lazy var privateKeyField = TextField(placeholder: €.Field.privateKey, type: .hexadecimal)
-        .withStyle(.password)
-    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
-
-    private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
+    private lazy var privateKeyField                        = TextField(type: .hexadecimal)
+    private lazy var encryptionPassphraseField              = TextField(type: .text)
+    private lazy var confirmEncryptionPassphraseField       = TextField(type: .text)
 
     private let bag = DisposeBag()
 
@@ -42,10 +37,27 @@ final class RestoreUsingPrivateKeyView: ScrollingStackView {
     ]
 
     override func setup() {
+        setupSubviews()
         setupViewModelBinding()
     }
+}
 
-    private func setupViewModelBinding() {
+// MARK: - Private
+private typealias € = L10n.Scene.RestoreWallet
+private extension RestoreUsingPrivateKeyView {
+    func setupSubviews() {
+        privateKeyField.withStyle(.password) {
+            $0.placeholder(€.Field.privateKey)
+        }
+
+        encryptionPassphraseField.withStyle(.password)
+
+        confirmEncryptionPassphraseField.withStyle(.password) {
+            $0.placeholder(€.Field.confirmEncryptionPassphrase)
+        }
+    }
+
+    func setupViewModelBinding() {
         bag <~ [
             viewModelOutput.encryptionPassphrasePlaceholder --> encryptionPassphraseField.rx.placeholder
         ]

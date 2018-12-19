@@ -13,21 +13,20 @@ import RxCocoa
 import UIKit
 import WebKit
 
-private typealias € = L10n.Scene.TermsOfService
-
 final class TermsOfServiceView: ScrollingStackView {
 
-    private lazy var htmlView = WKWebView(file: "TermsOfService")
-    
-    private lazy var acceptTermsButton = UIButton(title: €.Button.accept)
-        .withStyle(.primary)
-        .disabled()
+    private lazy var htmlView           = WKWebView(file: "TermsOfService")
+    private lazy var acceptTermsButton  = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         htmlView,
         acceptTermsButton
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension TermsOfServiceView: ViewModelled {
@@ -51,5 +50,15 @@ extension TermsOfServiceView: ViewModelled {
             didScrollToBottom: didScrollToBottom,
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
+    }
+}
+
+private typealias € = L10n.Scene.TermsOfService
+private extension TermsOfServiceView {
+    func setupSubviews() {
+        acceptTermsButton.withStyle(.primary) {
+            $0.title(€.Button.accept)
+                .disabled()
+        }
     }
 }

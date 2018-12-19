@@ -12,48 +12,32 @@ import TinyConstraints
 import RxSwift
 
 private typealias € = L10n.Scene.AskForAnalyticsPermissions
-private let topImageViewWidthHeight: CGFloat = 80
+private typealias Icon = Asset
+
+//private let topImageViewWidthHeight: CGFloat = 80
 
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
-    private lazy var topImageView = UIImageView()
-
+    private lazy var topImageView                   = UIImageView()
     private lazy var topImageViewContainerStackView = UIStackView(arrangedSubviews: [topImageView])
-        .withStyle(.default) { customizableStyle in
-            customizableStyle.alignment(.center)
-    }
-
-    private lazy var titleLabel = UILabel(text: €.title).withStyle(.title)
-
-    private lazy var disclaimerTextView = UITextView(text: €.Text.disclaimer).withStyle(.nonEditable)
-
-    private lazy var hasReadDisclaimerCheckbox = CheckboxWithLabel(titled: €.Checkbox.readDisclaimer)
-
-    private lazy var declineButton = UIButton(title: €.Button.decline)
-        .withStyle(.primary)
-        .disabled()
-
-    private lazy var acceptButton = UIButton(title: €.Button.accept)
-        .withStyle(.primary)
-        .disabled()
-
-    private lazy var buttonsStackView = UIStackView(arrangedSubviews: [declineButton, acceptButton])
-        .withStyle(.horizontalFillingEqually)
+    private lazy var headerLabel                    = UILabel()
+    private lazy var disclaimerTextView             = UITextView()
+    private lazy var hasReadDisclaimerCheckbox      = CheckboxWithLabel()
+    private lazy var declineButton                  = UIButton()
+    private lazy var acceptButton                   = UIButton()
+    private lazy var buttonsStackView               = UIStackView(arrangedSubviews: [declineButton, acceptButton])
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         topImageViewContainerStackView,
-        titleLabel,
+        headerLabel,
         disclaimerTextView,
         hasReadDisclaimerCheckbox,
         buttonsStackView
     ]
 
     override func setup() {
-        topImageView.backgroundColor = .lightGray
-        topImageView.clipsToBounds = true
-        topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
-        topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
+        setupSubviews()
     }
 }
 
@@ -74,5 +58,44 @@ extension AskForAnalyticsPermissionsView: ViewModelled {
             acceptTrigger: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
             declineTrigger: declineButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
+    }
+}
+
+private extension AskForAnalyticsPermissionsView {
+    func setupSubviews() {
+        //        topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
+        //        topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
+
+        topImageView.withStyle(.default) {
+            $0.asset(Icon.analytics)
+        }
+
+        topImageViewContainerStackView.withStyle(.default) {
+            $0.alignment(.center)
+        }
+
+        headerLabel.withStyle(.header) {
+            $0.text(€.title)
+        }
+
+        disclaimerTextView.withStyle(.nonEditable) {
+            $0.text(€.Text.disclaimer)
+        }
+
+        hasReadDisclaimerCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.readDisclaimer)
+        }
+
+        declineButton.withStyle(.primary) {
+            $0.title(€.Button.decline)
+                .disabled()
+        }
+
+        acceptButton.withStyle(.primary) {
+            $0.title(€.Button.accept)
+                .disabled()
+        }
+
+        buttonsStackView.withStyle(.horizontalFillingEqually)
     }
 }

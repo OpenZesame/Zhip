@@ -11,17 +11,28 @@ import RxSwift
 import RxCocoa
 
 private typealias € = L10n.Scene.SignTransaction
+private extension SignTransactionView {
+    func setupSubviews() {
+        confirmTransactionLabel.withStyle(.header) {
+            $0.text(€.Label.signTransactionWithEncryptionPassphrase)
+        }
+
+        encryptionPassphraseField.withStyle(.password) {
+            $0.placeholder(€.Field.encryptionPassphrase)
+        }
+
+        signButton.withStyle(.primary) {
+            $0.title(€.Button.confirm)
+                .disabled()
+        }
+    }
+}
 
 final class SignTransactionView: ScrollingStackView {
 
-    private lazy var confirmTransactionLabel = UILabel(text: €.Label.signTransactionWithEncryptionPassphrase).withStyle(.title)
-
-    private lazy var encryptionPassphraseField = TextField(placeholder: €.Field.encryptionPassphrase, type: .text).withStyle(.password)
-
-    private lazy var signButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.confirm)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-        }
+    private lazy var confirmTransactionLabel        = UILabel()
+    private lazy var encryptionPassphraseField      = TextField(type: .text)
+    private lazy var signButton                     = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,

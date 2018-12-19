@@ -9,21 +9,21 @@
 import UIKit
 import RxSwift
 
-private typealias € = L10n.Scene.ChooseWallet
-
 final class ChooseWalletView: ScrollingStackView {
 
-    private lazy var createNewWalletButton = UIButton(title: €.Button.newWallet)
-        .withStyle(.primary)
+    private lazy var createNewWalletButton = UIButton()
 
-    private lazy var restoreWalletButton = UIButton(title: €.Button.restoreWallet)
-        .withStyle(.secondary)
+    private lazy var restoreWalletButton = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         createNewWalletButton,
         restoreWalletButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension ChooseWalletView: ViewModelled {
@@ -33,5 +33,18 @@ extension ChooseWalletView: ViewModelled {
             createNewWalletTrigger: createNewWalletButton.rx.tap.asDriver(),
             restoreWalletTrigger: restoreWalletButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.ChooseWallet
+private extension ChooseWalletView {
+    func setupSubviews() {
+        createNewWalletButton.withStyle(.primary) {
+            $0.title(€.Button.newWallet)
+        }
+
+        restoreWalletButton.withStyle(.secondary) {
+            $0.title(€.Button.restoreWallet)
+        }
     }
 }

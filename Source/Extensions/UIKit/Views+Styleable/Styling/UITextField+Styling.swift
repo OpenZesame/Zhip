@@ -11,6 +11,7 @@ import TinyConstraints
 
 extension UITextField {
     struct Style {
+        var placeholder: String?
         let textColor: UIColor?
         let font: UIFont?
         let isSecureTextEntry: Bool?
@@ -18,12 +19,14 @@ extension UITextField {
         let backgroundColor: UIColor?
 
         init(
+            placeholder: String? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             backgroundColor: UIColor? = nil,
             isSecureTextEntry: Bool? = nil,
             keyboardType: UIKeyboardType? = nil
             ) {
+            self.placeholder = placeholder
             self.font = font
             self.textColor = textColor
             self.isSecureTextEntry = isSecureTextEntry
@@ -37,12 +40,22 @@ extension UITextField {
 extension UITextField {
     func apply(style: Style) {
         textColor = style.textColor ?? .defaultText
-        font = style.font ?? UIFont.Field.text
+        font = style.font ?? UIFont.Field.textAndPlaceholder
         isSecureTextEntry = style.isSecureTextEntry ?? false
         if let keyboardType = style.keyboardType {
             self.keyboardType = keyboardType
         }
         backgroundColor = style.backgroundColor ?? .white
+    }
+}
+
+// MARK: - Style + Customizing
+extension UITextField.Style {
+    @discardableResult
+    func placeholder(_ placeholder: String?) -> UITextField.Style {
+        var style = self
+        style.placeholder = placeholder
+        return style
     }
 }
 

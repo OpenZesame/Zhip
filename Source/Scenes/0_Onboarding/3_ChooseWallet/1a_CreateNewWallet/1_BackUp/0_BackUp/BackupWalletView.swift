@@ -9,39 +9,23 @@
 import UIKit
 import RxSwift
 
-private typealias € = L10n.Scene.BackupWallet
-
-extension UILabel {
-    convenience init(text: CustomStringConvertible?) {
-        self.init(frame: .zero)
-        self.text = text?.description
-    }
-}
-
 final class BackupWalletView: ScrollingStackView {
 
-    private lazy var beSafeLabel = UILabel(text: €.Label.storeKeystoreSecurely).withStyle(.title)
+    private lazy var beSafeLabel = UILabel()
 
-    private lazy var copyKeystoreButton = UIButton(title: €.Button.copyKeystore)
-        .withStyle(.primary)
+    private lazy var copyKeystoreButton = UIButton()
 
-    private lazy var revealKeystoreButton = UIButton(title: €.Button.revealKeystore)
-        .withStyle(.secondary)
+    private lazy var revealKeystoreButton = UIButton()
 
     private lazy var keystoreButtons = UIStackView(arrangedSubviews: [copyKeystoreButton, revealKeystoreButton])
-        .withStyle(.horizontal)
 
-    private lazy var revealPrivateKeyButton = UIButton(title: €.Button.revealPrivateKey)
-        .withStyle(.secondary)
+    private lazy var revealPrivateKeyButton = UIButton()
 
-    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeSecureBackupOfKeystore)
-        .withStyle(.body)
+    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel()
 
-    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.Checkbox.keystoreIsBackedUp)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel()
 
-    private lazy var haveBackedUpProceedButton = UIButton(title: €.Button.haveBackedUpProceed)
-        .withStyle(.secondary)
-        .disabled()
+    private lazy var haveBackedUpProceedButton = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -53,6 +37,10 @@ final class BackupWalletView: ScrollingStackView {
         haveBackedUpProceedButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension BackupWalletView: ViewModelled {
@@ -72,5 +60,41 @@ extension BackupWalletView: ViewModelled {
             isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.BackupWallet
+private extension BackupWalletView {
+    func setupSubviews() {
+        beSafeLabel.withStyle(.header) {
+            $0.text(€.Label.storeKeystoreSecurely)
+        }
+
+        copyKeystoreButton.withStyle(.primary) {
+            $0.title(€.Button.copyKeystore)
+        }
+
+        revealKeystoreButton.withStyle(.secondary) {
+            $0.title(€.Button.revealKeystore)
+        }
+
+        keystoreButtons.withStyle(.horizontal)
+
+        revealPrivateKeyButton.withStyle(.secondary) {
+            $0.title(€.Button.revealPrivateKey)
+        }
+
+        urgeUserToSecurlyBackupPassphraseLabel.withStyle(.body) {
+            $0.text(€.Label.urgeSecureBackupOfKeystore)
+        }
+
+        understandsRisksCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.keystoreIsBackedUp)
+        }
+
+        haveBackedUpProceedButton.withStyle(.secondary) {
+            $0.title(€.Button.haveBackedUpProceed)
+                .disabled()
+        }
     }
 }

@@ -9,10 +9,6 @@
 import UIKit
 
 extension UIButton {
-    convenience init(title titleNormal: CustomStringConvertible) {
-        self.init(frame: .zero)
-        setTitle(titleNormal.description, for: .normal)
-    }
 
     func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))

@@ -16,11 +16,9 @@ final class ConfirmNewPincodeView: ScrollingStackView {
 
     private lazy var inputPincodeView = InputPincodeView(.setNew)
 
-    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel(titled: €.Checkbox.pincodeIsBackedUp)
+    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel()
 
-    private lazy var confirmPincodeButton = UIButton(title: €.Button.confirmPincode)
-        .withStyle(.primary)
-        .disabled()
+    private lazy var confirmPincodeButton = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
@@ -28,6 +26,10 @@ final class ConfirmNewPincodeView: ScrollingStackView {
         confirmPincodeButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension ConfirmNewPincodeView: ViewModelled {
@@ -46,5 +48,18 @@ extension ConfirmNewPincodeView: ViewModelled {
             viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
             viewModel.isConfirmPincodeEnabled   --> confirmPincodeButton.rx.isEnabled
         ]
+    }
+}
+
+private extension ConfirmNewPincodeView {
+    func setupSubviews() {
+        haveBackedUpPincodeCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.pincodeIsBackedUp)
+        }
+
+        confirmPincodeButton.withStyle(.primary) {
+            $0.title(€.Button.confirmPincode)
+                .disabled()
+        }
     }
 }

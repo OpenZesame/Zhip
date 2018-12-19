@@ -9,23 +9,18 @@
 import UIKit
 import RxSwift
 
-private typealias € = L10n.Scene.CreateNewWallet
-
 final class CreateNewWalletView: ScrollingStackView {
 
-    private lazy var chooseNewPassphraseLabel = UILabel(text: €.Label.chooseNewPassphrase).withStyle(.title)
+    private lazy var chooseNewPassphraseLabel = UILabel()
 
-    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
-    private lazy var confirmEncryptionPassphraseField = TextField(placeholder: €.Field.confirmEncryptionPassphrase, type: .text).withStyle(.password)
+    private lazy var encryptionPassphraseField = TextField(type: .text)
+    private lazy var confirmEncryptionPassphraseField = TextField(type: .text)
 
-    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel(text: €.Label.urgeBackup).withStyle(.body)
+    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel()
 
-    private lazy var understandsRisksCheckbox = CheckboxWithLabel(titled: €.Checkbox.passphraseIsBackedUp)
+    private lazy var understandsRisksCheckbox = CheckboxWithLabel()
 
-    private lazy var createNewWalletButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.createNewWallet)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-        }
+    private lazy var createNewWalletButton = ButtonWithSpinner()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -37,6 +32,10 @@ final class CreateNewWalletView: ScrollingStackView {
         createNewWalletButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 // MARK: - ViewModelled
@@ -58,5 +57,33 @@ extension CreateNewWalletView: ViewModelled {
             isUnderstandRisksCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
             createWalletTrigger: createNewWalletButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.CreateNewWallet
+private extension CreateNewWalletView {
+    func setupSubviews() {
+        chooseNewPassphraseLabel.withStyle(.header) {
+            $0.text(€.Label.chooseNewPassphrase)
+        }
+
+        encryptionPassphraseField.withStyle(.password)
+
+        confirmEncryptionPassphraseField.withStyle(.password) {
+            $0.placeholder(€.Field.confirmEncryptionPassphrase)
+        }
+
+        urgeUserToSecurlyBackupPassphraseLabel.withStyle(.body) {
+            $0.text(€.Label.urgeBackup)
+        }
+
+        understandsRisksCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.passphraseIsBackedUp)
+        }
+
+        createNewWalletButton.withStyle(.primary) {
+            $0.title(€.Button.createNewWallet)
+                .disabled()
+        }
     }
 }

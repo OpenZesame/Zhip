@@ -13,33 +13,15 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-import SkyFloatingLabelTextField
-import Validator
-
-private typealias € = L10n.Scene.PrepareTransaction
-
-// MARK: - PrepareTransactionView
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceLabels = TitledValueView()
-        .titled(€.Labels.Balance.title)
-
-    private lazy var recipientAddressField = TextField(placeholder: €.Field.recipient, type: .hexadecimal)
-        .withStyle(.default)
-
-    private lazy var scanQRButton = UIButton(title: "📷")
-
-    private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .number)
-        .withStyle(.number)
-
-    private lazy var gasMeasuredInSmallUnitsLabel = UILabel(text: €.Label.gasInSmallUnits)
-        .withStyle(.body)
-
-    private lazy var gasPriceField = TextField(type: .number).withStyle(.number)
-
-    private lazy var sendButton = UIButton(title: €.Button.send)
-        .withStyle(.primary)
-        .disabled()
+    private lazy var balanceLabels                  = TitledValueView()
+    private lazy var recipientAddressField          = TextField(type: .hexadecimal)
+    private lazy var scanQRButton                   = UIButton()
+    private lazy var amountToSendField              = TextField(type: .number)
+    private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
+    private lazy var gasPriceField                  = TextField(type: .number)
+    private lazy var sendButton                     = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -52,10 +34,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     ]
 
     override func setup() {
-        scanQRButton.translatesAutoresizingMaskIntoConstraints = false
-        recipientAddressField.rightView = scanQRButton
-        recipientAddressField.rightViewMode = .always
-
+        setupSubiews()
         prefillValuesForDebugBuilds()
     }
 }
@@ -98,6 +77,39 @@ extension PrepareTransactionView: ViewModelled {
 }
 
 // MARK: - Private
+private typealias € = L10n.Scene.PrepareTransaction
+private extension PrepareTransactionView {
+    func setupSubiews() {
+        scanQRButton.translatesAutoresizingMaskIntoConstraints = false
+        recipientAddressField.rightView = scanQRButton
+        recipientAddressField.rightViewMode = .always
+
+        balanceLabels.titled(€.Labels.Balance.title)
+
+        recipientAddressField.withStyle(.default) {
+            $0.placeholder(€.Field.recipient)
+        }
+
+        scanQRButton.setTitle("📷", for: .normal)
+
+        amountToSendField.withStyle(.number) {
+            $0.placeholder(€.Field.amount)
+        }
+
+        gasMeasuredInSmallUnitsLabel.withStyle(.body) {
+            $0.text(€.Label.gasInSmallUnits)
+        }
+
+        gasPriceField.withStyle(.number)
+
+        sendButton.withStyle(.primary) {
+            $0.title(€.Button.send)
+                .disabled()
+        }
+    }
+}
+
+// MARK: - Debug builds only
 private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         guard isDebug else { return }
@@ -114,18 +126,5 @@ private extension PrepareTransactionView {
                     $0.sendActions(for: .editingDidEnd)
             }
         }
-    }
-}
-
-extension Reactive where Base: UITextField {
-    var isEditing: Driver<Bool> {
-        return Driver.merge(
-            controlEvent([.editingDidBegin]).asDriver().map { true },
-            controlEvent([.editingDidEnd]).asDriver().map { false }
-        )
-    }
-
-    var didEndEditing: Driver<Void> {
-        return isEditing.filter { !$0 }.mapToVoid()
     }
 }

@@ -20,12 +20,11 @@ final class ButtonWithSpinner: UIButton {
     }()
     private let _spinnerView: SpinnerView?
 
-    init(title: CustomStringConvertible? = nil, strokeColor: UIColor? = nil) {
+    init(strokeColor: UIColor? = nil) {
         if let strokeColor = strokeColor {
             _spinnerView = SpinnerView(strokeColor: strokeColor)
         } else { _spinnerView = nil }
         super.init(frame: .zero)
-        setTitle(title?.description, for: .normal)
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }

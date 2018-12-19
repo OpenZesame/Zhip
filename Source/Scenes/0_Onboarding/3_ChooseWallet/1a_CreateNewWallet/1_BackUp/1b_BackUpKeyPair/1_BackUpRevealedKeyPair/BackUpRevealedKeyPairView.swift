@@ -11,19 +11,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.BackUpRevealedKeyPair
-
 final class BackUpRevealedKeyPairView: ScrollingStackView {
 
-    private lazy var privateKeyTextView = TitledValueView().titled(€.Label.privateKey)
-
-    private lazy var publicKeyUncompressedTextView = TitledValueView().titled(€.Label.uncompressedPublicKey)
-
-    private lazy var copyPrivateKeyButton = UIButton(title: €.Button.copyPrivateKey)
-        .withStyle(.secondary)
-
-    private lazy var copyUncompressedPublicKeyButton = UIButton(title: €.Button.copyPublicKey)
-        .withStyle(.secondary)
+    private lazy var privateKeyTextView                 = TitledValueView()
+    private lazy var publicKeyUncompressedTextView      = TitledValueView()
+    private lazy var copyPrivateKeyButton               = UIButton()
+    private lazy var copyUncompressedPublicKeyButton    = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyTextView,
@@ -34,7 +27,7 @@ final class BackUpRevealedKeyPairView: ScrollingStackView {
     ]
 
     override func setup() {
-        privateKeyTextView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        setupSubviews()
     }
 }
 
@@ -53,5 +46,23 @@ extension BackUpRevealedKeyPairView: ViewModelled {
             copyPrivateKeyTrigger: copyPrivateKeyButton.rx.tap.asDriver(),
             copyPublicKeyTrigger: copyUncompressedPublicKeyButton.rx.tap.asDriver()
         )
+    }
+}
+
+private typealias € = L10n.Scene.BackUpRevealedKeyPair
+private extension BackUpRevealedKeyPairView {
+    func setupSubviews() {
+        privateKeyTextView.titled(€.Label.privateKey)
+        privateKeyTextView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+
+        publicKeyUncompressedTextView.titled(€.Label.uncompressedPublicKey)
+
+        copyPrivateKeyButton.withStyle(.secondary) {
+            $0.title(€.Button.copyPrivateKey)
+        }
+
+        copyUncompressedPublicKeyButton.withStyle(.secondary) {
+            $0.title(€.Button.copyPublicKey)
+        }
     }
 }
