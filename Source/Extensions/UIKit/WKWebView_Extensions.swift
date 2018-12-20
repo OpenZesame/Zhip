@@ -11,9 +11,12 @@ import WebKit
 
 extension WKWebView {
 
-    convenience init(file: String, in bundle: Bundle = Bundle.main) {
-        self.init(frame: .zero, configuration: WKWebViewConfiguration())
+    convenience init(configuration: WKWebViewConfiguration = WKWebViewConfiguration()) {
+        self.init(frame: .zero, configuration: configuration)
         translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    func loadHtml(file: String, in bundle: Bundle = Bundle.main) {
         let htmlFile = Bundle.main.path(forResource: file, ofType: "html")!
         guard let html = try? String(contentsOfFile: htmlFile, encoding: .utf8) else {
             incorrectImplementation("Bad HTML file, fix it please.")

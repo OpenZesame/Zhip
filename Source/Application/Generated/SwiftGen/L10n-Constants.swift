@@ -436,6 +436,10 @@ internal enum L10n {
         /// Accept
         internal static let accept = L10n.tr("Localizable", "Scene.TermsOfService.Button.Accept")
       }
+      internal enum Label {
+        /// Terms of service
+        internal static let termsOfService = L10n.tr("Localizable", "Scene.TermsOfService.Label.TermsOfService")
+      }
     }
     internal enum UnlockAppWithPincode {
       /// Unlock app

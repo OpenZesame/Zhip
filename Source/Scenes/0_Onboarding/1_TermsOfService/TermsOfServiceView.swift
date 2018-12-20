@@ -13,14 +13,19 @@ import RxCocoa
 import UIKit
 import WebKit
 
+
 final class TermsOfServiceView: ScrollingStackView {
 
-    private lazy var webView           = WKWebView(file: "TermsOfService")
+    private lazy var imageView          = UIImageView()
+    private lazy var headerLabel        = UILabel()
+    private lazy var textView           = UITextView()
     private lazy var acceptTermsButton  = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        webView,
+        imageView,
+        headerLabel,
+        textView,
         acceptTermsButton
     ]
 
@@ -39,14 +44,11 @@ extension TermsOfServiceView: ViewModelled {
     }
 
     var inputFromView: InputFromView {
-        let nearBottom = webView.scrollView.rx.didScroll.map { [unowned self] in
-            return self.webView.scrollView.isContentOffsetNearBottom()
-        }
-
-        let didScrollToBottom = nearBottom.filter { $0 == true }.mapToVoid().asDriverOnErrorReturnEmpty()
-
         return InputFromView(
-            didScrollToBottom: didScrollToBottom,
+            didScrollToBottom: textView.rx.contentOffset.map { [unowned textView] in
+                $0.y >= 0.97 * textView.contentSize.height
+            }.filter { $0 }
+            .mapToVoid().asDriverOnErrorReturnEmpty(),
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
@@ -55,54 +57,82 @@ extension TermsOfServiceView: ViewModelled {
 private typealias € = L10n.Scene.TermsOfService
 private extension TermsOfServiceView {
     func setupSubviews() {
+        imageView.withStyle(.default) {
+            $0.image(Asset.termsOfService.image)
+        }
 
-        webView.navigationDelegate = self
-        webView.alpha = 0
+        headerLabel.withStyle(.header) {
+            $0.text(€.Label.termsOfService)
+        }
 
         acceptTermsButton.withStyle(.primary) {
             $0.title(€.Button.accept)
                 .disabled()
         }
+
+        textView.withStyle(.nonSelectable)
+        textView.backgroundColor = .clear
+        textView.attributedText = htmlAsAttributedString()
     }
-}
 
-extension TermsOfServiceView: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let css = "body { background-color: \(UIColor.deepBlue.hexString); color: \(UIColor.white.hexString); }"
-        log.debug(css)
+    private func htmlAsAttributedString(
+        textColor: UIColor = .white,
+        font: UIFont = .body
+    ) -> NSAttributedString {
 
-//        NSData* data = UIImageJPEGRepresentation(image, 1.0f);
-
-//        NSString *strEncoded = [data base64Encoding];
-
-        let image = Asset.analytics.image // should be Terms of Service image
-        let imageAsJPEGData = image.jpegData(compressionQuality: 1)!
-        let imageAsJPEGDataEncoded = imageAsJPEGData.base64EncodedString()
-
-        let imageSectionHtml = """
-            <img style="opacity: 1.0"; src='data:image/png;base64,\(imageAsJPEGDataEncoded)'/>
-        """
-
-        log.debug(imageSectionHtml)
-
-        let js = """
-            var style = document.createElement("style");
-            style.innerHTML = "\(css)";
-            document.head.appendChild(style);
-
-            var imageDiv = document.createElement("div");
-            imageDiv.innerHTML = "\(imageSectionHtml)";
-            document.body.appendChild(imageDiv);
-        """
-
-        log.debug(js)
-
-        webView.evaluateJavaScript(js) { foobar, error in
-            if let error = error {
-                log.error(error)
-            }
-
+        guard let path = Bundle.main.path(forResource: "TermsOfService", ofType: "html") else {
+            incorrectImplementation("bad path")
         }
-        webView.alpha = 1
+        do {
+            let htmlBodyString = try String(contentsOfFile: path, encoding: .utf8)
+
+            return generateTermsOfServiceHTMLWithCSS(
+                htmlBodyString: htmlBodyString,
+                textColor: textColor,
+                font: font
+            )
+        } catch {
+            incorrectImplementation("Failed to read contents of file, error: \(error)")
+        }
+    }
+
+    // swiftlint:disable:next function_body_length
+    private func generateTermsOfServiceHTMLWithCSS(
+        htmlBodyString: String,
+        textColor: UIColor,
+        font: UIFont
+    ) -> NSAttributedString {
+
+        let htmlString = """
+            <html>
+                <head>
+                    <style>
+                        body {
+                            color: \(textColor.hexString);
+                        }
+                    </style>
+                </head>
+                <body>
+                    \(htmlBodyString)
+                </body>
+            </html>
+        """
+
+        guard let htmlData = NSString(string: htmlString).data(using: String.Encoding.unicode.rawValue) else {
+            incorrectImplementation("Failed to convert html to data")
+        }
+
+        do {
+            let attributexText = try NSMutableAttributedString(
+                data: htmlData,
+                options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],
+                documentAttributes: nil
+            )
+            let range = NSRange(location: 0, length: attributexText.string.count)
+            attributexText.addAttribute(.font, value: font, range: range)
+            return attributexText
+        } catch {
+            incorrectImplementation("Failed to create attributed string")
+        }
     }
 }

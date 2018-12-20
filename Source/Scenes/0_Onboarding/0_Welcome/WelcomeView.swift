@@ -99,8 +99,6 @@ private extension WelcomeView {
 
     // swiftlint:disable:next function_body_length
     func setup() {
-        backgroundColor = .deepBlue
-
         stackView.withStyle(.default) {
             $0.spacing(0)
         }

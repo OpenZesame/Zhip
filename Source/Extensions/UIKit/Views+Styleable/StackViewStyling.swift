@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol StackViewStyling: ContentViewProvider, BackgroundColorSpecifying {
+protocol StackViewStyling: ContentViewProvider {
     var stackViewStyle: UIStackView.Style { get }
 }
 

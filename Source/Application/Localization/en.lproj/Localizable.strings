@@ -27,6 +27,7 @@
 "Scene.Welcome.Button.Start" = "Start";
 
 // MARK: TermsOfService
+"Scene.TermsOfService.Label.TermsOfService" = "Terms of service";
 "Scene.TermsOfService.Button.Accept" = "Accept";
 
 // MARK: AskForAnalyticsPermissions
