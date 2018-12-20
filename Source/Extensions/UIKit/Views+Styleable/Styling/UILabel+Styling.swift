@@ -12,7 +12,7 @@ import UIKit
 extension UILabel {
     struct Style: Mergeable {
         var text: String?
-        let textColor: UIColor?
+        var textColor: UIColor?
         let textAlignment: NSTextAlignment?
         let font: UIFont?
         var numberOfLines: Int?
@@ -44,7 +44,7 @@ extension UILabel {
         textColor = style.textColor ?? .defaultText
         numberOfLines = style.numberOfLines ?? 1
         textAlignment = style.textAlignment ?? .left
-        backgroundColor = style.backgroundColor ?? .white
+        backgroundColor = style.backgroundColor ?? .clear
     }
 
     @discardableResult
@@ -70,6 +70,13 @@ extension UILabel.Style {
     func numberOfLines(_ numberOfLines: Int) -> UILabel.Style {
         var style = self
         style.numberOfLines = numberOfLines
+        return style
+    }
+
+    @discardableResult
+    func textColor(_ textColor: UIColor) -> UILabel.Style {
+        var style = self
+        style.textColor = textColor
         return style
     }
 }

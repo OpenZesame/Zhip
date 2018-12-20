@@ -21,6 +21,11 @@
 
 // MARK: - Onboarding
 
+// MARK: Welcome
+"Scene.Welcome.Label.Header" = "Welcome";
+"Scene.Welcome.Label.Body" = "Welcome to Zhip - the worlds first and only iOS wallet for Zilliqa.";
+"Scene.Welcome.Button.Start" = "Start";
+
 // MARK: TermsOfService
 "Scene.TermsOfService.Button.Accept" = "Accept";
 

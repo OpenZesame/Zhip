@@ -85,6 +85,20 @@ extension UIStackView.Style {
         style.alignment = alignment
         return style
     }
+
+    @discardableResult
+    func distribution(_ distribution: UIStackView.Distribution) -> UIStackView.Style {
+        var style = self
+        style.distribution = distribution
+        return style
+    }
+
+    @discardableResult
+    func spacing(_ spacing: CGFloat) -> UIStackView.Style {
+        var style = self
+        style.spacing = spacing
+        return style
+    }
 }
 
 // MARK: - Style Presets

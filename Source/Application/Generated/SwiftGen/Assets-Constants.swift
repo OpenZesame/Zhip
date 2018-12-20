@@ -19,6 +19,13 @@
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal static let analytics = ImageAsset(name: "Analytics")
+  internal static let starsBack = ImageAsset(name: "starsBack")
+  internal static let starsBackground = ImageAsset(name: "starsBackground")
+  internal static let starsFront = ImageAsset(name: "starsFront")
+  internal static let starsMiddle = ImageAsset(name: "starsMiddle")
+  internal static let clouds = ImageAsset(name: "Clouds")
+  internal static let spaceship = ImageAsset(name: "Spaceship")
+  internal static let stars = ImageAsset(name: "Stars")
   internal static let zilliqaLogo = ImageAsset(name: "ZilliqaLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

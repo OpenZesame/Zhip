@@ -20,6 +20,22 @@ extension UIButton {
     }
 }
 
+extension UIView {
+    enum Rounding {
+        case `static`(CGFloat)
+
+        func apply(to view: UIView, maskToBounds: Bool = true) {
+            switch self {
+            case .static(let radius):
+                view.layer.cornerRadius = radius
+            }
+            if maskToBounds {
+                view.layer.masksToBounds = true
+            }
+        }
+    }
+}
+
 extension UIButton {
     public struct Style {
         fileprivate var titleNormal: String?
@@ -31,6 +47,7 @@ extension UIButton {
         let font: UIFont?
         var isEnabled: Bool?
         let borderNormal: Border?
+        let cornerRounding: UIView.Rounding?
 
         init(
             titleNormal: String? = nil,
@@ -41,7 +58,8 @@ extension UIButton {
             colorDisabled: UIColor? = nil,
             colorSelected: UIColor? = nil,
             borderNormal: Border? = nil,
-            isEnabled: Bool? = nil
+            isEnabled: Bool? = nil,
+            cornerRounding: UIView.Rounding? = nil
             ) {
             self.titleNormal = titleNormal
             self.height = height
@@ -52,6 +70,7 @@ extension UIButton {
             self.font = font
             self.isEnabled = isEnabled
             self.borderNormal = borderNormal
+            self.cornerRounding = cornerRounding
         }
     }
 }
@@ -82,6 +101,10 @@ extension UIButton {
         isEnabled = style.isEnabled ?? true
         if let borderNormal = style.borderNormal {
             addBorder(borderNormal)
+        }
+
+        if let cornerRounding = style.cornerRounding {
+            cornerRounding.apply(to: self)
         }
     }
 
@@ -132,10 +155,11 @@ extension UIButton.Style {
         return UIButton.Style(
             height: .defaultHeight,
             textColor: .white,
-            colorNormal: .zilliqaCyan,
+            colorNormal: .teal,
             colorDisabled: .gray,
             colorSelected: nil,
-            isEnabled: true
+            isEnabled: true,
+            cornerRounding: .static(8)
         )
     }
 

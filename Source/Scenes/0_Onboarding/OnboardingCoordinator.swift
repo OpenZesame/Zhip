@@ -27,13 +27,22 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Navigat
     }
 
     override func start(didStart: Completion? = nil) {
-        toNextStep()
+        toWelcome()
     }
 }
 
 private extension OnboardingCoordinator {
 
+    func toWelcome() {
+        push(scene: Welcome.self, viewModel: WelcomeViewModel()) { [unowned self] userIntendsTo in
+            switch userIntendsTo {
+            case .start: self.toNextStep()
+            }
+        }
+    }
+
     func toNextStep() {
+
         guard onboardingUseCase.hasAcceptedTermsOfService else {
             return toTermsOfService()
         }

@@ -42,8 +42,16 @@ extension UIImageView {
 // MARK: - Apply Style
 extension UIImageView {
     func apply(style: Style) {
-        image = style.image
-        set(\.contentMode, ifNotNil: style.contentMode)
+        if let image = style.image {
+            self.image = image
+        }
+//        set(\.contentMode, ifNotNil: style.contentMode)
+        if let contentMode = style.contentMode {
+            self.contentMode = contentMode
+        }
+        if let clipsToBounds = style.clipsToBounds {
+            self.clipsToBounds = clipsToBounds
+        }
     }
 
     @discardableResult

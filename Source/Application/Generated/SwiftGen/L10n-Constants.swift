@@ -455,6 +455,18 @@ internal enum L10n {
         internal static let warningERC20 = L10n.tr("Localizable", "Scene.WarningERC20.Text.WarningERC20")
       }
     }
+    internal enum Welcome {
+      internal enum Button {
+        /// Start
+        internal static let start = L10n.tr("Localizable", "Scene.Welcome.Button.Start")
+      }
+      internal enum Label {
+        /// Welcome to Zhip - the worlds first and only iOS wallet for Zilliqa.
+        internal static let body = L10n.tr("Localizable", "Scene.Welcome.Label.Body")
+        /// Welcome
+        internal static let header = L10n.tr("Localizable", "Scene.Welcome.Label.Header")
+      }
+    }
   }
 
   internal enum View {
