@@ -38,9 +38,10 @@
 "Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";
 
 // MARK: WarningERC20
-"Scene.WarningERC20.Title" = "⚠️ WARNING ⚠️";
+"Scene.WarningERC20.Label.Erc20Tokens" = "ERC-20 tokens";
 "Scene.WarningERC20.Text.WarningERC20" = "This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.";
-"Scene.WarningERC20.Button.Accept" = "I understand";
+"Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility" = "I understand that ERC-20 tokens are not supported";
+"Scene.WarningERC20.Button.Accept" = "Accept";
 "Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
 
 // MARK: ChooseWallet

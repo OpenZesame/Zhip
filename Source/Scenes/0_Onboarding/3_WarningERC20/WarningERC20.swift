@@ -8,10 +8,6 @@
 
 import Foundation
 
-private typealias € = L10n.Scene.WarningERC20
-
 final class WarningERC20: Scene<WarningERC20View> {}
 
-extension WarningERC20 {
-    static let title = €.title
-}
+extension WarningERC20: NavigationBarHiding {}

@@ -1577,9 +1577,9 @@
 		5BF1DFA621A4288E00FE8068 /* 2_AskForAnalyticsPermissions */ = {
 			isa = PBXGroup;
 			children = (
-				5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */,
 				5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */,
 				5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */,
+				5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */,
 			);
 			path = 2_AskForAnalyticsPermissions;
 			sourceTree = "<group>";

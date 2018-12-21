@@ -47,6 +47,7 @@ final class WarningERC20ViewModel: BaseViewModel<
         ]
 
         return Output(
+            isAcceptButtonEnabled: input.fromView.isUnderstandsERC20IncompatibilityCheckboxChecked,
             isDoNotShowAgainButtonVisible: Driver.just(allowedToSupress)
         )
     }
@@ -54,11 +55,13 @@ final class WarningERC20ViewModel: BaseViewModel<
 
 extension WarningERC20ViewModel {
     struct InputFromView {
+        let isUnderstandsERC20IncompatibilityCheckboxChecked: Driver<Bool>
         let accept: Driver<Void>
         let doNotShowAgain: Driver<Void>
     }
 
     struct Output {
+        let isAcceptButtonEnabled: Driver<Bool>
         let isDoNotShowAgainButtonVisible: Driver<Bool>
     }
 }

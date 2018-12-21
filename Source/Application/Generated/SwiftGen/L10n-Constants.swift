@@ -446,13 +446,19 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title")
     }
     internal enum WarningERC20 {
-      /// ⚠️ WARNING ⚠️
-      internal static let title = L10n.tr("Localizable", "Scene.WarningERC20.Title")
       internal enum Button {
-        /// I understand
+        /// Accept
         internal static let accept = L10n.tr("Localizable", "Scene.WarningERC20.Button.Accept")
         /// Do not show this again
         internal static let doNotShowAgain = L10n.tr("Localizable", "Scene.WarningERC20.Button.DoNotShowAgain")
+      }
+      internal enum Checkbox {
+        /// I understand that ERC-20 tokens are not supported
+        internal static let understandsERC20Incompatibility = L10n.tr("Localizable", "Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility")
+      }
+      internal enum Label {
+        /// ERC-20 tokens
+        internal static let erc20Tokens = L10n.tr("Localizable", "Scene.WarningERC20.Label.Erc20Tokens")
       }
       internal enum Text {
         /// This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.

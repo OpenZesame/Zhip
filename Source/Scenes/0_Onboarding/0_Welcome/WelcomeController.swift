@@ -8,9 +8,6 @@
 
 import UIKit
 
-final class Welcome: Scene<WelcomeView> {
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-}
+final class Welcome: Scene<WelcomeView> {}
+
+extension Welcome: NavigationBarHiding {}

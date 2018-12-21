@@ -13,7 +13,7 @@ import RxSwift
 
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
-    private lazy var topImageView                   = UIImageView()
+    private lazy var imageView                      = UIImageView()
     private lazy var headerLabel                    = UILabel()
     private lazy var disclaimerTextView             = UITextView()
     private lazy var hasReadDisclaimerCheckbox      = CheckboxWithLabel()
@@ -23,7 +23,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        topImageView,
+        imageView,
         headerLabel,
         disclaimerTextView,
         hasReadDisclaimerCheckbox,
@@ -59,7 +59,7 @@ private typealias € = L10n.Scene.AskForAnalyticsPermissions
 private typealias Icon = Asset.Icons.Large
 private extension AskForAnalyticsPermissionsView {
     func setupSubviews() {
-        topImageView.withStyle(.default) {
+        imageView.withStyle(.default) {
             $0.asset(Icon.analytics)
         }
 

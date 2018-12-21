@@ -57,6 +57,18 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
             navigationItem.hidesBackButton = true
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self is NavigationBarHiding {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
 }
 
 // MARK: Private
