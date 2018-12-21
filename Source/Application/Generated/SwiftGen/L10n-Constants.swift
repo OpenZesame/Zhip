@@ -162,13 +162,17 @@ internal enum L10n {
       }
     }
     internal enum ChooseWallet {
-      /// Add Wallet
-      internal static let title = L10n.tr("Localizable", "Scene.ChooseWallet.Title")
       internal enum Button {
         /// New Wallet
         internal static let newWallet = L10n.tr("Localizable", "Scene.ChooseWallet.Button.NewWallet")
-        /// Restore Wallet
+        /// Restore existing wallet
         internal static let restoreWallet = L10n.tr("Localizable", "Scene.ChooseWallet.Button.RestoreWallet")
+      }
+      internal enum Label {
+        /// Wallet
+        internal static let impression = L10n.tr("Localizable", "Scene.ChooseWallet.Label.Impression")
+        /// It is time to set up the wallet. Do you want to start fresh, or restore an existing wallet?
+        internal static let setUpWallet = L10n.tr("Localizable", "Scene.ChooseWallet.Label.SetUpWallet")
       }
     }
     internal enum ConfirmNewPincode {

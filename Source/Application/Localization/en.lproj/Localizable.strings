@@ -45,9 +45,10 @@
 "Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
 
 // MARK: ChooseWallet
-"Scene.ChooseWallet.Title" = "Add Wallet";
+"Scene.ChooseWallet.Label.Impression" = "Wallet";
+"Scene.ChooseWallet.Label.SetUpWallet" = "It is time to set up the wallet. Do you want to start fresh, or restore an existing wallet?";
 "Scene.ChooseWallet.Button.NewWallet" = "New Wallet";
-"Scene.ChooseWallet.Button.RestoreWallet" = "Restore Wallet";
+"Scene.ChooseWallet.Button.RestoreWallet" = "Restore existing wallet";
 
 // MARK: CreateNewWallet
 "Scene.CreateNewWallet.Title" = "New wallet";
