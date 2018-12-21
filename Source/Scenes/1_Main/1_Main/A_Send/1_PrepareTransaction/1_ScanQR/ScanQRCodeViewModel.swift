@@ -24,6 +24,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
     ScanQRCodeViewModel.Output
 > {
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)

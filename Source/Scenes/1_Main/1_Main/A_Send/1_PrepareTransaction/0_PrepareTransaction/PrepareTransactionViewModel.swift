@@ -85,7 +85,6 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let balance = latestBalanceAndNonce.map { $0.balance }
 
-
         let sufficientFundsValidationTrigger = Driver.merge(
             // Amount trigger
             Driver.merge(

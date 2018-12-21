@@ -40,7 +40,8 @@ extension UIButton {
     public struct Style {
         fileprivate var titleNormal: String?
         let height: CGFloat?
-        let textColor: UIColor?
+        let textColorNormal: UIColor?
+        let textColorDisabled: UIColor?
         let colorNormal: UIColor?
         let colorDisabled: UIColor?
         let colorSelected: UIColor?
@@ -53,7 +54,8 @@ extension UIButton {
             titleNormal: String? = nil,
             height: CGFloat? = nil,
             font: UIFont? = nil,
-            textColor: UIColor? = nil,
+            textColorNormal: UIColor? = nil,
+            textColorDisabled: UIColor? = nil,
             colorNormal: UIColor? = nil,
             colorDisabled: UIColor? = nil,
             colorSelected: UIColor? = nil,
@@ -63,7 +65,8 @@ extension UIButton {
             ) {
             self.titleNormal = titleNormal
             self.height = height
-            self.textColor = textColor
+            self.textColorNormal = textColorNormal
+            self.textColorDisabled = textColorDisabled
             self.colorNormal = colorNormal
             self.colorDisabled = colorDisabled
             self.colorSelected = colorSelected
@@ -90,10 +93,11 @@ extension UIButton {
         if let titleNormal = style.titleNormal {
             setTitle(titleNormal, for: .normal)
         }
-        setTitleColor(style.textColor ?? .defaultText, for: UIControl.State())
+        setTitleColor(style.textColorNormal ?? .defaultText, for: .normal)
+        setTitleColor(style.textColorDisabled ?? .silverGrey, for: .disabled)
         titleLabel?.font = style.font ?? UIFont.button
-        let colorNormal = style.colorNormal ?? .green
-        let colorDisabled = style.colorDisabled ?? .gray
+        let colorNormal = style.colorNormal ?? .teal
+        let colorDisabled = style.colorDisabled ?? .asphaltGrey
         let colorSelected = style.colorSelected ?? colorNormal
         setBackgroundColor(colorNormal, for: .normal)
         setBackgroundColor(colorDisabled, for: .disabled)
@@ -138,25 +142,13 @@ extension UIButton.Style {
 // MARK: - Style Presets
 extension UIButton.Style {
 
-    static var hollow: UIButton.Style {
-        let color: UIColor = .zilliqaCyan
-        return UIButton.Style(
-            height: .defaultHeight,
-            textColor: color,
-            colorNormal: .clear,
-            colorDisabled: .black,
-            colorSelected: nil,
-            borderNormal: UIView.Border(color: color, width: 2),
-            isEnabled: true
-        )
-    }
-
     static var primary: UIButton.Style {
         return UIButton.Style(
             height: .defaultHeight,
-            textColor: .white,
+            textColorNormal: .white,
+            textColorDisabled: .silverGrey,
             colorNormal: .teal,
-            colorDisabled: .gray,
+            colorDisabled: .asphaltGrey,
             colorSelected: nil,
             isEnabled: true,
             cornerRounding: .static(8)
@@ -166,10 +158,8 @@ extension UIButton.Style {
     static var secondary: UIButton.Style {
         return UIButton.Style(
             height: .defaultHeight,
-            textColor: .white,
-            colorNormal: .zilliqaDarkBlue,
-            colorDisabled: .gray,
-            colorSelected: nil,
+            textColorNormal: .teal,
+            colorNormal: .clear,
             isEnabled: true
         )
     }

@@ -11,15 +11,9 @@ import UIKit
 import TinyConstraints
 import RxSwift
 
-private typealias € = L10n.Scene.AskForAnalyticsPermissions
-private typealias Icon = Asset
-
-//private let topImageViewWidthHeight: CGFloat = 80
-
 final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     private lazy var topImageView                   = UIImageView()
-    private lazy var topImageViewContainerStackView = UIStackView(arrangedSubviews: [topImageView])
     private lazy var headerLabel                    = UILabel()
     private lazy var disclaimerTextView             = UITextView()
     private lazy var hasReadDisclaimerCheckbox      = CheckboxWithLabel()
@@ -29,7 +23,7 @@ final class AskForAnalyticsPermissionsView: ScrollingStackView {
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        topImageViewContainerStackView,
+        topImageView,
         headerLabel,
         disclaimerTextView,
         hasReadDisclaimerCheckbox,
@@ -61,17 +55,12 @@ extension AskForAnalyticsPermissionsView: ViewModelled {
     }
 }
 
+private typealias € = L10n.Scene.AskForAnalyticsPermissions
+private typealias Icon = Asset.Icons.Large
 private extension AskForAnalyticsPermissionsView {
     func setupSubviews() {
-        //        topImageView.size(CGSize(width: topImageViewWidthHeight, height: topImageViewWidthHeight))
-        //        topImageView.layer.cornerRadius = topImageViewWidthHeight / 2
-
         topImageView.withStyle(.default) {
             $0.asset(Icon.analytics)
-        }
-
-        topImageViewContainerStackView.withStyle(.default) {
-            $0.alignment(.center)
         }
 
         headerLabel.withStyle(.header) {

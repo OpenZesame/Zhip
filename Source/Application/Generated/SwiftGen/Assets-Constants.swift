@@ -18,12 +18,49 @@
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
-  internal static let analytics = ImageAsset(name: "Analytics")
-  internal static let termsOfService = ImageAsset(name: "TermsOfService")
-  internal static let clouds = ImageAsset(name: "Clouds")
-  internal static let spaceship = ImageAsset(name: "Spaceship")
-  internal static let stars = ImageAsset(name: "Stars")
-  internal static let zilliqaLogo = ImageAsset(name: "ZilliqaLogo")
+  internal enum Icons {
+
+    internal enum Large {
+      internal static let analytics = ImageAsset(name: "Icons/Large/Analytics")
+      internal static let camera = ImageAsset(name: "Icons/Large/Camera")
+      internal static let checkmark = ImageAsset(name: "Icons/Large/Checkmark")
+      internal static let dome = ImageAsset(name: "Icons/Large/Dome")
+      internal static let receive = ImageAsset(name: "Icons/Large/Receive")
+      internal static let send = ImageAsset(name: "Icons/Large/Send")
+      internal static let shield = ImageAsset(name: "Icons/Large/Shield")
+      internal static let termsOfService = ImageAsset(name: "Icons/Large/TermsOfService")
+      internal static let warning = ImageAsset(name: "Icons/Large/Warning")
+    }
+    internal enum Small {
+      internal static let backUp = ImageAsset(name: "Icons/Small/BackUp")
+      internal static let camera = ImageAsset(name: "Icons/Small/Camera")
+      internal static let checkmark = ImageAsset(name: "Icons/Small/Checkmark")
+      internal static let chevronLeft = ImageAsset(name: "Icons/Small/ChevronLeft")
+      internal static let chevronRight = ImageAsset(name: "Icons/Small/ChevronRight")
+      internal static let cup = ImageAsset(name: "Icons/Small/Cup")
+      internal static let delete = ImageAsset(name: "Icons/Small/Delete")
+      internal static let document = ImageAsset(name: "Icons/Small/Document")
+      internal static let githubIssue = ImageAsset(name: "Icons/Small/GithubIssue")
+      internal static let githubStar = ImageAsset(name: "Icons/Small/GithubStar")
+      internal static let pinCode = ImageAsset(name: "Icons/Small/PinCode")
+      internal static let settings = ImageAsset(name: "Icons/Small/Settings")
+      internal static let warning = ImageAsset(name: "Icons/Small/Warning")
+      internal static let zilliqaLogo = ImageAsset(name: "Icons/Small/ZilliqaLogo")
+    }
+  }
+  internal enum Images {
+
+    internal enum Aurora {
+      internal static let background = ImageAsset(name: "Images/Aurora/Background")
+      internal static let front = ImageAsset(name: "Images/Aurora/Front")
+    }
+    internal static let planets = ImageAsset(name: "Images/Planets")
+    internal enum Spaceship {
+      internal static let clouds = ImageAsset(name: "Images/Spaceship/Clouds")
+      internal static let spaceship = ImageAsset(name: "Images/Spaceship/Spaceship")
+      internal static let stars = ImageAsset(name: "Images/Spaceship/Stars")
+    }
+  }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

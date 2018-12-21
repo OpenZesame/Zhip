@@ -48,20 +48,32 @@ extension UIView {
         let imageViews = [backImageView, middleImageView, frontImageView]
 
         imageViews.forEach {
-            $0.withStyle(.default)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.contentMode = UIView.ContentMode.center
+            addSubview($0)
             $0.backgroundColor = .clear
+            $0.edgesToSuperview()
         }
 
-//        backgroundImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        addMotionEffectTo(views: (backImageView, middleImageView, frontImageView))
+    }
 
-        zip(imageViews, [6, 20, 50]).forEach { (view, offset) in
-            addSubview(view)
-//            func addConstraints(_ view: UIView) {
-//                view.snp.makeConstraints { $0.leading.trailing.equalToSuperview().inset(-40) }
-//                view.snp.makeConstraints { $0.top.bottom.equalToSuperview().inset(-64) }
-//            }
-            view.edgesToSuperview()
-            view.addMotionEffect(strength: CGFloat(offset))
+    // swiftlint:disable large_tuple
+    func addMotionEffectTo(
+        views: (back: UIView, middle: UIView, front: UIView),
+        strengths: (back: CGFloat, middle: CGFloat, front: CGFloat) = (6, 20, 50)
+    ) {
+        let views = [views.back, views.middle, views.front]
+        let strengths = [strengths.back, strengths.middle, strengths.front]
+        let viewsAndEffectStrength = zip(views, strengths).map { ($0.0, $0.1) }
+
+        addMotionEffectTo(viewsAndEffectStrength: viewsAndEffectStrength)
+    }
+
+    func addMotionEffectTo(viewsAndEffectStrength: [(UIView, CGFloat)]) {
+        viewsAndEffectStrength.forEach {
+            let (view, strength) = $0
+            view.addMotionEffect(strength: CGFloat(strength))
         }
     }
 }
@@ -95,6 +107,7 @@ extension WelcomeView: ViewModelled {
 
 // MARK: - Private
 private typealias € = L10n.Scene.Welcome
+private typealias Image = Asset.Images.Spaceship
 private extension WelcomeView {
 
     // swiftlint:disable:next function_body_length
@@ -131,9 +144,9 @@ private extension WelcomeView {
         motionEffectSpaceshipImage.translatesAutoresizingMaskIntoConstraints = false
 
         motionEffectSpaceshipImage.addMotionEffectFromImageAssets(
-            front: Asset.spaceship,
-            middle: Asset.stars,
-            back: Asset.clouds
+            front: Image.spaceship,
+            middle: Image.stars,
+            back: Image.clouds
         )
     }
 }

@@ -60,7 +60,7 @@ private extension WarningERC20View {
             $0.title(€.Button.accept)
         }
 
-        doNotShowThisAgainButton.withStyle(.hollow) {
+        doNotShowThisAgainButton.withStyle(.secondary) {
             $0.title(€.Button.doNotShowAgain)
         }
     }

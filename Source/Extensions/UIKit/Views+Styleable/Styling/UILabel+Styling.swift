@@ -60,7 +60,7 @@ extension UILabel {
 extension UILabel.Style {
 
     @discardableResult
-    func text(_ text: String) -> UILabel.Style {
+    func text(_ text: String?) -> UILabel.Style {
         var style = self
         style.text = text
         return style

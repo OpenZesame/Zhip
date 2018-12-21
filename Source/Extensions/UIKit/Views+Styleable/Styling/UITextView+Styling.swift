@@ -49,10 +49,11 @@ extension UITextView {
 // MARK: Apply Style
 extension UITextView {
     func apply(style: UITextView.Style) {
+        text = style.text
         textAlignment = style.textAlignment ?? .left
         font = style.font ?? UIFont.body
         textColor = style.textColor ?? .defaultText
-        backgroundColor = style.backgroundColor ?? .white
+        backgroundColor = style.backgroundColor ?? .clear
         isEditable = style.isEditable ?? true
         isSelectable = style.isSelectable ?? true
         isScrollEnabled = style.isScrollEnabled ?? true
@@ -97,7 +98,7 @@ extension UITextView.Style {
 extension UITextView.Style {
     static var nonEditable: UITextView.Style {
         return UITextView.Style(
-            textAlignment: .center,
+            textAlignment: .left,
             isEditable: false
         )
     }

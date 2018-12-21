@@ -16,10 +16,11 @@ public extension UIColor {
 
 extension UIColor {
     enum Hex: Int {
-        case teal = 0x00a88d
-        case deepBlue = 0x1f292f
-        case zilliqaCyan = 0x66bebf
-        case zilliqaDarkBlue = 0x071d38
+        case teal = 0x00A88D
+        case deepBlue = 0x1F292F
+        case bloodRed = 0xFF4C4F
+        case asphaltGrey = 0x40484D
+        case silverGrey = 0x6F7579
     }
 }
 
@@ -42,8 +43,9 @@ extension UIColor {
 extension UIColor {
     static let teal = UIColor(hex: .teal)
     static let deepBlue = UIColor(hex: .deepBlue)
-    static let zilliqaCyan = UIColor(hex: .zilliqaCyan)
-    static let zilliqaDarkBlue = UIColor(hex: .zilliqaDarkBlue)
+    static let bloodRed = UIColor(hex: .bloodRed)
+    static let asphaltGrey = UIColor(hex: .asphaltGrey)
+    static let silverGrey = UIColor(hex: .silverGrey)
 }
 
 // MARK: - Private

@@ -48,7 +48,7 @@ private extension QRCoding {
         size cgFloatSize: CGFloat,
         backgroundColor: UIColor = .white,
         foregroundColor: UIColor = .black,
-        watermarkImage: UIImage? = Image.zilliqaLogo.image
+        watermarkImage: UIImage? = nil
         ) -> UIImage? {
         let intSize = Int(cgFloatSize)
         let size = EFIntSize(width: intSize, height: intSize)

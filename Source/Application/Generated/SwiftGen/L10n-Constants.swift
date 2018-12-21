@@ -64,7 +64,7 @@ internal enum L10n {
 
   internal enum Scene {
     internal enum AskForAnalyticsPermissions {
-      /// Analytics disclaimer
+      /// Analytics
       internal static let title = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Title")
       internal enum Button {
         /// Accept
@@ -73,7 +73,7 @@ internal enum L10n {
         internal static let decline = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Decline")
       }
       internal enum Checkbox {
-        /// I have read the analytics disclaimer
+        /// I have read and understood the analytics disclaimer
         internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer")
       }
       internal enum Text {

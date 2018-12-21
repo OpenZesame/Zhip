@@ -13,7 +13,6 @@ import RxCocoa
 import UIKit
 import WebKit
 
-
 final class TermsOfServiceView: ScrollingStackView {
 
     private lazy var imageView          = UIImageView()
@@ -44,21 +43,23 @@ extension TermsOfServiceView: ViewModelled {
     }
 
     var inputFromView: InputFromView {
+        let didScrollNearBottom = textView.rx.contentOffset.map { [unowned textView] in
+            $0.y >= 0.97 * textView.contentSize.height
+        }.filter { $0 }.mapToVoid().asDriverOnErrorReturnEmpty()
+
         return InputFromView(
-            didScrollToBottom: textView.rx.contentOffset.map { [unowned textView] in
-                $0.y >= 0.97 * textView.contentSize.height
-            }.filter { $0 }
-            .mapToVoid().asDriverOnErrorReturnEmpty(),
+            didScrollToBottom: didScrollNearBottom,
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
 }
 
 private typealias € = L10n.Scene.TermsOfService
+private typealias Image = Asset.Icons.Large
 private extension TermsOfServiceView {
     func setupSubviews() {
         imageView.withStyle(.default) {
-            $0.image(Asset.termsOfService.image)
+            $0.image(Image.analytics.image)
         }
 
         headerLabel.withStyle(.header) {

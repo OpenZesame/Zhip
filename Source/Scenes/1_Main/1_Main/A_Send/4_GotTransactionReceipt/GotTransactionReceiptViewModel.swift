@@ -13,7 +13,6 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-
 // MARK: - User action and navigation steps
 enum GotTransactionReceiptUserAction: TrackedUserAction {
     case /*user intends to*/ finish, viewTransactionDetailsInBrowser(id: String)
@@ -33,7 +32,6 @@ final class GotTransactionReceiptViewModel: BaseViewModel<
         self.receipt = receipt
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userIntends(to userAction: NavigationStep) {
             navigator.next(userAction)

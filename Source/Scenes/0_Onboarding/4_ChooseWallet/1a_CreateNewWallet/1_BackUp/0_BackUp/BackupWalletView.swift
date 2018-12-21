@@ -65,6 +65,7 @@ extension BackupWalletView: ViewModelled {
 
 private typealias € = L10n.Scene.BackupWallet
 private extension BackupWalletView {
+    // swiftlint:disable:next function_body_length
     func setupSubviews() {
         beSafeLabel.withStyle(.header) {
             $0.text(€.Label.storeKeystoreSecurely)
