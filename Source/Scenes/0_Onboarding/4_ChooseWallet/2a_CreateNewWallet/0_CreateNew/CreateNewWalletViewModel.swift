@@ -93,27 +93,24 @@ BaseViewModel<
             }
         }
 
-        let confirmEncryptionPassphraseValidationTrigger = Driver.merge(
-            input.fromView.confirmedNewEncryptionPassphrase.mapToVoid().map { true },
-            input.fromView.isEditingConfirmedEncryptionPassphrase
-        )
-
         let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
-            encryptionPassphraseValidationTrigger,
-            confirmEncryptionPassphraseValidationTrigger
-        )
-            .withLatestFrom(confirmEncryptionPassphraseValidationValue) {
-                (isEditingPassphrase: $0.0, isEditingConfirmPassphrase: $0.1, validationValue: $1)
-            }.map {
-
-                switch ($0.isEditingPassphrase, $0.isEditingConfirmPassphrase, $0.validationValue) {
-                // Always indicate valid
-                case (_, _, .valid): return .valid
-                // Always validate when stop editing
-                case (_, false, _): return $0.validationValue.validation
-                // Convert invalid -> empty when starting editing
-                case (_, true, .invalid): return .empty
-                }
+            Driver.merge(
+                // map editChanges to `isEditing:true`
+                input.fromView.confirmedNewEncryptionPassphrase.mapToVoid().map { true },
+                input.fromView.isEditingConfirmedEncryptionPassphrase
+            ),
+            encryptionPassphraseValidationTrigger // used for triggering, but value never used
+        ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
+            (isEditingConfirmPassphrase: $0.1, validationValue: $1)
+        }.map {
+            switch ($0.isEditingConfirmPassphrase, $0.validationValue) {
+            // Always indicate valid
+            case (_, .valid): return .valid
+            // Always validate when stop editing
+            case (false, _): return $0.validationValue.validation
+            // Convert invalid -> empty when starting editing
+            case (true, .invalid): return .empty
+            }
         }
 
         return Output(
