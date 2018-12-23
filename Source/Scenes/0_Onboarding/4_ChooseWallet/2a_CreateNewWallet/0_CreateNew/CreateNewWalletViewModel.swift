@@ -94,41 +94,27 @@ BaseViewModel<
         }
 
         let confirmEncryptionPassphraseValidationTrigger = Driver.merge(
-//            input.fromView.isEditingNewEncryptionPassphrase.filter { isEditing in isEditing == false },
-            encryptionPassphraseValidation.distinctUntilChanged {
-                $0.equalsTreatingAllErrorsAsOne($1)
-                }.filter {
-                    if case .empty = $0 {
-                        // Filter out (exclude) the empty state
-                        return false
-                    } else {
-                        return true
-                    }
-                }
-                .map {
-                switch $0 {
-                case .error: return false
-                case .empty: incorrectImplementation("this should have been filtered out")
-                case .valid: return true
-                }
-            },
             input.fromView.confirmedNewEncryptionPassphrase.mapToVoid().map { true },
             input.fromView.isEditingConfirmedEncryptionPassphrase
         )
 
-        let confirmEncryptionPassphraseValidation: Driver<Validation> = confirmEncryptionPassphraseValidationTrigger.withLatestFrom(confirmEncryptionPassphraseValidationValue) {
-            (isEditingConfirmPassphrase: $0, validationValue: $1)
+        let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
+            encryptionPassphraseValidationTrigger,
+            confirmEncryptionPassphraseValidationTrigger
+        )
+            .withLatestFrom(confirmEncryptionPassphraseValidationValue) {
+                (isEditingPassphrase: $0.0, isEditingConfirmPassphrase: $0.1, validationValue: $1)
             }.map {
-                switch ($0.isEditingConfirmPassphrase, $0.validationValue) {
+
+                switch ($0.isEditingPassphrase, $0.isEditingConfirmPassphrase, $0.validationValue) {
                 // Always indicate valid
-                case (_, .valid): return .valid
+                case (_, _, .valid): return .valid
                 // Always validate when stop editing
-                case (false, _): return $0.validationValue.validation
+                case (_, false, _): return $0.validationValue.validation
                 // Convert invalid -> empty when starting editing
-                case (true, .invalid): return .empty
+                case (_, true, .invalid): return .empty
                 }
         }
-
 
         return Output(
             encryptionPassphrasePlaceholder: Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode))),
