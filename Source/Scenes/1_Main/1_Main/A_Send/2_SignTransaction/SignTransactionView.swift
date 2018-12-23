@@ -10,28 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.SignTransaction
-private extension SignTransactionView {
-    func setupSubviews() {
-        confirmTransactionLabel.withStyle(.header) {
-            $0.text(€.Label.signTransactionWithEncryptionPassphrase)
-        }
-
-        encryptionPassphraseField.withStyle(.password) {
-            $0.placeholder(€.Field.encryptionPassphrase)
-        }
-
-        signButton.withStyle(.primary) {
-            $0.title(€.Button.confirm)
-                .disabled()
-        }
-    }
-}
-
 final class SignTransactionView: ScrollingStackView {
 
     private lazy var confirmTransactionLabel        = UILabel()
-    private lazy var encryptionPassphraseField      = TextField(type: .text)
+    private lazy var encryptionPassphraseField      = TextField()
     private lazy var signButton                     = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
@@ -57,5 +39,23 @@ extension SignTransactionView: ViewModelled {
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
+    }
+}
+
+private typealias € = L10n.Scene.SignTransaction
+private extension SignTransactionView {
+    func setupSubviews() {
+        confirmTransactionLabel.withStyle(.header) {
+            $0.text(€.Label.signTransactionWithEncryptionPassphrase)
+        }
+
+        encryptionPassphraseField.withStyle(.passphrase) {
+            $0.placeholder(€.Field.encryptionPassphrase)
+        }
+
+        signButton.withStyle(.primary) {
+            $0.title(€.Button.confirm)
+                .disabled()
+        }
     }
 }

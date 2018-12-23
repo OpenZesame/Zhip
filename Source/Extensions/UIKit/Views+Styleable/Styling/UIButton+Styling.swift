@@ -39,6 +39,7 @@ extension UIView {
 extension UIButton {
     public struct Style {
         fileprivate var titleNormal: String?
+        fileprivate var imageNormal: UIImage?
         let height: CGFloat?
         let textColorNormal: UIColor?
         let textColorDisabled: UIColor?
@@ -52,7 +53,8 @@ extension UIButton {
 
         init(
             titleNormal: String? = nil,
-            height: CGFloat? = nil,
+            imageNormal: UIImage? = nil,
+            height: CGFloat? = defaultHeight,
             font: UIFont? = nil,
             textColorNormal: UIColor? = nil,
             textColorDisabled: UIColor? = nil,
@@ -64,6 +66,7 @@ extension UIButton {
             cornerRounding: UIView.Rounding? = nil
             ) {
             self.titleNormal = titleNormal
+            self.imageNormal = imageNormal
             self.height = height
             self.textColorNormal = textColorNormal
             self.textColorDisabled = textColorDisabled
@@ -78,9 +81,7 @@ extension UIButton {
     }
 }
 
-private extension CGFloat {
-    static let defaultHeight: CGFloat = 64
-}
+private let defaultHeight: CGFloat = 64
 
 extension UIButton {
 
@@ -92,6 +93,9 @@ extension UIButton {
         }
         if let titleNormal = style.titleNormal {
             setTitle(titleNormal, for: .normal)
+        }
+        if let imageNormal = style.imageNormal {
+            setImage(imageNormal, for: .normal)
         }
         setTitleColor(style.textColorNormal ?? .defaultText, for: .normal)
         setTitleColor(style.textColorDisabled ?? .silverGrey, for: .disabled)
@@ -144,23 +148,25 @@ extension UIButton.Style {
 
     static var primary: UIButton.Style {
         return UIButton.Style(
-            height: .defaultHeight,
             textColorNormal: .white,
             textColorDisabled: .silverGrey,
             colorNormal: .teal,
             colorDisabled: .asphaltGrey,
-            colorSelected: nil,
-            isEnabled: true,
             cornerRounding: .static(8)
         )
     }
 
     static var secondary: UIButton.Style {
         return UIButton.Style(
-            height: .defaultHeight,
             textColorNormal: .teal,
-            colorNormal: .clear,
-            isEnabled: true
+            colorNormal: .clear
+        )
+    }
+
+    static func image(_ image: UIImage) -> UIButton.Style {
+        return UIButton.Style(
+            imageNormal: image,
+            height: nil
         )
     }
 }

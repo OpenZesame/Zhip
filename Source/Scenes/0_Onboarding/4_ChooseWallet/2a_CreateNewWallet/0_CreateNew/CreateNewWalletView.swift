@@ -13,8 +13,8 @@ final class CreateNewWalletView: ScrollingStackView {
 
     private lazy var headerLabel                        = UILabel()
     private lazy var subtitleLabel                      = UILabel()
-    private lazy var encryptionPassphraseField          = TextField(type: .text)
-    private lazy var confirmEncryptionPassphraseField   = TextField(type: .text)
+    private lazy var encryptionPassphraseField          = TextField()
+    private lazy var confirmEncryptionPassphraseField   = TextField()
     private lazy var haveBackedUpPassphraseCheckbox     = CheckboxWithLabel()
     private lazy var continueButton                     = ButtonWithSpinner()
 
@@ -72,9 +72,9 @@ private extension CreateNewWalletView {
             $0.text(€.Labels.ChooseNewPassphrase.value)
         }
 
-        encryptionPassphraseField.withStyle(.password)
+        encryptionPassphraseField.withStyle(.passphrase)
 
-        confirmEncryptionPassphraseField.withStyle(.password) {
+        confirmEncryptionPassphraseField.withStyle(.passphrase) {
             $0.placeholder(€.Field.confirmEncryptionPassphrase)
         }
 

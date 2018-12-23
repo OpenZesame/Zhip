@@ -18,9 +18,8 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
 
     private let bag = DisposeBag()
 
-    private lazy var keystoreTextView = UITextView(frame: .zero).withStyle(.editable)
-
-    private lazy var encryptionPassphraseField = TextField(type: .text).withStyle(.password)
+    private lazy var keystoreTextView           = UITextView()
+    private lazy var encryptionPassphraseField  = TextField()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
@@ -37,14 +36,17 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
     ]
 
     override func setup() {
-        setupTextView()
+        setupSubviews()
         setupViewModelBinding()
     }
 }
 
 private extension RestoreUsingKeystoreView {
-    func setupTextView() {
-        keystoreTextView.addBorder()
+
+    func setupSubviews() {
+        encryptionPassphraseField.withStyle(.passphrase)
+        keystoreTextView.withStyle(.editable)
+//        keystoreTextView.addBorder()
     }
 
     func setupViewModelBinding() {

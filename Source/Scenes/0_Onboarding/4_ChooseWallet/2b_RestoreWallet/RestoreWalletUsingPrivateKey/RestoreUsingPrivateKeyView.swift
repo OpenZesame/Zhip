@@ -13,9 +13,9 @@ import RxSwift
 final class RestoreUsingPrivateKeyView: ScrollingStackView {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
-    private lazy var privateKeyField                        = TextField(type: .hexadecimal)
-    private lazy var encryptionPassphraseField              = TextField(type: .text)
-    private lazy var confirmEncryptionPassphraseField       = TextField(type: .text)
+    private lazy var privateKeyField                        = TextField()
+    private lazy var encryptionPassphraseField              = TextField()
+    private lazy var confirmEncryptionPassphraseField       = TextField()
 
     private let bag = DisposeBag()
 
@@ -46,13 +46,13 @@ final class RestoreUsingPrivateKeyView: ScrollingStackView {
 private typealias € = L10n.Scene.RestoreWallet
 private extension RestoreUsingPrivateKeyView {
     func setupSubviews() {
-        privateKeyField.withStyle(.password) {
+        privateKeyField.withStyle(.privateKey) {
             $0.placeholder(€.Field.privateKey)
         }
 
-        encryptionPassphraseField.withStyle(.password)
+        encryptionPassphraseField.withStyle(.passphrase)
 
-        confirmEncryptionPassphraseField.withStyle(.password) {
+        confirmEncryptionPassphraseField.withStyle(.passphrase) {
             $0.placeholder(€.Field.confirmEncryptionPassphrase)
         }
     }

@@ -14,28 +14,38 @@ final class TextField: SkyFloatingLabelTextField {
     enum TypeOfInput {
         case number, hexadecimal, text
     }
-    let typeOfInput: TypeOfInput
+    var typeOfInput: TypeOfInput = .text
+
     private lazy var leftPaddingView      = UIView()
     private lazy var validationCircleView = UIView()
 
-    init(type: TypeOfInput) {
-        self.typeOfInput = type
-        super.init(frame: .zero)
-        self.delegate = self
+    // Overridden methods
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        let superRect = super.placeholderRect(forBounds: bounds)
+        return superRect.insetBy(dx: leftPaddingView.frame.width, dy: 0)
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    override func textHeight() -> CGFloat {
+        return textFieldHeight/2
+    }
+
+    override func titleHeight() -> CGFloat {
+        return textFieldHeight/2
+    }
+
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        return leftPaddingView.frame
+    }
 }
 
 // MARK: TextField + Styling
 extension TextField {
     @discardableResult
-    func withStyle<F>(_ style: UITextField.Style, customize: ((UITextField.Style) -> UITextField.Style)? = nil) -> F where F: UITextField {
+    func withStyle(_ style: TextField.Style, customize: ((TextField.Style) -> TextField.Style)? = nil) -> TextField {
+        self.delegate = self
+        apply(style: customize?(style) ?? style)
         setup()
-        let style = customize?(style) ?? style
-        apply(style: style)
-        guard let field = self as? F else { incorrectImplementation("Bad cast") }
-        return field
+        return self
     }
 }
 
@@ -58,11 +68,16 @@ extension Reactive where Base: TextField {
 
 private extension TextField {
     func setup() {
+        defer {
+            // calculations of the position of the circle view might be dependent on other settings, thus do it last
+            setupValidationCircleView()
+        }
         translatesAutoresizingMaskIntoConstraints = false
-
-        setupValidationCircleView()
         lineErrorColor = Color.error
         updateColorsWithValidation(.empty)
+
+        // prevent capitalization of strings
+        titleFormatter = { $0 }
     }
 
     func updateErrorMessageWithValidation(_ validation: Validation) {
@@ -133,20 +148,20 @@ private extension TextField {
     func setupValidationCircleView() {
         validationCircleView.translatesAutoresizingMaskIntoConstraints = false
         leftPaddingView.addSubview(validationCircleView)
-
-        let size: CGFloat = 16
-        validationCircleView.height(size)
-        validationCircleView.width(size)
-        validationCircleView.centerYToSuperview()
+        validationCircleView.size(CGSize(width: circeViewSize, height: circeViewSize))
+        validationCircleView.bottomToSuperview(offset: -distanceBetweenCircleAndBottom)
         validationCircleView.leftToSuperview()
-        UIView.Rounding.static(size/2).apply(to: validationCircleView)
+        UIView.Rounding.static(circeViewSize/2).apply(to: validationCircleView)
 
         leftView = leftPaddingView
         leftViewMode = .always
-
-        leftPaddingView.frame = CGRect(x: 0, y: 0, width: 16 + 12, height: size)
+        leftPaddingView.frame = CGRect(x: 0, y: 0, width: leftPaddingViewWidth, height: textFieldHeight)
     }
 }
+private let circeViewSize: CGFloat = 16
+private let leftPaddingViewWidth: CGFloat = circeViewSize + 12
+private let textFieldHeight: CGFloat = 64
+private let distanceBetweenCircleAndBottom: CGFloat = 10
 
 // MARK: UITextFieldDelegate
 extension TextField: UITextFieldDelegate {

@@ -16,11 +16,11 @@ import RxCocoa
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var balanceLabels                  = TitledValueView()
-    private lazy var recipientAddressField          = TextField(type: .hexadecimal)
+    private lazy var recipientAddressField          = TextField()
     private lazy var scanQRButton                   = UIButton()
-    private lazy var amountToSendField              = TextField(type: .number)
+    private lazy var amountToSendField              = TextField()
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
-    private lazy var gasPriceField                  = TextField(type: .number)
+    private lazy var gasPriceField                  = TextField()
     private lazy var sendButton                     = UIButton()
 
     // MARK: - StackViewStyling
@@ -80,17 +80,16 @@ extension PrepareTransactionView: ViewModelled {
 private typealias € = L10n.Scene.PrepareTransaction
 private extension PrepareTransactionView {
     func setupSubiews() {
-        scanQRButton.translatesAutoresizingMaskIntoConstraints = false
         recipientAddressField.rightView = scanQRButton
         recipientAddressField.rightViewMode = .always
 
         balanceLabels.titled(€.Labels.Balance.title)
 
-        recipientAddressField.withStyle(.default) {
+        recipientAddressField.withStyle(.address) {
             $0.placeholder(€.Field.recipient)
         }
 
-        scanQRButton.setTitle("📷", for: .normal)
+        scanQRButton.withStyle(.image(Asset.Icons.Small.camera.image))
 
         amountToSendField.withStyle(.number) {
             $0.placeholder(€.Field.amount)

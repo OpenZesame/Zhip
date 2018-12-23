@@ -17,7 +17,7 @@ final class ReceiveView: ScrollingStackView {
 
     private lazy var qrImageView            = UIImageView()
     private lazy var addressView            = TitledValueView()
-    private lazy var amountToReceiveField   = TextField(type: .number)
+    private lazy var amountToReceiveField   = TextField()
     private lazy var shareButton            = UIButton()
     private lazy var copyMyAddressButton    = UIButton()
     private lazy var buttonsStackView       = UIStackView(arrangedSubviews: [shareButton, copyMyAddressButton])

@@ -143,7 +143,7 @@
 		48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */; };
 		48C89FFD2143353C0063B0FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */; };
 		48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */; };
-		48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */; };
+		48C8A0032143C5B20063B0FA /* TextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* TextField+Styling.swift */; };
 		48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */; };
 		48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
@@ -413,7 +413,7 @@
 		48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Styling.swift"; sourceTree = "<group>"; };
 		48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Spacer.swift"; sourceTree = "<group>"; };
-		48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Styling.swift"; sourceTree = "<group>"; };
+		48C8A0022143C5B20063B0FA /* TextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Styling.swift"; sourceTree = "<group>"; };
 		48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutPriority_Extension.swift; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
@@ -1169,7 +1169,7 @@
 				4847EDF62160F520002FF978 /* UITextView+Styling.swift */,
 				489EB12D21CA459000664AA7 /* UIImageView+Styling.swift */,
 				48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */,
-				48C8A0022143C5B20063B0FA /* UITextField+Styling.swift */,
+				48C8A0022143C5B20063B0FA /* TextField+Styling.swift */,
 			);
 			path = Styling;
 			sourceTree = "<group>";
@@ -1890,7 +1890,7 @@
 				48ECF5F321A18F140078D659 /* ChooseWalletViewModel.swift in Sources */,
 				48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */,
 				483C0BE0219ECF89006947C7 /* ObserverType+BarButtonContent.swift in Sources */,
-				48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */,
+				48C8A0032143C5B20063B0FA /* TextField+Styling.swift in Sources */,
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */,
 				480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
