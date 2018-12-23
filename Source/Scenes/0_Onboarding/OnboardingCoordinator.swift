@@ -27,16 +27,6 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.Navigat
     }
 
     override func start(didStart: Completion? = nil) {
-        func toCreateWallet() {
-            let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
-
-            push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
-                switch userDid {
-                case .createWallet(let wallet): abstract
-                }
-            }
-        }
-        return toCreateWallet()
         toWelcome()
     }
 }
