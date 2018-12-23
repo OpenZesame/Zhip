@@ -17,6 +17,7 @@
 		480B0E9421CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */; };
 		480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */; };
 		480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9621CE2C8E00A72133 /* AppAppearance.swift */; };
+		480B0E9921CF852600A72133 /* Rx+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9821CF852600A72133 /* Rx+Validation.swift */; };
 		4819BD8B21C0CAEF00443F2A /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		4819BD8D21C0CAEF00443F2A /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
 		4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
@@ -277,6 +278,7 @@
 		480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsureThatYouAreNotBeingWatchedController.swift; sourceTree = "<group>"; };
 		480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsureThatYouAreNotBeingWatchedViewModel.swift; sourceTree = "<group>"; };
 		480B0E9621CE2C8E00A72133 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
+		480B0E9821CF852600A72133 /* Rx+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Validation.swift"; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
 		4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalController.swift; sourceTree = "<group>"; };
 		4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalViewModel.swift; sourceTree = "<group>"; };
@@ -964,6 +966,7 @@
 				485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */,
 				485AAC9F21AAE752005C56CC /* ValidationRulesOwner.swift */,
 				485AACA121AAE764005C56CC /* InputValidator.swift */,
+				480B0E9821CF852600A72133 /* Rx+Validation.swift */,
 			);
 			path = InputValidators;
 			sourceTree = "<group>";
@@ -1948,6 +1951,7 @@
 				48ECF61A21A29FE10078D659 /* CellConfigurable.swift in Sources */,
 				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,
 				48ECF5E421A18F140078D659 /* TermsOfService.swift in Sources */,
+				480B0E9921CF852600A72133 /* Rx+Validation.swift in Sources */,
 				48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */,
 				4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */,
 				48ECF5DD21A18F140078D659 /* ReceiveCoordinator.swift in Sources */,

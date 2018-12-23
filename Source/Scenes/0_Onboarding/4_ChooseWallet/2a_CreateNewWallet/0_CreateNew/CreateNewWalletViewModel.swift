@@ -19,11 +19,6 @@ enum CreateNewWalletUserAction: TrackedUserAction {
      case createWallet(Wallet)
 }
 
-struct EditingValidation {
-    let isEditing: Bool
-    let validation: Validation
-}
-
 // MARK: - CreateNewWalletViewModel
 final class CreateNewWalletViewModel:
 BaseViewModel<
@@ -51,14 +46,7 @@ BaseViewModel<
         let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(unconfirmedPassphrase, confirmingPassphrase)
             .map {
                 validator.validateConfirmedEncryptionPassphrase($0.0, confirmedBy: $0.1)
-            }.filter {
-                if case .invalid(.error(.passphraseIsTooShort)) = $0 {
-                    // Filter out (exclude) the error `passphraseIsTooShort`, covered by encryptionPassphraseValidation
-                    return false
-                } else {
-                    return true
-                }
-        }
+            }
 
         let isContinueButtonEnabled = Driver.combineLatest(
             confirmEncryptionPassphraseValidationValue.map { $0.isValid },
@@ -90,7 +78,7 @@ BaseViewModel<
             unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
-        }.alwaysEmitValidOnlyEmitErrorWhenEditingEnds()
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
             Driver.merge(
@@ -101,7 +89,7 @@ BaseViewModel<
             encryptionPassphraseValidationTrigger // used for triggering, but value never used
         ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
             EditingValidation(isEditing: $0.0, validation: $1.validation)
-        }.alwaysEmitValidOnlyEmitErrorWhenEditingEnds()
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         return Output(
             encryptionPassphrasePlaceholder: Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode))),
@@ -110,21 +98,6 @@ BaseViewModel<
             isContinueButtonEnabled: isContinueButtonEnabled,
             isButtonLoading: activityIndicator.asDriver()
         )
-    }
-}
-
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E == EditingValidation {
-    func alwaysEmitValidOnlyEmitErrorWhenEditingEnds() -> Driver<Validation> {
-        return asDriver().map {
-            switch ($0.isEditing, $0.validation.isValid) {
-            // Always indicate valid
-            case (_, true): return .valid
-            // Always validate when stop editing
-            case (false, _): return $0.validation
-            // Convert (.error, .empty) -> empty when starting editing
-            case (true, false): return .empty
-            }
-        }
     }
 }
 
