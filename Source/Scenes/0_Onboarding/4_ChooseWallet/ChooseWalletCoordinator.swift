@@ -36,8 +36,23 @@ private extension ChooseWalletCoordinator {
 
         push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .createNewWallet: self.toCreateNewWallet()
-            case .restoreWallet: self.toRestoreWallet()
+            case .createNewWallet:
+                self.toEnsureThatYouAreNotBeingWatched(then: {
+                    self.toCreateNewWallet()
+                })
+            case .restoreWallet:
+                self.toEnsureThatYouAreNotBeingWatched(then: {
+                    self.toRestoreWallet()
+                })
+            }
+        }
+    }
+
+    func toEnsureThatYouAreNotBeingWatched(then navigateToNextScne: @escaping () -> Void) {
+        let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
+        push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { userDid in
+            switch userDid {
+            case .understand: navigateToNextScne()
             }
         }
     }

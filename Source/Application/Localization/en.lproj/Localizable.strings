@@ -15,6 +15,7 @@
 "Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
+"Error.Input.Passphrase.Mismatch" = "Passphrases does not match";
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -50,14 +51,19 @@
 "Scene.ChooseWallet.Button.NewWallet" = "New Wallet";
 "Scene.ChooseWallet.Button.RestoreWallet" = "Restore existing wallet";
 
+// MARK: EnsureThatYouAreNotBeingWatched
+"Scene.EnsureThatYouAreNotBeingWatched.Label.Security" = "Security";
+"Scene.EnsureThatYouAreNotBeingWatched.Label.MakeSureAlone" = "Make sure that you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV’s.";
+"Scene.EnsureThatYouAreNotBeingWatched.Button.Understand" = "I understand";
+
 // MARK: CreateNewWallet
 "Scene.CreateNewWallet.Title" = "New wallet";
-"Scene.CreateNewWallet.Label.ChooseNewPassphrase" = "Choose new passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title" = "Set an encrpytion passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value" = "Your encyption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.";
 "Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
-"Scene.CreateNewWallet.Label.UrgeBackup" = "⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "Passphrase is backed up";
-"Scene.CreateNewWallet.Button.CreateNewWallet" = "Create new wallet";
+"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "I have securely backed up my encryption passphrase";
+"Scene.CreateNewWallet.Button.Continue" = "Continue";
 
 // MARK: BackupWallet
 "Scene.BackupWallet.Title" = "Backup Wallet";

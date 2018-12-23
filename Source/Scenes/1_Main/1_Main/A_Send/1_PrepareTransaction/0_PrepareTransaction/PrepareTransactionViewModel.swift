@@ -60,7 +60,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         // MARK: - Validate input (only validate fields when they loose focus)
         let validator = InputValidator()
 
-        let recipientAddressValidation = Driver.merge(
+        let recipientAddressValidationValue = Driver.merge(
             // Validate input from view
             input.fromView.recepientAddress.map { validator.validateRecipient($0) },
 
@@ -68,7 +68,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             deepLinkedTransaction.map { .valid($0.recipient) }
         )
 
-        let amountValidation = Driver.merge(
+        let amountValidationValue = Driver.merge(
             // Validate input from view
             input.fromView.amountToSend.map { validator.validateAmount($0) },
 
@@ -76,12 +76,12 @@ final class PrepareTransactionViewModel: BaseViewModel<
             deepLinkedTransaction.map { .valid($0.amount) }
         )
 
-        let gasPriceValidation = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
+        let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
 
         // MARK: - Validated values
-        let recipient = recipientAddressValidation.map { $0.value }
-        let amountNotBoundByBalance = amountValidation.map { $0.value }
-        let gasPrice = gasPriceValidation.map { $0.value }
+        let recipient = recipientAddressValidationValue.map { $0.value }
+        let amountNotBoundByBalance = amountValidationValue.map { $0.value }
+        let gasPrice = gasPriceValidationValue.map { $0.value }
 
         let balance = latestBalanceAndNonce.map { $0.balance }
 
@@ -95,7 +95,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             balance.mapToVoid()
         )
 
-        let sufficientFundsValidation: Driver<InputValidationResult<Amount>> = sufficientFundsValidationTrigger.withLatestFrom(
+        let sufficientFundsValidationValue: Driver<InputValidationResult<Amount, SufficientFundsValidator.Error>> = sufficientFundsValidationTrigger.withLatestFrom(
             Driver.combineLatest(amountNotBoundByBalance, gasPrice, balance) {
                 guard let amount = $0, let gasPrice = $1, case let balance = $2 else {
                     return .invalid(.empty)
@@ -104,7 +104,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             }
         )
 
-        let amount = sufficientFundsValidation.map { $0.value }
+        let amount = sufficientFundsValidationValue.map { $0.value }
         let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
 
         let payment: Driver<Payment?> = Driver.combineLatest(recipient, amount, gasPrice, nonce) {
@@ -130,16 +130,24 @@ final class PrepareTransactionViewModel: BaseViewModel<
         ]
 
         // Format output
-        let amountErrorMessage = Driver.zip(
-            sufficientFundsValidation.map { $0.errorMessage },
-            amountValidation.map { $0.errorMessage }
-        ) { $0 ?? $1 }
+        let amountValidation: Driver<Validation> = Driver.zip(
+            sufficientFundsValidationValue.map { $0.validation },
+            amountValidationValue.map { $0.validation }
+        ) {
+            switch ($0, $1) {
+            case (.valid, .valid): return Validation.valid
+            case (.empty, .empty): return Validation.empty
+            case (.error, _): return $0
+            case (_, .error): return $1
+            default: incorrectImplementation("Should have handled all cases above")
+            }
+        }
 
-        let gasPriceErrorMessage = input.fromView.gasPriceDidEndEditing
-            .withLatestFrom(gasPriceValidation.map { $0.errorMessage }) { $1 }
+        let gasPriceValidation = input.fromView.gasPriceDidEndEditing
+            .withLatestFrom(gasPriceValidationValue.map { $0.validation }) { $1 }
 
-        let recipientErrorMessage = input.fromView.recipientAddressDidEndEditing
-            .withLatestFrom(recipientAddressValidation.map { $0.errorMessage }) { $1 }
+        let recipientAddressValidation = input.fromView.recipientAddressDidEndEditing
+            .withLatestFrom(recipientAddressValidationValue.map { $0.validation }) { $1 }
 
         let balanceFormatted = balance.map { €.Labels.Balance.value($0.display) }
         let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
@@ -155,13 +163,13 @@ final class PrepareTransactionViewModel: BaseViewModel<
             balance: balanceFormatted,
 
             recipient: recipientFormatted,
-            recipientAddressValidation: recipientErrorMessage,
+            recipientAddressValidation: recipientAddressValidation,
 
             amount: amountFormatted,
-            amountValidation: amountErrorMessage,
+            amountValidation: amountValidation,
 
             gasPricePlaceholder: gasPricePlaceholder,
-            gasPriceValidation: gasPriceErrorMessage
+            gasPriceValidation: gasPriceValidation
         )
     }
 }
@@ -195,13 +203,13 @@ extension PrepareTransactionViewModel {
         let balance: Driver<String>
 
         let recipient: Driver<String>
-        let recipientAddressValidation: Driver<String?>
+        let recipientAddressValidation: Driver<Validation>
 
         let amount: Driver<String>
-        let amountValidation: Driver<String?>
+        let amountValidation: Driver<Validation>
 
         let gasPricePlaceholder: Driver<String>
-        let gasPriceValidation: Driver<String?>
+        let gasPriceValidation: Driver<Validation>
     }
 }
 
@@ -213,19 +221,19 @@ extension PrepareTransactionViewModel {
         private let gasPriceValidator = GasPriceValidator()
         private let sufficientFundsValidator = SufficientFundsValidator()
 
-        func validateRecipient(_ recipient: String?) -> InputValidationResult<Address> {
+        func validateRecipient(_ recipient: String?) -> InputValidationResult<Address, AddressValidator.Error> {
             return addressValidator.validate(input: recipient)
         }
 
-        func validate(amount: Amount, gasPrice: GasPrice, lessThanBalance balance: Amount) -> InputValidationResult<Amount> {
+        func validate(amount: Amount, gasPrice: GasPrice, lessThanBalance balance: Amount) -> InputValidationResult<Amount, SufficientFundsValidator.Error> {
             return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
         }
 
-        func validateAmount(_ amount: String) -> InputValidationResult<Amount> {
+        func validateAmount(_ amount: String) -> InputValidationResult<Amount, AmountValidator.Error> {
             return amountValidator.validate(input: amount)
         }
 
-        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<GasPrice> {
+        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<GasPrice, GasPriceValidator.Error> {
             return gasPriceValidator.validate(input: gasPrice)
         }
     }

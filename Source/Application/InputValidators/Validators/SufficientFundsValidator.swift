@@ -13,12 +13,13 @@ import Validator
 private typealias € = L10n.Error.Input.Amount
 
 struct SufficientFundsValidator: InputValidator {
-    enum Error: Int, Swift.Error {
+    enum Error: Swift.Error {
         case insufficientFunds
+        case amountError(AmountError)
     }
 
     // swiftlint:disable:next large_tuple
-    func validate(input: (amount: Amount, gasPrice: GasPrice, balance: Amount)) -> InputValidationResult<Amount> {
+    func validate(input: (amount: Amount, gasPrice: GasPrice, balance: Amount)) -> InputValidationResult<Amount, Error> {
         let (amount, gasPrice, balance) = input
 
         do {
@@ -27,7 +28,7 @@ struct SufficientFundsValidator: InputValidator {
                 return self.error(Error.insufficientFunds)
             }
         } catch let error as AmountError {
-            return .invalid(.error(message: error.errorMessage))
+            return .invalid(.error(.amountError(error)))
         } catch {
             incorrectImplementation("AmountError should cover all errors")
         }
@@ -40,6 +41,7 @@ extension SufficientFundsValidator.Error: InputError {
     var errorMessage: String {
         switch self {
         case .insufficientFunds: return €.exceedingBalance
+        case .amountError(let amountError): return amountError.errorMessage
         }
     }
 }

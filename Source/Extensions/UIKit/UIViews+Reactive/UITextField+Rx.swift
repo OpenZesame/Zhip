@@ -29,17 +29,3 @@ extension Reactive where Base: UITextField {
         return isEditing.filter { !$0 }.mapToVoid()
     }
 }
-
-extension TextField {
-    func updateWith(validationErrorMessage: String?) {
-        errorMessage = validationErrorMessage
-    }
-}
-
-extension Reactive where Base: TextField {
-    var validation: Binder<String?> {
-        return Binder<String?>(base) {
-            $0.updateWith(validationErrorMessage: $1)
-        }
-    }
-}

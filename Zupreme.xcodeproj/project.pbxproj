@@ -13,6 +13,10 @@
 		4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 480935482195D1BE009CA3FD /* Localizable.strings */; };
 		4809354E2195D1BE009CA3FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4809354B2195D1BE009CA3FD /* LaunchScreen.storyboard */; };
 		480B0E8A21CCEFDE00A72133 /* UIView+MotionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */; };
+		480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E8F21CE0B2800A72133 /* EnsureThatYouAreNotBeingWatchedView.swift */; };
+		480B0E9421CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */; };
+		480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */; };
+		480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9621CE2C8E00A72133 /* AppAppearance.swift */; };
 		4819BD8B21C0CAEF00443F2A /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		4819BD8D21C0CAEF00443F2A /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
 		4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
@@ -269,6 +273,10 @@
 		480935492195D1BE009CA3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4809354C2195D1BE009CA3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+MotionEffect.swift"; sourceTree = "<group>"; };
+		480B0E8F21CE0B2800A72133 /* EnsureThatYouAreNotBeingWatchedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsureThatYouAreNotBeingWatchedView.swift; sourceTree = "<group>"; };
+		480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsureThatYouAreNotBeingWatchedController.swift; sourceTree = "<group>"; };
+		480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsureThatYouAreNotBeingWatchedViewModel.swift; sourceTree = "<group>"; };
+		480B0E9621CE2C8E00A72133 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
 		4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalController.swift; sourceTree = "<group>"; };
 		4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalViewModel.swift; sourceTree = "<group>"; };
@@ -570,6 +578,16 @@
 			path = UIView;
 			sourceTree = "<group>";
 		};
+		480B0E8B21CE09D600A72133 /* 1_EnsureThatYouAreNotBeingWatched */ = {
+			isa = PBXGroup;
+			children = (
+				480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */,
+				480B0E8F21CE0B2800A72133 /* EnsureThatYouAreNotBeingWatchedView.swift */,
+				480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */,
+			);
+			path = 1_EnsureThatYouAreNotBeingWatched;
+			sourceTree = "<group>";
+		};
 		4819BD8421C0BE8E00443F2A /* B_ConfirmWalletRemoval */ = {
 			isa = PBXGroup;
 			children = (
@@ -792,6 +810,7 @@
 				483CE9AD2194E9E300BED31C /* Enum+Reflection.swift */,
 				483CE9AF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift */,
 				483CE9B02194E9E300BED31C /* Bootstrap.swift */,
+				480B0E9621CE2C8E00A72133 /* AppAppearance.swift */,
 				483CE9B12194E9E300BED31C /* ConfigurationDetection.swift */,
 			);
 			path = Utils;
@@ -1439,13 +1458,14 @@
 			children = (
 				48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */,
 				48ECF5B221A18F140078D659 /* 0_ChooseWallet */,
-				48ECF5B721A18F140078D659 /* 1a_CreateNewWallet */,
-				48ECF5AD21A18F140078D659 /* 1b_RestoreWallet */,
+				480B0E8B21CE09D600A72133 /* 1_EnsureThatYouAreNotBeingWatched */,
+				48ECF5B721A18F140078D659 /* 2a_CreateNewWallet */,
+				48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */,
 			);
 			path = 4_ChooseWallet;
 			sourceTree = "<group>";
 		};
-		48ECF5AD21A18F140078D659 /* 1b_RestoreWallet */ = {
+		48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48FD562C21B92F060026690E /* RestoreWalletUsingKeystore */,
@@ -1455,7 +1475,7 @@
 				48ECF5B021A18F140078D659 /* RestoreWallet.swift */,
 				48ECF5B121A18F140078D659 /* RestoreWalletCoordinator.swift */,
 			);
-			path = 1b_RestoreWallet;
+			path = 2b_RestoreWallet;
 			sourceTree = "<group>";
 		};
 		48ECF5B221A18F140078D659 /* 0_ChooseWallet */ = {
@@ -1468,14 +1488,14 @@
 			path = 0_ChooseWallet;
 			sourceTree = "<group>";
 		};
-		48ECF5B721A18F140078D659 /* 1a_CreateNewWallet */ = {
+		48ECF5B721A18F140078D659 /* 2a_CreateNewWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5B821A18F140078D659 /* CreateNewWalletCoordinator.swift */,
 				48ECF5B921A18F140078D659 /* 0_CreateNew */,
 				48ECF5BD21A18F140078D659 /* 1_BackUp */,
 			);
-			path = 1a_CreateNewWallet;
+			path = 2a_CreateNewWallet;
 			sourceTree = "<group>";
 		};
 		48ECF5B921A18F140078D659 /* 0_CreateNew */ = {
@@ -1870,6 +1890,7 @@
 				48C8A0032143C5B20063B0FA /* UITextField+Styling.swift in Sources */,
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */,
+				480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
 				48ECF5C221A18F140078D659 /* TitledScene.swift in Sources */,
 				48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */,
 				48BAC4E12195D83000A626FD /* Assets-Constants.swift in Sources */,
@@ -1981,6 +2002,7 @@
 				48F4098D21BD270B001C499F /* BackUpKeystore.swift in Sources */,
 				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
 				48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */,
+				480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
 				48ECF5D221A18F140078D659 /* RemovePincodeView.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */,
@@ -2018,6 +2040,7 @@
 				483CE9E42194E9E300BED31C /* UserDefaults+KeyValueStoring.swift in Sources */,
 				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
 				48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */,
+				480B0E9421CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */,
 				4819BD8D21C0CAEF00443F2A /* ConfirmWalletRemovalViewModel.swift in Sources */,
@@ -2037,6 +2060,7 @@
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
 				483CE9DB2194E9E300BED31C /* Toast.swift in Sources */,
 				483CE9E32194E9E300BED31C /* PreferencesKey.swift in Sources */,
+				480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */,
 				48ECF5EC21A18F140078D659 /* WarningERC20View.swift in Sources */,
 				48F4097521BBC673001C499F /* BackUpRevealedKeyPairView.swift in Sources */,
 				483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */,

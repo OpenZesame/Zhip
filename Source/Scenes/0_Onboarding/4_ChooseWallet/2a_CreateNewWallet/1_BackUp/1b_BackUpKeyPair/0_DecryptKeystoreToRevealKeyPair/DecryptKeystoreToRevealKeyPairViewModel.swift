@@ -50,11 +50,11 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         // MARK: - Validate input (only validate fields when they loose focus)
         let validator = InputValidator()
 
-        let encryptionPassphraseValidationResult = input.fromView.encryptionPassphrase
+        let encryptionPassphraseValidationValue = input.fromView.encryptionPassphrase
             .withLatestFrom(wallet) { (passphrase: $0, wallet: $1) }
             .map { validator.validateEncryptionPassphrase($0.passphrase, for: $0.wallet) }
 
-        let encryptionPassphrase = encryptionPassphraseValidationResult.map { $0.value?.validPassphrase }.filterNil()
+        let encryptionPassphrase = encryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()
 
         bag <~ [
             input.fromView.revealTrigger
@@ -81,8 +81,8 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         return Output(
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
-            encryptionPassphraseValidation: encryptionPassphraseValidationResult.map { $0.errorMessage },
-            isRevealButtonEnabled: encryptionPassphraseValidationResult.map { $0.isValid },
+            encryptionPassphraseValidation: encryptionPassphraseValidationValue.map { $0.validation },
+            isRevealButtonEnabled: encryptionPassphraseValidationValue.map { $0.isValid },
             isRevealButtonLoading: activityIndicator.asDriver()
         )
     }
@@ -97,16 +97,16 @@ extension DecryptKeystoreToRevealKeyPairViewModel {
 
     struct Output {
         let encryptionPassphrasePlaceholder: Driver<String>
-        let encryptionPassphraseValidation: Driver<String?>
+        let encryptionPassphraseValidation: Driver<Validation>
         let isRevealButtonEnabled: Driver<Bool>
         let isRevealButtonLoading: Driver<Bool>
     }
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> InputValidationResult<WalletEncryptionPassphrase> {
+        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> InputValidationResult<WalletEncryptionPassphrase, EncryptionPassphraseValidator.Error> {
             let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
-            return validator.validate(input: passphrase)
+            return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
         }
     }
 }

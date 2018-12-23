@@ -40,12 +40,13 @@ extension UITextField {
 extension UITextField {
     func apply(style: Style) {
         textColor = style.textColor ?? .defaultText
+        placeholder = style.placeholder
         font = style.font ?? UIFont.Field.textAndPlaceholder
         isSecureTextEntry = style.isSecureTextEntry ?? false
         if let keyboardType = style.keyboardType {
             self.keyboardType = keyboardType
         }
-        backgroundColor = style.backgroundColor ?? .white
+        backgroundColor = style.backgroundColor ?? .clear
     }
 }
 

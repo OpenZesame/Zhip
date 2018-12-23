@@ -16,7 +16,7 @@ struct AmountValidator: InputValidator {
 
     typealias Error = AmountError
 
-    func validate(input: String) -> InputValidationResult<Amount> {
+    func validate(input: String) -> InputValidationResult<Amount, Error> {
         let amount: Amount
         do {
             amount = try Amount(string: input)

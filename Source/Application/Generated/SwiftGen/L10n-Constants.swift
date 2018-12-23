@@ -41,6 +41,8 @@ internal enum L10n {
         }
       }
       internal enum Passphrase {
+        /// Passphrases does not match
+        internal static let mismatch = L10n.tr("Localizable", "Error.Input.Passphrase.Mismatch")
         /// Passphrase have length >%d
         internal static func tooShort(_ p1: Int) -> String {
           return L10n.tr("Localizable", "Error.Input.Passphrase.TooShort", p1)
@@ -207,11 +209,11 @@ internal enum L10n {
       /// New wallet
       internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Title")
       internal enum Button {
-        /// Create new wallet
-        internal static let createNewWallet = L10n.tr("Localizable", "Scene.CreateNewWallet.Button.CreateNewWallet")
+        /// Continue
+        internal static let `continue` = L10n.tr("Localizable", "Scene.CreateNewWallet.Button.Continue")
       }
       internal enum Checkbox {
-        /// Passphrase is backed up
+        /// I have securely backed up my encryption passphrase
         internal static let passphraseIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp")
       }
       internal enum Field {
@@ -222,11 +224,13 @@ internal enum L10n {
           return L10n.tr("Localizable", "Scene.CreateNewWallet.Field.EncryptionPassphrase", p1)
         }
       }
-      internal enum Label {
-        /// Choose new passphrase
-        internal static let chooseNewPassphrase = L10n.tr("Localizable", "Scene.CreateNewWallet.Label.ChooseNewPassphrase")
-        /// ⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.
-        internal static let urgeBackup = L10n.tr("Localizable", "Scene.CreateNewWallet.Label.UrgeBackup")
+      internal enum Labels {
+        internal enum ChooseNewPassphrase {
+          /// Set an encrpytion passphrase
+          internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title")
+          /// Your encyption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.
+          internal static let value = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value")
+        }
       }
     }
     internal enum DecryptKeystoreToRevealKeyPair {
@@ -241,6 +245,18 @@ internal enum L10n {
         internal static func encryptionPassphrase(_ p1: Int) -> String {
           return L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase", p1)
         }
+      }
+    }
+    internal enum EnsureThatYouAreNotBeingWatched {
+      internal enum Button {
+        /// I understand
+        internal static let understand = L10n.tr("Localizable", "Scene.EnsureThatYouAreNotBeingWatched.Button.Understand")
+      }
+      internal enum Label {
+        /// Make sure that you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV’s.
+        internal static let makeSureAlone = L10n.tr("Localizable", "Scene.EnsureThatYouAreNotBeingWatched.Label.MakeSureAlone")
+        /// Security
+        internal static let security = L10n.tr("Localizable", "Scene.EnsureThatYouAreNotBeingWatched.Label.Security")
       }
     }
     internal enum GotTransactionReceipt {
