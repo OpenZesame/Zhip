@@ -19,6 +19,11 @@ enum CreateNewWalletUserAction: TrackedUserAction {
      case createWallet(Wallet)
 }
 
+struct EditingValidation {
+    let isEditing: Bool
+    let validation: Validation
+}
+
 // MARK: - CreateNewWalletViewModel
 final class CreateNewWalletViewModel:
 BaseViewModel<
@@ -38,30 +43,35 @@ BaseViewModel<
             navigator.next(userAction)
         }
 
+        let unconfirmedPassphrase = input.fromView.newEncryptionPassphrase
+        let confirmingPassphrase = input.fromView.confirmedNewEncryptionPassphrase
+
         let validator = InputValidator()
 
-        let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(
-            input.fromView.newEncryptionPassphrase,
-            input.fromView.confirmedNewEncryptionPassphrase
-        ) { (passphrase: $0, confirming: $1) }.map {
-            validator.validateConfirmedEncryptionPassphrase($0.passphrase, confirmedBy: $0.confirming)
-        }.filter {
-            if case .invalid(.error(.passphraseIsTooShort)) = $0 {
-                // Filter out (exclude) the error `passphraseIsTooShort`, covered by encryptionPassphraseValidation
-                return false
-            } else {
-                return true
-            }
+        let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(unconfirmedPassphrase, confirmingPassphrase)
+            .map {
+                validator.validateConfirmedEncryptionPassphrase($0.0, confirmedBy: $0.1)
+            }.filter {
+                if case .invalid(.error(.passphraseIsTooShort)) = $0 {
+                    // Filter out (exclude) the error `passphraseIsTooShort`, covered by encryptionPassphraseValidation
+                    return false
+                } else {
+                    return true
+                }
         }
 
-        let confirmedEncryptionPassphrase = confirmEncryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()
-
-        let isContinueButtonEnabled = Driver.combineLatest(confirmEncryptionPassphraseValidationValue.map { $0.isValid }, input.fromView.isHaveBackedUpPassphraseCheckboxChecked) { $0 && $1 }
+        let isContinueButtonEnabled = Driver.combineLatest(
+            confirmEncryptionPassphraseValidationValue.map { $0.isValid },
+            input.fromView.isHaveBackedUpPassphraseCheckboxChecked
+        ) { (isPassphraseConfirmed, isBackedUpChecked) in
+            isPassphraseConfirmed && isBackedUpChecked
+        }
 
         let activityIndicator = ActivityIndicator()
 
         bag <~ [
-            input.fromView.createWalletTrigger.withLatestFrom(confirmedEncryptionPassphrase) { $1 }
+            input.fromView.createWalletTrigger
+                .withLatestFrom(confirmEncryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()) { $1 }
                 .flatMapLatest {
                     self.useCase.createNewWallet(encryptionPassphrase: $0)
                         .trackActivity(activityIndicator)
@@ -71,47 +81,27 @@ BaseViewModel<
                 .drive()
         ]
 
-        let encryptionPassphraseValidationValue = input.fromView.newEncryptionPassphrase.map {
-            validator.validateNewEncryptionPassphrase($0)
-        }
-
         let encryptionPassphraseValidationTrigger = Driver.merge(
-            input.fromView.newEncryptionPassphrase.mapToVoid().map { true },
+            unconfirmedPassphrase.mapToVoid().map { true },
             input.fromView.isEditingNewEncryptionPassphrase
         )
 
-        let encryptionPassphraseValidation: Driver<Validation> = encryptionPassphraseValidationTrigger.withLatestFrom(encryptionPassphraseValidationValue) {
-            (isEditingPassphrase: $0, validationValue: $1)
-        }.map {
-            switch ($0.isEditingPassphrase, $0.validationValue) {
-            // Always indicate valid
-            case (_, .valid): return .valid
-            // Always validate when stop editing
-            case (false, _): return $0.validationValue.validation
-            // Convert invalid -> empty when starting editing
-            case (true, .invalid): return .empty
-            }
-        }
+        let encryptionPassphraseValidation: Driver<Validation> = encryptionPassphraseValidationTrigger.withLatestFrom(
+            unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
+        ) {
+            EditingValidation(isEditing: $0, validation: $1.validation)
+        }.alwaysEmitValidOnlyEmitErrorWhenEditingEnds()
 
         let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
             Driver.merge(
-                // map editChanges to `isEditing:true`
-                input.fromView.confirmedNewEncryptionPassphrase.mapToVoid().map { true },
+                // map `editingChanged` to `editingDidBegin`
+                confirmingPassphrase.mapToVoid().map { true },
                 input.fromView.isEditingConfirmedEncryptionPassphrase
             ),
             encryptionPassphraseValidationTrigger // used for triggering, but value never used
         ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
-            (isEditingConfirmPassphrase: $0.1, validationValue: $1)
-        }.map {
-            switch ($0.isEditingConfirmPassphrase, $0.validationValue) {
-            // Always indicate valid
-            case (_, .valid): return .valid
-            // Always validate when stop editing
-            case (false, _): return $0.validationValue.validation
-            // Convert invalid -> empty when starting editing
-            case (true, .invalid): return .empty
-            }
-        }
+            EditingValidation(isEditing: $0.0, validation: $1.validation)
+        }.alwaysEmitValidOnlyEmitErrorWhenEditingEnds()
 
         return Output(
             encryptionPassphrasePlaceholder: Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode))),
@@ -120,6 +110,21 @@ BaseViewModel<
             isContinueButtonEnabled: isContinueButtonEnabled,
             isButtonLoading: activityIndicator.asDriver()
         )
+    }
+}
+
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E == EditingValidation {
+    func alwaysEmitValidOnlyEmitErrorWhenEditingEnds() -> Driver<Validation> {
+        return asDriver().map {
+            switch ($0.isEditing, $0.validation.isValid) {
+            // Always indicate valid
+            case (_, true): return .valid
+            // Always validate when stop editing
+            case (false, _): return $0.validation
+            // Convert (.error, .empty) -> empty when starting editing
+            case (true, false): return .empty
+            }
+        }
     }
 }
 
