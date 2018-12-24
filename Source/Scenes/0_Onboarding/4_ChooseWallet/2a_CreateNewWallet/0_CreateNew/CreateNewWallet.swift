@@ -15,3 +15,8 @@ final class CreateNewWallet: Scene<CreateNewWalletView> {}
 extension CreateNewWallet {
     static let title = €.title
 }
+
+extension CreateNewWallet: LeftBarButtonMaking {
+    static let makeLeft: BarButton = .cancel
+}
+

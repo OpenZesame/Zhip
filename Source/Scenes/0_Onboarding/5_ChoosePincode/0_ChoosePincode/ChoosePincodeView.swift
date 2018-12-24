@@ -52,7 +52,7 @@ private extension ChoosePincodeView {
         }
 
         proceedWithConfirmationButton.withStyle(.primary) {
-            $0.title(€.Button.proceedWithConfirmation)
+            $0.title(€.Button.done)
                 .disabled()
         }
     }

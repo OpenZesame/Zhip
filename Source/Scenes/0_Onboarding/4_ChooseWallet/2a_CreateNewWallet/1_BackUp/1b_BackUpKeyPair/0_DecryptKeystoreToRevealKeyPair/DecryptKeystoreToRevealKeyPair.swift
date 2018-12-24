@@ -16,6 +16,6 @@ extension DecryptKeystoreToRevealKeyPair {
     static let title = €.title
 }
 
-extension DecryptKeystoreToRevealKeyPair: RightBarButtonMaking, BackButtonHiding {
+extension DecryptKeystoreToRevealKeyPair: RightBarButtonMaking {
     static let makeRight: BarButton = .done
 }

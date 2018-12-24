@@ -57,7 +57,8 @@ extension Coordinating {
         childCoordinators.append(child)
 
         // Start the child coordinator (which is responsible for setting up its root UIViewController and presenting it)
-        // and pass along the `didStart` closure, which the child should invoke or delegate to invoke.
+        // and pass along the `didStart` closure, which the child should invoke or forward it along until some other
+        // entity finally invokes.
         child.start(didStart: didStart)
 
         // Present the new NavigationController. The child coordinator is responsible for presenting its own root ViewController

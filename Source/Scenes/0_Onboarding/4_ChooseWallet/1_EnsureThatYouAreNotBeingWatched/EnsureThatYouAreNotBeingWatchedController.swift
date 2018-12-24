@@ -9,3 +9,8 @@
 import UIKit
 
 final class EnsureThatYouAreNotBeingWatched: Scene<EnsureThatYouAreNotBeingWatchedView> {}
+
+extension EnsureThatYouAreNotBeingWatched: LeftBarButtonMaking {
+    static let makeLeft: BarButton = .cancel
+}
+

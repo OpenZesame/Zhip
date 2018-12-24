@@ -11,31 +11,32 @@ import RxSwift
 
 final class BackupWalletView: ScrollingStackView {
 
-    private lazy var beSafeLabel = UILabel()
+    private lazy var backUpLabel                    = UILabel()
+    private lazy var urgeBackupLabel                = UILabel()
 
-    private lazy var copyKeystoreButton = UIButton()
+    private lazy var privateKeyLabel                = UILabel()
+    private lazy var revealPrivateKeyButton         = UIButton()
+    private lazy var privateKeyButtonContainer      = UIStackView(arrangedSubviews: [revealPrivateKeyButton, .spacer])
+    private lazy var privateKeyViews                = UIStackView(arrangedSubviews: [privateKeyLabel, privateKeyButtonContainer])
 
-    private lazy var revealKeystoreButton = UIButton()
+    private lazy var keystoreLabel                  = UILabel()
+    private lazy var copyKeystoreButton             = UIButton()
+    private lazy var revealKeystoreButton           = UIButton()
+    private lazy var keystoreButtons                = UIStackView(arrangedSubviews: [revealKeystoreButton, copyKeystoreButton, .spacer])
+    private lazy var keystoreViews                  = UIStackView(arrangedSubviews: [keystoreLabel, keystoreButtons])
 
-    private lazy var keystoreButtons = UIStackView(arrangedSubviews: [copyKeystoreButton, revealKeystoreButton])
-
-    private lazy var revealPrivateKeyButton = UIButton()
-
-    private lazy var urgeUserToSecurlyBackupPassphraseLabel = UILabel()
-
-    private lazy var understandsRisksCheckbox = CheckboxWithLabel()
-
-    private lazy var haveBackedUpProceedButton = UIButton()
+    private lazy var understandsRisksCheckbox       = CheckboxWithLabel()
+    private lazy var doneButton                     = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
-        beSafeLabel,
-        keystoreButtons,
-        revealPrivateKeyButton,
-        urgeUserToSecurlyBackupPassphraseLabel,
+        backUpLabel,
+        urgeBackupLabel,
+        privateKeyViews,
+        keystoreViews,
+        .spacer,
         understandsRisksCheckbox,
-        haveBackedUpProceedButton,
-        .spacer
+        doneButton
     ]
 
     override func setup() {
@@ -48,7 +49,7 @@ extension BackupWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isProceedButtonEnabled    --> haveBackedUpProceedButton.rx.isEnabled
+            viewModel.isDoneButtonEnabled    --> doneButton.rx.isEnabled
         ]
     }
 
@@ -58,7 +59,7 @@ extension BackupWalletView: ViewModelled {
             revealKeystoreTrigger: revealKeystoreButton.rx.tap.asDriver(),
             revealPrivateKeyTrigger: revealPrivateKeyButton.rx.tap.asDriver(),
             isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
-            proceedTrigger: haveBackedUpProceedButton.rx.tap.asDriver()
+            doneTrigger: doneButton.rx.tap.asDriver()
         )
     }
 }
@@ -67,34 +68,53 @@ private typealias € = L10n.Scene.BackupWallet
 private extension BackupWalletView {
     // swiftlint:disable:next function_body_length
     func setupSubviews() {
-        beSafeLabel.withStyle(.header) {
-            $0.text(€.Label.storeKeystoreSecurely)
+
+        backUpLabel.withStyle(.header) {
+            $0.text(€.Label.backUpKeys)
         }
 
-        copyKeystoreButton.withStyle(.primary) {
-            $0.title(€.Button.copyKeystore)
+        urgeBackupLabel.withStyle(.body) {
+            $0.text(€.Label.urgeBackup)
         }
 
-        revealKeystoreButton.withStyle(.secondary) {
-            $0.title(€.Button.revealKeystore)
+        privateKeyLabel.withStyle(.checkbox) {
+            $0.text(€.Label.privateKey)
+        }
+
+        revealPrivateKeyButton.withStyle(.hollow) {
+            $0.title(€.Buttons.reveal)
+        }
+
+        privateKeyButtonContainer.withStyle(.horizontal)
+
+        privateKeyViews.withStyle(.vertical)
+
+        keystoreLabel.withStyle(.checkbox) {
+            $0.text(€.Label.keystore)
+        }
+
+        copyKeystoreButton.withStyle(.hollow) {
+            $0.title(€.Button.copy)
+        }
+
+        revealKeystoreButton.withStyle(.hollow) {
+            $0.title(€.Buttons.reveal)
         }
 
         keystoreButtons.withStyle(.horizontal)
 
-        revealPrivateKeyButton.withStyle(.secondary) {
-            $0.title(€.Button.revealPrivateKey)
-        }
-
-        urgeUserToSecurlyBackupPassphraseLabel.withStyle(.body) {
-            $0.text(€.Label.urgeSecureBackupOfKeystore)
-        }
+        keystoreViews.withStyle(.vertical)
 
         understandsRisksCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.keystoreIsBackedUp)
+            $0.text(€.Checkbox.haveSecurelyBackedUp)
         }
 
-        haveBackedUpProceedButton.withStyle(.secondary) {
-            $0.title(€.Button.haveBackedUpProceed)
+        [copyKeystoreButton, revealKeystoreButton, revealPrivateKeyButton].forEach {
+            $0.width(136)
+        }
+
+        doneButton.withStyle(.primary) {
+            $0.title(€.Button.done)
                 .disabled()
         }
     }

@@ -143,7 +143,7 @@ private extension SettingsCoordinator {
         },
             navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {
-                case .abort, .backUp: dismissModalFlow(true)
+                case .cancel, .backUp: dismissModalFlow(true)
             }
         })
     }

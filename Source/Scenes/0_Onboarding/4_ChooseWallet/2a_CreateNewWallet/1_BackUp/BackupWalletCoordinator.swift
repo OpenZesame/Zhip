@@ -17,12 +17,11 @@ import RxCocoa
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinator.NavigationStep> {
     enum NavigationStep {
         case backUp
-        case abort
+        case cancel
     }
 
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>
-    private let wasOpenedFromSettings: Bool
 
     init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil) {
         self.useCase = useCase
@@ -36,7 +35,6 @@ final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinator.Nav
                 return wallet
             }.asDriverOnErrorReturnEmpty()
         }
-        self.wasOpenedFromSettings = wallet == nil
         super.init(navigationController: navigationController)
     }
 
@@ -50,13 +48,13 @@ private extension BackupWalletCoordinator {
 
     func toBackUpWallet() {
 
-        let viewModel = BackupWalletViewModel(wallet: wallet, isDismissable: wasOpenedFromSettings)
+        let viewModel = BackupWalletViewModel(wallet: wallet)
 
         push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .revealKeystore: self.toRevealKeystore()
             case .revealPrivateKey: self.toDecryptKeystoreToRevealKeyPair()
-            case .abort: self.navigator.next(.abort)
+            case .cancel: self.cancel()
             case .backupWallet: self.finish()
             }
         }
@@ -65,10 +63,10 @@ private extension BackupWalletCoordinator {
     func toDecryptKeystoreToRevealKeyPair() {
         presentModalCoordinator(makeCoordinator: {
             DecryptKeystoreCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
-        },
-            navigationHandler: { userFinished, dismissModalFlow in
+        }, navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {
                 case .backingUpKeyPair: dismissModalFlow(true)
+                case .dismiss: dismissModalFlow(true)
                 }
         })
     }
@@ -81,6 +79,10 @@ private extension BackupWalletCoordinator {
             case .finished: dismissScene(true, nil)
             }
         }
+    }
+
+    func cancel() {
+        navigator.next(.cancel)
     }
 
     func finish() {

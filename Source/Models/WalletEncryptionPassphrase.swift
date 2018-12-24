@@ -46,10 +46,27 @@ extension WalletEncryptionPassphrase {
 }
 
 // MARK: - Error
+import Zesame
 extension WalletEncryptionPassphrase {
     enum Error: Swift.Error {
         case passphrasesDoesNotMatch
         case passphraseIsTooShort(mustAtLeastHaveLength: Int)
+        case incorrectPassphrase(backingUpWalletJustCreated: Bool)
+
+        init?(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) {
+            switch walletImportError {
+            case .incorrectPasshrase: self = .incorrectPassphrase(backingUpWalletJustCreated: backingUpWalletJustCreated)
+            default: return nil
+            }
+        }
+
+        init?(error: Swift.Error, backingUpWalletJustCreated: Bool = false) {
+           guard
+            let zesameError = error as? Zesame.Error,
+            case .walletImport(let walletImportError) = zesameError
+            else { return nil }
+            self.init(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
+        }
     }
 }
 

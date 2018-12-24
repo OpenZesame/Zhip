@@ -11,7 +11,7 @@ import Zesame
 
 final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.NavigationStep> {
     enum NavigationStep {
-        case finishedRestoring(wallet: Wallet)
+        case finishedRestoring(wallet: Wallet), cancel
     }
 
     private let useCase: WalletUseCase
@@ -22,12 +22,22 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.N
     }
 
     override func start(didStart: Completion? = nil) {
-        toRestoreWallet()
+        toEnsureThatYouAreNotBeingWatched()
     }
 }
 
 // MARK: - Private
 private extension RestoreWalletCoordinator {
+
+    func toEnsureThatYouAreNotBeingWatched() {
+        let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
+        push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .understand: self.toRestoreWallet()
+            case .cancel: self.cancel()
+            }
+        }
+    }
 
     func toRestoreWallet() {
         let viewModel = RestoreWalletViewModel(useCase: useCase)
@@ -41,5 +51,9 @@ private extension RestoreWalletCoordinator {
 
     func finishedRestoring(wallet: Wallet) {
         navigator.next(.finishedRestoring(wallet: wallet))
+    }
+
+    func cancel() {
+        navigator.next(.cancel)
     }
 }

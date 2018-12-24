@@ -16,13 +16,15 @@ final class BackUpRevealedKeyPairView: ScrollingStackView {
     private lazy var privateKeyTextView                 = TitledValueView()
     private lazy var publicKeyUncompressedTextView      = TitledValueView()
     private lazy var copyPrivateKeyButton               = UIButton()
+    private lazy var copyPrivateKeyButtonContainer      = UIStackView(arrangedSubviews: [copyPrivateKeyButton, .spacer])
     private lazy var copyUncompressedPublicKeyButton    = UIButton()
+    private lazy var copyPublicKeyButtonContainer       = UIStackView(arrangedSubviews: [copyUncompressedPublicKeyButton, .spacer])
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyTextView,
-        copyPrivateKeyButton,
+        copyPrivateKeyButtonContainer,
         publicKeyUncompressedTextView,
-        copyUncompressedPublicKeyButton,
+        copyPublicKeyButtonContainer,
         .spacer
     ]
 
@@ -52,17 +54,30 @@ extension BackUpRevealedKeyPairView: ViewModelled {
 private typealias € = L10n.Scene.BackUpRevealedKeyPair
 private extension BackUpRevealedKeyPairView {
     func setupSubviews() {
-        privateKeyTextView.titled(€.Label.privateKey)
-        privateKeyTextView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
-        publicKeyUncompressedTextView.titled(€.Label.uncompressedPublicKey)
-
-        copyPrivateKeyButton.withStyle(.secondary) {
-            $0.title(€.Button.copyPrivateKey)
+        privateKeyTextView.withStyles {
+            $0.text(€.Label.privateKey)
         }
 
-        copyUncompressedPublicKeyButton.withStyle(.secondary) {
-            $0.title(€.Button.copyPublicKey)
+        privateKeyTextView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+
+        copyPrivateKeyButton.withStyle(.hollow) {
+            $0.title(€.Buttons.copy)
+        }
+
+        copyPrivateKeyButtonContainer.withStyle(.horizontal)
+
+        publicKeyUncompressedTextView.withStyles {
+            $0.text(€.Label.uncompressedPublicKey)
+        }
+
+        copyUncompressedPublicKeyButton.withStyle(.hollow) {
+            $0.title(€.Buttons.copy)
+        }
+
+        copyPublicKeyButtonContainer.withStyle(.horizontal)
+
+        [copyPrivateKeyButton, copyUncompressedPublicKeyButton].forEach {
+            $0.width(136)
         }
     }
 }

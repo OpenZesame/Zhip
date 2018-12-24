@@ -12,7 +12,7 @@ import RxCocoa
 
 // MARK: - User action and navigation steps
 enum EnsureThatYouAreNotBeingWatchedUserAction: TrackedUserAction {
-    case /*user did*/understand
+    case /*user did*/understand, cancel
 }
 
 // MARK: - EnsureThatYouAreNotBeingWatchedViewModel
@@ -31,6 +31,10 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
         // MARK: Navigate
         bag <~ [
+            input.fromController.leftBarButtonTrigger
+                .do(onNext: { userDid(.cancel) })
+                .drive(),
+
             input.fromView.understandTrigger
                 .do(onNext: { userDid(.understand) })
                 .drive()

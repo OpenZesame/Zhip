@@ -11,16 +11,14 @@ import RxSwift
 import RxCocoa
 
 final class TitledValueView: UIStackView {
-
+    private var isSetup = false
     fileprivate let titleLabel = UILabel()
     fileprivate let valueTextView = UITextView()
 
-    init() {
-        super.init(frame: .zero)
-        setupSubviews()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard isSetup else { incorrectImplementation("you should call `withStyles` method after init")}
     }
-
-    required init(coder: NSCoder) { interfaceBuilderSucks }
 }
 
 extension TitledValueView {
@@ -30,14 +28,25 @@ extension TitledValueView {
         forValue valueStyle: UITextView.Style? = nil,
         customizeTitleStyle: ((UILabel.Style) -> (UILabel.Style))? = nil
     ) {
+        defer { isSetup = true }
+        var titleStyleUsed = titleStyle ?? UILabel.Style(font: .callToAction)
+        titleStyleUsed = customizeTitleStyle?(titleStyleUsed) ?? titleStyleUsed
 
-        if let titleStyle = titleStyle {
-            let style = customizeTitleStyle?(titleStyle) ?? titleStyle
-            titleLabel.withStyle(style)
-        }
-        if let valueStyle = valueStyle {
-            valueTextView.withStyle(valueStyle)
-        }
+        let valueStyleUsed = valueStyle ?? UITextView.Style(
+            font: UIFont.Label.body,
+            isEditable: false,
+            isScrollEnabled: false,
+            // UILabel and UITextView horizontal alignment differs, change inset: stackoverflow.com/a/45113744/1311272
+            contentInset: UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5)
+        )
+
+        titleLabel.withStyle(titleStyleUsed)
+        valueTextView.withStyle(valueStyleUsed)
+        translatesAutoresizingMaskIntoConstraints = false
+        let defaultStackViewStyle = UIStackView.Style(spacing: 8, margin: 0, isLayoutMarginsRelativeArrangement: false)
+
+        apply(style: defaultStackViewStyle)
+        [valueTextView, titleLabel].forEach { insertArrangedSubview($0, at: 0) }
     }
 
     func setValue(_ value: CustomStringConvertible) {
@@ -48,29 +57,6 @@ extension TitledValueView {
     func titled(_ text: CustomStringConvertible) -> TitledValueView {
         titleLabel.text = text.description
         return self
-    }
-}
-
-private extension TitledValueView {
-    func setupSubviews() {
-        let defaultTitleStyle = UILabel.Style(font: UIFont.title, textColor: .black)
-
-        let defaultValueStyle = UITextView.Style(
-            font: UIFont.Label.body,
-            textColor: .darkGray,
-            isEditable: false,
-            isScrollEnabled: false,
-            // UILabel and UITextView horizontal alignment differs, change inset: stackoverflow.com/a/45113744/1311272
-            contentInset: UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5)
-        )
-
-        titleLabel.withStyle(defaultTitleStyle)
-        valueTextView.withStyle(defaultValueStyle)
-        translatesAutoresizingMaskIntoConstraints = false
-        let defaultStackViewStyle = UIStackView.Style(spacing: 8, margin: 0, isLayoutMarginsRelativeArrangement: false)
-
-        apply(style: defaultStackViewStyle)
-        [valueTextView, titleLabel].forEach { insertArrangedSubview($0, at: 0) }
     }
 }
 

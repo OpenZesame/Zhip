@@ -13,7 +13,7 @@ extension UILabel {
     struct Style: Mergeable {
         var text: String?
         var textColor: UIColor?
-        let textAlignment: NSTextAlignment?
+        var textAlignment: NSTextAlignment?
         let font: UIFont?
         var numberOfLines: Int?
         let backgroundColor: UIColor?
@@ -74,6 +74,14 @@ extension UILabel.Style {
     }
 
     @discardableResult
+    func textAlignment(_ textAlignment: NSTextAlignment) -> UILabel.Style {
+        var style = self
+        style.textAlignment = textAlignment
+        return style
+    }
+
+
+    @discardableResult
     func textColor(_ textColor: UIColor) -> UILabel.Style {
         var style = self
         style.textColor = textColor
@@ -94,7 +102,7 @@ extension UILabel.Style {
 
     static var header: UILabel.Style {
         return UILabel.Style(
-            textAlignment: .center,
+            textAlignment: .left,
             font: UIFont.Label.header,
             numberOfLines: 0
         )

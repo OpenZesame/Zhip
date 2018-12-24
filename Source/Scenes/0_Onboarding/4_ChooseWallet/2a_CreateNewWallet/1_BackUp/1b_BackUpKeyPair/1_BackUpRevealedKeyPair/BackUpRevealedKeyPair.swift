@@ -8,12 +8,11 @@
 
 import Foundation
 
-private typealias € = L10n.Scene.BackUpRevealedKeyPair
-
 final class BackUpRevealedKeyPair: Scene<BackUpRevealedKeyPairView> {}
 
 extension BackUpRevealedKeyPair {
-    static let title = €.title
+    // keep same title as previous scene
+    static let title = L10n.Scene.DecryptKeystoreToRevealKeyPair.title
 }
 
 extension BackUpRevealedKeyPair: RightBarButtonMaking, BackButtonHiding {

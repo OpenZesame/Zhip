@@ -37,7 +37,13 @@ extension WalletEncryptionPassphrase.Error: InputError, Equatable {
 
         switch self {
         case .passphraseIsTooShort(let minLength): return Message.tooShort(minLength)
-        case .passphrasesDoesNotMatch: return Message.mismatch
+        case .passphrasesDoesNotMatch: return Message.confirmingPassphraseMismatch
+        case .incorrectPassphrase(let backingUpWalletJustCreated):
+            if backingUpWalletJustCreated {
+                return Message.incorrectPassphraseDuringBackupOfNewlyCreatedWallet
+            } else {
+                return Message.incorrectPassphrase
+            }
         }
     }
 
@@ -45,6 +51,7 @@ extension WalletEncryptionPassphrase.Error: InputError, Equatable {
         switch (lhs, rhs) {
         case (.passphraseIsTooShort, passphraseIsTooShort): return true
         case (.passphrasesDoesNotMatch, passphrasesDoesNotMatch): return true
+        case (.incorrectPassphrase, incorrectPassphrase): return true
         default: return false
         }
     }

@@ -16,6 +16,6 @@ extension ChoosePincode {
     static let title = €.title
 }
 
-extension ChoosePincode: RightBarButtonMaking {
+extension ChoosePincode: RightBarButtonMaking, BackButtonHiding {
     static let makeRight = BarButton.skip
 }

@@ -42,7 +42,11 @@ internal enum L10n {
       }
       internal enum Passphrase {
         /// Passphrases does not match
-        internal static let mismatch = L10n.tr("Localizable", "Error.Input.Passphrase.Mismatch")
+        internal static let confirmingPassphraseMismatch = L10n.tr("Localizable", "Error.Input.Passphrase.ConfirmingPassphraseMismatch")
+        /// Incorrect passphrase
+        internal static let incorrectPassphrase = L10n.tr("Localizable", "Error.Input.Passphrase.IncorrectPassphrase")
+        /// Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.
+        internal static let incorrectPassphraseDuringBackupOfNewlyCreatedWallet = L10n.tr("Localizable", "Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet")
         /// Passphrase have length >%d
         internal static func tooShort(_ p1: Int) -> String {
           return L10n.tr("Localizable", "Error.Input.Passphrase.TooShort", p1)
@@ -87,7 +91,7 @@ internal enum L10n {
       /// Keystore
       internal static let title = L10n.tr("Localizable", "Scene.BackUpKeystore.Title")
       internal enum Button {
-        /// Copy
+        /// Copy keystore
         internal static let copy = L10n.tr("Localizable", "Scene.BackUpKeystore.Button.Copy")
       }
       internal enum Event {
@@ -100,11 +104,9 @@ internal enum L10n {
     internal enum BackUpRevealedKeyPair {
       /// Backup key pair
       internal static let title = L10n.tr("Localizable", "Scene.BackUpRevealedKeyPair.Title")
-      internal enum Button {
-        /// Copy private key
-        internal static let copyPrivateKey = L10n.tr("Localizable", "Scene.BackUpRevealedKeyPair.Button.CopyPrivateKey")
-        /// Copy public key
-        internal static let copyPublicKey = L10n.tr("Localizable", "Scene.BackUpRevealedKeyPair.Button.CopyPublicKey")
+      internal enum Buttons {
+        /// Copy
+        internal static let copy = L10n.tr("Localizable", "Scene.BackUpRevealedKeyPair.Buttons.Copy")
       }
       internal enum Event {
         internal enum Toast {
@@ -122,21 +124,19 @@ internal enum L10n {
       }
     }
     internal enum BackupWallet {
-      /// Backup Wallet
-      internal static let title = L10n.tr("Localizable", "Scene.BackupWallet.Title")
       internal enum Button {
-        /// Copy keystore
-        internal static let copyKeystore = L10n.tr("Localizable", "Scene.BackupWallet.Button.CopyKeystore")
-        /// I've backed up, proceed
-        internal static let haveBackedUpProceed = L10n.tr("Localizable", "Scene.BackupWallet.Button.HaveBackedUpProceed")
-        /// Reveal keystore
-        internal static let revealKeystore = L10n.tr("Localizable", "Scene.BackupWallet.Button.RevealKeystore")
-        /// Reveal private key
-        internal static let revealPrivateKey = L10n.tr("Localizable", "Scene.BackupWallet.Button.RevealPrivateKey")
+        /// Copy
+        internal static let copy = L10n.tr("Localizable", "Scene.BackupWallet.Button.Copy")
+        /// Done
+        internal static let done = L10n.tr("Localizable", "Scene.BackupWallet.Button.Done")
+      }
+      internal enum Buttons {
+        /// Reveal
+        internal static let reveal = L10n.tr("Localizable", "Scene.BackupWallet.Buttons.Reveal")
       }
       internal enum Checkbox {
-        /// Keystore is backed up
-        internal static let keystoreIsBackedUp = L10n.tr("Localizable", "Scene.BackupWallet.Checkbox.KeystoreIsBackedUp")
+        /// I have securely backed up my private key.
+        internal static let haveSecurelyBackedUp = L10n.tr("Localizable", "Scene.BackupWallet.Checkbox.HaveSecurelyBackedUp")
       }
       internal enum Event {
         internal enum Toast {
@@ -145,21 +145,25 @@ internal enum L10n {
         }
       }
       internal enum Label {
-        /// Store the keystore + passphrase somewhere safe (e.g. 1Password)
-        internal static let storeKeystoreSecurely = L10n.tr("Localizable", "Scene.BackupWallet.Label.StoreKeystoreSecurely")
-        /// ⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.
-        internal static let urgeSecureBackupOfKeystore = L10n.tr("Localizable", "Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore")
+        /// Back up keys
+        internal static let backUpKeys = L10n.tr("Localizable", "Scene.BackupWallet.Label.BackUpKeys")
+        /// Keystore
+        internal static let keystore = L10n.tr("Localizable", "Scene.BackupWallet.Label.Keystore")
+        /// Private Key
+        internal static let privateKey = L10n.tr("Localizable", "Scene.BackupWallet.Label.PrivateKey")
+        /// Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption passphrase, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.
+        internal static let urgeBackup = L10n.tr("Localizable", "Scene.BackupWallet.Label.UrgeBackup")
       }
     }
     internal enum ChoosePincode {
-      /// Set app PIN
+      /// Set PIN
       internal static let title = L10n.tr("Localizable", "Scene.ChoosePincode.Title")
       internal enum Button {
-        /// Proceed
-        internal static let proceedWithConfirmation = L10n.tr("Localizable", "Scene.ChoosePincode.Button.ProceedWithConfirmation")
+        /// Done
+        internal static let done = L10n.tr("Localizable", "Scene.ChoosePincode.Button.Done")
       }
       internal enum Text {
-        /// This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet
+        /// The app PIN is an additional safety measure used only to unlock the app. It is not used to encrypt your private key. Make sure that you have backed up you wallet, since you might get locked out of the app if you forget the PIN.
         internal static let pincodeOnlyLocksApp = L10n.tr("Localizable", "Scene.ChoosePincode.Text.PincodeOnlyLocksApp")
       }
     }
@@ -178,15 +182,19 @@ internal enum L10n {
       }
     }
     internal enum ConfirmNewPincode {
-      /// Confirm app PIN
+      /// Confirm PIN
       internal static let title = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Title")
       internal enum Button {
-        /// Confirm
-        internal static let confirmPincode = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Button.ConfirmPincode")
+        /// Done
+        internal static let done = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Button.Done")
       }
       internal enum Checkbox {
-        /// I've backed up my PIN code
+        /// I have securely backed up my PIN code
         internal static let pincodeIsBackedUp = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp")
+      }
+      internal enum Error {
+        /// PIN does not match
+        internal static let pincodesDoesNotMatch = L10n.tr("Localizable", "Scene.ConfirmNewPincode.Error.PincodesDoesNotMatch")
       }
     }
     internal enum ConfirmWalletRemoval {
@@ -234,17 +242,19 @@ internal enum L10n {
       }
     }
     internal enum DecryptKeystoreToRevealKeyPair {
-      /// Decrypt keystore
+      /// Private key
       internal static let title = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Title")
       internal enum Button {
         /// Reveal
         internal static let reveal = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal")
       }
       internal enum Field {
-        /// Encryption passphrase (min %d chars)
-        internal static func encryptionPassphrase(_ p1: Int) -> String {
-          return L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase", p1)
-        }
+        /// Encryption passphrase
+        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase")
+      }
+      internal enum Label {
+        /// Enter your encryption passphrase to reveal your private and public key.
+        internal static let decryptToReaveal = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal")
       }
     }
     internal enum EnsureThatYouAreNotBeingWatched {

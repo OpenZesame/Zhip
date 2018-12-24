@@ -15,7 +15,10 @@
 "Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
-"Error.Input.Passphrase.Mismatch" = "Passphrases does not match";
+"Error.Input.Passphrase.ConfirmingPassphraseMismatch" = "Passphrases does not match";
+"Error.Input.Passphrase.IncorrectPassphrase" = "Incorrect passphrase";
+"Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet" = "Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.";
+
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -66,32 +69,32 @@
 "Scene.CreateNewWallet.Button.Continue" = "Continue";
 
 // MARK: BackupWallet
-"Scene.BackupWallet.Title" = "Backup Wallet";
-"Scene.BackupWallet.Label.StoreKeystoreSecurely" = "Store the keystore + passphrase somewhere safe (e.g. 1Password)";
-"Scene.BackupWallet.Button.CopyKeystore" = "Copy keystore";
-"Scene.BackupWallet.Button.RevealKeystore" = "Reveal keystore";
-"Scene.BackupWallet.Button.RevealPrivateKey" = "Reveal private key";
-"Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore" = "⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.BackupWallet.Checkbox.KeystoreIsBackedUp" = "Keystore is backed up";
-"Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
+"Scene.BackupWallet.Label.BackUpKeys" = "Back up keys";
+"Scene.BackupWallet.Label.UrgeBackup" = "Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption passphrase, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.";
+"Scene.BackupWallet.Label.Keystore" = "Keystore";
+"Scene.BackupWallet.Button.Copy" = "Copy";
+"Scene.BackupWallet.Label.PrivateKey" = "Private Key";
+"Scene.BackupWallet.Buttons.Reveal" = "Reveal";
+"Scene.BackupWallet.Checkbox.HaveSecurelyBackedUp" = "I have securely backed up my private key.";
+"Scene.BackupWallet.Button.Done" = "Done";
 "Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
 // MARK: Backup KeyPair
-"Scene.DecryptKeystoreToRevealKeyPair.Title" = "Decrypt keystore";
-"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.DecryptKeystoreToRevealKeyPair.Title" = "Private key";
+"Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal" = "Enter your encryption passphrase to reveal your private and public key.";
+"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal" = "Reveal";
 
 "Scene.BackUpRevealedKeyPair.Title" = "Backup key pair";
 "Scene.BackUpRevealedKeyPair.Label.PrivateKey" = "Private key";
 "Scene.BackUpRevealedKeyPair.Label.UncompressedPublicKey" = "Uncompressed public key";
-"Scene.BackUpRevealedKeyPair.Button.CopyPrivateKey" = "Copy private key";
-"Scene.BackUpRevealedKeyPair.Button.CopyPublicKey" = "Copy public key";
+"Scene.BackUpRevealedKeyPair.Buttons.Copy" = "Copy";
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPrivateKey" = "Copied private key";
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPublicKey" = "Copied public key";
 
 // MARK: BackUp Keystore
 "Scene.BackUpKeystore.Title" = "Keystore";
-"Scene.BackUpKeystore.Button.Copy" = "Copy";
+"Scene.BackUpKeystore.Button.Copy" = "Copy keystore";
 "Scene.BackUpKeystore.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
 // MARK: RestoreWallet
@@ -104,15 +107,16 @@
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
 
 // MARK: ChoosePincode
-"Scene.ChoosePincode.Title" = "Set app PIN";
-"Scene.ChoosePincode.Button.ProceedWithConfirmation" = "Proceed";
-"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet";
+"Scene.ChoosePincode.Title" = "Set PIN";
+"Scene.ChoosePincode.Button.Done" = "Done";
+"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "The app PIN is an additional safety measure used only to unlock the app. It is not used to encrypt your private key. Make sure that you have backed up you wallet, since you might get locked out of the app if you forget the PIN.";
 
 
 // MARK: ConfirmNewPincode
-"Scene.ConfirmNewPincode.Title" = "Confirm app PIN";
-"Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp" = "I've backed up my PIN code";
-"Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm";
+"Scene.ConfirmNewPincode.Title" = "Confirm PIN";
+"Scene.ConfirmNewPincode.Error.PincodesDoesNotMatch" = "PIN does not match";
+"Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp" = "I have securely backed up my PIN code";
+"Scene.ConfirmNewPincode.Button.Done" = "Done";
 
 
 // MARK: - Main Flow

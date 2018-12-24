@@ -16,7 +16,7 @@ private let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .new
 
 // MARK: - CreateNewWalletUserAction
 enum CreateNewWalletUserAction: TrackedUserAction {
-     case createWallet(Wallet)
+    case createWallet(Wallet), cancel
 }
 
 // MARK: - CreateNewWalletViewModel
@@ -58,6 +58,10 @@ BaseViewModel<
         let activityIndicator = ActivityIndicator()
 
         bag <~ [
+            input.fromController.leftBarButtonTrigger
+                .do(onNext: { userDid(.cancel) })
+                .drive(),
+
             input.fromView.createWalletTrigger
                 .withLatestFrom(confirmEncryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()) { $1 }
                 .flatMapLatest {

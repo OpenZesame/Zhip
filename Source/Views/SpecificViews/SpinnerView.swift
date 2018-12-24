@@ -68,7 +68,7 @@ private extension SpinnerView {
         layer.addSublayer(circleLayer)
 
         circleLayer.fillColor = nil
-        circleLayer.lineWidth = 1.5
+        circleLayer.lineWidth = 3
 
         circleLayer.strokeColor = strokeColor.cgColor
         circleLayer.strokeStart = 0

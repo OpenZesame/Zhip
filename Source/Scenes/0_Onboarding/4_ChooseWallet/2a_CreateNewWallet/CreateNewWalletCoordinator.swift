@@ -14,7 +14,7 @@ import RxCocoa
 
 final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.NavigationStep> {
     enum NavigationStep {
-        case didCreate(wallet: Wallet)
+        case create(wallet: Wallet), cancel
     }
 
     private let useCaseProvider: UseCaseProvider
@@ -26,12 +26,22 @@ final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinat
     }
 
     override func start(didStart: Completion? = nil) {
-        toCreateWallet()
+        toEnsureThatYouAreNotBeingWatched()
     }
 }
 
 // MARK: Private
 private extension CreateNewWalletCoordinator {
+
+    func toEnsureThatYouAreNotBeingWatched() {
+        let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
+        push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .understand: self.toCreateWallet()
+            case .cancel: self.cancel()
+            }
+        }
+    }
 
     func toCreateWallet() {
         let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
@@ -39,6 +49,7 @@ private extension CreateNewWalletCoordinator {
         push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .createWallet(let wallet): self.toBackupWallet(wallet: wallet)
+            case .cancel: self.cancel()
             }
         }
     }
@@ -52,13 +63,18 @@ private extension CreateNewWalletCoordinator {
 
         start(coordinator: coordinator) { [unowned self] userFinished in
             switch userFinished {
-            case .abort, .backUp: self.toMain(wallet: wallet)
+            case .cancel: self.cancel()
+            case .backUp: self.toMain(wallet: wallet)
             }
         }
     }
 
+    func cancel() {
+        navigator.next(.cancel)
+    }
+
     func toMain(wallet: Wallet) {
-        navigator.next(.didCreate(wallet: wallet))
+        navigator.next(.create(wallet: wallet))
     }
 
 }

@@ -107,6 +107,12 @@ extension UIStackView.Style {
         return UIStackView.Style()
     }
 
+    static var vertical: UIStackView.Style {
+        return UIStackView.Style(
+            margin: 0
+        )
+    }
+
     static var horizontalEqualCentering: UIStackView.Style {
         return UIStackView.Style(
             axis: .horizontal,

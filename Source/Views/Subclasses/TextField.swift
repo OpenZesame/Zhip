@@ -19,7 +19,9 @@ final class TextField: SkyFloatingLabelTextField {
     private lazy var leftPaddingView      = UIView()
     private lazy var validationCircleView = UIView()
 
-    // Overridden methods
+    // MARK: - Overridden methods
+
+    // Offset X so that label does not collide with leftView
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         let superRect = super.placeholderRect(forBounds: bounds)
         return superRect.insetBy(dx: leftPaddingView.frame.width, dy: 0)
@@ -33,8 +35,18 @@ final class TextField: SkyFloatingLabelTextField {
         return textFieldHeight/2
     }
 
+    override var errorMessage: String? {
+        didSet { updateFontResizing() }
+    }
+
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         return leftPaddingView.frame
+    }
+
+    /// Allowing for slighly shrinkt font size for error messages that otherwise would not fit.
+    /// Shrinking is only performed on the label when showing error messages.
+    private func updateFontResizing() {
+        titleLabel.adjustsFontSizeToFitWidth = errorMessage != nil
     }
 }
 
@@ -74,6 +86,9 @@ private extension TextField {
         }
         translatesAutoresizingMaskIntoConstraints = false
         lineErrorColor = Color.error
+        textErrorColor = .white
+        titleLabel.numberOfLines = 2
+        titleLabel.minimumScaleFactor = 0.8
         updateColorsWithValidation(.empty)
 
         // prevent capitalization of strings
@@ -100,14 +115,15 @@ private extension TextField {
 
     func updateColorsWithValidation(_ validation: Validation) {
         updateLineColorWithValidation(validation)
-        updatePlaceholderAndSelectedTitleColorWithValidation(validation)
+        updatePlaceholderColorWithValidation(validation)
+        updateSelectedTitleColorWithValidation(validation)
 
         let color = colorFromValidation(validation)
         validationCircleView.backgroundColor = color
     }
 
     func updateLineColorWithValidation(_ validation: Validation) {
-                let color: UIColor
+        let color: UIColor
         switch validation {
         case .valid: color = Color.valid
         default:
@@ -117,7 +133,18 @@ private extension TextField {
         lineColorWhenNoError = color
     }
 
-    func updatePlaceholderAndSelectedTitleColorWithValidation(_ validation: Validation) {
+    func updatePlaceholderColorWithValidation(_ validation: Validation) {
+        let color: UIColor
+        switch validation {
+        case .valid: color = Color.valid
+        default:
+            // color of line in case of error is handled by the property `lineErrorColor` in the superclass
+            color = Color.empty
+        }
+        placeholderColor = color
+    }
+
+    func updateSelectedTitleColorWithValidation(_ validation: Validation) {
         let color: UIColor
         switch validation {
         case .valid: color = Color.valid
@@ -126,7 +153,6 @@ private extension TextField {
             color = Color.empty
         }
         selectedTitleColor = color
-        placeholderColor = color
     }
 
     enum Color {

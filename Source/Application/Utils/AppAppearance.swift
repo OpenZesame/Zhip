@@ -39,9 +39,11 @@ private func setupAppearance() {
         makeNavigationBarTransparent()
 
         //To change Navigation Bar Background Color
-        //        UINavigationBar.appearance().barTintColor = UIColor.blue
+        UINavigationBar.appearance().barTintColor = .red
+
         //To change Back button title & icon color
-        //        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().tintColor = .teal
+
         //To change Navigation Bar Title Color
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }

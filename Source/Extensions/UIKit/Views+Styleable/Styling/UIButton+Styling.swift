@@ -163,6 +163,16 @@ extension UIButton.Style {
         )
     }
 
+    static var hollow: UIButton.Style {
+        return UIButton.Style(
+            height: 44,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            borderNormal: UIView.Border(color: .teal, width: 1),
+            cornerRounding: .static(8)
+        )
+    }
+
     static func image(_ image: UIImage) -> UIButton.Style {
         return UIButton.Style(
             imageNormal: image,

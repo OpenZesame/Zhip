@@ -16,7 +16,7 @@ import RxCocoa
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinator.NavigationStep> {
     enum NavigationStep {
-        case /* "user finished" */ backingUpKeyPair
+        case /* "user finished" */ backingUpKeyPair, dismiss
     }
 
     private let useCase: WalletUseCase
@@ -51,7 +51,7 @@ private extension DecryptKeystoreCoordinator {
 
         push(scene: DecryptKeystoreToRevealKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .abort: self.finish()
+            case .dismiss: self.dismiss()
             case .decryptKeystoreReavealing(let keyPair): self.toBackUpRevealed(keyPair: keyPair)
             }
         }
@@ -65,6 +65,10 @@ private extension DecryptKeystoreCoordinator {
             case .finish: self.finish()
             }
         }
+    }
+
+    func dismiss() {
+        navigator.next(.dismiss)
     }
 
     func finish() {

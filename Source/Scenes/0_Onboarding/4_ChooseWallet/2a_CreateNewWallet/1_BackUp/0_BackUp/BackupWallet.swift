@@ -8,10 +8,13 @@
 
 import Foundation
 
-private typealias € = L10n.Scene.BackupWallet
-
 final class BackupWallet: Scene<BackupWalletView> {}
 
 extension BackupWallet {
-    static let title = €.title
+    // reuse same title
+    static let title = L10n.Scene.CreateNewWallet.title
+}
+
+extension BackupWallet: LeftBarButtonMaking {
+    static let makeLeft: BarButton = .cancel
 }

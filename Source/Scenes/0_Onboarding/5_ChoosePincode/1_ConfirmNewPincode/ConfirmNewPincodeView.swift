@@ -14,17 +14,17 @@ private typealias € = L10n.Scene.ConfirmNewPincode
 
 final class ConfirmNewPincodeView: ScrollingStackView {
 
-    private lazy var inputPincodeView = InputPincodeView(.setNew)
-
-    private lazy var haveBackedUpPincodeCheckbox = CheckboxWithLabel()
-
-    private lazy var confirmPincodeButton = UIButton()
+    private lazy var inputPincodeView               = InputPincodeView(.setNew)
+    private lazy var errorLabel                     = UILabel()
+    private lazy var haveBackedUpPincodeCheckbox    = CheckboxWithLabel()
+    private lazy var confirmPincodeButton           = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
+        errorLabel,
+        .spacer,
         haveBackedUpPincodeCheckbox,
-        confirmPincodeButton,
-        .spacer
+        confirmPincodeButton
     ]
 
     override func setup() {
@@ -53,12 +53,17 @@ extension ConfirmNewPincodeView: ViewModelled {
 
 private extension ConfirmNewPincodeView {
     func setupSubviews() {
+
+        errorLabel.withStyle(.body) {
+            $0.textAlignment(.center).textColor(.bloodRed)
+        }
+
         haveBackedUpPincodeCheckbox.withStyle(.default) {
             $0.text(€.Checkbox.pincodeIsBackedUp)
         }
 
         confirmPincodeButton.withStyle(.primary) {
-            $0.title(€.Button.confirmPincode)
+            $0.title(€.Button.done)
                 .disabled()
         }
     }

@@ -15,7 +15,7 @@ private typealias € = L10n.Scene.BackupWallet
 
 // MARK: - BackupWalletUserAction
 enum BackupWalletUserAction: TrackedUserAction {
-    case abort
+    case cancel
     case backupWallet
     case revealPrivateKey
     case revealKeystore
@@ -47,11 +47,9 @@ final class BackupWalletViewModel: BaseViewModel<
 > {
 
     private let wallet: Driver<Wallet>
-    private let isDismissable: Bool
 
-    init(wallet: Driver<Wallet>, isDismissable: Bool) {
+    init(wallet: Driver<Wallet>) {
         self.wallet = wallet
-        self.isDismissable = isDismissable
     }
 
     // swiftlint:disable:next function_body_length
@@ -59,16 +57,14 @@ final class BackupWalletViewModel: BaseViewModel<
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
+
         let isUnderstandsRiskCheckboxChecked = input.fromView.isUnderstandsRiskCheckboxChecked
 
-        if isDismissable {
-            input.fromController.rightBarButtonContentSubject.onNext(BarButton.done.content)
-            bag <~ input.fromController.rightBarButtonTrigger.do(onNext: {
-                userDid(.abort)
-            }).drive()
-        }
-
         bag <~ [
+            input.fromController.leftBarButtonTrigger
+                .do(onNext: { userDid(.cancel) })
+                .drive(),
+
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
                 .do(onNext: { (keystoreText: String) -> Void in
                     UIPasteboard.general.string = keystoreText
@@ -83,14 +79,14 @@ final class BackupWalletViewModel: BaseViewModel<
                 .do(onNext: { userDid(.revealPrivateKey) })
                 .drive(),
 
-            input.fromView.proceedTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
+            input.fromView.doneTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }.mapToVoid()
                 .do(onNext: { userDid(.backupWallet) })
                 .drive()
         ]
 
         return Output(
-            isProceedButtonEnabled: isUnderstandsRiskCheckboxChecked
+            isDoneButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }
 }
@@ -102,10 +98,10 @@ extension BackupWalletViewModel {
         let revealKeystoreTrigger: Driver<Void>
         let revealPrivateKeyTrigger: Driver<Void>
         let isUnderstandsRiskCheckboxChecked: Driver<Bool>
-        let proceedTrigger: Driver<Void>
+        let doneTrigger: Driver<Void>
     }
 
     struct Output {
-        let isProceedButtonEnabled: Driver<Bool>
+        let isDoneButtonEnabled: Driver<Bool>
     }
 }

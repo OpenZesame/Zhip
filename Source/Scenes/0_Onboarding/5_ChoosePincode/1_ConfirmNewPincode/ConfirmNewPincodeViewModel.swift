@@ -56,6 +56,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         ]
 
         return Output(
+            pinValidation:
             isConfirmPincodeEnabled: isConfirmPincodeEnabled,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
@@ -70,8 +71,15 @@ extension ConfirmNewPincodeViewModel {
     }
 
     struct Output {
+        let pinValidation: Driver<Validation>
         let isConfirmPincodeEnabled: Driver<Bool>
         let inputBecomeFirstResponder: Driver<Void>
+    }
+
+    struct InputValidator {
+        func validate(pincode: String, confirmedBy confirminPin: String) -> Validation {
+            
+        }
     }
 
 }
