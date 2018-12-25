@@ -12,7 +12,6 @@ import RxCocoa
 import Zesame
 
 // MARK: - ReceiveView
-private let stackViewMargin: CGFloat = 16
 final class ReceiveView: ScrollingStackView {
 
     private lazy var qrImageView            = UIImageView()
@@ -28,7 +27,7 @@ final class ReceiveView: ScrollingStackView {
         addressView,
         amountToReceiveField,
         buttonsStackView
-        ], distribution: .equalSpacing, margin: stackViewMargin)
+        ], distribution: .equalSpacing)
 
     override func setup() {
         setupSubviews()
@@ -50,7 +49,7 @@ extension ReceiveView: ViewModelled {
         return InputFromView(
             copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
             shareTrigger: shareButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            qrCodeImageWidth: UIScreen.main.bounds.width - 2 * stackViewMargin,
+            qrCodeImageWidth: UIScreen.main.bounds.width - stackView.layoutMargins.right - stackView.layoutMargins.left,
             amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
         )
     }

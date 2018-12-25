@@ -101,6 +101,7 @@
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
 		486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C3621D21701006F3DFA /* TableViewCell.swift */; };
 		486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7A21D23A4C006F3DFA /* Digit.swift */; };
+		486D2C7E21D29E53006F3DFA /* StringFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */; };
 		4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */; };
 		487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */; };
 		487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E3219A2F4A00308550 /* Array_Extension.swift */; };
@@ -376,6 +377,7 @@
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		486D2C3621D21701006F3DFA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		486D2C7A21D23A4C006F3DFA /* Digit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Digit.swift; sourceTree = "<group>"; };
+		486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormattingTests.swift; sourceTree = "<group>"; };
 		4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+CustomStringConvertible.swift"; sourceTree = "<group>"; };
 		487C19E3219A2F4A00308550 /* Array_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extension.swift; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 			isa = PBXGroup;
 			children = (
 				484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */,
+				486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */,
 				48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */,
 			);
 			name = Tests;
@@ -2101,6 +2104,7 @@
 				48D0881421C7810200A88859 /* PrepareTransactionViewModelTests.swift in Sources */,
 				489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */,
 				489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */,
+				486D2C7E21D29E53006F3DFA /* StringFormattingTests.swift in Sources */,
 				489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */,
 				489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */,
 				489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */,

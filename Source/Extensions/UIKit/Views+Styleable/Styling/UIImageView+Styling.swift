@@ -45,17 +45,15 @@ extension UIImageView {
 // MARK: - Apply Style
 extension UIImageView {
     func apply(style: Style) {
-        if let image = style.image {
-            self.image = image
-        }
-//        set(\.contentMode, ifNotNil: style.contentMode)
+        set(\.image, ifNotNil: style.image)
+        set(\.contentMode, ifNotNil: style.contentMode)
+        set(\.clipsToBounds, ifNotNil: style.clipsToBounds)
         set(\.tintColor, ifNotNil: style.tintColor)
-        if let contentMode = style.contentMode {
-            self.contentMode = contentMode
-        }
-        if let clipsToBounds = style.clipsToBounds {
-            self.clipsToBounds = clipsToBounds
-        }
+    }
+
+    @discardableResult
+    func withStyle(_ makeStyle: () -> UIImageView.Style, customize: ((UIImageView.Style) -> UIImageView.Style)? = nil) -> UIImageView {
+        return withStyle(makeStyle(), customize: customize)
     }
 
     @discardableResult
@@ -74,6 +72,13 @@ extension UIImageView.Style {
     func image(_ image: UIImage?) -> UIImageView.Style {
         var style = self
         style.image = image
+        return style
+    }
+
+    @discardableResult
+    func contentMode(_ contentMode: UIView.ContentMode?) -> UIImageView.Style {
+        var style = self
+        style.contentMode = contentMode
         return style
     }
 

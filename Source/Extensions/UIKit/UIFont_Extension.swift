@@ -25,6 +25,8 @@ extension UIFont {
 
     // Welcome, ChoseWallet scene
     static let impression = Font(.𝟜𝟠, .bold).make()
+
+    static let bigBang = Font(.𝟠𝟠, .bold).make()
 }
 
 extension UIFont {
@@ -72,6 +74,7 @@ extension Font {
         case 𝟛𝟜 = 34
 
         case 𝟜𝟠 = 48
+        case 𝟠𝟠 = 88
     }
 }
 

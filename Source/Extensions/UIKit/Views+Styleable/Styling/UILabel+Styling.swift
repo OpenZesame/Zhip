@@ -14,17 +14,18 @@ extension UILabel {
         var text: String?
         var textColor: UIColor?
         var textAlignment: NSTextAlignment?
-        let font: UIFont?
+        var font: UIFont?
         var numberOfLines: Int?
         let backgroundColor: UIColor?
-
+        var adjustsFontSizeMinimumScaleFactor: CGFloat?
         init(
             text: String? = nil,
             textAlignment: NSTextAlignment? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             numberOfLines: Int? = nil,
-            backgroundColor: UIColor? = nil
+            backgroundColor: UIColor? = nil,
+            adjustsFontSizeMinimumScaleFactor: CGFloat? = nil
             ) {
             self.text = text
             self.textColor = textColor
@@ -32,6 +33,7 @@ extension UILabel {
             self.font = font
             self.numberOfLines = numberOfLines
             self.backgroundColor = backgroundColor
+            self.adjustsFontSizeMinimumScaleFactor = adjustsFontSizeMinimumScaleFactor
         }
     }
 }
@@ -45,6 +47,14 @@ extension UILabel {
         numberOfLines = style.numberOfLines ?? 1
         textAlignment = style.textAlignment ?? .left
         backgroundColor = style.backgroundColor ?? .clear
+        if let minimumScaleFactor = style.adjustsFontSizeMinimumScaleFactor {
+            adjustsFontSizeToFitWidth = true
+            self.minimumScaleFactor = minimumScaleFactor
+        }
+    }
+    @discardableResult
+    func withStyle(_ makeStyle: () -> UILabel.Style, customize: ((UILabel.Style) -> UILabel.Style)? = nil) -> UILabel {
+        return withStyle(makeStyle(), customize: customize)
     }
 
     @discardableResult
@@ -67,6 +77,13 @@ extension UILabel.Style {
     }
 
     @discardableResult
+    func font(_ font: UIFont) -> UILabel.Style {
+        var style = self
+        style.font = font
+        return style
+    }
+
+    @discardableResult
     func numberOfLines(_ numberOfLines: Int) -> UILabel.Style {
         var style = self
         style.numberOfLines = numberOfLines
@@ -80,13 +97,20 @@ extension UILabel.Style {
         return style
     }
 
-
     @discardableResult
     func textColor(_ textColor: UIColor) -> UILabel.Style {
         var style = self
         style.textColor = textColor
         return style
     }
+
+    @discardableResult
+    func minimumScaleFactor(_ minimumScaleFactor: CGFloat) -> UILabel.Style {
+        var style = self
+        style.adjustsFontSizeMinimumScaleFactor = minimumScaleFactor
+        return style
+    }
+
 }
 
 // MARK: - Style Presets

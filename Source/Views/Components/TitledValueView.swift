@@ -43,7 +43,12 @@ extension TitledValueView {
         titleLabel.withStyle(titleStyleUsed)
         valueTextView.withStyle(valueStyleUsed)
         translatesAutoresizingMaskIntoConstraints = false
-        let defaultStackViewStyle = UIStackView.Style(spacing: 8, margin: 0, isLayoutMarginsRelativeArrangement: false)
+
+        let defaultStackViewStyle = UIStackView.Style(
+            spacing: 8,
+            layoutMargins: .zero,
+            isLayoutMarginsRelativeArrangement: false
+        )
 
         apply(style: defaultStackViewStyle)
         [valueTextView, titleLabel].forEach { insertArrangedSubview($0, at: 0) }

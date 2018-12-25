@@ -308,10 +308,6 @@ internal enum L10n {
         internal enum Balance {
           /// Your balance
           internal static let title = L10n.tr("Localizable", "Scene.Main.Label.Balance.Title")
-          /// %@ ZILs
-          internal static func value(_ p1: String) -> String {
-            return L10n.tr("Localizable", "Scene.Main.Label.Balance.Value", p1)
-          }
         }
       }
     }

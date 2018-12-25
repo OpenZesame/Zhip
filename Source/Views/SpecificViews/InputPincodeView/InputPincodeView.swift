@@ -240,7 +240,6 @@ extension String {
     }
 }
 
-
 private final class DigitView: UIView {
 
     fileprivate lazy var label = UILabel()
@@ -253,7 +252,7 @@ private final class DigitView: UIView {
         return view
     }()
 
-    lazy var stackView = UIStackView(arrangedSubviews: [label, underline]).withStyle(UIStackView.Style(spacing: 4, margin: 0))
+    lazy var stackView = UIStackView(arrangedSubviews: [label, underline])
 
     init() {
         super.init(frame: .zero)
@@ -272,6 +271,9 @@ private final class DigitView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         stackView.edgesToSuperview()
+
+        stackView.withStyle(.init(spacing: 4, layoutMargins: .zero))
+
         label.withStyle(.impression) {
             $0.textAlignment(.center)
         }

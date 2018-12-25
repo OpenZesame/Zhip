@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TinyConstraints
 
 extension UIView {
 
@@ -28,4 +29,10 @@ extension UIView {
     }
 
     static var spacer: UIView { return spacer() }
+
+    static func spacer(height: CGFloat) -> UIView {
+        let spacer: UIView = .spacer
+        spacer.height(height)
+        return spacer
+    }
 }

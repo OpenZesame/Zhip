@@ -125,7 +125,6 @@
 
 // MARK: Main
 "Scene.Main.Label.Balance.Title" = "Your balance";
-"Scene.Main.Label.Balance.Value" = "%@ ZILs";
 "Scene.Main.Button.Send" = "Send";
 "Scene.Main.Button.Receive" = "Receive";
 

@@ -105,7 +105,6 @@ extension UITextView.Style {
 extension UITextView.Style {
     static var nonEditable: UITextView.Style {
         return UITextView.Style(
-            textAlignment: .left,
             isEditable: false
         )
     }
@@ -131,6 +130,13 @@ extension UITextView.Style {
             isEditable: false
         )
     }
+
+//    static var impression: UITextView.Style {
+//        return UITextView.Style(
+//            font: UIFont.impression,
+//            isEditable: false
+//        )
+//    }
 }
 
 // MARK: - Style + Merging
