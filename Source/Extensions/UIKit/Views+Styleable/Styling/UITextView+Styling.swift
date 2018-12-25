@@ -92,6 +92,13 @@ extension UITextView.Style {
         style.textAlignment = textAlignment
         return style
     }
+
+    @discardableResult
+    func textColor(_ textColor: UIColor) -> UITextView.Style {
+        var style = self
+        style.textColor = textColor
+        return style
+    }
 }
 
 // MARK: - Style Presets

@@ -13,7 +13,7 @@ private typealias € = L10n.Scene.RemovePincode
 
 final class RemovePincodeView: ScrollingStackView {
 
-    private lazy var inputPincodeView = InputPincodeView(.setNew)
+    private lazy var inputPincodeView = InputPincodeView()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
@@ -30,7 +30,7 @@ extension RemovePincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            pincode: inputPincodeView.pincode
+            pincode: inputPincodeView.rx.pincode.asDriver()
         )
     }
 }

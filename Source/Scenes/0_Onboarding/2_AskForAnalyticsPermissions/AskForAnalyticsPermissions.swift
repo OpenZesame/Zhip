@@ -10,4 +10,8 @@ import Foundation
 
 final class AskForAnalyticsPermissions: Scene<AskForAnalyticsPermissionsView> {}
 
-extension AskForAnalyticsPermissions: NavigationBarHiding {}
+extension AskForAnalyticsPermissions: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
+    }
+}

@@ -29,7 +29,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
         let pincode = input.fromView.pincode
 
         bag <~ [
-            input.fromView.confirmedTrigger.withLatestFrom(pincode.filterNil())
+            input.fromView.doneTrigger.withLatestFrom(pincode.filterNil())
             .do(onNext: { userDid(.chosePincode($0)) })
                 .drive(),
 
@@ -40,7 +40,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,
-            isConfirmPincodeEnabled: pincode.map { $0 != nil }
+            isDoneButtonEnabled: pincode.map { $0 != nil }
         )
     }
 }
@@ -48,12 +48,12 @@ final class ChoosePincodeViewModel: BaseViewModel<
 extension ChoosePincodeViewModel {
     struct InputFromView {
         let pincode: Driver<Pincode?>
-        let confirmedTrigger: Driver<Void>
+        let doneTrigger: Driver<Void>
     }
 
     struct Output {
         let inputBecomeFirstResponder: Driver<Void>
-        let isConfirmPincodeEnabled: Driver<Bool>
+        let isDoneButtonEnabled: Driver<Bool>
     }
 
 }

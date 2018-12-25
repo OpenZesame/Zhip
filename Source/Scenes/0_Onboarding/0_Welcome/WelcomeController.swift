@@ -10,4 +10,8 @@ import UIKit
 
 final class Welcome: Scene<WelcomeView> {}
 
-extension Welcome: NavigationBarHiding {}
+extension Welcome: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
+    }
+}

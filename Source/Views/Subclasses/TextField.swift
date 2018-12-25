@@ -14,10 +14,10 @@ final class TextField: SkyFloatingLabelTextField {
     enum TypeOfInput {
         case number, hexadecimal, text
     }
-    var typeOfInput: TypeOfInput = .text
 
     private lazy var leftPaddingView      = UIView()
     private lazy var validationCircleView = UIView()
+    private lazy var textFieldDelegate    = TextFieldDelegate()
 
     // MARK: - Overridden methods
 
@@ -54,10 +54,14 @@ final class TextField: SkyFloatingLabelTextField {
 extension TextField {
     @discardableResult
     func withStyle(_ style: TextField.Style, customize: ((TextField.Style) -> TextField.Style)? = nil) -> TextField {
-        self.delegate = self
+        defer { delegate = textFieldDelegate }
         apply(style: customize?(style) ?? style)
         setup()
         return self
+    }
+
+    func updateTypeOfInput(_ typeOfInput: TypeOfInput) {
+        textFieldDelegate.setTypeOfInput(typeOfInput)
     }
 }
 
@@ -79,6 +83,7 @@ extension Reactive where Base: TextField {
 }
 
 private extension TextField {
+    typealias Color = Validation.Color
     func setup() {
         defer {
             // calculations of the position of the circle view might be dependent on other settings, thus do it last
@@ -155,11 +160,7 @@ private extension TextField {
         selectedTitleColor = color
     }
 
-    enum Color {
-        static let valid: UIColor = .teal
-        static let error: UIColor = .bloodRed
-        static let empty: UIColor = .silverGrey
-    }
+
 
     func colorFromValidation(_ validation: Validation) -> UIColor {
         let color: UIColor
@@ -189,16 +190,39 @@ private let leftPaddingViewWidth: CGFloat = circeViewSize + 12
 private let textFieldHeight: CGFloat = 64
 private let distanceBetweenCircleAndBottom: CGFloat = 10
 
-// MARK: UITextFieldDelegate
-extension TextField: UITextFieldDelegate {
+final class TextFieldDelegate: NSObject {
+    private let maxLength: Int?
+    private var allowedCharacters: CharacterSet
+    init(allowedCharacters: CharacterSet, maxLength: Int? = nil) {
+        self.allowedCharacters = allowedCharacters
+        self.maxLength = maxLength
+    }
+}
 
+extension TextFieldDelegate {
+    convenience init(type: TextField.TypeOfInput = .text, maxLength: Int? = nil) {
+        self.init(allowedCharacters: type.characterSet, maxLength: maxLength)
+    }
+
+    func setTypeOfInput( _ typeOfInput: TextField.TypeOfInput) {
+        allowedCharacters = typeOfInput.characterSet
+    }
+}
+
+extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Always allow erasing of digit
         guard !string.isBackspace else { return true }
 
         // Dont allow pasting of non numbers
-        guard typeOfInput.characterSet.isSuperset(of: CharacterSet(charactersIn: string)) else { return false }
-        return true
+        guard allowedCharacters.isSuperset(of: CharacterSet(charactersIn: string)) else { return false }
+
+        guard let maxLength = maxLength else {
+            return true
+        }
+        let newLength = (textField.text?.count ?? 0) + string.count - range.length
+        // Dont allow pasting of strings longer than max length
+        return newLength <= maxLength
     }
 }
 

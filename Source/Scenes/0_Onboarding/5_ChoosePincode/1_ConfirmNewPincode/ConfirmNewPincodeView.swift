@@ -14,14 +14,12 @@ private typealias € = L10n.Scene.ConfirmNewPincode
 
 final class ConfirmNewPincodeView: ScrollingStackView {
 
-    private lazy var inputPincodeView               = InputPincodeView(.setNew)
-    private lazy var errorLabel                     = UILabel()
+    private lazy var inputPincodeView               = InputPincodeView()
     private lazy var haveBackedUpPincodeCheckbox    = CheckboxWithLabel()
     private lazy var confirmPincodeButton           = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
-        errorLabel,
         .spacer,
         haveBackedUpPincodeCheckbox,
         confirmPincodeButton
@@ -37,7 +35,7 @@ extension ConfirmNewPincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            pincode: inputPincodeView.pincode,
+            pincode: inputPincodeView.rx.pincode.asDriver(),
             isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.rx.isChecked.asDriverOnErrorReturnEmpty(),
             confirmedTrigger: confirmPincodeButton.rx.tap.asDriver()
         )
@@ -46,6 +44,7 @@ extension ConfirmNewPincodeView: ViewModelled {
     func populate(with viewModel: ConfirmNewPincodeViewModel.Output) -> [Disposable] {
         return [
             viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
+            viewModel.pincodeValidation         --> inputPincodeView.rx.validation,
             viewModel.isConfirmPincodeEnabled   --> confirmPincodeButton.rx.isEnabled
         ]
     }
@@ -53,10 +52,6 @@ extension ConfirmNewPincodeView: ViewModelled {
 
 private extension ConfirmNewPincodeView {
     func setupSubviews() {
-
-        errorLabel.withStyle(.body) {
-            $0.textAlignment(.center).textColor(.bloodRed)
-        }
 
         haveBackedUpPincodeCheckbox.withStyle(.default) {
             $0.text(€.Checkbox.pincodeIsBackedUp)

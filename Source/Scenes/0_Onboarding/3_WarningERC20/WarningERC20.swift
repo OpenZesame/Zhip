@@ -10,4 +10,8 @@ import Foundation
 
 final class WarningERC20: Scene<WarningERC20View> {}
 
-extension WarningERC20: NavigationBarHiding {}
+extension WarningERC20: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
+    }
+}

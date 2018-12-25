@@ -36,15 +36,20 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let unconfirmedPincode = self.unconfirmedPincode
-        let confirmedPincode = input.fromView.pincode.map { pincode -> Pincode? in
-            guard pincode == unconfirmedPincode else { return nil }
-            return pincode
+        let validator = InputValidator(existingPincode: unconfirmedPincode)
+
+        let pincodeValidationValue = input.fromView.pincode.map {
+            validator.validate(unconfirmedPincode: $0)
         }
-        let isConfirmPincodeEnabled = Driver.combineLatest(confirmedPincode.map { $0 != nil }, input.fromView.isHaveBackedUpPincodeCheckboxChecked) { $0 && $1 }
+        let isConfirmPincodeEnabled = Driver.combineLatest(
+            pincodeValidationValue.map { $0.isValid },
+            input.fromView.isHaveBackedUpPincodeCheckboxChecked
+        ) { isPincodeValid, isBackedUpChecked in
+            isPincodeValid && isBackedUpChecked
+        }
 
         bag <~ [
-            input.fromView.confirmedTrigger.withLatestFrom(confirmedPincode.filterNil())
+            input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map { $0.value }.filterNil())
             .do(onNext: { [unowned useCase] in
                 useCase.userChoose(pincode: $0)
                 userDid(.confirmPincode)
@@ -56,7 +61,7 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         ]
 
         return Output(
-            pinValidation:
+            pincodeValidation: pincodeValidationValue.map { $0.validation },
             isConfirmPincodeEnabled: isConfirmPincodeEnabled,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
@@ -71,15 +76,66 @@ extension ConfirmNewPincodeViewModel {
     }
 
     struct Output {
-        let pinValidation: Driver<Validation>
+        let pincodeValidation: Driver<Validation>
         let isConfirmPincodeEnabled: Driver<Bool>
         let inputBecomeFirstResponder: Driver<Void>
     }
 
     struct InputValidator {
-        func validate(pincode: String, confirmedBy confirminPin: String) -> Validation {
-            
+
+        private let existingPincode: Pincode
+        private let pincodeValidator = PincodeValidator(settingNew: true)
+
+        init(existingPincode: Pincode) {
+            self.existingPincode = existingPincode
         }
+
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+            return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
+        }
+
     }
 
+}
+
+struct PincodeValidator: InputValidator {
+//    typealias Input = String
+    typealias Output = Pincode
+    enum Error: InputError {
+        case incorrectPincode(settingNew: Bool)
+    }
+
+    private let settingNew: Bool
+    init(settingNew: Bool = false) {
+        self.settingNew = settingNew
+    }
+
+    func validate(input: (unconfirmed: Pincode?, existing: Pincode)) -> InputValidationResult<Output, Error> {
+
+        let pincode = input.existing
+
+        guard let unconfirmed = input.unconfirmed else {
+            return .invalid(.empty)
+        }
+
+        guard unconfirmed == pincode else {
+            return .invalid(.error(Error.incorrectPincode(settingNew: settingNew)))
+        }
+        return .valid(pincode)
+    }
+}
+
+extension PincodeValidator.Error {
+    var errorMessage: String {
+        let Message = L10n.Error.Input.Pincode.self
+
+        switch self {
+        case .incorrectPincode(let settingNew):
+            if settingNew {
+                return Message.pincodesDoesNotMatch
+            } else {
+                return Message.pincodesDoesNotMatch
+            }
+        }
+    }
 }

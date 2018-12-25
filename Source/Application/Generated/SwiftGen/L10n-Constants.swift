@@ -52,6 +52,12 @@ internal enum L10n {
           return L10n.tr("Localizable", "Error.Input.Passphrase.TooShort", p1)
         }
       }
+      internal enum Pincode {
+        /// Incorrect PIN
+        internal static let incorrectPincode = L10n.tr("Localizable", "Error.Input.Pincode.IncorrectPincode")
+        /// PIN does not match
+        internal static let pincodesDoesNotMatch = L10n.tr("Localizable", "Error.Input.Pincode.PincodesDoesNotMatch")
+      }
     }
   }
 

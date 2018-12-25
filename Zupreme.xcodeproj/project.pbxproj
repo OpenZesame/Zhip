@@ -99,6 +99,7 @@
 		485AACA221AAE764005C56CC /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA121AAE764005C56CC /* InputValidator.swift */; };
 		485AACA421AAF3B3005C56CC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* TextField.swift */; };
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
+		486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C3621D21701006F3DFA /* TableViewCell.swift */; };
 		4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */; };
 		487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */; };
 		487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E3219A2F4A00308550 /* Array_Extension.swift */; };
@@ -150,6 +151,7 @@
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
 		48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */; };
 		48D0881421C7810200A88859 /* PrepareTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */; };
+		48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
 		48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */; };
 		48ECF4B621A16B9D0078D659 /* ScrollingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */; };
@@ -371,6 +373,7 @@
 		485AACA121AAE764005C56CC /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
 		485AACA321AAF3B3005C56CC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
+		486D2C3621D21701006F3DFA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
 		487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+CustomStringConvertible.swift"; sourceTree = "<group>"; };
 		487C19E3219A2F4A00308550 /* Array_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extension.swift; sourceTree = "<group>"; };
@@ -421,6 +424,7 @@
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
 		48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder_Extensions.swift; sourceTree = "<group>"; };
 		48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareTransactionViewModelTests.swift; sourceTree = "<group>"; };
+		48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutOwner.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
 		48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingStackView.swift; sourceTree = "<group>"; };
@@ -816,6 +820,7 @@
 				483CE9AF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift */,
 				483CE9B02194E9E300BED31C /* Bootstrap.swift */,
 				480B0E9621CE2C8E00A72133 /* AppAppearance.swift */,
+				48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */,
 				483CE9B12194E9E300BED31C /* ConfigurationDetection.swift */,
 			);
 			path = Utils;
@@ -1539,6 +1544,7 @@
 		48ECF61521A29F820078D659 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				486D2C3621D21701006F3DFA /* TableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1896,6 +1902,7 @@
 				48C8A0032143C5B20063B0FA /* TextField+Styling.swift in Sources */,
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */,
+				486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */,
 				480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
 				48ECF5C221A18F140078D659 /* TitledScene.swift in Sources */,
 				48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */,
@@ -2015,6 +2022,7 @@
 				48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */,
 				5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
+				48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */,
 				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
 				485AACA421AAF3B3005C56CC /* TextField.swift in Sources */,
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,

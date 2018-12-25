@@ -45,7 +45,7 @@ extension TextField {
 // MARK: - Apply Syyle
 extension TextField {
     func apply(style: Style) {
-        typeOfInput = style.typeOfInput
+        updateTypeOfInput(style.typeOfInput)
         textColor = style.textColor ?? .defaultText
         placeholder = style.placeholder
         placeholderFont = style.placeholderFont ?? UIFont.Field.floatingPlaceholder

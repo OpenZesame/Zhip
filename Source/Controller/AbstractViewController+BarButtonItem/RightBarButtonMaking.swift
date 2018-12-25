@@ -29,4 +29,3 @@ extension RightBarButtonContentMaking {
 }
 
 protocol BackButtonHiding {}
-protocol NavigationBarHiding {}

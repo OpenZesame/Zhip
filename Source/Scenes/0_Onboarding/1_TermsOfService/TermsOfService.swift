@@ -8,4 +8,10 @@
 
 import Foundation
 
-final class TermsOfService: Scene<TermsOfServiceView>, NavigationBarHiding {}
+final class TermsOfService: Scene<TermsOfServiceView> {}
+
+extension TermsOfService: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
+    }
+}

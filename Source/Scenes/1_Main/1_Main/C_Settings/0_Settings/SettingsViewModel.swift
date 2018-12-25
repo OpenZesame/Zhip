@@ -94,35 +94,40 @@ private extension SettingsViewModel {
 
     // swiftlint:disable:next function_body_length
     func makeItemMatrix() -> [[SettingsItem]] {
+        let Icon = Asset.Icons.Small.self
         var sections = [[SettingsItem]]()
         let hasPin = useCase.hasConfiguredPincode
 
         sections += [
             .whenSelectedNavigate(
                 to: hasPin ? .removePincode : .setPincode,
-                titled: hasPin ? €.removePincode : €.setPincode
+                titled: hasPin ? €.removePincode : €.setPincode,
+                icon: hasPin ? Icon.delete : Icon.pinCode,
+                style: hasPin ? .destructive : .normal
             )
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub),
-            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub),
-            .whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements)
+            .whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub, icon: Icon.githubStar),
+            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub, icon: Icon.githubIssue),
+            .whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements, icon: Icon.cup)
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService),
-            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning),
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions)
+            .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
+            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning, icon: Icon.warning),
+            // TOOO change icon when asset available
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.camera)
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet),
-            .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, style: .destructive)
+            .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet, icon: Icon.backUp),
+            .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, icon: Icon.delete, style: .destructive)
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString)
+            // TODO chang from cell to table footer, without any action
+            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString, icon: Icon.cup)
         ]
 
         return sections

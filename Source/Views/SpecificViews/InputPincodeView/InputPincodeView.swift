@@ -12,26 +12,149 @@ import RxSwift
 import RxCocoa
 import TinyConstraints
 
-final class InputPincodeView: UITextField {
+extension Reactive where Base == InputPincodeView {
+    var becomeFirstResponder: Binder<Void> {
+        return base.pinField.rx.becomeFirstResponder
+    }
 
-    private let digitLabelsStackView = UIStackView(frame: .zero).withStyle(.horizontalEqualCentering)
+    var pincode: ControlProperty<Pincode?> {
 
-    private let mode: Mode
-    private let length = Pincode.length
+        let source: Observable<Pincode?> = Observable.deferred { [weak inputPincodeView = self.base] in
+            let pinField = inputPincodeView?.pinField
+            return pinField?.pincodeSubject.asObservable().observeOn(MainScheduler.asyncInstance) ?? .empty()
+        }
 
-    private let weakReferencesToDigitView: [Weak<DigitView>]
+        let bindingObserver = Binder<Pincode?>(base) { $0.pinField.setPincode($1) }
 
+        return ControlProperty(
+            values: source,
+            valueSink: bindingObserver)
+    }
+
+    var validation: Binder<Validation> {
+        return Binder<Validation>(base) {
+            $0.validate($1)
+        }
+    }
+}
+
+final class InputPincodeView: UIView {
+
+    fileprivate lazy var pinField   = PincodeTextField()
+    private lazy var errorLabel     = UILabel()
+    private lazy var stackView      = UIStackView(arrangedSubviews: [pinField, errorLabel])
+
+    init() {
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) { interfaceBuilderSucks }
+
+    func validate(_ validation: Validation) {
+        pinField.validate(validation)
+
+        switch validation {
+        case .empty, .valid: errorLabel.text = nil
+        case .error(let errorMessage): errorLabel.text = errorMessage
+        }
+    }
+}
+
+private extension InputPincodeView {
+    func setup() {
+        translatesAutoresizingMaskIntoConstraints = true
+        stackView.withStyle(.default)
+        addSubview(stackView)
+        stackView.edgesToSuperview()
+        errorLabel.withStyle(.body) {
+            $0.textAlignment(.center).textColor(.bloodRed)
+        }
+    }
+}
+
+private extension PincodeTextField.Presentation {
+    func validate(_ validation: Validation) {
+        switch validation {
+        case .empty, .valid:
+            colorUnderlineViews(with: Validation.Color.valid)
+        case .error:
+            colorUnderlineViews(with: Validation.Color.error)
+        }
+    }
+}
+
+private final class PincodeTextField: UITextField {
+    final class Presentation: UIStackView {
+
+        private var digitViews: [DigitView] {
+            let digitViews = arrangedSubviews.compactMap { $0 as? DigitView }
+            assert(digitViews.count == length)
+            return digitViews
+        }
+
+        fileprivate let length: Int
+        private let widthOfDigitView: CGFloat
+
+        init(length: Int, widthOfDigitView: CGFloat) {
+            self.length = length
+            self.widthOfDigitView = widthOfDigitView
+            super.init(frame: .zero)
+            setup()
+        }
+
+        required init(coder: NSCoder) { interfaceBuilderSucks }
+
+        func colorUnderlineViews(with color: UIColor) {
+            digitViews.forEach {
+                $0.colorUnderlineView(with: color)
+            }
+        }
+
+        func setPincode(_ digits: [Digit]) {
+            digitViews.forEach {
+                $0.label.text = nil
+            }
+            for (index, digit) in digits.enumerated() {
+                digitViews[index].label.text = digit.rawValue
+            }
+        }
+
+        private func setup() {
+            withStyle(.horizontalEqualCentering)
+            [Void](repeating: (), count: length).map(DigitView.init).forEach {
+                addArrangedSubview($0)
+                $0.heightToSuperview()
+                $0.width(widthOfDigitView)
+            }
+
+            isUserInteractionEnabled = false
+
+            // add spacers left and right, centering the digit views
+            insertArrangedSubview(.spacer, at: 0)
+            addArrangedSubview(.spacer)
+        }
+    }
+
+    func validate(_ validation: Validation) {
+        presentation.validate(validation)
+    }
+
+    private let presentation: Presentation
+    private lazy var textFieldDelegate = TextFieldDelegate(type: .number, maxLength: pincodeLength)
+
+    private var pincodeLength: Int {
+        return presentation.length
+    }
+
+    // only used to listen to change of `text` in the UITextField when it is being edited
     private let bag = DisposeBag()
-    private let pincodeSubject = PublishSubject<Pincode?>()
 
-    // Use this to read out pincode
-    lazy var pincode = pincodeSubject.asDriverOnErrorReturnEmpty()
+    fileprivate var pincodeSubject = PublishSubject<Pincode?>()
 
     // MARK: - Initialization
-    init(_ mode: Mode, height: CGFloat = 80) {
-        self.mode = mode
-        let digitsViews = Array(0..<length).mapToVoid().map(DigitView.init)
-        self.weakReferencesToDigitView = digitsViews.map { Weak($0) }
+    init(height: CGFloat = 80, widthOfDigitView: CGFloat = 40, pincodeLength: Int = Pincode.length) {
+        presentation = Presentation(length: pincodeLength, widthOfDigitView: widthOfDigitView)
         super.init(frame: .zero)
         setup(height: height)
     }
@@ -39,54 +162,41 @@ final class InputPincodeView: UITextField {
     required init?(coder: NSCoder) {
         interfaceBuilderSucks
     }
+
+    func setPincode(_ pincode: Pincode?) {
+       presentation.setPincode(pincode?.digits ?? [])
+    }
 }
 
-private extension InputPincodeView {
-
-    private var digitViews: [DigitView] {
-        guard
-            case let digitViews = weakReferencesToDigitView.compactMap({ $0.value }),
-            digitViews.count == length
-            else { incorrectImplementation("Check weak reference implementation") }
-        return digitViews
-    }
+private extension PincodeTextField {
 
     // swiftlint:disable:next function_body_length
     func setup(height: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
+
         self.height(height)
         keyboardType = .numberPad
         isSecureTextEntry = true
         textColor = .clear
         tintColor = .clear
-        self.delegate = self
+        self.delegate = textFieldDelegate
 
         bag <~ rx.text.asDriver().do(onNext: { [weak self] in
             guard let `self` = self else { return }
             self.setDigits(string: $0)
         }).drive()
 
-        addSubview(digitLabelsStackView)
-        digitLabelsStackView.edgesToSuperview()
-        digitLabelsStackView.isUserInteractionEnabled = false
-
-        digitViews.forEach {
-            digitLabelsStackView.addArrangedSubview($0)
-            $0.heightToSuperview()
-            $0.width(40)
-        }
-
-        // add spacers
-        digitLabelsStackView.insertArrangedSubview(.spacer, at: 0)
-        digitLabelsStackView.addArrangedSubview(.spacer)
+        addSubview(presentation)
+        presentation.edgesToSuperview()
     }
 
+
     func setDigits(string: String?) {
-        guard let string = string else {
-            return setPincode(digits: [])
+        guard let string = string, !string.isEmpty else {
+            return setDigits([])
         }
 
-        guard string.count <= length else {
+        guard string.count <= pincodeLength else {
             return
         }
 
@@ -94,39 +204,17 @@ private extension InputPincodeView {
             case let digits = string.map(String.init).compactMap(Digit.init),
             digits.count == string.count
             else {
-                incorrectImplementation("Did you forget to protect against pasting of strings into the input field?")
+                incorrectImplementation("Did you forget to protect against pasting of non numerical strings into the input field?")
         }
-        setPincode(digits: digits)
+        setDigits(digits)
     }
 
-    func setPincode(digits: [Digit]) {
+    func setDigits(_ digits: [Digit]) {
         defer { pincodeSubject.onNext(try? Pincode(digits: digits)) }
-        guard digits.count <= length else {
+        guard digits.count <= pincodeLength else {
             return
         }
-        digitViews.forEach {
-            $0.label.text = nil
-        }
-        for (index, digit) in digits.enumerated() {
-            digitViews[index].label.text = digit.rawValue
-        }
-    }
-}
-
-extension InputPincodeView: UITextFieldDelegate {
-    // Prevent pasting of non numbers or too long number sequence
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-        // Always allow erasing of digit
-        guard !string.isBackspace else { return true }
-
-        // Dont allow pasting of non numbers
-        guard CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) else { return false }
-
-        let newLength = (textField.text?.count ?? 0) + string.count - range.length
-
-        // Dont allow pasting of strings longer than max length
-        return newLength <= length
+        presentation.setPincode(digits)
     }
 }
 
@@ -134,14 +222,6 @@ extension String {
     var isBackspace: Bool {
         let char = self.cString(using: String.Encoding.utf8)!
         return strcmp(char, "\\b") == -92
-    }
-}
-
-extension InputPincodeView {
-
-    enum Mode {
-        case setNew
-        case match(existing: Pincode)
     }
 }
 
@@ -158,35 +238,39 @@ enum Digit: String, Codable, Equatable {
     case nine   = "9"
 }
 
-extension InputPincodeView {
-    private final class DigitView: UIView {
+private final class DigitView: UIView {
 
-        fileprivate lazy var label = UILabel()
+    fileprivate lazy var label = UILabel()
 
-        private lazy var underline: UIView = {
-            let view = UIView(frame: .zero)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.height(3)
-            view.backgroundColor = .black
-            return view
-        }()
+    private lazy var underline: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.height(3)
+        view.backgroundColor = Validation.Color.valid
+        return view
+    }()
 
-        lazy var stackView = UIStackView(arrangedSubviews: [label, underline]).withStyle(UIStackView.Style(spacing: 4, margin: 0))
+    lazy var stackView = UIStackView(arrangedSubviews: [label, underline]).withStyle(UIStackView.Style(spacing: 4, margin: 0))
 
-        init() {
-            super.init(frame: .zero)
-            setupSubviews()
-        }
+    init() {
+        super.init(frame: .zero)
+        setupSubviews()
+    }
 
-        required init?(coder: NSCoder) {
-            interfaceBuilderSucks
-        }
+    required init?(coder: NSCoder) {
+        interfaceBuilderSucks
+    }
 
-        private func setupSubviews() {
-            translatesAutoresizingMaskIntoConstraints = false
-            addSubview(stackView)
-            stackView.edgesToSuperview()
-            label.withStyle(.impression)
+    func colorUnderlineView(with color: UIColor) {
+        underline.backgroundColor = color
+    }
+
+    private func setupSubviews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        stackView.edgesToSuperview()
+        label.withStyle(.impression) {
+            $0.textAlignment(.center)
         }
     }
 }

@@ -19,6 +19,8 @@
 "Error.Input.Passphrase.IncorrectPassphrase" = "Incorrect passphrase";
 "Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet" = "Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.";
 
+"Error.Input.Pincode.PincodesDoesNotMatch" = "PIN does not match";
+"Error.Input.Pincode.IncorrectPincode" = "Incorrect PIN";
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";

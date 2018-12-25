@@ -24,17 +24,20 @@ extension UIImageView {
 extension UIImageView {
     struct Style {
         var image: UIImage?
+        var tintColor: UIColor?
         var contentMode: UIView.ContentMode?
         var clipsToBounds: Bool?
 
         init(
             image: UIImage? = nil,
             contentMode: UIView.ContentMode? = nil,
-            clipsToBounds: Bool? = nil
+            clipsToBounds: Bool? = nil,
+            tintColor: UIColor? = nil
         ) {
             self.image = image
             self.contentMode = contentMode
             self.clipsToBounds = clipsToBounds
+            self.tintColor = tintColor
         }
     }
 }
@@ -46,6 +49,7 @@ extension UIImageView {
             self.image = image
         }
 //        set(\.contentMode, ifNotNil: style.contentMode)
+        set(\.tintColor, ifNotNil: style.tintColor)
         if let contentMode = style.contentMode {
             self.contentMode = contentMode
         }

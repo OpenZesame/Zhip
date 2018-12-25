@@ -51,6 +51,15 @@ enum Validation {
     }
 }
 
+import UIKit
+extension Validation {
+    enum Color {
+        static let valid: UIColor = .teal
+        static let error: UIColor = .bloodRed
+        static let empty: UIColor = .silverGrey
+    }
+}
+
 enum InputValidationResult<Value, ValidationError: InputError> {
     case valid(Value)
     case invalid(Invalid)

@@ -10,4 +10,8 @@ import UIKit
 
 final class ChooseWallet: Scene<ChooseWalletView> {}
 
-extension ChooseWallet: NavigationBarHiding {}
+extension ChooseWallet: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
+    }
+}
