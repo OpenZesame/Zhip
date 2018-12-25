@@ -240,9 +240,9 @@ internal enum L10n {
       }
       internal enum Labels {
         internal enum ChooseNewPassphrase {
-          /// Set an encrpytion passphrase
+          /// Set an encryption passphrase
           internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title")
-          /// Your encyption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.
+          /// Your encryption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.
           internal static let value = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value")
         }
       }

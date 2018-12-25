@@ -63,8 +63,8 @@
 
 // MARK: CreateNewWallet
 "Scene.CreateNewWallet.Title" = "New wallet";
-"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title" = "Set an encrpytion passphrase";
-"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value" = "Your encyption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title" = "Set an encryption passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value" = "Your encryption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.";
 "Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
 "Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "I have securely backed up my encryption passphrase";

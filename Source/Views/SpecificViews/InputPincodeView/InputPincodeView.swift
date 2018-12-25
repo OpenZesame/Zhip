@@ -34,19 +34,32 @@ final class InputPincodeView: UIView {
     private lazy var errorLabel     = UILabel()
     private lazy var stackView      = UIStackView(arrangedSubviews: [pinField, errorLabel])
 
-    init() {
+    private let hapticFeedbackOnValid: UIImpactFeedbackGenerator.FeedbackStyle?
+    private let hapticFeedbackOnInvalid: UIImpactFeedbackGenerator.FeedbackStyle?
+
+    init(hapticFeedbackOnValid: UIImpactFeedbackGenerator.FeedbackStyle? = .medium, hapticFeedbackOnInvalid: UIImpactFeedbackGenerator.FeedbackStyle? = .heavy) {
+        self.hapticFeedbackOnValid = hapticFeedbackOnValid
+        self.hapticFeedbackOnInvalid = hapticFeedbackOnInvalid
         super.init(frame: .zero)
         setup()
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
+    func vibrate(style: UIImpactFeedbackGenerator.FeedbackStyle?) {
+        guard let style = style else { return }
+        UIImpactFeedbackGenerator(style: style).impactOccurred()
+    }
+
     func validate(_ validation: Validation) {
         pinField.validate(validation)
 
         switch validation {
-        case .empty, .valid: errorLabel.text = nil
-        case .error(let errorMessage): errorLabel.text = errorMessage
+        case .valid: vibrateOnValid(); fallthrough
+        case .empty: errorLabel.text = nil
+        case .error(let errorMessage):
+            vibrateOnInvalid()
+            errorLabel.text = errorMessage
         }
     }
 }
@@ -61,6 +74,15 @@ private extension InputPincodeView {
             $0.textAlignment(.center).textColor(.bloodRed)
         }
     }
+
+    func vibrateOnInvalid() {
+        vibrate(style: hapticFeedbackOnInvalid)
+    }
+
+    func vibrateOnValid() {
+        vibrate(style: hapticFeedbackOnValid)
+    }
+
 }
 
 private extension PincodeTextField.Presentation {
