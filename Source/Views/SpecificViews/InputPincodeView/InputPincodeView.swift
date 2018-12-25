@@ -34,22 +34,14 @@ final class InputPincodeView: UIView {
     private lazy var errorLabel     = UILabel()
     private lazy var stackView      = UIStackView(arrangedSubviews: [pinField, errorLabel])
 
-    private let hapticFeedbackOnValid: UIImpactFeedbackGenerator.FeedbackStyle?
-    private let hapticFeedbackOnInvalid: UIImpactFeedbackGenerator.FeedbackStyle?
+    private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
 
-    init(hapticFeedbackOnValid: UIImpactFeedbackGenerator.FeedbackStyle? = .medium, hapticFeedbackOnInvalid: UIImpactFeedbackGenerator.FeedbackStyle? = .heavy) {
-        self.hapticFeedbackOnValid = hapticFeedbackOnValid
-        self.hapticFeedbackOnInvalid = hapticFeedbackOnInvalid
+    init() {
         super.init(frame: .zero)
         setup()
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
-
-    func vibrate(style: UIImpactFeedbackGenerator.FeedbackStyle?) {
-        guard let style = style else { return }
-        UIImpactFeedbackGenerator(style: style).impactOccurred()
-    }
 
     func validate(_ validation: Validation) {
         pinField.validate(validation)
@@ -75,12 +67,17 @@ private extension InputPincodeView {
         }
     }
 
+    func vibrate(style: UINotificationFeedbackGenerator.FeedbackType?) {
+        guard let style = style else { return }
+        hapticFeedbackGenerator.notificationOccurred(style)
+    }
+
     func vibrateOnInvalid() {
-        vibrate(style: hapticFeedbackOnInvalid)
+        vibrate(style: .error)
     }
 
     func vibrateOnValid() {
-        vibrate(style: hapticFeedbackOnValid)
+        vibrate(style: .success)
     }
 
 }
