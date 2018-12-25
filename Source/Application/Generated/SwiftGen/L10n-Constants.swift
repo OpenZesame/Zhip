@@ -390,12 +390,6 @@ internal enum L10n {
     internal enum RemovePincode {
       /// Unlock to remove
       internal static let title = L10n.tr("Localizable", "Scene.RemovePincode.Title")
-      internal enum Event {
-        internal enum Toast {
-          /// Pincode removed
-          internal static let didRemovePincode = L10n.tr("Localizable", "Scene.RemovePincode.Event.Toast.DidRemovePincode")
-        }
-      }
     }
     internal enum RestoreWallet {
       /// Restore Wallet

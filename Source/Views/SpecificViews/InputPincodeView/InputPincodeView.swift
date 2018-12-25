@@ -17,18 +17,8 @@ extension Reactive where Base == InputPincodeView {
         return base.pinField.rx.becomeFirstResponder
     }
 
-    var pincode: ControlProperty<Pincode?> {
-
-        let source: Observable<Pincode?> = Observable.deferred { [weak inputPincodeView = self.base] in
-            let pinField = inputPincodeView?.pinField
-            return pinField?.pincodeSubject.asObservable().observeOn(MainScheduler.asyncInstance) ?? .empty()
-        }
-
-        let bindingObserver = Binder<Pincode?>(base) { $0.pinField.setPincode($1) }
-
-        return ControlProperty(
-            values: source,
-            valueSink: bindingObserver)
+    var pincode: Driver<Pincode?> {
+        return base.pinField.pincodeDriver
     }
 
     var validation: Binder<Validation> {
@@ -116,7 +106,7 @@ private final class PincodeTextField: UITextField {
                 $0.label.text = nil
             }
             for (index, digit) in digits.enumerated() {
-                digitViews[index].label.text = digit.rawValue
+                digitViews[index].label.text = String(describing: digit)
             }
         }
 
@@ -151,6 +141,13 @@ private final class PincodeTextField: UITextField {
     private let bag = DisposeBag()
 
     fileprivate var pincodeSubject = PublishSubject<Pincode?>()
+    fileprivate lazy var pincodeDriver = pincodeSubject.asDriverOnErrorReturnEmpty()
+        // Calling `distinctUntilChanged` really is quite important, since it fixes potential bugs where
+        // we use `UIViewController.viewWillAppear` as a trigger for invoking `PincodeTextField.becomeFirstResponder`
+        // If we have logic presenting some alert when a pincode was removed, dismissing said alert would cause
+        // `viewWillAppear` to be called resulting in `becomeFirstResponder` which would emit the same Pincode,
+        // which might result in the same alert being presented.
+        .distinctUntilChanged()
 
     // MARK: - Initialization
     init(height: CGFloat = 80, widthOfDigitView: CGFloat = 40, pincodeLength: Int = Pincode.length) {
@@ -190,7 +187,6 @@ private extension PincodeTextField {
         presentation.edgesToSuperview()
     }
 
-
     func setDigits(string: String?) {
         guard let string = string, !string.isEmpty else {
             return setDigits([])
@@ -225,18 +221,6 @@ extension String {
     }
 }
 
-enum Digit: String, Codable, Equatable {
-    case zero   = "0"
-    case one    = "1"
-    case two    = "2"
-    case three  = "3"
-    case four   = "4"
-    case five   = "5"
-    case six    = "6"
-    case seven  = "7"
-    case eight  = "8"
-    case nine   = "9"
-}
 
 private final class DigitView: UIView {
 

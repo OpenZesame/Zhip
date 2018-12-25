@@ -28,6 +28,13 @@ final class RemovePincodeView: ScrollingStackView {
 extension RemovePincodeView: ViewModelled {
     typealias ViewModel = RemovePincodeViewModel
 
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
+            viewModel.pincodeValidation         --> inputPincodeView.rx.validation
+        ]
+    }
+
     var inputFromView: InputFromView {
         return InputFromView(
             pincode: inputPincodeView.rx.pincode.asDriver()

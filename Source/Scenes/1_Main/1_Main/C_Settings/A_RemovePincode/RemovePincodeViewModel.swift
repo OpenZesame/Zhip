@@ -25,9 +25,14 @@ final class RemovePincodeViewModel: BaseViewModel<
 > {
 
     private let useCase: PincodeUseCase
+    private let pincode: Pincode
 
     init(useCase: PincodeUseCase) {
         self.useCase = useCase
+        guard let pincode = useCase.pincode else {
+            incorrectImplementation("Should have pincode set")
+        }
+        self.pincode = pincode
     }
 
     // swiftlint:disable:next function_body_length
@@ -36,26 +41,30 @@ final class RemovePincodeViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let matchingPincode = input.fromView.pincode.map { [unowned useCase] in
-            useCase.doesPincodeMatchChosen($0)
-            }.filter { $0 }.mapToVoid()
+        let validator = InputValidator(existingPincode: pincode)
+
+        let pincodeValidationValue: Driver<PincodeValidator.Result> = input.fromView.pincode.map {
+            return validator.validate(unconfirmedPincode: $0)
+        }
 
         bag <~ [
-            input.fromController.leftBarButtonTrigger.do(onNext: {
-                userDid(.cancelPincodeRemoval)
-            }).drive(),
+            input.fromController.leftBarButtonTrigger
+                .do(onNext: { userDid(.cancelPincodeRemoval) })
+                .drive(),
 
-            matchingPincode.do(onNext: { [unowned useCase] in
-                useCase.deletePincode()
-                let toast = Toast(€.Event.Toast.didRemovePincode) {
+            pincodeValidationValue.filter { $0.isValid }
+                .mapToVoid()
+                .do(onNext: { [unowned useCase] in
+                    useCase.deletePincode()
                     userDid(.removePincode)
-                }
-                input.fromController.toastSubject.onNext(toast)
-
-            }).drive()
+                })
+                .drive()
         ]
 
-        return Output()
+        return Output(
+            inputBecomeFirstResponder: input.fromController.viewDidAppear,
+            pincodeValidation: pincodeValidationValue.map { $0.validation }
+        )
     }
 }
 
@@ -64,5 +73,22 @@ extension RemovePincodeViewModel {
         let pincode: Driver<Pincode?>
     }
 
-    struct Output {}
+    struct Output {
+        let inputBecomeFirstResponder: Driver<Void>
+        let pincodeValidation: Driver<Validation>
+    }
+
+    struct InputValidator {
+
+        private let existingPincode: Pincode
+        private let pincodeValidator = PincodeValidator(settingNew: false)
+
+        init(existingPincode: Pincode) {
+            self.existingPincode = existingPincode
+        }
+
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+            return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
+        }
+    }
 }

@@ -26,7 +26,8 @@ extension UnlockAppWithPincodeView: ViewModelled {
 
     func populate(with viewModel: UnlockAppWithPincodeViewModel.Output) -> [Disposable] {
         return [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
+            viewModel.pincodeValidation         --> inputPincodeView.rx.validation
         ]
     }
 

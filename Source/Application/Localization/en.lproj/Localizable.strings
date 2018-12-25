@@ -134,7 +134,6 @@
 
 // MARK: Remove Pincode
 "Scene.RemovePincode.Title" = "Unlock to remove";
-"Scene.RemovePincode.Event.Toast.DidRemovePincode" = "Pincode removed";
 
 // MARK: PrepareTransaction
 "Scene.PrepareTransaction.Title" = "Send";

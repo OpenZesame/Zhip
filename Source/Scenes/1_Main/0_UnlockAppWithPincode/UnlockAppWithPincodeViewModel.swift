@@ -24,9 +24,14 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 > {
 
     private let useCase: PincodeUseCase
+    private let pincode: Pincode
 
     init(useCase: PincodeUseCase) {
         self.useCase = useCase
+        guard let pincode = useCase.pincode else {
+            incorrectImplementation("Should have pincode set")
+        }
+        self.pincode = pincode
     }
 
     override func transform(input: Input) -> Output {
@@ -34,14 +39,23 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let matchingPincode = input.fromView.pincode.map { [unowned useCase] in
-            useCase.doesPincodeMatchChosen($0)
-        }.filter { $0 }.mapToVoid()
+        let validator = InputValidator(existingPincode: pincode)
 
-        bag <~ matchingPincode.do(onNext: { userDid(.unlockApp) }).drive()
+        let pincodeValidationValue = input.fromView.pincode.map {
+            validator.validate(unconfirmedPincode: $0)
+        }
+
+        bag <~ [
+             pincodeValidationValue.filter { $0.isValid }
+                .mapToVoid()
+                .do(onNext: { userDid(.unlockApp) })
+                .drive()
+
+        ]
 
         return Output(
-            inputBecomeFirstResponder: input.fromController.viewWillAppear
+            inputBecomeFirstResponder: input.fromController.viewWillAppear,
+            pincodeValidation: pincodeValidationValue.map { $0.validation }
         )
     }
 }
@@ -53,5 +67,20 @@ extension UnlockAppWithPincodeViewModel {
 
     struct Output {
         let inputBecomeFirstResponder: Driver<Void>
+        let pincodeValidation: Driver<Validation>
+    }
+
+    struct InputValidator {
+
+        private let existingPincode: Pincode
+        private let pincodeValidator = PincodeValidator(settingNew: false)
+
+        init(existingPincode: Pincode) {
+            self.existingPincode = existingPincode
+        }
+
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+            return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
+        }
     }
 }
