@@ -50,7 +50,7 @@ final class ReceiveViewModel: BaseViewModel<
         let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
 
         let qrImage = transactionToReceive.map { [unowned qrCoder] in
-            qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageWidth)
+            qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }
 
         let receivingAddress = wallet.map { $0.address.checksummedHex }
@@ -73,6 +73,7 @@ final class ReceiveViewModel: BaseViewModel<
 
         return Output(
             receivingAddress: receivingAddress,
+            addressBecomeFirstResponder: input.fromController.viewWillAppear,
             qrImage: qrImage
         )
     }
@@ -83,12 +84,13 @@ extension ReceiveViewModel {
     struct InputFromView {
         let copyMyAddressTrigger: Driver<Void>
         let shareTrigger: Driver<Void>
-        let qrCodeImageWidth: CGFloat
+        let qrCodeImageHeight: CGFloat
         let amountToReceive: Driver<String>
     }
 
     struct Output {
         let receivingAddress: Driver<String>
+        let addressBecomeFirstResponder: Driver<Void>
         let qrImage: Driver<UIImage?>
     }
 }

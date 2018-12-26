@@ -82,6 +82,8 @@ private extension ImageAboveLabelButton {
         stackView.withStyle(.default) {
             $0.layoutMargins(UIEdgeInsets(top: 30, bottom: 20)).spacing(30)
         }
+
+        [stackView, customLabel, customImageView].forEach { $0.isUserInteractionEnabled = false }
     }
 }
 

@@ -138,6 +138,7 @@
 "Scene.PrepareTransaction.Title" = "Send";
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
+"Scene.PrepareTransaction.Button.MaxAmount" = "Max";
 "Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in 10^-12 Zil";
 "Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
@@ -170,10 +171,10 @@
 // MARK: Recieve
 "Scene.Receive.Title" = "Receive";
 "Scene.Receive.Label.MyPublicAddress" = "My public address";
-"Scene.Receive.Button.CopyMyAddress" = "Copy address";
-"Scene.Receive.Button.Share" = "Share address";
+"Scene.Receive.Button.CopyMyAddress" = "Copy";
+"Scene.Receive.Button.RequestPayment" = "Request payment";
 "Scene.Receive.Event.Toast.DidCopyAddress" = "Copied address";
-"Scene.Receive.Field.Amount" = "Amount";
+"Scene.Receive.Field.RequestAmount" = "Request amount";
 
 // MARK: - Settings
 "Scene.Settings.Title" = "Settings";

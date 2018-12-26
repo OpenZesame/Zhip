@@ -40,6 +40,7 @@ extension UIButton {
     public struct Style {
         fileprivate var titleNormal: String?
         fileprivate var imageNormal: UIImage?
+        var tintColor: UIColor?
         var height: CGFloat?
         let textColorNormal: UIColor?
         let textColorDisabled: UIColor?
@@ -54,6 +55,7 @@ extension UIButton {
         init(
             titleNormal: String? = nil,
             imageNormal: UIImage? = nil,
+            tintColor: UIColor? = UIColor.teal,
             height: CGFloat? = defaultHeight,
             font: UIFont? = nil,
             textColorNormal: UIColor? = nil,
@@ -67,6 +69,7 @@ extension UIButton {
             ) {
             self.titleNormal = titleNormal
             self.imageNormal = imageNormal
+            self.tintColor = tintColor
             self.height = height
             self.textColorNormal = textColorNormal
             self.textColorDisabled = textColorDisabled
@@ -97,6 +100,7 @@ extension UIButton {
         if let imageNormal = style.imageNormal {
             setImage(imageNormal, for: .normal)
         }
+        set(\.tintColor, ifNotNil: style.tintColor)
         setTitleColor(style.textColorNormal ?? .defaultText, for: .normal)
         setTitleColor(style.textColorDisabled ?? .silverGrey, for: .disabled)
         titleLabel?.font = style.font ?? UIFont.button
@@ -183,7 +187,22 @@ extension UIButton.Style {
     static func image(_ image: UIImage) -> UIButton.Style {
         return UIButton.Style(
             imageNormal: image,
-            height: nil
+            height: nil,
+            font: .title,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            cornerRounding: nil
+        )
+    }
+
+    static func title(_ title: String) -> UIButton.Style {
+        return UIButton.Style(
+            titleNormal: title,
+            height: nil,
+            font: .title,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            cornerRounding: nil
         )
     }
 }

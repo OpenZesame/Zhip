@@ -185,6 +185,7 @@ extension PrepareTransactionViewModel {
     struct InputFromView {
         let pullToRefreshTrigger: Driver<Void>
         let scanQRTrigger: Driver<Void>
+        let maxAmountTrigger: Driver<Void>
         let sendTrigger: Driver<Void>
 
         let recepientAddress: Driver<String>

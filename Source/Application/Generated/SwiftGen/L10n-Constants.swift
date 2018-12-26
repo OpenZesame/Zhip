@@ -327,6 +327,8 @@ internal enum L10n {
       /// Send
       internal static let title = L10n.tr("Localizable", "Scene.PrepareTransaction.Title")
       internal enum Button {
+        /// Max
+        internal static let maxAmount = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.MaxAmount")
         /// Send
         internal static let send = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.Send")
       }
@@ -363,10 +365,10 @@ internal enum L10n {
       /// Receive
       internal static let title = L10n.tr("Localizable", "Scene.Receive.Title")
       internal enum Button {
-        /// Copy address
+        /// Copy
         internal static let copyMyAddress = L10n.tr("Localizable", "Scene.Receive.Button.CopyMyAddress")
-        /// Share address
-        internal static let share = L10n.tr("Localizable", "Scene.Receive.Button.Share")
+        /// Request payment
+        internal static let requestPayment = L10n.tr("Localizable", "Scene.Receive.Button.RequestPayment")
       }
       internal enum Event {
         internal enum Toast {
@@ -375,8 +377,8 @@ internal enum L10n {
         }
       }
       internal enum Field {
-        /// Amount
-        internal static let amount = L10n.tr("Localizable", "Scene.Receive.Field.Amount")
+        /// Request amount
+        internal static let requestAmount = L10n.tr("Localizable", "Scene.Receive.Field.RequestAmount")
       }
       internal enum Label {
         /// My public address

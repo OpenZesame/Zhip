@@ -15,19 +15,22 @@ import Zesame
 final class ReceiveView: ScrollingStackView {
 
     private lazy var qrImageView            = UIImageView()
-    private lazy var addressView            = TitledValueView()
-    private lazy var amountToReceiveField   = TextField()
-    private lazy var shareButton            = UIButton()
+    private lazy var addressTitleLabel      = UILabel()
+    private lazy var addressValueTextView   = UITextView()
     private lazy var copyMyAddressButton    = UIButton()
-    private lazy var buttonsStackView       = UIStackView(arrangedSubviews: [shareButton, copyMyAddressButton])
+    private lazy var addressAndCopyButton   = UIStackView(arrangedSubviews: [addressValueTextView, copyMyAddressButton])
+    private lazy var addressViews           = UIStackView(arrangedSubviews: [addressTitleLabel, addressAndCopyButton])
+    private lazy var requestingAmountField  = TextField()
+    private lazy var requestPaymentButton   = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle = UIStackView.Style([
         qrImageView,
-        addressView,
-        amountToReceiveField,
-        buttonsStackView
-        ], distribution: .equalSpacing)
+        addressViews,
+        requestingAmountField,
+        .spacer,
+        requestPaymentButton
+        ])
 
     override func setup() {
         setupSubviews()
@@ -40,40 +43,56 @@ extension ReceiveView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.receivingAddress      --> addressView.rx.value,
-            viewModel.qrImage               --> qrImageView.rx.image
+            viewModel.receivingAddress              --> addressValueTextView.rx.text,
+            viewModel.addressBecomeFirstResponder   --> requestingAmountField.rx.becomeFirstResponder,
+            viewModel.qrImage                       --> qrImageView.rx.image
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
             copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
-            shareTrigger: shareButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            qrCodeImageWidth: UIScreen.main.bounds.width - stackView.layoutMargins.right - stackView.layoutMargins.left,
-            amountToReceive: amountToReceiveField.rx.text.orEmpty.asDriver()
+            shareTrigger: requestPaymentButton.rx.tap.asDriverOnErrorReturnEmpty(),
+            qrCodeImageHeight: 200,
+            amountToReceive: requestingAmountField.rx.text.orEmpty.asDriver()
         )
     }
 }
 
 private typealias € = L10n.Scene.Receive
 private extension ReceiveView {
+
+    // swiftlint:disable:next function_body_length
     func setupSubviews() {
         qrImageView.withStyle(.default)
 
-        addressView.titled(€.Label.myPublicAddress)
-
-        amountToReceiveField.withStyle(.number) {
-            $0.placeholder(€.Field.amount)
+        addressTitleLabel.withStyle(.title) {
+            $0.text(€.Label.myPublicAddress)
         }
 
-        shareButton.withStyle(.secondary) {
-            $0.title(€.Button.share)
+        addressValueTextView.withStyle(.init(
+            font: UIFont.Label.body,
+            isEditable: false,
+            isScrollEnabled: false,
+            // UILabel and UITextView horizontal alignment differs, change inset: stackoverflow.com/a/45113744/1311272
+            contentInset: UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5)
+            )
+        )
+
+        copyMyAddressButton.withStyle(.title(€.Button.copyMyAddress))
+        copyMyAddressButton.setHugging(.required, for: .horizontal)
+
+        addressAndCopyButton.withStyle(.horizontal)
+        addressViews.withStyle(.default) {
+            $0.layoutMargins(.zero)
         }
 
-        copyMyAddressButton.withStyle(.primary) {
-            $0.title(€.Button.copyMyAddress)
+        requestingAmountField.withStyle(.number) {
+            $0.placeholder(€.Field.requestAmount)
         }
 
-        buttonsStackView.withStyle(.horizontalFillingEqually)
+        requestPaymentButton.withStyle(.primary) {
+            $0.title(€.Button.requestPayment)
+        }
     }
 }

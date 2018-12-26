@@ -97,11 +97,10 @@ private extension MainView {
         motionEffectAuroraImageView.backgroundColor = .clear
         motionEffectAuroraImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        motionEffectAuroraImageView.addMotionEffectFromImageAssets(
-            front: Asset.Images.Aurora.front,
-            // TODO add new middle
-            middle: Asset.Images.Aurora.background,
-            back: Asset.Images.Aurora.background
+        motionEffectAuroraImageView.addMotionEffectFromImages(
+            front: Asset.Images.Aurora.front.image, motionEffectStrength: 4,
+            middle: Asset.Images.Aurora.background.image, motionEffectStrength: 10,
+            back: Asset.Images.Aurora.background.image, motionEffectStrength: 20
         )
     }
 }

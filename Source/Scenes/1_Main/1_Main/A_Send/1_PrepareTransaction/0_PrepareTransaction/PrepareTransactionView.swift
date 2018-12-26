@@ -15,10 +15,13 @@ import RxCocoa
 
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceLabels                  = TitledValueView()
+    private lazy var balanceTitleLabel              = UILabel()
+    private lazy var balanceValueLabel              = UILabel()
+    private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
     private lazy var recipientAddressField          = TextField()
     private lazy var scanQRButton                   = UIButton()
     private lazy var amountToSendField              = TextField()
+    private lazy var maxAmounButton                 = UIButton()
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     private lazy var gasPriceField                  = TextField()
     private lazy var sendButton                     = UIButton()
@@ -50,7 +53,7 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.amount                            --> amountToSendField.rx.text,
             viewModel.recipient                         --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled               --> sendButton.rx.isEnabled,
-            viewModel.balance                           --> balanceLabels.rx.value,
+            viewModel.balance                           --> balanceValueLabel.rx.text,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
             viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
@@ -62,6 +65,7 @@ extension PrepareTransactionView: ViewModelled {
         return InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
             scanQRTrigger: scanQRButton.rx.tap.asDriver(),
+            maxAmountTrigger: maxAmounButton.rx.tap.asDriver(),
             sendTrigger: sendButton.rx.tap.asDriver(),
 
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
@@ -79,11 +83,17 @@ extension PrepareTransactionView: ViewModelled {
 // MARK: - Private
 private typealias € = L10n.Scene.PrepareTransaction
 private extension PrepareTransactionView {
-    func setupSubiews() {
-        recipientAddressField.rightView = scanQRButton
-        recipientAddressField.rightViewMode = .always
 
-        balanceLabels.titled(€.Labels.Balance.title)
+    // swiftlint:disable function_body_length
+    func setupSubiews() {
+
+        balanceTitleLabel.withStyle(.title) {
+            $0.text(€.Labels.Balance.title)
+        }
+
+        balanceValueLabel.withStyle(.body)
+
+        balanceLabels.withStyle(.horizontal)
 
         recipientAddressField.withStyle(.address) {
             $0.placeholder(€.Field.recipient)
@@ -91,9 +101,17 @@ private extension PrepareTransactionView {
 
         scanQRButton.withStyle(.image(Asset.Icons.Small.camera.image))
 
+        recipientAddressField.rightView = scanQRButton
+        recipientAddressField.rightViewMode = .always
+
         amountToSendField.withStyle(.number) {
             $0.placeholder(€.Field.amount)
         }
+
+        maxAmounButton.withStyle(.title(€.Button.maxAmount))
+
+        amountToSendField.rightView = maxAmounButton
+        amountToSendField.rightViewMode = .always
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
             $0.text(€.Label.gasInSmallUnits)

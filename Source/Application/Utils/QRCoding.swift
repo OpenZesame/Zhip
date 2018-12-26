@@ -46,7 +46,7 @@ private extension QRCoding {
     func generateImage(
         content: String,
         size cgFloatSize: CGFloat,
-        backgroundColor: UIColor = .white,
+        backgroundColor: UIColor = .teal,
         foregroundColor: UIColor = .black,
         watermarkImage: UIImage? = nil
         ) -> UIImage? {

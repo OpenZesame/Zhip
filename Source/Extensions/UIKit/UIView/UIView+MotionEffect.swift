@@ -38,8 +38,13 @@ extension UIView {
         addMotionEffectFromImages(front: front.image, middle: middle.image, back: back.image)
     }
     
-    // swiftlint:disable:next function_body_length
-    func addMotionEffectFromImages(front: UIImage, middle: UIImage, back: UIImage, horizontalInset: CGFloat = 80) {
+    func addMotionEffectFromImages(
+        front: UIImage, motionEffectStrength frontStrength: CGFloat = 6,
+        middle: UIImage, motionEffectStrength middleStrength: CGFloat = 20,
+        back: UIImage, motionEffectStrength backStrength: CGFloat = 48,
+        horizontalInsetForImageViews: CGFloat = 80
+        ) {
+
         let frontImageView = UIImageView(image: front)
         let middleImageView = UIImageView(image: middle)
         let backImageView = UIImageView(image: back)
@@ -54,14 +59,14 @@ extension UIView {
             $0.edgesToSuperview(insets:
                 UIEdgeInsets(
                     top: 0,
-                    left: horizontalInset,
+                    left: horizontalInsetForImageViews,
                     bottom: 0,
-                    right: horizontalInset
+                    right: horizontalInsetForImageViews
                 )
             )
         }
 
-        addMotionEffectTo(views: (backImageView, middleImageView, frontImageView))
+        addMotionEffectTo(views: (backImageView, middleImageView, frontImageView), strengths: (frontStrength, middleStrength, backStrength))
     }
 
     // swiftlint:disable large_tuple
@@ -69,7 +74,7 @@ extension UIView {
     // (8, 30, 50)
     func addMotionEffectTo(
         views: (back: UIView, middle: UIView, front: UIView),
-        strengths: (back: CGFloat, middle: CGFloat, front: CGFloat) = (6, 20, 48)
+        strengths: (back: CGFloat, middle: CGFloat, front: CGFloat)
         ) {
         let views = [views.back, views.middle, views.front]
         let strengths = [strengths.back, strengths.middle, strengths.front]
