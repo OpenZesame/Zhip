@@ -186,7 +186,6 @@ private final class PincodeTextField: UITextField {
 
 private extension PincodeTextField {
 
-    // swiftlint:disable:next function_body_length
     func setup(height: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
 

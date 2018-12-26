@@ -22,8 +22,8 @@ line_length: 300
 type_name:
   min_length: 3
   max_length:
-    warning: 40
-    error:  45
+    warning: 45
+    error:  50
   excluded:
     - id
     - €

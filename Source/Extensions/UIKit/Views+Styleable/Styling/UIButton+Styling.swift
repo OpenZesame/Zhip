@@ -40,7 +40,7 @@ extension UIButton {
     public struct Style {
         fileprivate var titleNormal: String?
         fileprivate var imageNormal: UIImage?
-        let height: CGFloat?
+        var height: CGFloat?
         let textColorNormal: UIColor?
         let textColorDisabled: UIColor?
         let colorNormal: UIColor?
@@ -139,6 +139,13 @@ extension UIButton.Style {
     func title(_ titleNormal: String) -> UIButton.Style {
         var style = self
         style.titleNormal = titleNormal
+        return style
+    }
+
+    @discardableResult
+    func height(_ height: CGFloat?) -> UIButton.Style {
+        var style = self
+        style.height = height
         return style
     }
 }

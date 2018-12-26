@@ -52,11 +52,6 @@ extension UIImageView {
     }
 
     @discardableResult
-    func withStyle(_ makeStyle: () -> UIImageView.Style, customize: ((UIImageView.Style) -> UIImageView.Style)? = nil) -> UIImageView {
-        return withStyle(makeStyle(), customize: customize)
-    }
-
-    @discardableResult
     func withStyle(_ style: UIImageView.Style, customize: ((UIImageView.Style) -> UIImageView.Style)? = nil) -> UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style

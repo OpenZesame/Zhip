@@ -83,11 +83,6 @@ extension UIStackView {
     }
 
     @discardableResult
-    func withStyle(_ makeStyle: () -> (UIStackView.Style), customize: ((UIStackView.Style) -> UIStackView.Style)? = nil) -> UIStackView {
-        return withStyle(makeStyle(), customize: customize)
-    }
-
-    @discardableResult
     func withStyle(_ style: UIStackView.Style, customize: ((UIStackView.Style) -> UIStackView.Style)? = nil) -> UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style

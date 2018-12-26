@@ -37,7 +37,8 @@ extension UIView {
     func addMotionEffectFromImageAssets(front: ImageAsset, middle: ImageAsset, back: ImageAsset) {
         addMotionEffectFromImages(front: front.image, middle: middle.image, back: back.image)
     }
-
+    
+    // swiftlint:disable:next function_body_length
     func addMotionEffectFromImages(front: UIImage, middle: UIImage, back: UIImage, horizontalInset: CGFloat = 80) {
         let frontImageView = UIImageView(image: front)
         let middleImageView = UIImageView(image: middle)

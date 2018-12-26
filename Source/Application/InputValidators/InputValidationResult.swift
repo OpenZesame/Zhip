@@ -40,12 +40,14 @@ enum Validation {
         case .error(let error): self = .error(errorMessage: error.errorMessage)
         }
     }
+}
 
-    func equalsTreatingAllErrorsAsOne(_ other: Validation) -> Bool {
-        switch (self, other) {
+extension Validation: Equatable {
+    static func == (lhs: Validation, rhs: Validation) -> Bool {
+        switch (lhs, rhs) {
         case (.valid, .valid): return true
         case (.empty, .empty): return true
-        case (.error, .error): return true
+        case (.error(let lhsError), .error(let rhsError)): return lhsError == rhsError
         default: return false
         }
     }

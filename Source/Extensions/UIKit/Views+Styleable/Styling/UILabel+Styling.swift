@@ -21,8 +21,8 @@ extension UILabel {
         init(
             text: String? = nil,
             textAlignment: NSTextAlignment? = nil,
-            font: UIFont? = nil,
             textColor: UIColor? = nil,
+            font: UIFont? = nil,
             numberOfLines: Int? = nil,
             backgroundColor: UIColor? = nil,
             adjustsFontSizeMinimumScaleFactor: CGFloat? = nil
@@ -51,10 +51,6 @@ extension UILabel {
             adjustsFontSizeToFitWidth = true
             self.minimumScaleFactor = minimumScaleFactor
         }
-    }
-    @discardableResult
-    func withStyle(_ makeStyle: () -> UILabel.Style, customize: ((UILabel.Style) -> UILabel.Style)? = nil) -> UILabel {
-        return withStyle(makeStyle(), customize: customize)
     }
 
     @discardableResult
@@ -163,8 +159,8 @@ extension UILabel.Style {
 
         return UILabel.Style(
             textAlignment: merge(\.textAlignment),
-            font: merge(\.font),
             textColor: merge(\.textColor),
+            font: merge(\.font),
             numberOfLines: merge(\.numberOfLines),
             backgroundColor: merge(\.backgroundColor)
         )

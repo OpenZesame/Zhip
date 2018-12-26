@@ -142,7 +142,8 @@ class PrepareTransactionViewModelTests: XCTestCase, ViewModelTesting {
 
             XCTAssertEqual(recordedBalance.values, expectedBalance)
             XCTAssertEqual(recordedAmount.values, expectedAmount)
-            XCTAssertEqual(recordedAmountValidation.values, [Optional<String>.none, Optional<String>.none, Optional<String>.some("Insufficient funds")])
+            let amountValidationValues: [Validation?] = recordedAmountValidation.values
+            XCTAssertEqual(amountValidationValues, [.valid, .valid, .error(errorMessage: "Insufficient funds")])
         }
 
     }

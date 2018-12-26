@@ -22,7 +22,8 @@ final class TitledValueView: UIStackView {
 }
 
 extension TitledValueView {
-
+    
+    // swiftlint:disable:next function_body_length
     func withStyles(
         forTitle titleStyle: UILabel.Style? = nil,
         forValue valueStyle: UITextView.Style? = nil,

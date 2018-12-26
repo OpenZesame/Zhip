@@ -160,8 +160,6 @@ private extension TextField {
         selectedTitleColor = color
     }
 
-
-
     func colorFromValidation(_ validation: Validation) -> UIColor {
         let color: UIColor
         switch validation {

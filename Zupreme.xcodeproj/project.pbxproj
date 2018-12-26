@@ -107,6 +107,8 @@
 		487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E3219A2F4A00308550 /* Array_Extension.swift */; };
 		487C19E6219A2FCD00308550 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E5219A2FCD00308550 /* Weak.swift */; };
 		488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488EE4CB215FAD53009A3903 /* Driver+Empty.swift */; };
+		48947B7D21D3F21900604D90 /* String_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48947B7C21D3F21900604D90 /* String_Extensions.swift */; };
+		48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */; };
 		4898FB4521542333009501DC /* StackViewStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4421542333009501DC /* StackViewStyling.swift */; };
 		4898FB48215423D6009501DC /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* ScrollView.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
@@ -383,6 +385,8 @@
 		487C19E3219A2F4A00308550 /* Array_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extension.swift; sourceTree = "<group>"; };
 		487C19E5219A2FCD00308550 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		488EE4CB215FAD53009A3903 /* Driver+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Empty.swift"; sourceTree = "<group>"; };
+		48947B7C21D3F21900604D90 /* String_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_Extensions.swift; sourceTree = "<group>"; };
+		48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAboveLabelButton.swift; sourceTree = "<group>"; };
 		4898FB4421542333009501DC /* StackViewStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewStyling.swift; sourceTree = "<group>"; };
 		4898FB47215423D6009501DC /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
@@ -1221,6 +1225,7 @@
 			isa = PBXGroup;
 			children = (
 				4898FB47215423D6009501DC /* ScrollView.swift */,
+				48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */,
 				485AACA321AAF3B3005C56CC /* TextField.swift */,
 				48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */,
 			);
@@ -1234,6 +1239,7 @@
 				487C19E3219A2F4A00308550 /* Array_Extension.swift */,
 				48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */,
 				48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */,
+				48947B7C21D3F21900604D90 /* String_Extensions.swift */,
 				48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */,
 				487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */,
 				485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */,
@@ -1943,6 +1949,7 @@
 				487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */,
 				48ECF5F621A18F140078D659 /* ChooseWalletCoordinator.swift in Sources */,
 				48379C6C21AE925400B95DB9 /* BaseViewModel.swift in Sources */,
+				48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */,
 				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
@@ -2035,6 +2042,7 @@
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,
 				48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
 				483CE9CA2194E9E300BED31C /* TrackedUserAction.swift in Sources */,
+				48947B7D21D3F21900604D90 /* String_Extensions.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
 				48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */,
