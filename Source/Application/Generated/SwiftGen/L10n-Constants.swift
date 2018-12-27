@@ -72,6 +72,8 @@ internal enum L10n {
     internal static let ok = L10n.tr("Localizable", "Generic.OK")
     /// Skip
     internal static let skip = L10n.tr("Localizable", "Generic.Skip")
+    /// ZILs
+    internal static let zils = L10n.tr("Localizable", "Generic.Zils")
   }
 
   internal enum Scene {
@@ -354,10 +356,6 @@ internal enum L10n {
         internal enum Balance {
           /// Current balance
           internal static let title = L10n.tr("Localizable", "Scene.PrepareTransaction.Labels.Balance.Title")
-          /// %@ ZILs
-          internal static func value(_ p1: String) -> String {
-            return L10n.tr("Localizable", "Scene.PrepareTransaction.Labels.Balance.Value", p1)
-          }
         }
       }
     }

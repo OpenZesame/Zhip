@@ -4,6 +4,7 @@
 "Generic.Next" = "Next";
 "Generic.Skip" = "Skip";
 "Generic.Back" = "Back";
+"Generic.Zils" = "ZILs";
 
 "Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
@@ -145,7 +146,6 @@
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
-"Scene.PrepareTransaction.Labels.Balance.Value" = "%@ ZILs";
 
 // MARK: ScanQRCode
 "Scene.ScanQRCode.Title" = "Scan QR";
