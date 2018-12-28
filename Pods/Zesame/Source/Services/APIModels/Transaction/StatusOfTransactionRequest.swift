@@ -12,8 +12,8 @@ import JSONRPCKit
 // The receipt for a transaction that the network has reached consensus for.
 public struct TransactionReceipt {
     public let transactionId: String
-    public let totalGasCost: Amount
-    public init(id: String, totalGasCost: Amount) {
+    public let totalGasCost: ZilAmount
+    public init(id: String, totalGasCost: ZilAmount) {
         self.transactionId = id
         self.totalGasCost = totalGasCost
     }
@@ -28,7 +28,7 @@ public extension TransactionReceipt {
 
 public struct StatusOfTransactionResponse: Decodable {
     public struct Receipt {
-        public let totalGasCost: Amount
+        public let totalGasCost: ZilAmount
         public let isSent: Bool
     }
 
@@ -46,7 +46,7 @@ public extension StatusOfTransactionResponse.Receipt {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let costAsString = try container.decode(String.self, forKey: .totalGasCost)
-        self.totalGasCost = try Amount(string: costAsString)
+        self.totalGasCost = try ZilAmount(zil: costAsString)
         self.isSent = try container.decode(Bool.self, forKey: .isSent)
     }
 }

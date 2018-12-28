@@ -9,7 +9,7 @@
 import Foundation
 
 public struct BalanceResponse: Decodable {
-    public let balance: Amount
+    public let balance: ZilAmount
     public let nonce: Nonce
 }
 

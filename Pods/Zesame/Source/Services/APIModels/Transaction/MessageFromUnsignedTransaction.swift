@@ -21,7 +21,7 @@ func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, has
         $0.senderpubkey = publicKey.data.compressed.asByteArray
         $0.amount = tx.payment.amount.as16BytesLongArray
         $0.gasprice = tx.payment.gasPrice.as16BytesLongArray
-        $0.gaslimit = UInt64(tx.payment.gasLimit.valueForTransaction)
+        $0.gaslimit = UInt64(tx.payment.gasLimit)
         $0.code = formatCodeOrData(tx.code)
         $0.data = formatCodeOrData(tx.data)
     }

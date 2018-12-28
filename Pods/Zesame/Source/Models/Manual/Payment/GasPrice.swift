@@ -9,25 +9,25 @@
 import Foundation
 
 public struct GasPrice: ExpressibleByAmount {
-    public static let exponent: Int = -12
-    public static let minSignificand: Value = 100
+    public typealias Magnitude = Qa.Magnitude
+    public static let minMagnitude: Magnitude = 1_000_000_000
+    public static let maxMagnitude = Qa.max
+    public static let unit: Unit = .qa
+    public let magnitude: Magnitude
 
-    public static var minValue: Value {
-        return minSignificand * powerFactor
-    }
-
-    public let significand: Value
-    public init(validSignificand significand: Value) {
-        do {
-            self.significand = try GasPrice.validate(significand: significand)
-        } catch {
-            fatalError("Invalid significand passed")
-        }
+    public init(magnitude: Magnitude) {
+        self.magnitude = magnitude
     }
 }
 
 public extension GasPrice {
-    func asAmount() -> Amount {
-        return GasPrice.express(value: value, in: Amount.self)
+    var amount: Qa.Magnitude {
+        return magnitude
+    }
+}
+
+public extension GasPrice {
+    static var minInLi: Int {
+        return Int(GasPrice.min.inLi.magnitude)
     }
 }
