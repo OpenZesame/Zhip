@@ -2,8 +2,7 @@
 
 This project uses [Bitrise](https://app.bitrise.io/users/sign_up?referrer=88c745a0e3bea9de) for CI.
 
-[[https://github.com/OpenZesame/Zhip/blob/develop/zhip-logo.png]]
-
+![ZhipLogo](zhip-logo.png)
 
 # Zhip
 Zhip is the worlds first and only iOS wallet for Zilliqa. The app is entirely open source. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame). Zhip was formerly known as Zupreme (the code base will reflect the change of name to Zhip soon).
