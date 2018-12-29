@@ -45,28 +45,22 @@ extension UIView {
         horizontalInsetForImageViews: CGFloat = 80
         ) {
 
-        let frontImageView = UIImageView(image: front)
-        let middleImageView = UIImageView(image: middle)
-        let backImageView = UIImageView(image: back)
+		let imageViews = [back, middle, front].map { image -> UIImageView in
+			let imageView = UIImageView()
+			imageView.withStyle(.background(image: image))
+			addSubview(imageView)
+			imageView.edgesToSuperview(insets:
+				UIEdgeInsets(
+					top: 0,
+					left: horizontalInsetForImageViews,
+					bottom: 0,
+					right: horizontalInsetForImageViews
+				)
+			)
+			return imageView
+		}
 
-        let imageViews = [backImageView, middleImageView, frontImageView]
-
-        imageViews.forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.contentMode = UIView.ContentMode.center
-            addSubview($0)
-            $0.backgroundColor = .clear
-            $0.edgesToSuperview(insets:
-                UIEdgeInsets(
-                    top: 0,
-                    left: horizontalInsetForImageViews,
-                    bottom: 0,
-                    right: horizontalInsetForImageViews
-                )
-            )
-        }
-
-        addMotionEffectTo(views: (backImageView, middleImageView, frontImageView), strengths: (frontStrength, middleStrength, backStrength))
+        addMotionEffectTo(views: (imageViews[0], imageViews[1], imageViews[2]), strengths: (frontStrength, middleStrength, backStrength))
     }
 
     // swiftlint:disable large_tuple

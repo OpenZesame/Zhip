@@ -88,7 +88,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         }.eagerValidLazyErrorTurnedToEmptyOnEdit(
             directlyDisplayErrorsTrackedBy: errorTracker
         ) {
-            WalletEncryptionPassphrase.Error(error: $0, backingUpWalletJustCreated: true)
+            WalletEncryptionPassphrase.Error.incorrectPassphraseErrorFrom(error: $0, backingUpWalletJustCreated: true)
         }
 
         return Output(

@@ -40,35 +40,70 @@ final class SignTransactionViewModel: BaseViewModel<
         guard let _wallet = walletUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }
         let _payment = payment
 
+        let errorTracker = ErrorTracker()
         let activityIndicator = ActivityIndicator()
+
+        // MARK: - Validate input
+        let validator = InputValidator()
+
+        let encryptionPassphraseValidationValue = input.fromView.encryptionPassphrase
+            .map { validator.validateEncryptionPassphrase($0, for: _wallet) }
+
+        let encryptionPassphrase = encryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()
 
         bag <~ [
             input.fromView.signAndSendTrigger
-                .withLatestFrom(input.fromView.encryptionPassphrase)
+                .withLatestFrom(encryptionPassphrase)
                 .flatMapLatest {
                     self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassphrase: $0)
                         .trackActivity(activityIndicator)
+                        .trackError(errorTracker)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userDid(.sign($0)) })
                 .drive()
         ]
 
+        let encryptionPassphraseValidation = Driver.merge(
+            // map `editingChanged` to `editingDidBegin`
+            input.fromView.encryptionPassphrase.mapToVoid().map { true },
+            input.fromView.isEditingEncryptionPassphrase
+            ).withLatestFrom(encryptionPassphraseValidationValue) {
+                EditingValidation(isEditing: $0, validation: $1.validation)
+            }.eagerValidLazyErrorTurnedToEmptyOnEdit(
+                directlyDisplayErrorsTrackedBy: errorTracker
+            ) {
+                WalletEncryptionPassphrase.Error.incorrectPassphraseErrorFrom(error: $0)
+        }
+
         return Output(
             isSignButtonEnabled: input.fromView.encryptionPassphrase.map { $0.count >= WalletEncryptionPassphrase.minimumLenght },
-            isSignButtonLoading: activityIndicator.asDriver()
+            isSignButtonLoading: activityIndicator.asDriver(),
+            encryptionPassphraseValidation: encryptionPassphraseValidation
         )
     }
 
 }
 
 extension SignTransactionViewModel {
+
     struct InputFromView {
         let encryptionPassphrase: Driver<String>
+        let isEditingEncryptionPassphrase: Driver<Bool>
         let signAndSendTrigger: Driver<Void>
     }
+
     struct Output {
         let isSignButtonEnabled: Driver<Bool>
         let isSignButtonLoading: Driver<Bool>
+        let encryptionPassphraseValidation: Driver<Validation>
+    }
+
+    struct InputValidator {
+
+        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> InputValidationResult<WalletEncryptionPassphrase, EncryptionPassphraseValidator.Error> {
+            let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
+            return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
+        }
     }
 }

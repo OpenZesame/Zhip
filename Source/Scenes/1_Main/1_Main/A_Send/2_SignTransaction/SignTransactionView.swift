@@ -22,6 +22,10 @@ final class SignTransactionView: ScrollingStackView {
         signButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension SignTransactionView: ViewModelled {
@@ -29,14 +33,16 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isSignButtonEnabled --> signButton.rx.isEnabled,
-            viewModel.isSignButtonLoading --> signButton.rx.isLoading
+            viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
+            viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
+            viewModel.isSignButtonLoading               --> signButton.rx.isLoading
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
+            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
@@ -45,7 +51,7 @@ extension SignTransactionView: ViewModelled {
 private typealias € = L10n.Scene.SignTransaction
 private extension SignTransactionView {
     func setupSubviews() {
-        confirmTransactionLabel.withStyle(.header) {
+        confirmTransactionLabel.withStyle(.body) {
             $0.text(€.Label.signTransactionWithEncryptionPassphrase)
         }
 

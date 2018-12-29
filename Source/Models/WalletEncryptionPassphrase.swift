@@ -53,19 +53,20 @@ extension WalletEncryptionPassphrase {
         case passphraseIsTooShort(mustAtLeastHaveLength: Int)
         case incorrectPassphrase(backingUpWalletJustCreated: Bool)
 
-        init?(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) {
+        static func incorrectPassphraseErrorFrom(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) -> Error? {
             switch walletImportError {
-            case .incorrectPasshrase: self = .incorrectPassphrase(backingUpWalletJustCreated: backingUpWalletJustCreated)
+            case .incorrectPasshrase: return .incorrectPassphrase(backingUpWalletJustCreated: backingUpWalletJustCreated)
             default: return nil
             }
         }
 
-        init?(error: Swift.Error, backingUpWalletJustCreated: Bool = false) {
-           guard
-            let zesameError = error as? Zesame.Error,
-            case .walletImport(let walletImportError) = zesameError
-            else { return nil }
-            self.init(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
+        static func incorrectPassphraseErrorFrom(error: Swift.Error, backingUpWalletJustCreated: Bool = false) -> Error? {
+			guard
+				let zesameError = error as? Zesame.Error,
+				case .walletImport(let walletImportError) = zesameError
+				else { return nil }
+
+            return incorrectPassphraseErrorFrom(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
         }
     }
 }
