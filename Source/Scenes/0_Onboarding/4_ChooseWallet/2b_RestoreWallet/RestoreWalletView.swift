@@ -23,6 +23,7 @@ final class RestoreWalletView: UIView, EmptyInitializable {
 
     // MARK: - Subviews
     private lazy var restorationMethodSegmentedControl  = UISegmentedControl()
+    private lazy var headerLabel                        = UILabel()
     private lazy var restoreUsingPrivateKeyView         = RestoreUsingPrivateKeyView()
     private lazy var restoreUsingKeyStoreView           = RestoreUsingKeystoreView()
     private lazy var restoreWalletButton                = ButtonWithSpinner()
@@ -44,18 +45,25 @@ private extension RestoreWalletView {
     // swiftlint:disable:next function_body_length
     func setup() {
 
+        headerLabel.withStyle(.header)
+
         addSubview(restorationMethodSegmentedControl)
+        addSubview(headerLabel)
+        headerLabel.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
+        headerLabel.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
+        headerLabel.topToBottom(of: restorationMethodSegmentedControl, offset: 24)
         addSubview(restoreWalletButton)
         restoreWalletButton.bottomToSuperview(offset: -50)
-        restoreWalletButton.centerXToSuperview()
+        restoreWalletButton.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
+        restoreWalletButton.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
 
         func setupSubview(_ view: UIView) {
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
             view.leadingToSuperview()
             view.trailingToSuperview()
-            view.topToBottom(of: restorationMethodSegmentedControl)
-            view.bottomToTop(of: restoreWalletButton, offset: 10)
+            view.topToBottom(of: headerLabel)
+            view.bottomToTop(of: restoreWalletButton, offset: -30)
             view.isHidden = true
         }
 
@@ -74,15 +82,25 @@ private extension RestoreWalletView {
     // swiftlint:disable:next function_body_length
     func setupSegmentedControl() {
         restorationMethodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        restorationMethodSegmentedControl.topToSuperview(offset: 8)
+        restorationMethodSegmentedControl.topToSuperview(usingSafeArea: true)
         restorationMethodSegmentedControl.centerXToSuperview()
 
         func add(segment: Segment, titled title: String) {
             restorationMethodSegmentedControl.insertSegment(withTitle: title, at: segment.rawValue, animated: false)
         }
 
-        add(segment: .privateKey, titled: €.Segment.privateKey)
+        restorationMethodSegmentedControl.tintColor = .teal
+        let whiteFontAttributes = [NSAttributedString.Key.font: UIFont.hint,
+                             NSAttributedString.Key.foregroundColor: UIColor.white]
+
+        let tealFontAttributes = [NSAttributedString.Key.font: UIFont.hint,
+                                   NSAttributedString.Key.foregroundColor: UIColor.teal]
+
+        restorationMethodSegmentedControl.setTitleTextAttributes(whiteFontAttributes, for: .selected)
+        restorationMethodSegmentedControl.setTitleTextAttributes(tealFontAttributes, for: .normal)
+
         add(segment: .keystore, titled: €.Segment.keystore)
+        add(segment: .privateKey, titled: €.Segment.privateKey)
 
         restorationMethodSegmentedControl.rx.value
             .asDriver()
@@ -126,6 +144,7 @@ extension RestoreWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
+            viewModel.headerLabel               --> headerLabel.rx.text,
             viewModel.isRestoring               --> restoreWalletButton.rx.isLoading,
             viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled
         ]

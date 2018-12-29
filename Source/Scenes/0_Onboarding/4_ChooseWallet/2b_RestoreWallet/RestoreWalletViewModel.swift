@@ -46,6 +46,13 @@ final class RestoreWalletViewModel: BaseViewModel<
             }
         }
 
+        let headerLabel: Driver<String> = input.fromView.selectedSegment.map {
+            switch $0 {
+            case .keystore: return €.Label.Header.keystore
+            case .privateKey: return €.Label.Header.privateKey
+            }
+        }
+
         bag <~ [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
@@ -58,6 +65,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         ]
 
         return Output(
+            headerLabel: headerLabel,
             isRestoreButtonEnabled: keyRestoration.map { $0 != nil },
             isRestoring: activityIndicator.asDriver()
         )
@@ -77,6 +85,7 @@ extension RestoreWalletViewModel {
     }
     
     struct Output {
+        let headerLabel: Driver<String>
         let isRestoreButtonEnabled: Driver<Bool>
         let isRestoring: Driver<Bool>
     }

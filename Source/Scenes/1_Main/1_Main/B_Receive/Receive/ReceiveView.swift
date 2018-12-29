@@ -20,7 +20,7 @@ final class ReceiveView: ScrollingStackView {
     private lazy var copyMyAddressButton    = UIButton()
     private lazy var addressAndCopyButton   = UIStackView(arrangedSubviews: [addressValueTextView, copyMyAddressButton])
     private lazy var addressViews           = UIStackView(arrangedSubviews: [addressTitleLabel, addressAndCopyButton])
-    private lazy var requestingAmountField  = TextField()
+    private lazy var requestingAmountField  = FloatingLabelTextField()
     private lazy var requestPaymentButton   = UIButton()
 
     // MARK: - StackViewStyling

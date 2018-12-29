@@ -6,12 +6,15 @@
 "Generic.Back" = "Back";
 "Generic.Zils" = "ZILs";
 
+"Generic.Show" = "Show";
+"Generic.Hide" = "Hide";
+
 "Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
 "Error.Input.Address.TooLong" = "Address is too long, should be %d";
 
 "Error.Input.Amount.NonNumericString" = "String not a number";
-"Error.Input.Amount.TooSmall" = "Must be at lest %@";
+"Error.Input.Amount.TooSmall" = "Must be at least %@";
 "Error.Input.Amount.TooLarge" = "Must be at most %@";
 "Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
@@ -101,13 +104,16 @@
 "Scene.BackUpKeystore.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
 // MARK: RestoreWallet
-"Scene.RestoreWallet.Title" = "Restore Wallet";
+"Scene.RestoreWallet.Title" = "Restore existing wallet";
+"Scene.RestoreWallet.Label.Header.Keystore" = "Restore with keystore";
+"Scene.RestoreWallet.Label.Header.PrivateKey" = "Restore with private key";
 "Scene.RestoreWallet.Segment.PrivateKey" = "Private key";
 "Scene.RestoreWallet.Segment.Keystore" = "Keystore";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
-"Scene.RestoreWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.RestoreWallet.Field.EncryptionPassphrase.PrivateKey" = "New encryption passphrase (min %d chars)";
+"Scene.RestoreWallet.Field.EncryptionPassphrase.Keystore" = "Encryption passphrase (min %d chars)";
 "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
-"Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
+"Scene.RestoreWallet.Button.RestoreWallet" = "Restore";
 
 // MARK: ChoosePincode
 "Scene.ChoosePincode.Title" = "Set PIN";
@@ -140,7 +146,7 @@
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
 "Scene.PrepareTransaction.Button.MaxAmount" = "Max";
-"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in 10^-12 Zil";
+"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in %@";
 "Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.PrepareTransaction.Button.Send" = "Send";

@@ -57,7 +57,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .asDriverOnErrorReturnEmpty()
         }
 
-        let balance = latestBalanceAndNonce.map { $0.balance }.startWith(0)
+        let _cachedBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
+        let balance = latestBalanceAndNonce.map { $0.balance }.startWith(_cachedBalance)
 
         // MARK: - Validate input (only validate fields when they loose focus)
         let validator = InputValidator()
@@ -70,34 +71,38 @@ final class PrepareTransactionViewModel: BaseViewModel<
             deepLinkedTransaction.map { .valid($0.recipient) }
         )
 
+        let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
+        let gasPrice = gasPriceValidationValue.map { $0.value }
+
         // This is not quite optimal, we should read from gasPrice field
-        let maxAmountBoundByBalanceAndMinGasPrice: Driver<Amount?> = input.fromView.maxAmountTrigger.withLatestFrom(balance).map {
-            guard case let balanceMinusOne = $0.value - 1, balanceMinusOne > 0 else { return nil }
-            return try? Amount(significand: balanceMinusOne)
+        let maxAmountBoundByBalanceAndMinGasPrice: Driver<ZilAmount?> = input.fromView.maxAmountTrigger.withLatestFrom(
+            Driver.combineLatest(balance, gasPrice)
+        ).map {
+            let balance = $0.0
+            guard let gasPrice = $0.1 else {
+                return balance
+            }
+            guard case let balanceMinusOne = balance - gasPrice, balanceMinusOne > 0 else { return nil }
+            return try? ZilAmount(qa: balanceMinusOne.inQa)
         }
 
         let amountValidationValue = Driver.merge(
             // Validate input from view
             input.fromView.amountToSend.map { validator.validateAmount($0) },
 
-            // Amount from DeepLinked transaction should be valid
+            // ZilAmount from DeepLinked transaction should be valid
             deepLinkedTransaction.map { .valid($0.amount) },
 
             maxAmountBoundByBalanceAndMinGasPrice.filterNil().map { .valid($0) }
         )
 
-        let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
-
         // MARK: - Validated values
         let recipient = recipientAddressValidationValue.map { $0.value }
 
-
         let amountNotBoundByBalance = amountValidationValue.map { $0.value }
 
-        let gasPrice = gasPriceValidationValue.map { $0.value }
-
         let sufficientFundsValidationTrigger = Driver.merge(
-            // Amount trigger
+            // ZilAmount trigger
             Driver.merge(
                 input.fromView.amountDidEndEditing,
                 input.fromView.maxAmountTrigger,
@@ -170,7 +175,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let isSendButtonEnabled = payment.map { $0 != nil }
 
-        let gasPricePlaceholder = Driver.just(€.Field.gasPrice(GasPrice.minimum.display))
+        let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.minInLi.description) \(Unit.li.name)"))
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
@@ -191,7 +196,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 extension ExpressibleByAmount {
     var display: String {
-        return Int(significand).description
+        return Int(magnitude).description
     }
 }
 
@@ -241,11 +246,11 @@ extension PrepareTransactionViewModel {
             return addressValidator.validate(input: recipient)
         }
 
-        func validate(amount: Amount, gasPrice: GasPrice, lessThanBalance balance: Amount) -> InputValidationResult<Amount, SufficientFundsValidator.Error> {
+        func validate(amount: ZilAmount, gasPrice: GasPrice, lessThanBalance balance: ZilAmount) -> InputValidationResult<ZilAmount, SufficientFundsValidator.Error> {
             return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
         }
 
-        func validateAmount(_ amount: String) -> InputValidationResult<Amount, AmountValidator.Error> {
+        func validateAmount(_ amount: String) -> InputValidationResult<ZilAmount, AmountValidator.Error> {
             return amountValidator.validate(input: amount)
         }
 
@@ -255,7 +260,7 @@ extension PrepareTransactionViewModel {
     }
 
     struct Formatter {
-        func format(amount: Amount) -> String {
+        func format(amount: ZilAmount) -> String {
             let amountString = amount.display.inserting(string: " ", every: 3)
             return "\(amountString) \(L10n.Generic.zils)"
         }

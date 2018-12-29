@@ -57,10 +57,12 @@ final class MainViewModel: BaseViewModel<
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
+                .do(onNext: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })
         }
 
         // Format output
-        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(0)
+        let _cachedBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
+        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(_cachedBalance)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -98,7 +100,7 @@ extension MainViewModel {
     }
 
     struct Formatter {
-        func format(amount: Amount) -> String {
+        func format(amount: ZilAmount) -> String {
             return amount.display.inserting(string: " ", every: 3)
         }
     }

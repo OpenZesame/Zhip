@@ -13,10 +13,10 @@ import Validator
 struct GasPriceValidator: InputValidator {
     typealias Error = AmountValidator.Error
 
-    func validate(input: String) -> InputValidationResult<GasPrice, Error> {
+    func validate(input li: String) -> InputValidationResult<GasPrice, Error> {
         let gasPrice: GasPrice
         do {
-            gasPrice = try GasPrice(string: input)
+            gasPrice = try GasPrice(li: li)
         } catch let amountError as AmountError {
             return self.error(amountError)
         } catch {

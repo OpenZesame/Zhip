@@ -14,7 +14,7 @@ import RxCocoa
 final class DecryptKeystoreToRevealKeyPairView: ScrollingStackView {
 
     private lazy var decryptToRevealLabel       = UILabel()
-    private lazy var encryptionPassphraseField  = TextField()
+    private lazy var encryptionPassphraseField  = FloatingLabelTextField()
     private lazy var revealButton               = ButtonWithSpinner()
 
     lazy var stackViewStyle = UIStackView.Style([

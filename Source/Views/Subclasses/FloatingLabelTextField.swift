@@ -10,7 +10,7 @@ import UIKit
 
 import SkyFloatingLabelTextField
 
-final class TextField: SkyFloatingLabelTextField {
+final class FloatingLabelTextField: SkyFloatingLabelTextField {
     enum TypeOfInput {
         case number, hexadecimal, text
     }
@@ -43,6 +43,16 @@ final class TextField: SkyFloatingLabelTextField {
         return leftPaddingView.frame
     }
 
+    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        var rightViewRect = super.rightViewRect(forBounds: bounds)
+        rightViewRect.origin.y = 0
+        var size = rightViewRect.size
+        size.height = textFieldHeight
+        size.width = rightViewWidth
+        rightViewRect.size = size
+        return rightViewRect
+    }
+
     /// Allowing for slighly shrinkt font size for error messages that otherwise would not fit.
     /// Shrinking is only performed on the label when showing error messages.
     private func updateFontResizing() {
@@ -50,10 +60,48 @@ final class TextField: SkyFloatingLabelTextField {
     }
 }
 
+extension FloatingLabelTextField {
+    enum Position {
+        case right, left
+    }
+
+    func addBottomAlignedButton(titled: String, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        let button = UIButton()
+
+        button.withStyle(.title(titled))
+        button.setContentHuggingPriority(.required, for: .vertical)
+        button.translatesAutoresizingMaskIntoConstraints = true
+
+        addBottomAligned(view: button, position: position, offset: offset, mode: mode)
+
+        return button
+    }
+
+    func addBottomAligned(view: UIView, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
+        view.translatesAutoresizingMaskIntoConstraints = true
+        let bottomAligningContainerView = UIView()
+        let height: CGFloat = 40
+        let width: CGFloat = rightViewWidth
+        let offset: CGFloat = 0
+        let y: CGFloat = textFieldHeight - height - offset
+        view.frame = CGRect(x: 0, y: y, width: width, height: height)
+        bottomAligningContainerView.addSubview(view)
+
+        switch position {
+        case .left:
+            leftView = bottomAligningContainerView
+            leftViewMode = mode
+        case .right:
+            rightView = bottomAligningContainerView
+            rightViewMode = mode
+        }
+    }
+}
+
 // MARK: TextField + Styling
-extension TextField {
+extension FloatingLabelTextField {
     @discardableResult
-    func withStyle(_ style: TextField.Style, customize: ((TextField.Style) -> TextField.Style)? = nil) -> TextField {
+    func withStyle(_ style: FloatingLabelTextField.Style, customize: ((FloatingLabelTextField.Style) -> FloatingLabelTextField.Style)? = nil) -> FloatingLabelTextField {
         defer { delegate = textFieldDelegate }
         apply(style: customize?(style) ?? style)
         setup()
@@ -65,7 +113,7 @@ extension TextField {
     }
 }
 
-extension TextField {
+extension FloatingLabelTextField {
     func validate(_ validation: Validation) {
         updateColorsWithValidation(validation)
         updateErrorMessageWithValidation(validation)
@@ -74,7 +122,7 @@ extension TextField {
 
 import RxCocoa
 import RxSwift
-extension Reactive where Base: TextField {
+extension Reactive where Base: FloatingLabelTextField {
     var validation: Binder<Validation> {
         return Binder<Validation>(base) {
             $0.validate($1)
@@ -82,7 +130,7 @@ extension Reactive where Base: TextField {
     }
 }
 
-private extension TextField {
+private extension FloatingLabelTextField {
     typealias Color = Validation.Color
     func setup() {
         defer {
@@ -186,6 +234,7 @@ private extension TextField {
 private let circeViewSize: CGFloat = 16
 private let leftPaddingViewWidth: CGFloat = circeViewSize + 12
 private let textFieldHeight: CGFloat = 64
+private let rightViewWidth: CGFloat = 45
 private let distanceBetweenCircleAndBottom: CGFloat = 10
 
 final class TextFieldDelegate: NSObject {
@@ -198,11 +247,11 @@ final class TextFieldDelegate: NSObject {
 }
 
 extension TextFieldDelegate {
-    convenience init(type: TextField.TypeOfInput = .text, maxLength: Int? = nil) {
+    convenience init(type: FloatingLabelTextField.TypeOfInput = .text, maxLength: Int? = nil) {
         self.init(allowedCharacters: type.characterSet, maxLength: maxLength)
     }
 
-    func setTypeOfInput( _ typeOfInput: TextField.TypeOfInput) {
+    func setTypeOfInput( _ typeOfInput: FloatingLabelTextField.TypeOfInput) {
         allowedCharacters = typeOfInput.characterSet
     }
 }
@@ -224,7 +273,7 @@ extension TextFieldDelegate: UITextFieldDelegate {
     }
 }
 
-extension TextField.TypeOfInput {
+extension FloatingLabelTextField.TypeOfInput {
     var characterSet: CharacterSet {
         switch self {
         case .number: return .decimalDigits

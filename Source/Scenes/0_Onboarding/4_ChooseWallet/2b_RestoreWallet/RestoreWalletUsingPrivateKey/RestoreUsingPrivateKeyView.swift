@@ -13,15 +13,18 @@ import RxSwift
 final class RestoreUsingPrivateKeyView: ScrollingStackView {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
-    private lazy var privateKeyField                        = TextField()
-    private lazy var encryptionPassphraseField              = TextField()
-    private lazy var confirmEncryptionPassphraseField       = TextField()
+    private lazy var privateKeyField                        = FloatingLabelTextField()
+    private lazy var showPrivateKeyButton = privateKeyField.addBottomAlignedButton(titled: L10n.Generic.show)
+
+    private lazy var encryptionPassphraseField              = FloatingLabelTextField()
+    private lazy var confirmEncryptionPassphraseField       = FloatingLabelTextField()
 
     private let bag = DisposeBag()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
             privateKey: privateKeyField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            showPrivateKeyTrigger: showPrivateKeyButton.rx.tap.asDriver(),
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
             confirmEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged()
         )
@@ -59,7 +62,19 @@ private extension RestoreUsingPrivateKeyView {
 
     func setupViewModelBinding() {
         bag <~ [
-            viewModelOutput.encryptionPassphrasePlaceholder --> encryptionPassphraseField.rx.placeholder
+            viewModelOutput.togglePrivateKeyVisibilityButtonTitle   --> showPrivateKeyButton.rx.title(for: .normal),
+            viewModelOutput.privateKeyFieldIsSecureTextEntry        --> privateKeyField.rx.isSecureTextEntry,
+            viewModelOutput.encryptionPassphrasePlaceholder         --> encryptionPassphraseField.rx.placeholder
         ]
+    }
+}
+
+import RxSwift
+import RxCocoa
+extension Reactive where Base: UITextField {
+    var isSecureTextEntry: Binder<Bool> {
+        return Binder(base) {
+            $0.isSecureTextEntry = $1
+        }
     }
 }

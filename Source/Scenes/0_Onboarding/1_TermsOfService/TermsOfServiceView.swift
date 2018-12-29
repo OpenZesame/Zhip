@@ -44,7 +44,7 @@ extension TermsOfServiceView: ViewModelled {
 
     var inputFromView: InputFromView {
         let didScrollNearBottom = textView.rx.contentOffset.map { [unowned textView] in
-            $0.y >= 0.97 * textView.contentSize.height
+            $0.y >= 0.95 * textView.contentSize.height
         }.filter { $0 }.mapToVoid().asDriverOnErrorReturnEmpty()
 
         return InputFromView(

@@ -38,7 +38,7 @@ final class DefaultUseCaseProvider {
 
 extension DefaultUseCaseProvider: UseCaseProvider {
     func makeTransactionsUseCase() -> TransactionsUseCase {
-        return DefaultTransactionsUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence)
+        return DefaultTransactionsUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence, preferences: preferences)
     }
 
     func makeOnboardingUseCase() -> OnboardingUseCase {

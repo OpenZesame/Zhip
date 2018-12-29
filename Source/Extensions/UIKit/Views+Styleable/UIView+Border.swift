@@ -12,7 +12,7 @@ extension UIView {
     struct Border {
         let color: CGColor
         let width: CGFloat
-        init(color: UIColor, width: CGFloat ) {
+        init(color: UIColor, width: CGFloat = 1) {
             self.color = color.cgColor
             self.width = width
         }

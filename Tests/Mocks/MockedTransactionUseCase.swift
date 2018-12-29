@@ -44,10 +44,10 @@ final class MockedTransactionUseCase: TransactionsUseCase {
 extension BalanceResponse: ExpressibleByIntegerLiteral {
 
     public init(integerLiteral value: Int) {
-        try! self.init(Amount(significand: value))
+        try! self.init(ZilAmount(significand: value))
     }
 
-    init(_ balance: Amount, nonce: Nonce = 0) {
+    init(_ balance: ZilAmount, nonce: Nonce = 0) {
         let json = """
             {
             "balance": "\(balance.significand)",

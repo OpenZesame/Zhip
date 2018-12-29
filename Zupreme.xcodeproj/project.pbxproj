@@ -97,7 +97,7 @@
 		485AAC9E21AAC6FA005C56CC /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9D21AAC6FA005C56CC /* AddressValidator.swift */; };
 		485AACA021AAE752005C56CC /* ValidationRulesOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9F21AAE752005C56CC /* ValidationRulesOwner.swift */; };
 		485AACA221AAE764005C56CC /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA121AAE764005C56CC /* InputValidator.swift */; };
-		485AACA421AAF3B3005C56CC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* TextField.swift */; };
+		485AACA421AAF3B3005C56CC /* FloatingLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */; };
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
 		486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C3621D21701006F3DFA /* TableViewCell.swift */; };
 		486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7A21D23A4C006F3DFA /* Digit.swift */; };
@@ -149,7 +149,7 @@
 		48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */; };
 		48C89FFD2143353C0063B0FA /* UIFont_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */; };
 		48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */; };
-		48C8A0032143C5B20063B0FA /* TextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* TextField+Styling.swift */; };
+		48C8A0032143C5B20063B0FA /* FloatingLabelTextField+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0022143C5B20063B0FA /* FloatingLabelTextField+Styling.swift */; };
 		48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */; };
 		48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
@@ -375,7 +375,7 @@
 		485AAC9D21AAC6FA005C56CC /* AddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressValidator.swift; sourceTree = "<group>"; };
 		485AAC9F21AAE752005C56CC /* ValidationRulesOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRulesOwner.swift; sourceTree = "<group>"; };
 		485AACA121AAE764005C56CC /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
-		485AACA321AAF3B3005C56CC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLabelTextField.swift; sourceTree = "<group>"; };
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		486D2C3621D21701006F3DFA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		486D2C7A21D23A4C006F3DFA /* Digit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Digit.swift; sourceTree = "<group>"; };
@@ -426,7 +426,7 @@
 		48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Styling.swift"; sourceTree = "<group>"; };
 		48C89FFC2143353C0063B0FA /* UIFont_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont_Extension.swift; sourceTree = "<group>"; };
 		48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Spacer.swift"; sourceTree = "<group>"; };
-		48C8A0022143C5B20063B0FA /* TextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Styling.swift"; sourceTree = "<group>"; };
+		48C8A0022143C5B20063B0FA /* FloatingLabelTextField+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+Styling.swift"; sourceTree = "<group>"; };
 		48C8A0102143CE8F0063B0FA /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutPriority_Extension.swift; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
@@ -1187,7 +1187,7 @@
 				4847EDF62160F520002FF978 /* UITextView+Styling.swift */,
 				489EB12D21CA459000664AA7 /* UIImageView+Styling.swift */,
 				48C89FF82143328E0063B0FA /* UIStackView+Styling.swift */,
-				48C8A0022143C5B20063B0FA /* TextField+Styling.swift */,
+				48C8A0022143C5B20063B0FA /* FloatingLabelTextField+Styling.swift */,
 			);
 			path = Styling;
 			sourceTree = "<group>";
@@ -1226,7 +1226,7 @@
 			children = (
 				4898FB47215423D6009501DC /* ScrollView.swift */,
 				48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */,
-				485AACA321AAF3B3005C56CC /* TextField.swift */,
+				485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */,
 				48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */,
 			);
 			path = Subclasses;
@@ -1912,7 +1912,7 @@
 				48ECF5F321A18F140078D659 /* ChooseWalletViewModel.swift in Sources */,
 				48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */,
 				483C0BE0219ECF89006947C7 /* ObserverType+BarButtonContent.swift in Sources */,
-				48C8A0032143C5B20063B0FA /* TextField+Styling.swift in Sources */,
+				48C8A0032143C5B20063B0FA /* FloatingLabelTextField+Styling.swift in Sources */,
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */,
 				486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */,
@@ -2038,7 +2038,7 @@
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
 				48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */,
 				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
-				485AACA421AAF3B3005C56CC /* TextField.swift in Sources */,
+				485AACA421AAF3B3005C56CC /* FloatingLabelTextField.swift in Sources */,
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,
 				48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
 				483CE9CA2194E9E300BED31C /* TrackedUserAction.swift in Sources */,

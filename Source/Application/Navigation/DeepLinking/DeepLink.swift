@@ -59,7 +59,7 @@ import Zesame
 private extension TransactionIntent {
     init?(amount amountString: String, to addresssHex: String) {
         guard
-            let amount = try? Amount(string: amountString),
+            let amount = try? ZilAmount(zil: amountString),
             let recipient = try? Address(hexString: addresssHex)
             else { return nil }
         self.init(amount: amount, to: recipient)

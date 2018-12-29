@@ -43,7 +43,7 @@ final class ReceiveViewModel: BaseViewModel<
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
         let receivingAmount = input.fromView.amountToReceive
-            .map { try? Amount(string: $0) }
+            .map { try? ZilAmount(zil: $0) }
             .filterNil()
             .startWith(0)
 

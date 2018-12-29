@@ -9,7 +9,7 @@
 import UIKit
 import TinyConstraints
 
-extension TextField {
+extension FloatingLabelTextField {
     struct Style {
         var typeOfInput: TypeOfInput
         var placeholder: String?
@@ -43,7 +43,7 @@ extension TextField {
 }
 
 // MARK: - Apply Syyle
-extension TextField {
+extension FloatingLabelTextField {
     func apply(style: Style) {
         updateTypeOfInput(style.typeOfInput)
         textColor = style.textColor ?? .defaultText
@@ -59,9 +59,9 @@ extension TextField {
 }
 
 // MARK: - Style + Customizing
-extension TextField.Style {
+extension FloatingLabelTextField.Style {
     @discardableResult
-    func placeholder(_ placeholder: String?) -> TextField.Style {
+    func placeholder(_ placeholder: String?) -> FloatingLabelTextField.Style {
         var style = self
         style.placeholder = placeholder
         return style
@@ -69,35 +69,35 @@ extension TextField.Style {
 }
 
 // MARK: - Style Presets
-extension TextField.Style {
-    static var text: TextField.Style {
-        return TextField.Style(
+extension FloatingLabelTextField.Style {
+    static var text: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
             typeOfInput: .text
         )
     }
 
-    static var address: TextField.Style {
-        return TextField.Style(
+    static var address: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
             typeOfInput: .hexadecimal
         )
     }
 
-    static var passphrase: TextField.Style {
-        return TextField.Style(
+    static var passphrase: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
             typeOfInput: .text,
             isSecureTextEntry: true
         )
     }
 
-    static var privateKey: TextField.Style {
-        return TextField.Style(
+    static var privateKey: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
             typeOfInput: .hexadecimal,
             isSecureTextEntry: true
         )
     }
 
-    static var number: TextField.Style {
-        return TextField.Style(
+    static var number: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
             typeOfInput: .number,
             keyboardType: .numberPad
         )

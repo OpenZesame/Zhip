@@ -35,7 +35,7 @@ internal enum L10n {
         internal static func tooLarge(_ p1: String) -> String {
           return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", p1)
         }
-        /// Must be at lest %@
+        /// Must be at least %@
         internal static func tooSmall(_ p1: String) -> String {
           return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
         }
@@ -66,10 +66,14 @@ internal enum L10n {
     internal static let back = L10n.tr("Localizable", "Generic.Back")
     /// Close
     internal static let close = L10n.tr("Localizable", "Generic.Close")
+    /// Hide
+    internal static let hide = L10n.tr("Localizable", "Generic.Hide")
     /// Next
     internal static let next = L10n.tr("Localizable", "Generic.Next")
     /// OK
     internal static let ok = L10n.tr("Localizable", "Generic.OK")
+    /// Show
+    internal static let show = L10n.tr("Localizable", "Generic.Show")
     /// Skip
     internal static let skip = L10n.tr("Localizable", "Generic.Skip")
     /// ZILs
@@ -347,8 +351,10 @@ internal enum L10n {
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
       }
       internal enum Label {
-        /// Gas price is measured in 10^-12 Zil
-        internal static let gasInSmallUnits = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits")
+        /// Gas price is measured in %@
+        internal static func gasInSmallUnits(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits", p1)
+        }
         /// Transaction Id
         internal static let transactionId = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.TransactionId")
       }
@@ -388,21 +394,35 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "Scene.RemovePincode.Title")
     }
     internal enum RestoreWallet {
-      /// Restore Wallet
+      /// Restore existing wallet
       internal static let title = L10n.tr("Localizable", "Scene.RestoreWallet.Title")
       internal enum Button {
-        /// Restore Wallet
+        /// Restore
         internal static let restoreWallet = L10n.tr("Localizable", "Scene.RestoreWallet.Button.RestoreWallet")
       }
       internal enum Field {
         /// Confirm encryption passphrase
         internal static let confirmEncryptionPassphrase = L10n.tr("Localizable", "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase")
-        /// Encryption passphrase (min %d chars)
-        internal static func encryptionPassphrase(_ p1: Int) -> String {
-          return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassphrase", p1)
-        }
         /// Private key
         internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Field.PrivateKey")
+        internal enum EncryptionPassphrase {
+          /// Encryption passphrase (min %d chars)
+          internal static func keystore(_ p1: Int) -> String {
+            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassphrase.Keystore", p1)
+          }
+          /// New encryption passphrase (min %d chars)
+          internal static func privateKey(_ p1: Int) -> String {
+            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassphrase.PrivateKey", p1)
+          }
+        }
+      }
+      internal enum Label {
+        internal enum Header {
+          /// Restore with keystore
+          internal static let keystore = L10n.tr("Localizable", "Scene.RestoreWallet.Label.Header.Keystore")
+          /// Restore with private key
+          internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Label.Header.PrivateKey")
+        }
       }
       internal enum Segment {
         /// Keystore

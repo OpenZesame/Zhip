@@ -13,7 +13,7 @@ import RxCocoa
 final class SignTransactionView: ScrollingStackView {
 
     private lazy var confirmTransactionLabel        = UILabel()
-    private lazy var encryptionPassphraseField      = TextField()
+    private lazy var encryptionPassphraseField      = FloatingLabelTextField()
     private lazy var signButton                     = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [

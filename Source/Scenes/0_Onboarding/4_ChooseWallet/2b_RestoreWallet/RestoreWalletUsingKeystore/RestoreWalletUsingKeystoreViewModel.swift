@@ -32,9 +32,15 @@ final class RestoreWalletUsingKeystoreViewModel {
             return try? KeyRestoration(keyStoreJSONString: $0, encryptedBy: newEncryptionPassphrase)
         }
 
-        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.EncryptionPassphrase.keystore(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+
+        let keystoreTextFieldPlaceholder = inputFromView.keystoreDidBeginEditing
+            .map { "" }
+            .distinctUntilChanged() // never changed, thus only emitted once, as wished
+            .startWith("Paste your keystore here")
 
         self.output = Output(
+            keystoreTextFieldPlaceholder: keystoreTextFieldPlaceholder,
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
             keyRestoration: keyRestoration
         )
@@ -44,11 +50,13 @@ final class RestoreWalletUsingKeystoreViewModel {
 extension RestoreWalletUsingKeystoreViewModel {
 
     struct InputFromView {
+        let keystoreDidBeginEditing: Driver<Void>
         let keystoreText: Driver<String>
         let encryptionPassphrase: Driver<String>
     }
 
     struct Output {
+        let keystoreTextFieldPlaceholder: Driver<String>
         let encryptionPassphrasePlaceholder: Driver<String>
         let keyRestoration: Driver<KeyRestoration?>
     }

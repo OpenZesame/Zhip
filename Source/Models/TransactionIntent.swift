@@ -10,10 +10,10 @@ import Foundation
 import Zesame
 
 struct TransactionIntent: Codable {
-    let amount: Amount
+    let amount: ZilAmount
     let recipient: Address
 
-    init(amount: Amount, to recipient: Address) {
+    init(amount: ZilAmount, to recipient: Address) {
         self.amount = amount
         self.recipient = recipient
     }

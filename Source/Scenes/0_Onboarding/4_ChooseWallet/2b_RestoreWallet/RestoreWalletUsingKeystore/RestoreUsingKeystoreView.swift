@@ -19,10 +19,11 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
     private let bag = DisposeBag()
 
     private lazy var keystoreTextView           = UITextView()
-    private lazy var encryptionPassphraseField  = TextField()
+    private lazy var encryptionPassphraseField  = FloatingLabelTextField()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
+            keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing.asDriver(),
             keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged()
         )
@@ -46,11 +47,12 @@ private extension RestoreUsingKeystoreView {
     func setupSubviews() {
         encryptionPassphraseField.withStyle(.passphrase)
         keystoreTextView.withStyle(.editable)
-//        keystoreTextView.addBorder()
+        keystoreTextView.addBorder(Border(color: .teal))
     }
 
     func setupViewModelBinding() {
         bag <~ [
+            viewModelOutput.keystoreTextFieldPlaceholder     --> keystoreTextView.rx.text,
             viewModelOutput.encryptionPassphrasePlaceholder --> encryptionPassphraseField.rx.placeholder
         ]
     }

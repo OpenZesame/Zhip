@@ -18,12 +18,12 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
     private lazy var balanceTitleLabel              = UILabel()
     private lazy var balanceValueLabel              = UILabel()
     private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
-    private lazy var recipientAddressField          = TextField()
+    private lazy var recipientAddressField          = FloatingLabelTextField()
     private lazy var scanQRButton                   = UIButton()
-    private lazy var amountToSendField              = TextField()
+    private lazy var amountToSendField              = FloatingLabelTextField()
     private lazy var maxAmounButton                 = UIButton()
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
-    private lazy var gasPriceField                  = TextField()
+    private lazy var gasPriceField                  = FloatingLabelTextField()
     private lazy var sendButton                     = UIButton()
 
     // MARK: - StackViewStyling
@@ -114,7 +114,7 @@ private extension PrepareTransactionView {
         amountToSendField.rightViewMode = .always
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
-            $0.text(€.Label.gasInSmallUnits)
+            $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))
         }
 
         gasPriceField.withStyle(.number)
