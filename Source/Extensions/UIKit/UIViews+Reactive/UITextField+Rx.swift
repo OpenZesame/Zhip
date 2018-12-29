@@ -25,9 +25,9 @@ extension Reactive where Base: UITextField {
         )
     }
 
-    var didEndEditing: Driver<Void> {
-        return isEditing.filter { !$0 }.mapToVoid()
-    }
+//    var didEndEditing: Driver<Void> {
+//        return isEditing.filter { !$0 }.mapToVoid()
+//    }
 }
 
 extension Reactive where Base: UITextView {

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol BackgroundColorSpecifying {
+	var colorOfBackground: UIColor { get }
+}
+
 typealias ContentView = UIView & ViewModelled
 
 /// Use typealias when you don't require a subclass. If your use case requires subclass, inherit from `SceneController`.

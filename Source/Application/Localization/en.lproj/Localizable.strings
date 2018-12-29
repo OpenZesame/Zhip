@@ -169,9 +169,11 @@
 "Scene.SignTransaction.Button.Confirm" = "Confirm";
 
 // MARK: PollTransactionStatus
-"Scene.PollTransactionStatus.Title" = "Wait for consensus";
-"Scene.PollTransactionStatus.Label.WaitingOnReceipt" = "Your transaction has successfully been broadcasted to the network. You can either wait a minute or two for the receipt that the network has reached consensus about your transaction or you can close this screen and recheck your balance later.";
-"Scene.PollTransactionStatus.Button.Skip" = "Skip waiting";
+"Scene.PollTransactionStatus.Label.TransactionBroadcasted" = "Transaction broadcasted";
+"Scene.PollTransactionStatus.Label.MightTakeSomeMinutes" = "In a minute or two, when the network's finished processing, your balance will be updated and you can view transaction details.";
+"Scene.PollTransactionStatus.Button.SeeTransactionDetails" = "Transaction details";
+"Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Skip" = "Skip waiting";
+"Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Done" = "Done";
 
 // MARK: TransactionConfirmation
 "Scene.GotTransactionReceipt.Title" = "Confirmed";

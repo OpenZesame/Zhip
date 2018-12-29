@@ -34,7 +34,11 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override func loadView() {
         view = View()
 
-        view.backgroundColor = .deepBlue
+		if let backgroundColorSpecifyingView = view as? BackgroundColorSpecifying {
+			view.backgroundColor = backgroundColorSpecifyingView.colorOfBackground
+		} else {
+			view.backgroundColor = .deepBlue
+		}
 
         // We should not use autolayout here, but this works.
         view.bounds = UIScreen.main.bounds

@@ -113,6 +113,10 @@ extension InputValidationResult {
         return error
     }
 
+	var isError: Bool {
+		return error != nil
+	}
+
     var value: Value? {
         guard case .valid(let value) = self else { return nil }
         return value

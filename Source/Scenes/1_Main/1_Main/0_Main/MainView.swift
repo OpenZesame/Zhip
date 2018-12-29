@@ -34,6 +34,12 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
     }
 }
 
+extension MainView: BackgroundColorSpecifying {
+	var colorOfBackground: UIColor {
+		return .teal
+	}
+}
+
 extension MainView: ViewModelled {
     typealias ViewModel = MainViewModel
 
