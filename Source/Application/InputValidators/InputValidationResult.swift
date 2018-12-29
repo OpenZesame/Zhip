@@ -42,6 +42,16 @@ enum Validation {
     }
 }
 
+extension Validation: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .empty: return "empty"
+        case .valid: return "valid"
+        case .error(let errorMsg): return "error: \(errorMsg)"
+        }
+    }
+}
+
 extension Validation: Equatable {
     static func == (lhs: Validation, rhs: Validation) -> Bool {
         switch (lhs, rhs) {
@@ -83,6 +93,19 @@ enum InputValidationResult<Value, ValidationError: InputError> {
     }
 }
 
+extension InputValidationResult: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .valid: return "Valid"
+        case .invalid(let invalid):
+            switch invalid {
+            case .empty: return "empty"
+            case .error(let error): return "error: \(error.description)"
+            }
+        }
+    }
+}
+
 extension InputValidationResult {
 
     var error: InputError? {
@@ -100,9 +123,15 @@ extension InputValidationResult {
     }
 }
 
-protocol InputError: Swift.Error {
+protocol InputError: Swift.Error, CustomStringConvertible {
     var errorMessage: String { get }
     func isEqual(_ error: InputError) -> Bool
+}
+
+extension InputError {
+    public var description: String {
+        return errorMessage
+    }
 }
 
 extension InputError {
