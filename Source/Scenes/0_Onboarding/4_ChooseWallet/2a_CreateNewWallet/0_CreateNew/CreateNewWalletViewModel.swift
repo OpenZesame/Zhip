@@ -138,9 +138,3 @@ extension CreateNewWalletViewModel {
         }
     }
 }
-
-extension Bool {
-    static var irrelevant: Bool {
-        return Bool.random()
-    }
-}

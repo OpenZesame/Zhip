@@ -26,6 +26,10 @@
 "Error.Input.Pincode.PincodesDoesNotMatch" = "PIN does not match";
 "Error.Input.Pincode.IncorrectPincode" = "Incorrect PIN";
 
+"Error.Input.PrivateKey.TooShort" = "Should be %d characters (missing %d)";
+"Error.Input.PrivateKey.TooLong" = "Should be %d characters (%d too many)";
+"Error.Input.PrivateKey.BadKey" = "Bad private key";
+
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
 

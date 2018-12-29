@@ -58,6 +58,18 @@ internal enum L10n {
         /// PIN does not match
         internal static let pincodesDoesNotMatch = L10n.tr("Localizable", "Error.Input.Pincode.PincodesDoesNotMatch")
       }
+      internal enum PrivateKey {
+        /// Bad private key
+        internal static let badKey = L10n.tr("Localizable", "Error.Input.PrivateKey.BadKey")
+        /// Should be %d characters (%d too many)
+        internal static func tooLong(_ p1: Int, _ p2: Int) -> String {
+          return L10n.tr("Localizable", "Error.Input.PrivateKey.TooLong", p1, p2)
+        }
+        /// Should be %d characters (missing %d)
+        internal static func tooShort(_ p1: Int, _ p2: Int) -> String {
+          return L10n.tr("Localizable", "Error.Input.PrivateKey.TooShort", p1, p2)
+        }
+      }
     }
   }
 

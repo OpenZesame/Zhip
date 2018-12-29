@@ -23,10 +23,13 @@ final class RestoreUsingPrivateKeyView: ScrollingStackView {
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
-            privateKey: privateKeyField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
+            isEditingPrivateKey: privateKeyField.rx.isEditing,
             showPrivateKeyTrigger: showPrivateKeyButton.rx.tap.asDriver(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            confirmEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged()
+            newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
+            isEditingNewEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
+            confirmEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
+            isEditingConfirmedEncryptionPassphrase: confirmEncryptionPassphraseField.rx.isEditing
         )
     )
 
@@ -64,7 +67,10 @@ private extension RestoreUsingPrivateKeyView {
         bag <~ [
             viewModelOutput.togglePrivateKeyVisibilityButtonTitle   --> showPrivateKeyButton.rx.title(for: .normal),
             viewModelOutput.privateKeyFieldIsSecureTextEntry        --> privateKeyField.rx.isSecureTextEntry,
-            viewModelOutput.encryptionPassphrasePlaceholder         --> encryptionPassphraseField.rx.placeholder
+            viewModelOutput.encryptionPassphrasePlaceholder         --> encryptionPassphraseField.rx.placeholder,
+            viewModelOutput.privateKeyValidation                    --> privateKeyField.rx.validation,
+            viewModelOutput.encryptionPassphraseValidation          --> encryptionPassphraseField.rx.validation,
+            viewModelOutput.confirmEncryptionPassphraseValidation   --> confirmEncryptionPassphraseField.rx.validation
         ]
     }
 }

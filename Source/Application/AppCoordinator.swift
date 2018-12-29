@@ -27,6 +27,13 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
     }
 
     override func start(didStart: Completion? = nil) {
+//        let viewModel = RestoreWalletViewModel(useCase: walletUseCase)
+//
+//        return push(scene: RestoreWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
+//            switch userIntendsTo {
+//            case .restoreWallet(let wallet): abstract
+//            }
+//        }
         if walletUseCase.hasConfiguredWallet {
             toMain(lockIfNeeded: true)
         } else {

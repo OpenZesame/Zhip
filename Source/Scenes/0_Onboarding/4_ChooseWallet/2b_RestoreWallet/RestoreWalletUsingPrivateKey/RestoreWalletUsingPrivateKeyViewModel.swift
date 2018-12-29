@@ -12,6 +12,7 @@ import RxCocoa
 import RxSwift
 
 private typealias € = L10n.Scene.RestoreWallet
+private let encryptionPassphraseMode = WalletEncryptionPassphrase.Mode.new
 
 // MARK: - RestoreWalletUsingPrivateKeyViewModel
 final class RestoreWalletUsingPrivateKeyViewModel {
@@ -20,28 +21,17 @@ final class RestoreWalletUsingPrivateKeyViewModel {
 
     // swiftlint:disable:next function_body_length
     init(inputFromView: InputFromView) {
-        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .new
 
-        let validEncryptionPassphrase: Driver<String?> = Observable.combineLatest(
-            inputFromView.encryptionPassphrase.asObservable(),
-            inputFromView.confirmEncryptionPassphrase.asObservable()
-        ) {
-            try? WalletEncryptionPassphrase(passphrase: $0, confirm: $1, mode: encryptionPassphraseMode)
-            }.map { $0?.validPassphrase }
-            .asDriverOnErrorReturnEmpty()
-            .distinctUntilChanged()
+        let validator = InputValidator()
+        
+        let privateKeyValidationValue = inputFromView.privateKey.map { validator.validatePrivateKey($0) }
 
-        let validPrivateKey: Driver<String?> = inputFromView.privateKey.map {
-            guard
-                case let key = $0,
-                key.count <= 64
-                else { return nil }
-            return key
-        }
+        let unconfirmedPassphrase = inputFromView.newEncryptionPassphrase
+        let confirmingPassphrase = inputFromView.confirmEncryptionPassphrase
 
-        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(validPrivateKey, validEncryptionPassphrase) {
-            guard let privateKeyHex = $0, let newEncryptionPassphrase = $1 else { return nil }
-            return try? KeyRestoration(privateKeyHexString: privateKeyHex, encryptBy: newEncryptionPassphrase)
+        let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(unconfirmedPassphrase, confirmingPassphrase)
+            .map {
+                validator.validateConfirmedEncryptionPassphrase($0.0, confirmedBy: $0.1)
         }
 
         let encryptionPassphrasePlaceHolder = Driver.just(€.Field.EncryptionPassphrase.privateKey(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
@@ -54,10 +44,49 @@ final class RestoreWalletUsingPrivateKeyViewModel {
             $0 ? L10n.Generic.show : L10n.Generic.hide
         }
 
+        let encryptionPassphraseValidationTrigger = Driver.merge(
+            unconfirmedPassphrase.mapToVoid().map { true },
+            inputFromView.isEditingNewEncryptionPassphrase
+            )
+
+        let encryptionPassphraseValidation: Driver<Validation> = encryptionPassphraseValidationTrigger.withLatestFrom(
+            unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
+        ) {
+            EditingValidation(isEditing: $0, validation: $1.validation)
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+
+        let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
+            Driver.merge(
+                // map `editingChanged` to `editingDidBegin`
+                confirmingPassphrase.mapToVoid().map { true },
+                inputFromView.isEditingConfirmedEncryptionPassphrase
+            ),
+            encryptionPassphraseValidationTrigger // used for triggering, but value never used
+        ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
+            EditingValidation(isEditing: $0.0, validation: $1.validation)
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+
+        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
+            privateKeyValidationValue.map { $0.value },
+            confirmEncryptionPassphraseValidationValue.map { $0.value }
+        ).map {
+            guard let privateKey = $0.0, let newEncryptionPassphrase = $0.1?.validPassphrase else {
+                return nil
+            }
+            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassphrase)
+        }
+
+        let privateKeyValidation = inputFromView.isEditingPrivateKey.withLatestFrom(privateKeyValidationValue) {
+              EditingValidation(isEditing: $0, validation: $1.validation)
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+
         self.output = Output(
             togglePrivateKeyVisibilityButtonTitle: togglePrivateKeyVisibilityButtonTitle,
             privateKeyFieldIsSecureTextEntry: privateKeyFieldIsSecureTextEntry,
+            privateKeyValidation: privateKeyValidation,
             encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
+            encryptionPassphraseValidation: encryptionPassphraseValidation,
+            confirmEncryptionPassphraseValidation: confirmEncryptionPassphraseValidation,
             keyRestoration: keyRestoration
         )
     }
@@ -67,15 +96,91 @@ extension RestoreWalletUsingPrivateKeyViewModel {
 
     struct InputFromView {
         let privateKey: Driver<String>
+        let isEditingPrivateKey: Driver<Bool>
         let showPrivateKeyTrigger: Driver<Void>
-        let encryptionPassphrase: Driver<String>
+        let newEncryptionPassphrase: Driver<String>
+        let isEditingNewEncryptionPassphrase: Driver<Bool>
         let confirmEncryptionPassphrase: Driver<String>
+        let isEditingConfirmedEncryptionPassphrase: Driver<Bool>
     }
 
     struct Output {
         let togglePrivateKeyVisibilityButtonTitle: Driver<String>
         let privateKeyFieldIsSecureTextEntry: Driver<Bool>
+        let privateKeyValidation: Driver<Validation>
         let encryptionPassphrasePlaceholder: Driver<String>
+        let encryptionPassphraseValidation: Driver<Validation>
+        let confirmEncryptionPassphraseValidation: Driver<Validation>
         let keyRestoration: Driver<KeyRestoration?>
+    }
+
+    struct InputValidator {
+        private let privateKeyValidator = PrivateKeyValidator()
+
+        func validatePrivateKey(_ privateKey: String?) -> PrivateKeyValidator.Result {
+            return privateKeyValidator.validate(input: privateKey)
+        }
+
+        func validateNewEncryptionPassphrase(_ passphrase: String) -> EncryptionPassphraseValidator.Result {
+            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
+            return validator.validate(input: (passphrase, passphrase))
+        }
+
+        func validateConfirmedEncryptionPassphrase(_ passphrase: String, confirmedBy confirming: String) -> EncryptionPassphraseValidator.Result {
+            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
+            return validator.validate(input: (passphrase, confirming))
+        }
+    }
+}
+
+struct PrivateKeyValidator: InputValidator {
+    static let expectedLengthOfPrivateKey = 64
+    typealias Input = String
+    typealias Output = PrivateKey
+
+    enum Error: InputError {
+        case tooShort(lengthKeySubmitted: Int)
+        case tooLong(lengthKeySubmitted: Int)
+        case badPrivateKey
+    }
+
+    func validate(input: Input) -> InputValidationResult<Output, Error> {
+        func validate(privateKeyHex: String) throws -> PrivateKey {
+            let lengthKeySubmitted = privateKeyHex.count
+            if lengthKeySubmitted < PrivateKeyValidator.expectedLengthOfPrivateKey {
+                throw Error.tooShort(lengthKeySubmitted: lengthKeySubmitted)
+            }
+
+            if lengthKeySubmitted > PrivateKeyValidator.expectedLengthOfPrivateKey {
+                throw Error.tooLong(lengthKeySubmitted: lengthKeySubmitted)
+            }
+
+            guard let privateKey = PrivateKey(hex: privateKeyHex) else {
+                throw Error.badPrivateKey
+            }
+
+            return privateKey
+        }
+
+        do {
+            return .valid(try validate(privateKeyHex: input))
+        } catch let privateError as Error {
+            return .invalid(.error(privateError))
+        } catch {
+            incorrectImplementation("Address.Error should cover all errors")
+        }
+    }
+}
+
+extension PrivateKeyValidator.Error {
+    var errorMessage: String {
+        let Message = L10n.Error.Input.PrivateKey.self
+        let expectedLength = PrivateKeyValidator.expectedLengthOfPrivateKey
+
+        switch self {
+        case .tooShort(let lengthKeySubmitted): return Message.tooShort(expectedLength, expectedLength - lengthKeySubmitted)
+        case .tooLong(let lengthKeySubmitted): return Message.tooLong(expectedLength, lengthKeySubmitted - expectedLength)
+        case .badPrivateKey: return Message.badKey
+        }
     }
 }
