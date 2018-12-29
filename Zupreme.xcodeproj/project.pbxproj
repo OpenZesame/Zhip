@@ -25,9 +25,6 @@
 		4819BD9A21C223B200443F2A /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
 		4819BD9B21C223B200443F2A /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
 		4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
-		4819BDA421C2367500443F2A /* GotTransactionReceiptViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */; };
-		4819BDA521C2367500443F2A /* GotTransactionReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */; };
-		4819BDA621C2367500443F2A /* GotTransactionReceiptController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */; };
 		4819BDA921C2403800443F2A /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA821C2403800443F2A /* UIView+Rx.swift */; };
 		4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */; };
 		4819BDB421C27D2900443F2A /* ScanQRCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */; };
@@ -296,9 +293,6 @@
 		4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusView.swift; sourceTree = "<group>"; };
 		4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusController.swift; sourceTree = "<group>"; };
 		4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollTransactionStatusViewModel.swift; sourceTree = "<group>"; };
-		4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptViewModel.swift; sourceTree = "<group>"; };
-		4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptView.swift; sourceTree = "<group>"; };
-		4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GotTransactionReceiptController.swift; sourceTree = "<group>"; };
 		4819BDA821C2403800443F2A /* UIView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rx.swift"; sourceTree = "<group>"; };
 		4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeView.swift; sourceTree = "<group>"; };
 		4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeController.swift; sourceTree = "<group>"; };
@@ -626,16 +620,6 @@
 				4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */,
 			);
 			path = 3_PollTransactionStatus;
-			sourceTree = "<group>";
-		};
-		4819BD9D21C235BA00443F2A /* 4_GotTransactionReceipt */ = {
-			isa = PBXGroup;
-			children = (
-				4819BDA221C2367400443F2A /* GotTransactionReceiptController.swift */,
-				4819BDA121C2367400443F2A /* GotTransactionReceiptView.swift */,
-				4819BDA021C2367400443F2A /* GotTransactionReceiptViewModel.swift */,
-			);
-			path = 4_GotTransactionReceipt;
 			sourceTree = "<group>";
 		};
 		4819BDAA21C27BEC00443F2A /* 0_PrepareTransaction */ = {
@@ -1322,7 +1306,6 @@
 				48ECF57621A18F140078D659 /* 1_PrepareTransaction */,
 				48ECF57B21A18F140078D659 /* 2_SignTransaction */,
 				4819BD9221C2235500443F2A /* 3_PollTransactionStatus */,
-				4819BD9D21C235BA00443F2A /* 4_GotTransactionReceipt */,
 			);
 			path = A_Send;
 			sourceTree = "<group>";
@@ -1896,7 +1879,6 @@
 				48F4098821BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift in Sources */,
 				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
-				4819BDA521C2367500443F2A /* GotTransactionReceiptView.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
 				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
 				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
@@ -1943,7 +1925,6 @@
 				489EB13621CA7A6100664AA7 /* WelcomeViewModel.swift in Sources */,
 				483CE9CC2194E9E300BED31C /* Tracker.swift in Sources */,
 				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
-				4819BDA621C2367500443F2A /* GotTransactionReceiptController.swift in Sources */,
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
 				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
@@ -2011,7 +1992,6 @@
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
 				4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */,
-				4819BDA421C2367500443F2A /* GotTransactionReceiptViewModel.swift in Sources */,
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,
 				483CE9E12194E9E300BED31C /* ConfigurationDetection.swift in Sources */,
 				4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */,
@@ -2178,6 +2158,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */;
 			buildSettings = {
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};

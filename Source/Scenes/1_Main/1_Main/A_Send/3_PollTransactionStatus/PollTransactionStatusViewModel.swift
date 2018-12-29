@@ -15,63 +15,86 @@ import RxCocoa
 
 // MARK: - User action and navigation steps
 enum PollTransactionStatusUserAction: TrackedUserAction {
-    case /*user did*/skip, waitUntilReceipt(TransactionReceipt), waitUntilTimeout
+	case /*user did*/skip, dismiss, viewTransactionDetailsInBrowser(id: String), waitUntilTimeout
 }
 
 // MARK: - PollTransactionStatusViewModel
 private typealias € = L10n.Scene.PollTransactionStatus
 
 final class PollTransactionStatusViewModel: BaseViewModel<
-    PollTransactionStatusUserAction,
-    PollTransactionStatusViewModel.InputFromView,
-    PollTransactionStatusViewModel.Output
+	PollTransactionStatusUserAction,
+	PollTransactionStatusViewModel.InputFromView,
+	PollTransactionStatusViewModel.Output
 > {
-    private let useCase: TransactionsUseCase
-    private let transactionId: String
+	private let useCase: TransactionsUseCase
+	private let transactionId: String
 
-    init(useCase: TransactionsUseCase, transactionId: String) {
-        self.useCase = useCase
-        self.transactionId = transactionId
-    }
+	init(useCase: TransactionsUseCase, transactionId: String) {
+		self.useCase = useCase
+		self.transactionId = transactionId
+	}
 
-    // swiftlint:disable:next function_body_length
-    override func transform(input: Input) -> Output {
-        func userDid(_ userAction: NavigationStep) {
-            navigator.next(userAction)
-        }
+	// swiftlint:disable:next function_body_length
+	override func transform(input: Input) -> Output {
+		func userDid(_ userAction: NavigationStep) {
+			navigator.next(userAction)
+		}
 
-        let receipt = useCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
+		let activityTracker = ActivityIndicator()
 
-        // MARK: Navigate
-        bag <~ [
-            input.fromView.skipWaitingTrigger
-                .do(onNext: { userDid(.skip) })
-                .drive(),
+		let receipt = useCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
+			.trackActivity(activityTracker)
+			.do(onError: {
+				guard let error = $0 as? Zesame.Error else {
+					incorrectImplementation("Wrong type of error")
+				}
+				if case(.api(.timeout)) = error {
+					userDid(.waitUntilTimeout)
+				} else {
+					log.error("Error: \(error)")
+				}
+			}
+		)
 
-            receipt.do(
-                onNext: { userDid(.waitUntilReceipt($0)) },
-                onError: {
-                    guard let error = $0 as? Zesame.Error else {
-                        incorrectImplementation("Wrong type of error")
-                    }
-                    if case(.api(.timeout)) = error {
-                        userDid(.waitUntilTimeout)
-                    } else {
-                        log.error("Error: \(error)")
-                    }
-            }).asDriverOnErrorReturnEmpty().drive()
-        ]
+		let hasReceivedReceipt = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false)
 
-        // MARK: Return output
-        return Output()
-    }
+		// MARK: Navigate
+		bag <~ [
+			input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
+				.do(onNext: { hasReceivedReceipt in
+					let action: NavigationStep = hasReceivedReceipt ? .dismiss : .skip
+					userDid(action)
+
+				})
+				.drive(),
+
+			input.fromView.seeTxDetails.withLatestFrom(receipt.asDriverOnErrorReturnEmpty()) {
+				$1
+				}.do(
+					onNext: { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) }
+				).drive()
+		]
+
+		// MARK: Return output
+
+		return Output(
+			skipWaitingOrDoneButtonTitle: hasReceivedReceipt.map { $0 ? €.Button.SkipWaitingOrDone.done : €.Button.SkipWaitingOrDone.skip },
+			isSeeTxDetailsEnabled: hasReceivedReceipt,
+			isSeeTxDetailsButtonLoading: activityTracker.asDriver()
+		)
+	}
 }
 
 extension PollTransactionStatusViewModel {
-    
-    struct InputFromView {
-        let skipWaitingTrigger: Driver<Void>
-    }
 
-    struct Output {}
+	struct InputFromView {
+		let skipWaitingOrDoneTrigger: Driver<Void>
+		let seeTxDetails: Driver<Void>
+	}
+
+	struct Output {
+		let skipWaitingOrDoneButtonTitle: Driver<String>
+		let isSeeTxDetailsEnabled: Driver<Bool>
+		let isSeeTxDetailsButtonLoading: Driver<Bool>
+	}
 }

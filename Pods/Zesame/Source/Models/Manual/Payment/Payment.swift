@@ -55,13 +55,10 @@ public extension Payment {
         // to be able to keep the 1E-12 part and compare it against
         // the transaction cost. Ugly, but it works...
         if totalInQaAsMagnitude == totalSupplyInQaAsMagnitude {
-            print("totalInZil == totalSupplyInZil")
             let subtractedTotalSupplyFromAmount = totalInQaAsMagnitude - totalSupplyInQaAsMagnitude
             if (subtractedTotalSupplyFromAmount + fee.magnitude) != fee.magnitude {
                 throw tooLargeError
             }
-        } else {
-            print("totalInZil != totalSupplyInZil")
         }
 
         return try ZilAmount(qa: Qa(totalInQaAsMagnitude))

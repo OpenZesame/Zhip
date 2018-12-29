@@ -57,7 +57,7 @@ private extension SendCoordinator {
         let viewModel = PrepareTransactionViewModel(
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            deepLinkedTransaction: transactionIntent.filter { [unowned self] _ in
+            scannedOrDeeplinkedTransaction: transactionIntent.filter { [unowned self] _ in
                 let prepareTransactionIsCurrentScene = self.navigationController.viewControllers.isEmpty || self.isTopmost(scene: PrepareTransaction.self)
                 guard prepareTransactionIsCurrentScene else {
                     log.verbose("Prevented deeplinked transaction since it is not the active scene.")
@@ -89,10 +89,6 @@ private extension SendCoordinator {
         }
     }
 
-    func finish(triggerBalanceFetching: Bool = false) {
-        navigator.next(.finish(fetchBalance: triggerBalanceFetching))
-    }
-
     func toSignPayment(_ payment: Payment) {
         let viewModel = SignTransactionViewModel(
             paymentToSign: payment,
@@ -114,27 +110,13 @@ private extension SendCoordinator {
             transactionId: transactionId
         )
 
-        push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .skip, .waitUntilTimeout: self.finish()
-            case .waitUntilReceipt(let receipt): self.toGotTransaction(receipt: receipt)
-            }
-        }
-    }
-
-    func toGotTransaction(receipt: TransactionReceipt) {
-        let viewModel = GotTransactionReceiptViewModel(
-            receipt: receipt
-        )
-
-        push(scene: GotTransactionReceipt.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .viewTransactionDetailsInBrowser(let txId):
-                self.openInBrowserDetailsForTransaction(id: txId)
-            case .finish:
-                self.finish(triggerBalanceFetching: true)
-            }
-        }
+		push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
+			switch userDid {
+			case .skip, .waitUntilTimeout: self.finish()
+			case .dismiss: self.finish(triggerBalanceFetching: true)
+			case .viewTransactionDetailsInBrowser(let txId): self.openInBrowserDetailsForTransaction(id: txId)
+			}
+		}
     }
 
     func openInBrowserDetailsForTransaction(id transactionId: String) {
@@ -144,4 +126,9 @@ private extension SendCoordinator {
         }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
+
+    func finish(triggerBalanceFetching: Bool = false) {
+        navigator.next(.finish(fetchBalance: triggerBalanceFetching))
+    }
+
 }
