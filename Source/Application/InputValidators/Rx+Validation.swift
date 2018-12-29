@@ -44,22 +44,6 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
     }
 
     func eagerValidLazyErrorTurnedToEmptyOnEdit<IE: InputError>(directlyDisplayErrorsTrackedBy errorTracker: ErrorTracker, mapError: @escaping (Swift.Error) -> IE?) -> Driver<Validation> {
-
-        let trackedErrors: Driver<IE> = errorTracker.asObservable().materialize().map { (event: Event<Error>) -> IE? in
-            guard case .next(let swiftError) = event else {
-                return nil
-            }
-
-            guard let mappedError = mapError(swiftError) else {
-                log.error("Failed to map Swift.Error to error of type `\(type(of: IE.self))`")
-                return nil
-            }
-            return mappedError
-        }
-            .filterNil()
-            // This is an Driver of Errors, so it is correct to call `asDriverOnErrorReturnEmpty`, which will not filter out our elements (errors).
-            .asDriverOnErrorReturnEmpty()
-
-        return eagerValidLazyErrorTurnedToEmptyOnEdit(directlyDisplayTrackedErrors: trackedErrors)
+        return eagerValidLazyErrorTurnedToEmptyOnEdit(directlyDisplayTrackedErrors: errorTracker.asInputErrors(mapError: mapError))
     }
 }

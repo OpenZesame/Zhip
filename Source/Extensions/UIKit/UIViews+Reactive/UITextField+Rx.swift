@@ -29,3 +29,12 @@ extension Reactive where Base: UITextField {
         return isEditing.filter { !$0 }.mapToVoid()
     }
 }
+
+extension Reactive where Base: UITextView {
+    var isEditing: Driver<Bool> {
+        return Driver.merge(
+            didBeginEditing.asDriver().map { true },
+            didEndEditing.asDriver().map { false }
+        )
+    }
+}

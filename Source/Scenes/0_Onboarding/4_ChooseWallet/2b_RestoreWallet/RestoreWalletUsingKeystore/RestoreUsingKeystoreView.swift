@@ -24,8 +24,10 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
             keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing.asDriver(),
+            isEditingKeystore: keystoreTextView.rx.isEditing,
             keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged()
+            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing
         )
     )
 
@@ -40,6 +42,10 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
         setupSubviews()
         setupViewModelBinding()
     }
+
+    func restorationErrorValidation(_ validation: Validation) {
+        encryptionPassphraseField.validate(validation)
+    }
 }
 
 private extension RestoreUsingKeystoreView {
@@ -47,13 +53,31 @@ private extension RestoreUsingKeystoreView {
     func setupSubviews() {
         encryptionPassphraseField.withStyle(.passphrase)
         keystoreTextView.withStyle(.editable)
-        keystoreTextView.addBorder(Border(color: .teal))
+        keystoreTextView.addBorderBy(validation: .empty)
     }
 
     func setupViewModelBinding() {
         bag <~ [
-            viewModelOutput.keystoreTextFieldPlaceholder     --> keystoreTextView.rx.text,
-            viewModelOutput.encryptionPassphrasePlaceholder --> encryptionPassphraseField.rx.placeholder
+            viewModelOutput.keyRestorationValidation            --> keystoreTextView.rx.validationByBorder,
+            viewModelOutput.encryptionPassphraseValidation      --> encryptionPassphraseField.rx.validation,
+            viewModelOutput.keystoreTextFieldPlaceholder        --> keystoreTextView.rx.text,
+            viewModelOutput.encryptionPassphrasePlaceholder     --> encryptionPassphraseField.rx.placeholder
         ]
+    }
+}
+
+import RxSwift
+import RxCocoa
+extension Reactive where Base: UITextView {
+    var validationByBorder: Binder<Validation> {
+        return Binder(base) {
+            $0.addBorderBy(validation: $1)
+        }
+    }
+}
+
+extension UITextView {
+    func addBorderBy(validation: Validation) {
+        addBorder(UIView.Border.fromValidation(validation))
     }
 }

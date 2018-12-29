@@ -40,6 +40,12 @@ internal enum L10n {
           return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
         }
       }
+      internal enum Keystore {
+        /// Bad JSON, control format.
+        internal static let badFormatOrInput = L10n.tr("Localizable", "Error.Input.Keystore.BadFormatOrInput")
+        /// Keystore was not encrypted by this passphrase
+        internal static let incorrectPassphrase = L10n.tr("Localizable", "Error.Input.Keystore.IncorrectPassphrase")
+      }
       internal enum Passphrase {
         /// Passphrases does not match
         internal static let confirmingPassphraseMismatch = L10n.tr("Localizable", "Error.Input.Passphrase.ConfirmingPassphraseMismatch")

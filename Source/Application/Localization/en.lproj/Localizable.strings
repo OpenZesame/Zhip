@@ -30,6 +30,9 @@
 "Error.Input.PrivateKey.TooLong" = "Should be %d characters (%d too many)";
 "Error.Input.PrivateKey.BadKey" = "Bad private key";
 
+"Error.Input.Keystore.BadFormatOrInput" = "Bad JSON, control format.";
+"Error.Input.Keystore.IncorrectPassphrase" = "Keystore was not encrypted by this passphrase";
+
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
 

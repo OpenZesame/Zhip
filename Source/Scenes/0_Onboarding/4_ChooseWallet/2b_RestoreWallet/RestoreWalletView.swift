@@ -25,8 +25,8 @@ final class RestoreWalletView: UIView, EmptyInitializable {
     private lazy var restorationMethodSegmentedControl  = UISegmentedControl()
     private lazy var headerLabel                        = UILabel()
     private lazy var restoreUsingPrivateKeyView         = RestoreUsingPrivateKeyView()
-    private lazy var restoreUsingKeyStoreView           = RestoreUsingKeystoreView()
-    private lazy var restoreWalletButton                = ButtonWithSpinner()
+    fileprivate lazy var restoreUsingKeyStoreView       = RestoreUsingKeystoreView()
+    fileprivate lazy var restoreWalletButton                = ButtonWithSpinner()
 
     // MARK: - Initialization
     init() {
@@ -104,28 +104,28 @@ private extension RestoreWalletView {
 
         restorationMethodSegmentedControl.rx.value
             .asDriver()
-            .filter { $0 >= 0 }
-            .do(onNext: { [unowned self] in self.selectedSegment(at: $0) })
+            .map { Segment(rawValue: $0) }
+            .filterNil()
+            .do(onNext: { [unowned self] in self.switchToViewFor(selectedSegment: $0) })
             .drive().disposed(by: bag)
 
-        func startSegmentedControl(at segment: Segment) {
-            restorationMethodSegmentedControl.selectedSegmentIndex = segment.rawValue
-            selectedSegment(at: segment.rawValue)
-        }
-
-        startSegmentedControl(at: .privateKey)
+        selectSegment(.privateKey)
     }
 
-    func selectedSegment(at index: Int) {
-        switch index {
-        case 0:
+    func switchToViewFor(selectedSegment: Segment) {
+        switch selectedSegment {
+        case .privateKey:
             restoreUsingPrivateKeyView.isHidden = false
             restoreUsingKeyStoreView.isHidden = true
-        case 1:
+        case .keystore:
             restoreUsingPrivateKeyView.isHidden = true
             restoreUsingKeyStoreView.isHidden = false
-        default: incorrectImplementation("Unhandled case")
         }
+    }
+
+    func selectSegment(_ segment: Segment) {
+        restorationMethodSegmentedControl.selectedSegmentIndex = segment.rawValue
+        restorationMethodSegmentedControl.sendActions(for: .valueChanged)
     }
 }
 
@@ -146,7 +146,17 @@ extension RestoreWalletView: ViewModelled {
         return [
             viewModel.headerLabel               --> headerLabel.rx.text,
             viewModel.isRestoring               --> restoreWalletButton.rx.isLoading,
-            viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled
+            viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled,
+            viewModel.keystoreRestorationError  --> keystoreRestorationValidatino
         ]
     }
+
+    var keystoreRestorationValidatino: Binder<Validation> {
+        return Binder<Validation>(self) {
+            $0.restoreUsingKeyStoreView.restorationErrorValidation($1)
+            $0.selectSegment(.keystore)
+            $0.restoreWalletButton.isEnabled = false
+        }
+    }
+
 }

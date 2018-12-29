@@ -89,6 +89,8 @@
 		4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */; };
 		4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */; };
 		4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */; };
+		484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */; };
+		484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
 		485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */; };
 		485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */; };
@@ -363,6 +365,8 @@
 		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
+		484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyValidator.swift; sourceTree = "<group>"; };
+		484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidator.swift; sourceTree = "<group>"; };
 		4850A407214C122900EBB85B /* Mergeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
 		4858D7B22194F91A00030237 /* ZupremeTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Release.xcconfig"; sourceTree = "<group>"; };
 		4858D7B32194F91B00030237 /* ZupremeTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Debug.xcconfig"; sourceTree = "<group>"; };
@@ -1003,6 +1007,8 @@
 				4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */,
 				485AAC9D21AAC6FA005C56CC /* AddressValidator.swift */,
 				48F4097921BCD560001C499F /* EncryptionPassphraseValidator.swift */,
+				484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */,
+				484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */,
 				4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */,
 			);
 			path = Validators;
@@ -1949,6 +1955,7 @@
 				487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */,
 				48ECF5F621A18F140078D659 /* ChooseWalletCoordinator.swift in Sources */,
 				48379C6C21AE925400B95DB9 /* BaseViewModel.swift in Sources */,
+				484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */,
 				48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */,
 				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
@@ -2087,6 +2094,7 @@
 				48ECF60C21A1D0170078D659 /* CoordinatorTransition.swift in Sources */,
 				483CE9D02194E9E300BED31C /* BaseCoordinator.swift in Sources */,
 				48ECF5C621A18F140078D659 /* AbstractController.swift in Sources */,
+				484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
 				483CE9DB2194E9E300BED31C /* Toast.swift in Sources */,
 				483CE9E32194E9E300BED31C /* PreferencesKey.swift in Sources */,

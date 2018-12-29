@@ -42,3 +42,29 @@ public extension ObservableConvertibleType {
         return errorTracker.trackError(from: self)
     }
 }
+
+// MARK: Input Validation
+extension ErrorTracker {
+    func asInputErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<IE> {
+        return asObservable().materialize().map { (event: Event<Error>) -> IE? in
+            guard case .next(let swiftError) = event else {
+                return nil
+            }
+
+            guard let mappedError = mapError(swiftError) else {
+                log.error("Failed to map Swift.Error to error of type `\(type(of: IE.self))`")
+                return nil
+            }
+            return mappedError
+            }
+            .filterNil()
+            // This is an Driver of Errors, so it is correct to call `asDriverOnErrorReturnEmpty`, which will not filter out our elements (errors).
+            .asDriverOnErrorReturnEmpty()
+    }
+
+    func asInputValidationErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<Validation> {
+        return asInputErrors(mapError: mapError)
+            .map { $0.errorMessage }
+            .map { .error(errorMessage: $0) }
+    }
+}
