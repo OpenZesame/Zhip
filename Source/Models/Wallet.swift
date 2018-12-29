@@ -20,7 +20,8 @@ struct Wallet: Codable {
     // MARK: Origin
     enum Origin: Int, Codable {
         case generatedByThisApp
-        case imported
+        case importedPrivateKey
+        case importedKeystore
     }
 
     enum Error: Swift.Error {

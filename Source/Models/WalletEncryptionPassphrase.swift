@@ -73,16 +73,16 @@ extension WalletEncryptionPassphrase {
 // MARK: - Mode
 extension WalletEncryptionPassphrase {
     enum Mode: CaseIterable {
-        case new
-        case restore
+        case newOrRestorePrivateKey
+        case restoreKeystore
     }
 }
 
 extension WalletEncryptionPassphrase.Mode {
     var mimimumPassphraseLength: Int {
         switch self {
-        case .new: return 8
-        case .restore: return Zesame.Keystore.minumumPasshraseLength
+        case .newOrRestorePrivateKey: return 8
+        case .restoreKeystore: return Zesame.Keystore.minumumPasshraseLength
         }
     }
 }
@@ -91,8 +91,8 @@ extension WalletEncryptionPassphrase.Mode {
 private extension Wallet.Origin {
     var passphraseMode: WalletEncryptionPassphrase.Mode {
         switch self {
-        case .generatedByThisApp: return .new
-        case .imported: return .restore
+        case .generatedByThisApp, .importedPrivateKey: return .newOrRestorePrivateKey
+        case .importedKeystore: return .restoreKeystore
         }
     }
 }

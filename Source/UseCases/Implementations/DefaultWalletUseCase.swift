@@ -34,8 +34,13 @@ extension DefaultWalletUseCase {
     }
 
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet> {
+        let origin: Wallet.Origin
+        switch restoration {
+        case .keystore: origin = .importedKeystore
+        case .privateKey: origin = .importedPrivateKey
+        }
         return zilliqaService.restoreWallet(from: restoration).map {
-            Wallet(wallet: $0, origin: .imported)
+            Wallet(wallet: $0, origin: origin)
         }
     }
 }

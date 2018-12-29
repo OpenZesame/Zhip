@@ -12,7 +12,7 @@ import RxCocoa
 import Zesame
 
 private typealias € = L10n.Scene.CreateNewWallet
-private let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .new
+private let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .newOrRestorePrivateKey
 
 // MARK: - CreateNewWalletUserAction
 enum CreateNewWalletUserAction: TrackedUserAction {

@@ -12,7 +12,7 @@ import RxCocoa
 import RxSwift
 
 private typealias € = L10n.Scene.RestoreWallet
-private let encryptionPassphraseMode = WalletEncryptionPassphrase.Mode.new
+private let encryptionPassphraseMode = WalletEncryptionPassphrase.Mode.newOrRestorePrivateKey
 
 // MARK: - RestoreWalletUsingPrivateKeyViewModel
 final class RestoreWalletUsingPrivateKeyViewModel {

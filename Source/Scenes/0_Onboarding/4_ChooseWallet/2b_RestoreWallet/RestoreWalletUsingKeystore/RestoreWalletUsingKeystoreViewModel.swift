@@ -19,7 +19,7 @@ final class RestoreWalletUsingKeystoreViewModel {
     let output: Output
 
     init(inputFromView: InputFromView) {
-        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restore
+        let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restoreKeystore
 
         let validEncryptionPassphrase: Driver<String?> =
             inputFromView.encryptionPassphrase.map {
