@@ -336,15 +336,21 @@ internal enum L10n {
       }
     }
     internal enum PollTransactionStatus {
-      /// Wait for consensus
-      internal static let title = L10n.tr("Localizable", "Scene.PollTransactionStatus.Title")
       internal enum Button {
-        /// Skip waiting
-        internal static let skip = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.Skip")
+        /// Transaction details
+        internal static let seeTransactionDetails = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SeeTransactionDetails")
+        internal enum SkipWaitingOrDone {
+          /// Done
+          internal static let done = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Done")
+          /// Skip waiting
+          internal static let skip = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Skip")
+        }
       }
       internal enum Label {
-        /// Your transaction has successfully been broadcasted to the network. You can either wait a minute or two for the receipt that the network has reached consensus about your transaction or you can close this screen and recheck your balance later.
-        internal static let waitingOnReceipt = L10n.tr("Localizable", "Scene.PollTransactionStatus.Label.WaitingOnReceipt")
+        /// In a minute or two, when the network's finished processing, your balance will be updated and you can view transaction details.
+        internal static let mightTakeSomeMinutes = L10n.tr("Localizable", "Scene.PollTransactionStatus.Label.MightTakeSomeMinutes")
+        /// Transaction broadcasted
+        internal static let transactionBroadcasted = L10n.tr("Localizable", "Scene.PollTransactionStatus.Label.TransactionBroadcasted")
       }
     }
     internal enum PrepareTransaction {

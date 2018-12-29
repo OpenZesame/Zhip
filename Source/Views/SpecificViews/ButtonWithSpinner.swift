@@ -11,10 +11,15 @@ import RxSwift
 import RxCocoa
 
 final class ButtonWithSpinner: UIButton {
+	enum SpinnerMode {
+		case replaceText
+		case nextToText
+	}
 
     private lazy var spinnerView = SpinnerView()
-
-    init() {
+	private let mode: SpinnerMode
+	init(mode: SpinnerMode = .replaceText) {
+		self.mode = mode
         super.init(frame: .zero)
         setup()
     }
@@ -22,23 +27,42 @@ final class ButtonWithSpinner: UIButton {
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
+extension ButtonWithSpinner {
+	func startSpinning() {
+		switch mode {
+		case .replaceText:
+			titleLabel?.layer.opacity = 0
+			bringSubviewToFront(spinnerView)
+		case .nextToText: break
+		}
+
+		spinnerView.startSpinning()
+	}
+
+	func stopSpinning () {
+		switch mode {
+		case .replaceText:
+			titleLabel?.layer.opacity = 1
+			sendSubviewToBack(spinnerView)
+		case .nextToText: break
+		}
+		spinnerView.stopSpinning()
+	}
+}
+
 private extension ButtonWithSpinner {
 
     func setup() {
-        addSubview(spinnerView)
-        spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
-    }
+		addSubview(spinnerView)
+		switch mode {
+		case .replaceText:
+			spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+		case .nextToText:
+			spinnerView.size(CGSize(width: 32, height: 32))
+			spinnerView.leftToSuperview(offset: 20)
+			spinnerView.centerYToSuperview()
+		}
 
-    func startSpinning() {
-        titleLabel?.layer.opacity = 0
-        bringSubviewToFront(spinnerView)
-        spinnerView.startSpinning()
-    }
-
-    func stopSpinning () {
-        titleLabel?.layer.opacity = 1
-        sendSubviewToBack(spinnerView)
-        spinnerView.stopSpinning()
     }
 
     func changeTo(isSpinning: Bool) {

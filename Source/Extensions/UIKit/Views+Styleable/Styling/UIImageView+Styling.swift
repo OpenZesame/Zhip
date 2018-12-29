@@ -25,21 +25,23 @@ extension UIImageView {
     struct Style {
         var image: UIImage?
         var tintColor: UIColor?
+		var backgroundColor: UIColor?
         var contentMode: UIView.ContentMode?
         var clipsToBounds: Bool?
 
-        init(
-            image: UIImage? = nil,
-            contentMode: UIView.ContentMode? = nil,
-            clipsToBounds: Bool? = nil,
-            tintColor: UIColor? = nil
-        ) {
-            self.image = image
-            self.contentMode = contentMode
-            self.clipsToBounds = clipsToBounds
-            self.tintColor = tintColor
-        }
-    }
+		init(
+			image: UIImage? = nil,
+			contentMode: UIView.ContentMode? = nil,
+			clipsToBounds: Bool? = nil,
+			tintColor: UIColor? = nil,
+			backgroundColor: UIColor? = nil
+			) {
+			self.image = image
+			self.contentMode = contentMode
+			self.clipsToBounds = clipsToBounds
+			self.tintColor = tintColor
+		}
+	}
 }
 
 // MARK: - Apply Style
@@ -49,6 +51,7 @@ extension UIImageView {
         set(\.contentMode, ifNotNil: style.contentMode)
         set(\.clipsToBounds, ifNotNil: style.clipsToBounds)
         set(\.tintColor, ifNotNil: style.tintColor)
+        set(\.backgroundColor, ifNotNil: style.backgroundColor)
     }
 
     @discardableResult
@@ -81,6 +84,13 @@ extension UIImageView.Style {
     func asset(_ imageAsset: ImageAsset) -> UIImageView.Style {
         return image(imageAsset.image)
     }
+
+	@discardableResult
+	func backgroundColor(_ backgroundColor: UIColor) -> UIImageView.Style {
+		var style = self
+		style.backgroundColor = backgroundColor
+		return style
+	}
 }
 
 // MARK: - Style Presets
@@ -91,4 +101,8 @@ extension UIImageView.Style {
             clipsToBounds: true
         )
     }
+
+	static func background(image: UIImage) -> UIImageView.Style {
+		return .init(image: image, contentMode: .center, backgroundColor: .clear)
+	}
 }
