@@ -25,7 +25,7 @@ struct AddressValidator: InputValidator {
 }
 
 extension Address.Error: InputError {
-    var errorMessage: String {
+    public var errorMessage: String {
         let Message = L10n.Error.Input.Address.self
 
         switch self {

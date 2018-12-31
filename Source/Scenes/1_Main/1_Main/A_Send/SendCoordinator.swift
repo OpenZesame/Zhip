@@ -110,13 +110,13 @@ private extension SendCoordinator {
             transactionId: transactionId
         )
 
-		push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
-			switch userDid {
-			case .skip, .waitUntilTimeout: self.finish()
-			case .dismiss: self.finish(triggerBalanceFetching: true)
-			case .viewTransactionDetailsInBrowser(let txId): self.openInBrowserDetailsForTransaction(id: txId)
-			}
-		}
+        push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .skip, .waitUntilTimeout: self.finish()
+            case .dismiss: self.finish(triggerBalanceFetching: true)
+            case .viewTransactionDetailsInBrowser(let txId): self.openInBrowserDetailsForTransaction(id: txId)
+            }
+        }
     }
 
     func openInBrowserDetailsForTransaction(id transactionId: String) {

@@ -56,6 +56,7 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.balance                           --> balanceValueLabel.rx.text,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
+            viewModel.gasPriceMeasuredInLi              --> gasPriceField.rx.text,
             viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
             viewModel.gasPriceValidation                --> gasPriceField.rx.validation
         ]
@@ -69,13 +70,13 @@ extension PrepareTransactionView: ViewModelled {
             sendTrigger: sendButton.rx.tap.asDriver(),
 
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
-            recipientAddressDidEndEditing: recipientAddressField.rx.didEndEditing,
+            isEditingRecipientAddress: recipientAddressField.rx.isEditing,
 
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
-            amountDidEndEditing: amountToSendField.rx.didEndEditing,
+            isEditingAmount: amountToSendField.rx.isEditing,
 
             gasPrice: gasPriceField.rx.text.orEmpty.asDriver(),
-            gasPriceDidEndEditing: gasPriceField.rx.didEndEditing
+            isEditingGasPrice: gasPriceField.rx.isEditing
         )
     }
 }

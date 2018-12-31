@@ -127,18 +127,18 @@ extension InputValidationResult {
     }
 }
 
-protocol InputError: Swift.Error, CustomStringConvertible {
+public protocol InputError: Swift.Error, CustomStringConvertible {
     var errorMessage: String { get }
     func isEqual(_ error: InputError) -> Bool
 }
 
-extension InputError {
-    public var description: String {
+public extension CustomStringConvertible where Self: InputError {
+    var description: String {
         return errorMessage
     }
 }
 
-extension InputError {
+public extension InputError {
     func isEqual(_ error: InputError) -> Bool {
         return true
     }

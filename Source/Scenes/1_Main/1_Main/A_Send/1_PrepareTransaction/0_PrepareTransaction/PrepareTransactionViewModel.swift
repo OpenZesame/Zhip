@@ -13,169 +13,202 @@ import Zesame
 
 // MARK: - PrepareTransactionUserAction
 enum PrepareTransactionUserAction: TrackedUserAction {
-    case cancel
-    case signPayment(Payment)
-    case scanQRCode
+	case cancel
+	case signPayment(Payment)
+	case scanQRCode
 }
 
 // MARK: - PrepareTransactionViewModel
 private typealias € = L10n.Scene.PrepareTransaction
 final class PrepareTransactionViewModel: BaseViewModel<
-    PrepareTransactionUserAction,
-    PrepareTransactionViewModel.InputFromView,
-    PrepareTransactionViewModel.Output
+	PrepareTransactionUserAction,
+	PrepareTransactionViewModel.InputFromView,
+	PrepareTransactionViewModel.Output
 > {
-    private let transactionUseCase: TransactionsUseCase
-    private let walletUseCase: WalletUseCase
-    private let deepLinkedTransaction: Driver<TransactionIntent>
+	private let transactionUseCase: TransactionsUseCase
+	private let walletUseCase: WalletUseCase
+	private let scannedOrDeeplinkedTransaction: Driver<TransactionIntent>
 
-    init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, deepLinkedTransaction: Driver<TransactionIntent>) {
-        self.walletUseCase = walletUseCase
-        self.transactionUseCase = transactionUseCase
-        self.deepLinkedTransaction = deepLinkedTransaction
-    }
+	init(walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase, scannedOrDeeplinkedTransaction: Driver<TransactionIntent>) {
+		self.walletUseCase = walletUseCase
+		self.transactionUseCase = transactionUseCase
+		self.scannedOrDeeplinkedTransaction = scannedOrDeeplinkedTransaction
+	}
 
-    // swiftlint:disable:next function_body_length
-    override func transform(input: Input) -> Output {
-        func userIntends(to intention: NavigationStep) {
-            navigator.next(intention)
-        }
+	// swiftlint:disable:next function_body_length
+	override func transform(input: Input) -> Output {
+		func userIntends(to intention: NavigationStep) {
+			navigator.next(intention)
+		}
 
-        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
-        let activityIndicator = ActivityIndicator()
+		let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+		let activityIndicator = ActivityIndicator()
+		let errorTracker = ErrorTracker()
 
-        let fetchTrigger = Driver.merge(
-            input.fromView.pullToRefreshTrigger,
-            wallet.mapToVoid()
-        )
+		let fetchTrigger = Driver.merge(
+			input.fromView.pullToRefreshTrigger,
+			wallet.mapToVoid()
+		)
 
-        // Fetch latest balance from API
-        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
-            self.transactionUseCase
-                .getBalance(for: $0.address)
-                .trackActivity(activityIndicator)
-                .asDriverOnErrorReturnEmpty()
-        }
+		// Fetch latest balance from API
+		let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
+			self.transactionUseCase
+				.getBalance(for: $0.address)
+				.trackActivity(activityIndicator)
+				.trackError(errorTracker)
+				.asDriverOnErrorReturnEmpty()
+		}
 
-        let _cachedBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
-        let balance = latestBalanceAndNonce.map { $0.balance }.startWith(_cachedBalance)
+		let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
+		let _startingBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
+		let balance: Driver<ZilAmount> = latestBalanceAndNonce.map { $0.balance }.startWith(_startingBalance)
 
-        // MARK: - Validate input (only validate fields when they loose focus)
-        let validator = InputValidator()
+		// MARK: - VALIDATION -> VALUE
+		let validator = InputValidator()
 
-        let recipientAddressValidationValue = Driver.merge(
-            // Validate input from view
-            input.fromView.recepientAddress.map { validator.validateRecipient($0) },
+		// MARK: Recipient Input ->  Value + Validation
+		let recipientValidationValue = Driver.merge(
+			input.fromView.recepientAddress.map { validator.validateRecipient($0) },
+			scannedOrDeeplinkedTransaction.map { .valid($0.recipient) }
+		)
 
-            // Address from DeepLinked transaction should be valid
-            deepLinkedTransaction.map { .valid($0.recipient) }
-        )
+		let recipient: Driver<Address?> = recipientValidationValue.map { $0.value }
 
+		let recipientValidation: Driver<Validation> = Driver.merge(
+			// Emit errors only on `editingDidEnd`
+            input.fromView.isEditingRecipientAddress
+                .filter { isEditing in isEditing == false }
+                .withLatestFrom(recipientValidationValue) { $1 }
+                .map { $0.validation }
+                .map { $0.isError ? $0 : nil }
+                .filterNil(),
+
+			// merge with empty/valid validation results
+			recipientValidationValue.filter { $0.isError == false }.map { $0.validation }
+		)
+
+		// MARK: GasPrice Input -> Value + Validation
         let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
-        let gasPrice = gasPriceValidationValue.map { $0.value }
+		let _startingGasPrice: GasPrice = .min
+        let gasPrice = gasPriceValidationValue.map { $0.value }.startWith(_startingGasPrice).do(onNext: { log.debug("🌈 Gasprice: \($0)") })
 
-        // This is not quite optimal, we should read from gasPrice field
-        let maxAmountBoundByBalanceAndMinGasPrice: Driver<ZilAmount?> = input.fromView.maxAmountTrigger.withLatestFrom(
-            Driver.combineLatest(balance, gasPrice)
-        ).map {
-            let balance = $0.0
-            guard let gasPrice = $0.1 else {
-                return balance
-            }
-            guard case let balanceMinusOne = balance - gasPrice, balanceMinusOne > 0 else { return nil }
-            return try? ZilAmount(qa: balanceMinusOne.inQa)
-        }
-
-        let amountValidationValue = Driver.merge(
-            // Validate input from view
-            input.fromView.amountToSend.map { validator.validateAmount($0) },
-
-            // ZilAmount from DeepLinked transaction should be valid
-            deepLinkedTransaction.map { .valid($0.amount) },
-
-            maxAmountBoundByBalanceAndMinGasPrice.filterNil().map { .valid($0) }
+        let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
+            input.fromView.isEditingGasPrice
+                .filter { isEditing in isEditing == false }.skip(1).mapToVoid(),
+            input.fromView.maxAmountTrigger
         )
 
-        // MARK: - Validated values
-        let recipient = recipientAddressValidationValue.map { $0.value }
 
-        let amountNotBoundByBalance = amountValidationValue.map { $0.value }
+		let gasPriceValidation = Driver.merge(
+			// Emit errors only on `editingDidEnd`
+            gasPriceValidationErrorTrigger
+                .withLatestFrom(gasPriceValidationValue) { $1 }
+                .map { $0.validation }
+                .map { $0.isError ? $0 : nil }
+                .filterNil(),
 
-        let sufficientFundsValidationTrigger = Driver.merge(
-            // ZilAmount trigger
+			// merge with empty/valid validation results
+			gasPriceValidationValue.filter { $0.isError == false }.map { $0.validation }
+            ).do(onNext: { log.debug("🌈 gasPriceValidation: \($0)") })
+
+
+		// MARK: Amount + MaxAmountTrigger Input -> Value + Validation
+		let amountWithoutSufficientFundsCheckValidationValue = Driver.merge(
+			input.fromView.amountToSend.map { validator.validateAmount($0) },
+			scannedOrDeeplinkedTransaction.map { .valid($0.amount) }
+		)
+
+		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value }
+
+		let gasPriceResultingFromMaxAmountTriggerSubject = PublishSubject<GasPrice>()
+        let amountValidationValue: Driver<SufficientFundsValidator.Result> = Driver.combineLatest(
+
             Driver.merge(
-                input.fromView.amountDidEndEditing,
-                input.fromView.maxAmountTrigger,
-                deepLinkedTransaction.map { $0.amount }.distinctUntilChanged().mapToVoid()
+                // Input from fields or deeplinked/scanned
+                amountWithoutSufficientFundsCheck,
+
+                // Max trigger -> Balance SUBTRACT GasPrice (default to min)
+                input.fromView.maxAmountTrigger.withLatestFrom(
+                    Driver.combineLatest(
+                        balance.startWith(_startingBalance),
+                        gasPrice.startWith(_startingGasPrice)
+                    ) { (latestBalance: ZilAmount?, latestGasPrice: GasPrice?) -> ZilAmount? in
+                        let balanceOrZero: ZilAmount = latestBalance ?? _startingBalance
+                        let gasPriceOrMin: GasPrice = latestGasPrice ?? _startingGasPrice
+
+                        guard let balanceMinusGas: ZilAmount = try? balanceOrZero - gasPriceOrMin else {
+                            log.error("returning nil")
+                            return nil
+                        }
+                        if latestGasPrice == nil {
+                            // we set the GasPrice by using the Max trigger
+                            gasPriceResultingFromMaxAmountTriggerSubject.onNext(gasPriceOrMin)
+                        }
+                        return balanceMinusGas
+                    }
+                ) { $1 }
             ),
-            input.fromView.gasPriceDidEndEditing,
-            balance.mapToVoid()
-        )
 
-        let sufficientFundsValidationValue: Driver<SufficientFundsValidator.Result> = sufficientFundsValidationTrigger.withLatestFrom(
-            Driver.combineLatest(amountNotBoundByBalance, gasPrice, balance) {
-                guard let amount = $0, let gasPrice = $1, case let balance = $2 else {
-                    return .invalid(.empty)
-                }
-                return validator.validate(amount: amount, gasPrice: gasPrice, lessThanBalance: balance)
-            }
-        )
-
-        let amount = sufficientFundsValidationValue.map { $0.value }
-        let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
-
-        let payment: Driver<Payment?> = Driver.combineLatest(recipient, amount, gasPrice, nonce) {
-            guard let to = $0, let amount = $1, let price = $2, case let nonce = $3 else {
-                return nil
-            }
-            return Payment(to: to, amount: amount, gasLimit: 1, gasPrice: price, nonce: nonce)
+            gasPrice.startWith(_startingGasPrice),
+            balance.startWith(_startingBalance)
+        ) { (amount: ZilAmount?, gasPrice: GasPrice?, balance: ZilAmount?) in
+            validator.validate(amount: amount, gasPrice: gasPrice, lessThanBalance: balance)
         }
 
-        // Setup navigation
-        bag <~ [
-            input.fromController.rightBarButtonTrigger
-                .do(onNext: { userIntends(to: .cancel) })
-                .drive(),
+		let amountBoundByBalance = amountValidationValue.map { $0.value }
+            .do(onNext: {
+                guard let amount = $0 else { return log.verbose("Amount is nil") }
+                log.verbose("Amount in qa: \(amount.inQa)")
+            })
 
-            input.fromView.scanQRTrigger
-                .do(onNext: { userIntends(to: .scanQRCode) })
-                .drive(),
+		let amountValidationErrorTrigger: Driver<Void> = Driver.merge(
+			input.fromView.isEditingAmount.filter { isEditing in isEditing == false }.mapToVoid(),
+			scannedOrDeeplinkedTransaction.mapToVoid()
+		)
 
-            input.fromView.sendTrigger.withLatestFrom(payment.filterNil())
-                .do(onNext: { userIntends(to: .signPayment($0)) })
-                .drive()
-        ]
+		let amountValidation = Driver.merge(
+			// Emit errors only on `editingDidEnd`
+            amountValidationErrorTrigger
+                .withLatestFrom(gasPriceValidationValue) { $1 }
+                .map { $0.validation }
+                .map { $0.isError ? $0 : nil }
+                .filterNil(),
 
-        // Format output
-        let formatter = Formatter()
+			// merge with empty/valid validation results
+			amountValidationValue.filter { $0.isError == false }.map { $0.validation }
+		)
 
-        let amountValidation: Driver<Validation> = Driver.zip(
-            sufficientFundsValidationValue.map { $0.validation },
-            amountValidationValue.map { $0.validation }
-        ) {
-            switch ($0, $1) {
-            case (.valid, .valid): return Validation.valid
-            case (.empty, .empty), (.empty, .valid): return Validation.empty
-            case (.error, _): return $0
-            case (_, .error): return $1
-            default: incorrectImplementation("Should have handled all cases above, sufficientFundsValidationValue: \($0), amountValidationValue: \($1)")
-            }
-        }
+		let payment: Driver<Payment?> = Driver.combineLatest(recipient, amountBoundByBalance, gasPrice, nonce) {
+			guard let to = $0, let amount = $1, let price = $2, case let nonce = $3 else {
+				return nil
+			}
+			return Payment(to: to, amount: amount, gasLimit: 1, gasPrice: price, nonce: nonce)
+		}
 
-        let gasPriceValidation = input.fromView.gasPriceDidEndEditing
-            .withLatestFrom(gasPriceValidationValue.map { $0.validation }) { $1 }
+		// Setup navigation
+		bag <~ [
+			input.fromController.rightBarButtonTrigger
+				.do(onNext: { userIntends(to: .cancel) })
+				.drive(),
 
-        let recipientAddressValidation = input.fromView.recipientAddressDidEndEditing
-            .withLatestFrom(recipientAddressValidationValue.map { $0.validation }) { $1 }
+			input.fromView.scanQRTrigger
+				.do(onNext: { userIntends(to: .scanQRCode) })
+				.drive(),
 
-        let balanceFormatted = balance.map { formatter.format(amount: $0) }
-        let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
+			input.fromView.sendTrigger.withLatestFrom(payment.filterNil())
+				.do(onNext: { userIntends(to: .signPayment($0)) })
+				.drive()
+		]
 
-        let amountFormatted = amount.filterNil().map { $0.display }
+		// MARK: FORMATTING
+		let formatter = Formatter()
+		let balanceFormatted = balance.map { formatter.format(amount: $0) }
+		let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
+		let amountFormatted = amountBoundByBalance.filterNil().map { $0.display }
 
-        let isSendButtonEnabled = payment.map { $0 != nil }
+		let isSendButtonEnabled = payment.map { $0 != nil }
 
-        let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.minInLi.description) \(Unit.li.name)"))
+		let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.minInLiAsInt) \(Unit.li.name)"))
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
@@ -183,86 +216,102 @@ final class PrepareTransactionViewModel: BaseViewModel<
             balance: balanceFormatted,
 
             recipient: recipientFormatted,
-            recipientAddressValidation: recipientAddressValidation,
+            recipientAddressValidation: recipientValidation,
 
             amount: amountFormatted,
             amountValidation: amountValidation,
 
+            gasPriceMeasuredInLi:
+            Driver.merge(
+                gasPrice,
+                gasPriceResultingFromMaxAmountTriggerSubject.asDriverOnErrorReturnEmpty().map { GasPrice?.some($0) }
+                ).startWith(GasPrice.min).flatMapLatest {
+                    if let gasPrice = $0 {
+                        return .just(gasPrice.inLi.display)
+                    } else {
+                        return input.fromView.gasPrice
+                    }
+            },
             gasPricePlaceholder: gasPricePlaceholder,
-            gasPriceValidation: gasPriceValidation
+            gasPriceValidation:
+            Driver.merge(
+                gasPriceValidation,
+                gasPriceResultingFromMaxAmountTriggerSubject.mapToVoid().asDriverOnErrorReturnEmpty().map { Validation.valid }
+            )
         )
-    }
+	}
 }
 
 extension ExpressibleByAmount {
-    var display: String {
-        return Int(magnitude).description
-    }
+	var display: String {
+		return Int(magnitude).description
+	}
 }
 
 extension PrepareTransactionViewModel {
 
-    struct InputFromView {
-        let pullToRefreshTrigger: Driver<Void>
-        let scanQRTrigger: Driver<Void>
-        let maxAmountTrigger: Driver<Void>
-        let sendTrigger: Driver<Void>
+	struct InputFromView {
+		let pullToRefreshTrigger: Driver<Void>
+		let scanQRTrigger: Driver<Void>
+		let maxAmountTrigger: Driver<Void>
+		let sendTrigger: Driver<Void>
 
-        let recepientAddress: Driver<String>
-        let recipientAddressDidEndEditing: Driver<Void>
+		let recepientAddress: Driver<String>
+		let isEditingRecipientAddress: Driver<Bool>
 
-        let amountToSend: Driver<String>
-        let amountDidEndEditing: Driver<Void>
+		let amountToSend: Driver<String>
+		let isEditingAmount: Driver<Bool>
 
-        let gasPrice: Driver<String>
-        let gasPriceDidEndEditing: Driver<Void>
-    }
+		let gasPrice: Driver<String>
+		let isEditingGasPrice: Driver<Bool>
+	}
 
-    struct Output {
-        let isFetchingBalance: Driver<Bool>
-        let isSendButtonEnabled: Driver<Bool>
-        let balance: Driver<String>
+	struct Output {
+		let isFetchingBalance: Driver<Bool>
+		let isSendButtonEnabled: Driver<Bool>
+		let balance: Driver<String>
 
-        let recipient: Driver<String>
-        let recipientAddressValidation: Driver<Validation>
+		let recipient: Driver<String>
+		let recipientAddressValidation: Driver<Validation>
 
-        let amount: Driver<String>
-        let amountValidation: Driver<Validation>
+		let amount: Driver<String>
+		let amountValidation: Driver<Validation>
 
-        let gasPricePlaceholder: Driver<String>
-        let gasPriceValidation: Driver<Validation>
-    }
+		let gasPriceMeasuredInLi: Driver<String>
+		let gasPricePlaceholder: Driver<String>
+		let gasPriceValidation: Driver<Validation>
+	}
 }
 
 // MARK: - Field Validation
 extension PrepareTransactionViewModel {
-    struct InputValidator {
-        private let addressValidator = AddressValidator()
-        private let amountValidator = AmountValidator()
-        private let gasPriceValidator = GasPriceValidator()
-        private let sufficientFundsValidator = SufficientFundsValidator()
+	struct InputValidator {
+		private let addressValidator = AddressValidator()
+		private let amountValidator = AmountValidator()
+		private let gasPriceValidator = GasPriceValidator()
+		private let sufficientFundsValidator = SufficientFundsValidator()
 
-        func validateRecipient(_ recipient: String?) -> InputValidationResult<Address, AddressValidator.Error> {
-            return addressValidator.validate(input: recipient)
-        }
+		func validateRecipient(_ recipient: String?) -> AddressValidator.Result {
+			return addressValidator.validate(input: recipient)
+		}
 
-        func validate(amount: ZilAmount, gasPrice: GasPrice, lessThanBalance balance: ZilAmount) -> InputValidationResult<ZilAmount, SufficientFundsValidator.Error> {
-            return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
-        }
+		func validate(amount: ZilAmount?, gasPrice: GasPrice?, lessThanBalance balance: ZilAmount?) -> SufficientFundsValidator.Result {
+			return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
+		}
 
-        func validateAmount(_ amount: String) -> InputValidationResult<ZilAmount, AmountValidator.Error> {
-            return amountValidator.validate(input: amount)
-        }
+		func validateAmount(_ amount: String) -> AmountValidator.Result {
+			return amountValidator.validate(input: amount)
+		}
 
-        func validateGasPrice(_ gasPrice: String?) -> InputValidationResult<GasPrice, GasPriceValidator.Error> {
-            return gasPriceValidator.validate(input: gasPrice)
-        }
-    }
+		func validateGasPrice(_ gasPrice: String?) -> GasPriceValidator.Result {
+			return gasPriceValidator.validate(input: gasPrice)
+		}
+	}
 
-    struct Formatter {
-        func format(amount: ZilAmount) -> String {
-            let amountString = amount.display.inserting(string: " ", every: 3)
-            return "\(amountString) \(L10n.Generic.zils)"
-        }
-    }
+	struct Formatter {
+		func format(amount: ZilAmount) -> String {
+			let amountString = amount.display.inserting(string: " ", every: 3)
+			return "\(amountString) \(L10n.Generic.zils)"
+		}
+	}
 }

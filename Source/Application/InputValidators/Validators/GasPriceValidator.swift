@@ -11,16 +11,15 @@ import Zesame
 import Validator
 
 struct GasPriceValidator: InputValidator {
-    typealias Error = AmountValidator.Error
+
+    typealias Error = AmountError<Li>
 
     func validate(input li: String) -> InputValidationResult<GasPrice, Error> {
         let gasPrice: GasPrice
         do {
-            gasPrice = try GasPrice(li: li)
-        } catch let amountError as AmountError {
-            return self.error(amountError)
+            gasPrice = try GasPrice.init(li: li)
         } catch {
-            incorrectImplementation("AmountValidator.Error should cover all errors")
+            return self.error(Error(error: error)!)
         }
         return .valid(gasPrice)
     }
