@@ -15,30 +15,40 @@ public extension ExpressibleByAmount {
     }
 
     static func express(_ input: Magnitude, in unit: Unit) -> Magnitude {
-        return Magnitude.init(floatLiteral: input / pow(10, Double(unit.exponent - Self.unit.exponent)))
+        let exponentDiff = abs(unit.exponent - self.unit.exponent)
+        let powerFactor = pow(10, Double(exponentDiff))
+        // Instead of doing input / pow(10, Double(unit.exponent - Self.unit.exponent))
+        // which may result in precision loss we perform either division or multiplication
+        if unit > self.unit {
+            return input / powerFactor
+        } else {
+            return input * powerFactor
+        }
     }
 
     var inZil: Zil {
-        return Zil(magnitude: valueMeasured(in: .zil))
-    }
-
-    init(zil: Zil) throws {
-        try self.init(zil.valueMeasured(in: Self.unit))
+        return Zil(valid: valueMeasured(in: .zil))
     }
 
     var inLi: Li {
-        return Li(magnitude: valueMeasured(in: .li))
-    }
-
-    init(li: Li) throws {
-        try self.init(li.valueMeasured(in: Self.unit))
+        return Li(valid: valueMeasured(in: .li))
     }
 
     var inQa: Qa {
-        return Qa(magnitude: valueMeasured(in: .qa))
+        return Qa(valid: valueMeasured(in: .qa))
+    }
+}
+
+public extension ExpressibleByAmount {
+    func `as`<E>(_ type: E.Type) -> E where E: ExpressibleByAmount {
+        return E.init(valid: valueMeasured(in: E.unit))
     }
 
-    init(qa: Qa) throws {
-        try self.init(qa.valueMeasured(in: Self.unit))
+    func `as`<U>(_ type: U.Type) -> U where U: Unbound & ExpressibleByAmount {
+        return U.init(valueMeasured(in: U.unit))
+    }
+
+    func `as`<B>(_ type: B.Type) throws -> B where B: Bound & ExpressibleByAmount {
+        return try B.init(valueMeasured(in: B.unit))
     }
 }

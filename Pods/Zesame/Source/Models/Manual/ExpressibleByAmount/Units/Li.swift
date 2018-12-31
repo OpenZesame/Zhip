@@ -8,21 +8,8 @@
 
 import Foundation
 
-public struct Li: ExpressibleByAmount {
-    public typealias Magnitude = Double
+public typealias Li = UnboundAmount<MeasuredInLi>
+
+public struct MeasuredInLi: UnitSpecifying {
     public static let unit: Unit = .li
-    public let magnitude: Magnitude
-
-    public init(magnitude: Magnitude) {
-        do {
-            self.magnitude = try Li.validate(magnitude: magnitude)
-        } catch {
-            fatalError("Invalid magnitude passed")
-        }
-    }
-}
-
-// MARK: ExpressibleByAmount
-public extension Li {
-    var inLi: Li { return self }
 }

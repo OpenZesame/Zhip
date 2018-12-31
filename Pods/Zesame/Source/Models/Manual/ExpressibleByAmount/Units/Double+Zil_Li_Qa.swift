@@ -8,20 +8,40 @@
 
 import Foundation
 
+// MARK: - Magnitude
 public extension Zil.Magnitude {
     var zil: Zil {
-        return try! Zil(self)
+        return Zil(self)
     }
 }
 
 public extension Li.Magnitude {
     var li: Li {
-        return try! Li(self)
+        return Li(self)
     }
 }
 
 public extension Qa.Magnitude {
     var qa: Qa {
-        return try! Qa(self)
+        return Qa(self)
+    }
+}
+
+// MARK: Integer
+public extension Int {
+    var zil: Zil {
+        return Zil(magnitude: self)
+    }
+}
+
+public extension Int {
+    var li: Li {
+        return Li(magnitude: self)
+    }
+}
+
+public extension Int {
+    var qa: Qa {
+        return Qa(magnitude: self)
     }
 }

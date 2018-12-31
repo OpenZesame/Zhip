@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Unit: Int, Equatable, CustomStringConvertible {
+public enum Unit: Int {
     case zil = 0
     case li = -6
     case qa = -12
@@ -32,8 +32,14 @@ public extension Unit {
     }
 }
 
-public extension Unit {
-    var description: String {
+extension Unit: CustomStringConvertible {
+    public var description: String {
         return name
+    }
+}
+
+extension Unit: Comparable {
+    public static func < (lhs: Unit, rhs: Unit) -> Bool {
+        return lhs.exponent < rhs.exponent
     }
 }

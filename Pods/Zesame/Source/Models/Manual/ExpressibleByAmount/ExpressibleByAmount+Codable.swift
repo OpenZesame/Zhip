@@ -20,9 +20,7 @@ public extension ExpressibleByAmount {
 public extension ExpressibleByAmount {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let string = try container.decode(String.self)
-        let qa = try Qa(string)
-        let zil = try Zil(qa: qa)
-        try self.init(zil: zil)
+        let qaString = try container.decode(String.self)
+        try self.init(qa: qaString)
     }
 }

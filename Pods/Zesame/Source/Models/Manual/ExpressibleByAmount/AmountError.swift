@@ -8,8 +8,8 @@
 
 import Foundation
 
-public enum AmountError: Swift.Error {
-    case tooSmall(minMagnitudeIs: Double)
-    case tooLarge(maxMagnitudeIs: Double)
+public enum AmountError<E: ExpressibleByAmount>: Swift.Error {
+    case tooSmall(min: E)
+    case tooLarge(max: E)
     case nonNumericString
 }

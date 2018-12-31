@@ -44,3 +44,4 @@ extension AmountValidator.Error: InputError {
         }
     }
 }
+
