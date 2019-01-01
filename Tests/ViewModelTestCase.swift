@@ -53,7 +53,7 @@ extension ViewModelTesting {
                 return XCTFail()
             }
             let _wallet = Zesame.Wallet(keystore: keystore, address: address)
-            let wallet = Zupreme.Wallet(wallet: _wallet, origin: .imported)
+            let wallet = Zupreme.Wallet(wallet: _wallet, origin: .importedPrivateKey)
             self.cachedWallet = wallet
             success(wallet)
         }
