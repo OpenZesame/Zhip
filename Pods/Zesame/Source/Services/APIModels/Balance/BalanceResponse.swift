@@ -8,15 +8,21 @@
 
 import Foundation
 
-public struct BalanceResponse: Decodable {
-    public let balance: Amount
+// Encodable for test purposes, this type is never sent TO the API, only parsed FROM the API.
+public struct BalanceResponse: Codable {
+    public let balance: ZilAmount
     public let nonce: Nonce
 }
 
-extension Nonce: Decodable {
+extension Nonce: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let nonce = try container.decode(UInt64.self)
         self.init(nonce)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(nonce)
     }
 }

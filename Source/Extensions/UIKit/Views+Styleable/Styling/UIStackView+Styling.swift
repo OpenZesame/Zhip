@@ -8,6 +8,21 @@
 
 import UIKit
 
+extension UIEdgeInsets {
+
+    init(top: CGFloat, bottom: CGFloat) {
+        self.init(top: top, left: 0, bottom: bottom, right: 0)
+    }
+
+    init(all margin: CGFloat) {
+        self.init(top: margin, left: margin, bottom: margin, right: margin)
+    }
+
+    init(vertical: CGFloat = 0, horizontal: CGFloat = 0) {
+        self.init(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
+    }
+}
+
 // MARK: - Style
 extension UIStackView {
     struct Style {
@@ -19,7 +34,7 @@ extension UIStackView {
         var alignment: UIStackView.Alignment?
         var distribution: UIStackView.Distribution?
         var spacing: CGFloat?
-        var margin: CGFloat?
+        var layoutMargins: UIEdgeInsets?
         var isLayoutMarginsRelativeArrangement: Bool?
 
         init(
@@ -28,7 +43,7 @@ extension UIStackView {
             alignment: UIStackView.Alignment? = nil,
             distribution: UIStackView.Distribution? = nil,
             spacing: CGFloat? = defaultSpacing,
-            margin: CGFloat? = defaultMargin,
+            layoutMargins: UIEdgeInsets? = UIEdgeInsets(all: defaultMargin),
             isLayoutMarginsRelativeArrangement: Bool? = nil
             ) {
             self.views = views
@@ -36,7 +51,7 @@ extension UIStackView {
             self.alignment = alignment
             self.distribution = distribution
             self.spacing = spacing
-            self.margin = margin
+            self.layoutMargins = layoutMargins
             self.isLayoutMarginsRelativeArrangement = isLayoutMarginsRelativeArrangement
         }
     }
@@ -59,8 +74,8 @@ extension UIStackView {
         alignment = style.alignment ?? .fill
         distribution = style.distribution ?? .fill
         spacing = style.spacing ?? 0
-        if let margin = style.margin {
-            layoutMargins = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        if let layoutMargins = style.layoutMargins {
+            self.layoutMargins = layoutMargins
             isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? true
         } else {
             isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? false
@@ -85,6 +100,27 @@ extension UIStackView.Style {
         style.alignment = alignment
         return style
     }
+
+    @discardableResult
+    func distribution(_ distribution: UIStackView.Distribution) -> UIStackView.Style {
+        var style = self
+        style.distribution = distribution
+        return style
+    }
+
+    @discardableResult
+    func spacing(_ spacing: CGFloat) -> UIStackView.Style {
+        var style = self
+        style.spacing = spacing
+        return style
+    }
+
+    @discardableResult
+    func layoutMargins(_ layoutMargins: UIEdgeInsets) -> UIStackView.Style {
+        var style = self
+        style.layoutMargins = layoutMargins
+        return style
+    }
 }
 
 // MARK: - Style Presets
@@ -93,20 +129,26 @@ extension UIStackView.Style {
         return UIStackView.Style()
     }
 
+    static var vertical: UIStackView.Style {
+        return UIStackView.Style(
+            layoutMargins: .zero
+        )
+    }
+
     static var horizontalEqualCentering: UIStackView.Style {
         return UIStackView.Style(
             axis: .horizontal,
             alignment: .center,
             distribution: .equalCentering,
             spacing: 0,
-            margin: 0
+            layoutMargins: .zero
         )
     }
 
     static var horizontal: UIStackView.Style {
         return UIStackView.Style(
             axis: .horizontal,
-            margin: 0
+            layoutMargins: .zero
         )
     }
 
@@ -114,6 +156,6 @@ extension UIStackView.Style {
         return UIStackView.Style(
             axis: .horizontal,
             distribution: .fillEqually,
-            margin: 0)
+            layoutMargins: .zero)
     }
 }

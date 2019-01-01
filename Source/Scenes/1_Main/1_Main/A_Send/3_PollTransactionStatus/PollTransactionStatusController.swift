@@ -12,6 +12,4 @@ private typealias € = L10n.Scene.PollTransactionStatus
 
 final class PollTransactionStatus: Scene<PollTransactionStatusView> {}
 
-extension PollTransactionStatus: BackButtonHiding {
-    static let title = €.title
-}
+extension PollTransactionStatus: BackButtonHiding {}

@@ -11,6 +11,7 @@ import UIKit
 // MARK: - Style
 extension UITextView {
     struct Style {
+        var text: String?
         var textAlignment: NSTextAlignment?
         var textColor: UIColor?
         var backgroundColor: UIColor?
@@ -21,6 +22,7 @@ extension UITextView {
         var isScrollEnabled: Bool?
 
         init(
+            text: String? = nil,
             textAlignment: NSTextAlignment? = nil,
             height: CGFloat? = nil,
             font: UIFont? = nil,
@@ -31,6 +33,7 @@ extension UITextView {
             isScrollEnabled: Bool? = nil,
             contentInset: UIEdgeInsets? = nil
             ) {
+            self.text = text
             self.textAlignment = textAlignment
             self.textColor = textColor
             self.font = font
@@ -46,10 +49,11 @@ extension UITextView {
 // MARK: Apply Style
 extension UITextView {
     func apply(style: UITextView.Style) {
+        text = style.text
         textAlignment = style.textAlignment ?? .left
-        font = style.font ?? UIFont.small
+        font = style.font ?? UIFont.body
         textColor = style.textColor ?? .defaultText
-        backgroundColor = style.backgroundColor ?? .white
+        backgroundColor = style.backgroundColor ?? .clear
         isEditable = style.isEditable ?? true
         isSelectable = style.isSelectable ?? true
         isScrollEnabled = style.isScrollEnabled ?? true
@@ -67,6 +71,14 @@ extension UITextView {
 
 // MARK: - Style + Customizing
 extension UITextView.Style {
+
+    @discardableResult
+    func text(_ text: String?) -> UITextView.Style {
+        var style = self
+        style.text = text
+        return style
+    }
+
     @discardableResult
     func font(_ font: UIFont) -> UITextView.Style {
         var style = self
@@ -80,13 +92,19 @@ extension UITextView.Style {
         style.textAlignment = textAlignment
         return style
     }
+
+    @discardableResult
+    func textColor(_ textColor: UIColor) -> UITextView.Style {
+        var style = self
+        style.textColor = textColor
+        return style
+    }
 }
 
 // MARK: - Style Presets
 extension UITextView.Style {
     static var nonEditable: UITextView.Style {
         return UITextView.Style(
-            textAlignment: .center,
             isEditable: false
         )
     }
@@ -105,9 +123,20 @@ extension UITextView.Style {
         )
     }
 
-    static var huge: UITextView.Style {
-        return UITextView.Style(font: UIFont.huge)
+    static var header: UITextView.Style {
+        return UITextView.Style(
+            textAlignment: .center,
+            font: UIFont.header,
+            isEditable: false
+        )
     }
+
+//    static var impression: UITextView.Style {
+//        return UITextView.Style(
+//            font: UIFont.impression,
+//            isEditable: false
+//        )
+//    }
 }
 
 // MARK: - Style + Merging

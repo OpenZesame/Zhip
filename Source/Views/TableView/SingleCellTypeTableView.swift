@@ -53,6 +53,7 @@ private extension SingleCellTypeTableView {
         translatesAutoresizingMaskIntoConstraints = false
         register(Cell.self, forCellReuseIdentifier: Cell.identifier)
         backgroundColor = .white
+        separatorStyle = .none
     }
 }
 

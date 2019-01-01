@@ -13,11 +13,11 @@ struct AddressValidator: InputValidator {
     typealias Output = Address
     typealias Error = Address.Error
 
-    func validate(input: Input) -> InputValidationResult<Output> {
+    func validate(input: Input) -> InputValidationResult<Output, Error> {
         do {
             return .valid(try Address(hexString: input))
         } catch let addressError as Address.Error {
-            return .invalid(.error(message: addressError.errorMessage))
+            return .invalid(.error(addressError))
         } catch {
             incorrectImplementation("Address.Error should cover all errors")
         }
@@ -25,7 +25,7 @@ struct AddressValidator: InputValidator {
 }
 
 extension Address.Error: InputError {
-    var errorMessage: String {
+    public var errorMessage: String {
         let Message = L10n.Error.Input.Address.self
 
         switch self {

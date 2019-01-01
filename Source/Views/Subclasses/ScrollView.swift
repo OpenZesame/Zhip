@@ -28,8 +28,19 @@ class ScrollView: UIScrollView {
         log.verbose("💣 \(type(of: self))")
     }
 
+    var contentView: UIView!
+
     // MARK: Overrideable
     func setup() { /* subclass me */ }
+}
+
+extension StackViewStyling where Self: ScrollView {
+    var stackView: UIStackView {
+        guard let stackView = contentView as? UIStackView else {
+            incorrectImplementation("Should be stackview")
+        }
+        return stackView
+    }
 }
 
 // MARK: - Private
@@ -45,6 +56,7 @@ private extension ScrollView {
 
     func setupContentView() {
         let contentView = makeView()
+        self.contentView = contentView
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         contentView.heightToSuperview()

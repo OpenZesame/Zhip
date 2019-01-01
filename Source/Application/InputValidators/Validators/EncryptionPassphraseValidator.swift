@@ -9,7 +9,7 @@
 import Zesame
 
 struct EncryptionPassphraseValidator: InputValidator {
-    typealias Input = String
+    typealias Input = (passphrase: String, confirmingPassphrase: String)
     typealias Output = WalletEncryptionPassphrase
     typealias Error = WalletEncryptionPassphrase.Error
 
@@ -18,24 +18,41 @@ struct EncryptionPassphraseValidator: InputValidator {
         self.mode = mode
     }
 
-    func validate(input: Input) -> InputValidationResult<Output> {
+    func validate(input: Input) -> InputValidationResult<Output, Error> {
+        let passphrase = input.passphrase
+        let confirmingPassphrase = input.confirmingPassphrase
         do {
-            return .valid(try WalletEncryptionPassphrase(passphrase: input, confirm: input, mode: mode))
+            return .valid(try WalletEncryptionPassphrase(passphrase: passphrase, confirm: confirmingPassphrase, mode: mode))
         } catch let passphraseError as Error {
-            return .invalid(.error(message: passphraseError.errorMessage))
+            return .invalid(.error(passphraseError))
         } catch {
             incorrectImplementation("Address.Error should cover all errors")
         }
     }
 }
 
-extension WalletEncryptionPassphrase.Error: InputError {
+extension WalletEncryptionPassphrase.Error: InputError, Equatable {
     var errorMessage: String {
         let Message = L10n.Error.Input.Passphrase.self
 
         switch self {
         case .passphraseIsTooShort(let minLength): return Message.tooShort(minLength)
-        case .passphrasesDoesNotMatch: incorrectImplementation("Should pass the same passphrase in `validate:input` method")
+        case .passphrasesDoesNotMatch: return Message.confirmingPassphraseMismatch
+        case .incorrectPassphrase(let backingUpWalletJustCreated):
+            if backingUpWalletJustCreated {
+                return Message.incorrectPassphraseDuringBackupOfNewlyCreatedWallet
+            } else {
+                return Message.incorrectPassphrase
+            }
+        }
+    }
+
+    static func == (lhs: WalletEncryptionPassphrase.Error, rhs: WalletEncryptionPassphrase.Error) -> Bool {
+        switch (lhs, rhs) {
+        case (.passphraseIsTooShort, passphraseIsTooShort): return true
+        case (.passphrasesDoesNotMatch, passphrasesDoesNotMatch): return true
+        case (.incorrectPassphrase, incorrectPassphrase): return true
+        default: return false
         }
     }
 }

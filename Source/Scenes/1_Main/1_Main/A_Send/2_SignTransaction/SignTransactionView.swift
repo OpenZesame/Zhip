@@ -10,18 +10,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.SignTransaction
-
 final class SignTransactionView: ScrollingStackView {
 
-    private lazy var confirmTransactionLabel = UILabel(text: €.Label.signTransactionWithEncryptionPassphrase).withStyle(.title)
-
-    private lazy var encryptionPassphraseField = TextField(placeholder: €.Field.encryptionPassphrase, type: .text).withStyle(.password)
-
-    private lazy var signButton: ButtonWithSpinner = ButtonWithSpinner(title: €.Button.confirm)
-        .withStyle(.primary) { customizableStyle in
-            customizableStyle.disabled()
-        }
+    private lazy var confirmTransactionLabel        = UILabel()
+    private lazy var encryptionPassphraseField      = FloatingLabelTextField()
+    private lazy var signButton                     = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,
@@ -29,6 +22,10 @@ final class SignTransactionView: ScrollingStackView {
         signButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension SignTransactionView: ViewModelled {
@@ -36,15 +33,35 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isSignButtonEnabled --> signButton.rx.isEnabled,
-            viewModel.isSignButtonLoading --> signButton.rx.isLoading
+            viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
+            viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
+            viewModel.isSignButtonLoading               --> signButton.rx.isLoading
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
             encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
+            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
+    }
+}
+
+private typealias € = L10n.Scene.SignTransaction
+private extension SignTransactionView {
+    func setupSubviews() {
+        confirmTransactionLabel.withStyle(.body) {
+            $0.text(€.Label.signTransactionWithEncryptionPassphrase)
+        }
+
+        encryptionPassphraseField.withStyle(.passphrase) {
+            $0.placeholder(€.Field.encryptionPassphrase)
+        }
+
+        signButton.withStyle(.primary) {
+            $0.title(€.Button.confirm)
+                .disabled()
+        }
     }
 }

@@ -17,18 +17,24 @@ extension Reactive where Base: UITextField {
             $0.placeholder = $1
         }
     }
-}
 
-extension TextField {
-    func updateWith(validationErrorMessage: String?) {
-        errorMessage = validationErrorMessage
+    var isEditing: Driver<Bool> {
+        return Driver.merge(
+            controlEvent([.editingDidBegin]).asDriver().map { true },
+            controlEvent([.editingDidEnd]).asDriver().map { false }
+        )
+    }
+
+    var didEndEditing: Driver<Void> {
+        return isEditing.filter { !$0 }.mapToVoid()
     }
 }
 
-extension Reactive where Base: TextField {
-    var validation: Binder<String?> {
-        return Binder<String?>(base) {
-            $0.updateWith(validationErrorMessage: $1)
-        }
+extension Reactive where Base: UITextView {
+    var isEditing: Driver<Bool> {
+        return Driver.merge(
+            didBeginEditing.asDriver().map { true },
+            didEndEditing.asDriver().map { false }
+        )
     }
 }

@@ -4,109 +4,141 @@
 "Generic.Next" = "Next";
 "Generic.Skip" = "Skip";
 "Generic.Back" = "Back";
+"Generic.Zils" = "ZILs";
+
+"Generic.Show" = "Show";
+"Generic.Hide" = "Hide";
 
 "Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
 "Error.Input.Address.TooLong" = "Address is too long, should be %d";
 
 "Error.Input.Amount.NonNumericString" = "String not a number";
-"Error.Input.Amount.WasNegative" = "Amount cannot be negative";
-"Error.Input.Amount.TooLarge" = "Amount must be smaller than %@";
-
-"Error.Input.GasPrice.TooSmall" = "Gas price should be >%@E-12";
+"Error.Input.Amount.TooSmall" = "Must be at least %@";
+"Error.Input.Amount.TooLarge" = "Must be at most %@";
+"Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
 "Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
+"Error.Input.Passphrase.ConfirmingPassphraseMismatch" = "Passphrases does not match";
+"Error.Input.Passphrase.IncorrectPassphrase" = "Incorrect passphrase";
+"Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet" = "Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.";
+
+"Error.Input.Pincode.PincodesDoesNotMatch" = "PIN does not match";
+"Error.Input.Pincode.IncorrectPincode" = "Incorrect PIN";
+
+"Error.Input.PrivateKey.TooShort" = "Should be %d characters (missing %d)";
+"Error.Input.PrivateKey.TooLong" = "Should be %d characters (%d too many)";
+"Error.Input.PrivateKey.BadKey" = "Bad private key";
+
+"Error.Input.Keystore.BadFormatOrInput" = "Bad JSON, control format.";
+"Error.Input.Keystore.IncorrectPassphrase" = "Keystore was not encrypted by this passphrase";
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
 
 // MARK: - Onboarding
 
+// MARK: Welcome
+"Scene.Welcome.Label.Header" = "Welcome";
+"Scene.Welcome.Label.Body" = "Welcome to Zhip - the worlds first and only iOS wallet for Zilliqa.";
+"Scene.Welcome.Button.Start" = "Start";
+
 // MARK: TermsOfService
+"Scene.TermsOfService.Label.TermsOfService" = "Terms of service";
 "Scene.TermsOfService.Button.Accept" = "Accept";
 
 // MARK: AskForAnalyticsPermissions
-"Scene.AskForAnalyticsPermissions.Title" = "Analytics disclaimer";
+"Scene.AskForAnalyticsPermissions.Title" = "Analytics";
 "Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-"Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer" = "I have read the analytics disclaimer";
+"Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer" = "I have read and understood the analytics disclaimer";
 "Scene.AskForAnalyticsPermissions.Button.Accept" = "Accept";
 "Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";
 
 // MARK: WarningERC20
-"Scene.WarningERC20.Title" = "⚠️ WARNING ⚠️";
+"Scene.WarningERC20.Label.Erc20Tokens" = "ERC-20 tokens";
 "Scene.WarningERC20.Text.WarningERC20" = "This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.";
-"Scene.WarningERC20.Button.Accept" = "I understand";
+"Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility" = "I understand that ERC-20 tokens are not supported";
+"Scene.WarningERC20.Button.Accept" = "Accept";
 "Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
 
 // MARK: ChooseWallet
-"Scene.ChooseWallet.Title" = "Add Wallet";
+"Scene.ChooseWallet.Label.Impression" = "Wallet";
+"Scene.ChooseWallet.Label.SetUpWallet" = "It is time to set up the wallet. Do you want to start fresh, or restore an existing wallet?";
 "Scene.ChooseWallet.Button.NewWallet" = "New Wallet";
-"Scene.ChooseWallet.Button.RestoreWallet" = "Restore Wallet";
+"Scene.ChooseWallet.Button.RestoreWallet" = "Restore existing wallet";
+
+// MARK: EnsureThatYouAreNotBeingWatched
+"Scene.EnsureThatYouAreNotBeingWatched.Label.Security" = "Security";
+"Scene.EnsureThatYouAreNotBeingWatched.Label.MakeSureAlone" = "Make sure that you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV’s.";
+"Scene.EnsureThatYouAreNotBeingWatched.Button.Understand" = "I understand";
 
 // MARK: CreateNewWallet
 "Scene.CreateNewWallet.Title" = "New wallet";
-"Scene.CreateNewWallet.Label.ChooseNewPassphrase" = "Choose new passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title" = "Set an encryption passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value" = "Your encryption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.";
 "Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
 "Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
-"Scene.CreateNewWallet.Label.UrgeBackup" = "⚠️ I understand that I'm responsible for securely backing up the encryption passphrase and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "Passphrase is backed up";
-"Scene.CreateNewWallet.Button.CreateNewWallet" = "Create new wallet";
+"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "I have securely backed up my encryption passphrase";
+"Scene.CreateNewWallet.Button.Continue" = "Continue";
 
 // MARK: BackupWallet
-"Scene.BackupWallet.Title" = "Backup Wallet";
-"Scene.BackupWallet.Label.StoreKeystoreSecurely" = "Store the keystore + passphrase somewhere safe (e.g. 1Password)";
-"Scene.BackupWallet.Button.CopyKeystore" = "Copy keystore";
-"Scene.BackupWallet.Button.RevealKeystore" = "Reveal keystore";
-"Scene.BackupWallet.Button.RevealPrivateKey" = "Reveal private key";
-"Scene.BackupWallet.Label.UrgeSecureBackupOfKeystore" = "⚠️ I understand that I'm responsible for securely backing up the keystore and might suffer permanent loss of all assets if I fail to do so.";
-"Scene.BackupWallet.Checkbox.KeystoreIsBackedUp" = "Keystore is backed up";
-"Scene.BackupWallet.Button.HaveBackedUpProceed" = "I've backed up, proceed";
+"Scene.BackupWallet.Label.BackUpKeys" = "Back up keys";
+"Scene.BackupWallet.Label.UrgeBackup" = "Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption passphrase, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.";
+"Scene.BackupWallet.Label.Keystore" = "Keystore";
+"Scene.BackupWallet.Button.Copy" = "Copy";
+"Scene.BackupWallet.Label.PrivateKey" = "Private Key";
+"Scene.BackupWallet.Buttons.Reveal" = "Reveal";
+"Scene.BackupWallet.Checkbox.HaveSecurelyBackedUp" = "I have securely backed up my private key.";
+"Scene.BackupWallet.Button.Done" = "Done";
 "Scene.BackupWallet.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
 // MARK: Backup KeyPair
-"Scene.DecryptKeystoreToRevealKeyPair.Title" = "Decrypt keystore";
-"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.DecryptKeystoreToRevealKeyPair.Title" = "Private key";
+"Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal" = "Enter your encryption passphrase to reveal your private and public key.";
+"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal" = "Reveal";
 
 "Scene.BackUpRevealedKeyPair.Title" = "Backup key pair";
 "Scene.BackUpRevealedKeyPair.Label.PrivateKey" = "Private key";
 "Scene.BackUpRevealedKeyPair.Label.UncompressedPublicKey" = "Uncompressed public key";
-"Scene.BackUpRevealedKeyPair.Button.CopyPrivateKey" = "Copy private key";
-"Scene.BackUpRevealedKeyPair.Button.CopyPublicKey" = "Copy public key";
+"Scene.BackUpRevealedKeyPair.Buttons.Copy" = "Copy";
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPrivateKey" = "Copied private key";
 "Scene.BackUpRevealedKeyPair.Event.Toast.DidCopyPublicKey" = "Copied public key";
 
 // MARK: BackUp Keystore
 "Scene.BackUpKeystore.Title" = "Keystore";
-"Scene.BackUpKeystore.Button.Copy" = "Copy";
+"Scene.BackUpKeystore.Button.Copy" = "Copy keystore";
 "Scene.BackUpKeystore.Event.Toast.DidCopyKeystore" = "Copied keystore";
 
 // MARK: RestoreWallet
-"Scene.RestoreWallet.Title" = "Restore Wallet";
+"Scene.RestoreWallet.Title" = "Restore existing wallet";
+"Scene.RestoreWallet.Label.Header.Keystore" = "Restore with keystore";
+"Scene.RestoreWallet.Label.Header.PrivateKey" = "Restore with private key";
 "Scene.RestoreWallet.Segment.PrivateKey" = "Private key";
 "Scene.RestoreWallet.Segment.Keystore" = "Keystore";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
-"Scene.RestoreWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
+"Scene.RestoreWallet.Field.EncryptionPassphrase.PrivateKey" = "New encryption passphrase (min %d chars)";
+"Scene.RestoreWallet.Field.EncryptionPassphrase.Keystore" = "Encryption passphrase (min %d chars)";
 "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
-"Scene.RestoreWallet.Button.RestoreWallet" = "Restore Wallet";
+"Scene.RestoreWallet.Button.RestoreWallet" = "Restore";
 
 // MARK: ChoosePincode
-"Scene.ChoosePincode.Title" = "Set app PIN";
-"Scene.ChoosePincode.Button.ProceedWithConfirmation" = "Proceed";
-"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "This pincode is optional and is only used to lock this app when you close it, its purpose is to protect against unwanted users to access the app. This pincode has nothing to do with the cryptography related to you wallet. However, if you have not backed up your wallet and forget this pincode you will be locked out of this app and thus your wallet";
+"Scene.ChoosePincode.Title" = "Set PIN";
+"Scene.ChoosePincode.Button.Done" = "Done";
+"Scene.ChoosePincode.Text.PincodeOnlyLocksApp" = "The app PIN is an additional safety measure used only to unlock the app. It is not used to encrypt your private key. Make sure that you have backed up you wallet, since you might get locked out of the app if you forget the PIN.";
 
 
 // MARK: ConfirmNewPincode
-"Scene.ConfirmNewPincode.Title" = "Confirm app PIN";
-"Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp" = "I've backed up my PIN code";
-"Scene.ConfirmNewPincode.Button.ConfirmPincode" = "Confirm";
+"Scene.ConfirmNewPincode.Title" = "Confirm PIN";
+"Scene.ConfirmNewPincode.Error.PincodesDoesNotMatch" = "PIN does not match";
+"Scene.ConfirmNewPincode.Checkbox.PincodeIsBackedUp" = "I have securely backed up my PIN code";
+"Scene.ConfirmNewPincode.Button.Done" = "Done";
 
 
 // MARK: - Main Flow
 
 // MARK: Main
 "Scene.Main.Label.Balance.Title" = "Your balance";
-"Scene.Main.Label.Balance.Value" = "%@ ZILs";
 "Scene.Main.Button.Send" = "Send";
 "Scene.Main.Button.Receive" = "Receive";
 
@@ -115,20 +147,18 @@
 
 // MARK: Remove Pincode
 "Scene.RemovePincode.Title" = "Unlock to remove";
-"Scene.RemovePincode.Event.Toast.DidRemovePincode" = "Pincode removed";
 
 // MARK: PrepareTransaction
 "Scene.PrepareTransaction.Title" = "Send";
 "Scene.PrepareTransaction.Field.Recipient" = "To address";
 "Scene.PrepareTransaction.Field.Amount" = "Amount";
-"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas limit & price is measured in 10^-12 Zil";
-"Scene.PrepareTransaction.Field.GasLimit" = "Gas limit (E-12 Zil)";
-"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (E-12 Zil)";
+"Scene.PrepareTransaction.Button.MaxAmount" = "Max";
+"Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in %@";
+"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
-"Scene.PrepareTransaction.Labels.Balance.Value" = "%@ ZILs";
 
 // MARK: ScanQRCode
 "Scene.ScanQRCode.Title" = "Scan QR";
@@ -139,9 +169,11 @@
 "Scene.SignTransaction.Button.Confirm" = "Confirm";
 
 // MARK: PollTransactionStatus
-"Scene.PollTransactionStatus.Title" = "Wait for consensus";
-"Scene.PollTransactionStatus.Label.WaitingOnReceipt" = "Your transaction has successfully been broadcasted to the network. You can either wait a minute or two for the receipt that the network has reached consensus about your transaction or you can close this screen and recheck your balance later.";
-"Scene.PollTransactionStatus.Button.Skip" = "Skip waiting";
+"Scene.PollTransactionStatus.Label.TransactionBroadcasted" = "Transaction broadcasted";
+"Scene.PollTransactionStatus.Label.MightTakeSomeMinutes" = "In a minute or two, when the network's finished processing, your balance will be updated and you can view transaction details.";
+"Scene.PollTransactionStatus.Button.SeeTransactionDetails" = "Transaction details";
+"Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Skip" = "Skip waiting";
+"Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Done" = "Done";
 
 // MARK: TransactionConfirmation
 "Scene.GotTransactionReceipt.Title" = "Confirmed";
@@ -154,10 +186,10 @@
 // MARK: Recieve
 "Scene.Receive.Title" = "Receive";
 "Scene.Receive.Label.MyPublicAddress" = "My public address";
-"Scene.Receive.Button.CopyMyAddress" = "Copy address";
-"Scene.Receive.Button.Share" = "Share address";
+"Scene.Receive.Button.CopyMyAddress" = "Copy";
+"Scene.Receive.Button.RequestPayment" = "Request payment";
 "Scene.Receive.Event.Toast.DidCopyAddress" = "Copied address";
-"Scene.Receive.Field.Amount" = "Amount";
+"Scene.Receive.Field.RequestAmount" = "Request amount";
 
 // MARK: - Settings
 "Scene.Settings.Title" = "Settings";

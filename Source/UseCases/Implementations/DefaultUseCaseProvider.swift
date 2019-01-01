@@ -19,8 +19,10 @@ extension KeyValueStore where KeyType == PreferencesKey {
 
 final class DefaultUseCaseProvider {
 
+    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.staging)
+
     static let shared = DefaultUseCaseProvider(
-        zilliqaService: DefaultZilliqaService.shared.rx,
+        zilliqaService: DefaultZilliqaService(environment: zilliqaAPIEnviroment).rx,
         preferences: .default,
         securePersistence: KeyValueStore(KeychainSwift())
     )
@@ -38,7 +40,7 @@ final class DefaultUseCaseProvider {
 
 extension DefaultUseCaseProvider: UseCaseProvider {
     func makeTransactionsUseCase() -> TransactionsUseCase {
-        return DefaultTransactionsUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence)
+        return DefaultTransactionsUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence, preferences: preferences)
     }
 
     func makeOnboardingUseCase() -> OnboardingUseCase {

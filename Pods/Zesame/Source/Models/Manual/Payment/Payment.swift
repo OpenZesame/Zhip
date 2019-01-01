@@ -10,16 +10,16 @@ import Foundation
 
 public struct Payment {
     public let recipient: Address
-    public let amount: Amount
-    public let gasLimit: Amount
-    public let gasPrice: Amount
+    public let amount: ZilAmount
+    public let gasLimit: GasLimit
+    public let gasPrice: GasPrice
     public let nonce: Nonce
 
     public init(
         to recipient: Address,
-        amount: Amount,
-        gasLimit: Amount,
-        gasPrice: Amount,
+        amount: ZilAmount,
+        gasLimit: GasLimit = .defaultGasLimit,
+        gasPrice: GasPrice,
         nonce: Nonce = 0
         ) {
         self.recipient = recipient
@@ -27,7 +27,37 @@ public struct Payment {
         self.gasLimit = gasLimit
         self.gasPrice = gasPrice
         self.nonce = nonce.increasedByOne()
+    }
+}
 
-        assert(gasPrice.amount >= 100, "Gas Price should be set to at least 100")
+public extension Payment {
+    static func estimatedTotalTransactionFee(gasPrice: GasPrice, gasLimit: GasLimit = .defaultGasLimit) throws -> Qa {
+        return Qa(qa: Qa.Magnitude(gasLimit) * gasPrice.qa)
+    }
+
+    static func estimatedTotalCostOfTransaction(amount: ZilAmount, gasPrice: GasPrice, gasLimit: GasLimit = .defaultGasLimit) throws -> ZilAmount {
+
+        let fee = try estimatedTotalTransactionFee(gasPrice: gasPrice, gasLimit: gasLimit)
+        let amountInQa = amount.inQa
+        let totalInQa: Qa = amountInQa + fee
+
+        let tooLargeError = AmountError.tooLarge(max: ZilAmount.max)
+
+        guard totalInQa < ZilAmount.max.inQa else {
+            throw tooLargeError
+        }
+
+        // Ugly trick to handle problem of small fees and big amounts.
+        // When adding 1E-12 to 21E9 the `Double` rounds down to
+        // 21E9 so we lose the 1E-12 part. Thus we subtract 21E9
+        // to be able to keep the 1E-12 part and compare it against
+        // the transaction cost. Ugly, but it works...
+        if totalInQa == ZilAmount.max.inQa {
+            let subtractedTotalSupplyFromAmount = totalInQa - ZilAmount.max.inQa
+            if (subtractedTotalSupplyFromAmount + fee) != fee {
+                throw tooLargeError
+            }
+        }
+        return try ZilAmount(qa: totalInQa)
     }
 }

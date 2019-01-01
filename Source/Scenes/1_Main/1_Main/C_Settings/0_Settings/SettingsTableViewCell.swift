@@ -8,12 +8,5 @@
 
 import UIKit
 
-final class SettingsTableViewCell: UITableViewCell {}
+final class SettingsTableViewCell: TableViewCell<SettingsItem> {}
 
-extension SettingsTableViewCell: CellConfigurable {
-    func configure(model: SettingsItem) {
-        textLabel?.text = model.title
-        textLabel?.textColor = model.style.textColor
-        textLabel?.font = UIFont.Label.value
-    }
-}

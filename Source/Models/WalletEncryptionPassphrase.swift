@@ -19,11 +19,6 @@ struct WalletEncryptionPassphrase {
         guard passphrase.count >= minLength else { throw Error.passphraseIsTooShort(mustAtLeastHaveLength: minLength) }
         validPassphrase = passphrase
     }
-
-    init(passphrase: String) {
-        guard passphrase.count >= WalletEncryptionPassphrase.minimumLenght else { incorrectImplementation("should have validated passphrase earlier") }
-        self.validPassphrase = passphrase
-    }
 }
 
 extension WalletEncryptionPassphrase {
@@ -38,34 +33,47 @@ extension WalletEncryptionPassphrase {
     static func minimumLengthForWallet(_ wallet: Wallet) -> Int {
         return minimumLenght(mode: wallet.passphraseMode)
     }
-
-    static var minimumLenght: Int {
-        let lengths = Mode.allCases.map { minimumLenght(mode: $0) }
-        return lengths.min() ?? lengths[0]
-    }
 }
 
 // MARK: - Error
+import Zesame
 extension WalletEncryptionPassphrase {
     enum Error: Swift.Error {
         case passphrasesDoesNotMatch
         case passphraseIsTooShort(mustAtLeastHaveLength: Int)
+        case incorrectPassphrase(backingUpWalletJustCreated: Bool)
+
+        static func incorrectPassphraseErrorFrom(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) -> Error? {
+            switch walletImportError {
+            case .incorrectPasshrase: return .incorrectPassphrase(backingUpWalletJustCreated: backingUpWalletJustCreated)
+            default: return nil
+            }
+        }
+
+        static func incorrectPassphraseErrorFrom(error: Swift.Error, backingUpWalletJustCreated: Bool = false) -> Error? {
+			guard
+				let zesameError = error as? Zesame.Error,
+				case .walletImport(let walletImportError) = zesameError
+				else { return nil }
+
+            return incorrectPassphraseErrorFrom(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
+        }
     }
 }
 
 // MARK: - Mode
 extension WalletEncryptionPassphrase {
     enum Mode: CaseIterable {
-        case new
-        case restore
+        case newOrRestorePrivateKey
+        case restoreKeystore
     }
 }
 
 extension WalletEncryptionPassphrase.Mode {
     var mimimumPassphraseLength: Int {
         switch self {
-        case .new: return 8
-        case .restore: return Zesame.Keystore.minumumPasshraseLength
+        case .newOrRestorePrivateKey: return 8
+        case .restoreKeystore: return Zesame.Keystore.minumumPasshraseLength
         }
     }
 }
@@ -74,8 +82,8 @@ extension WalletEncryptionPassphrase.Mode {
 private extension Wallet.Origin {
     var passphraseMode: WalletEncryptionPassphrase.Mode {
         switch self {
-        case .generatedByThisApp: return .new
-        case .imported: return .restore
+        case .generatedByThisApp, .importedPrivateKey: return .newOrRestorePrivateKey
+        case .importedKeystore: return .restoreKeystore
         }
     }
 }
@@ -86,3 +94,5 @@ private extension Wallet {
         return origin.passphraseMode
     }
 }
+
+extension WalletEncryptionPassphrase: Equatable {}

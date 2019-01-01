@@ -54,25 +54,3 @@ extension DeepLink {
         }
     }
 }
-
-import Zesame
-private extension TransactionIntent {
-    init?(amount amountString: String, to addresssHex: String) {
-        guard
-            let amount = try? Amount(string: amountString),
-            let recipient = try? Address(hexString: addresssHex)
-            else { return nil }
-        self.init(amount: amount, to: recipient)
-    }
-
-    init?(queryParameters params: [URLQueryItem]) {
-        guard let amount = params.first(where: { $0.name == "amount" })?.value,
-
-            let hexAddress = params.first(where: { $0.name == "recipient" })?.value
-
-            else {
-                return nil
-        }
-        self.init(amount: amount, to: hexAddress)
-    }
-}

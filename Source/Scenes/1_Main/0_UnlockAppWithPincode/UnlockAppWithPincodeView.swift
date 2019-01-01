@@ -13,7 +13,7 @@ private typealias € = L10n.Scene.UnlockAppWithPincode
 
 final class UnlockAppWithPincodeView: ScrollingStackView {
 
-    private lazy var inputPincodeView = InputPincodeView(.setNew)
+    private lazy var inputPincodeView = InputPincodeView()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
@@ -26,13 +26,14 @@ extension UnlockAppWithPincodeView: ViewModelled {
 
     func populate(with viewModel: UnlockAppWithPincodeViewModel.Output) -> [Disposable] {
         return [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
+            viewModel.pincodeValidation         --> inputPincodeView.rx.validation
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
-            pincode: inputPincodeView.pincode
+            pincode: inputPincodeView.rx.pincode.asDriver()
         )
     }
 }

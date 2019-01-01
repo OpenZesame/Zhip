@@ -14,29 +14,77 @@ import RxSwift
 import RxCocoa
 
 final class CheckboxWithLabel: UIView {
+    struct Style {
+        var labelText: String?
+        var numberOfLines: Int?
+        init(
+            labelText: String? = nil,
+            numberOfLines: Int? = nil
+            ) {
+            self.labelText = labelText
+            self.numberOfLines = numberOfLines
+        }
+    }
 
-    static let checkboxSize: CGFloat = 44
+    static let checkboxSize: CGFloat = 24
 
     fileprivate lazy var checkbox = M13Checkbox(frame: .zero)
-    private let label: UILabel
+    private lazy var label = UILabel()
 
-    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label]).withStyle(.horizontal) { customizableStyle in
-        // only by using `.top` alignment together with a label having `numberOfLines` set to 0
-        // can we make the label span the height of the stackview.
-        customizableStyle.alignment(self.label.numberOfLines == 0 ? .top : .fill)
-    }
+    private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label])
+}
 
-    // MARK: Initialization
-    init(titled: CustomStringConvertible? = nil, numberOfLines: Int = 0) {
-        label = UILabel(text: titled).withStyle(.checkbox) { customizableStyle in
-            customizableStyle.numberOfLines(numberOfLines)
+extension CheckboxWithLabel {
+
+    func apply(style: Style) {
+        defer { setup() }
+        label.withStyle(.checkbox) {
+            $0.text(style.labelText)
+                .numberOfLines(style.numberOfLines ?? 0)
         }
-        super.init(frame: .zero)
-        setup()
+
+        stackView.withStyle(.horizontal) {
+            // only by using `.top` alignment together with a label having `numberOfLines` set to 0
+            // can we make the label span the height of the stackview. Altough we would like to add
+            // the constraint: `label.centerY(to: checkbox)`, which indeed layouts these views
+            // vertically aligned to their respective centers, it truncates the text of the label.
+            $0.alignment(style.numberOfLines == 0 ? .top : .fill)
+        }
     }
 
-    required init?(coder: NSCoder) {
-        interfaceBuilderSucks
+    @discardableResult
+    func withStyle(_ style: Style, customize: ((Style) -> Style)? = nil) -> CheckboxWithLabel {
+        translatesAutoresizingMaskIntoConstraints = false
+        let style = customize?(style) ?? style
+        apply(style: style)
+        return self
+    }
+}
+
+// MARK: - Style + Customizing
+extension CheckboxWithLabel.Style {
+
+    @discardableResult
+    func text(_ text: String?) -> CheckboxWithLabel.Style {
+        var style = self
+        style.labelText = text
+        return style
+    }
+
+    @discardableResult
+    func numberOfLines(_ numberOfLines: Int) -> CheckboxWithLabel.Style {
+        var style = self
+        style.numberOfLines = numberOfLines
+        return style
+    }
+}
+
+// MARK: - Style Presets
+extension CheckboxWithLabel.Style {
+    static var `default`: CheckboxWithLabel.Style {
+        return CheckboxWithLabel.Style(
+            numberOfLines: 0
+        )
     }
 }
 
@@ -44,7 +92,6 @@ final class CheckboxWithLabel: UIView {
 private extension CheckboxWithLabel {
     func setup() {
         addSubview(stackView)
-        translatesAutoresizingMaskIntoConstraints = false
         setupViews()
         setupConstraints()
     }
@@ -63,14 +110,14 @@ private extension CheckboxWithLabel {
     func setupCheckbox() {
         checkbox.translatesAutoresizingMaskIntoConstraints = false
         checkbox.boxType = .square
-        checkbox.cornerRadius = 5
-        checkbox.boxLineWidth = 3
-        checkbox.checkmarkLineWidth = 3
+        checkbox.cornerRadius = 3
+        checkbox.boxLineWidth = 1
+        checkbox.checkmarkLineWidth = 2
 
-        // Color of box line in disabled state
-        checkbox.secondaryTintColor = .gray
+        // Color of box line in unchecked state
+        checkbox.secondaryTintColor = .teal
         // Color of checkmark and box when checked
-        checkbox.tintColor = .green
+        checkbox.tintColor = .teal
 
     }
 }

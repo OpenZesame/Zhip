@@ -9,53 +9,103 @@
 import UIKit
 
 extension UIButton {
+    func setOptional<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute?>, ifNotNil attribute: Attribute?) {
+        guard let attribute = attribute else { return }
+        self[keyPath: keyPath] = attribute
+    }
+
+    func set<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute>, ifNotNil attribute: Attribute?) {
+        guard let attribute = attribute else { return }
+        self[keyPath: keyPath] = attribute
+    }
+}
+
+extension UIView {
+    enum Rounding {
+        case `static`(CGFloat)
+
+        func apply(to view: UIView, maskToBounds: Bool = true) {
+            switch self {
+            case .static(let radius):
+                view.layer.cornerRadius = radius
+            }
+            if maskToBounds {
+                view.layer.masksToBounds = true
+            }
+        }
+    }
+}
+
+extension UIButton {
     public struct Style {
-        let height: CGFloat?
-        let textColor: UIColor?
+        fileprivate var titleNormal: String?
+        fileprivate var imageNormal: UIImage?
+        var tintColor: UIColor?
+        var height: CGFloat?
+        let textColorNormal: UIColor?
+        let textColorDisabled: UIColor?
         let colorNormal: UIColor?
         let colorDisabled: UIColor?
         let colorSelected: UIColor?
         let font: UIFont?
         var isEnabled: Bool?
         let borderNormal: Border?
+        let cornerRounding: UIView.Rounding?
 
         init(
-            height: CGFloat? = nil,
+            titleNormal: String? = nil,
+            imageNormal: UIImage? = nil,
+            tintColor: UIColor? = UIColor.teal,
+            height: CGFloat? = defaultHeight,
             font: UIFont? = nil,
-            textColor: UIColor? = nil,
+            textColorNormal: UIColor? = nil,
+            textColorDisabled: UIColor? = nil,
             colorNormal: UIColor? = nil,
             colorDisabled: UIColor? = nil,
             colorSelected: UIColor? = nil,
             borderNormal: Border? = nil,
-            isEnabled: Bool? = nil
+            isEnabled: Bool? = nil,
+            cornerRounding: UIView.Rounding? = nil
             ) {
+            self.titleNormal = titleNormal
+            self.imageNormal = imageNormal
+            self.tintColor = tintColor
             self.height = height
-            self.textColor = textColor
+            self.textColorNormal = textColorNormal
+            self.textColorDisabled = textColorDisabled
             self.colorNormal = colorNormal
             self.colorDisabled = colorDisabled
             self.colorSelected = colorSelected
             self.font = font
             self.isEnabled = isEnabled
             self.borderNormal = borderNormal
+            self.cornerRounding = cornerRounding
         }
     }
 }
 
-private extension CGFloat {
-    static let defaultHeight: CGFloat = 64
-}
+private let defaultHeight: CGFloat = 64
 
 extension UIButton {
 
+    // swiftlint:disable:next function_body_length
     func apply(style: Style) {
         translatesAutoresizingMaskIntoConstraints = false
         if let height = style.height {
             self.height(height)
         }
-        setTitleColor(style.textColor ?? .defaultText, for: UIControl.State())
-        titleLabel?.font = style.font ?? UIFont.Button.primary
-        let colorNormal = style.colorNormal ?? .green
-        let colorDisabled = style.colorDisabled ?? .gray
+        if let titleNormal = style.titleNormal {
+            setTitle(titleNormal, for: .normal)
+        }
+        if let imageNormal = style.imageNormal {
+            setImage(imageNormal, for: .normal)
+        }
+        set(\.tintColor, ifNotNil: style.tintColor)
+        setTitleColor(style.textColorNormal ?? .defaultText, for: .normal)
+        setTitleColor(style.textColorDisabled ?? .silverGrey, for: .disabled)
+        titleLabel?.font = style.font ?? UIFont.button
+        let colorNormal = style.colorNormal ?? .teal
+        let colorDisabled = style.colorDisabled ?? .asphaltGrey
         let colorSelected = style.colorSelected ?? colorNormal
         setBackgroundColor(colorNormal, for: .normal)
         setBackgroundColor(colorDisabled, for: .disabled)
@@ -63,6 +113,10 @@ extension UIButton {
         isEnabled = style.isEnabled ?? true
         if let borderNormal = style.borderNormal {
             addBorder(borderNormal)
+        }
+
+        if let cornerRounding = style.cornerRounding {
+            cornerRounding.apply(to: self)
         }
     }
 
@@ -84,46 +138,71 @@ extension UIButton.Style {
         style.isEnabled = false
         return style
     }
+
+    @discardableResult
+    func title(_ titleNormal: String) -> UIButton.Style {
+        var style = self
+        style.titleNormal = titleNormal
+        return style
+    }
+
+    @discardableResult
+    func height(_ height: CGFloat?) -> UIButton.Style {
+        var style = self
+        style.height = height
+        return style
+    }
 }
 
 // MARK: - Style Presets
 extension UIButton.Style {
 
-    static var hollow: UIButton.Style {
-        let color: UIColor = .zilliqaCyan
-        return UIButton.Style(
-            height: .defaultHeight,
-            font: UIFont.Button.primary,
-            textColor: color,
-            colorNormal: .clear,
-            colorDisabled: .black,
-            colorSelected: nil,
-            borderNormal: UIView.Border(color: color, width: 2),
-            isEnabled: true
-        )
-    }
-
     static var primary: UIButton.Style {
         return UIButton.Style(
-            height: .defaultHeight,
-            font: UIFont.Button.primary,
-            textColor: .white,
-            colorNormal: .zilliqaCyan,
-            colorDisabled: .gray,
-            colorSelected: nil,
-            isEnabled: true
+            textColorNormal: .white,
+            textColorDisabled: .silverGrey,
+            colorNormal: .teal,
+            colorDisabled: .asphaltGrey,
+            cornerRounding: .static(8)
         )
     }
 
     static var secondary: UIButton.Style {
         return UIButton.Style(
-            height: .defaultHeight,
-            font: UIFont.Button.seconday,
-            textColor: .white,
-            colorNormal: .zilliqaDarkBlue,
-            colorDisabled: .gray,
-            colorSelected: nil,
-            isEnabled: true
+            textColorNormal: .teal,
+            colorNormal: .clear
+        )
+    }
+
+    static var hollow: UIButton.Style {
+        return UIButton.Style(
+            height: 44,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            borderNormal: UIView.Border(color: .teal, width: 1),
+            cornerRounding: .static(8)
+        )
+    }
+
+    static func image(_ image: UIImage) -> UIButton.Style {
+        return UIButton.Style(
+            imageNormal: image,
+            height: nil,
+            font: .title,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            cornerRounding: nil
+        )
+    }
+
+    static func title(_ title: String) -> UIButton.Style {
+        return UIButton.Style(
+            titleNormal: title,
+            height: nil,
+            font: .title,
+            textColorNormal: .teal,
+            colorNormal: .clear,
+            cornerRounding: nil
         )
     }
 }

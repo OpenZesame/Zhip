@@ -16,9 +16,9 @@ class SpinnerView: UIView {
     private(set) var isAnimating = false
     var animationDuration: TimeInterval = 2
 
-    init(strokeColor: UIColor? = nil) {
+    init() {
         super.init(frame: .zero)
-        setup(strokeColor: strokeColor ?? .zilliqaCyan)
+        setup(strokeColor: .white)
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
@@ -68,7 +68,7 @@ private extension SpinnerView {
         layer.addSublayer(circleLayer)
 
         circleLayer.fillColor = nil
-        circleLayer.lineWidth = 1.5
+        circleLayer.lineWidth = 3
 
         circleLayer.strokeColor = strokeColor.cgColor
         circleLayer.strokeStart = 0

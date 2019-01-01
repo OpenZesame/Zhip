@@ -23,13 +23,8 @@ extension DefaultPincodeUseCase: PincodeUseCase {
         preferences.save(value: true, for: .skipPincodeSetup)
     }
 
-    func doesPincodeMatchChosen(_ pincode: Pincode?) -> Bool {
-        guard let pincode = pincode else { return false }
-        if let chosenPincode = securePersistence.loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography) {
-            return pincode == chosenPincode
-        } else {
-            return false
-        }
+    var pincode: Pincode? {
+        return securePersistence.loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
     }
 
     var hasConfiguredPincode: Bool {

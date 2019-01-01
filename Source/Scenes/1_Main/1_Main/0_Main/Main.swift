@@ -11,5 +11,11 @@ import Foundation
 final class Main: Scene<MainView> {}
 
 extension Main: RightBarButtonContentMaking {
-    static let makeRightContent = BarButtonContent(title: "⚙️")
+    static let makeRightContent = BarButtonContent(image: Asset.Icons.Small.settings.image)
+}
+
+extension Main: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .transluscent
+    }
 }

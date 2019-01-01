@@ -10,20 +10,42 @@ import UIKit
 
 public extension UIColor {
     static var defaultText: UIColor {
-        return .black
+        return .white
     }
 }
 
 extension UIColor {
     enum Hex: Int {
-        case zilliqaCyan = 0x66bebf
-        case zilliqaDarkBlue = 0x071d38
+        case teal = 0x00A88D
+        case deepBlue = 0x1F292F
+        case bloodRed = 0xFF4C4F
+        case asphaltGrey = 0x40484D
+        case silverGrey = 0x6F7579
     }
 }
 
 extension UIColor {
-    static let zilliqaCyan = UIColor(hex: .zilliqaCyan)
-    static let zilliqaDarkBlue = UIColor(hex: .zilliqaDarkBlue)
+    var hexString: String {
+
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+
+        let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
+
+        return String(format: "#%06x", rgb)
+    }
+}
+
+extension UIColor {
+    static let teal = UIColor(hex: .teal)
+    static let deepBlue = UIColor(hex: .deepBlue)
+    static let bloodRed = UIColor(hex: .bloodRed)
+    static let asphaltGrey = UIColor(hex: .asphaltGrey)
+    static let silverGrey = UIColor(hex: .silverGrey)
 }
 
 // MARK: - Private

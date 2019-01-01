@@ -13,71 +13,33 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-import SkyFloatingLabelTextField
-import Validator
-
 private typealias € = L10n.Scene.PrepareTransaction
-
-// MARK: - PrepareTransactionView
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
-    private lazy var balanceLabels = TitledValueView()
-        .titled(€.Labels.Balance.title)
-
-    private lazy var recipientAddressField = TextField(placeholder: €.Field.recipient, type: .hexadecimal)
-        .withStyle(.default)
-
-    private lazy var scanQRButton = UIButton(title: "📷")
-
-    private lazy var amountToSendField = TextField(placeholder: €.Field.amount, type: .number)
-        .withStyle(.number)
-
-    private lazy var gasMeasuredInSmallUnitsLabel = UILabel(text: €.Label.gasInSmallUnits)
-        .withStyle(.body)
-
-    private lazy var gasPriceField = TextField(placeholder: €.Field.gasPrice, type: .number)
-        .withStyle(.number)
-
-    private lazy var gasLimitField = TextField(placeholder: €.Field.gasLimit, type: .number)
-        .withStyle(.number)
-
-    private lazy var sendButton = UIButton(title: €.Button.send)
-        .withStyle(.primary)
-        .disabled()
+    private lazy var balanceTitleLabel              = UILabel()
+    private lazy var balanceValueLabel              = UILabel()
+    private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
+    private lazy var recipientAddressField          = FloatingLabelTextField()
+    private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(asset: Asset.Icons.Small.camera)
+    private lazy var amountToSendField              = FloatingLabelTextField()
+    private lazy var maxAmounButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
+    private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
+    private lazy var gasPriceField                  = FloatingLabelTextField()
+    private lazy var sendButton                     = UIButton()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         balanceLabels,
         recipientAddressField,
         amountToSendField,
-        gasMeasuredInSmallUnitsLabel,
         gasPriceField,
-        gasLimitField,
         .spacer,
         sendButton
     ]
 
     override func setup() {
-        scanQRButton.translatesAutoresizingMaskIntoConstraints = false
-        recipientAddressField.rightView = scanQRButton
-        recipientAddressField.rightViewMode = .always
-        if isDebug {
-            recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
-            amountToSendField.text = Int.random(in: 1...200).description
-            gasPriceField.text = Int.random(in: 100...200).description
-            gasLimitField.text = Int.random(in: 1...10).description
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
-                    [
-                        self.recipientAddressField,
-                        self.amountToSendField,
-                        self.gasPriceField,
-                        self.gasLimitField
-                    ].forEach {
-                            $0.sendActions(for: .editingDidEnd)
-                    }
-            }
-        }
+        setupSubiews()
+//        prefillValuesForDebugBuilds()
     }
 }
 
@@ -92,10 +54,11 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.amount                            --> amountToSendField.rx.text,
             viewModel.recipient                         --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled               --> sendButton.rx.isEnabled,
-            viewModel.balance                           --> balanceLabels.rx.value,
+            viewModel.balance                           --> balanceValueLabel.rx.text,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
-            viewModel.gasLimitValidation                --> gasLimitField.rx.validation,
+            viewModel.gasPriceMeasuredInLi              --> gasPriceField.rx.text,
+            viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
             viewModel.gasPriceValidation                --> gasPriceField.rx.validation
         ]
     }
@@ -104,32 +67,75 @@ extension PrepareTransactionView: ViewModelled {
         return InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
             scanQRTrigger: scanQRButton.rx.tap.asDriver(),
+            maxAmountTrigger: maxAmounButton.rx.tap.asDriver(),
             sendTrigger: sendButton.rx.tap.asDriver(),
 
-            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
-            recipientAddressDidEndEditing: recipientAddressField.rx.didEndEditing,
+            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
 
-            amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
-            amountDidEndEditing: amountToSendField.rx.didEndEditing,
+            amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingAmount: amountToSendField.rx.didEndEditing,
 
-            gasLimit: gasLimitField.rx.text.orEmpty.asDriver(),
-            gasLimitDidEndEditing: gasLimitField.rx.didEndEditing,
-
-            gasPrice: gasPriceField.rx.text.orEmpty.asDriver(),
-            gasPriceDidEndEditing: gasPriceField.rx.didEndEditing
+            gasPrice: gasPriceField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingGasPrice: gasPriceField.rx.didEndEditing
         )
     }
 }
 
-extension Reactive where Base: UITextField {
-    var isEditing: Driver<Bool> {
-        return Driver.merge(
-            controlEvent([.editingDidBegin]).asDriver().map { true },
-            controlEvent([.editingDidEnd]).asDriver().map { false }
-        )
-    }
+// MARK: - Private
+private extension PrepareTransactionView {
 
-    var didEndEditing: Driver<Void> {
-        return isEditing.filter { !$0 }.mapToVoid()
+    // swiftlint:disable function_body_length
+    func setupSubiews() {
+
+        balanceTitleLabel.withStyle(.title) {
+            $0.text(€.Labels.Balance.title)
+        }
+
+        balanceValueLabel.withStyle(.body)
+
+        balanceLabels.withStyle(.horizontal)
+
+        recipientAddressField.withStyle(.address) {
+            $0.placeholder(€.Field.recipient)
+        }
+
+        recipientAddressField.rightView = scanQRButton
+        recipientAddressField.rightViewMode = .always
+
+        amountToSendField.withStyle(.number) {
+            $0.placeholder(€.Field.amount)
+        }
+
+        gasMeasuredInSmallUnitsLabel.withStyle(.body) {
+            $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))
+        }
+
+        gasPriceField.withStyle(.number)
+
+        sendButton.withStyle(.primary) {
+            $0.title(€.Button.send)
+                .disabled()
+        }
     }
 }
+
+//// MARK: - Debug builds only
+//private extension PrepareTransactionView {
+//    func prefillValuesForDebugBuilds() {
+//        guard isDebug else { return }
+//        recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
+//        amountToSendField.text = Int.random(in: 1...200).description
+//        gasPriceField.text = Int.random(in: 100...200).description
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
+//            [
+//                self.recipientAddressField,
+//                self.amountToSendField,
+//                self.gasPriceField
+//                ].forEach {
+//                    $0.sendActions(for: .editingDidEnd)
+//            }
+//        }
+//    }
+//}

@@ -10,18 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.ConfirmWalletRemoval
-
 final class ConfirmWalletRemovalView: ScrollingStackView {
 
-    private lazy var areYouSureLabel = UILabel(text: €.Label.areYouSure).withStyle(.title)
+    private lazy var areYouSureLabel = UILabel()
 
-    private lazy var haveBackedUpWalletCheckbox = CheckboxWithLabel(titled: €.Checkbox.backUpWallet)
+    private lazy var haveBackedUpWalletCheckbox = CheckboxWithLabel()
 
-    private lazy var confirmButton = UIButton(title: €.Button.confirm)
-        .withStyle(.primary) {
-            $0.disabled()
-    }
+    private lazy var confirmButton = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         areYouSureLabel,
@@ -29,6 +24,10 @@ final class ConfirmWalletRemovalView: ScrollingStackView {
         confirmButton,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension ConfirmWalletRemovalView: ViewModelled {
@@ -48,3 +47,20 @@ extension ConfirmWalletRemovalView: ViewModelled {
     }
 }
 
+private typealias € = L10n.Scene.ConfirmWalletRemoval
+private extension ConfirmWalletRemovalView {
+    func setupSubviews() {
+        areYouSureLabel.withStyle(.header) {
+            $0.text(€.Label.areYouSure)
+        }
+
+        haveBackedUpWalletCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.backUpWallet)
+        }
+
+        confirmButton.withStyle(.primary) {
+            $0.title(€.Button.confirm)
+                .disabled()
+        }
+    }
+}

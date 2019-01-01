@@ -17,11 +17,11 @@ func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, has
     let protoTransaction = ProtoTransactionCoreInfo.with {
         $0.version = tx.version
         $0.nonce = tx.payment.nonce.nonce
-        $0.toaddr = BigNumber(hexString: tx.payment.recipient.checksummedHex)!.asTrimmedData()
+        $0.toaddr = Data(hex: tx.payment.recipient.checksummedHex)
         $0.senderpubkey = publicKey.data.compressed.asByteArray
         $0.amount = tx.payment.amount.as16BytesLongArray
         $0.gasprice = tx.payment.gasPrice.as16BytesLongArray
-        $0.gaslimit = UInt64(tx.payment.gasLimit.amount)
+        $0.gaslimit = UInt64(tx.payment.gasLimit)
         $0.code = formatCodeOrData(tx.code)
         $0.data = formatCodeOrData(tx.data)
     }
@@ -30,34 +30,41 @@ func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, has
 }
 
 // MARK: - Private format helpers
-private extension Amount {
-
-    var asBigNumber: BigNumber {
-        return BigNumber(amount)
+private extension BigInt {
+    /// Returns this integer as `Data` of `length`, if `length` is greater
+    /// than the number itself, we pad empty bytes.
+    func asData(minByteCount: Int? = nil) -> Data {
+//        var hexString = String(self, radix: 16)
+        var hexString = self.asHexString()
+        if let minByteCount = minByteCount {
+            // each byte is represented as two hexadecimal chars
+            let minStringLength = 2 * minByteCount
+            while hexString.count < minStringLength {
+                hexString = "0" + hexString
+            }
+        }
+        return Data(hex: hexString)
     }
+}
 
-    var asTrimmedData: Data {
-        return asBigNumber.asTrimmedData()
+import BigInt
+private extension ExpressibleByAmount {
+
+    func asData(minByteCount: Int? = nil) -> Data {
+        return qa.asData(minByteCount: minByteCount)
     }
 
     var asByteArray: ByteArray {
-        return asTrimmedData.asByteArray
+        return asData().asByteArray
     }
 
     var as16BytesLongArray: ByteArray {
-        let data = asBigNumber.as16BytesLongData()
-        return data.asByteArray
+        return asData(minByteCount: 16).asByteArray
     }
 }
 
 private extension Data {
     var asByteArray: ByteArray {
         return ByteArray.with { $0.data = self }
-    }
-}
-
-private extension BigNumber {
-    func as16BytesLongData() -> Data {
-        return Data(hex: String(asHexStringLength64().suffix(32)))
     }
 }

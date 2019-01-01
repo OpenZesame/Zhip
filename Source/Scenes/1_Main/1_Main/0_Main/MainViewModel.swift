@@ -57,10 +57,12 @@ final class MainViewModel: BaseViewModel<
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
+                .do(onNext: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })
         }
 
         // Format output
-        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(0)
+        let _cachedBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
+        let latestBalanceOrZero = latestBalanceAndNonce.map { $0.balance }.startWith(_cachedBalance)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -76,9 +78,11 @@ final class MainViewModel: BaseViewModel<
                 .drive()
         ]
 
+        let formatter = Formatter()
+
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { €.Label.Balance.value($0.amount.description) }
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0) }
         )
     }
 }
@@ -93,5 +97,17 @@ extension MainViewModel {
     struct Output {
         let isFetchingBalance: Driver<Bool>
         let balance: Driver<String>
+    }
+
+    struct Formatter {
+        func format(amount: ZilAmount) -> String {
+            return amount.formatted(unit: .zil)
+        }
+    }
+}
+
+extension ExpressibleByAmount {
+    func formatted(unit: Zesame.Unit) -> String {
+        return asString(in: unit).inserting(string: " ", every: 3)
     }
 }

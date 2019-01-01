@@ -27,7 +27,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
     }
 
     override func start(didStart: Completion? = nil) {
-        if walletUseCase.hasConfiguredWallet {
+		if walletUseCase.hasConfiguredWallet {
             toMain(lockIfNeeded: true)
         } else {
             toOnboarding()

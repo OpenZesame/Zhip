@@ -11,38 +11,58 @@ import RxSwift
 import RxCocoa
 
 final class ButtonWithSpinner: UIButton {
+	enum SpinnerMode {
+		case replaceText
+		case nextToText
+	}
 
-    private lazy var spinnerView: SpinnerView = {
-        let spinnerView = _spinnerView ?? SpinnerView(strokeColor: titleColor(for: .normal))
-        addSubview(spinnerView)
-        spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
-        return spinnerView
-    }()
-    private let _spinnerView: SpinnerView?
-
-    init(title: CustomStringConvertible? = nil, strokeColor: UIColor? = nil) {
-        if let strokeColor = strokeColor {
-            _spinnerView = SpinnerView(strokeColor: strokeColor)
-        } else { _spinnerView = nil }
+    private lazy var spinnerView = SpinnerView()
+	private let mode: SpinnerMode
+	init(mode: SpinnerMode = .replaceText) {
+		self.mode = mode
         super.init(frame: .zero)
-        setTitle(title?.description, for: .normal)
+        setup()
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
+extension ButtonWithSpinner {
+	func startSpinning() {
+		switch mode {
+		case .replaceText:
+			titleLabel?.layer.opacity = 0
+			bringSubviewToFront(spinnerView)
+		case .nextToText: break
+		}
+
+		spinnerView.startSpinning()
+	}
+
+	func stopSpinning () {
+		switch mode {
+		case .replaceText:
+			titleLabel?.layer.opacity = 1
+			sendSubviewToBack(spinnerView)
+		case .nextToText: break
+		}
+		spinnerView.stopSpinning()
+	}
+}
+
 private extension ButtonWithSpinner {
 
-    func startSpinning() {
-        titleLabel?.layer.opacity = 0
-        bringSubviewToFront(spinnerView)
-        spinnerView.startSpinning()
-    }
+    func setup() {
+		addSubview(spinnerView)
+		switch mode {
+		case .replaceText:
+			spinnerView.edgesToSuperview(insets: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+		case .nextToText:
+			spinnerView.size(CGSize(width: 32, height: 32))
+			spinnerView.leftToSuperview(offset: 20)
+			spinnerView.centerYToSuperview()
+		}
 
-    func stopSpinning () {
-        titleLabel?.layer.opacity = 1
-        sendSubviewToBack(spinnerView)
-        spinnerView.stopSpinning()
     }
 
     func changeTo(isSpinning: Bool) {

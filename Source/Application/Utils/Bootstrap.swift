@@ -14,6 +14,7 @@ import SwiftyBeaver
 let log = SwiftyBeaver.self
 
 func bootstrap() {
+    AppAppearance.setupDefault()
     setupKeyboardHiding()
     setupLogging()
 }

@@ -33,7 +33,13 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     // MARK: View Lifecycle
     override func loadView() {
         view = View()
-        view.backgroundColor = .white
+
+		if let backgroundColorSpecifyingView = view as? BackgroundColorSpecifying {
+			view.backgroundColor = backgroundColorSpecifyingView.colorOfBackground
+		} else {
+			view.backgroundColor = .deepBlue
+		}
+
         // We should not use autolayout here, but this works.
         view.bounds = UIScreen.main.bounds
     }
@@ -54,6 +60,21 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         if self is BackButtonHiding {
             navigationItem.hidesBackButton = true
         }
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        applyLayoutIfNeeded()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }
 
@@ -62,7 +83,6 @@ private extension SceneController {
 
     func setup() {
         bindViewToViewModel()
-        edgesForExtendedLayout = .bottom
     }
 
     // swiftlint:disable:next function_body_length
@@ -117,5 +137,25 @@ private extension SceneController {
 
         // Update UI, dispose the array of `Disposable`s
         contentView.populate(with: output).forEach { $0.disposed(by: bag) }
+    }
+
+    func applyLayoutIfNeeded() {
+
+        guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
+            // Default to transluscent
+            navigationController?.applyLayout(.transluscent)
+            return
+        }
+
+        navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+    }
+}
+
+private extension UINavigationController {
+    func applyLayout(_ layout: NavigationBarLayout) {
+        navigationBar.applyLayout(layout)
+        let isHidden = layout.visibility.isHidden
+        let animated = layout.visibility.animated
+        setNavigationBarHidden(isHidden, animated: animated)
     }
 }
