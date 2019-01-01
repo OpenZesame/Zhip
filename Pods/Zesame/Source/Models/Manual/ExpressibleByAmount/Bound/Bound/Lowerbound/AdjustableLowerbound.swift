@@ -9,13 +9,13 @@
 import Foundation
 
 public protocol AdjustableLowerbound: Lowerbound {
-    static var minMagnitudeDefault: Magnitude { get }
-    static var minMagnitude: Magnitude { get set }
+    static var minInQaDefault: Magnitude { get }
+    static var minInQa: Magnitude { get set }
     static func restoreDefaultMin()
 }
 
 public extension AdjustableLowerbound {
     static func restoreDefaultMin() {
-        minMagnitude = minMagnitudeDefault
+        minInQa = minInQaDefault
     }
 }

@@ -12,7 +12,7 @@ import Foundation
 public extension ExpressibleByAmount {
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(Int(magnitude))
+        try container.encode(qaString)
     }
 }
 

@@ -11,12 +11,10 @@ import Foundation
 public extension ExpressibleByAmount {
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        let unitUsedForComparision: Unit = .qa
-        return lhs.valueMeasured(in: unitUsedForComparision) == rhs.valueMeasured(in: unitUsedForComparision)
+        return lhs.qa == rhs.qa
     }
 
     static func < (lhs: Self, rhs: Self) -> Bool {
-        let unitUsedForComparision: Unit = .qa
-        return lhs.valueMeasured(in: unitUsedForComparision) < rhs.valueMeasured(in: unitUsedForComparision)
+        return lhs.qa < rhs.qa
     }
 }

@@ -16,9 +16,17 @@ public final class DefaultZilliqaService: ZilliqaService, ReactiveCompatible {
 
     public static let shared = DefaultZilliqaService()
 
-    public let apiClient: APIClient = DefaultAPIClient()
+    public let apiClient: APIClient
 
-    private init() {}
+    private init(apiClient: APIClient = DefaultAPIClient()) {
+        self.apiClient = apiClient
+    }
+}
+
+public extension DefaultZilliqaService {
+    convenience init(environment: ZilliqaEnvironment) {
+        self.init(apiClient: DefaultAPIClient(environment: environment))
+    }
 }
 
 public extension DefaultZilliqaService {

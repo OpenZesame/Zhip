@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 /// A type representing an Zilliqa amount in any denominator, specified by the `Unit` and the value measured
 /// in said unit by the `Magnitude`. For convenience any type can be converted to the default units, such as
@@ -15,22 +16,21 @@ import Foundation
 // Zil(2) + Li(3_000_000) // 5 Zil
 /// We can also compare them of course. An extension on The Magnitude allows for syntax like 3.zil
 /// analogously for Li and Qa.
-public protocol ExpressibleByAmount: UnitSpecifying,
+public protocol ExpressibleByAmount:
 Codable,
 Comparable,
-CustomStringConvertible,
 CustomDebugStringConvertible,
 ExpressibleByIntegerLiteral,
 ExpressibleByFloatLiteral,
 ExpressibleByStringLiteral
-where Magnitude == Double {
+where Magnitude == BigInt {
 
-    associatedtype Magnitude: Comparable & Numeric
+    associatedtype Magnitude
 
     // These are the two most important properties of the `ExpressibleByAmount` protocol,
     // the unit in which the value - the magnitude is measured.
     static var unit: Unit { get }
-    var magnitude: Magnitude { get }
+    var qa: Magnitude { get }
 
     // "Designated" initializer
     init(valid: Magnitude)
@@ -40,12 +40,18 @@ where Magnitude == Double {
     var inZil: Zil { get }
     var inQa: Qa { get }
 
-    static func validate(magnitude: Magnitude) throws -> Magnitude
-    static func validate(magnitude: String) throws -> Magnitude
+    static func validate(value: Magnitude) throws -> Magnitude
     
     // Convenience initializers
-    init(magnitude: String) throws
     init(zil zilString: String) throws
     init(li liString: String) throws
     init(qa qaString: String) throws
+}
+
+public extension ExpressibleByAmount {
+    var unit: Unit { return Self.unit }
+
+    static var powerOf: String {
+        return unit.powerOf
+    }
 }

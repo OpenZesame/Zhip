@@ -7,9 +7,15 @@
 //
 
 import Foundation
+import BigInt
 
-public typealias Zil = UnboundAmount<MeasuredInZil>
+public struct Zil: ExpressibleByAmount, Unbound {
 
-public struct MeasuredInZil: UnitSpecifying {
+    public typealias Magnitude = BigInt
     public static let unit: Unit = .zil
+    public let qa: Magnitude
+
+    public init(qa: Magnitude) {
+        self.qa = qa
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  AnyLowerbound.swift
+//  AnyUpperbound.swift
 //  Zesame
 //
 //  Created by Alexander Cyon on 2018-12-30.
@@ -8,24 +8,24 @@
 
 import Foundation
 
-public struct AnyLowerbound {
+public struct AnyUpperbound {
     private let _withinBounds: (Any) throws -> Void
-    init<L>(_ type: L.Type) where L: ExpressibleByAmount & Lowerbound {
+    init<L>(_ type: L.Type) where L: ExpressibleByAmount & Upperbound {
         self._withinBounds = {
             guard let value = $0 as? L.Magnitude else {
                 fatalError("incorrect implementation")
             }
-            guard value >= L.minMagnitude else {
-                throw AmountError<L>.tooSmall(min: L.min)
+            guard value <= L.maxInQa else {
+                throw AmountError<L>.tooLarge(max: L.max)
             }
             // Yes is within bounds
             return
         }
     }
 
-    init<E>(_ type: E.Type) where E: ExpressibleByAmount & NoLowerbound {
+    init<E>(_ type: E.Type) where E: ExpressibleByAmount & NoUpperbound {
         self._withinBounds = { ignoredValue in
-            // no lower bound, do not throw, just return
+            // no upper bound, do not throw, just return
             return
         }
     }

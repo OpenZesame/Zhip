@@ -9,17 +9,13 @@
 import Foundation
 
 public protocol Lowerbound: Bound {
-    static var minMagnitude: Magnitude { get }
+    static var minInQa: Magnitude { get }
     static var min: Self { get }
     static func - (lhs: Self, rhs: Self) throws -> Self
 }
 
 extension Lowerbound where Self: ExpressibleByAmount {
     public static var min: Self {
-        do {
-            return try Self(minMagnitude)
-        } catch {
-            fatalError("We should always be able to create lower bound")
-        }
+        return try! Self(qa: minInQa)
     }
 }

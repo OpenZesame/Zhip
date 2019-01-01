@@ -30,18 +30,18 @@ public extension Qa.Magnitude {
 // MARK: Integer
 public extension Int {
     var zil: Zil {
-        return Zil(magnitude: self)
+        return Zil(self)
     }
 }
 
 public extension Int {
     var li: Li {
-        return Li(magnitude: self)
+        return Li(self)
     }
 }
 
 public extension Int {
     var qa: Qa {
-        return Qa(magnitude: self)
+        return Qa(self)
     }
 }

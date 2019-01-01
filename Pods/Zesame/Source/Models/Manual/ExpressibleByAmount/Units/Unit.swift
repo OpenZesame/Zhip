@@ -37,9 +37,3 @@ extension Unit: CustomStringConvertible {
         return name
     }
 }
-
-extension Unit: Comparable {
-    public static func < (lhs: Unit, rhs: Unit) -> Bool {
-        return lhs.exponent < rhs.exponent
-    }
-}

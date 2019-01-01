@@ -9,13 +9,13 @@
 import Foundation
 
 public protocol AdjustableUpperbound: Upperbound {
-    static var maxMagnitudeDefault: Magnitude { get }
-    static var maxMagnitude: Magnitude { get set }
+    static var maxInQaDefault: Magnitude { get }
+    static var maxInQa: Magnitude { get set }
     static func restoreDefaultMax()
 }
 
 public extension AdjustableUpperbound {
     static func restoreDefaultMax() {
-        maxMagnitude = maxMagnitudeDefault
+        maxInQa = maxInQaDefault
     }
 }

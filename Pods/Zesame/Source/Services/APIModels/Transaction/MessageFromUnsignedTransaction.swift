@@ -30,11 +30,12 @@ func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, has
 }
 
 // MARK: - Private format helpers
-private extension Int {
+private extension BigInt {
     /// Returns this integer as `Data` of `length`, if `length` is greater
     /// than the number itself, we pad empty bytes.
     func asData(minByteCount: Int? = nil) -> Data {
-        var hexString = String(self, radix: 16)
+//        var hexString = String(self, radix: 16)
+        var hexString = self.asHexString()
         if let minByteCount = minByteCount {
             // each byte is represented as two hexadecimal chars
             let minStringLength = 2 * minByteCount
@@ -46,10 +47,11 @@ private extension Int {
     }
 }
 
+import BigInt
 private extension ExpressibleByAmount {
 
     func asData(minByteCount: Int? = nil) -> Data {
-        return valueForTransaction.asData(minByteCount: minByteCount)
+        return qa.asData(minByteCount: minByteCount)
     }
 
     var asByteArray: ByteArray {
