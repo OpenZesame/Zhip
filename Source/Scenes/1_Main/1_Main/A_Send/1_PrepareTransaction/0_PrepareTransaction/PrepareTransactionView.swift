@@ -13,15 +13,16 @@ import Zesame
 import RxSwift
 import RxCocoa
 
+private typealias € = L10n.Scene.PrepareTransaction
 final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
     private lazy var balanceTitleLabel              = UILabel()
     private lazy var balanceValueLabel              = UILabel()
     private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
     private lazy var recipientAddressField          = FloatingLabelTextField()
-    private lazy var scanQRButton                   = UIButton()
+    private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(asset: Asset.Icons.Small.camera)
     private lazy var amountToSendField              = FloatingLabelTextField()
-    private lazy var maxAmounButton                 = UIButton()
+    private lazy var maxAmounButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     private lazy var gasPriceField                  = FloatingLabelTextField()
     private lazy var sendButton                     = UIButton()
@@ -38,7 +39,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
     override func setup() {
         setupSubiews()
-        prefillValuesForDebugBuilds()
+//        prefillValuesForDebugBuilds()
     }
 }
 
@@ -69,20 +70,19 @@ extension PrepareTransactionView: ViewModelled {
             maxAmountTrigger: maxAmounButton.rx.tap.asDriver(),
             sendTrigger: sendButton.rx.tap.asDriver(),
 
-            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver(),
-            isEditingRecipientAddress: recipientAddressField.rx.isEditing,
+            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
 
-            amountToSend: amountToSendField.rx.text.orEmpty.asDriver(),
-            isEditingAmount: amountToSendField.rx.isEditing,
+            amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingAmount: amountToSendField.rx.didEndEditing,
 
-            gasPrice: gasPriceField.rx.text.orEmpty.asDriver(),
-            isEditingGasPrice: gasPriceField.rx.isEditing
+            gasPrice: gasPriceField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingGasPrice: gasPriceField.rx.didEndEditing
         )
     }
 }
 
 // MARK: - Private
-private typealias € = L10n.Scene.PrepareTransaction
 private extension PrepareTransactionView {
 
     // swiftlint:disable function_body_length
@@ -100,19 +100,12 @@ private extension PrepareTransactionView {
             $0.placeholder(€.Field.recipient)
         }
 
-        scanQRButton.withStyle(.image(Asset.Icons.Small.camera.image))
-
         recipientAddressField.rightView = scanQRButton
         recipientAddressField.rightViewMode = .always
 
         amountToSendField.withStyle(.number) {
             $0.placeholder(€.Field.amount)
         }
-
-        maxAmounButton.withStyle(.title(€.Button.maxAmount))
-
-        amountToSendField.rightView = maxAmounButton
-        amountToSendField.rightViewMode = .always
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
             $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))
@@ -127,22 +120,22 @@ private extension PrepareTransactionView {
     }
 }
 
-// MARK: - Debug builds only
-private extension PrepareTransactionView {
-    func prefillValuesForDebugBuilds() {
-        guard isDebug else { return }
-        recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
-        amountToSendField.text = Int.random(in: 1...200).description
-        gasPriceField.text = Int.random(in: 100...200).description
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
-            [
-                self.recipientAddressField,
-                self.amountToSendField,
-                self.gasPriceField
-                ].forEach {
-                    $0.sendActions(for: .editingDidEnd)
-            }
-        }
-    }
-}
+//// MARK: - Debug builds only
+//private extension PrepareTransactionView {
+//    func prefillValuesForDebugBuilds() {
+//        guard isDebug else { return }
+//        recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
+//        amountToSendField.text = Int.random(in: 1...200).description
+//        gasPriceField.text = Int.random(in: 100...200).description
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
+//            [
+//                self.recipientAddressField,
+//                self.amountToSendField,
+//                self.gasPriceField
+//                ].forEach {
+//                    $0.sendActions(for: .editingDidEnd)
+//            }
+//        }
+//    }
+//}

@@ -74,43 +74,28 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let recipient: Driver<Address?> = recipientValidationValue.map { $0.value }
 
-		let recipientValidation: Driver<Validation> = Driver.merge(
-			// Emit errors only on `editingDidEnd`
-            input.fromView.isEditingRecipientAddress
-                .filter { isEditing in isEditing == false }
-                .withLatestFrom(recipientValidationValue) { $1 }
-                .map { $0.validation }
-                .map { $0.isError ? $0 : nil }
-                .filterNil(),
+        let recipientValidationTrigger = input.fromView.didEndEditingRecipientAddress
 
-			// merge with empty/valid validation results
-			recipientValidationValue.filter { $0.isError == false }.map { $0.validation }
+		let recipientValidation: Driver<Validation> = Driver.merge(
+            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrors(),
+			recipientValidationValue.onlyValidOrEmpty()
 		)
 
 		// MARK: GasPrice Input -> Value + Validation
-        let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
-		let _startingGasPrice: GasPrice = .min
-        let gasPrice = gasPriceValidationValue.map { $0.value }.startWith(_startingGasPrice).do(onNext: { log.debug("🌈 Gasprice: \($0)") })
+        let _startingGasPrice: GasPrice = .min
+        let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }.startWith(.valid(_startingGasPrice))
+
+        let gasPrice = gasPriceValidationValue.map { $0.value }
 
         let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
-            input.fromView.isEditingGasPrice
-                .filter { isEditing in isEditing == false }.skip(1).mapToVoid(),
+            input.fromView.didEndEditingGasPrice,
             input.fromView.maxAmountTrigger
         )
 
-
 		let gasPriceValidation = Driver.merge(
-			// Emit errors only on `editingDidEnd`
-            gasPriceValidationErrorTrigger
-                .withLatestFrom(gasPriceValidationValue) { $1 }
-                .map { $0.validation }
-                .map { $0.isError ? $0 : nil }
-                .filterNil(),
-
-			// merge with empty/valid validation results
-			gasPriceValidationValue.filter { $0.isError == false }.map { $0.validation }
-            ).do(onNext: { log.debug("🌈 gasPriceValidation: \($0)") })
-
+            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+			gasPriceValidationValue.onlyValidOrEmpty()
+        )
 
 		// MARK: Amount + MaxAmountTrigger Input -> Value + Validation
 		let amountWithoutSufficientFundsCheckValidationValue = Driver.merge(
@@ -120,7 +105,6 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value }
 
-		let gasPriceResultingFromMaxAmountTriggerSubject = PublishSubject<GasPrice>()
         let amountValidationValue: Driver<SufficientFundsValidator.Result> = Driver.combineLatest(
 
             Driver.merge(
@@ -137,12 +121,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                         let gasPriceOrMin: GasPrice = latestGasPrice ?? _startingGasPrice
 
                         guard let balanceMinusGas: ZilAmount = try? balanceOrZero - gasPriceOrMin else {
-                            log.error("returning nil")
                             return nil
-                        }
-                        if latestGasPrice == nil {
-                            // we set the GasPrice by using the Max trigger
-                            gasPriceResultingFromMaxAmountTriggerSubject.onNext(gasPriceOrMin)
                         }
                         return balanceMinusGas
                     }
@@ -156,26 +135,15 @@ final class PrepareTransactionViewModel: BaseViewModel<
         }
 
 		let amountBoundByBalance = amountValidationValue.map { $0.value }
-            .do(onNext: {
-                guard let amount = $0 else { return log.verbose("Amount is nil") }
-                log.verbose("Amount in qa: \(amount.inQa)")
-            })
 
 		let amountValidationErrorTrigger: Driver<Void> = Driver.merge(
-			input.fromView.isEditingAmount.filter { isEditing in isEditing == false }.mapToVoid(),
+            input.fromView.didEndEditingAmount,
 			scannedOrDeeplinkedTransaction.mapToVoid()
 		)
 
 		let amountValidation = Driver.merge(
-			// Emit errors only on `editingDidEnd`
-            amountValidationErrorTrigger
-                .withLatestFrom(gasPriceValidationValue) { $1 }
-                .map { $0.validation }
-                .map { $0.isError ? $0 : nil }
-                .filterNil(),
-
-			// merge with empty/valid validation results
-			amountValidationValue.filter { $0.isError == false }.map { $0.validation }
+            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+			amountValidationValue.onlyValidOrEmpty()
 		)
 
 		let payment: Driver<Payment?> = Driver.combineLatest(recipient, amountBoundByBalance, gasPrice, nonce) {
@@ -204,11 +172,11 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		let formatter = Formatter()
 		let balanceFormatted = balance.map { formatter.format(amount: $0) }
 		let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
-		let amountFormatted = amountBoundByBalance.filterNil().map { $0.display }
+		let amountFormatted = amountBoundByBalance.filterNil().map { $0.zilString }
 
 		let isSendButtonEnabled = payment.map { $0 != nil }
 
-		let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.minInLiAsInt) \(Unit.li.name)"))
+		let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.min.liString) \(Unit.li.name)"))
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
@@ -221,30 +189,16 @@ final class PrepareTransactionViewModel: BaseViewModel<
             amount: amountFormatted,
             amountValidation: amountValidation,
 
-            gasPriceMeasuredInLi:
-            Driver.merge(
-                gasPrice,
-                gasPriceResultingFromMaxAmountTriggerSubject.asDriverOnErrorReturnEmpty().map { GasPrice?.some($0) }
-                ).startWith(GasPrice.min).flatMapLatest {
-                    if let gasPrice = $0 {
-                        return .just(gasPrice.inLi.display)
-                    } else {
-                        return input.fromView.gasPrice
-                    }
+            gasPriceMeasuredInLi: gasPrice.flatMapLatest {
+                if let gasPrice = $0 {
+                    return .just(gasPrice.liString)
+                } else {
+                    return input.fromView.gasPrice
+                }
             },
             gasPricePlaceholder: gasPricePlaceholder,
-            gasPriceValidation:
-            Driver.merge(
-                gasPriceValidation,
-                gasPriceResultingFromMaxAmountTriggerSubject.mapToVoid().asDriverOnErrorReturnEmpty().map { Validation.valid }
-            )
+            gasPriceValidation: gasPriceValidation
         )
-	}
-}
-
-extension ExpressibleByAmount {
-	var display: String {
-		return Int(magnitude).description
 	}
 }
 
@@ -257,13 +211,13 @@ extension PrepareTransactionViewModel {
 		let sendTrigger: Driver<Void>
 
 		let recepientAddress: Driver<String>
-		let isEditingRecipientAddress: Driver<Bool>
+		let didEndEditingRecipientAddress: Driver<Void>
 
 		let amountToSend: Driver<String>
-		let isEditingAmount: Driver<Bool>
+		let didEndEditingAmount: Driver<Void>
 
 		let gasPrice: Driver<String>
-		let isEditingGasPrice: Driver<Bool>
+		let didEndEditingGasPrice: Driver<Void>
 	}
 
 	struct Output {
@@ -310,7 +264,7 @@ extension PrepareTransactionViewModel {
 
 	struct Formatter {
 		func format(amount: ZilAmount) -> String {
-			let amountString = amount.display.inserting(string: " ", every: 3)
+            let amountString = amount.formatted(unit: .zil)
 			return "\(amountString) \(L10n.Generic.zils)"
 		}
 	}

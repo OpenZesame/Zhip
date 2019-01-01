@@ -25,14 +25,18 @@ final class DefaultTransactionsUseCase {
 extension DefaultTransactionsUseCase: TransactionsUseCase {
 
     var cachedBalance: ZilAmount? {
-        guard let cachedBalance: String = preferences.loadValue(for: .cachedBalance) else {
+        guard let qa: String = preferences.loadValue(for: .cachedBalance) else {
             return nil
         }
-        return try? ZilAmount(qa: cachedBalance)
+        return try? ZilAmount(qa: qa)
+    }
+
+    func deleteCachedBalance() {
+        preferences.deleteValue(for: .cachedBalance)
     }
 
     func cacheBalance(_ balance: ZilAmount) {
-        preferences.save(value: Int(balance.inQa.magnitude).description, for: .cachedBalance)
+        preferences.save(value: balance.qaString, for: .cachedBalance)
     }
 
     func getBalance(for address: Address) -> Observable<BalanceResponse> {

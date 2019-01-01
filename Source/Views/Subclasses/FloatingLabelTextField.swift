@@ -60,28 +60,73 @@ final class FloatingLabelTextField: SkyFloatingLabelTextField {
     }
 }
 
+enum ImageOrText {
+    case text(String)
+    case image(UIImage)
+}
+
+
+extension UIButton {
+    func widthOfTitle(for state: UIControl.State = .normal) -> CGFloat? {
+        guard let font = self.titleLabel?.font, let title = title(for: state) else {
+            return nil
+        }
+        return title.widthUsingFont(font)
+    }
+}
+
+extension String {
+    func sizeUsingFont(_ font: UIFont) -> CGSize {
+        return self.size(withAttributes:[.font: font])
+    }
+
+    func widthUsingFont(_ font: UIFont) -> CGFloat {
+        return sizeUsingFont(font).width
+    }
+}
+
+
 extension FloatingLabelTextField {
     enum Position {
         case right, left
     }
 
+    func addBottomAlignedButton(asset: ImageAsset, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(image: asset.image, position: position, offset: offset, mode: mode)
+    }
+
+    func addBottomAlignedButton(image: UIImage, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(imageOrText: .image(image), position: position, offset: offset, mode: mode)
+    }
+
     func addBottomAlignedButton(titled: String, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(imageOrText: .text(titled), position: position, offset: offset, mode: mode)
+    }
+
+    private func addBottomAlignedButton(imageOrText: ImageOrText, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
         let button = UIButton()
+        var width: CGFloat?
+        switch imageOrText {
+        case .image(let image):
+            button.withStyle(.image(image))
+            width = image.size.width
+        case .text(let title):
+            button.withStyle(.title(title))
+            width = button.widthOfTitle()
+        }
 
-        button.withStyle(.title(titled))
         button.setContentHuggingPriority(.required, for: .vertical)
-        button.translatesAutoresizingMaskIntoConstraints = true
 
-        addBottomAligned(view: button, position: position, offset: offset, mode: mode)
+        addBottomAligned(view: button, position: position, width: width, offset: offset, mode: mode)
 
         return button
     }
 
-    func addBottomAligned(view: UIView, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
+    func addBottomAligned(view: UIView, position: Position = .right, width: CGFloat? = nil, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
         view.translatesAutoresizingMaskIntoConstraints = true
         let bottomAligningContainerView = UIView()
+        let width = width ?? rightViewWidth
         let height: CGFloat = 40
-        let width: CGFloat = rightViewWidth
         let offset: CGFloat = 0
         let y: CGFloat = textFieldHeight - height - offset
         view.frame = CGRect(x: 0, y: y, width: width, height: height)

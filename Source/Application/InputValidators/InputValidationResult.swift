@@ -42,6 +42,10 @@ enum Validation {
     }
 }
 
+extension Validation: ValidationConvertible {
+    var validation: Validation { return self }
+}
+
 extension Validation: CustomStringConvertible {
     var description: String {
         switch self {
@@ -71,8 +75,10 @@ extension Validation {
         static let empty: UIColor = .silverGrey
     }
 }
-
-enum InputValidationResult<Value, ValidationError: InputError> {
+protocol ValidationConvertible {
+    var validation: Validation { get }
+}
+enum InputValidationResult<Value, ValidationError: InputError>: ValidationConvertible {
     case valid(Value)
     case invalid(Invalid)
 

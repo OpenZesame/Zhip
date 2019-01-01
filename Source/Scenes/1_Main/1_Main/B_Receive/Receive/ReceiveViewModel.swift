@@ -42,12 +42,20 @@ final class ReceiveViewModel: BaseViewModel<
 
         let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
 
-        let receivingAmount = input.fromView.amountToReceive
-            .map { try? ZilAmount(zil: $0) }
-            .filterNil()
-            .startWith(0)
+        let validator = InputValidator()
 
-        let transactionToReceive = Driver.combineLatest(receivingAmount, wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
+        let amountValidationValue = input.fromView.amountToReceive.map { validator.validateAmount($0) }.startWith(.valid(0))
+
+        let amount = amountValidationValue.map { $0.value }
+
+        let amountValidationTrigger = input.fromView.didEndEditingAmount
+
+        let amountValidation: Driver<Validation> = Driver.merge(
+            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrors(),
+            amountValidationValue.onlyValidOrEmpty()
+        )
+
+        let transactionToReceive = Driver.combineLatest(amount.filterNil(), wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
 
         let qrImage = transactionToReceive.map { [unowned qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
@@ -73,7 +81,8 @@ final class ReceiveViewModel: BaseViewModel<
 
         return Output(
             receivingAddress: receivingAddress,
-            addressBecomeFirstResponder: input.fromController.viewWillAppear,
+            amountBecomeFirstResponder: input.fromController.viewWillAppear,
+            amountValidation: amountValidation,
             qrImage: qrImage
         )
     }
@@ -82,15 +91,25 @@ final class ReceiveViewModel: BaseViewModel<
 extension ReceiveViewModel {
 
     struct InputFromView {
-        let copyMyAddressTrigger: Driver<Void>
-        let shareTrigger: Driver<Void>
         let qrCodeImageHeight: CGFloat
         let amountToReceive: Driver<String>
+        let didEndEditingAmount: Driver<Void>
+        let copyMyAddressTrigger: Driver<Void>
+        let shareTrigger: Driver<Void>
     }
 
     struct Output {
         let receivingAddress: Driver<String>
-        let addressBecomeFirstResponder: Driver<Void>
+        let amountBecomeFirstResponder: Driver<Void>
+        let amountValidation: Driver<Validation>
         let qrImage: Driver<UIImage?>
+    }
+
+    struct InputValidator {
+        private let amountValidator = AmountValidator()
+
+        func validateAmount(_ amount: String) -> AmountValidator.Result {
+            return amountValidator.validate(input: amount)
+        }
     }
 }

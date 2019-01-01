@@ -23,6 +23,7 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationS
     }
 
     private let useCaseProvider: UseCaseProvider
+    private lazy var transactionUseCase = useCaseProvider.makeTransactionsUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
@@ -163,6 +164,7 @@ private extension SettingsCoordinator {
     }
 
     func toChooseWallet() {
+        transactionUseCase.deleteCachedBalance()
         walletUseCase.deleteWallet()
         pincodeUseCase.deletePincode()
         userIntends(to: .removeWallet)

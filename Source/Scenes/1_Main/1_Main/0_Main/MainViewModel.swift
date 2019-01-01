@@ -101,13 +101,13 @@ extension MainViewModel {
 
     struct Formatter {
         func format(amount: ZilAmount) -> String {
-            return amount.formatted
+            return amount.formatted(unit: .zil)
         }
     }
 }
 
 extension ExpressibleByAmount {
-    var formatted: String {
-        return display.inserting(string: " ", every: 3)
+    func formatted(unit: Zesame.Unit) -> String {
+        return asString(in: unit).inserting(string: " ", every: 3)
     }
 }

@@ -44,17 +44,19 @@ extension ReceiveView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
             viewModel.receivingAddress              --> addressValueTextView.rx.text,
-            viewModel.addressBecomeFirstResponder   --> requestingAmountField.rx.becomeFirstResponder,
+            viewModel.amountValidation              --> requestingAmountField.rx.validation,
+            viewModel.amountBecomeFirstResponder   --> requestingAmountField.rx.becomeFirstResponder,
             viewModel.qrImage                       --> qrImageView.rx.image
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
-            copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
-            shareTrigger: requestPaymentButton.rx.tap.asDriverOnErrorReturnEmpty(),
             qrCodeImageHeight: 200,
-            amountToReceive: requestingAmountField.rx.text.orEmpty.asDriver()
+            amountToReceive: requestingAmountField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingAmount: requestingAmountField.rx.didEndEditing,
+            copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
+            shareTrigger: requestPaymentButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
 }

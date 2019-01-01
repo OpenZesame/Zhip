@@ -14,6 +14,7 @@ protocol TransactionsUseCase {
     var cachedBalance: ZilAmount? { get }
     func cacheBalance(_ balance: ZilAmount)
     func getBalance(for address: Address) -> Observable<BalanceResponse>
+    func deleteCachedBalance()
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse>
     func receiptOfTransaction(byId txId: String, polling: Polling) -> Observable<TransactionReceipt>
 }

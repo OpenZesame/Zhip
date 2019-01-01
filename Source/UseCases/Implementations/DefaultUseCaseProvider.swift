@@ -19,8 +19,10 @@ extension KeyValueStore where KeyType == PreferencesKey {
 
 final class DefaultUseCaseProvider {
 
+    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.staging)
+
     static let shared = DefaultUseCaseProvider(
-        zilliqaService: DefaultZilliqaService.shared.rx,
+        zilliqaService: DefaultZilliqaService(environment: zilliqaAPIEnviroment).rx,
         preferences: .default,
         securePersistence: KeyValueStore(KeychainSwift())
     )

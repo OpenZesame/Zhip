@@ -44,8 +44,13 @@ extension KeyValueStoring {
     }
 
     func saveCodable<C>(_ model: C, for key: Key) where C: Codable {
-        guard let json = try? JSONEncoder().encode(model) else { return }
-        save(value: json, for: key)
+        let encoder = JSONEncoder()
+        do {
+            let json = try encoder.encode(model)
+            save(value: json, for: key)
+        } catch {
+            log.error("Failed to save model: \(model), error: \(error)")
+        }
     }
 }
 

@@ -76,8 +76,10 @@ final class SignTransactionViewModel: BaseViewModel<
                 WalletEncryptionPassphrase.Error.incorrectPassphraseErrorFrom(error: $0)
         }
 
+        let isSignButtonEnabled = encryptionPassphraseValidation.map { $0.isValid }
+
         return Output(
-            isSignButtonEnabled: input.fromView.encryptionPassphrase.map { $0.count >= WalletEncryptionPassphrase.minimumLenght },
+            isSignButtonEnabled: isSignButtonEnabled,
             isSignButtonLoading: activityIndicator.asDriver(),
             encryptionPassphraseValidation: encryptionPassphraseValidation
         )

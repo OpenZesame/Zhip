@@ -19,11 +19,6 @@ struct WalletEncryptionPassphrase {
         guard passphrase.count >= minLength else { throw Error.passphraseIsTooShort(mustAtLeastHaveLength: minLength) }
         validPassphrase = passphrase
     }
-
-    init(passphrase: String) {
-        guard passphrase.count >= WalletEncryptionPassphrase.minimumLenght else { incorrectImplementation("should have validated passphrase earlier") }
-        self.validPassphrase = passphrase
-    }
 }
 
 extension WalletEncryptionPassphrase {
@@ -37,11 +32,6 @@ extension WalletEncryptionPassphrase {
 
     static func minimumLengthForWallet(_ wallet: Wallet) -> Int {
         return minimumLenght(mode: wallet.passphraseMode)
-    }
-
-    static var minimumLenght: Int {
-        let lengths = Mode.allCases.map { minimumLenght(mode: $0) }
-        return lengths.min() ?? lengths[0]
     }
 }
 
