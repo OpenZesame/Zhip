@@ -71,7 +71,6 @@ public extension Reactive where Base: ZilliqaService {
             call(strongBase, {
                 switch $0 {
                 case .failure(let error):
-                    print("⚠️ API request failed, error: '\(error)'")
                     single(.error(error))
                 case .success(let result):
                     single(.success(result))

@@ -1,6 +1,6 @@
 //
 //  ConfirmNewPincodeViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-13.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 
 // MARK: - ConfirmNewPincodeUserAction
-enum ConfirmNewPincodeUserAction: TrackedUserAction {
+enum ConfirmNewPincodeUserAction: String, TrackedUserAction {
     case confirmPincode
     case skip
 }

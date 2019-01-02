@@ -1,6 +1,6 @@
 //
 //  DeepLink.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-06.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -22,7 +22,7 @@ extension DeepLink {
 
 extension DeepLink {
     
-    static let scheme: String = "zupreme://"
+    static let scheme: String = "zhip://"
 
     enum Path: String, CaseIterable {
         case send

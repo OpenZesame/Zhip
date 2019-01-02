@@ -1,6 +1,6 @@
 //
 //  TermsOfServiceViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-29.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: TermsOfServiceNavigation
-enum TermsOfServiceNavigation: TrackedUserAction {
+enum TermsOfServiceNavigation: String, TrackedUserAction {
     case acceptTermsOfService
 }
 

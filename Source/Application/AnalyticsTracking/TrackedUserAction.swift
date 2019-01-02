@@ -1,6 +1,6 @@
 //
 //  TrackedUserAction.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -18,4 +18,4 @@ import Foundation
 ///   * chosePincode
 /// Which should read out like "user did skip" and "user did chose pincode"
 /// respectively.
-protocol TrackedUserAction: TrackableEvent {}
+protocol TrackedUserAction: TrackableEvent, RawRepresentable {}

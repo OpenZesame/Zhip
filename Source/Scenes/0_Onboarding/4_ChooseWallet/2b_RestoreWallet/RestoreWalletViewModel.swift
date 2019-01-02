@@ -1,6 +1,6 @@
 //
 //  RestoreWalletViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -14,8 +14,15 @@ import RxSwift
 private typealias € = L10n.Scene.RestoreWallet
 
 /// Navigation from RestoreWallet
-enum RestoreWalletNavigation: TrackedUserAction {
+enum RestoreWalletNavigation: TrackableEvent {
     case restoreWallet(Wallet)
+
+    var eventName: String {
+        switch self {
+        case .restoreWallet: return "restoreWallet"
+        }
+    }
+
 }
 
 // MARK: - RestoreWalletViewModel

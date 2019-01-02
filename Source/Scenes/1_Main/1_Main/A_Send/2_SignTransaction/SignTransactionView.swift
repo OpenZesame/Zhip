@@ -1,6 +1,6 @@
 //
 //  SignTransactionView.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-17.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -33,6 +33,7 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
+            viewModel.inputBecomeFirstResponder --> encryptionPassphraseField.rx.becomeFirstResponder,
             viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
             viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
             viewModel.isSignButtonLoading               --> signButton.rx.isLoading

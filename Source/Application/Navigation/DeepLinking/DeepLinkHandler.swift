@@ -1,6 +1,6 @@
 //
 //  DeepLinkHandler.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-05.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -12,9 +12,17 @@ import RxCocoa
 
 final class DeepLinkHandler {
     enum AnalyticsEvent: TrackableEvent {
-        case receivedLinkFrom
+        case handlingIncomingDeeplink
         case sourceOfDeepLink(sendingAppId: String)
         case failedToParseLink
+
+        var eventName: String {
+            switch self {
+            case .handlingIncomingDeeplink: return "handlingIncomingDeeplink"
+            case .sourceOfDeepLink(let sendingAppId): return "sourceOfDeepLink: \(sendingAppId)"
+            case .failedToParseLink: return "failedToParseLink"
+            }
+        }
     }
 
     private let tracker: Tracker
@@ -43,18 +51,18 @@ final class DeepLinkHandler {
 extension DeepLinkHandler {
 
     /// Read more: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app
-    /// Handles incoming `url`, e.g. `zupreme://send?to=0x1a2b3c&amount=1337`
+    /// Handles incoming `url`, e.g. `Zhip://send?to=0x1a2b3c&amount=1337`
     ///
     /// return: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
     func handle(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        track(event: .receivedLinkFrom)
+        track(event: .handlingIncomingDeeplink)
 
         if let sendingAppID = options[.sourceApplication] as? String {
             track(event: .sourceOfDeepLink(sendingAppId: sendingAppID))
         }
 
         guard let destination = DeepLink(url: url) else {
-            log.error("Unable to create destination from url: \(url)")
+            track(event: .failedToParseLink)
             return false
         }
 

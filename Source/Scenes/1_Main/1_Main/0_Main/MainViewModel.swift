@@ -1,6 +1,6 @@
 //
 //  MainViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-16.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxCocoa
 import Zesame
 
 // MARK: - MainUserAction
-enum MainUserAction: TrackedUserAction {
+enum MainUserAction: String, TrackedUserAction {
     case send
     case receive
     case goToSettings
@@ -78,11 +78,11 @@ final class MainViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let formatter = Formatter()
+        let formatter = AmountFormatter()
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { formatter.format(amount: $0) }
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil) }
         )
     }
 }
@@ -97,17 +97,5 @@ extension MainViewModel {
     struct Output {
         let isFetchingBalance: Driver<Bool>
         let balance: Driver<String>
-    }
-
-    struct Formatter {
-        func format(amount: ZilAmount) -> String {
-            return amount.formatted(unit: .zil)
-        }
-    }
-}
-
-extension ExpressibleByAmount {
-    func formatted(unit: Zesame.Unit) -> String {
-        return asString(in: unit).inserting(string: " ", every: 3)
     }
 }

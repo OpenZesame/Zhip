@@ -1,6 +1,6 @@
 //
 //  ChooseWalletViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - ChooseWalletUserAction
-enum ChooseWalletUserAction: TrackedUserAction {
+enum ChooseWalletUserAction: String, TrackedUserAction {
     case createNewWallet
     case restoreWallet
 }

@@ -21,7 +21,7 @@ public protocol Bound {
     init(_ doubleValue: Double) throws
     init(_ intValue: Int) throws
     init(_ stringValue: String) throws
-    init<UE>(amount: UE) throws where UE: ExpressibleByAmount & Unbound
+    init<E>(_ other: E) throws where E: ExpressibleByAmount
     init(zil: Zil) throws
     init(li: Li) throws
     init(qa: Qa) throws
@@ -55,10 +55,11 @@ public extension ExpressibleByAmount where Self: Bound {
         try self.init(Magnitude(intValue))
     }
 
-    init(_ stringValue: String) throws {
-        if let value = Magnitude(decimalString: stringValue) {
+    init(_ untrimmed: String) throws {
+        let whiteSpacesRemoved = untrimmed.replacingOccurrences(of: " ", with: "")
+        if let value = Magnitude(decimalString: whiteSpacesRemoved) {
            try self.init(try Self.validate(value: value))
-        } else if let double = Double(stringValue) {
+        } else if let double = Double(whiteSpacesRemoved) {
             try self.init(double)
         } else {
             throw AmountError<Self>.nonNumericString
@@ -67,20 +68,20 @@ public extension ExpressibleByAmount where Self: Bound {
 }
 
 public extension ExpressibleByAmount where Self: Bound {
-    init<UE>(amount: UE) throws where UE: ExpressibleByAmount & Unbound {
-        try self.init(qa: amount.qa)
+    init<E>(_ other: E) throws where E: ExpressibleByAmount {
+        try self.init(qa: other.qa)
     }
 
     init(zil: Zil) throws {
-        try self.init(amount: zil)
+        try self.init(zil)
     }
 
     init(li: Li) throws {
-        try self.init(amount: li)
+        try self.init(li)
     }
 
     init(qa: Qa) throws {
-        try self.init(amount: qa)
+        try self.init(qa)
     }
 }
 

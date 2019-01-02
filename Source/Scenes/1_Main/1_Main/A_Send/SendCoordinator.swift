@@ -1,6 +1,6 @@
 //
 //  SendCoordinator.swifr
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -60,7 +60,7 @@ private extension SendCoordinator {
             scannedOrDeeplinkedTransaction: transactionIntent.filter { [unowned self] _ in
                 let prepareTransactionIsCurrentScene = self.navigationController.viewControllers.isEmpty || self.isTopmost(scene: PrepareTransaction.self)
                 guard prepareTransactionIsCurrentScene else {
-                    log.verbose("Prevented deeplinked transaction since it is not the active scene.")
+                    // Prevented deeplinked transaction since it is not the active scene
                     return false
                 }
                 return true
@@ -121,8 +121,10 @@ private extension SendCoordinator {
 
     func openInBrowserDetailsForTransaction(id transactionId: String) {
         let baseURL = "https://explorer.zilliqa.com/"
-        guard let url = URL(string: "transactions/\(transactionId)", relativeTo: URL(string: baseURL)) else {
-            return log.error("failed to create url")
+        let urlString = "transactions/\(transactionId)"
+        guard let url = URL(string: urlString, relativeTo: URL(string: baseURL)) else {
+            GlobalTracker.shared.track(error: .failedToCreateUrl(from: baseURL))
+            return
         }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }

@@ -1,6 +1,6 @@
 //
 //  MainNavigator.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-09.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -42,7 +42,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
 private extension MainCoordinator {
     func toSendPrefilTransaction() {
         guard childCoordinators.isEmpty else {
-            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
+            // Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented
             return
         }
         toSend()

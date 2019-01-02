@@ -1,3 +1,0 @@
-#include "Zupreme.xcconfig"
-
-#include "Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme.release.xcconfig"

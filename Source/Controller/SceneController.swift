@@ -1,6 +1,6 @@
 //
 //  SceneController.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -25,10 +25,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
-
-    deinit {
-        log.verbose("💣 \(type(of: self))")
-    }
 
     // MARK: View Lifecycle
     override func loadView() {
@@ -66,6 +62,11 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyLayoutIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logSceneAppearanceToAnalyticsIfAllowed()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -148,6 +149,11 @@ private extension SceneController {
         }
 
         navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+    }
+
+    func logSceneAppearanceToAnalyticsIfAllowed() {
+        guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
+        GlobalTracker.shared.track(scene: self)
     }
 }
 

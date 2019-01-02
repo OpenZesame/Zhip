@@ -1,6 +1,6 @@
 //
 //  DefaultUseCaseProvider.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-29.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -19,7 +19,7 @@ extension KeyValueStore where KeyType == PreferencesKey {
 
 final class DefaultUseCaseProvider {
 
-    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.staging)
+    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.prod)
 
     static let shared = DefaultUseCaseProvider(
         zilliqaService: DefaultZilliqaService(environment: zilliqaAPIEnviroment).rx,

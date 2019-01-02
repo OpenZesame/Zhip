@@ -21,7 +21,7 @@ public protocol Unbound: NoLowerbound & NoUpperbound {
     init(_ doubleValue: Double)
     init(_ intValue: Int)
     init(_ stringValue: String) throws
-    init<UE>(amount: UE) where UE: ExpressibleByAmount & Unbound
+    init<E>(_ other: E) where E: ExpressibleByAmount
     init(zil: Zil)
     init(li: Li)
     init(qa: Qa)
@@ -51,10 +51,11 @@ public extension ExpressibleByAmount where Self: Unbound {
         self.init(Magnitude(intValue))
     }
 
-    init(_ stringValue: String) throws {
-        if let mag = Magnitude(decimalString: stringValue) {
+    init(_ untrimmed: String) throws {
+        let whiteSpacesRemoved = untrimmed.replacingOccurrences(of: " ", with: "")
+        if let mag = Magnitude(decimalString: whiteSpacesRemoved) {
             self = Self.init(mag)
-        } else if let double = Double(stringValue) {
+        } else if let double = Double(whiteSpacesRemoved) {
             self.init(double)
         } else {
             throw AmountError<Self>.nonNumericString
@@ -63,26 +64,26 @@ public extension ExpressibleByAmount where Self: Unbound {
 }
 
 public extension ExpressibleByAmount where Self: Unbound {
-    init<UE>(amount: UE) where UE: ExpressibleByAmount & Unbound {
-        self.init(qa: amount.qa)
+    init<E>(_ other: E) where E: ExpressibleByAmount {
+        self.init(qa: other.qa)
     }
 
     init(zil: Zil) {
-        self.init(amount: zil)
+        self.init(zil)
     }
 
     init(li: Li) {
-        self.init(amount: li)
+        self.init(li)
     }
 
     init(qa: Qa) {
-        self.init(amount: qa)
+        self.init(qa)
     }
 }
 
 public extension ExpressibleByAmount where Self: Unbound {
     init(zil zilString: String) throws {
-        self.init(zil: try Zil(zilString))
+        self.init(zil: try Zil.init(zilString))
     }
 
     init(li liString: String) throws {

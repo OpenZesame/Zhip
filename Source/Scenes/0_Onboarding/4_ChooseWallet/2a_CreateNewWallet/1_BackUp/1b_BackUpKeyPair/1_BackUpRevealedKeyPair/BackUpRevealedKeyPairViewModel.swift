@@ -1,6 +1,6 @@
 //
 //  BackUpRevealedKeyPairViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-enum BackUpRevealedKeyPairUserAction: TrackedUserAction {
+enum BackUpRevealedKeyPairUserAction: String, TrackedUserAction {
     case finish
 }
 
@@ -48,13 +48,13 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyPrivateKey))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPrivateKey))
                 }).drive(),
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyPublicKey))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPublicKey))
                 }).drive()
         ]
 

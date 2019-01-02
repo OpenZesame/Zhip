@@ -1,6 +1,6 @@
 //
 //  WelcomeViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-19.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum WelcomeUserAction: TrackedUserAction {
+enum WelcomeUserAction: String, TrackedUserAction {
     case /*user intends to*/start
 }
 

@@ -1,6 +1,6 @@
 //
 //  DefaultOnboardingUseCase.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-30.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -41,6 +41,7 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
     func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
         preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
         preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)
+        setupAnalyticsIfAllowed()
     }
 
     func doNotShowERC20WarningAgain() {

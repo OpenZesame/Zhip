@@ -1,6 +1,6 @@
 //
 //  SettingsCoordinator.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-09.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-let githubUrlString = "https://github.com/OpenZesame/Zupreme"
+let githubUrlString = "https://github.com/OpenZesame/Zhip"
 
 // This is the app id for the iOS app "Apple Store" in the iOS App Store
 let appStoreUrlString = "itms://itunes.apple.com/us/app/apple-store/id375380948?mt=8"

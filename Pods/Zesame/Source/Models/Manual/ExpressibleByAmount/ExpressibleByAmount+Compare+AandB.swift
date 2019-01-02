@@ -9,25 +9,25 @@
 import Foundation
 
 public func == <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa == rhs.inQa
+    return lhs.qa == rhs.qa
 }
 
 public func <= <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa <= rhs.inQa
+    return lhs.qa <= rhs.qa
 }
 
 public func >= <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa >= rhs.inQa
+    return lhs.qa >= rhs.qa
 }
 
 public func != <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa != rhs.inQa
+    return lhs.qa != rhs.qa
 }
 
 public func > <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa > rhs.inQa
+    return lhs.qa > rhs.qa
 }
 
 public func < <A, B>(lhs: A, rhs: B) -> Bool where A: ExpressibleByAmount, B: ExpressibleByAmount {
-    return lhs.inQa < rhs.inQa
+    return lhs.qa < rhs.qa
 }

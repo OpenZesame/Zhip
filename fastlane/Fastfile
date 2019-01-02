@@ -1,6 +1,6 @@
 default_platform(:ios)
 
-$plist_path = "Source/Application/Zupreme-Info.plist"
+$plist_path = "Source/Application/Zhip-Info.plist"
 
 desc "Push a new beta build to TestFlight"
 lane :beta do
@@ -9,7 +9,7 @@ lane :beta do
     match(type: "appstore", readonly: true)
     
     # Build the IPA
-    build_app(scheme: "Zupreme")
+    build_app(scheme: "Zhip")
 
     upload_to_testflight
 
@@ -28,7 +28,7 @@ end
 desc "Run unit tests for each opened pull request"
 lane :test do
   run_tests(
-    scheme: "ZupremeTests",
+    scheme: "ZhipTests",
     clean: false,
     slack_only_on_failure: true
   )

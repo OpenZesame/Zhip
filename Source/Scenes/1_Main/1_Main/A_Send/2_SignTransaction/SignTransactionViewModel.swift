@@ -1,6 +1,6 @@
 //
 //  SignTransactionViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-17.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,8 +11,14 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-enum SignTransactionUserAction: TrackedUserAction {
+enum SignTransactionUserAction: TrackableEvent {
     case sign(TransactionResponse)
+
+    var eventName: String {
+        switch self {
+        case .sign: return "sign"
+        }
+    }
 }
 
 final class SignTransactionViewModel: BaseViewModel<
@@ -81,7 +87,8 @@ final class SignTransactionViewModel: BaseViewModel<
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
             isSignButtonLoading: activityIndicator.asDriver(),
-            encryptionPassphraseValidation: encryptionPassphraseValidation
+            encryptionPassphraseValidation: encryptionPassphraseValidation,
+            inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
     }
 
@@ -99,6 +106,7 @@ extension SignTransactionViewModel {
         let isSignButtonEnabled: Driver<Bool>
         let isSignButtonLoading: Driver<Bool>
         let encryptionPassphraseValidation: Driver<Validation>
+        let inputBecomeFirstResponder: Driver<Void>
     }
 
     struct InputValidator {

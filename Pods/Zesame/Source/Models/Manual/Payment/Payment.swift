@@ -38,12 +38,12 @@ public extension Payment {
     static func estimatedTotalCostOfTransaction(amount: ZilAmount, gasPrice: GasPrice, gasLimit: GasLimit = .defaultGasLimit) throws -> ZilAmount {
 
         let fee = try estimatedTotalTransactionFee(gasPrice: gasPrice, gasLimit: gasLimit)
-        let amountInQa = amount.inQa
+        let amountInQa = amount.asQa
         let totalInQa: Qa = amountInQa + fee
 
         let tooLargeError = AmountError.tooLarge(max: ZilAmount.max)
 
-        guard totalInQa < ZilAmount.max.inQa else {
+        guard totalInQa < ZilAmount.max.asQa else {
             throw tooLargeError
         }
 
@@ -52,8 +52,8 @@ public extension Payment {
         // 21E9 so we lose the 1E-12 part. Thus we subtract 21E9
         // to be able to keep the 1E-12 part and compare it against
         // the transaction cost. Ugly, but it works...
-        if totalInQa == ZilAmount.max.inQa {
-            let subtractedTotalSupplyFromAmount = totalInQa - ZilAmount.max.inQa
+        if totalInQa == ZilAmount.max.asQa {
+            let subtractedTotalSupplyFromAmount = totalInQa - ZilAmount.max.asQa
             if (subtractedTotalSupplyFromAmount + fee) != fee {
                 throw tooLargeError
             }

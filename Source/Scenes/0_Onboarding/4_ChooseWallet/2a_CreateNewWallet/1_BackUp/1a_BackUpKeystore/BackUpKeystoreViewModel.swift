@@ -1,6 +1,6 @@
 //
 //  BackUpKeystoreViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-09.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -13,7 +13,7 @@ import RxCocoa
 
 private typealias € = L10n.Scene.BackUpKeystore
 
-enum BackUpKeystoreUserAction: TrackedUserAction {
+enum BackUpKeystoreUserAction: String, TrackedUserAction {
     case finished
 }
 
@@ -44,7 +44,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             input.fromView.copyTrigger.withLatestFrom(keystore)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    let toast = Toast("✅" + €.Event.Toast.didCopyKeystore)
+                    let toast = Toast(€.Event.Toast.didCopyKeystore)
                     input.fromController.toastSubject.onNext(toast)
                 })
                 .drive()

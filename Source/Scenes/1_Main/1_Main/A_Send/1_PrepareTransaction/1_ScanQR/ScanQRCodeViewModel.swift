@@ -1,6 +1,6 @@
 //
 //  ScanQRCodeViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-13.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,8 +11,16 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum ScanQRCodeUserAction: TrackedUserAction {
+enum ScanQRCodeUserAction: TrackableEvent {
     case /*user did*/cancel, scanQRContainingTransaction(TransactionIntent)
+
+    // Analytics
+    var eventName: String {
+        switch self {
+        case .cancel: return "cancel"
+        case .scanQRContainingTransaction: return "scanQRContainingTransaction"
+        }
+    }
 }
 
 // MARK: - ScanQRCodeViewModel

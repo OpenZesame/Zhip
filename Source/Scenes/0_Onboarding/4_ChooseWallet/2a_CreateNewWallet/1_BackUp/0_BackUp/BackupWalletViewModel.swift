@@ -1,6 +1,6 @@
 //
 //  BackupWalletViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-10-25.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -14,7 +14,7 @@ import Zesame
 private typealias € = L10n.Scene.BackupWallet
 
 // MARK: - BackupWalletUserAction
-enum BackupWalletUserAction: TrackedUserAction {
+enum BackupWalletUserAction: String, TrackedUserAction {
     case cancel
     case backupWallet
     case revealPrivateKey
@@ -68,7 +68,7 @@ final class BackupWalletViewModel: BaseViewModel<
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
                 .do(onNext: { (keystoreText: String) -> Void in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyKeystore))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyKeystore))
                 }).drive(),
 
             input.fromView.revealKeystoreTrigger

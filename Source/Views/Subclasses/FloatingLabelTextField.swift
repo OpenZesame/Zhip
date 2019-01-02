@@ -1,6 +1,6 @@
 //
 //  TextField.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-25.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -65,7 +65,6 @@ enum ImageOrText {
     case image(UIImage)
 }
 
-
 extension UIButton {
     func widthOfTitle(for state: UIControl.State = .normal) -> CGFloat? {
         guard let font = self.titleLabel?.font, let title = title(for: state) else {
@@ -77,14 +76,13 @@ extension UIButton {
 
 extension String {
     func sizeUsingFont(_ font: UIFont) -> CGSize {
-        return self.size(withAttributes:[.font: font])
+        return self.size(withAttributes: [.font: font])
     }
 
     func widthUsingFont(_ font: UIFont) -> CGFloat {
         return sizeUsingFont(font).width
     }
 }
-
 
 extension FloatingLabelTextField {
     enum Position {

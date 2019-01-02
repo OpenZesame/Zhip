@@ -10,11 +10,60 @@ PODS:
   - EllipticCurveKit (0.0.1):
     - BigInt (~> 3.1)
     - CryptoSwift (~> 0.12)
+  - Firebase/Core (5.15.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.4.0)
+  - Firebase/CoreOnly (5.15.0):
+    - FirebaseCore (= 5.1.10)
+  - FirebaseAnalytics (5.4.0):
+    - FirebaseCore (~> 5.1)
+    - FirebaseInstanceID (~> 3.3)
+    - GoogleAppMeasurement (= 5.4.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - FirebaseCore (5.1.10):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseInstanceID (3.3.0):
+    - FirebaseCore (~> 5.1)
+    - GoogleUtilities/Environment (~> 5.3)
+    - GoogleUtilities/UserDefaults (~> 5.3)
+  - GoogleAppMeasurement (5.4.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - GoogleUtilities/AppDelegateSwizzler (5.3.6):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (5.3.6)
+  - GoogleUtilities/Logger (5.3.6):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (5.3.6):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (5.3.6)"
+  - GoogleUtilities/Reachability (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (5.3.6):
+    - GoogleUtilities/Logger
   - IQKeyboardManagerSwift (6.2.0)
   - JSONRPCKit (4.0.0):
     - Result (~> 4.0.0)
   - KeychainSwift (13.0.0)
   - M13Checkbox (3.2.2)
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
   - QRCodeReader.swift (9.0.1)
   - Result (4.0.0)
   - RxAtomic (4.4.0)
@@ -50,6 +99,7 @@ PODS:
 
 DEPENDENCIES:
   - EFQRCode
+  - Firebase/Core
   - IQKeyboardManagerSwift
   - JSONRPCKit (from `https://github.com/ollitapa/JSONRPCKit.git`, branch `master`)
   - KeychainSwift
@@ -75,9 +125,16 @@ SPEC REPOS:
     - Differentiator
     - EFQRCode
     - EllipticCurveKit
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseInstanceID
+    - GoogleAppMeasurement
+    - GoogleUtilities
     - IQKeyboardManagerSwift
     - KeychainSwift
     - M13Checkbox
+    - nanopb
     - QRCodeReader.swift
     - Result
     - RxAtomic
@@ -109,7 +166,7 @@ CHECKOUT OPTIONS:
     :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :commit: 733549796b9db2e96986cc3634ba3642b18797a6
+    :commit: 282c7e784e9d893c49461ee9a75cb3bce71f99d6
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:
@@ -119,10 +176,17 @@ SPEC CHECKSUMS:
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
+  Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
+  FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
+  FirebaseCore: 35747502d9e8c6ee217385ad04446c7c2aaf9c5c
+  FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
+  GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
+  GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
   JSONRPCKit: ce08ee53ac1afd6150351531836e0ab842cf567e
   KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
   M13Checkbox: a8c2491cfbbca10797925fd0b9154a782bf40d89
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   QRCodeReader.swift: 96292a5612fbc2fd9a0b26f93fa5164c8d02f59d
   Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
@@ -142,6 +206,6 @@ SPEC CHECKSUMS:
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: 5c5593265a8651adb27822d43b458078cfa687ea
 
-PODFILE CHECKSUM: 6839b4d703d2ffcb8699715dcf6ab0beb7b0b5d3
+PODFILE CHECKSUM: c207f382f0a8b2f5296c809b31151b04ace10946
 
 COCOAPODS: 1.5.3

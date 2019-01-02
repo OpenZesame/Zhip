@@ -1,6 +1,6 @@
 //
 //  ScrollViewOwner.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-20.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -23,10 +23,6 @@ class ScrollView: UIScrollView {
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
-
-    deinit {
-        log.verbose("💣 \(type(of: self))")
-    }
 
     var contentView: UIView!
 

@@ -1,6 +1,6 @@
 //
 //  BaseCoordinator.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-10-27.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -28,10 +28,6 @@ class BaseCoordinator<NavigationStep>: Coordinating, Navigating {
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-    }
-
-    deinit {
-        log.verbose("💣 \(type(of: self))")
     }
 
     // MARK: - Overridable

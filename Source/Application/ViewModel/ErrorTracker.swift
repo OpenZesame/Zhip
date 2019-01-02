@@ -1,6 +1,6 @@
 //
 //  ErrorTracker.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-24.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -52,14 +52,15 @@ extension ErrorTracker {
             }
 
             guard let mappedError = mapError(swiftError) else {
-                log.error("Failed to map Swift.Error to error of type `\(type(of: IE.self))`")
+                GlobalTracker.shared.track(error: .failedToMapSwiftErrorTo(type: IE.self))
                 return nil
             }
+
             return mappedError
-            }
-            .filterNil()
-            // This is an Driver of Errors, so it is correct to call `asDriverOnErrorReturnEmpty`, which will not filter out our elements (errors).
-            .asDriverOnErrorReturnEmpty()
+        }
+        .filterNil()
+        // This is an Driver of Errors, so it is correct to call `asDriverOnErrorReturnEmpty`, which will not filter out our elements (errors).
+        .asDriverOnErrorReturnEmpty()
     }
 
     func asInputValidationErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<Validation> {

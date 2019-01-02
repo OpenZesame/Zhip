@@ -1,6 +1,6 @@
 //
 //  EnsureThatYouAreNotBeingWatchedViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-22.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum EnsureThatYouAreNotBeingWatchedUserAction: TrackedUserAction {
+enum EnsureThatYouAreNotBeingWatchedUserAction: String, TrackedUserAction {
     case /*user did*/understand, cancel
 }
 

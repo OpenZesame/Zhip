@@ -1,6 +1,6 @@
 //
 //  OpenUrl.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-19.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -16,7 +16,6 @@ func openUrl(string baseUrlString: String, relative path: String? = nil, tracker
     }
 
     guard let url = createUrl() else {
-        log.warning("Failed to create")
         tracker?.track(event: TrackedError.failedToCreateUrl(from: baseUrlString), context: context)
         return
     }

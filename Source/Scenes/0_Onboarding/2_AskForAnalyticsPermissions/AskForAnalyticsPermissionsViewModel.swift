@@ -1,6 +1,6 @@
 //
 //  AskForAnalyticsPermissionsViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Andrei Radulescu on 09/11/2018.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - AnalyticsPermissionNavigation
-enum AskForAnalyticsPermissionsNavigation: TrackedUserAction {
+enum AskForAnalyticsPermissionsNavigation: String, TrackedUserAction {
     case answerQuestionAboutAnalyticsPermission
 }
 

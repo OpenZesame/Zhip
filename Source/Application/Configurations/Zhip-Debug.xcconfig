@@ -1,0 +1,5 @@
+#include "Zhip.xcconfig"
+
+#include "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.debug.xcconfig"
+
+SWIFT_OPTIMIZATION_LEVEL = -Onone

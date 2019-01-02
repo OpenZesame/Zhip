@@ -1,6 +1,6 @@
 //
 //  PollTransactionStatusViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-13.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -14,8 +14,18 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum PollTransactionStatusUserAction: TrackedUserAction {
+enum PollTransactionStatusUserAction: TrackableEvent {
 	case /*user did*/skip, dismiss, viewTransactionDetailsInBrowser(id: String), waitUntilTimeout
+
+    // Analytics
+    var eventName: String {
+        switch self {
+        case .skip: return "skip"
+        case .dismiss: return "dismss"
+        case .viewTransactionDetailsInBrowser: return "viewTransactionDetailsInBrowser"
+        case .waitUntilTimeout: return "waitUntilTimeout"
+        }
+    }
 }
 
 // MARK: - PollTransactionStatusViewModel
@@ -50,8 +60,6 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 				}
 				if case(.api(.timeout)) = error {
 					userDid(.waitUntilTimeout)
-				} else {
-					log.error("Error: \(error)")
 				}
 			}
 		)

@@ -1,6 +1,6 @@
 //
 //  ReceiveViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -14,9 +14,17 @@ import Zesame
 private typealias € = L10n.Scene.Receive
 
 // MARK: - ReceiveUserAction
-enum ReceiveUserAction: TrackedUserAction {
+enum ReceiveUserAction: TrackableEvent {
     case finish
     case requestTransaction(TransactionIntent)
+
+    // Analytics
+    var eventName: String {
+        switch self {
+        case .finish: return "finish"
+        case .requestTransaction: return "requestTransaction"
+        }
+    }
 }
 
 // MARK: - ReceiveViewModel
@@ -71,7 +79,7 @@ final class ReceiveViewModel: BaseViewModel<
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅ " + €.Event.Toast.didCopyAddress))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyAddress))
                 }).drive(),
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)

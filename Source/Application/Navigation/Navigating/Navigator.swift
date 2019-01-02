@@ -23,11 +23,11 @@ extension Navigator {
     func next(_ step: NavigationStep) {
         navigationSubject.onNext(step)
 
-        if let userAction = step as? TrackedUserAction {
+        if let userAction = step as? TrackableEvent {
             return track(event: userAction)
         }
 
-        guard let userAction = findNestedEnumOfType(TrackedUserAction.self, in: step, recursiveTriesLeft: 3) else { return }
+        guard let userAction = findNestedEnumOfType(TrackableEvent.self, in: step, recursiveTriesLeft: 3) else { return }
 
         track(event: userAction)
     }

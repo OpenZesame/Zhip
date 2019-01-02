@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-05-26.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -39,15 +39,5 @@ extension AppDelegate: UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         appCoordinator.appWillResignActive()
-    }
-}
-
-// MARK: Debugging
-extension UIApplication {
-    static func printCoordinatorStack() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            incorrectImplementation("UIApplication.shared.delegate should be AppDelegate")
-        }
-        log.debug(appDelegate.appCoordinator)
     }
 }

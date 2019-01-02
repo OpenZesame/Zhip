@@ -1,6 +1,6 @@
 //
 //  MockedTransactionUseCase.swift
-//  ZupremeTests
+//  ZhipTests
 //
 //  Created by Alexander Cyon on 2018-12-18.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-@testable import Zupreme
+@testable import Zhip
 
 import RxSwift
 import RxCocoa
@@ -31,7 +31,7 @@ import Zesame
 //        return .just(mockedBalanceResponse)
 //    }
 //
-//    func sendTransaction(for payment: Payment, wallet: Zupreme.Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
+//    func sendTransaction(for payment: Payment, wallet: Zhip.Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
 //        abstract
 //    }
 //

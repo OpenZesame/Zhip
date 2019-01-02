@@ -1,6 +1,6 @@
 //
 //  PrepareTransactionViewModel.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-08.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -12,14 +12,23 @@ import RxCocoa
 import Zesame
 
 // MARK: - PrepareTransactionUserAction
-enum PrepareTransactionUserAction: TrackedUserAction {
+enum PrepareTransactionUserAction: TrackableEvent {
 	case cancel
 	case signPayment(Payment)
 	case scanQRCode
+
+    var eventName: String {
+        switch self {
+        case .cancel: return "cancel"
+        case .signPayment: return "signPayment"
+        case .scanQRCode: return "scanQRCode"
+        }
+    }
 }
 
 // MARK: - PrepareTransactionViewModel
 private typealias € = L10n.Scene.PrepareTransaction
+// swiftlint:disable:next type_body_length
 final class PrepareTransactionViewModel: BaseViewModel<
 	PrepareTransactionUserAction,
 	PrepareTransactionViewModel.InputFromView,
@@ -34,6 +43,10 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		self.transactionUseCase = transactionUseCase
 		self.scannedOrDeeplinkedTransaction = scannedOrDeeplinkedTransaction
 	}
+
+    enum Event: String, TrackableEvent {
+        case maxAmount
+    }
 
 	// swiftlint:disable:next function_body_length
 	override func transform(input: Input) -> Output {
@@ -87,9 +100,11 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let gasPrice = gasPriceValidationValue.map { $0.value }
 
+        let maxAmountTrigger = input.fromView.maxAmountTrigger.do(onNext: { [unowned self] in self.track(event: Event.maxAmount) })
+
         let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
             input.fromView.didEndEditingGasPrice,
-            input.fromView.maxAmountTrigger
+            maxAmountTrigger
         )
 
 		let gasPriceValidation = Driver.merge(
@@ -112,7 +127,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 amountWithoutSufficientFundsCheck,
 
                 // Max trigger -> Balance SUBTRACT GasPrice (default to min)
-                input.fromView.maxAmountTrigger.withLatestFrom(
+                maxAmountTrigger.withLatestFrom(
                     Driver.combineLatest(
                         balance.startWith(_startingBalance),
                         gasPrice.startWith(_startingGasPrice)
@@ -169,14 +184,16 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		]
 
 		// MARK: FORMATTING
-		let formatter = Formatter()
-		let balanceFormatted = balance.map { formatter.format(amount: $0) }
+		let formatter = AmountFormatter()
+        let balanceFormatted = balance.map { formatter.format(amount: $0, in: .zil, showUnit: true) }
 		let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
-		let amountFormatted = amountBoundByBalance.filterNil().map { $0.zilString }
+        let amountFormatted = amountBoundByBalance.filterNil().map { formatter.format(amount: $0, in: .zil) }
 
 		let isSendButtonEnabled = payment.map { $0 != nil }
 
-		let gasPricePlaceholder = Driver.just(€.Field.gasPrice("\(GasPrice.min.liString) \(Unit.li.name)"))
+        let gasPricePlaceholder = Driver.just(GasPrice.min).map { €.Field.gasPrice(formatter.format(amount: $0, in: .li, showUnit: true)) }
+
+        let gasPriceFormatted = gasPrice.filterNil().map { formatter.format(amount: $0, in: .li) }
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
@@ -189,13 +206,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             amount: amountFormatted,
             amountValidation: amountValidation,
 
-            gasPriceMeasuredInLi: gasPrice.flatMapLatest {
-                if let gasPrice = $0 {
-                    return .just(gasPrice.liString)
-                } else {
-                    return input.fromView.gasPrice
-                }
-            },
+            gasPriceMeasuredInLi: gasPriceFormatted,
             gasPricePlaceholder: gasPricePlaceholder,
             gasPriceValidation: gasPriceValidation
         )
@@ -259,13 +270,6 @@ extension PrepareTransactionViewModel {
 
 		func validateGasPrice(_ gasPrice: String?) -> GasPriceValidator.Result {
 			return gasPriceValidator.validate(input: gasPrice)
-		}
-	}
-
-	struct Formatter {
-		func format(amount: ZilAmount) -> String {
-            let amountString = amount.formatted(unit: .zil)
-			return "\(amountString) \(L10n.Generic.zils)"
 		}
 	}
 }
