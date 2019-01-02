@@ -34,7 +34,6 @@ private extension BigInt {
     /// Returns this integer as `Data` of `length`, if `length` is greater
     /// than the number itself, we pad empty bytes.
     func asData(minByteCount: Int? = nil) -> Data {
-//        var hexString = String(self, radix: 16)
         var hexString = self.asHexString()
         if let minByteCount = minByteCount {
             // each byte is represented as two hexadecimal chars

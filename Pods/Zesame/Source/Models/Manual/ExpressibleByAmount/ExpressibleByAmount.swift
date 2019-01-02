@@ -36,9 +36,9 @@ where Magnitude == BigInt {
     init(valid: Magnitude)
 
     // Convenience translations
-    var inLi: Li { get }
-    var inZil: Zil { get }
-    var inQa: Qa { get }
+    var asLi: Li { get }
+    var asZil: Zil { get }
+    var asQa: Qa { get }
 
     static func validate(value: Magnitude) throws -> Magnitude
     

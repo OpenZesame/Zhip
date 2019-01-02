@@ -21,7 +21,7 @@ public protocol Unbound: NoLowerbound & NoUpperbound {
     init(_ doubleValue: Double)
     init(_ intValue: Int)
     init(_ stringValue: String) throws
-    init<UE>(amount: UE) where UE: ExpressibleByAmount & Unbound
+    init<E>(_ other: E) where E: ExpressibleByAmount
     init(zil: Zil)
     init(li: Li)
     init(qa: Qa)
@@ -63,20 +63,20 @@ public extension ExpressibleByAmount where Self: Unbound {
 }
 
 public extension ExpressibleByAmount where Self: Unbound {
-    init<UE>(amount: UE) where UE: ExpressibleByAmount & Unbound {
-        self.init(qa: amount.qa)
+    init<E>(_ other: E) where E: ExpressibleByAmount {
+        self.init(qa: other.qa)
     }
 
     init(zil: Zil) {
-        self.init(amount: zil)
+        self.init(zil)
     }
 
     init(li: Li) {
-        self.init(amount: li)
+        self.init(li)
     }
 
     init(qa: Qa) {
-        self.init(amount: qa)
+        self.init(qa)
     }
 }
 
