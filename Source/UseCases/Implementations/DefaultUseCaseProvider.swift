@@ -19,7 +19,7 @@ extension KeyValueStore where KeyType == PreferencesKey {
 
 final class DefaultUseCaseProvider {
 
-    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.staging)
+    static let zilliqaAPIEnviroment: ZilliqaEnvironment = .testnet(.prod)
 
     static let shared = DefaultUseCaseProvider(
         zilliqaService: DefaultZilliqaService(environment: zilliqaAPIEnviroment).rx,

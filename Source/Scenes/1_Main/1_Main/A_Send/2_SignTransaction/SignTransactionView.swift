@@ -33,6 +33,7 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
+            viewModel.inputBecomeFirstResponder --> encryptionPassphraseField.rx.becomeFirstResponder,
             viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
             viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
             viewModel.isSignButtonLoading               --> signButton.rx.isLoading

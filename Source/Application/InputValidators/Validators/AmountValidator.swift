@@ -24,8 +24,8 @@ struct AmountValidator: InputValidator {
 private typealias € = L10n.Error.Input.Amount
 
 enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
-    case tooLarge(max: ConvertTo)
-    case tooSmall(min: ConvertTo)
+    case tooLarge(max: String, unit: Unit)
+    case tooSmall(min: String, unit: Unit)
     case nonNumericString
 
     init?(error: Swift.Error) {
@@ -44,21 +44,29 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
         }
     }
 
-    init<T>(zesameError: Zesame.AmountError<T>) where T: ExpressibleByAmount {
+    init<T>(zesameError: Zesame.AmountError<T>) where T: ExpressibleByAmount & Upperbound & Lowerbound {
         switch zesameError {
         case .nonNumericString: self = .nonNumericString
         case .tooLarge(let max):
-            self = .tooLarge(max: max.as(ConvertTo.self))
+            let convertedMax = max.asString(in: ConvertTo.unit)
+            self = .tooLarge(max: convertedMax, unit: ConvertTo.unit)
         case .tooSmall(let min):
-            self = .tooSmall(min: min.as(ConvertTo.self))
+            let convertedMin = min.asString(in: ConvertTo.unit)
+            self = .tooSmall(min: convertedMin, unit: ConvertTo.unit)
+        }
+    }
+
+    init<T>(zesameError: Zesame.AmountError<T>) where T: ExpressibleByAmount & Unbound {
+        switch zesameError {
+        case .nonNumericString: self = .nonNumericString
+        case .tooLarge, .tooSmall: incorrectImplementation("Unbound amounts should not throw `tooLarge` or `tooSmall` errors")
         }
     }
 
     var errorMessage: String {
-
         switch self {
-        case .tooLarge(let max): return €.tooLarge("\(max.formatted(unit: ConvertTo.unit)) \(ConvertTo.unit.name)")
-        case .tooSmall(let min): return €.tooSmall("\(min.formatted(unit: ConvertTo.unit)) \(ConvertTo.unit.name)")
+        case .tooLarge(let max, let unit): return €.tooLarge("\(max.thousands) \(unit.name)")
+        case .tooSmall(let min, let unit): return €.tooSmall("\(min.thousands) \(unit.name)")
         case .nonNumericString: return €.nonNumericString
         }
     }

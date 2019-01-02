@@ -81,7 +81,8 @@ final class SignTransactionViewModel: BaseViewModel<
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
             isSignButtonLoading: activityIndicator.asDriver(),
-            encryptionPassphraseValidation: encryptionPassphraseValidation
+            encryptionPassphraseValidation: encryptionPassphraseValidation,
+            inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
     }
 
@@ -99,6 +100,7 @@ extension SignTransactionViewModel {
         let isSignButtonEnabled: Driver<Bool>
         let isSignButtonLoading: Driver<Bool>
         let encryptionPassphraseValidation: Driver<Validation>
+        let inputBecomeFirstResponder: Driver<Void>
     }
 
     struct InputValidator {

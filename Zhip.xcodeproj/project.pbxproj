@@ -89,6 +89,7 @@
 		484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */; };
 		484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
+		485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AA29021DD303200E700C5 /* AmountFormatter.swift */; };
 		485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */; };
 		485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */; };
 		485AAC9821AAC6C9005C56CC /* InputValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */; };
@@ -356,8 +357,8 @@
 		4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOnboardingUseCase.swift; sourceTree = "<group>"; };
 		4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView_Extensions.swift; sourceTree = "<group>"; };
 		4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_Extensions.swift; sourceTree = "<group>"; };
-		484B063620BA0C2D00C4E50A /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Zhip.app; path = .app; sourceTree = BUILT_PRODUCTS_DIR; };
-		484B064A20BA0C2F00C4E50A /* Zhip.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Zhip.xctest; path = .xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		484B063620BA0C2D00C4E50A /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		484B064A20BA0C2F00C4E50A /* Zhip.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zhip.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyValidator.swift; sourceTree = "<group>"; };
 		484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidator.swift; sourceTree = "<group>"; };
 		4850A407214C122900EBB85B /* Mergeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
@@ -365,6 +366,7 @@
 		4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZhipTests-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B52194F92800030237 /* Zhip-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Release.xcconfig"; sourceTree = "<group>"; };
+		485AA29021DD303200E700C5 /* AmountFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
 		485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet_Hexadecimal.swift; sourceTree = "<group>"; };
 		485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleHexadecimalCharacters.swift; sourceTree = "<group>"; };
 		485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidationResult.swift; sourceTree = "<group>"; };
@@ -703,6 +705,7 @@
 				483CE98B2194E9E300BED31C /* Configurations */,
 				48BAC4D82195D2CE00A626FD /* Generated */,
 				485AAC9421AAC68E005C56CC /* InputValidators */,
+				485AA28F21DD301900E700C5 /* OutputFormatting */,
 				480935472195D1BE009CA3FD /* Localization */,
 				483CE9992194E9E300BED31C /* Navigation */,
 				483CE9B42194E9E300BED31C /* Persistence */,
@@ -950,6 +953,14 @@
 				48CA697C218352B200C05F5F /* Subclasses */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		485AA28F21DD301900E700C5 /* OutputFormatting */ = {
+			isa = PBXGroup;
+			children = (
+				485AA29021DD303200E700C5 /* AmountFormatter.swift */,
+			);
+			path = OutputFormatting;
 			sourceTree = "<group>";
 		};
 		485AAC9421AAC68E005C56CC /* InputValidators */ = {
@@ -2009,6 +2020,7 @@
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
 				48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */,
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
+				485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,
 				48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */,
 				48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */,
