@@ -1,6 +1,6 @@
 //
 //  WKWebView_Extensions.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-09-30.
 //  Copyright © 2018 Open Zesame. All rights reserved.

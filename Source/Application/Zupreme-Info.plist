@@ -31,7 +31,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string></string>
 			<key>CFBundleURLName</key>
-			<string>org.openzesame.Zupreme</string>
+			<string>org.openzesame.Zhip</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>zupreme</string>

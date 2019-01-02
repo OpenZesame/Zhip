@@ -1,6 +1,6 @@
 //
 //  Array_Extension.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-11-12.
 //  Copyright © 2018 Open Zesame. All rights reserved.

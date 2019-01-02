@@ -1,5 +1,5 @@
-#include "Zupreme.xcconfig"
+#include "Zhip.xcconfig"
 
-#include "Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme.debug.xcconfig"
+#include "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.debug.xcconfig"
 
 SWIFT_OPTIMIZATION_LEVEL = -Onone

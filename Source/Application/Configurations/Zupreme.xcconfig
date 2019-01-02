@@ -3,11 +3,11 @@
 
 SDKROOT = iphoneos
 
-PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.Zupreme
+PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.Zhip
 PRODUCT_NAME = $(_APP_NAME)
 
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
-INFOPLIST_FILE = Source/Application/Zupreme-Info.plist
+INFOPLIST_FILE = Source/Application/Zhip-Info.plist
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
 
@@ -16,5 +16,5 @@ ENABLE_TESTABILITY = YES
 CODE_SIGN_IDENTITY[config=Debug] = iPhone Developer
 CODE_SIGN_IDENTITY[config=Release] = iPhone Distribution
 DEVELOPMENT_TEAM = 7A6XYE8ZR7
-PROVISIONING_PROFILE_SPECIFIER[config=Debug] = match Development org.openzesame.Zupreme
-PROVISIONING_PROFILE_SPECIFIER[config=Release] = match AppStore org.openzesame.Zupreme
+PROVISIONING_PROFILE_SPECIFIER[config=Debug] = match Development org.openzesame.Zhip
+PROVISIONING_PROFILE_SPECIFIER[config=Release] = match AppStore org.openzesame.Zhip

@@ -1,6 +1,6 @@
 //
 //  UIView+Border.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-10-24.
 //  Copyright © 2018 Open Zesame. All rights reserved.
