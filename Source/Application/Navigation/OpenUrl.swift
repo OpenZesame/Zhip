@@ -16,7 +16,6 @@ func openUrl(string baseUrlString: String, relative path: String? = nil, tracker
     }
 
     guard let url = createUrl() else {
-        log.warning("Failed to create")
         tracker?.track(event: TrackedError.failedToCreateUrl(from: baseUrlString), context: context)
         return
     }

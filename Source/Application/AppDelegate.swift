@@ -41,13 +41,3 @@ extension AppDelegate: UIApplicationDelegate {
         appCoordinator.appWillResignActive()
     }
 }
-
-// MARK: Debugging
-extension UIApplication {
-    static func printCoordinatorStack() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            incorrectImplementation("UIApplication.shared.delegate should be AppDelegate")
-        }
-        log.debug(appDelegate.appCoordinator)
-    }
-}

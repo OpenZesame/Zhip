@@ -24,10 +24,6 @@ class ScrollView: UIScrollView {
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
-    deinit {
-        log.verbose("💣 \(type(of: self))")
-    }
-
     var contentView: UIView!
 
     // MARK: Overrideable

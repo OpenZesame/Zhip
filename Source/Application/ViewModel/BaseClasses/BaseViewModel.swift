@@ -23,8 +23,8 @@ class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: Abstrac
         self.navigator = navigator
     }
 
-    deinit {
-        log.verbose("💣 \(type(of: self))")
+    func track(event: TrackableEvent) {
+        navigator.track(event: event, context: self)
     }
 }
 

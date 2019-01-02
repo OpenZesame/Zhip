@@ -42,7 +42,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
 private extension MainCoordinator {
     func toSendPrefilTransaction() {
         guard childCoordinators.isEmpty else {
-            log.debug("Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented.")
+            // Prevented navigation to PrepareTransaction via deeplink since a coordinator is already presented
             return
         }
         toSend()

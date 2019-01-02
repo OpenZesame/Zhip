@@ -62,7 +62,7 @@ extension DeepLinkHandler {
         }
 
         guard let destination = DeepLink(url: url) else {
-            log.error("Unable to create destination from url: \(url)")
+            track(event: .failedToParseLink)
             return false
         }
 

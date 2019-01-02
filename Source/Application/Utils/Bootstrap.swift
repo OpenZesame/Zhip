@@ -16,6 +16,7 @@ let log = SwiftyBeaver.self
 func bootstrap() {
     AppAppearance.setupDefault()
     setupKeyboardHiding()
+
     setupLogging()
 }
 
@@ -24,6 +25,8 @@ private func setupKeyboardHiding() {
 }
 
 private func setupLogging() {
+     // only allow logging for Debug builds
+    guard isDebug else { return }
     let console = ConsoleDestination()
     console.minLevel = .verbose
     log.addDestination(console)

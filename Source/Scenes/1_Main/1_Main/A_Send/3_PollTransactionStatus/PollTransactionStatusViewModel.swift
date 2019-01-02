@@ -60,8 +60,6 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 				}
 				if case(.api(.timeout)) = error {
 					userDid(.waitUntilTimeout)
-				} else {
-					log.error("Error: \(error)")
 				}
 			}
 		)

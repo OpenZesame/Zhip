@@ -30,10 +30,6 @@ class BaseCoordinator<NavigationStep>: Coordinating, Navigating {
         self.navigationController = navigationController
     }
 
-    deinit {
-        log.verbose("💣 \(type(of: self))")
-    }
-
     // MARK: - Overridable
 
     /// Method to be overriden by coordinator implementations. This method is invoked by parent coodinator when this
