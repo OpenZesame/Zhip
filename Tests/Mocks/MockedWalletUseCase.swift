@@ -1,6 +1,6 @@
 //
 //  MockedWalletUseCase.swift
-//  Zupreme
+//  Zhip
 //
 //  Created by Alexander Cyon on 2018-12-18.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-@testable import Zupreme
+@testable import Zhip
 
 import RxSwift
 import RxCocoa
@@ -19,22 +19,22 @@ import Zesame
 
 final class MockedWalletUseCase: WalletUseCase {
 
-    var wallet: Zupreme.Wallet?
+    var wallet: Zhip.Wallet?
     var hasLoadWalletBeenCalled = false
 
-    init(wallet: Zupreme.Wallet) {
+    init(wallet: Zhip.Wallet) {
         self.wallet = wallet
     }
 
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Zupreme.Wallet> {
+    func createNewWallet(encryptionPassphrase: String) -> Observable<Zhip.Wallet> {
         abstract
     }
 
-    func restoreWallet(from restoration: KeyRestoration) -> Observable<Zupreme.Wallet> {
+    func restoreWallet(from restoration: KeyRestoration) -> Observable<Zhip.Wallet> {
         abstract
     }
 
-    func save(wallet: Zupreme.Wallet) {
+    func save(wallet: Zhip.Wallet) {
         self.wallet = wallet
     }
 
@@ -46,7 +46,7 @@ final class MockedWalletUseCase: WalletUseCase {
         abstract
     }
 
-    func loadWallet() -> Zupreme.Wallet? {
+    func loadWallet() -> Zhip.Wallet? {
         hasLoadWalletBeenCalled = true
         return wallet
     }

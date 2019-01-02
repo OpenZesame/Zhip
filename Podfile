@@ -46,10 +46,10 @@ def shared
   pod 'M13Checkbox'
 end
 
-target 'Zupreme' do
+target 'Zhip' do
   shared
 
-  target 'ZupremeTests' do
+  target 'ZhipTests' do
     inherit! :search_paths
     pod 'RxTest'
     pod 'RxBlocking'
@@ -73,7 +73,7 @@ pods_to_set_swift_verstion_to_42 = [
 post_install do |installer|
   # Acknowledgments: https://github.com/CocoaPods/CocoaPods/wiki/Acknowledgements
   require 'fileutils'
-  FileUtils.cp_r('Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme-acknowledgements.plist', 'Source/Application/Assets/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+  FileUtils.cp_r('Pods/Target Support Files/Pods-Zhip/Pods-Zhip-acknowledgements.plist', 'Source/Application/Assets/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
 
   installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|

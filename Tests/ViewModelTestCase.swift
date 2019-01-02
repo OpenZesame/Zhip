@@ -1,6 +1,6 @@
 //
 //  ViewModelTestCase.swift
-//  ZupremeTests
+//  ZhipTests
 //
 //  Created by Alexander Cyon on 2018-12-18.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import XCTest
-@testable import Zupreme
+@testable import Zhip
 
 import RxSwift
 import RxCocoa
@@ -33,14 +33,14 @@ extension ViewModelSpecifier {
 protocol ViewModelTesting: AnyObject, ViewModelSpecifier {
     var scheduler: TestScheduler { get set }
     var viewModel: ViewModel! { get set }
-    var cachedWallet: Zupreme.Wallet? { get set }
+    var cachedWallet: Zhip.Wallet? { get set }
 
     var emptyInputFromView: InputFromView { get }
 }
 
 extension ViewModelTesting {
 
-    func makeWallet(useCache: Bool = true, success: @escaping (Zupreme.Wallet) -> Void) {
+    func makeWallet(useCache: Bool = true, success: @escaping (Zhip.Wallet) -> Void) {
         if useCache, let cached = cachedWallet {
             return success(cached)
         }
@@ -53,7 +53,7 @@ extension ViewModelTesting {
                 return XCTFail()
             }
             let _wallet = Zesame.Wallet(keystore: keystore, address: address)
-            let wallet = Zupreme.Wallet(wallet: _wallet, origin: .importedPrivateKey)
+            let wallet = Zhip.Wallet(wallet: _wallet, origin: .importedPrivateKey)
             self.cachedWallet = wallet
             success(wallet)
         }

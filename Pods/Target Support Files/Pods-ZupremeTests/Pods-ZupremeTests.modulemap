@@ -1,6 +1,0 @@
-module Pods_ZupremeTests {
-  umbrella header "Pods-ZupremeTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

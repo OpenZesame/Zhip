@@ -1,13 +1,13 @@
 //
-//  ZupremeTests.swift
-//  ZupremeTests
+//  ZhipTests.swift
+//  ZhipTests
 //
 //  Created by Alexander Cyon on 2018-05-26.
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
 import XCTest
-@testable import Zupreme
+@testable import Zhip
 
 enum EnumWithAssociatedValue {
     case foo(Int)

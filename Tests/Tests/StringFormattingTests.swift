@@ -1,6 +1,6 @@
 //
 //  StringFormattingTests.swift
-//  ZupremeTests
+//  ZhipTests
 //
 //  Created by Alexander Cyon on 2018-12-26.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import XCTest
-@testable import Zupreme
+@testable import Zhip
 
 class StringFormattingTests: XCTestCase {
 

@@ -34,7 +34,7 @@
 			<string>org.openzesame.Zhip</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>zupreme</string>
+				<string>Zhip</string>
 			</array>
 		</dict>
 	</array>

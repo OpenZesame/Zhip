@@ -1,2 +1,2 @@
-_APP_NAME = Zupreme
+_APP_NAME = Zhip
 PRODUCT_NAME = $(_APP_NAME)

@@ -1,6 +1,0 @@
-module Pods_Zupreme {
-  umbrella header "Pods-Zupreme-umbrella.h"
-
-  export *
-  module * { export * }
-}

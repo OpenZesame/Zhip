@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C89F7165F988BE2FB42A729 /* libPods-Zupreme.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */; };
+		0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */; };
 		4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE72218369A7002734C8 /* UITextField+Rx.swift */; };
 		4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4806AE9521837F5F002734C8 /* QRCoding.swift */; };
 		4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 480935482195D1BE009CA3FD /* Localizable.strings */; };
@@ -100,8 +100,7 @@
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
 		486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C3621D21701006F3DFA /* TableViewCell.swift */; };
 		486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7A21D23A4C006F3DFA /* Digit.swift */; };
-		486D2C7E21D29E53006F3DFA /* StringFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */; };
-		4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */; };
+		4877B50021BFA36F00A94318 /* Zhip-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zhip-Tests-Info.plist */; };
 		487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */; };
 		487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E3219A2F4A00308550 /* Array_Extension.swift */; };
 		487C19E6219A2FCD00308550 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C19E5219A2FCD00308550 /* Weak.swift */; };
@@ -111,7 +110,6 @@
 		4898FB4521542333009501DC /* StackViewStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4421542333009501DC /* StackViewStyling.swift */; };
 		4898FB48215423D6009501DC /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* ScrollView.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
-		489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */; };
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
 		489EB0ED21C7E59100664AA7 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0EC21C7E59100664AA7 /* libRxTest.a */; };
 		489EB0EF21C7E5A700664AA7 /* libRxSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0EE21C7E5A700664AA7 /* libRxSwift.a */; };
@@ -137,6 +135,9 @@
 		48BAC4E12195D83000A626FD /* Assets-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAC4DF2195D83000A626FD /* Assets-Constants.swift */; };
 		48BAC4E32195E5F200A626FD /* ImageConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAC4E22195E5F200A626FD /* ImageConvertible.swift */; };
 		48C0613721BD3107006E3E0A /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C0613621BD3107006E3E0A /* Wallet.swift */; };
+		48C25DBE21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C25DBB21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift */; };
+		48C25DBF21DCD3BB00619620 /* AutoEnumCaseNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C25DBC21DCD3BB00619620 /* AutoEnumCaseNameTests.swift */; };
+		48C25DC021DCD3BB00619620 /* StringFormattingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C25DBD21DCD3BB00619620 /* StringFormattingTests.swift */; };
 		48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */; };
 		48C467BB219619CC006DA5EE /* Pincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C467BA219619CC006DA5EE /* Pincode.swift */; };
 		48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C467BC21986528006DA5EE /* InputPincodeView.swift */; };
@@ -153,7 +154,6 @@
 		48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
 		48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */; };
-		48D0881421C7810200A88859 /* PrepareTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */; };
 		48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
 		48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */; };
@@ -261,7 +261,7 @@
 		5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */; };
 		5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */; };
 		5BF1DFAC21A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */; };
-		7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */; };
+		7BFDCAE30FF2195FF7E88F54 /* libPods-ZhipTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -270,7 +270,7 @@
 			containerPortal = 484B062E20BA0C2D00C4E50A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 484B063520BA0C2D00C4E50A;
-			remoteInfo = ZilliqaSDKiOSZupreme;
+			remoteInfo = ZilliqaSDKiOSZhip;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -286,7 +286,7 @@
 		480B0E9621CE2C8E00A72133 /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		480B0E9821CF852600A72133 /* Rx+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Validation.swift"; sourceTree = "<group>"; };
 		480B0EBB21D0A74600A72133 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
-		4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZupremeTests.xcconfig; sourceTree = "<group>"; };
+		4811BA2021860B45005FB01C /* ZhipTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ZhipTests.xcconfig; sourceTree = "<group>"; };
 		4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalController.swift; sourceTree = "<group>"; };
 		4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalViewModel.swift; sourceTree = "<group>"; };
 		4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmWalletRemovalView.swift; sourceTree = "<group>"; };
@@ -307,7 +307,7 @@
 		4833C34E219221BC00D7D312 /* WalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUseCase.swift; sourceTree = "<group>"; };
 		48379C6B21AE925400B95DB9 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		483C0BDF219ECF89006947C7 /* ObserverType+BarButtonContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObserverType+BarButtonContent.swift"; sourceTree = "<group>"; };
-		483CE98C2194E9E300BED31C /* Zupreme.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Zupreme.xcconfig; sourceTree = "<group>"; };
+		483CE98C2194E9E300BED31C /* Zhip.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Zhip.xcconfig; sourceTree = "<group>"; };
 		483CE98E2194E9E300BED31C /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		483CE98F2194E9E300BED31C /* AbstractTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractTarget.swift; sourceTree = "<group>"; };
 		483CE9902194E9E300BED31C /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 		483CE9C02194E9E300BED31C /* KeyValueStoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueStoring.swift; sourceTree = "<group>"; };
 		483CE9C12194E9E300BED31C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		483CE9C32194E9E300BED31C /* TermsOfService.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = TermsOfService.html; sourceTree = "<group>"; };
-		483CE9C42194E9E300BED31C /* Zupreme-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Info.plist"; sourceTree = "<group>"; };
+		483CE9C42194E9E300BED31C /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
 		483DDEA8219B6448009D3F4C /* PincodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PincodeUseCase.swift; sourceTree = "<group>"; };
 		483DDEAA219B6456009D3F4C /* DefaultPincodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPincodeUseCase.swift; sourceTree = "<group>"; };
 		483DDECB219CB860009D3F4C /* InputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputType.swift; sourceTree = "<group>"; };
@@ -356,16 +356,15 @@
 		4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultOnboardingUseCase.swift; sourceTree = "<group>"; };
 		4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView_Extensions.swift; sourceTree = "<group>"; };
 		4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_Extensions.swift; sourceTree = "<group>"; };
-		484B063620BA0C2D00C4E50A /* Zupreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zupreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		484B064A20BA0C2F00C4E50A /* Zupreme.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zupreme.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
+		484B063620BA0C2D00C4E50A /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Zhip.app; path = .app; sourceTree = BUILT_PRODUCTS_DIR; };
+		484B064A20BA0C2F00C4E50A /* Zhip.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Zhip.xctest; path = .xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyValidator.swift; sourceTree = "<group>"; };
 		484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidator.swift; sourceTree = "<group>"; };
 		4850A407214C122900EBB85B /* Mergeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
-		4858D7B22194F91A00030237 /* ZupremeTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Release.xcconfig"; sourceTree = "<group>"; };
-		4858D7B32194F91B00030237 /* ZupremeTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZupremeTests-Debug.xcconfig"; sourceTree = "<group>"; };
-		4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Debug.xcconfig"; sourceTree = "<group>"; };
-		4858D7B52194F92800030237 /* Zupreme-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zupreme-Release.xcconfig"; sourceTree = "<group>"; };
+		4858D7B22194F91A00030237 /* ZhipTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZhipTests-Release.xcconfig"; sourceTree = "<group>"; };
+		4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZhipTests-Debug.xcconfig"; sourceTree = "<group>"; };
+		4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Debug.xcconfig"; sourceTree = "<group>"; };
+		4858D7B52194F92800030237 /* Zhip-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Release.xcconfig"; sourceTree = "<group>"; };
 		485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet_Hexadecimal.swift; sourceTree = "<group>"; };
 		485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleHexadecimalCharacters.swift; sourceTree = "<group>"; };
 		485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidationResult.swift; sourceTree = "<group>"; };
@@ -377,8 +376,7 @@
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
 		486D2C3621D21701006F3DFA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		486D2C7A21D23A4C006F3DFA /* Digit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Digit.swift; sourceTree = "<group>"; };
-		486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormattingTests.swift; sourceTree = "<group>"; };
-		4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zupreme-Tests-Info.plist"; sourceTree = "<group>"; };
+		4877B4FF21BFA36F00A94318 /* Zhip-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Tests-Info.plist"; sourceTree = "<group>"; };
 		487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+CustomStringConvertible.swift"; sourceTree = "<group>"; };
 		487C19E3219A2F4A00308550 /* Array_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array_Extension.swift; sourceTree = "<group>"; };
 		487C19E5219A2FCD00308550 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
@@ -413,6 +411,9 @@
 		48BAC4DF2195D83000A626FD /* Assets-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Assets-Constants.swift"; sourceTree = "<group>"; };
 		48BAC4E22195E5F200A626FD /* ImageConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConvertible.swift; sourceTree = "<group>"; };
 		48C0613621BD3107006E3E0A /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		48C25DBB21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareTransactionViewModelTests.swift; sourceTree = "<group>"; };
+		48C25DBC21DCD3BB00619620 /* AutoEnumCaseNameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoEnumCaseNameTests.swift; sourceTree = "<group>"; };
+		48C25DBD21DCD3BB00619620 /* StringFormattingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringFormattingTests.swift; sourceTree = "<group>"; };
 		48C44434218C602A00C0D201 /* Bundle+Version+Build.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Version+Build.swift"; sourceTree = "<group>"; };
 		48C467BA219619CC006DA5EE /* Pincode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pincode.swift; sourceTree = "<group>"; };
 		48C467BC21986528006DA5EE /* InputPincodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPincodeView.swift; sourceTree = "<group>"; };
@@ -429,7 +430,6 @@
 		48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutPriority_Extension.swift; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
 		48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder_Extensions.swift; sourceTree = "<group>"; };
-		48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareTransactionViewModelTests.swift; sourceTree = "<group>"; };
 		48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutOwner.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
@@ -537,8 +537,8 @@
 		5BF1DFA721A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsViewModel.swift; sourceTree = "<group>"; };
 		5BF1DFA821A4288E00FE8068 /* AskForAnalyticsPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissions.swift; sourceTree = "<group>"; };
 		5BF1DFA921A4288E00FE8068 /* AskForAnalyticsPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForAnalyticsPermissionsView.swift; sourceTree = "<group>"; };
-		71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZupremeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zupreme.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZhipTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zhip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,7 +546,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C89F7165F988BE2FB42A729 /* libPods-Zupreme.a in Frameworks */,
+				0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,7 +557,7 @@
 				489EB0F221C8FAAD00664AA7 /* libRxCocoa.a in Frameworks */,
 				489EB0EF21C7E5A700664AA7 /* libRxSwift.a in Frameworks */,
 				489EB0ED21C7E59100664AA7 /* libRxTest.a in Frameworks */,
-				7BFDCAE30FF2195FF7E88F54 /* libPods-ZupremeTests.a in Frameworks */,
+				7BFDCAE30FF2195FF7E88F54 /* libPods-ZhipTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,17 +642,6 @@
 			path = 1_ScanQR;
 			sourceTree = "<group>";
 		};
-		4819BDC321C5169200443F2A /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				484B067B20BA0D2C00C4E50A /* AutoEnumCaseNameTests.swift */,
-				486D2C7C21D29E47006F3DFA /* StringFormattingTests.swift */,
-				48D0881321C7810200A88859 /* PrepareTransactionViewModelTests.swift */,
-			);
-			name = Tests;
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		48241B4A21B1575A0054ED8E /* Coordinating */ = {
 			isa = PBXGroup;
 			children = (
@@ -705,7 +694,7 @@
 		483CE98A2194E9E300BED31C /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				483CE9C42194E9E300BED31C /* Zupreme-Info.plist */,
+				483CE9C42194E9E300BED31C /* Zhip-Info.plist */,
 				483CE99B2194E9E300BED31C /* AppCoordinator.swift */,
 				483CE9C12194E9E300BED31C /* AppDelegate.swift */,
 				483CE9982194E9E300BED31C /* Assets.xcassets */,
@@ -726,9 +715,9 @@
 		483CE98B2194E9E300BED31C /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				483CE98C2194E9E300BED31C /* Zupreme.xcconfig */,
-				4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */,
-				4858D7B52194F92800030237 /* Zupreme-Release.xcconfig */,
+				483CE98C2194E9E300BED31C /* Zhip.xcconfig */,
+				4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */,
+				4858D7B52194F92800030237 /* Zhip-Release.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -899,8 +888,8 @@
 		484B063720BA0C2D00C4E50A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				484B063620BA0C2D00C4E50A /* Zupreme.app */,
-				484B064A20BA0C2F00C4E50A /* Zupreme.xctest */,
+				484B063620BA0C2D00C4E50A /* Zhip.app */,
+				484B064A20BA0C2F00C4E50A /* Zhip.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -908,9 +897,9 @@
 		484B067820BA0D2C00C4E50A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				48C25DBA21DCD3BB00619620 /* Tests */,
 				489EB0F921C902D200664AA7 /* Extensions */,
 				489EB0F321C9024C00664AA7 /* Mocks */,
-				4819BDC321C5169200443F2A /* Tests */,
 				489CDBA02143E27500318450 /* Configurations */,
 				484B067920BA0D2C00C4E50A /* SupportingFiles */,
 				489EB10021C9066200664AA7 /* ViewModelTestCase.swift */,
@@ -921,7 +910,7 @@
 		484B067920BA0D2C00C4E50A /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				4877B4FF21BFA36F00A94318 /* Zupreme-Tests-Info.plist */,
+				4877B4FF21BFA36F00A94318 /* Zhip-Tests-Info.plist */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -946,8 +935,8 @@
 				489EB0F121C8FAAD00664AA7 /* libRxCocoa.a */,
 				489EB0EE21C7E5A700664AA7 /* libRxSwift.a */,
 				489EB0EC21C7E59100664AA7 /* libRxTest.a */,
-				CE78846B53E531ED7D309BA6 /* libPods-Zupreme.a */,
-				71461FDB24E2088DB0EDFB36 /* libPods-ZupremeTests.a */,
+				CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */,
+				71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1001,9 +990,9 @@
 		489CDBA02143E27500318450 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				4858D7B32194F91B00030237 /* ZupremeTests-Debug.xcconfig */,
-				4858D7B22194F91A00030237 /* ZupremeTests-Release.xcconfig */,
-				4811BA2021860B45005FB01C /* ZupremeTests.xcconfig */,
+				4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */,
+				4858D7B22194F91A00030237 /* ZhipTests-Release.xcconfig */,
+				4811BA2021860B45005FB01C /* ZhipTests.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
@@ -1132,6 +1121,16 @@
 				48BAC4DE2195D83000A626FD /* L10n-Constants.swift */,
 			);
 			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		48C25DBA21DCD3BB00619620 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				48C25DBB21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift */,
+				48C25DBC21DCD3BB00619620 /* AutoEnumCaseNameTests.swift */,
+				48C25DBD21DCD3BB00619620 /* StringFormattingTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		48C467EC2198936F006DA5EE /* InputPincodeView */ = {
@@ -1638,9 +1637,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		484B063520BA0C2D00C4E50A /* Zupreme */ = {
+		484B063520BA0C2D00C4E50A /* Zhip */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zupreme" */;
+			buildConfigurationList = 484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zhip" */;
 			buildPhases = (
 				1D4F5CBD7BA4C346FE074D7D /* [CP] Check Pods Manifest.lock */,
 				4802C7802194FFB7004E4980 /* ✅ SwiftLint */,
@@ -1654,14 +1653,14 @@
 			);
 			dependencies = (
 			);
-			name = Zupreme;
-			productName = ZilliqaSDKiOSZupreme;
-			productReference = 484B063620BA0C2D00C4E50A /* Zupreme.app */;
+			name = Zhip;
+			productName = ZilliqaSDKiOSZhip;
+			productReference = 484B063620BA0C2D00C4E50A /* Zhip.app */;
 			productType = "com.apple.product-type.application";
 		};
-		484B064920BA0C2F00C4E50A /* ZupremeTests */ = {
+		484B064920BA0C2F00C4E50A /* ZhipTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 484B066120BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "ZupremeTests" */;
+			buildConfigurationList = 484B066120BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "ZhipTests" */;
 			buildPhases = (
 				85D8528398A840E47CCD4B93 /* [CP] Check Pods Manifest.lock */,
 				484B064620BA0C2F00C4E50A /* Sources */,
@@ -1673,9 +1672,9 @@
 			dependencies = (
 				484B064C20BA0C2F00C4E50A /* PBXTargetDependency */,
 			);
-			name = ZupremeTests;
-			productName = ZilliqaSDKiOSZupremeTests;
-			productReference = 484B064A20BA0C2F00C4E50A /* Zupreme.xctest */;
+			name = ZhipTests;
+			productName = ZilliqaSDKiOSZhipTests;
+			productReference = 484B064A20BA0C2F00C4E50A /* Zhip.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1702,7 +1701,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 484B063120BA0C2D00C4E50A /* Build configuration list for PBXProject "Zupreme" */;
+			buildConfigurationList = 484B063120BA0C2D00C4E50A /* Build configuration list for PBXProject "Zhip" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1715,8 +1714,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				484B063520BA0C2D00C4E50A /* Zupreme */,
-				484B064920BA0C2F00C4E50A /* ZupremeTests */,
+				484B063520BA0C2D00C4E50A /* Zhip */,
+				484B064920BA0C2F00C4E50A /* ZhipTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1742,7 +1741,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4877B50021BFA36F00A94318 /* Zupreme-Tests-Info.plist in Resources */,
+				4877B50021BFA36F00A94318 /* Zhip-Tests-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1757,7 +1756,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resources/IQKeyboardManager.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1768,7 +1767,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zupreme/Pods-Zupreme-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1D4F5CBD7BA4C346FE074D7D /* [CP] Check Pods Manifest.lock */ = {
@@ -1786,7 +1785,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Zupreme-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Zhip-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1844,7 +1843,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ZupremeTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ZhipTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2097,12 +2096,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48D0881421C7810200A88859 /* PrepareTransactionViewModelTests.swift in Sources */,
 				489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */,
 				489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */,
-				486D2C7E21D29E53006F3DFA /* StringFormattingTests.swift in Sources */,
-				489CDB9A2143E0CC00318450 /* AutoEnumCaseNameTests.swift in Sources */,
 				489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */,
+				48C25DC021DCD3BB00619620 /* StringFormattingTests.swift in Sources */,
+				48C25DBF21DCD3BB00619620 /* AutoEnumCaseNameTests.swift in Sources */,
+				48C25DBE21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift in Sources */,
 				489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */,
 				489EB0F821C9028800664AA7 /* MockedTransactionUseCase.swift in Sources */,
 			);
@@ -2113,7 +2112,7 @@
 /* Begin PBXTargetDependency section */
 		484B064C20BA0C2F00C4E50A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 484B063520BA0C2D00C4E50A /* Zupreme */;
+			target = 484B063520BA0C2D00C4E50A /* Zhip */;
 			targetProxy = 484B064B20BA0C2F00C4E50A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2156,7 +2155,7 @@
 		};
 		484B065F20BA0C2F00C4E50A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4858D7B42194F92800030237 /* Zupreme-Debug.xcconfig */;
+			baseConfigurationReference = 4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */;
 			buildSettings = {
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -2164,21 +2163,21 @@
 		};
 		484B066020BA0C2F00C4E50A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4858D7B52194F92800030237 /* Zupreme-Release.xcconfig */;
+			baseConfigurationReference = 4858D7B52194F92800030237 /* Zhip-Release.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		484B066220BA0C2F00C4E50A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4858D7B32194F91B00030237 /* ZupremeTests-Debug.xcconfig */;
+			baseConfigurationReference = 4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */;
 			buildSettings = {
 			};
 			name = Debug;
 		};
 		484B066320BA0C2F00C4E50A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4858D7B22194F91A00030237 /* ZupremeTests-Release.xcconfig */;
+			baseConfigurationReference = 4858D7B22194F91A00030237 /* ZhipTests-Release.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
@@ -2186,7 +2185,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		484B063120BA0C2D00C4E50A /* Build configuration list for PBXProject "Zupreme" */ = {
+		484B063120BA0C2D00C4E50A /* Build configuration list for PBXProject "Zhip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				484B065C20BA0C2F00C4E50A /* Debug */,
@@ -2195,7 +2194,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zupreme" */ = {
+		484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zhip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				484B065F20BA0C2F00C4E50A /* Debug */,
@@ -2204,7 +2203,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		484B066120BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "ZupremeTests" */ = {
+		484B066120BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "ZhipTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				484B066220BA0C2F00C4E50A /* Debug */,

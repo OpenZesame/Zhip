@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_ZupremeVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_ZupremeVersionString[];
+FOUNDATION_EXPORT double Pods_ZhipVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_ZhipVersionString[];
 

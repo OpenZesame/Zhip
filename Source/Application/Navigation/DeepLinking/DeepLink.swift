@@ -22,7 +22,7 @@ extension DeepLink {
 
 extension DeepLink {
     
-    static let scheme: String = "zupreme://"
+    static let scheme: String = "zhip://"
 
     enum Path: String, CaseIterable {
         case send

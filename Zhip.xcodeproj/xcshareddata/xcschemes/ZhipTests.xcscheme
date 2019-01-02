@@ -9,15 +9,15 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "484B063520BA0C2D00C4E50A"
-               BuildableName = "Zupreme.app"
-               BlueprintName = "Zupreme"
-               ReferencedContainer = "container:Zupreme.xcodeproj">
+               BlueprintIdentifier = "484B064920BA0C2F00C4E50A"
+               BuildableName = "Zhip.xctest"
+               BlueprintName = "ZhipTests"
+               ReferencedContainer = "container:Zhip.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,21 +33,12 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "484B064920BA0C2F00C4E50A"
-               BuildableName = "Zupreme.xctest"
-               BlueprintName = "ZupremeTests"
-               ReferencedContainer = "container:Zupreme.xcodeproj">
+               BuildableName = "Zhip.xctest"
+               BlueprintName = "ZhipTests"
+               ReferencedContainer = "container:Zhip.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "484B063520BA0C2D00C4E50A"
-            BuildableName = "Zupreme.app"
-            BlueprintName = "Zupreme"
-            ReferencedContainer = "container:Zupreme.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -61,16 +52,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "484B063520BA0C2D00C4E50A"
-            BuildableName = "Zupreme.app"
-            BlueprintName = "Zupreme"
-            ReferencedContainer = "container:Zupreme.xcodeproj">
+            BlueprintIdentifier = "484B064920BA0C2F00C4E50A"
+            BuildableName = "Zhip.xctest"
+            BlueprintName = "ZhipTests"
+            ReferencedContainer = "container:Zhip.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,16 +70,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "484B063520BA0C2D00C4E50A"
-            BuildableName = "Zupreme.app"
-            BlueprintName = "Zupreme"
-            ReferencedContainer = "container:Zupreme.xcodeproj">
+            BlueprintIdentifier = "484B064920BA0C2F00C4E50A"
+            BuildableName = "Zhip.xctest"
+            BlueprintName = "ZhipTests"
+            ReferencedContainer = "container:Zhip.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

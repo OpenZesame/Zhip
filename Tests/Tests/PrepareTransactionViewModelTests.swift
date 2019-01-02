@@ -1,6 +1,6 @@
 //
 //  PrepareTransactionViewModelTests.swift
-//  ZupremeTests
+//  ZhipTests
 //
 //  Created by Alexander Cyon on 2018-12-17.
 //  Copyright © 2018 Open Zesame. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import XCTest
-@testable import Zupreme
+@testable import Zhip
 
 import RxSwift
 import RxCocoa
@@ -22,7 +22,7 @@ import Zesame
 //
 //    var scheduler = TestScheduler(initialClock: 0)
 //    var viewModel: ViewModel!
-//    var cachedWallet: Zupreme.Wallet?
+//    var cachedWallet: Zhip.Wallet?
 //
 //    private var deeplinkedTxSubject: PublishSubject<TransactionIntent>!
 //    private var mockedWalletUseCase: MockedWalletUseCase!
@@ -36,7 +36,7 @@ import Zesame
 //
 //        deeplinkedTxSubject = PublishSubject<TransactionIntent>()
 //
-//        var wallet: Zupreme.Wallet!
+//        var wallet: Zhip.Wallet!
 //
 //        makeWallet() {
 //            wallet = $0

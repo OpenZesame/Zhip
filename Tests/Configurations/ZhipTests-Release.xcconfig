@@ -1,0 +1,3 @@
+#include "ZhipTests.xcconfig"
+
+#include "Pods/Target Support Files/Pods-ZhipTests/Pods-ZhipTests.release.xcconfig"
