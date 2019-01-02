@@ -51,10 +51,12 @@ public extension ExpressibleByAmount where Self: Unbound {
         self.init(Magnitude(intValue))
     }
 
-    init(_ stringValue: String) throws {
-        if let mag = Magnitude(decimalString: stringValue) {
+    init(_ untrimmed: String) throws {
+        let whiteSpacesRemoved = untrimmed.replacingOccurrences(of: " ", with: "")
+        print("untrimmed: \(untrimmed), whiteSpacesRemoved: \(whiteSpacesRemoved)")
+        if let mag = Magnitude(decimalString: whiteSpacesRemoved) {
             self = Self.init(mag)
-        } else if let double = Double(stringValue) {
+        } else if let double = Double(whiteSpacesRemoved) {
             self.init(double)
         } else {
             throw AmountError<Self>.nonNumericString
@@ -82,7 +84,7 @@ public extension ExpressibleByAmount where Self: Unbound {
 
 public extension ExpressibleByAmount where Self: Unbound {
     init(zil zilString: String) throws {
-        self.init(zil: try Zil(zilString))
+        self.init(zil: try Zil.init(zilString))
     }
 
     init(li liString: String) throws {

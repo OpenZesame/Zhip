@@ -55,10 +55,11 @@ public extension ExpressibleByAmount where Self: Bound {
         try self.init(Magnitude(intValue))
     }
 
-    init(_ stringValue: String) throws {
-        if let value = Magnitude(decimalString: stringValue) {
+    init(_ untrimmed: String) throws {
+        let whiteSpacesRemoved = untrimmed.replacingOccurrences(of: " ", with: "")
+        if let value = Magnitude(decimalString: whiteSpacesRemoved) {
            try self.init(try Self.validate(value: value))
-        } else if let double = Double(stringValue) {
+        } else if let double = Double(whiteSpacesRemoved) {
             try self.init(double)
         } else {
             throw AmountError<Self>.nonNumericString
