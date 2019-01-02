@@ -9,6 +9,7 @@
 import Foundation
 import IQKeyboardManagerSwift
 import SwiftyBeaver
+import Firebase
 
 /// The global logger used throughout the app.
 let log = SwiftyBeaver.self
@@ -16,8 +17,24 @@ let log = SwiftyBeaver.self
 func bootstrap() {
     AppAppearance.setupDefault()
     setupKeyboardHiding()
-
+    setupAnalyticsIfAllowed()
     setupLogging()
+}
+
+func setupAnalyticsIfAllowed() {
+    guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else {
+        // unsure if this does anything or if it is needed, but seems prudent.
+        FirebaseApp.app()?.delete { _ in
+            /* some required strange ObjC callback that we dont care about `- (void)deleteApp:(FIRAppVoidBoolCallback)completion;` */
+        }
+        return
+    }
+    guard FirebaseApp.app() == nil else {
+        // already configured, will crash if called twice
+        return
+    }
+    FirebaseConfiguration().setLoggerLevel(FirebaseLoggerLevel.min)
+    FirebaseApp.configure()
 }
 
 private func setupKeyboardHiding() {

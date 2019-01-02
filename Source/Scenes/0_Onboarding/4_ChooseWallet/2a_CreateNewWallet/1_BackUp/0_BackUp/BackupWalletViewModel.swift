@@ -68,7 +68,7 @@ final class BackupWalletViewModel: BaseViewModel<
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
                 .do(onNext: { (keystoreText: String) -> Void in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyKeystore))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyKeystore))
                 }).drive(),
 
             input.fromView.revealKeystoreTrigger

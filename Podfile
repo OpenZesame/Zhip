@@ -6,6 +6,10 @@ def shared
   # The Zilliqa Swift SDK
   pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'master'
 
+  # Used for logging, search for "TrackableEvent" in the code base to see which events
+  # are being logged
+  pod 'Firebase/Core'
+
   # RxSwift made this app
   pod 'RxCocoa'
 

@@ -79,7 +79,7 @@ final class ReceiveViewModel: BaseViewModel<
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅ " + €.Event.Toast.didCopyAddress))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyAddress))
                 }).drive(),
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)

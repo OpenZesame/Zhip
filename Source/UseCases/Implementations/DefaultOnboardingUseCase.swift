@@ -41,6 +41,7 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
     func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
         preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
         preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)
+        setupAnalyticsIfAllowed()
     }
 
     func doNotShowERC20WarningAgain() {

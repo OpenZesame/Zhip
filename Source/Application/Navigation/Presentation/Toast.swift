@@ -19,7 +19,7 @@ struct Toast {
     private let dismissing: Dismissing
     private let completion: Completion?
 
-    init(_ message: String, dismissing: Dismissing = .after(duration: 1.2), completion: Completion? = nil) {
+    init(_ message: String, dismissing: Dismissing = .after(duration: 0.6), completion: Completion? = nil) {
         self.message = message
         self.dismissing = dismissing
         self.completion = completion

@@ -44,7 +44,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             input.fromView.copyTrigger.withLatestFrom(keystore)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    let toast = Toast("✅" + €.Event.Toast.didCopyKeystore)
+                    let toast = Toast(€.Event.Toast.didCopyKeystore)
                     input.fromController.toastSubject.onNext(toast)
                 })
                 .drive()

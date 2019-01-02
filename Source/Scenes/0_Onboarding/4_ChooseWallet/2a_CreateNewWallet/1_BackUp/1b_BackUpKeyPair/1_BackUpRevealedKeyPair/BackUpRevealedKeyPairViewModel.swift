@@ -48,13 +48,13 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyPrivateKey))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPrivateKey))
                 }).drive(),
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast("✅" + €.Event.Toast.didCopyPublicKey))
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPublicKey))
                 }).drive()
         ]
 

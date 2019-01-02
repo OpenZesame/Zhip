@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 /// Type that can track events and sending them to some third party network storage
 struct Tracker {
@@ -34,6 +35,9 @@ extension Tracker: Tracking {
         } else {
             context = event.eventContext
         }
-        log.verbose("🌍 Tracked: \(context):\(event.eventName)")
+
+        Firebase.Analytics.logEvent(event.eventName, parameters: [
+            "Context": context
+        ])
     }
 }

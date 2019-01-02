@@ -44,6 +44,10 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		self.scannedOrDeeplinkedTransaction = scannedOrDeeplinkedTransaction
 	}
 
+    enum Event: String, TrackableEvent {
+        case maxAmount
+    }
+
 	// swiftlint:disable:next function_body_length
 	override func transform(input: Input) -> Output {
 		func userIntends(to intention: NavigationStep) {
@@ -96,9 +100,11 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let gasPrice = gasPriceValidationValue.map { $0.value }
 
+        let maxAmountTrigger = input.fromView.maxAmountTrigger.do(onNext: { [unowned self] in self.track(event: Event.maxAmount) })
+
         let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
             input.fromView.didEndEditingGasPrice,
-            input.fromView.maxAmountTrigger
+            maxAmountTrigger
         )
 
 		let gasPriceValidation = Driver.merge(
@@ -121,7 +127,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 amountWithoutSufficientFundsCheck,
 
                 // Max trigger -> Balance SUBTRACT GasPrice (default to min)
-                input.fromView.maxAmountTrigger.withLatestFrom(
+                maxAmountTrigger.withLatestFrom(
                     Driver.combineLatest(
                         balance.startWith(_startingBalance),
                         gasPrice.startWith(_startingGasPrice)

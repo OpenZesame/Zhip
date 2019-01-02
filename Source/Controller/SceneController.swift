@@ -64,6 +64,11 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         applyLayoutIfNeeded()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logSceneAppearanceToAnalyticsIfAllowed()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -144,6 +149,11 @@ private extension SceneController {
         }
 
         navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+    }
+
+    func logSceneAppearanceToAnalyticsIfAllowed() {
+        guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
+        GlobalTracker.shared.track(scene: self)
     }
 }
 
