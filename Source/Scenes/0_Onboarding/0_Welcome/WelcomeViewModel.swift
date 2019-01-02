@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum WelcomeUserAction: TrackedUserAction {
+enum WelcomeUserAction: String, TrackedUserAction {
     case /*user intends to*/start
 }
 

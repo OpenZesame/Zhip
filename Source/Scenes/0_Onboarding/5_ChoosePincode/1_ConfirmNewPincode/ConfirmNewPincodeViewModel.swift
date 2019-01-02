@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 
 // MARK: - ConfirmNewPincodeUserAction
-enum ConfirmNewPincodeUserAction: TrackedUserAction {
+enum ConfirmNewPincodeUserAction: String, TrackedUserAction {
     case confirmPincode
     case skip
 }

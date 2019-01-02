@@ -14,9 +14,17 @@ import Zesame
 private typealias € = L10n.Scene.Receive
 
 // MARK: - ReceiveUserAction
-enum ReceiveUserAction: TrackedUserAction {
+enum ReceiveUserAction: TrackableEvent {
     case finish
     case requestTransaction(TransactionIntent)
+
+    // Analytics
+    var eventName: String {
+        switch self {
+        case .finish: return "finish"
+        case .requestTransaction: return "requestTransaction"
+        }
+    }
 }
 
 // MARK: - ReceiveViewModel

@@ -113,7 +113,7 @@ internal enum L10n {
         internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer")
       }
       internal enum Text {
-        /// Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        /// We would love to improve this app by collecting and analyzing anonymized events sent by the app while you are using it. Such events could for example be menu selections and button taps (so we know if you use the QR code scanning feature for example). You can opt out of this at anytime from the settings menu. We never send any sensitive information of course, which you can verify yourself since this app is open source. Search for 'TrackableEvent' in the source code (you will find a link to Github in the settings meny).
         internal static let disclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Text.Disclaimer")
       }
     }

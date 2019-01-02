@@ -49,7 +49,7 @@
 
 // MARK: AskForAnalyticsPermissions
 "Scene.AskForAnalyticsPermissions.Title" = "Analytics";
-"Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+"Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "We would love to improve this app by collecting and analyzing anonymized events sent by the app while you are using it. Such events could for example be menu selections and button taps (so we know if you use the QR code scanning feature for example). You can opt out of this at anytime from the settings menu. We never send any sensitive information of course, which you can verify yourself since this app is open source. Search for 'TrackableEvent' in the source code (you will find a link to Github in the settings meny).";
 "Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer" = "I have read and understood the analytics disclaimer";
 "Scene.AskForAnalyticsPermissions.Button.Accept" = "Accept";
 "Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";

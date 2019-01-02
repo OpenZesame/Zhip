@@ -12,14 +12,23 @@ import RxCocoa
 import Zesame
 
 // MARK: - PrepareTransactionUserAction
-enum PrepareTransactionUserAction: TrackedUserAction {
+enum PrepareTransactionUserAction: TrackableEvent {
 	case cancel
 	case signPayment(Payment)
 	case scanQRCode
+
+    var eventName: String {
+        switch self {
+        case .cancel: return "cancel"
+        case .signPayment: return "signPayment"
+        case .scanQRCode: return "scanQRCode"
+        }
+    }
 }
 
 // MARK: - PrepareTransactionViewModel
 private typealias € = L10n.Scene.PrepareTransaction
+// swiftlint:disable:next type_body_length
 final class PrepareTransactionViewModel: BaseViewModel<
 	PrepareTransactionUserAction,
 	PrepareTransactionViewModel.InputFromView,

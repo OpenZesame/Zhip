@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 
 // MARK: SettingsNavigation
-enum SettingsNavigation: TrackedUserAction {
+enum SettingsNavigation: String, TrackedUserAction {
     // Navigation Bar
     case closeSettings
 
@@ -117,7 +117,7 @@ private extension SettingsViewModel {
             .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
             .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning, icon: Icon.warning),
             // TOOO change icon when asset available
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.camera)
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.document)
         ]
 
         sections += [
@@ -126,8 +126,8 @@ private extension SettingsViewModel {
         ]
 
         sections += [
-            // TODO chang from cell to table footer, without any action
-            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString, icon: Icon.cup)
+            // TODO change from cell to table footer, without any action
+            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString, icon: nil)
         ]
 
         return sections

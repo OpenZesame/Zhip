@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - WarningERC20UserAction
-enum WarningERC20UserAction: TrackedUserAction {
+enum WarningERC20UserAction: String, TrackedUserAction {
     case understandRisks
 }
 

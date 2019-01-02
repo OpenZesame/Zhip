@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - AnalyticsPermissionNavigation
-enum AskForAnalyticsPermissionsNavigation: TrackedUserAction {
+enum AskForAnalyticsPermissionsNavigation: String, TrackedUserAction {
     case answerQuestionAboutAnalyticsPermission
 }
 

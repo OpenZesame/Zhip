@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: TermsOfServiceNavigation
-enum TermsOfServiceNavigation: TrackedUserAction {
+enum TermsOfServiceNavigation: String, TrackedUserAction {
     case acceptTermsOfService
 }
 

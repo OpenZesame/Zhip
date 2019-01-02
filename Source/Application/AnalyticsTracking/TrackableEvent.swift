@@ -14,17 +14,14 @@ protocol TrackableEvent {
     var eventContext: String { get }
 }
 
+extension TrackableEvent where Self: RawRepresentable, Self.RawValue == String {
+    var eventName: String {
+        return rawValue
+    }
+}
+
 // MARK: Default Implemtation for `enum` that do not have RawTypes, using reflection
 extension TrackableEvent {
-    var eventName: String {
-        if isEnum(type: self) {
-            guard let nameOfEnumCase = nameOf(enumCase: self) else { incorrectImplementation("Fix the code that recursivly extracts name of nested enums, it contains some bug.") }
-            return nameOfEnumCase
-        } else {
-            incorrectImplementation("You need to conform to `TrackableEvent`")
-        }
-    }
-
     var eventContext: String {
         return String(describing: type(of: self))
     }

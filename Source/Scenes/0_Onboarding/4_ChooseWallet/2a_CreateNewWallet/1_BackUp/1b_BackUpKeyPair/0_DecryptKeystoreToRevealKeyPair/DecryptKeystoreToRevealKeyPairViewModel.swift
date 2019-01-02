@@ -11,14 +11,15 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-enum DecryptKeystoreToRevealKeyPairUserAction: TrackedUserAction {
+enum DecryptKeystoreToRevealKeyPairUserAction: TrackableEvent {
     case dismiss
     case decryptKeystoreReavealing(keyPair: KeyPair)
-    // Explicitly implement `eventName` to omitt sensitive data
+
+    // Analytics
     var eventName: String {
         switch self {
         case .dismiss: return "dismiss"
-        case .decryptKeystoreReavealing: return "decryptKeystore"
+        case .decryptKeystoreReavealing: return "decryptKeystoreReavealing"
         }
     }
 }

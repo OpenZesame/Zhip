@@ -14,7 +14,7 @@ import Zesame
 private typealias € = L10n.Scene.BackupWallet
 
 // MARK: - BackupWalletUserAction
-enum BackupWalletUserAction: TrackedUserAction {
+enum BackupWalletUserAction: String, TrackedUserAction {
     case cancel
     case backupWallet
     case revealPrivateKey

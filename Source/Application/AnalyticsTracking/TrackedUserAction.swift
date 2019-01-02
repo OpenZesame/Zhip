@@ -18,4 +18,4 @@ import Foundation
 ///   * chosePincode
 /// Which should read out like "user did skip" and "user did chose pincode"
 /// respectively.
-protocol TrackedUserAction: TrackableEvent {}
+protocol TrackedUserAction: TrackableEvent, RawRepresentable {}

@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - ChooseWalletUserAction
-enum ChooseWalletUserAction: TrackedUserAction {
+enum ChooseWalletUserAction: String, TrackedUserAction {
     case createNewWallet
     case restoreWallet
 }

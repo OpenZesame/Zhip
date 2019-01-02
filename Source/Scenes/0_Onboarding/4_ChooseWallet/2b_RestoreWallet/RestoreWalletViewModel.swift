@@ -14,8 +14,15 @@ import RxSwift
 private typealias € = L10n.Scene.RestoreWallet
 
 /// Navigation from RestoreWallet
-enum RestoreWalletNavigation: TrackedUserAction {
+enum RestoreWalletNavigation: TrackableEvent {
     case restoreWallet(Wallet)
+
+    var eventName: String {
+        switch self {
+        case .restoreWallet: return "restoreWallet"
+        }
+    }
+
 }
 
 // MARK: - RestoreWalletViewModel

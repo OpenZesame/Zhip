@@ -12,9 +12,17 @@ import RxCocoa
 
 final class DeepLinkHandler {
     enum AnalyticsEvent: TrackableEvent {
-        case receivedLinkFrom
+        case handlingIncomingDeeplink
         case sourceOfDeepLink(sendingAppId: String)
         case failedToParseLink
+
+        var eventName: String {
+            switch self {
+            case .handlingIncomingDeeplink: return "handlingIncomingDeeplink"
+            case .sourceOfDeepLink(let sendingAppId): return "sourceOfDeepLink: \(sendingAppId)"
+            case .failedToParseLink: return "failedToParseLink"
+            }
+        }
     }
 
     private let tracker: Tracker
@@ -47,7 +55,7 @@ extension DeepLinkHandler {
     ///
     /// return: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
     func handle(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        track(event: .receivedLinkFrom)
+        track(event: .handlingIncomingDeeplink)
 
         if let sendingAppID = options[.sourceApplication] as? String {
             track(event: .sourceOfDeepLink(sendingAppId: sendingAppID))

@@ -22,10 +22,10 @@ struct NavigatingCellModel<Destination> {
     let accessoryType: UITableViewCell.AccessoryType
 
     private let title: String
-    private let icon: UIImage
+    private let icon: UIImage?
     private let style: Style
 
-    fileprivate init(title: String, icon: UIImage, destination: Destination, style: Style, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator) {
+    fileprivate init(title: String, icon: UIImage?, destination: Destination, style: Style, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator) {
         self.title = title
         self.icon = icon
         self.destination = destination
@@ -74,7 +74,7 @@ extension NavigatingCellModel {
     static func whenSelectedNavigate(
         to destination: Destination,
         titled title: String,
-        icon: UIImage,
+        icon: UIImage?,
         style: Style = .normal,
         accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
     ) -> NavigatingCellModel {
