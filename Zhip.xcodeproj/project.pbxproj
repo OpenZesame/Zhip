@@ -90,7 +90,7 @@
 		484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
 		485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AA29021DD303200E700C5 /* AmountFormatter.swift */; };
-		485AA29421DD5EAC00E700C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485AA29321DD5EAC00E700C5 /* GoogleService-Info.plist */; };
+		485AA29621DD744F00E700C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485AA29521DD744F00E700C5 /* GoogleService-Info.plist */; };
 		485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */; };
 		485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */; };
 		485AAC9821AAC6C9005C56CC /* InputValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */; };
@@ -368,7 +368,7 @@
 		4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B52194F92800030237 /* Zhip-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Release.xcconfig"; sourceTree = "<group>"; };
 		485AA29021DD303200E700C5 /* AmountFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
-		485AA29321DD5EAC00E700C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		485AA29521DD744F00E700C5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet_Hexadecimal.swift; sourceTree = "<group>"; };
 		485AAC9521AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleHexadecimalCharacters.swift; sourceTree = "<group>"; };
 		485AAC9721AAC6C9005C56CC /* InputValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidationResult.swift; sourceTree = "<group>"; };
@@ -699,8 +699,8 @@
 			isa = PBXGroup;
 			children = (
 				483CE9C42194E9E300BED31C /* Zhip-Info.plist */,
-				485AA29321DD5EAC00E700C5 /* GoogleService-Info.plist */,
 				483CE99B2194E9E300BED31C /* AppCoordinator.swift */,
+				485AA29521DD744F00E700C5 /* GoogleService-Info.plist */,
 				483CE9C12194E9E300BED31C /* AppDelegate.swift */,
 				483CE9982194E9E300BED31C /* Assets.xcassets */,
 				483CE9932194E9E300BED31C /* AnalyticsTracking */,
@@ -1746,7 +1746,7 @@
 				489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */,
 				48ECF62621A34E780078D659 /* Settings.bundle in Resources */,
 				4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */,
-				485AA29421DD5EAC00E700C5 /* GoogleService-Info.plist in Resources */,
+				485AA29621DD744F00E700C5 /* GoogleService-Info.plist in Resources */,
 				489EB10B21CA30F200664AA7 /* Barlow-SemiBold.ttf in Resources */,
 				483CE9ED2194E9E300BED31C /* TermsOfService.html in Resources */,
 			);
