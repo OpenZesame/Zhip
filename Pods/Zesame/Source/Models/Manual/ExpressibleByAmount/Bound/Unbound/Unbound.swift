@@ -53,7 +53,6 @@ public extension ExpressibleByAmount where Self: Unbound {
 
     init(_ untrimmed: String) throws {
         let whiteSpacesRemoved = untrimmed.replacingOccurrences(of: " ", with: "")
-        print("untrimmed: \(untrimmed), whiteSpacesRemoved: \(whiteSpacesRemoved)")
         if let mag = Magnitude(decimalString: whiteSpacesRemoved) {
             self = Self.init(mag)
         } else if let double = Double(whiteSpacesRemoved) {
