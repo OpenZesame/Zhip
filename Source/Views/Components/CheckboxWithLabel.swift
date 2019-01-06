@@ -13,7 +13,7 @@ import M13Checkbox
 import RxSwift
 import RxCocoa
 
-final class CheckboxWithLabel: UIView {
+final class CheckboxWithLabel: UIControl {
     struct Style {
         var labelText: String?
         var numberOfLines: Int?
@@ -32,6 +32,12 @@ final class CheckboxWithLabel: UIView {
     private lazy var label = UILabel()
 
     private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label])
+
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        super.beginTracking(touch, with: event)
+        checkbox.toggleCheckState(true)
+        return true
+    }
 }
 
 extension CheckboxWithLabel {
@@ -94,6 +100,9 @@ private extension CheckboxWithLabel {
         addSubview(stackView)
         setupViews()
         setupConstraints()
+
+        stackView.isUserInteractionEnabled = false
+        label.isUserInteractionEnabled = false
     }
 
     func setupViews() {
