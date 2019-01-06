@@ -32,9 +32,6 @@ enum SettingsNavigation: String, TrackedUserAction {
     // Section 3
     case backupWallet
     case removeWallet
-
-    // Section 4
-    case openAppStore
 }
 
 private typealias € = L10n.Scene.Settings.Cell
@@ -123,11 +120,6 @@ private extension SettingsViewModel {
         sections += [
             .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet, icon: Icon.backUp),
             .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, icon: Icon.delete, style: .destructive)
-        ]
-
-        sections += [
-            // TODO change from cell to table footer, without any action
-            .whenSelectedNavigate(to: .openAppStore, titled: appVersionString, icon: nil)
         ]
 
         return sections
