@@ -92,7 +92,9 @@ private extension PrepareTransactionView {
             $0.text(€.Labels.Balance.title)
         }
 
-        balanceValueLabel.withStyle(.body)
+        balanceValueLabel.withStyle(.body) {
+            $0.textAlignment(.right)
+        }
 
         balanceLabels.withStyle(.horizontal)
 
