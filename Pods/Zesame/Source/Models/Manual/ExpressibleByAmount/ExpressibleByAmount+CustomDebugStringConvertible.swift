@@ -45,8 +45,13 @@ public extension ExpressibleByAmount {
         return qa.asDecimalString()
     }
 
-    func asString(`in` targetUnit: Unit) -> String {
-        if let qaAsDecimal = decimalValue(in: targetUnit) {
+    func asString(`in` targetUnit: Unit, roundingIfNeeded: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> String {
+        // handle trivial edge case
+        if qa == 0 {
+            return "0"
+        }
+
+        if let qaAsDecimal = decimalValue(in: targetUnit, rounding: roundingIfNeeded) {
             return qaAsDecimal.asStringWithoutTrailingZeros
         } else {
             let numberOfCharactersToDrop = abs(Unit.qa.exponent - targetUnit.exponent)
