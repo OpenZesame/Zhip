@@ -104,10 +104,12 @@ private final class PincodeTextField: UITextField {
 
         fileprivate let length: Int
         private let widthOfDigitView: CGFloat
+        private let isSecureTextEntry: Bool
 
-        init(length: Int, widthOfDigitView: CGFloat) {
+        init(length: Int, widthOfDigitView: CGFloat, isSecureTextEntry: Bool = true) {
             self.length = length
             self.widthOfDigitView = widthOfDigitView
+            self.isSecureTextEntry = isSecureTextEntry
             super.init(frame: .zero)
             setup()
         }
@@ -122,16 +124,16 @@ private final class PincodeTextField: UITextField {
 
         func setPincode(_ digits: [Digit]) {
             digitViews.forEach {
-                $0.label.text = nil
+                $0.updateWithNumberOrBullet(text: nil)
             }
             for (index, digit) in digits.enumerated() {
-                digitViews[index].label.text = String(describing: digit)
+                digitViews[index].updateWithNumberOrBullet(text: String(describing: digit))
             }
         }
 
         private func setup() {
             withStyle(.horizontalEqualCentering)
-            [Void](repeating: (), count: length).map(DigitView.init).forEach {
+            [Void](repeating: (), count: length).map { DigitView(isSecureTextEntry: isSecureTextEntry) }.forEach {
                 addArrangedSubview($0)
                 $0.heightToSuperview()
                 $0.width(widthOfDigitView)
@@ -241,7 +243,7 @@ extension String {
 
 private final class DigitView: UIView {
 
-    fileprivate lazy var label = UILabel()
+    private lazy var label = UILabel()
 
     private lazy var underline: UIView = {
         let view = UIView(frame: .zero)
@@ -253,13 +255,25 @@ private final class DigitView: UIView {
 
     lazy var stackView = UIStackView(arrangedSubviews: [label, underline])
 
-    init() {
+    private let isSecureTextEntry: Bool
+
+    init(isSecureTextEntry: Bool) {
+        self.isSecureTextEntry = isSecureTextEntry
         super.init(frame: .zero)
         setupSubviews()
     }
 
     required init?(coder: NSCoder) {
         interfaceBuilderSucks
+    }
+
+    public func updateWithNumberOrBullet(text: String?) {
+        guard let text = text else {
+            label.text = nil
+            return
+        }
+        let labelText = isSecureTextEntry ? "•" : text
+        label.text = labelText
     }
 
     func colorUnderlineView(with color: UIColor) {
@@ -273,8 +287,10 @@ private final class DigitView: UIView {
 
         stackView.withStyle(.init(spacing: 4, layoutMargins: .zero))
 
+        let font: UIFont = isSecureTextEntry ? .bigBang : .impression
         label.withStyle(.impression) {
             $0.textAlignment(.center)
+                .font(font)
         }
     }
 }
