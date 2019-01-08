@@ -36,6 +36,7 @@ final class CheckboxWithLabel: UIControl {
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         super.beginTracking(touch, with: event)
         checkbox.toggleCheckState(true)
+        checkbox.sendActions(for: .valueChanged)
         return true
     }
 }
