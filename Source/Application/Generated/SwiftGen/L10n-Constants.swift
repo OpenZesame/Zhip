@@ -523,7 +523,7 @@ internal enum L10n {
         internal static let doNotShowAgain = L10n.tr("Localizable", "Scene.WarningERC20.Button.DoNotShowAgain")
       }
       internal enum Checkbox {
-        /// I understand that ERC-20 tokens are not supported
+        /// I understand that ERC-20 ZILs are not supported
         internal static let understandsERC20Incompatibility = L10n.tr("Localizable", "Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility")
       }
       internal enum Label {
@@ -531,7 +531,7 @@ internal enum L10n {
         internal static let erc20Tokens = L10n.tr("Localizable", "Scene.WarningERC20.Label.Erc20Tokens")
       }
       internal enum Text {
-        /// This is a Zilliqa testnet. Please do not send any interim ERC-20 ZIL tokens to this wallet.\n\nZilliqa and the Ethereum blockchain are two completely separate platforms and the mneumonic phrases, private keys, addresses and tokens CANNOT be shared.\n\nTransferring assets directly from Ethereum to Zilliqa (or vice versa) will cause irreparable loss.
+        /// This is a wallet for the Zilliqa network. Do NOT send ERC-20 ZILs to native Zilliqa addresses.\n\nTransferring ERC-20 ZILs to a native Zilliqa address - or vice versa - will cause irreparable loss.
         internal static let warningERC20 = L10n.tr("Localizable", "Scene.WarningERC20.Text.WarningERC20")
       }
     }

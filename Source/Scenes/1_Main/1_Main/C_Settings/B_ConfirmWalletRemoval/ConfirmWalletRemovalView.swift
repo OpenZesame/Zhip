@@ -20,9 +20,9 @@ final class ConfirmWalletRemovalView: ScrollingStackView {
 
     lazy var stackViewStyle: UIStackView.Style = [
         areYouSureLabel,
+        .spacer,
         haveBackedUpWalletCheckbox,
-        confirmButton,
-        .spacer
+        confirmButton
     ]
 
     override func setup() {

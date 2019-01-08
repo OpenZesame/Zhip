@@ -16,7 +16,6 @@ class StringFormattingTests: XCTestCase {
     func testFormatting() {
         func f(_ s: String) -> String {
             let new = s.inserting(string: "x", every: 3)
-            print(new)
             return new
         }
 
