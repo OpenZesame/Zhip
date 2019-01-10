@@ -334,6 +334,14 @@ internal enum L10n {
           internal static let title = L10n.tr("Localizable", "Scene.Main.Label.Balance.Title")
         }
       }
+      internal enum RefreshControl {
+        /// Balance last updated %@.
+        internal static func balanceWasUpdatedAt(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.Main.RefreshControl.BalanceWasUpdatedAt", p1)
+        }
+        /// Fetching balance...
+        internal static let first = L10n.tr("Localizable", "Scene.Main.RefreshControl.First")
+      }
     }
     internal enum PollTransactionStatus {
       internal enum Button {

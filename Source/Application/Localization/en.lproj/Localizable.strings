@@ -141,6 +141,8 @@
 "Scene.Main.Label.Balance.Title" = "Your balance";
 "Scene.Main.Button.Send" = "Send";
 "Scene.Main.Button.Receive" = "Receive";
+"Scene.Main.RefreshControl.BalanceWasUpdatedAt" = "Balance last updated %@.";
+"Scene.Main.RefreshControl.First" = "Fetching balance...";
 
 // MARK: Unlock App
 "Scene.UnlockAppWithPincode.Title" = "Unlock app";

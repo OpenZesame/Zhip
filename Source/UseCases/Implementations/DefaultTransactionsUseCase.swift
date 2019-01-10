@@ -31,12 +31,22 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         return try? ZilAmount(qa: qa)
     }
 
+    var balanceUpdatedAt: Date? {
+        return preferences.loadValue(for: .balanceWasUpdatedAt)
+    }
+
+    func balanceWasUpdated(at date: Date) {
+        preferences.save(value: date, for: .balanceWasUpdatedAt)
+    }
+
     func deleteCachedBalance() {
         preferences.deleteValue(for: .cachedBalance)
+        preferences.deleteValue(for: .balanceWasUpdatedAt)
     }
 
     func cacheBalance(_ balance: ZilAmount) {
         preferences.save(value: balance.qaString, for: .cachedBalance)
+        balanceWasUpdated(at: Date())
     }
 
     func getBalance(for address: Address) -> Observable<BalanceResponse> {

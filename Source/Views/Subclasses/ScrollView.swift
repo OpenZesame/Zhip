@@ -28,6 +28,52 @@ class ScrollView: UIScrollView {
 
     // MARK: Overrideable
     func setup() { /* subclass me */ }
+
+    private var refreshControlCustomView: RefreshControlCustomView?
+
+    func setRefreshControlTitle(_ title: String) {
+        guard let refreshControlCustomView = refreshControlCustomView else {
+            return
+        }
+        refreshControlCustomView.setTitle(title)
+    }
+}
+
+final class RefreshControlCustomView: UIView {
+    private lazy var spinner = SpinnerView()
+    private lazy var label = UILabel()
+    private lazy var stackView = UIStackView(arrangedSubviews: [spinner, label])
+
+    init() {
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        interfaceBuilderSucks
+    }
+}
+
+extension RefreshControlCustomView {
+    func setTitle(_ title: String) {
+        label.text = title
+    }
+}
+
+private extension RefreshControlCustomView {
+    func setup() {
+        contentMode = .scaleToFill
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        label.withStyle(.init(textAlignment: .center, textColor: .white, font: .title))
+        stackView.withStyle(.vertical) {
+            $0.distribution(.fill).spacing(0)
+        }
+        addSubview(stackView)
+        stackView.edgesToSuperview()
+        spinner.startSpinning()
+        spinner.height(30)
+    }
 }
 
 extension StackViewStyling where Self: ScrollView {
@@ -43,7 +89,8 @@ extension StackViewStyling where Self: ScrollView {
 private extension ScrollView {
     func privateSetup() {
         setupContentView()
-        contentInsetAdjustmentBehavior = .never
+        contentInsetAdjustmentBehavior = .always
+        
         if self is PullToRefreshCapable {
             setupRefreshControl()
         }
@@ -55,9 +102,11 @@ private extension ScrollView {
         self.contentView = contentView
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
-        contentView.heightToSuperview()
         contentView.widthToSuperview()
-        contentView.edgesToSuperview()
+        contentView.leadingToSuperview()
+        contentView.trailingToSuperview()
+        contentView.topToSuperview()
+        contentView.bottomToSuperview(usingSafeArea: true)
     }
 
     func makeView() -> UIView {
@@ -68,8 +117,15 @@ private extension ScrollView {
     func setupRefreshControl() {
         alwaysBounceVertical = true
         let refreshControl = UIRefreshControl(frame: .zero)
-        refreshControl.attributedTitle = NSAttributedString(string: €.title)
+
+        refreshControl.tintColor = .clear // hiding bundled spinner
+        let refreshControlCustomView = RefreshControlCustomView()
+        refreshControl.addSubview(refreshControlCustomView)
+        refreshControlCustomView.bounds = refreshControl.bounds
+        self.refreshControlCustomView = refreshControlCustomView
         self.refreshControl = refreshControl
+        setRefreshControlTitle(€.title)
+        refreshControl.beginRefreshing()
     }
 }
 
@@ -77,6 +133,12 @@ private extension ScrollView {
 extension Reactive where Base: ScrollingStackView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
         return base.refreshControl!.rx.isRefreshing
+    }
+
+    var pullToRefreshTitle: Binder<String> {
+        return Binder<String>(base) {
+            $0.setRefreshControlTitle($1)
+        }
     }
 
     var pullToRefreshTrigger: Driver<Void> {

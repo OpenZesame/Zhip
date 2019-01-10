@@ -36,7 +36,7 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
 
 extension MainView: BackgroundColorSpecifying {
 	var colorOfBackground: UIColor {
-		return .teal
+		return .darkTeal
 	}
 }
 
@@ -53,8 +53,9 @@ extension MainView: ViewModelled {
 
     func populate(with viewModel: MainViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isFetchingBalance     --> rx.isRefreshing,
-            viewModel.balance               --> balanceValueLabel.rx.text
+            viewModel.isFetchingBalance                 --> rx.isRefreshing,
+            viewModel.balance                           --> balanceValueLabel.rx.text,
+            viewModel.refreshControlLastUpdatedTitle    --> rx.pullToRefreshTitle
         ]
     }
 }

@@ -16,6 +16,7 @@ enum PreferencesKey: String, KeyConvertible {
     case skipShowingERC20Warning
     case skipPincodeSetup
     case cachedBalance
+    case balanceWasUpdatedAt
 }
 
 /// Abstraction of UserDefaults
