@@ -114,15 +114,12 @@ extension UILabel.Style {
 
     static var impression: UILabel.Style {
         return UILabel.Style(
-            textAlignment: .left,
-            font: UIFont.Label.impression,
-            numberOfLines: 1
+            font: UIFont.Label.impression
         )
     }
 
     static var header: UILabel.Style {
         return UILabel.Style(
-            textAlignment: .left,
             font: UIFont.Label.header,
             numberOfLines: 0
         )
@@ -130,8 +127,7 @@ extension UILabel.Style {
 
     static var title: UILabel.Style {
         return UILabel.Style(
-            font: UIFont.title,
-            numberOfLines: 1
+            font: UIFont.title
         )
     }
 

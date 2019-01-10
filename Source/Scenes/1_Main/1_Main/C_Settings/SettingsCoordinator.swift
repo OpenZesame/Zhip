@@ -13,9 +13,6 @@ import Zesame
 
 let githubUrlString = "https://github.com/OpenZesame/Zhip"
 
-// This is the app id for the iOS app "Apple Store" in the iOS App Store
-let appStoreUrlString = "itms://itunes.apple.com/us/app/apple-store/id375380948?mt=8"
-
 final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationStep> {
     enum NavigationStep {
         case removeWallet
@@ -69,9 +66,6 @@ private extension SettingsCoordinator {
             // Section 3
             case .backupWallet: self.toBackupWallet()
             case .removeWallet: self.toConfirmWalletRemoval()
-
-            // Section 4
-            case .openAppStore: self.toAppStore()
             }
         }
     }
@@ -168,10 +162,6 @@ private extension SettingsCoordinator {
         walletUseCase.deleteWallet()
         pincodeUseCase.deletePincode()
         userIntends(to: .removeWallet)
-    }
-
-    func toAppStore() {
-        openUrl(string: appStoreUrlString, tracker: tracker, context: self)
     }
 
     func finish() {

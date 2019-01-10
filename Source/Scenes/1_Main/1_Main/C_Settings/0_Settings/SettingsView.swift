@@ -27,7 +27,8 @@ extension SettingsView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.sections.drive(sections)
+            viewModel.sections.drive(sections),
+            viewModel.footerText.drive(rx.footerLabel)
         ]
     }
 
