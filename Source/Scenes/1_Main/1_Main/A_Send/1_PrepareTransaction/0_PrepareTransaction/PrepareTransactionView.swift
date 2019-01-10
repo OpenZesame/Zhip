@@ -39,7 +39,7 @@ final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
 
     override func setup() {
         setupSubiews()
-//        prefillValuesForDebugBuilds()
+        prefillValuesForDebugBuilds()
     }
 }
 
@@ -122,22 +122,23 @@ private extension PrepareTransactionView {
     }
 }
 
-//// MARK: - Debug builds only
-//private extension PrepareTransactionView {
-//    func prefillValuesForDebugBuilds() {
-//        guard isDebug else { return }
-//        recipientAddressField.text = "74C544A11795905C2C9808F9E78D8156159D32E4"
-//        amountToSendField.text = Int.random(in: 1...200).description
-//        gasPriceField.text = Int.random(in: 100...200).description
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [unowned self] in
-//            [
-//                self.recipientAddressField,
-//                self.amountToSendField,
-//                self.gasPriceField
-//                ].forEach {
-//                    $0.sendActions(for: .editingDidEnd)
-//            }
-//        }
-//    }
-//}
+// MARK: - Debug builds only
+private extension PrepareTransactionView {
+    func prefillValuesForDebugBuilds() {
+        #if DEBUG
+        recipientAddressField.text = "74c544a11795905C2C9808F9E78D8156159d32e4"
+        amountToSendField.text = Int.random(in: 100...500).description
+        gasPriceField.text = Int.random(in: 1000...2000).description
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
+            [
+                self.recipientAddressField,
+                self.amountToSendField,
+                self.gasPriceField
+                ].forEach {
+                    $0.sendActions(for: .editingDidEnd)
+            }
+        }
+        #endif
+    }
+}

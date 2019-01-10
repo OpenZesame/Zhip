@@ -49,6 +49,7 @@ final class SettingsViewModel: BaseViewModel<
         self.useCase = useCase
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userWantsToNavigate(to intention: NavigationStep) {
             navigator.next(intention)
@@ -72,7 +73,8 @@ final class SettingsViewModel: BaseViewModel<
         ]
 
         return Output(
-            sections: sections
+            sections: sections,
+            footerText: .just(appVersionString)
         )
     }
 }
@@ -84,6 +86,7 @@ extension SettingsViewModel {
 
     struct Output {
         let sections: Driver<[SectionModel<Void, SettingsItem>]>
+        let footerText: Driver<String>
     }
 }
 
@@ -133,8 +136,9 @@ private extension SettingsViewModel {
         let bundle = Bundle.main
         guard
             let version = bundle.version,
-            let build = bundle.build
-            else { incorrectImplementation("Should be able to read version and build number") }
-        return "\(version) (\(build))"
+            let build = bundle.build,
+            let appName = bundle.name
+            else { incorrectImplementation("Should be able to read name, version and build number") }
+        return "\(appName) v\(version) (\(build))"
     }
 }
