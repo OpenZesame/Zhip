@@ -42,15 +42,15 @@ public extension SharedSequenceConvertibleType where SharingStrategy == DriverSh
 }
 
 extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E: ValidationConvertible {
-    func onlyErrors() -> Driver<Validation> {
+    func onlyErrorsAndWarnings() -> Driver<AnyValidation> {
         return map { $0.validation }
-            .map { $0.isError ? $0 : nil }
+            .map { $0.isErrorOrWarning ? $0 : nil }
             .filterNil()
     }
 
-    func onlyValidOrEmpty() -> Driver<Validation> {
+    func onlyValidOrEmpty() -> Driver<AnyValidation> {
         return map { $0.validation }
-            .map { $0.isError ? nil : $0 }
+            .map { $0.isValidOrEmpty ? $0 : nil }
             .filterNil()
     }
 }

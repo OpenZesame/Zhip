@@ -89,8 +89,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let recipientValidationTrigger = input.fromView.didEndEditingRecipientAddress
 
-		let recipientValidation: Driver<Validation> = Driver.merge(
-            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrors(),
+		let recipientValidation: Driver<AnyValidation> = Driver.merge(
+            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrorsAndWarnings(),
 			recipientValidationValue.onlyValidOrEmpty()
 		)
 
@@ -108,7 +108,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         )
 
 		let gasPriceValidation = Driver.merge(
-            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrorsAndWarnings(),
 			gasPriceValidationValue.onlyValidOrEmpty()
         )
 
@@ -157,7 +157,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		)
 
 		let amountValidation = Driver.merge(
-            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrorsAndWarnings(),
 			amountValidationValue.onlyValidOrEmpty()
 		)
 
@@ -237,14 +237,14 @@ extension PrepareTransactionViewModel {
 		let balance: Driver<String>
 
 		let recipient: Driver<String>
-		let recipientAddressValidation: Driver<Validation>
+		let recipientAddressValidation: Driver<AnyValidation>
 
 		let amount: Driver<String>
-		let amountValidation: Driver<Validation>
+		let amountValidation: Driver<AnyValidation>
 
 		let gasPriceMeasuredInLi: Driver<String>
 		let gasPricePlaceholder: Driver<String>
-		let gasPriceValidation: Driver<Validation>
+		let gasPriceValidation: Driver<AnyValidation>
 	}
 }
 

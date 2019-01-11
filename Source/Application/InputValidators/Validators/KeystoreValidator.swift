@@ -34,7 +34,7 @@ struct KeystoreValidator: InputValidator {
         }
     }
 
-    func validate(input: Input) -> InputValidationResult<Output, Error> {
+    func validate(input: Input) -> Validation<Output, Error> {
         func validate() throws -> Keystore {
             guard let json = input.data(using: .utf8) else {
                 throw Error.stringToDataConversionFailed

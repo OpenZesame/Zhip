@@ -12,7 +12,7 @@ struct AmountValidator: InputValidator {
 
     typealias Error = AmountError<Zil>
 
-    func validate(input zil: String) -> InputValidationResult<ZilAmount, Error> {
+    func validate(input zil: String) -> Validation<ZilAmount, Error> {
         do {
             return .valid(try ZilAmount(zil: zil))
         } catch {

@@ -63,9 +63,9 @@ extension ErrorTracker {
         .asDriverOnErrorReturnEmpty()
     }
 
-    func asInputValidationErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<Validation> {
+    func asInputValidationErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<AnyValidation> {
         return asInputErrors(mapError: mapError)
             .map { $0.errorMessage }
-            .map { .error(errorMessage: $0) }
+            .map { .errorMessage($0) }
     }
 }

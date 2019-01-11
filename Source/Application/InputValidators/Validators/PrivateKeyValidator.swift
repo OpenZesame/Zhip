@@ -20,7 +20,7 @@ struct PrivateKeyValidator: InputValidator {
         case badPrivateKey
     }
 
-    func validate(input: Input) -> InputValidationResult<Output, Error> {
+    func validate(input: Input) -> Validation<Output, Error> {
         func validate(privateKeyHex: String) throws -> PrivateKey {
             let lengthKeySubmitted = privateKeyHex.count
             if lengthKeySubmitted < PrivateKeyValidator.expectedLengthOfPrivateKey {

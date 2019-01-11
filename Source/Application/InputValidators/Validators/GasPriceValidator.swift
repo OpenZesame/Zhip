@@ -14,7 +14,7 @@ struct GasPriceValidator: InputValidator {
 
     typealias Error = AmountError<Li>
 
-    func validate(input li: String) -> InputValidationResult<GasPrice, Error> {
+    func validate(input li: String) -> Validation<GasPrice, Error> {
         let gasPrice: GasPrice
         do {
             gasPrice = try GasPrice.init(li: li)

@@ -13,7 +13,7 @@ struct AddressValidator: InputValidator {
     typealias Output = Address
     typealias Error = Address.Error
 
-    func validate(input: Input) -> InputValidationResult<Output, Error> {
+    func validate(input: Input) -> Validation<Output, Error> {
         do {
             return .valid(try Address(hexString: input))
         } catch let addressError as Address.Error {

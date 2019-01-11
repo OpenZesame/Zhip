@@ -49,13 +49,13 @@ final class RestoreWalletUsingPrivateKeyViewModel {
             inputFromView.isEditingNewEncryptionPassphrase
             )
 
-        let encryptionPassphraseValidation: Driver<Validation> = encryptionPassphraseValidationTrigger.withLatestFrom(
+        let encryptionPassphraseValidation: Driver<AnyValidation> = encryptionPassphraseValidationTrigger.withLatestFrom(
             unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
+        let confirmEncryptionPassphraseValidation: Driver<AnyValidation> = Driver.combineLatest(
             Driver.merge(
                 // map `editingChanged` to `editingDidBegin`
                 confirmingPassphrase.mapToVoid().map { true },
@@ -107,10 +107,10 @@ extension RestoreWalletUsingPrivateKeyViewModel {
     struct Output {
         let togglePrivateKeyVisibilityButtonTitle: Driver<String>
         let privateKeyFieldIsSecureTextEntry: Driver<Bool>
-        let privateKeyValidation: Driver<Validation>
+        let privateKeyValidation: Driver<AnyValidation>
         let encryptionPassphrasePlaceholder: Driver<String>
-        let encryptionPassphraseValidation: Driver<Validation>
-        let confirmEncryptionPassphraseValidation: Driver<Validation>
+        let encryptionPassphraseValidation: Driver<AnyValidation>
+        let confirmEncryptionPassphraseValidation: Driver<AnyValidation>
         let keyRestoration: Driver<KeyRestoration?>
     }
 

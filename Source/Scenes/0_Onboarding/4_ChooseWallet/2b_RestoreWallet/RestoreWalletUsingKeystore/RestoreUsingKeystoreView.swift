@@ -43,7 +43,7 @@ final class RestoreUsingKeystoreView: ScrollingStackView {
         setupViewModelBinding()
     }
 
-    func restorationErrorValidation(_ validation: Validation) {
+    func restorationErrorValidation(_ validation: AnyValidation) {
         encryptionPassphraseField.validate(validation)
     }
 }
@@ -69,7 +69,7 @@ private extension RestoreUsingKeystoreView {
 import RxSwift
 import RxCocoa
 extension Reactive where Base: UITextView {
-    var validationByBorder: Binder<Validation> {
+    var validationByBorder: Binder<AnyValidation> {
         return Binder(base) {
             $0.addBorderBy(validation: $1)
         }
@@ -77,7 +77,7 @@ extension Reactive where Base: UITextView {
 }
 
 extension UITextView {
-    func addBorderBy(validation: Validation) {
+    func addBorderBy(validation: AnyValidation) {
         addBorder(UIView.Border.fromValidation(validation))
     }
 }

@@ -58,8 +58,8 @@ final class ReceiveViewModel: BaseViewModel<
 
         let amountValidationTrigger = input.fromView.didEndEditingAmount
 
-        let amountValidation: Driver<Validation> = Driver.merge(
-            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrors(),
+        let amountValidation: Driver<AnyValidation> = Driver.merge(
+            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrorsAndWarnings(),
             amountValidationValue.onlyValidOrEmpty()
         )
 
@@ -109,7 +109,7 @@ extension ReceiveViewModel {
     struct Output {
         let receivingAddress: Driver<String>
         let amountBecomeFirstResponder: Driver<Void>
-        let amountValidation: Driver<Validation>
+        let amountValidation: Driver<AnyValidation>
         let qrImage: Driver<UIImage?>
     }
 

@@ -157,7 +157,7 @@ extension FloatingLabelTextField {
 }
 
 extension FloatingLabelTextField {
-    func validate(_ validation: Validation) {
+    func validate(_ validation: AnyValidation) {
         updateColorsWithValidation(validation)
         updateErrorMessageWithValidation(validation)
     }
@@ -166,15 +166,15 @@ extension FloatingLabelTextField {
 import RxCocoa
 import RxSwift
 extension Reactive where Base: FloatingLabelTextField {
-    var validation: Binder<Validation> {
-        return Binder<Validation>(base) {
+    var validation: Binder<AnyValidation> {
+        return Binder<AnyValidation>(base) {
             $0.validate($1)
         }
     }
 }
 
 private extension FloatingLabelTextField {
-    typealias Color = Validation.Color
+    typealias Color = AnyValidation.Color
     func setup() {
         defer {
             // calculations of the position of the circle view might be dependent on other settings, thus do it last
@@ -191,10 +191,11 @@ private extension FloatingLabelTextField {
         titleFormatter = { $0 }
     }
 
-    func updateErrorMessageWithValidation(_ validation: Validation) {
+    func updateErrorMessageWithValidation(_ validation: AnyValidation) {
         switch validation {
-        case .error(let errorMessage): self.errorMessage = errorMessage
-        default: errorMessage = nil
+        case .errorMessage(let errorMessage): self.errorMessage = errorMessage
+        case .warningMessage(let warningMessage): self.errorMessage = warningMessage
+        case .empty, .valid: errorMessage = nil
         }
     }
 
@@ -209,7 +210,7 @@ private extension FloatingLabelTextField {
         }
     }
 
-    func updateColorsWithValidation(_ validation: Validation) {
+    func updateColorsWithValidation(_ validation: AnyValidation) {
         updateLineColorWithValidation(validation)
         updatePlaceholderColorWithValidation(validation)
         updateSelectedTitleColorWithValidation(validation)
@@ -218,7 +219,7 @@ private extension FloatingLabelTextField {
         validationCircleView.backgroundColor = color
     }
 
-    func updateLineColorWithValidation(_ validation: Validation) {
+    func updateLineColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
         case .valid: color = Color.valid
@@ -229,7 +230,7 @@ private extension FloatingLabelTextField {
         lineColorWhenNoError = color
     }
 
-    func updatePlaceholderColorWithValidation(_ validation: Validation) {
+    func updatePlaceholderColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
         case .valid: color = Color.valid
@@ -240,7 +241,7 @@ private extension FloatingLabelTextField {
         placeholderColor = color
     }
 
-    func updateSelectedTitleColorWithValidation(_ validation: Validation) {
+    func updateSelectedTitleColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
         case .valid: color = Color.valid
@@ -251,11 +252,11 @@ private extension FloatingLabelTextField {
         selectedTitleColor = color
     }
 
-    func colorFromValidation(_ validation: Validation) -> UIColor {
+    func colorFromValidation(_ validation: AnyValidation) -> UIColor {
         let color: UIColor
         switch validation {
-        case .empty: color = Color.empty
-        case .error: color = Color.error
+        case .empty, .warningMessage: color = Color.empty
+        case .errorMessage: color = Color.error
         case .valid: color = Color.valid
         }
         return color
