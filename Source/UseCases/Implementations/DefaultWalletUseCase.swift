@@ -27,6 +27,10 @@ extension DefaultWalletUseCase {
         return zilliqaService.verifyThat(encryptionPasshrase: passhrase, canDecryptKeystore: keystore)
     }
 
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        return zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: passphrase)
+    }
+
     func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
         return zilliqaService.createNewWallet(encryptionPassphrase: encryptionPassphrase).map {
             Wallet(wallet: $0, origin: .generatedByThisApp)

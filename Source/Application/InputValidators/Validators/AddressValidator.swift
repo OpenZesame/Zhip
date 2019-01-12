@@ -41,9 +41,3 @@ extension Address.Error: InputError {
         }
     }
 }
-
-extension Address {
-    static var lengthOfValidAddresses: Int {
-        return AddressNotNecessarilyChecksummed.lengthOfValidAddresses
-    }
-}
