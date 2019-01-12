@@ -18,6 +18,9 @@ import RxTest
 import Zesame
 
 final class MockedWalletUseCase: WalletUseCase {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        abstract
+    }
 
     var wallet: Zhip.Wallet?
     var hasLoadWalletBeenCalled = false
