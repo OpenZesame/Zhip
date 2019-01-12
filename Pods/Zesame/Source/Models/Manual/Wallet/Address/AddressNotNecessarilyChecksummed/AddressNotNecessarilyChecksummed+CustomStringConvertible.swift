@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension Address: CustomStringConvertible {}
-public extension Address {
+extension AddressNotNecessarilyChecksummed: CustomStringConvertible {}
+public extension AddressNotNecessarilyChecksummed {
     var description: String {
-        return checksummedHex
+        return hexString.description
     }
 }

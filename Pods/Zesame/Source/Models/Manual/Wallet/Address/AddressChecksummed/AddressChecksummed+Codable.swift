@@ -1,5 +1,5 @@
 //
-//  Address+Codable.swift
+//  AddressChecksummed+Codable.swift
 //  Zesame
 //
 //  Created by Alexander Cyon on 2018-10-21.
@@ -8,17 +8,17 @@
 
 import Foundation
 
-extension Address: Encodable {
+extension AddressChecksummed: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(checksummedHex)
+        try container.encode(asString)
     }
 }
 
-extension Address: Decodable {
+extension AddressChecksummed: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let hexString = try container.decode(String.self)
-        try self.init(hexString: hexString)
+        try self.init(string: hexString)
     }
 }

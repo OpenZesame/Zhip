@@ -41,13 +41,13 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func exportKeystore(address: Address, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore> {
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore> {
         return callBase {
             $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: passphrase, done: $1)
         }
     }
 
-    func getBalance(for address: Address) -> Observable<BalanceResponse> {
+    func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse> {
         return callBase {
             $0.getBalance(for: address, done: $1)
         }
