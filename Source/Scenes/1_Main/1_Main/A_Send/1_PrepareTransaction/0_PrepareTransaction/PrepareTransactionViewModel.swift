@@ -80,9 +80,9 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		let validator = InputValidator()
 
 		// MARK: Recipient Input ->  Value + Validation
-		let recipientValidationValue = Driver.merge(
+        let recipientValidationValue: Driver<Validation<Address, AddressValidator.Error>> = Driver.merge(
 			input.fromView.recepientAddress.map { validator.validateRecipient($0) },
-			scannedOrDeeplinkedTransaction.map { .valid($0.recipient) }
+			scannedOrDeeplinkedTransaction.map { .valid(Address.checksummed($0.recipient)) }
 		)
 
 		let recipient: Driver<Address?> = recipientValidationValue.map { $0.value }
@@ -90,8 +90,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
         let recipientValidationTrigger = input.fromView.didEndEditingRecipientAddress
 
 		let recipientValidation: Driver<AnyValidation> = Driver.merge(
-            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrorsAndWarnings(),
-			recipientValidationValue.onlyValidOrEmpty()
+            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrors(),
+			recipientValidationValue.nonErrors()
 		)
 
 		// MARK: GasPrice Input -> Value + Validation
@@ -108,8 +108,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
         )
 
 		let gasPriceValidation = Driver.merge(
-            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrorsAndWarnings(),
-			gasPriceValidationValue.onlyValidOrEmpty()
+            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+			gasPriceValidationValue.nonErrors()
         )
 
 		// MARK: Amount + MaxAmountTrigger Input -> Value + Validation
@@ -157,8 +157,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		)
 
 		let amountValidation = Driver.merge(
-            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrorsAndWarnings(),
-			amountValidationValue.onlyValidOrEmpty()
+            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
+			amountValidationValue.nonErrors()
 		)
 
 		let payment: Driver<Payment?> = Driver.combineLatest(recipient, amountBoundByBalance, gasPrice, nonce) {
@@ -186,7 +186,11 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		// MARK: FORMATTING
 		let formatter = AmountFormatter()
         let balanceFormatted = balance.map { formatter.format(amount: $0, in: .zil, showUnit: true) }
-		let recipientFormatted = recipient.filterNil().map { $0.checksummedHex }
+
+        // It is deliberate that we do NOT auto checksum the address here. We would like to be able to inform the user that
+        // she might have pasted an unchecksummed address.
+		let recipientFormatted = recipient.filterNil().map { $0.hexString.value }
+
         let amountFormatted = amountBoundByBalance.filterNil().map { formatter.format(amount: $0, in: .zil) }
 
 		let isSendButtonEnabled = payment.map { $0 != nil }

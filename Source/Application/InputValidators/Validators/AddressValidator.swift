@@ -15,7 +15,12 @@ struct AddressValidator: InputValidator {
 
     func validate(input: Input) -> Validation<Output, Error> {
         do {
-            return .valid(try Address(hexString: input))
+            let address = try Address(string: input)
+            if address.isChecksummed {
+                return .valid(address)
+            } else {
+                return .valid(address, remark: Error.notChecksummed)
+            }
         } catch let addressError as Address.Error {
             return .invalid(.error(addressError))
         } catch {
@@ -29,9 +34,16 @@ extension Address.Error: InputError {
         let Message = L10n.Error.Input.Address.self
 
         switch self {
-        case .containsInvalidCharacters: return Message.containsNonHexadecimal
+        case .notHexadecimal: return Message.containsNonHexadecimal
         case .tooLong: return Message.tooLong(Address.lengthOfValidAddresses)
         case .tooShort: return Message.tooShort(Address.lengthOfValidAddresses)
+        case .notChecksummed: return Message.addressNotChecksummed
         }
+    }
+}
+
+extension Address {
+    static var lengthOfValidAddresses: Int {
+        return AddressNotNecessarilyChecksummed.lengthOfValidAddresses
     }
 }

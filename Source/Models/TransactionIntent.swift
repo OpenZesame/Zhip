@@ -11,11 +11,11 @@ import Zesame
 
 struct TransactionIntent: Codable {
     let amount: ZilAmount
-    let recipient: Address
+    let recipient: AddressChecksummed
 
-    init(amount: ZilAmount, to recipient: Address) {
+    init(amount: ZilAmount, to recipient: AddressChecksummedConvertible) {
         self.amount = amount
-        self.recipient = recipient
+        self.recipient = recipient.checksummedAddress
     }
 }
 
@@ -23,7 +23,7 @@ extension TransactionIntent {
     init?(amount amountString: String, to addresssHex: String) {
         guard
             let amount = try? ZilAmount(qa: amountString),
-            let recipient = try? Address(hexString: addresssHex)
+            let recipient = try? AddressChecksummed(string: addresssHex)
             else { return nil }
         self.init(amount: amount, to: recipient)
     }

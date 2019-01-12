@@ -11,7 +11,8 @@ import UIKit
 // MARK: - Coloring
 extension AnyValidation {
     enum Color {
-        static let valid: UIColor = .teal
+        static let validWithoutRemark: UIColor = .teal
+        static let validWithRemark: UIColor = .yellow
         static let error: UIColor = .bloodRed
         static let empty: UIColor = .silverGrey
     }

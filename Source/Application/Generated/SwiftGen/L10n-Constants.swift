@@ -15,6 +15,8 @@ internal enum L10n {
   internal enum Error {
     internal enum Input {
       internal enum Address {
+        /// Are you sure this is a Zilliqa address? It is not checksummed. This might still be a valid address.
+        internal static let addressNotChecksummed = L10n.tr("Localizable", "Error.Input.Address.AddressNotChecksummed")
         /// Only 0-9 and A-F allowed
         internal static let containsNonHexadecimal = L10n.tr("Localizable", "Error.Input.Address.ContainsNonHexadecimal")
         /// Address is too long, should be %d

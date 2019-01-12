@@ -192,10 +192,19 @@ private extension FloatingLabelTextField {
     }
 
     func updateErrorMessageWithValidation(_ validation: AnyValidation) {
+        lineErrorColor = Color.error
+        errorColor = Color.error
         switch validation {
         case .errorMessage(let errorMessage): self.errorMessage = errorMessage
-        case .warningMessage(let warningMessage): self.errorMessage = warningMessage
-        case .empty, .valid: errorMessage = nil
+        case .valid(let remark):
+            if let remark = remark {
+                self.errorMessage = remark
+                lineErrorColor = Color.validWithRemark
+                errorColor = Color.validWithRemark
+            } else {
+                self.errorMessage = nil
+            }
+        case .empty: errorMessage = nil
         }
     }
 
@@ -222,7 +231,7 @@ private extension FloatingLabelTextField {
     func updateLineColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
-        case .valid: color = Color.valid
+        case .valid(let remark): color = (remark == nil) ? Color.validWithoutRemark : Color.validWithRemark
         default:
             // color of line in case of error is handled by the property `lineErrorColor` in the superclass
             color = Color.empty
@@ -233,7 +242,7 @@ private extension FloatingLabelTextField {
     func updatePlaceholderColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
-        case .valid: color = Color.valid
+        case .valid(let remark): color = (remark == nil) ? Color.validWithoutRemark : Color.validWithRemark
         default:
             // color of line in case of error is handled by the property `lineErrorColor` in the superclass
             color = Color.empty
@@ -244,7 +253,7 @@ private extension FloatingLabelTextField {
     func updateSelectedTitleColorWithValidation(_ validation: AnyValidation) {
         let color: UIColor
         switch validation {
-        case .valid: color = Color.valid
+        case .valid(let remark): color = (remark == nil) ? Color.validWithoutRemark : Color.validWithRemark
         default:
             // color of line in case of error is handled by the property `lineErrorColor` in the superclass
             color = Color.empty
@@ -255,9 +264,9 @@ private extension FloatingLabelTextField {
     func colorFromValidation(_ validation: AnyValidation) -> UIColor {
         let color: UIColor
         switch validation {
-        case .empty, .warningMessage: color = Color.empty
+        case .empty: color = Color.empty
         case .errorMessage: color = Color.error
-        case .valid: color = Color.valid
+        case .valid(let remark): color = (remark == nil) ? Color.validWithoutRemark : Color.validWithRemark
         }
         return color
     }

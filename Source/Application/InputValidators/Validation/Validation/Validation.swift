@@ -8,22 +8,28 @@
 
 import Foundation
 
-enum Validation<Value, InvalidReason: InputError> {
-    case valid(Value)
+enum Validation<Value, Error: InputError> {
+    case valid(Value, remark: Error?)
     case invalid(Invalid)
 
     enum Invalid {
         case empty
-        case warning(InvalidReason)
-        case error(InvalidReason)
+        case error(Error)
     }
 }
 
 // MARK: - Convenience Getters
 extension Validation {
+
+    static func valid(_ value: Value) -> Validation {
+        return .valid(value, remark: nil)
+    }
+
     var value: Value? {
-        guard case .valid(let value) = self else { return nil }
-        return value
+        switch self {
+        case .valid(let value, _): return value
+        default: return nil
+        }
     }
 
     var isValid: Bool {
@@ -38,13 +44,4 @@ extension Validation {
 	var isError: Bool {
 		return error != nil
 	}
-
-    var warning: InputError? {
-        guard case .invalid(.warning(let warning)) = self else { return nil }
-        return warning
-    }
-
-    var isWarning: Bool {
-        return warning != nil
-    }
 }

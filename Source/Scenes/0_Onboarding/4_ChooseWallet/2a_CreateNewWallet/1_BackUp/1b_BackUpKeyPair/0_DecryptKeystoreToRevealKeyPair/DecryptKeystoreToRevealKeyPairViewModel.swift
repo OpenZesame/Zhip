@@ -116,7 +116,7 @@ extension DecryptKeystoreToRevealKeyPairViewModel {
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> Validation<WalletEncryptionPassphrase, EncryptionPassphraseValidator.Error> {
+        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> EncryptionPassphraseValidator.Result {
             let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
             return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
         }

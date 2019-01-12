@@ -23,13 +23,13 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
 
     func eagerValidLazyErrorTurnedToEmptyOnEdit(directlyDisplayErrorMessages: Driver<String> = .empty()) -> Driver<AnyValidation> {
         let editingValidation: Driver<AnyValidation> = asDriver().map {
-            switch ($0.isEditing, $0.validation.isValid) {
+            switch ($0.isEditing, $0.validation) {
             // Always indicate valid
-            case (_, true): return .valid
+            case (_, .valid): return $0.validation
             // Always validate when stop editing
             case (false, _): return $0.validation
-            // Convert (.error, .warning, .empty) -> empty when starting editing
-            case (true, false): return .empty
+            // Convert (.error, .empty) -> empty when starting editing
+            case (true, _): return .empty
             }
         }
 

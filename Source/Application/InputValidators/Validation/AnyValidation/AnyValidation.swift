@@ -9,21 +9,9 @@
 import Foundation
 
 enum AnyValidation {
-    case valid
+    case valid(withRemark: String?)
     case empty
-    case warningMessage(String)
     case errorMessage(String)
-}
-
-// MARK: - Convenience Init
-extension AnyValidation {
-    init<V, E>(invalid: Validation<V, E>.Invalid) {
-        switch invalid {
-        case .empty: self = .empty
-        case .error(let error): self = .errorMessage(error.errorMessage)
-        case .warning(let warning): self = .warningMessage(warning.errorMessage)
-        }
-    }
 }
 
 // MARK: - Convenience Getters
@@ -42,26 +30,11 @@ extension AnyValidation {
         }
     }
 
-    var isWarning: Bool {
-        switch self {
-        case .warningMessage: return true
-        default: return false
-        }
-    }
-
     var isError: Bool {
         switch self {
         case .errorMessage: return true
         default: return false
         }
-    }
-
-    var isErrorOrWarning: Bool {
-        return isError || isWarning
-    }
-
-    var isValidOrEmpty: Bool {
-        return isEmpty || isValid
     }
 }
 

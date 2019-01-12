@@ -59,8 +59,8 @@ final class ReceiveViewModel: BaseViewModel<
         let amountValidationTrigger = input.fromView.didEndEditingAmount
 
         let amountValidation: Driver<AnyValidation> = Driver.merge(
-            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrorsAndWarnings(),
-            amountValidationValue.onlyValidOrEmpty()
+            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrors(),
+            amountValidationValue.nonErrors()
         )
 
         let transactionToReceive = Driver.combineLatest(amount.filterNil(), wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
@@ -69,7 +69,7 @@ final class ReceiveViewModel: BaseViewModel<
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }
 
-        let receivingAddress = wallet.map { $0.address.checksummedHex }
+        let receivingAddress = wallet.map { $0.address.checksummedAddress.asString }
 
         bag <~ [
             input.fromController.rightBarButtonTrigger

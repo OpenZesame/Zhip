@@ -34,15 +34,13 @@ extension UIView.Border {
         return UIView.Border(color: AnyValidation.Color.error)
     }
 
-    static var valid: UIView.Border {
-        return UIView.Border(color: AnyValidation.Color.valid)
-    }
-
     static func fromValidation(_ validation: AnyValidation) -> UIView.Border {
         switch validation {
-        case .empty, .warningMessage: return .empty
+        case .empty: return .empty
         case .errorMessage: return .error
-        case .valid: return .valid
+        case .valid(let remark):
+            let color: UIColor = (remark == nil) ? AnyValidation.Color.validWithoutRemark : AnyValidation.Color.validWithRemark
+            return UIView.Border(color: color)
         }
     }
 }

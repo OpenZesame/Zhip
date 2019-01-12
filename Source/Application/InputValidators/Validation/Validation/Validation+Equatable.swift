@@ -14,7 +14,6 @@ extension Validation: Equatable {
         case (.valid, .valid): return true
         case (.invalid(.empty), .invalid(.empty)): return true
         case (.invalid(.error(let lhsError)), .invalid(.error(let rhsError))): return lhsError.isEqual(rhsError)
-        case (.invalid(.warning(let lhsError)), .invalid(.warning(let rhsError))): return lhsError.isEqual(rhsError)
         default: return false
         }
     }

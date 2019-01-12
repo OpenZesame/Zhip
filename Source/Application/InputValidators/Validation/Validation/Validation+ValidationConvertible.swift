@@ -15,10 +15,9 @@ extension Validation: ValidationConvertible {
         case .invalid(let invalid):
             switch invalid {
             case .empty: return .empty
-            case .warning(let warning): return .warningMessage(warning.errorMessage)
             case .error(let error): return .errorMessage(error.errorMessage)
             }
-        case .valid: return .valid
+        case .valid(_, let remark): return .valid(withRemark: remark?.errorMessage)
         }
     }
 }

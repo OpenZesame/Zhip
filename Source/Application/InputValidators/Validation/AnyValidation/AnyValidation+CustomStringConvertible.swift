@@ -13,9 +13,13 @@ extension AnyValidation: CustomStringConvertible {
     var description: String {
         switch self {
         case .empty: return "empty"
-        case .valid: return "valid"
+        case .valid(let remark):
+            if let remark = remark {
+                return "valid, with remark: \(remark)"
+            } else {
+                return "valid"
+            }
         case .errorMessage(let errorMsg): return "error: \(errorMsg)"
-        case .warningMessage(let warningMessage): return "warning: \(warningMessage)"
         }
     }
 }

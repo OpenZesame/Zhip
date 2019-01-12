@@ -48,7 +48,7 @@ final class InputPincodeView: UIView {
 
         switch validation {
         case .valid: vibrateOnValid(); fallthrough
-        case .empty, .warningMessage: errorLabel.text = nil
+        case .empty: errorLabel.text = nil
         case .errorMessage(let errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage
@@ -85,8 +85,8 @@ private extension InputPincodeView {
 private extension PincodeTextField.Presentation {
     func validate(_ validation: AnyValidation) {
         switch validation {
-        case .empty, .valid, .warningMessage:
-            colorUnderlineViews(with: AnyValidation.Color.valid)
+        case .empty, .valid:
+            colorUnderlineViews(with: AnyValidation.Color.validWithoutRemark)
         case .errorMessage:
             colorUnderlineViews(with: AnyValidation.Color.error)
         }
@@ -249,7 +249,7 @@ private final class DigitView: UIView {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.height(3)
-        view.backgroundColor = AnyValidation.Color.valid
+        view.backgroundColor = AnyValidation.Color.validWithoutRemark
         return view
     }()
 
