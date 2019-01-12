@@ -151,8 +151,8 @@ extension RestoreWalletView: ViewModelled {
         ]
     }
 
-    var keystoreRestorationValidatino: Binder<Validation> {
-        return Binder<Validation>(self) {
+    var keystoreRestorationValidatino: Binder<AnyValidation> {
+        return Binder<AnyValidation>(self) {
             $0.restoreUsingKeyStoreView.restorationErrorValidation($1)
             $0.selectSegment(.keystore)
             $0.restoreWalletButton.isEnabled = false

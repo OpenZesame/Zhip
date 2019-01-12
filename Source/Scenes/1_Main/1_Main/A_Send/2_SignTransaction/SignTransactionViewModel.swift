@@ -105,13 +105,13 @@ extension SignTransactionViewModel {
     struct Output {
         let isSignButtonEnabled: Driver<Bool>
         let isSignButtonLoading: Driver<Bool>
-        let encryptionPassphraseValidation: Driver<Validation>
+        let encryptionPassphraseValidation: Driver<AnyValidation>
         let inputBecomeFirstResponder: Driver<Void>
     }
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> InputValidationResult<WalletEncryptionPassphrase, EncryptionPassphraseValidator.Error> {
+        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> EncryptionPassphraseValidator.Result {
             let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
             return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
         }

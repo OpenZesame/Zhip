@@ -27,22 +27,20 @@ extension UIView {
 extension UIView.Border {
 
     static var empty: UIView.Border {
-        return UIView.Border(color: Validation.Color.empty)
+        return UIView.Border(color: AnyValidation.Color.empty)
     }
 
     static var error: UIView.Border {
-        return UIView.Border(color: Validation.Color.error)
+        return UIView.Border(color: AnyValidation.Color.error)
     }
 
-    static var valid: UIView.Border {
-        return UIView.Border(color: Validation.Color.valid)
-    }
-
-    static func fromValidation(_ validation: Validation) -> UIView.Border {
+    static func fromValidation(_ validation: AnyValidation) -> UIView.Border {
         switch validation {
         case .empty: return .empty
-        case .error: return .error
-        case .valid: return .valid
+        case .errorMessage: return .error
+        case .valid(let remark):
+            let color: UIColor = (remark == nil) ? AnyValidation.Color.validWithoutRemark : AnyValidation.Color.validWithRemark
+            return UIView.Border(color: color)
         }
     }
 }

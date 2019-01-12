@@ -18,7 +18,7 @@ struct EncryptionPassphraseValidator: InputValidator {
         self.mode = mode
     }
 
-    func validate(input: Input) -> InputValidationResult<Output, Error> {
+    func validate(input: Input) -> Validation<Output, Error> {
         let passphrase = input.passphrase
         let confirmingPassphrase = input.confirmingPassphrase
         do {

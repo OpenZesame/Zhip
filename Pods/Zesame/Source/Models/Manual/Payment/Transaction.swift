@@ -9,12 +9,12 @@
 import Foundation
 
 public struct Transaction {
-    let version: UInt32
+    let version: Version
     let payment: Payment
     let data: String
     let code: String
 
-    init(payment: Payment, version: UInt32 = 1, data: String = "", code: String = "") {
+    init(payment: Payment, version: Version = .default, data: String = "", code: String = "") {
         self.version = version
         self.payment = payment
         self.data = data

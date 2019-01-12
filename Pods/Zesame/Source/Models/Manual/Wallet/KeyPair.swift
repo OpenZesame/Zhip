@@ -15,13 +15,6 @@ public typealias PrivateKey = EllipticCurveKit.PrivateKey<Curve>
 public typealias PublicKey = EllipticCurveKit.PublicKey<Curve>
 public typealias Signature = EllipticCurveKit.Signature<Curve>
 public typealias Signer = EllipticCurveKit.AnyKeySigner<Schnorr<Curve>>
-public typealias Network = EllipticCurveKit.Zilliqa.Network
-
-public extension Network {
-    static var `default`: Network {
-        return .mainnet
-    }
-}
 
 extension EllipticCurveKit.PublicKey: CustomStringConvertible {
     public var description: String {

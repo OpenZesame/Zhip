@@ -83,8 +83,8 @@ extension RestoreWalletUsingKeystoreViewModel {
     struct Output {
         let keystoreTextFieldPlaceholder: Driver<String>
         let encryptionPassphrasePlaceholder: Driver<String>
-        let keyRestorationValidation: Driver<Validation>
-        let encryptionPassphraseValidation: Driver<Validation>
+        let keyRestorationValidation: Driver<AnyValidation>
+        let encryptionPassphraseValidation: Driver<AnyValidation>
         let keyRestoration: Driver<KeyRestoration?>
     }
 

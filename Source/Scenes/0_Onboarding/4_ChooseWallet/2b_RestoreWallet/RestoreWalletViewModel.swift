@@ -74,7 +74,7 @@ final class RestoreWalletViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let keystoreRestorationError: Driver<Validation> = errorTracker.asInputValidationErrors {
+        let keystoreRestorationError: Driver<AnyValidation> = errorTracker.asInputValidationErrors {
             KeystoreValidator.Error(error: $0)
         }
 
@@ -103,6 +103,6 @@ extension RestoreWalletViewModel {
         let headerLabel: Driver<String>
         let isRestoreButtonEnabled: Driver<Bool>
         let isRestoring: Driver<Bool>
-        let keystoreRestorationError: Driver<Validation>
+        let keystoreRestorationError: Driver<AnyValidation>
     }
 }

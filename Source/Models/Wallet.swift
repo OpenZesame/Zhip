@@ -34,7 +34,7 @@ extension Wallet {
         return wallet.keystore
     }
 
-    var address: Address {
+    var address: AddressChecksummed {
         return wallet.address
     }
 }

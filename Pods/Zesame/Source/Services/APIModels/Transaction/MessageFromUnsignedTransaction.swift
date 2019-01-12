@@ -15,9 +15,9 @@ func messageFromUnsignedTransaction(_ tx: Transaction, publicKey: PublicKey, has
     }
 
     let protoTransaction = ProtoTransactionCoreInfo.with {
-        $0.version = tx.version
+        $0.version = tx.version.value
         $0.nonce = tx.payment.nonce.nonce
-        $0.toaddr = Data(hex: tx.payment.recipient.checksummedHex)
+        $0.toaddr = Data(hex: tx.payment.recipient.asString.lowercased())
         $0.senderpubkey = publicKey.data.compressed.asByteArray
         $0.amount = tx.payment.amount.as16BytesLongArray
         $0.gasprice = tx.payment.gasPrice.as16BytesLongArray

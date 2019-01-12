@@ -21,8 +21,8 @@ extension Reactive where Base == InputPincodeView {
         return base.pinField.pincodeDriver
     }
 
-    var validation: Binder<Validation> {
-        return Binder<Validation>(base) {
+    var validation: Binder<AnyValidation> {
+        return Binder<AnyValidation>(base) {
             $0.validate($1)
         }
     }
@@ -43,13 +43,13 @@ final class InputPincodeView: UIView {
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
-    func validate(_ validation: Validation) {
+    func validate(_ validation: AnyValidation) {
         pinField.validate(validation)
 
         switch validation {
         case .valid: vibrateOnValid(); fallthrough
         case .empty: errorLabel.text = nil
-        case .error(let errorMessage):
+        case .errorMessage(let errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage
         }
@@ -83,12 +83,12 @@ private extension InputPincodeView {
 }
 
 private extension PincodeTextField.Presentation {
-    func validate(_ validation: Validation) {
+    func validate(_ validation: AnyValidation) {
         switch validation {
         case .empty, .valid:
-            colorUnderlineViews(with: Validation.Color.valid)
-        case .error:
-            colorUnderlineViews(with: Validation.Color.error)
+            colorUnderlineViews(with: AnyValidation.Color.validWithoutRemark)
+        case .errorMessage:
+            colorUnderlineViews(with: AnyValidation.Color.error)
         }
     }
 }
@@ -147,7 +147,7 @@ private final class PincodeTextField: UITextField {
         }
     }
 
-    func validate(_ validation: Validation) {
+    func validate(_ validation: AnyValidation) {
         presentation.validate(validation)
     }
 
@@ -249,7 +249,7 @@ private final class DigitView: UIView {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.height(3)
-        view.backgroundColor = Validation.Color.valid
+        view.backgroundColor = AnyValidation.Color.validWithoutRemark
         return view
     }()
 

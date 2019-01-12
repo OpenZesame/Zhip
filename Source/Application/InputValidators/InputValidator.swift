@@ -12,13 +12,13 @@ protocol InputValidator {
     associatedtype Input
     associatedtype Output
     associatedtype Error: InputError
-    func validate(input: Input?) -> InputValidationResult<Output, Error>
-    func validate(input: Input) -> InputValidationResult<Output, Error>
+    func validate(input: Input?) -> Validation<Output, Error>
+    func validate(input: Input) -> Validation<Output, Error>
 }
 
 extension InputValidator {
 
-    typealias Result = InputValidationResult<Output, Error>
+    typealias Result = Validation<Output, Error>
 
     func validate(input: Input?) -> Result {
         guard let input = input else { return .invalid(.empty) }
@@ -45,7 +45,7 @@ extension InputValidator where Self: ValidationRulesOwner, Self.RuleInput == Inp
 // MARK: - String to Double
 extension InputValidator where Input == Double, Output == Double {
     func validate(string: String?) -> Result {
-        guard let input = string, let double = Double(input) else { return InputValidationResult.invalid(.empty) }
+        guard let input = string, let double = Double(input) else { return Validation.invalid(.empty) }
         return validate(input: double)
     }
 }

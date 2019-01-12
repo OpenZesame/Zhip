@@ -19,7 +19,7 @@ struct SufficientFundsValidator: InputValidator {
     }
 
     // swiftlint:disable:next large_tuple
-    func validate(input: (amount: ZilAmount?, gasPrice: GasPrice?, balance: ZilAmount?)) -> InputValidationResult<ZilAmount, Error> {
+    func validate(input: (amount: ZilAmount?, gasPrice: GasPrice?, balance: ZilAmount?)) -> Validation<ZilAmount, Error> {
 		guard let amount = input.amount, let gasPrice = input.gasPrice, let balance = input.balance else {
 			return .invalid(.empty)
 		}

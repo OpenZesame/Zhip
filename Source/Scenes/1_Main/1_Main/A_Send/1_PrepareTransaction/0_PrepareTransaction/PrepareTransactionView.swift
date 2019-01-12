@@ -126,7 +126,7 @@ private extension PrepareTransactionView {
 private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         #if DEBUG
-        recipientAddressField.text = "74c544a11795905C2C9808F9E78D8156159d32e4"
+        recipientAddressField.text = "89A810E6Db25912028F704b4947a6dcf724139AE"
         amountToSendField.text = Int.random(in: 100...500).description
         gasPriceField.text = Int.random(in: 1000...2000).description
 

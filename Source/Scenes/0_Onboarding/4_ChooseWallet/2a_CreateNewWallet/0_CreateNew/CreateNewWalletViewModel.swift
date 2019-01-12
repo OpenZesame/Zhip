@@ -86,13 +86,13 @@ BaseViewModel<
             input.fromView.isEditingNewEncryptionPassphrase
         )
 
-        let encryptionPassphraseValidation: Driver<Validation> = encryptionPassphraseValidationTrigger.withLatestFrom(
+        let encryptionPassphraseValidation: Driver<AnyValidation> = encryptionPassphraseValidationTrigger.withLatestFrom(
             unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPassphraseValidation: Driver<Validation> = Driver.combineLatest(
+        let confirmEncryptionPassphraseValidation: Driver<AnyValidation> = Driver.combineLatest(
             Driver.merge(
                 // map `editingChanged` to `editingDidBegin`
                 confirmingPassphrase.mapToVoid().map { true },
@@ -127,8 +127,8 @@ extension CreateNewWalletViewModel {
 
     struct Output {
         let encryptionPassphrasePlaceholder: Driver<String>
-        let encryptionPassphraseValidation: Driver<Validation>
-        let confirmEncryptionPassphraseValidation: Driver<Validation>
+        let encryptionPassphraseValidation: Driver<AnyValidation>
+        let confirmEncryptionPassphraseValidation: Driver<AnyValidation>
         let isContinueButtonEnabled: Driver<Bool>
         let isButtonLoading: Driver<Bool>
     }

@@ -42,18 +42,22 @@ public extension ZilliqaService {
                         main {
                             done(.failure(error))
                         }
-                    case .success:
-                        guard let address = Address(uncheckedString: keystore.address) else {
-                            done(.failure(.walletImport(.badAddress)))
-                            return
+                    case .success(_): // we dont want to use the private key that got decrypted, we only store keystore
+                        do {
+                            let address = try Address(string: keystore.address)
+                            main {
+                                done(.success(Wallet(keystore: keystore, address: address)))
+                            }
+                        } catch {
+                            main {
+                                done(.failure(.walletImport(.badAddress)))
+                            }
                         }
-                        main {
-                            done(.success(Wallet(keystore: keystore, address: address)))
-                        }
+
                     }
                 }
             case .privateKey(let privateKey, let newPassphrase):
-                let address = Address(privateKey: privateKey)
+                let address = AddressNotNecessarilyChecksummed(privateKey: privateKey)
                 Keystore.from(address: address, privateKey: privateKey, encryptBy: newPassphrase) {
                     guard case .success(let keystore) = $0 else { done(Result.failure($0.error!)); return }
                     main {
@@ -64,7 +68,7 @@ public extension ZilliqaService {
         }
     }
 
-    func exportKeystore(address: Address, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>) {
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>) {
         Keystore.from(address: address, privateKey: privateKey, encryptBy: passphrase, done: done)
     }
 }
