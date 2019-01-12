@@ -32,6 +32,7 @@ public protocol ZilliqaServiceReactive {
     func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
     func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair>
 
     func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse>
     func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionResponse>
@@ -41,7 +42,29 @@ public protocol ZilliqaServiceReactive {
 }
 
 public extension ZilliqaServiceReactive {
+
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: passphrase)
+    }
+
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+        return Observable.create { observer in
+
+            keystore.toKeypair(encryptedBy: passphrase) {
+                switch $0 {
+                case .success(let keyPair):
+                    observer.onNext(keyPair)
+                    observer.onCompleted()
+                case .failure(let error):
+                    observer.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+
     func hasNetworkReachedConsensusYetForTransactionWith(id: String) -> Observable<TransactionReceipt> {
         return hasNetworkReachedConsensusYetForTransactionWith(id: id, polling: .twentyTimesLinearBackoff)
     }
+
 }

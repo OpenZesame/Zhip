@@ -22,10 +22,8 @@ public extension AddressChecksummedConvertible {
     }
 
     init(publicKey: PublicKey, network: Network) {
-        let system = EllipticCurveKit.Zilliqa(network)
-        let compressedHash = system.compressedHash(from: publicKey)
         do {
-            try self.init(compressedHash: compressedHash)
+            try self.init(compressedHash: network.compressedHashForAddressFromPublicKey(publicKey))
         } catch {
             fatalError("Incorrect implementation, using `publicKey:network` initializer should never result in error: `\(error)`")
         }

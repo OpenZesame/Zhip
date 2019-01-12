@@ -9,13 +9,12 @@
 import Foundation
 
 public extension AddressNotNecessarilyChecksummed {
-    public static let lengthOfValidAddresses: Int = 40
     static func validate(hexString: HexStringConvertible) throws {
         let length = hexString.length
-        if length < lengthOfValidAddresses {
+        if length < Address.lengthOfValidAddresses {
             throw Address.Error.tooShort
         }
-        if length > lengthOfValidAddresses {
+        if length > Address.lengthOfValidAddresses {
             throw Address.Error.tooLong
         }
         // is valid
