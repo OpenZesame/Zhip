@@ -19,4 +19,3 @@ extension Receive: BackButtonHiding {
 extension Receive: RightBarButtonMaking {
     static let makeRight: BarButton = .done
 }
-

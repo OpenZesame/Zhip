@@ -23,6 +23,9 @@ extension UIColor {
         case bloodRed = 0xFF4C4F
         case asphaltGrey = 0x40484D
         case silverGrey = 0x6F7579
+
+        // Dark color used for navigation bar
+        case dusk = 0x192226
     }
 }
 
@@ -49,6 +52,7 @@ extension UIColor {
     static let bloodRed = UIColor(hex: .bloodRed)
     static let asphaltGrey = UIColor(hex: .asphaltGrey)
     static let silverGrey = UIColor(hex: .silverGrey)
+    static let dusk = UIColor(hex: .dusk)
 }
 
 // MARK: - Private

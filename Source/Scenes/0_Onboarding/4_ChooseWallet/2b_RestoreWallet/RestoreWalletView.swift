@@ -17,7 +17,7 @@ private typealias € = L10n.Scene.RestoreWallet
 private typealias Segment = RestoreWalletViewModel.InputFromView.Segment
 
 // MARK: - RestoreWalletView
-final class RestoreWalletView: UIView, EmptyInitializable {
+final class RestoreWalletView: BaseSceneView, EmptyInitializable {
 
     private let bag = DisposeBag()
 
@@ -26,16 +26,29 @@ final class RestoreWalletView: UIView, EmptyInitializable {
     private lazy var headerLabel                        = UILabel()
     private lazy var restoreUsingPrivateKeyView         = RestoreUsingPrivateKeyView()
     fileprivate lazy var restoreUsingKeyStoreView       = RestoreUsingKeystoreView()
+    private lazy var containerView                      = UIView()
     fileprivate lazy var restoreWalletButton                = ButtonWithSpinner()
 
-    // MARK: - Initialization
-    init() {
-        super.init(frame: .zero)
-        setup()
+    lazy var stackViewStyle = UIStackView.Style([
+//        restorationMethodSegmentedControl, // above scrollview
+        headerLabel,
+        containerView,
+        restoreWalletButton
+        ], spacing: 8)
+
+    override func setup() {
+        setupSubviews()
     }
 
-    required init?(coder: NSCoder) {
-        interfaceBuilderSucks
+    override func preSetup() {
+        setupSegmentedControl()
+    }
+
+    override func setupScrollViewConstraints() {
+        scrollView.bottomToSuperview()
+        scrollView.leadingToSuperview()
+        scrollView.trailingToSuperview()
+        scrollView.topToBottom(of: restorationMethodSegmentedControl)
     }
 }
 
@@ -43,28 +56,28 @@ final class RestoreWalletView: UIView, EmptyInitializable {
 private extension RestoreWalletView {
 
     // swiftlint:disable:next function_body_length
-    func setup() {
-
+    func setupSubviews() {
         headerLabel.withStyle(.header)
 
-        addSubview(restorationMethodSegmentedControl)
-        addSubview(headerLabel)
-        headerLabel.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
-        headerLabel.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
-        headerLabel.topToBottom(of: restorationMethodSegmentedControl, offset: 24)
-        addSubview(restoreWalletButton)
-        restoreWalletButton.bottomToSuperview(offset: -50)
-        restoreWalletButton.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
-        restoreWalletButton.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
 
+//        headerLabel.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
+//        headerLabel.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
+//        headerLabel.topToBottom(of: restorationMethodSegmentedControl, offset: 24)
+//        restoreWalletButton.bottomToSuperview(offset: -50)
+//        restoreWalletButton.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
+//        restoreWalletButton.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
+
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         func setupSubview(_ view: UIView) {
             view.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(view)
-            view.leadingToSuperview()
-            view.trailingToSuperview()
-            view.topToBottom(of: headerLabel)
-            view.bottomToTop(of: restoreWalletButton, offset: -30)
-            view.isHidden = true
+            containerView.addSubview(view)
+            view.edgesToSuperview()
+//            view.leadingToSuperview()
+//            view.trailingToSuperview()
+//            view.topToBottom(of: headerLabel)
+//            view.bottomToTop(of: restoreWalletButton, offset: -30)
+//            view.isHidden = true
         }
 
         [restoreUsingPrivateKeyView, restoreUsingKeyStoreView].forEach {
@@ -76,13 +89,13 @@ private extension RestoreWalletView {
                 .disabled()
         }
 
-        setupSegmentedControl()
     }
 
     // swiftlint:disable:next function_body_length
     func setupSegmentedControl() {
         restorationMethodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        restorationMethodSegmentedControl.topToSuperview(usingSafeArea: true)
+        addSubview(restorationMethodSegmentedControl)
+        restorationMethodSegmentedControl.topToSuperview(offset: 10, usingSafeArea: true)
         restorationMethodSegmentedControl.centerXToSuperview()
 
         func add(segment: Segment, titled title: String) {

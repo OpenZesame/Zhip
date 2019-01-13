@@ -47,7 +47,7 @@ extension Coordinating {
         ) where C: Coordinating & Navigating {
 
         // Initialize a new NavigationController to be passed to the new child coordinator
-        let newModalNavigationController = UINavigationController()
+        let newModalNavigationController = NavigationBarLayoutingNavigationController()
 
         // Initialize the new child coordinator, by invoking the `makeCoordinator` closure,
         // passing the newly created NavigationController

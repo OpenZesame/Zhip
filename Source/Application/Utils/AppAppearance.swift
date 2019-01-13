@@ -22,16 +22,20 @@ private func setupAppearance() {
 func setupBarButtonItemAppearance() {
     UINavigationBar.appearance().backIndicatorImage = UIImage()
     UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage()
+    UIBarButtonItem.appearance().attributeText([.font(.title), .color(.teal)], for: UIControl.State.all)
+    replaceBackBarButtonImage()
+}
+
+private func replaceBackBarButtonImage() {
     let backImage = Asset.Icons.Small.chevronLeft.image
     let streched = backImage.stretchableImage(withLeftCapWidth: 15, topCapHeight: 30)
     UIBarButtonItem.appearance().setBackButtonBackgroundImage(streched, for: .normal, barMetrics: .default)
-    UIBarButtonItem.appearance().attributeText([.font(.title), .color(.teal)], for: UIControl.State.all)
 }
 
 public extension UINavigationBar {
 
     static var defaultBarTintColor: UIColor {
-        return .teal
+        return .dusk
     }
 
     static var defaultBackgroundColor: UIColor {

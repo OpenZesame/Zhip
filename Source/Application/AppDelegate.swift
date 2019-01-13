@@ -13,7 +13,7 @@ class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
 
     fileprivate lazy var appCoordinator: AppCoordinator = {
-        let navigationController = UINavigationController()
+        let navigationController = NavigationBarLayoutingNavigationController()
         window?.rootViewController = navigationController
 
         return AppCoordinator(

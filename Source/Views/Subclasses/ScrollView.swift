@@ -45,7 +45,7 @@ private typealias € = L10n.View.PullToRefreshControl
 
 typealias BaseSceneView = AbstractSceneView & StackViewStyling
 
-class AbstractSceneView: UIView, ScrollingStackView {
+class AbstractSceneView: UIView, ScrollViewOwner {
 
     // MARK: Initialization
     init() {
@@ -56,18 +56,18 @@ class AbstractSceneView: UIView, ScrollingStackView {
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
     lazy var scrollView = UIScrollView(frame: .zero)
-    lazy var scrollViewContentView: UIStackView = makScrollViewContentView()
+    lazy var scrollViewContentView: UIView = makScrollViewContentView()
     private lazy var refreshControlCustomView = RefreshControlCustomView()
     lazy var refreshControl = UIRefreshControl()
 
-    func makScrollViewContentView() -> UIStackView {
-        guard let stackViewProvider = self as? StackViewStyling else {
-            incorrectImplementation("Self should be StackViewStyling")
+    func makScrollViewContentView() -> UIView {
+        guard let contentViewProvider = self as? ContentViewProvider else {
+            incorrectImplementation("Self should be ContentViewProvider")
         }
-        guard let stackView = stackViewProvider.makeContentView() as? UIStackView else {
-            incorrectImplementation("ContentView should have been `UIStackView`")
-        }
-        return stackView
+//        guard let stackView = stackViewProvider.makeContentView() as? UIStackView else {
+//            incorrectImplementation("ContentView should have been `UIStackView`")
+//        }
+        return contentViewProvider.makeContentView()
     }
 
     override func layoutSubviews() {
@@ -77,10 +77,15 @@ class AbstractSceneView: UIView, ScrollingStackView {
 
 
     // MARK: Overrideable
-    func setup() { /* subclass me */ }
+    func preSetup() { /* override me */ }
+    func setup() { /* override me */ }
 
     func setRefreshControlTitle(_ title: String) {
         refreshControlCustomView.setTitle(title)
+    }
+
+    func setupScrollViewConstraints() {
+        scrollView.edgesToSuperview()
     }
 }
 
@@ -88,14 +93,23 @@ class AbstractSceneView: UIView, ScrollingStackView {
 // MARK: - Private
 private extension AbstractSceneView {
     func privateSetup() {
+
+        translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
+
+        preSetup()
+        defer { setup() }
+
         addSubview(scrollView)
+        setupScrollViewConstraints()
 
         scrollView.addSubview(scrollViewContentView)
-        scrollView.edgesToSuperview()
 
         scrollViewContentView.widthToSuperview()
+        scrollViewContentView.heightToSuperview(relation: .equalOrGreater, priority: .defaultHigh)
+        scrollViewContentView.edgesToParent(topToSafeArea: false, bottomToSafeArea: (self is PullToRefreshCapable))
 
-        scrollViewContentView.edgesToParent(topToSafeArea: false, bottomToSafeArea: true)
 //        scrollViewContentView.leadingToSuperview()
 //        scrollViewContentView.trailingToSuperview()
 //        scrollViewContentView.topToSuperview(usingSafeArea: false)
@@ -108,7 +122,6 @@ private extension AbstractSceneView {
             scrollView.contentInsetAdjustmentBehavior = .never
 //               scrollViewContentView.edgesToParent()
         }
-        setup()
     }
 
 
@@ -122,23 +135,6 @@ private extension AbstractSceneView {
     }
 }
 
-// Keyboard avoiding
-extension AbstractSceneView {
-//
-//    private func registerNotifications() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        guard let keyboardFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-//        contentInset.bottom = convert(keyboardFrame.cgRectValue, from: nil).size.height
-//    }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        contentInset.bottom = 0
-//    }
-}
 
 // MARK: - Rx
 extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {

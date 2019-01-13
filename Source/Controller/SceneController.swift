@@ -35,10 +35,10 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         rootContentView.backgroundColor = .clear
         view.addSubview(rootContentView)
         rootContentView.edgesToSuperview()
-//        if let scrollingStackView = rootContentView as? AbstractSceneView {
-//            scrollingStackView.stackView.height(to: view)
-//        }
-//        rootContentView.heightToSuperview()
+        //        if let scrollingStackView = rootContentView as? AbstractSceneView {
+        //            scrollingStackView.stackView.height(to: view)
+        //        }
+        //        rootContentView.heightToSuperview()
 
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
@@ -67,13 +67,27 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         logSceneAppearanceToAnalyticsIfAllowed()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+
+    override func handleKeyboardWillShow(_ keyboardSize: CGSize) {
+        guard
+            let scrollingStackView = rootContentView as? AbstractSceneView,
+            case let scrollView = scrollingStackView.scrollView else {
+            return
+        }
+        print("scrollView.contentInset.bottom = \(keyboardSize.height)")
+        scrollView.contentInset.bottom = keyboardSize.height
+    }
+
+    override func handleKeyboardWillHide() {
+        guard
+            let scrollingStackView = rootContentView as? AbstractSceneView,
+            case let scrollView = scrollingStackView.scrollView else {
+                return
+        }
+        scrollView.contentInset.bottom = 0
     }
 }
 
@@ -81,6 +95,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 private extension SceneController {
 
     func setup() {
+//        extendedLayoutIncludesOpaqueBars = true
         bindViewToViewModel()
     }
 
@@ -136,28 +151,42 @@ private extension SceneController {
         rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
 
+//    func applyLayoutIfNeeded() {
+//
+//        guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
+//            // Default to transluscent
+//            navigationController?.applyLayout(.opaque)
+//            return
+//        }
+//
+//        navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+//    }
+
     func applyLayoutIfNeeded() {
+        guard let barLayoutingNavController = navigationController as? NavigationBarLayoutingNavigationController else {
+            incorrectImplementation("navigationController should be instance of `NavigationBarLayoutingNavigationController`")
+        }
 
         guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
-            // Default to transluscent
-            navigationController?.applyLayout(.transluscent)
+            barLayoutingNavController.applyLayout(.opaque)
             return
         }
 
-        navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+        if let lastLayout = barLayoutingNavController.lastLayout {
+            let layout = barLayoutOwner.navigationBarLayout
+            guard layout != lastLayout else {
+                // do not apply layout if same, to avoid potential gui glitches
+                return
+            }
+               barLayoutingNavController.applyLayout(layout)
+        } else {
+            // always apply layout if this is the first scene of this navigation controller
+            barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)
+        }
     }
 
     func logSceneAppearanceToAnalyticsIfAllowed() {
         guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
         GlobalTracker.shared.track(scene: self)
-    }
-}
-
-private extension UINavigationController {
-    func applyLayout(_ layout: NavigationBarLayout) {
-        navigationBar.applyLayout(layout)
-        let isHidden = layout.visibility.isHidden
-        let animated = layout.visibility.animated
-        setNavigationBarHidden(isHidden, animated: animated)
     }
 }
