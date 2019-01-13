@@ -46,6 +46,37 @@ final class RestoreWalletView: ScrollableStackViewOwner {
     }
 }
 
+// MARK: - ViewModelled
+extension RestoreWalletView: ViewModelled {
+    typealias ViewModel = RestoreWalletViewModel
+    
+    var inputFromView: InputFromView {
+        return InputFromView(
+            selectedSegment: restorationMethodSegmentedControl.rx.value.asDriver().map { Segment(rawValue: $0) }.filterNil(),
+            keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
+            keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
+            restoreTrigger: restoreWalletButton.rx.tap.asDriver()
+        )
+    }
+
+    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.headerLabel               --> headerLabel.rx.text,
+            viewModel.isRestoring               --> restoreWalletButton.rx.isLoading,
+            viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled,
+            viewModel.keystoreRestorationError  --> keystoreRestorationValidatino
+        ]
+    }
+
+    var keystoreRestorationValidatino: Binder<AnyValidation> {
+        return Binder<AnyValidation>(self) {
+            $0.restoreUsingKeyStoreView.restorationErrorValidation($1)
+            $0.selectSegment(.keystore)
+            $0.restoreWalletButton.isEnabled = false
+        }
+    }
+}
+
 // MARK: - Private
 private extension RestoreWalletView {
 
@@ -81,10 +112,10 @@ private extension RestoreWalletView {
 
         restorationMethodSegmentedControl.tintColor = .teal
         let whiteFontAttributes = [NSAttributedString.Key.font: UIFont.hint,
-                             NSAttributedString.Key.foregroundColor: UIColor.white]
+                                   NSAttributedString.Key.foregroundColor: UIColor.white]
 
         let tealFontAttributes = [NSAttributedString.Key.font: UIFont.hint,
-                                   NSAttributedString.Key.foregroundColor: UIColor.teal]
+                                  NSAttributedString.Key.foregroundColor: UIColor.teal]
 
         restorationMethodSegmentedControl.setTitleTextAttributes(whiteFontAttributes, for: .selected)
         restorationMethodSegmentedControl.setTitleTextAttributes(tealFontAttributes, for: .normal)
@@ -117,36 +148,4 @@ private extension RestoreWalletView {
         restorationMethodSegmentedControl.selectedSegmentIndex = segment.rawValue
         restorationMethodSegmentedControl.sendActions(for: .valueChanged)
     }
-}
-
-// MARK: - ViewModelled
-extension RestoreWalletView: ViewModelled {
-    typealias ViewModel = RestoreWalletViewModel
-    
-    var inputFromView: InputFromView {
-        return InputFromView(
-            selectedSegment: restorationMethodSegmentedControl.rx.value.asDriver().map { Segment(rawValue: $0) }.filterNil(),
-            keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
-            keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
-            restoreTrigger: restoreWalletButton.rx.tap.asDriver()
-        )
-    }
-
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.headerLabel               --> headerLabel.rx.text,
-            viewModel.isRestoring               --> restoreWalletButton.rx.isLoading,
-            viewModel.isRestoreButtonEnabled    --> restoreWalletButton.rx.isEnabled,
-            viewModel.keystoreRestorationError  --> keystoreRestorationValidatino
-        ]
-    }
-
-    var keystoreRestorationValidatino: Binder<AnyValidation> {
-        return Binder<AnyValidation>(self) {
-            $0.restoreUsingKeyStoreView.restorationErrorValidation($1)
-            $0.selectSegment(.keystore)
-            $0.restoreWalletButton.isEnabled = false
-        }
-    }
-
 }

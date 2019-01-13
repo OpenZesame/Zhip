@@ -9,8 +9,8 @@
 import UIKit
 
 extension UIView {
-    func edgesToParent(topToSafeArea: Bool = true, bottomToSafeArea: Bool = true) {
-        guard let superview = superview else { fatalError("no superview") }
+    func edgesToParent(topToSafeArea: Bool, bottomToSafeArea: Bool) {
+        guard let superview = superview else { incorrectImplementation("Should have `superview`") }
         edgesTo(view: superview, topToSafeArea: topToSafeArea, bottomToSafeArea: bottomToSafeArea)
     }
 
