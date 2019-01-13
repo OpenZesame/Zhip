@@ -50,6 +50,7 @@ extension PrepareTransactionView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
+            viewModel.refreshControlLastUpdatedTitle    --> rx.pullToRefreshTitle,
             viewModel.isFetchingBalance                 --> rx.isRefreshing,
             viewModel.amount                            --> amountToSendField.rx.text,
             viewModel.recipient                         --> recipientAddressField.rx.text,

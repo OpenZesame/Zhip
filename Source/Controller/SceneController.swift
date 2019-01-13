@@ -78,7 +78,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
             case let scrollView = scrollingStackView.scrollView else {
             return
         }
-        print("scrollView.contentInset.bottom = \(keyboardSize.height)")
         scrollView.contentInset.bottom = keyboardSize.height
     }
 

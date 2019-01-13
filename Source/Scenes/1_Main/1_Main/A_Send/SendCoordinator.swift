@@ -105,7 +105,6 @@ private extension SendCoordinator {
     }
 
     func toWaitForReceiptForTransactionWith(id transactionId: String) {
-        print("Polling transaction status for tx: \(transactionId)")
         let viewModel = PollTransactionStatusViewModel(
             useCase: useCaseProvider.makeTransactionsUseCase(),
             transactionId: transactionId

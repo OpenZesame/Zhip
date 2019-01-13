@@ -55,7 +55,6 @@ final class MainViewModel: BaseViewModel<
         let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest { [unowned self] in
             self.transactionUseCase
                 .getBalance(for: $0.address)
-                .delay(20, scheduler: MainScheduler.instance)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
                 .do(onNext: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })
@@ -89,9 +88,8 @@ final class MainViewModel: BaseViewModel<
             guard let updatedAt = $0 else {
                 return €.RefreshControl.first
             }
-
             return €.RefreshControl.balanceWasUpdatedAt(updatedAt.timeAgo().lowercased())
-            }.do(onNext: { print("Refresh title: \($0)") })
+        }
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
