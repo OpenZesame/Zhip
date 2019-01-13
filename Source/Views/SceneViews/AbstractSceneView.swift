@@ -13,8 +13,7 @@ import RxCocoa
 
 class AbstractSceneView: UIView, ScrollViewOwner {
 
-    lazy var refreshControlCustomView = RefreshControlCustomView()
-    lazy var refreshControl = UIRefreshControl()
+    lazy var refreshControl = RefreshControl()
 
     let scrollView: UIScrollView
 
@@ -22,10 +21,6 @@ class AbstractSceneView: UIView, ScrollViewOwner {
         self.scrollView = scrollView
         super.init(frame: .zero)
         setupAbstractSceneView()
-    }
-
-    func setRefreshControlTitle(_ title: String) {
-        refreshControlCustomView.setTitle(title)
     }
 
     func setupScrollViewConstraints() {
@@ -59,22 +54,20 @@ private extension AbstractSceneView {
 
     func setupRefreshControl() {
         scrollView.alwaysBounceVertical = true
-        refreshControl.tintColor = .clear // hiding bundled spinner
         scrollView.refreshControl = refreshControl
-        refreshControl.addSubview(refreshControlCustomView)
-        setRefreshControlTitle(L10n.View.PullToRefreshControl.title)
     }
 }
 
 // MARK: - Rx
 extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
-        return base.refreshControl.rx.isRefreshing
+        let refreshControl = base.refreshControl
+        return refreshControl.rx.isRefreshing
     }
 
     var pullToRefreshTitle: Binder<String> {
         return Binder<String>(base) {
-            $0.setRefreshControlTitle($1)
+            $0.refreshControl.setTitle($1)
         }
     }
 

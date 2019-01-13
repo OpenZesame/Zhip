@@ -28,11 +28,6 @@ class BaseScrollableStackViewOwner: AbstractSceneView {
         }
         return contentViewProvider.makeContentView()
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        refreshControlCustomView.frame = refreshControl.bounds
-    }
 }
 
 private extension BaseScrollableStackViewOwner {

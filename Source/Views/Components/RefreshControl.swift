@@ -8,12 +8,12 @@
 
 import UIKit
 
-final class RefreshControlCustomView: UIView {
+final class RefreshControl: UIRefreshControl {
     private lazy var spinner = SpinnerView()
     private lazy var label = UILabel()
     private lazy var stackView = UIStackView(arrangedSubviews: [spinner, label])
 
-    init() {
+    override init() {
         super.init(frame: .zero)
         setup()
     }
@@ -21,15 +21,23 @@ final class RefreshControlCustomView: UIView {
     required init?(coder: NSCoder) {
         interfaceBuilderSucks
     }
+
+    // Ugly hack to remove default spinner: https://stackoverflow.com/a/33472020/1311272
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        guard superview != nil else { return }
+        // setting `isHidden = true` does not work
+        subviews.first?.alpha = 0
+    }
 }
 
-extension RefreshControlCustomView {
+extension RefreshControl {
     func setTitle(_ title: String) {
         label.text = title
     }
 }
 
-private extension RefreshControlCustomView {
+private extension RefreshControl {
     func setup() {
         backgroundColor = .clear
         contentMode = .scaleToFill
@@ -40,8 +48,9 @@ private extension RefreshControlCustomView {
             $0.distribution(.fill).spacing(0)
         }
         addSubview(stackView)
+        spinner.height(30, priority: .defaultHigh)
         stackView.edgesToSuperview()
         spinner.startSpinning()
-//        spinner.height(30)
+        setTitle(L10n.View.PullToRefreshControl.title)
     }
 }

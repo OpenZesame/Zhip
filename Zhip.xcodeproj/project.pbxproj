@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */; };
-		48053F0121EB86FD008FCE13 /* RefreshControlCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */; };
+		48053F0121EB86FD008FCE13 /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0021EB86FD008FCE13 /* RefreshControl.swift */; };
 		48053F2621EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */; };
 		48053F2921EBDB0C008FCE13 /* ScrollViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */; };
 		48053F2C21EBDB92008FCE13 /* AbstractSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */; };
@@ -299,7 +299,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControlCustomView.swift; sourceTree = "<group>"; };
+		48053F0021EB86FD008FCE13 /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
 		48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutingNavigationController.swift; sourceTree = "<group>"; };
 		48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOwner.swift; sourceTree = "<group>"; };
 		48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractSceneView.swift; sourceTree = "<group>"; };
@@ -1235,7 +1235,7 @@
 			isa = PBXGroup;
 			children = (
 				48FD562721B632E50026690E /* CheckboxWithLabel.swift */,
-				48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */,
+				48053F0021EB86FD008FCE13 /* RefreshControl.swift */,
 				48ECF4B721A17B7A0078D659 /* TitledValueView.swift */,
 			);
 			path = Components;
@@ -2029,7 +2029,7 @@
 				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
-				48053F0121EB86FD008FCE13 /* RefreshControlCustomView.swift in Sources */,
+				48053F0121EB86FD008FCE13 /* RefreshControl.swift in Sources */,
 				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
 				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */,
