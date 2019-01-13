@@ -30,7 +30,9 @@ class BaseScrollableStackViewOwner: AbstractSceneView {
     }
 }
 
+// MARK: - Private
 private extension BaseScrollableStackViewOwner {
+    // Due to classes and inheritance we cannot name this `setupSuviews`, since the subclasses cannot use that name.
     func setupBaseScrollableStackViewOwner() {
         scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
 

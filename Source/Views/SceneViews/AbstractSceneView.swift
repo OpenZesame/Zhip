@@ -30,11 +30,14 @@ class AbstractSceneView: UIView, ScrollViewOwner {
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
     // MARK: Overrideable
+
+    /// Override this method from you scene views, setting up its subviews.
     func setup() { /* override me */ }
 }
 
 // MARK: - Private
 private extension AbstractSceneView {
+    // Due to classes and inheritance we cannot name this `setupSuviews`, since the subclasses cannot use that name.
     func setupAbstractSceneView() {
         defer { setup() }
 
