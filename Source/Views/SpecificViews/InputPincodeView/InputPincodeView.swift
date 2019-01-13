@@ -28,6 +28,20 @@ extension Reactive where Base == InputPincodeView {
     }
 }
 
+public extension UIView {
+
+    func shake(count: Float = 3, duration: TimeInterval = 0.3, withTranslation translation: CGFloat = 5) {
+        let animation = CABasicAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        animation.repeatCount = count
+        animation.duration = duration / TimeInterval(animation.repeatCount)
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: -translation, y: center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: translation, y: center.y))
+        layer.add(animation, forKey: "shake")
+    }
+}
+
 final class InputPincodeView: UIView {
 
     fileprivate lazy var pinField   = PincodeTextField()
@@ -52,6 +66,8 @@ final class InputPincodeView: UIView {
         case .errorMessage(let errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage
+            shake()
+            pinField.clearInput()
         }
     }
 }
@@ -183,6 +199,11 @@ private final class PincodeTextField: UITextField {
 
     func setPincode(_ pincode: Pincode?) {
        presentation.setPincode(pincode?.digits ?? [])
+    }
+
+    func clearInput() {
+        setPincode(nil)
+        self.text = nil
     }
 }
 
