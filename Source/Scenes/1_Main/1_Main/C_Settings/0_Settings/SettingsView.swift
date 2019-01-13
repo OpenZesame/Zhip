@@ -13,7 +13,7 @@ import RxCocoa
 private typealias € = L10n.Scene.Settings
 
 // MARK: - SettingsView
-final class SettingsView: HeaderlessTableView<SettingsTableViewCell>, EmptyInitializable {
+final class SettingsView: HeaderlessTableViewSceneView<SettingsTableViewCell> {
 
     init() {
         super.init(style: .grouped)
@@ -27,14 +27,14 @@ extension SettingsView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.sections.drive(sections),
-            viewModel.footerText.drive(rx.footerLabel)
+            viewModel.sections.drive(tableView.sections),
+            viewModel.footerText.drive(tableView.rx.footerLabel)
         ]
     }
 
     var inputFromView: InputFromView {
         return InputFromView(
-            selectedIndedPath: rx.itemSelected.asDriver()
+            selectedIndedPath: tableView.rx.itemSelected.asDriver()
         )
     }
 }

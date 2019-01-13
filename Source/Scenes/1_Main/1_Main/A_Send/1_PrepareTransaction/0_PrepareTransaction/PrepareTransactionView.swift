@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 private typealias € = L10n.Scene.PrepareTransaction
-final class PrepareTransactionView: BaseSceneView, PullToRefreshCapable {
+final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapable {
 
     private lazy var balanceTitleLabel              = UILabel()
     private lazy var balanceValueLabel              = UILabel()

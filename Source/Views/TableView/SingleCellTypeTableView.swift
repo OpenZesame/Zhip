@@ -11,11 +11,33 @@ import RxDataSources
 import RxSwift
 import RxCocoa
 
-typealias ListCell = UITableViewCell & CellConfigurable
+class BaseTableViewOwner<Header, Cell>: AbstractSceneView where Cell: ListCell {
+    let tableView: SingleCellTypeTableView<Header, Cell>
+
+    // MARK: - Initialization
+    init(style: UITableView.Style) {
+        tableView = SingleCellTypeTableView(style: style)
+        super.init(scrollView: tableView)
+        setup()
+    }
+    
+    // MARK: Overrideable
+    func setup() { /* override me */ }
+
+    required init?(coder: NSCoder) { interfaceBuilderSucks }
+}
+
+protocol TableViewOwner {
+    associatedtype Header
+    associatedtype Cell: ListCell
+    var tableView: SingleCellTypeTableView<Header, Cell> { get }
+}
+
+typealias ListCell = AbstractTableViewCell & CellConfigurable
 
 typealias Sections<HeaderModel, CellModel> = (Observable<[SectionModel<HeaderModel, CellModel>]>) -> Disposable
 
-typealias HeaderlessTableView<Cell: ListCell> = SingleCellTypeTableView<Void, Cell>
+//typealias HeaderlessTableView<Cell: ListCell> = SingleCellTypeTableView<Void, Cell>
 
 class SingleCellTypeTableView<Header, Cell>: UITableView where Cell: ListCell {
     typealias DataSource = RxTableViewSectionedReloadDataSource<SectionModel<Header, Cell.Model>>
@@ -79,7 +101,7 @@ private extension SingleCellTypeTableView {
     func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         register(Cell.self, forCellReuseIdentifier: Cell.identifier)
-        backgroundColor = .white
+        backgroundColor = .clear
         separatorStyle = .none
     }
 }

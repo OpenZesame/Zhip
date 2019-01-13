@@ -13,7 +13,7 @@ import RxCocoa
 import UIKit
 import WebKit
 
-final class TermsOfServiceView: BaseSceneView {
+final class TermsOfServiceView: ScrollableStackViewOwner {
 
     private lazy var imageView          = UIImageView()
     private lazy var headerLabel        = UILabel()

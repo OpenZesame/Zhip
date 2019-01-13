@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class MainView: BaseSceneView, PullToRefreshCapable {
+final class MainView: ScrollableStackViewOwner, PullToRefreshCapable {
 
     private lazy var motionEffectAuroraImageView    = UIView()
     private lazy var balanceTitleLabel              = UILabel()

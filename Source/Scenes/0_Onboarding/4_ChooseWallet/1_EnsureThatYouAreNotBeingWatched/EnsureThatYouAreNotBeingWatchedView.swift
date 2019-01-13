@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class EnsureThatYouAreNotBeingWatchedView: BaseSceneView {
+final class EnsureThatYouAreNotBeingWatchedView: ScrollableStackViewOwner {
 
     private lazy var imageView              = UIImageView()
     private lazy var headerLabel            = UILabel()

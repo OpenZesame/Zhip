@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-final class BackupWalletView: BaseSceneView {
+final class BackupWalletView: ScrollableStackViewOwner {
 
     private lazy var backUpLabel                    = UILabel()
     private lazy var urgeBackupLabel                = UILabel()

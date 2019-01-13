@@ -17,7 +17,7 @@ private typealias € = L10n.Scene.RestoreWallet
 private typealias Segment = RestoreWalletViewModel.InputFromView.Segment
 
 // MARK: - RestoreWalletView
-final class RestoreWalletView: BaseSceneView, EmptyInitializable {
+final class RestoreWalletView: ScrollableStackViewOwner {
 
     private let bag = DisposeBag()
 

@@ -28,37 +28,30 @@ extension ContentViewProvider where Self: StackViewStyling {
 
 protocol ScrollViewOwner {
     var scrollView: UIScrollView { get }
+}
+
+protocol ScrollViewWithContentViewOwner: ScrollViewOwner {
     associatedtype ScrollViewContentView: UIView
     var scrollViewContentView: ScrollViewContentView { get }
 }
 
-//UIView & ScrollViewOwner & StackViewStyling
-protocol ScrollingStackView: ScrollViewOwner where ScrollViewContentView == UIStackView {}
-
-extension ScrollingStackView where ScrollViewContentView == UIStackView {
-    var stackView: UIStackView {
-        return scrollViewContentView
-    }
-}
-
 private typealias € = L10n.View.PullToRefreshControl
 
-typealias BaseSceneView = AbstractSceneView & StackViewStyling
+typealias ScrollableStackViewOwner = BaseScrollableStackViewOwner & StackViewStyling
+typealias HeaderlessTableViewSceneView<Cell: ListCell> = TableViewSceneView<Void, Cell>
+typealias TableViewSceneView<Header, Cell: ListCell> = BaseTableViewOwner<Header, Cell> & TableViewOwner
 
-class AbstractSceneView: UIView, ScrollViewOwner {
+class BaseScrollableStackViewOwner: AbstractSceneView, ScrollViewWithContentViewOwner {
 
     // MARK: Initialization
     init() {
-        super.init(frame: .zero)
-        privateSetup()
+        super.init(scrollView: UIScrollView(frame: .zero))
+        privateBaseSetup()
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
-    lazy var scrollView = UIScrollView(frame: .zero)
     lazy var scrollViewContentView: UIView = makScrollViewContentView()
-    private lazy var refreshControlCustomView = RefreshControlCustomView()
-    lazy var refreshControl = UIRefreshControl()
 
     func makScrollViewContentView() -> UIView {
         guard let contentViewProvider = self as? ContentViewProvider else {
@@ -75,10 +68,41 @@ class AbstractSceneView: UIView, ScrollViewOwner {
         refreshControlCustomView.frame = refreshControl.bounds
     }
 
-
     // MARK: Overrideable
     func preSetup() { /* override me */ }
     func setup() { /* override me */ }
+
+}
+
+extension BaseScrollableStackViewOwner {
+    func privateBaseSetup() {
+        preSetup()
+        defer { setup() }
+
+        scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
+
+        scrollView.addSubview(scrollViewContentView)
+
+        scrollViewContentView.widthToSuperview()
+        scrollViewContentView.heightToSuperview(relation: .equalOrGreater, priority: .defaultHigh)
+        scrollViewContentView.edgesToParent(topToSafeArea: false, bottomToSafeArea: (self is PullToRefreshCapable))
+    }
+}
+
+
+class AbstractSceneView: UIView, ScrollViewOwner {
+
+    lazy var refreshControlCustomView = RefreshControlCustomView()
+    lazy var refreshControl = UIRefreshControl()
+
+    let scrollView: UIScrollView
+
+    init(scrollView: UIScrollView) {
+        self.scrollView = scrollView
+        super.init(frame: .zero)
+        privateSetup()
+    }
+
 
     func setRefreshControlTitle(_ title: String) {
         refreshControlCustomView.setTitle(title)
@@ -87,6 +111,8 @@ class AbstractSceneView: UIView, ScrollViewOwner {
     func setupScrollViewConstraints() {
         scrollView.edgesToSuperview()
     }
+
+    required init?(coder: NSCoder) { interfaceBuilderSucks }
 }
 
 
@@ -96,19 +122,10 @@ private extension AbstractSceneView {
 
         translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
 
-        preSetup()
-        defer { setup() }
 
         addSubview(scrollView)
         setupScrollViewConstraints()
-
-        scrollView.addSubview(scrollViewContentView)
-
-        scrollViewContentView.widthToSuperview()
-        scrollViewContentView.heightToSuperview(relation: .equalOrGreater, priority: .defaultHigh)
-        scrollViewContentView.edgesToParent(topToSafeArea: false, bottomToSafeArea: (self is PullToRefreshCapable))
 
 //        scrollViewContentView.leadingToSuperview()
 //        scrollViewContentView.trailingToSuperview()
