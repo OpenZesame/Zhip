@@ -12,6 +12,7 @@
 "Error.Input.Address.ContainsNonHexadecimal" = "Only 0-9 and A-F allowed";
 "Error.Input.Address.TooShort" = "Address is too short, should be %d";
 "Error.Input.Address.TooLong" = "Address is too long, should be %d";
+"Error.Input.Address.AddressNotChecksummed" = "Are you sure this is a Zilliqa address? It is not checksummed. This might still be a valid address.";
 
 "Error.Input.Amount.NonNumericString" = "String not a number";
 "Error.Input.Amount.TooSmall" = "Must be at least %@";

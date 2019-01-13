@@ -102,14 +102,14 @@ extension Keystore.Crypto.KeyDerivationFunctionParameters: Codable, Equatable {
 }
 
 public extension Keystore {
-    init(address: Address, crypto: Crypto, id: String? = nil, version: Int = 3) {
-        self.address = address.checksummedHex.lowercased()
+    init(address: AddressChecksummedConvertible, crypto: Crypto, id: String? = nil, version: Int = 3) {
+        self.address = address.asString
         self.crypto = crypto
         self.id = id ?? UUID().uuidString
         self.version = version
     }
 
-    init(from derivedKey: DerivedKey, address: Address, privateKey: PrivateKey, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
+    init(from derivedKey: DerivedKey, address: AddressChecksummedConvertible, privateKey: PrivateKey, parameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
         self.init(
             address: address,
             crypto:

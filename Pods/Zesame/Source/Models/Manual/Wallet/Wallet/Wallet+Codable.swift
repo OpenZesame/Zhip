@@ -23,6 +23,6 @@ extension Wallet: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.keystore = try container.decode(Keystore.self, forKey: .keystore)
-        self.address = try container.decode(Address.self, forKey: .address)
+        self.address = try container.decode(AddressChecksummed.self, forKey: .address)
     }
 }

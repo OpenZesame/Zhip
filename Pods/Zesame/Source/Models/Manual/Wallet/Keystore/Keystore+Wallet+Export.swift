@@ -11,7 +11,7 @@ import EllipticCurveKit
 import Result
 
 public extension Keystore {
-    static func from(address: Address, privateKey: PrivateKey, encryptBy passphrase: String, done: @escaping Done<Keystore>) {
+    static func from(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptBy passphrase: String, done: @escaping Done<Keystore>) {
         guard passphrase.count >= Keystore.minumumPasshraseLength else { done(.failure(.keystorePasshraseTooShort(provided: passphrase.count, minimum: Keystore.minumumPasshraseLength))); return }
 
         // Same parameters used by Zilliqa Javascript SDK: https://github.com/Zilliqa/Zilliqa-Wallet/blob/master/src/app/zilliqa.service.ts#L142

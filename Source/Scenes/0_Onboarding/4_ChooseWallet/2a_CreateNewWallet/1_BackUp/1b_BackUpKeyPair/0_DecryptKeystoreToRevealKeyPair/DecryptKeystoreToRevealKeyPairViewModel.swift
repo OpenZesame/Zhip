@@ -109,14 +109,14 @@ extension DecryptKeystoreToRevealKeyPairViewModel {
     }
 
     struct Output {
-        let encryptionPassphraseValidation: Driver<Validation>
+        let encryptionPassphraseValidation: Driver<AnyValidation>
         let isRevealButtonEnabled: Driver<Bool>
         let isRevealButtonLoading: Driver<Bool>
     }
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> InputValidationResult<WalletEncryptionPassphrase, EncryptionPassphraseValidator.Error> {
+        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> EncryptionPassphraseValidator.Result {
             let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
             return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
         }

@@ -67,7 +67,7 @@ extension UnlockAppWithPincodeViewModel {
 
     struct Output {
         let inputBecomeFirstResponder: Driver<Void>
-        let pincodeValidation: Driver<Validation>
+        let pincodeValidation: Driver<AnyValidation>
     }
 
     struct InputValidator {

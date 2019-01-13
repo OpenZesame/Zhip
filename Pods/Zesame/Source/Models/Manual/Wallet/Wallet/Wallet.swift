@@ -8,10 +8,10 @@
 
 public struct Wallet {
     public let keystore: Keystore
-    public let address: Address
+    public let address: AddressChecksummed
 
-    public init(keystore: Keystore, address: Address) {
+    public init(keystore: Keystore, address: AddressChecksummedConvertible) {
         self.keystore = keystore
-        self.address = address
+        self.address = address.checksummedAddress
     }
 }

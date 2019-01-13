@@ -49,7 +49,7 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         balanceWasUpdated(at: Date())
     }
 
-    func getBalance(for address: Address) -> Observable<BalanceResponse> {
+    func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse> {
         return zilliqaService.getBalance(for: address)
     }
 

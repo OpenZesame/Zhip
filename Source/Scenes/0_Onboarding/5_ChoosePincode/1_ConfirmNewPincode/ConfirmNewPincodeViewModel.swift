@@ -76,7 +76,7 @@ extension ConfirmNewPincodeViewModel {
     }
 
     struct Output {
-        let pincodeValidation: Driver<Validation>
+        let pincodeValidation: Driver<AnyValidation>
         let isConfirmPincodeEnabled: Driver<Bool>
         let inputBecomeFirstResponder: Driver<Void>
     }
