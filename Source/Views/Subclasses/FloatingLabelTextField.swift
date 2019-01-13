@@ -10,6 +10,7 @@ import UIKit
 
 import SkyFloatingLabelTextField
 
+// swiftlint:disable file_length
 final class FloatingLabelTextField: SkyFloatingLabelTextField {
     enum TypeOfInput {
         case number, hexadecimal, text

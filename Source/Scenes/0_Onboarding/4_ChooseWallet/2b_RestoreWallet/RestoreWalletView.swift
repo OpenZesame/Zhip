@@ -49,40 +49,20 @@ final class RestoreWalletView: ScrollableStackViewOwner {
 // MARK: - Private
 private extension RestoreWalletView {
 
-    // swiftlint:disable:next function_body_length
     func setupSubviews() {
         headerLabel.withStyle(.header)
-
-
-//        headerLabel.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
-//        headerLabel.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
-//        headerLabel.topToBottom(of: restorationMethodSegmentedControl, offset: 24)
-//        restoreWalletButton.bottomToSuperview(offset: -50)
-//        restoreWalletButton.leadingToSuperview(offset: UIStackView.Style.defaultMargin)
-//        restoreWalletButton.trailingToSuperview(offset: UIStackView.Style.defaultMargin)
-
-
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        func setupSubview(_ view: UIView) {
-            view.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(view)
-            view.edgesToSuperview()
-//            view.leadingToSuperview()
-//            view.trailingToSuperview()
-//            view.topToBottom(of: headerLabel)
-//            view.bottomToTop(of: restoreWalletButton, offset: -30)
-//            view.isHidden = true
-        }
 
         [restoreUsingPrivateKeyView, restoreUsingKeyStoreView].forEach {
-            setupSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            containerView.addSubview($0)
+            $0.edgesToSuperview()
         }
 
         restoreWalletButton.withStyle(.primary) {
             $0.title(€.Button.restoreWallet)
                 .disabled()
         }
-
 
         setupSegmentedControl()
     }
@@ -94,7 +74,6 @@ private extension RestoreWalletView {
         restorationMethodSegmentedControl.topToSuperview(offset: 10, usingSafeArea: true)
         restorationMethodSegmentedControl.centerXToSuperview()
         restorationMethodSegmentedControl.bottomToTop(of: scrollView)
-//        scrollView.topToBottom(of: restorationMethodSegmentedControl)
 
         func add(segment: Segment, titled title: String) {
             restorationMethodSegmentedControl.insertSegment(withTitle: title, at: segment.rawValue, animated: false)

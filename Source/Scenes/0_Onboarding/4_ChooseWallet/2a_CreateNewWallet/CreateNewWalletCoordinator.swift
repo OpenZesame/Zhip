@@ -33,18 +33,14 @@ final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinat
 // MARK: Private
 private extension CreateNewWalletCoordinator {
 
-    fileprivate func extractedFunc(_ viewModel: EnsureThatYouAreNotBeingWatchedViewModel) {
+    func toEnsureThatYouAreNotBeingWatched() {
+        let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
         push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .understand: self.toCreateWallet()
             case .cancel: self.cancel()
             }
         }
-    }
-    
-    func toEnsureThatYouAreNotBeingWatched() {
-        let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
-        extractedFunc(viewModel)
     }
 
     func toCreateWallet() {
