@@ -54,6 +54,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         if self is BackButtonHiding {
             navigationItem.hidesBackButton = true
         }
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = !(self is BackButtonHiding)
 
     }
 

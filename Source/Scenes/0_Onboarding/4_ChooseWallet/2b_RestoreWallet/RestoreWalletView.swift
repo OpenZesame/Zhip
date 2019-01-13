@@ -30,7 +30,6 @@ final class RestoreWalletView: ScrollableStackViewOwner {
     fileprivate lazy var restoreWalletButton                = ButtonWithSpinner()
 
     lazy var stackViewStyle = UIStackView.Style([
-//        restorationMethodSegmentedControl, // above scrollview
         headerLabel,
         containerView,
         restoreWalletButton
@@ -40,15 +39,10 @@ final class RestoreWalletView: ScrollableStackViewOwner {
         setupSubviews()
     }
 
-    override func preSetup() {
-        setupSegmentedControl()
-    }
-
     override func setupScrollViewConstraints() {
         scrollView.bottomToSuperview()
         scrollView.leadingToSuperview()
         scrollView.trailingToSuperview()
-        scrollView.topToBottom(of: restorationMethodSegmentedControl)
     }
 }
 
@@ -89,6 +83,8 @@ private extension RestoreWalletView {
                 .disabled()
         }
 
+
+        setupSegmentedControl()
     }
 
     // swiftlint:disable:next function_body_length
@@ -97,6 +93,8 @@ private extension RestoreWalletView {
         addSubview(restorationMethodSegmentedControl)
         restorationMethodSegmentedControl.topToSuperview(offset: 10, usingSafeArea: true)
         restorationMethodSegmentedControl.centerXToSuperview()
+        restorationMethodSegmentedControl.bottomToTop(of: scrollView)
+//        scrollView.topToBottom(of: restorationMethodSegmentedControl)
 
         func add(segment: Segment, titled title: String) {
             restorationMethodSegmentedControl.insertSegment(withTitle: title, at: segment.rawValue, animated: false)
