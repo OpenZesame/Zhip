@@ -17,6 +17,11 @@
 		48053F3321EBDCA2008FCE13 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3221EBDCA2008FCE13 /* FooterView.swift */; };
 		48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */; };
 		48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */; };
+		48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3821EBEEBD008FCE13 /* ImageOrText.swift */; };
+		48053F3D21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */; };
+		48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */; };
+		48053F4221EBEF98008FCE13 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */; };
+		48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */; };
 		4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7D821E951B2008D6778 /* ValidationConvertible.swift */; };
 		4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DC21E951DA008D6778 /* AnyValidation.swift */; };
 		4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */; };
@@ -303,6 +308,11 @@
 		48053F3221EBDCA2008FCE13 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Footer.swift"; sourceTree = "<group>"; };
 		48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceLastUpdatedFormatter.swift; sourceTree = "<group>"; };
+		48053F3821EBEEBD008FCE13 /* ImageOrText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageOrText.swift; sourceTree = "<group>"; };
+		48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+RightLeftView.swift"; sourceTree = "<group>"; };
+		48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+Validation.swift"; sourceTree = "<group>"; };
+		48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
+		48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+TypeOfInput.swift"; sourceTree = "<group>"; };
 		4805A7D821E951B2008D6778 /* ValidationConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationConvertible.swift; sourceTree = "<group>"; };
 		4805A7DC21E951DA008D6778 /* AnyValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidation.swift; sourceTree = "<group>"; };
 		4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyValidation+Colors.swift"; sourceTree = "<group>"; };
@@ -632,6 +642,25 @@
 				48053F3221EBDCA2008FCE13 /* FooterView.swift */,
 			);
 			path = Footer;
+			sourceTree = "<group>";
+		};
+		48053F3B21EBEF01008FCE13 /* FloatingLabelTextField */ = {
+			isa = PBXGroup;
+			children = (
+				485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */,
+				48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */,
+				48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */,
+				48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */,
+			);
+			path = FloatingLabelTextField;
+			sourceTree = "<group>";
+		};
+		48053F4021EBEF90008FCE13 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 		4805A7D721E951A2008D6778 /* Validation */ = {
@@ -1049,6 +1078,7 @@
 		4850A401214C112000EBB85B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				48053F4021EBEF90008FCE13 /* Delegates */,
 				48053F2A21EBDB83008FCE13 /* SceneViews */,
 				48053F2721EBDADD008FCE13 /* Protocols */,
 				48ECF61121A29F340078D659 /* TableView */,
@@ -1196,6 +1226,7 @@
 				48C0613621BD3107006E3E0A /* Wallet.swift */,
 				48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */,
 				487C19E5219A2FCD00308550 /* Weak.swift */,
+				48053F3821EBEEBD008FCE13 /* ImageOrText.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1325,8 +1356,8 @@
 		48CA697C218352B200C05F5F /* Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				48053F3B21EBEF01008FCE13 /* FloatingLabelTextField */,
 				48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */,
-				485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */,
 				48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */,
 			);
 			path = Subclasses;
@@ -2010,6 +2041,7 @@
 				48ECF5C821A18F140078D659 /* PrepareTransaction.swift in Sources */,
 				48F4097721BBC67D001C499F /* BackUpRevealedKeyPair.swift in Sources */,
 				4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */,
+				48053F3D21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift in Sources */,
 				48ECF61C21A29FF20078D659 /* ClassIdentifiable.swift in Sources */,
 				483CE9D32194E9E300BED31C /* Navigator.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
@@ -2030,6 +2062,7 @@
 				48ECF5CD21A18F140078D659 /* SignTransaction.swift in Sources */,
 				48BAC4E02195D83000A626FD /* L10n-Constants.swift in Sources */,
 				4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */,
+				48053F4221EBEF98008FCE13 /* TextFieldDelegate.swift in Sources */,
 				48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
 				48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */,
@@ -2062,6 +2095,7 @@
 				48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */,
 				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
+				48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
@@ -2221,7 +2255,9 @@
 				480B0EBC21D0A74600A72133 /* ErrorTracker.swift in Sources */,
 				483CE9C72194E9E300BED31C /* AbstractTarget.swift in Sources */,
 				48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */,
+				48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */,
 				48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */,
+				48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

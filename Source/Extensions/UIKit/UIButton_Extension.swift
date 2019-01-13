@@ -18,4 +18,11 @@ extension UIButton {
         UIGraphicsEndImageContext()
         self.setBackgroundImage(colorImage, for: state)
     }
+
+    func widthOfTitle(for state: UIControl.State = .normal) -> CGFloat? {
+        guard let font = self.titleLabel?.font, let title = title(for: state) else {
+            return nil
+        }
+        return title.widthUsingFont(font)
+    }
 }

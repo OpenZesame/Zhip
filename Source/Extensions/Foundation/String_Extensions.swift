@@ -6,7 +6,7 @@
 //  Copyright © 2018 Open Zesame. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension String {
 
@@ -47,5 +47,13 @@ extension String {
         let string = String(suffix(k))
         removeLast(k)
         return string
+    }
+
+    func sizeUsingFont(_ font: UIFont) -> CGSize {
+        return self.size(withAttributes: [.font: font])
+    }
+
+    func widthUsingFont(_ font: UIFont) -> CGFloat {
+        return sizeUsingFont(font).width
     }
 }
