@@ -35,14 +35,11 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         rootContentView.backgroundColor = .clear
         view.addSubview(rootContentView)
         rootContentView.edgesToSuperview()
-        //        if let scrollingStackView = rootContentView as? AbstractSceneView {
-        //            scrollingStackView.stackView.height(to: view)
-        //        }
-        //        rootContentView.heightToSuperview()
 
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
         }
+
         if let rightButtonMaker = self as? RightBarButtonContentMaking {
             rightButtonMaker.setRightBarButton(for: self)
         }
@@ -54,6 +51,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         if self is BackButtonHiding {
             navigationItem.hidesBackButton = true
         }
+        
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !(self is BackButtonHiding)
 
     }
@@ -71,31 +69,12 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
-    override func handleKeyboardWillShow(_ keyboardSize: CGSize) {
-        guard
-            let scrollingStackView = rootContentView as? AbstractSceneView,
-            case let scrollView = scrollingStackView.scrollView else {
-            return
-        }
-        scrollView.contentInset.bottom = keyboardSize.height
-    }
-
-    override func handleKeyboardWillHide() {
-        guard
-            let scrollingStackView = rootContentView as? AbstractSceneView,
-            case let scrollView = scrollingStackView.scrollView else {
-                return
-        }
-        scrollView.contentInset.bottom = 0
-    }
 }
 
 // MARK: Private
 private extension SceneController {
 
     func setup() {
-//        extendedLayoutIncludesOpaqueBars = true
         bindViewToViewModel()
     }
 
@@ -150,17 +129,6 @@ private extension SceneController {
         // Update UI, dispose the array of `Disposable`s
         rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
-
-//    func applyLayoutIfNeeded() {
-//
-//        guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
-//            // Default to transluscent
-//            navigationController?.applyLayout(.opaque)
-//            return
-//        }
-//
-//        navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
-//    }
 
     func applyLayoutIfNeeded() {
         guard let barLayoutingNavController = navigationController as? NavigationBarLayoutingNavigationController else {
