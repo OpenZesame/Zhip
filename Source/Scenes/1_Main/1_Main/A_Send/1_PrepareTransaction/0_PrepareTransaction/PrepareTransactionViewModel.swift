@@ -207,10 +207,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         }
 
         let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
-            guard let updatedAt = $0 else {
-                return L10n.Scene.Main.RefreshControl.first
-            }
-            return L10n.Scene.Main.RefreshControl.balanceWasUpdatedAt(updatedAt.timeAgo().lowercased())
+            BalanceLastUpdatedFormatter().string(from: $0)
         }
 
         return Output(

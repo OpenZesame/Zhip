@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */; };
 		48053F0121EB86FD008FCE13 /* RefreshControlCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */; };
-		48053F0321EB8721008FCE13 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */; };
 		48053F2621EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */; };
 		48053F2921EBDB0C008FCE13 /* ScrollViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */; };
 		48053F2C21EBDB92008FCE13 /* AbstractSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */; };
@@ -17,6 +16,7 @@
 		48053F3021EBDC6E008FCE13 /* TableViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2F21EBDC6E008FCE13 /* TableViewOwner.swift */; };
 		48053F3321EBDCA2008FCE13 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3221EBDCA2008FCE13 /* FooterView.swift */; };
 		48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */; };
+		48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */; };
 		4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7D821E951B2008D6778 /* ValidationConvertible.swift */; };
 		4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DC21E951DA008D6778 /* AnyValidation.swift */; };
 		4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */; };
@@ -296,7 +296,6 @@
 
 /* Begin PBXFileReference section */
 		48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControlCustomView.swift; sourceTree = "<group>"; };
-		48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutingNavigationController.swift; sourceTree = "<group>"; };
 		48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOwner.swift; sourceTree = "<group>"; };
 		48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractSceneView.swift; sourceTree = "<group>"; };
@@ -304,6 +303,7 @@
 		48053F2F21EBDC6E008FCE13 /* TableViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewOwner.swift; sourceTree = "<group>"; };
 		48053F3221EBDCA2008FCE13 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Footer.swift"; sourceTree = "<group>"; };
+		48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceLastUpdatedFormatter.swift; sourceTree = "<group>"; };
 		4805A7D821E951B2008D6778 /* ValidationConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationConvertible.swift; sourceTree = "<group>"; };
 		4805A7DC21E951DA008D6778 /* AnyValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidation.swift; sourceTree = "<group>"; };
 		4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyValidation+Colors.swift"; sourceTree = "<group>"; };
@@ -690,7 +690,6 @@
 			isa = PBXGroup;
 			children = (
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
-				48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */,
 				480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */,
 			);
 			path = UIView;
@@ -1064,6 +1063,7 @@
 			isa = PBXGroup;
 			children = (
 				485AA29021DD303200E700C5 /* AmountFormatter.swift */,
+				48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */,
 			);
 			path = OutputFormatting;
 			sourceTree = "<group>";
@@ -1874,12 +1874,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh",
+				"${PODS_ROOT}/DateToolsSwift/DateToolsSwift/DateTools/DateTools.bundle",
 				"${PODS_ROOT}/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resources/IQKeyboardManager.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DateTools.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2106,7 +2108,6 @@
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
 				48ECF5FC21A18F140078D659 /* BackupWalletViewModel.swift in Sources */,
 				4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */,
-				48053F0321EB8721008FCE13 /* UIView+SafeArea.swift in Sources */,
 				48C89FEE214331FE0063B0FA /* ViewModelled.swift in Sources */,
 				48ECF5F021A18F140078D659 /* RestoreWalletView.swift in Sources */,
 				4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */,
@@ -2117,6 +2118,7 @@
 				48ECF60E21A1D0AC0078D659 /* Coordinating+Scene+Push.swift in Sources */,
 				48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
+				48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
 				4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */,
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,

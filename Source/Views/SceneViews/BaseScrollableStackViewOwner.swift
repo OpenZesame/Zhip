@@ -46,3 +46,22 @@ private extension BaseScrollableStackViewOwner {
         scrollViewContentView.edgesToParent(topToSafeArea: false, bottomToSafeArea: (self is PullToRefreshCapable))
     }
 }
+
+private extension UIView {
+    func edgesToParent(topToSafeArea: Bool, bottomToSafeArea: Bool) {
+        guard let superview = superview else { incorrectImplementation("Should have `superview`") }
+        edgesTo(view: superview, topToSafeArea: topToSafeArea, bottomToSafeArea: bottomToSafeArea)
+    }
+
+    func edgesTo(view: UIView, topToSafeArea: Bool = true, bottomToSafeArea: Bool = true) {
+        let topAnchor = topToSafeArea ? view.safeAreaLayoutGuide.topAnchor : view.topAnchor
+        let bottomAnchor = bottomToSafeArea ? view.safeAreaLayoutGuide.bottomAnchor : view.bottomAnchor
+
+        [
+            leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            self.topAnchor.constraint(equalTo: topAnchor),
+            self.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ].forEach { $0.isActive = true }
+    }
+}

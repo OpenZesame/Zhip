@@ -85,10 +85,7 @@ final class MainViewModel: BaseViewModel<
         let formatter = AmountFormatter()
 
         let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
-            guard let updatedAt = $0 else {
-                return €.RefreshControl.first
-            }
-            return €.RefreshControl.balanceWasUpdatedAt(updatedAt.timeAgo().lowercased())
+            BalanceLastUpdatedFormatter().string(from: $0)
         }
 
         return Output(
@@ -110,43 +107,5 @@ extension MainViewModel {
         let isFetchingBalance: Driver<Bool>
         let balance: Driver<String>
         let refreshControlLastUpdatedTitle: Driver<String>
-    }
-}
-
-extension Date {
-    // swiftlint:disable:next function_body_length cyclomatic_complexity
-    func timeAgo(numericDates: Bool = false) -> String {
-        let calendar = Calendar.current
-        let now = Date()
-        let earliest = self < now ? self : now
-        let latest =  self > now ? self : now
-
-        let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfMonth, .month, .year, .second]
-        let components: DateComponents = calendar.dateComponents(unitFlags, from: earliest, to: latest)
-
-        let year = components.year ?? 0
-        let month = components.month ?? 0
-        let weekOfMonth = components.weekOfMonth ?? 0
-        let day = components.day ?? 0
-        let hour = components.hour ?? 0
-        let minute = components.minute ?? 0
-        let second = components.second ?? 0
-
-        switch (year, month, weekOfMonth, day, hour, minute, second) {
-        case (let year, _, _, _, _, _, _) where year >= 2: return "\(year) years ago"
-        case (let year, _, _, _, _, _, _) where year == 1: return numericDates ? "1 year ago" : "Last year"
-        case (_, let month, _, _, _, _, _) where month >= 2: return "\(month) months ago"
-        case (_, let month, _, _, _, _, _) where month == 1: return numericDates ? "1 month ago" :  "Last month"
-        case (_, _, let weekOfMonth, _, _, _, _) where weekOfMonth >= 2: return "\(weekOfMonth) weeks ago"
-        case (_, _, let weekOfMonth, _, _, _, _) where weekOfMonth == 1: return numericDates ? "1 week ago" : "Last week"
-        case (_, _, _, let day, _, _, _) where day >= 2: return "\(day) days ago"
-        case (_, _, _, let day, _, _, _) where day == 1: return numericDates ? "1 day ago" : "Yesterday"
-        case (_, _, _, _, let hour, _, _) where hour >= 2: return "\(hour) hours ago"
-        case (_, _, _, _, let hour, _, _) where hour == 1: return numericDates ? "1 hour ago" : "An hour ago"
-        case (_, _, _, _, _, let minute, _) where minute >= 2: return "\(minute) minutes ago"
-        case (_, _, _, _, _, let minute, _) where minute == 1: return numericDates ? "1 minute ago" : "A minute ago"
-        case (_, _, _, _, _, _, let second) where second >= 3: return "\(second) seconds ago"
-        default: return "Just now"
-        }
     }
 }

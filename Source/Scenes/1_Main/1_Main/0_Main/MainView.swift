@@ -90,7 +90,7 @@ private extension MainView {
         buttonsView.height(184)
 
         insertSubview(motionEffectAuroraImageView, belowSubview: scrollView)
-        motionEffectAuroraImageView.edgesToParent(topToSafeArea: true, bottomToSafeArea: true)
+        motionEffectAuroraImageView.edgesToSuperview()
         setupAuroraImageViewWithMotionEffect()
     }
 
