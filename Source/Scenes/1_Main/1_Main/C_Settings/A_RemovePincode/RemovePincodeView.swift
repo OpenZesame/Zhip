@@ -11,7 +11,7 @@ import RxSwift
 
 private typealias € = L10n.Scene.RemovePincode
 
-final class RemovePincodeView: ScrollingStackView {
+final class RemovePincodeView: BaseSceneView {
 
     private lazy var inputPincodeView = InputPincodeView()
 

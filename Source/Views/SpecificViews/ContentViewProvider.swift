@@ -7,7 +7,3 @@
 //
 
 import UIKit
-
-protocol ContentViewProvider {
-    func makeContentView() -> UIView
-}

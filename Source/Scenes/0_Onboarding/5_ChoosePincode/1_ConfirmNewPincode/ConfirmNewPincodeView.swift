@@ -12,7 +12,7 @@ import RxCocoa
 
 private typealias € = L10n.Scene.ConfirmNewPincode
 
-final class ConfirmNewPincodeView: ScrollingStackView {
+final class ConfirmNewPincodeView: BaseSceneView {
 
     private lazy var inputPincodeView               = InputPincodeView()
     private lazy var haveBackedUpPincodeCheckbox    = CheckboxWithLabel()

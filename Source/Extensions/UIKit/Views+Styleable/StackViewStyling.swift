@@ -8,12 +8,3 @@
 
 import UIKit
 
-protocol StackViewStyling: ContentViewProvider {
-    var stackViewStyle: UIStackView.Style { get }
-}
-
-extension ContentViewProvider where Self: StackViewStyling {
-    func makeContentView() -> UIView {
-        return UIStackView(frame: .zero).withStyle(stackViewStyle)
-    }
-}

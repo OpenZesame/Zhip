@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class DecryptKeystoreToRevealKeyPairView: ScrollingStackView {
+final class DecryptKeystoreToRevealKeyPairView: BaseSceneView {
 
     private lazy var decryptToRevealLabel       = UILabel()
     private lazy var encryptionPassphraseField  = FloatingLabelTextField()

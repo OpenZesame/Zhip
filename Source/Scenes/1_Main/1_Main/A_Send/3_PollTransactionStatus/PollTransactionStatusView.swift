@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class PollTransactionStatusView: ScrollingStackView {
+final class PollTransactionStatusView: BaseSceneView {
 
 	private lazy var backgroundImageView    			= UIImageView()
 	private lazy var checkmarkLogoImageView				= UIImageView()
@@ -81,6 +81,6 @@ private extension PollTransactionStatusView {
 
 		backgroundImageView.withStyle(.background(image: Asset.Images.Spaceship.stars.image))
 		
-		insertSubview(backgroundImageView, belowSubview: stackView)
+		insertSubview(backgroundImageView, belowSubview: scrollView)
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class WarningERC20View: ScrollingStackView {
+final class WarningERC20View: BaseSceneView {
 
     private lazy var imageView                  = UIImageView()
     private lazy var headerLabel                = UILabel()

@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-final class ChoosePincodeView: ScrollingStackView {
+final class ChoosePincodeView: BaseSceneView {
 
     private lazy var inputPincodeView           = InputPincodeView()
     private lazy var pinOnlyLocksAppTextView    = UITextView()

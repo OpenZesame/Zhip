@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-final class CreateNewWalletView: ScrollingStackView {
+final class CreateNewWalletView: BaseSceneView {
 
     private lazy var headerLabel                        = UILabel()
     private lazy var subtitleLabel                      = UILabel()

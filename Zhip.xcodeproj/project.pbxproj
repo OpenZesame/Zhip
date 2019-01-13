@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */; };
+		48053F0121EB86FD008FCE13 /* RefreshControlCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */; };
+		48053F0321EB8721008FCE13 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */; };
 		4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7D821E951B2008D6778 /* ValidationConvertible.swift */; };
 		4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DC21E951DA008D6778 /* AnyValidation.swift */; };
 		4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */; };
@@ -286,6 +288,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControlCustomView.swift; sourceTree = "<group>"; };
+		48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		4805A7D821E951B2008D6778 /* ValidationConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationConvertible.swift; sourceTree = "<group>"; };
 		4805A7DC21E951DA008D6778 /* AnyValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidation.swift; sourceTree = "<group>"; };
 		4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyValidation+Colors.swift"; sourceTree = "<group>"; };
@@ -642,6 +646,7 @@
 			isa = PBXGroup;
 			children = (
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
+				48053F0221EB8721008FCE13 /* UIView+SafeArea.swift */,
 				480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */,
 			);
 			path = UIView;
@@ -1153,6 +1158,7 @@
 			isa = PBXGroup;
 			children = (
 				48FD562721B632E50026690E /* CheckboxWithLabel.swift */,
+				48053F0021EB86FD008FCE13 /* RefreshControlCustomView.swift */,
 				48ECF4B721A17B7A0078D659 /* TitledValueView.swift */,
 			);
 			path = Components;
@@ -1945,6 +1951,7 @@
 				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
+				48053F0121EB86FD008FCE13 /* RefreshControlCustomView.swift in Sources */,
 				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
 				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */,
@@ -2050,6 +2057,7 @@
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
 				48ECF5FC21A18F140078D659 /* BackupWalletViewModel.swift in Sources */,
 				4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */,
+				48053F0321EB8721008FCE13 /* UIView+SafeArea.swift in Sources */,
 				48C89FEE214331FE0063B0FA /* ViewModelled.swift in Sources */,
 				48ECF5F021A18F140078D659 /* RestoreWalletView.swift in Sources */,
 				4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */,

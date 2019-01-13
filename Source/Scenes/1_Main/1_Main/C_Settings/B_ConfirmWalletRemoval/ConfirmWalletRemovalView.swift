@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ConfirmWalletRemovalView: ScrollingStackView {
+final class ConfirmWalletRemovalView: BaseSceneView {
 
     private lazy var areYouSureLabel = UILabel()
 

@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 private typealias € = L10n.Scene.PrepareTransaction
-final class PrepareTransactionView: ScrollingStackView, PullToRefreshCapable {
+final class PrepareTransactionView: BaseSceneView, PullToRefreshCapable {
 
     private lazy var balanceTitleLabel              = UILabel()
     private lazy var balanceValueLabel              = UILabel()
@@ -126,7 +126,7 @@ private extension PrepareTransactionView {
 private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         #if DEBUG
-        recipientAddressField.text = "89A810E6Db25912028F704b4947a6dcf724139AE"
+        recipientAddressField.text = "89a810e6dB25912028f704b4947a6dCF724139Ae"
         amountToSendField.text = Int.random(in: 100...500).description
         gasPriceField.text = Int.random(in: 1000...2000).description
 

@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class BackUpKeystoreView: ScrollingStackView {
+final class BackUpKeystoreView: BaseSceneView {
 
     private lazy var keystoreTextView   = UITextView()
     private lazy var copyButton         = UIButton()

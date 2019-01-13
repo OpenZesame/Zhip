@@ -42,7 +42,8 @@ extension UIView {
         front: UIImage, motionEffectStrength frontStrength: CGFloat = 6,
         middle: UIImage, motionEffectStrength middleStrength: CGFloat = 20,
         back: UIImage, motionEffectStrength backStrength: CGFloat = 48,
-        horizontalInsetForImageViews: CGFloat = 80
+        verticalInsetForImageViews: CGFloat = -40,
+        horizontalInsetForImageViews: CGFloat = -80
         ) {
 
 		let imageViews = [back, middle, front].map { image -> UIImageView in
@@ -51,9 +52,9 @@ extension UIView {
 			addSubview(imageView)
 			imageView.edgesToSuperview(insets:
 				UIEdgeInsets(
-					top: 0,
+					top: verticalInsetForImageViews,
 					left: horizontalInsetForImageViews,
-					bottom: 0,
+					bottom: verticalInsetForImageViews,
 					right: horizontalInsetForImageViews
 				)
 			)

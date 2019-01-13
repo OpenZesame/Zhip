@@ -13,7 +13,7 @@ import RxSwift
 private typealias € = L10n.Scene.RestoreWallet
 
 // MARK: - RestoreWithKeystoreView
-final class RestoreUsingKeystoreView: ScrollingStackView {
+final class RestoreUsingKeystoreView: BaseSceneView {
     typealias ViewModel = RestoreWalletUsingKeystoreViewModel
 
     private let bag = DisposeBag()

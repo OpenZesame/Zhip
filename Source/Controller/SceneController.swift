@@ -16,6 +16,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 
     private let bag = DisposeBag()
     private let viewModel: ViewModel
+    private lazy var rootContentView = View()
 
     // MARK: - Initialization
     required init(viewModel: ViewModel) {
@@ -27,21 +28,18 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
     // MARK: View Lifecycle
-    override func loadView() {
-        view = View()
-
-		if let backgroundColorSpecifyingView = view as? BackgroundColorSpecifying {
-			view.backgroundColor = backgroundColorSpecifyingView.colorOfBackground
-		} else {
-			view.backgroundColor = .deepBlue
-		}
-
-        // We should not use autolayout here, but this works.
-        view.bounds = UIScreen.main.bounds
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = .deepBlue
+        rootContentView.backgroundColor = .clear
+        view.addSubview(rootContentView)
+        rootContentView.edgesToSuperview()
+//        if let scrollingStackView = rootContentView as? AbstractSceneView {
+//            scrollingStackView.stackView.height(to: view)
+//        }
+//        rootContentView.heightToSuperview()
+
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
         }
@@ -124,9 +122,7 @@ private extension SceneController {
     }
 
     func bindViewToViewModel() {
-        guard let contentView = view as? View else { return }
-
-        let inputFromView = contentView.inputFromView
+        let inputFromView = rootContentView.inputFromView
         let inputFromController = makeAndSubscribeToInputFromController()
 
         let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
@@ -137,7 +133,7 @@ private extension SceneController {
         let output = viewModel.transform(input: input)
 
         // Update UI, dispose the array of `Disposable`s
-        contentView.populate(with: output).forEach { $0.disposed(by: bag) }
+        rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
 
     func applyLayoutIfNeeded() {

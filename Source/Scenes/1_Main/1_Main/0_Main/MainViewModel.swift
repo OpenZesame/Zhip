@@ -91,7 +91,7 @@ final class MainViewModel: BaseViewModel<
             }
 
             return €.RefreshControl.balanceWasUpdatedAt(updatedAt.timeAgo().lowercased())
-        }
+            }.do(onNext: { print("Refresh title: \($0)") })
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
