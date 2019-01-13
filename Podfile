@@ -48,6 +48,9 @@ def shared
   pod 'SwiftGen'
 
   pod 'M13Checkbox'
+
+  # "just now" / "One week ago" / "2 months ago"
+  pod 'DateToolsSwift'
 end
 
 target 'Zhip' do

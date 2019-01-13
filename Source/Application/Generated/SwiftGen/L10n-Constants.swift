@@ -81,6 +81,15 @@ internal enum L10n {
     }
   }
 
+  internal enum Formatter {
+    /// Fetching balance...
+    internal static let balanceFirstFetch = L10n.tr("Localizable", "Formatter.BalanceFirstFetch")
+    /// Balance last updated %@.
+    internal static func balanceWasUpdatedAt(_ p1: String) -> String {
+      return L10n.tr("Localizable", "Formatter.BalanceWasUpdatedAt", p1)
+    }
+  }
+
   internal enum Generic {
     /// Back
     internal static let back = L10n.tr("Localizable", "Generic.Back")

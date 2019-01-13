@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class BackUpRevealedKeyPairView: ScrollingStackView {
+final class BackUpRevealedKeyPairView: ScrollableStackViewOwner {
 
     private lazy var privateKeyTextView                 = TitledValueView()
     private lazy var publicKeyUncompressedTextView      = TitledValueView()

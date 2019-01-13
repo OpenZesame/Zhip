@@ -60,7 +60,7 @@ private extension UINavigationController {
         ) {
 
         if viewControllers.isEmpty {
-            setViewControllers([viewController], animated: animated)
+            setViewControllers([viewController], animated: false)
         } else {
             pushViewController(viewController, animated: animated)
         }

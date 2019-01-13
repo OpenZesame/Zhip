@@ -11,7 +11,7 @@ import RxSwift
 
 private typealias € = L10n.Scene.UnlockAppWithPincode
 
-final class UnlockAppWithPincodeView: ScrollingStackView {
+final class UnlockAppWithPincodeView: ScrollableStackViewOwner {
 
     private lazy var inputPincodeView = InputPincodeView()
 

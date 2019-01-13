@@ -12,7 +12,7 @@ import RxCocoa
 import Zesame
 
 // MARK: - ReceiveView
-final class ReceiveView: ScrollingStackView {
+final class ReceiveView: ScrollableStackViewOwner {
 
     private lazy var qrImageView            = UIImageView()
     private lazy var addressTitleLabel      = UILabel()

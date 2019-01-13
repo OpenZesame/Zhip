@@ -36,7 +36,7 @@ extension Coordinating {
 
         // Create a new `UINavigationController` having the scene as root ViewController.
         // Since this is starting a new modal flow we should use a new NavigationController.
-        let viewControllerToPresent = UINavigationController(rootViewController: scene)
+        let viewControllerToPresent = NavigationBarLayoutingNavigationController(rootViewController: scene)
 
         navigationController.present(viewControllerToPresent, animated: true, completion: nil)
 

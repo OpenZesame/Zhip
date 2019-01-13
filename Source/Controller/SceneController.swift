@@ -16,6 +16,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 
     private let bag = DisposeBag()
     private let viewModel: ViewModel
+    private lazy var rootContentView = View()
 
     // MARK: - Initialization
     required init(viewModel: ViewModel) {
@@ -27,24 +28,18 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     required init?(coder: NSCoder) { interfaceBuilderSucks }
 
     // MARK: View Lifecycle
-    override func loadView() {
-        view = View()
-
-		if let backgroundColorSpecifyingView = view as? BackgroundColorSpecifying {
-			view.backgroundColor = backgroundColorSpecifyingView.colorOfBackground
-		} else {
-			view.backgroundColor = .deepBlue
-		}
-
-        // We should not use autolayout here, but this works.
-        view.bounds = UIScreen.main.bounds
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = .deepBlue
+        rootContentView.backgroundColor = .clear
+        view.addSubview(rootContentView)
+        rootContentView.edgesToSuperview()
+
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
             self.title = sceneTitle
         }
+
         if let rightButtonMaker = self as? RightBarButtonContentMaking {
             rightButtonMaker.setRightBarButton(for: self)
         }
@@ -57,6 +52,8 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
             navigationItem.hidesBackButton = true
         }
 
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = !(self is BackButtonHiding)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,11 +64,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         logSceneAppearanceToAnalyticsIfAllowed()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -124,9 +116,7 @@ private extension SceneController {
     }
 
     func bindViewToViewModel() {
-        guard let contentView = view as? View else { return }
-
-        let inputFromView = contentView.inputFromView
+        let inputFromView = rootContentView.inputFromView
         let inputFromController = makeAndSubscribeToInputFromController()
 
         let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
@@ -137,31 +127,34 @@ private extension SceneController {
         let output = viewModel.transform(input: input)
 
         // Update UI, dispose the array of `Disposable`s
-        contentView.populate(with: output).forEach { $0.disposed(by: bag) }
+        rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
     }
 
     func applyLayoutIfNeeded() {
+        guard let barLayoutingNavController = navigationController as? NavigationBarLayoutingNavigationController else {
+            incorrectImplementation("navigationController should be instance of `NavigationBarLayoutingNavigationController`")
+        }
 
         guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
-            // Default to transluscent
-            navigationController?.applyLayout(.transluscent)
+            barLayoutingNavController.applyLayout(.opaque)
             return
         }
 
-        navigationController?.applyLayout(barLayoutOwner.navigationBarLayout)
+        if let lastLayout = barLayoutingNavController.lastLayout {
+            let layout = barLayoutOwner.navigationBarLayout
+            guard layout != lastLayout else {
+                // do not apply layout if same, to avoid potential gui glitches
+                return
+            }
+               barLayoutingNavController.applyLayout(layout)
+        } else {
+            // always apply layout if this is the first scene of this navigation controller
+            barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)
+        }
     }
 
     func logSceneAppearanceToAnalyticsIfAllowed() {
         guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
         GlobalTracker.shared.track(scene: self)
-    }
-}
-
-private extension UINavigationController {
-    func applyLayout(_ layout: NavigationBarLayout) {
-        navigationBar.applyLayout(layout)
-        let isHidden = layout.visibility.isHidden
-        let animated = layout.visibility.animated
-        setNavigationBarHidden(isHidden, animated: animated)
     }
 }

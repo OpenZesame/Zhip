@@ -52,12 +52,16 @@ final class MainViewModel: BaseViewModel<
             wallet.mapToVoid()
         )
 
-        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
+        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest { [unowned self] in
             self.transactionUseCase
                 .getBalance(for: $0.address)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
                 .do(onNext: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })
+        }
+
+        let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
+            self.transactionUseCase.balanceUpdatedAt
         }
 
         // Format output
@@ -80,9 +84,14 @@ final class MainViewModel: BaseViewModel<
 
         let formatter = AmountFormatter()
 
+        let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
+            BalanceLastUpdatedFormatter().string(from: $0)
+        }
+
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil) }
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil) },
+            refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle
         )
     }
 }
@@ -97,5 +106,6 @@ extension MainViewModel {
     struct Output {
         let isFetchingBalance: Driver<Bool>
         let balance: Driver<String>
+        let refreshControlLastUpdatedTitle: Driver<String>
     }
 }

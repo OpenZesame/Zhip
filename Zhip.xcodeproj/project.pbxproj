@@ -8,6 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */; };
+		48053F0121EB86FD008FCE13 /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F0021EB86FD008FCE13 /* RefreshControl.swift */; };
+		48053F2621EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */; };
+		48053F2921EBDB0C008FCE13 /* ScrollViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */; };
+		48053F2C21EBDB92008FCE13 /* AbstractSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */; };
+		48053F2E21EBDC61008FCE13 /* BaseTableViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2D21EBDC61008FCE13 /* BaseTableViewOwner.swift */; };
+		48053F3021EBDC6E008FCE13 /* TableViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F2F21EBDC6E008FCE13 /* TableViewOwner.swift */; };
+		48053F3321EBDCA2008FCE13 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3221EBDCA2008FCE13 /* FooterView.swift */; };
+		48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */; };
+		48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */; };
+		48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3821EBEEBD008FCE13 /* ImageOrText.swift */; };
+		48053F3D21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */; };
+		48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */; };
+		48053F4221EBEF98008FCE13 /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */; };
+		48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */; };
 		4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7D821E951B2008D6778 /* ValidationConvertible.swift */; };
 		4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DC21E951DA008D6778 /* AnyValidation.swift */; };
 		4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */; };
@@ -119,7 +133,7 @@
 		48947B7D21D3F21900604D90 /* String_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48947B7C21D3F21900604D90 /* String_Extensions.swift */; };
 		48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */; };
 		4898FB4521542333009501DC /* StackViewStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4421542333009501DC /* StackViewStyling.swift */; };
-		4898FB48215423D6009501DC /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* ScrollView.swift */; };
+		4898FB48215423D6009501DC /* BaseScrollableStackViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
 		489EB0ED21C7E59100664AA7 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0EC21C7E59100664AA7 /* libRxTest.a */; };
@@ -168,7 +182,6 @@
 		48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
 		48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */; };
-		48ECF4B621A16B9D0078D659 /* ScrollingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */; };
 		48ECF4B821A17B7A0078D659 /* TitledValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B721A17B7A0078D659 /* TitledValueView.swift */; };
 		48ECF5C121A18F140078D659 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF56921A18F140078D659 /* Scene.swift */; };
 		48ECF5C221A18F140078D659 /* TitledScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF56A21A18F140078D659 /* TitledScene.swift */; };
@@ -286,6 +299,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48053F0021EB86FD008FCE13 /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
+		48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutingNavigationController.swift; sourceTree = "<group>"; };
+		48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOwner.swift; sourceTree = "<group>"; };
+		48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractSceneView.swift; sourceTree = "<group>"; };
+		48053F2D21EBDC61008FCE13 /* BaseTableViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewOwner.swift; sourceTree = "<group>"; };
+		48053F2F21EBDC6E008FCE13 /* TableViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewOwner.swift; sourceTree = "<group>"; };
+		48053F3221EBDCA2008FCE13 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
+		48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Footer.swift"; sourceTree = "<group>"; };
+		48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceLastUpdatedFormatter.swift; sourceTree = "<group>"; };
+		48053F3821EBEEBD008FCE13 /* ImageOrText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageOrText.swift; sourceTree = "<group>"; };
+		48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+RightLeftView.swift"; sourceTree = "<group>"; };
+		48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+Validation.swift"; sourceTree = "<group>"; };
+		48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
+		48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingLabelTextField+TypeOfInput.swift"; sourceTree = "<group>"; };
 		4805A7D821E951B2008D6778 /* ValidationConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationConvertible.swift; sourceTree = "<group>"; };
 		4805A7DC21E951DA008D6778 /* AnyValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidation.swift; sourceTree = "<group>"; };
 		4805A7DE21E9525D008D6778 /* AnyValidation+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyValidation+Colors.swift"; sourceTree = "<group>"; };
@@ -406,7 +433,7 @@
 		48947B7C21D3F21900604D90 /* String_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_Extensions.swift; sourceTree = "<group>"; };
 		48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAboveLabelButton.swift; sourceTree = "<group>"; };
 		4898FB4421542333009501DC /* StackViewStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewStyling.swift; sourceTree = "<group>"; };
-		4898FB47215423D6009501DC /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
+		4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScrollableStackViewOwner.swift; sourceTree = "<group>"; };
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
 		489EB0EC21C7E59100664AA7 /* libRxTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxTest.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -455,7 +482,6 @@
 		48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutOwner.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
-		48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingStackView.swift; sourceTree = "<group>"; };
 		48ECF4B721A17B7A0078D659 /* TitledValueView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitledValueView.swift; sourceTree = "<group>"; };
 		48ECF56921A18F140078D659 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		48ECF56A21A18F140078D659 /* TitledScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitledScene.swift; sourceTree = "<group>"; };
@@ -586,6 +612,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48053F2721EBDADD008FCE13 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4898FB4921542400009501DC /* ContentViewProvider.swift */,
+				48C89FED214331FE0063B0FA /* ViewModelled.swift */,
+				48053F2F21EBDC6E008FCE13 /* TableViewOwner.swift */,
+				4898FB4421542333009501DC /* StackViewStyling.swift */,
+				48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */,
+				48053F2821EBDB0C008FCE13 /* ScrollViewOwner.swift */,
+				48C89FEB214331F00063B0FA /* EmptyInitializable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		48053F2A21EBDB83008FCE13 /* SceneViews */ = {
+			isa = PBXGroup;
+			children = (
+				4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */,
+				48053F2D21EBDC61008FCE13 /* BaseTableViewOwner.swift */,
+				48053F2B21EBDB92008FCE13 /* AbstractSceneView.swift */,
+			);
+			path = SceneViews;
+			sourceTree = "<group>";
+		};
+		48053F3121EBDC9A008FCE13 /* Footer */ = {
+			isa = PBXGroup;
+			children = (
+				48053F3221EBDCA2008FCE13 /* FooterView.swift */,
+			);
+			path = Footer;
+			sourceTree = "<group>";
+		};
+		48053F3B21EBEF01008FCE13 /* FloatingLabelTextField */ = {
+			isa = PBXGroup;
+			children = (
+				485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */,
+				48053F4321EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift */,
+				48053F3C21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift */,
+				48053F3E21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift */,
+			);
+			path = FloatingLabelTextField;
+			sourceTree = "<group>";
+		};
+		48053F4021EBEF90008FCE13 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				48053F4121EBEF98008FCE13 /* TextFieldDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		4805A7D721E951A2008D6778 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1001,6 +1078,9 @@
 		4850A401214C112000EBB85B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				48053F4021EBEF90008FCE13 /* Delegates */,
+				48053F2A21EBDB83008FCE13 /* SceneViews */,
+				48053F2721EBDADD008FCE13 /* Protocols */,
 				48ECF61121A29F340078D659 /* TableView */,
 				48A9EFC22194DEAA00E9785E /* SpecificViews */,
 				48A9EFC12194DE9B00E9785E /* Components */,
@@ -1013,6 +1093,7 @@
 			isa = PBXGroup;
 			children = (
 				485AA29021DD303200E700C5 /* AmountFormatter.swift */,
+				48053F3621EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift */,
 			);
 			path = OutputFormatting;
 			sourceTree = "<group>";
@@ -1145,6 +1226,7 @@
 				48C0613621BD3107006E3E0A /* Wallet.swift */,
 				48A640012186273300B08C67 /* WalletEncryptionPassphrase.swift */,
 				487C19E5219A2FCD00308550 /* Weak.swift */,
+				48053F3821EBEEBD008FCE13 /* ImageOrText.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1153,6 +1235,7 @@
 			isa = PBXGroup;
 			children = (
 				48FD562721B632E50026690E /* CheckboxWithLabel.swift */,
+				48053F0021EB86FD008FCE13 /* RefreshControl.swift */,
 				48ECF4B721A17B7A0078D659 /* TitledValueView.swift */,
 			);
 			path = Components;
@@ -1162,9 +1245,6 @@
 			isa = PBXGroup;
 			children = (
 				48C467EC2198936F006DA5EE /* InputPincodeView */,
-				4898FB4921542400009501DC /* ContentViewProvider.swift */,
-				48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */,
-				48ECF4B521A16B9D0078D659 /* ScrollingStackView.swift */,
 				48ECF4B121A06C4D0078D659 /* SpinnerView.swift */,
 				48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */,
 			);
@@ -1223,10 +1303,7 @@
 		48C89FEF2143320B0063B0FA /* Views+Styleable */ = {
 			isa = PBXGroup;
 			children = (
-				48C89FEB214331F00063B0FA /* EmptyInitializable.swift */,
 				4850A407214C122900EBB85B /* Mergeable.swift */,
-				4898FB4421542333009501DC /* StackViewStyling.swift */,
-				48C89FED214331FE0063B0FA /* ViewModelled.swift */,
 				48C89FF72143327A0063B0FA /* Styling */,
 				48BA52F12180EC47009775D5 /* UIView+Border.swift */,
 			);
@@ -1271,6 +1348,7 @@
 				48AC6CCA2145AF3E00B4D036 /* UITabBarItem_Extension.swift */,
 				4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */,
 				4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */,
+				48053F3421EBDCD5008FCE13 /* UITableView+Footer.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -1278,9 +1356,8 @@
 		48CA697C218352B200C05F5F /* Subclasses */ = {
 			isa = PBXGroup;
 			children = (
-				4898FB47215423D6009501DC /* ScrollView.swift */,
+				48053F3B21EBEF01008FCE13 /* FloatingLabelTextField */,
 				48947B7E21D3F28900604D90 /* ImageAboveLabelButton.swift */,
-				485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */,
 				48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */,
 			);
 			path = Subclasses;
@@ -1309,6 +1386,7 @@
 				48ECF56B21A18F140078D659 /* AbstractViewController+BarButtonItem */,
 				48ECF57021A18F140078D659 /* AbstractController.swift */,
 				48ECF57121A18F140078D659 /* SceneController.swift */,
+				48053F2521EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1598,6 +1676,7 @@
 		48ECF61121A29F340078D659 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				48053F3121EBDC9A008FCE13 /* Footer */,
 				48ECF61521A29F820078D659 /* Cells */,
 				48ECF61921A29FE10078D659 /* CellConfigurable.swift */,
 				48ECF61B21A29FF20078D659 /* ClassIdentifiable.swift */,
@@ -1823,12 +1902,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh",
+				"${PODS_ROOT}/DateToolsSwift/DateToolsSwift/DateTools/DateTools.bundle",
 				"${PODS_ROOT}/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resources/IQKeyboardManager.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DateTools.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1926,6 +2007,7 @@
 				4819BD8B21C0CAEF00443F2A /* ConfirmWalletRemovalController.swift in Sources */,
 				483DDECC219CB860009D3F4C /* InputType.swift in Sources */,
 				48ECF5EF21A18F140078D659 /* RestoreWalletViewModel.swift in Sources */,
+				48053F3321EBDCA2008FCE13 /* FooterView.swift in Sources */,
 				48ECF61E21A2A02E0078D659 /* SingleCellTypeTableView.swift in Sources */,
 				4819BDB421C27D2900443F2A /* ScanQRCodeController.swift in Sources */,
 				486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */,
@@ -1935,9 +2017,11 @@
 				48F4098721BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				48ECF5C321A18F140078D659 /* BarButton.swift in Sources */,
 				485AAC9E21AAC6FA005C56CC /* AddressValidator.swift in Sources */,
+				48053F2E21EBDC61008FCE13 /* BaseTableViewOwner.swift in Sources */,
 				483CE9CD2194E9E300BED31C /* TrackableEvent.swift in Sources */,
 				48ECF60A21A1CFF30078D659 /* Coordinating+Stack.swift in Sources */,
 				480B0E8A21CCEFDE00A72133 /* UIView+MotionEffect.swift in Sources */,
+				48053F2C21EBDB92008FCE13 /* AbstractSceneView.swift in Sources */,
 				48ECF5E021A18F140078D659 /* UnlockAppWithPincode.swift in Sources */,
 				48ECF5C521A18F140078D659 /* BarButtonContent.swift in Sources */,
 				48ECF5D821A18F140078D659 /* Main.swift in Sources */,
@@ -1945,6 +2029,7 @@
 				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
+				48053F0121EB86FD008FCE13 /* RefreshControl.swift in Sources */,
 				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
 				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */,
@@ -1956,6 +2041,7 @@
 				48ECF5C821A18F140078D659 /* PrepareTransaction.swift in Sources */,
 				48F4097721BBC67D001C499F /* BackUpRevealedKeyPair.swift in Sources */,
 				4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */,
+				48053F3D21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift in Sources */,
 				48ECF61C21A29FF20078D659 /* ClassIdentifiable.swift in Sources */,
 				483CE9D32194E9E300BED31C /* Navigator.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
@@ -1976,6 +2062,7 @@
 				48ECF5CD21A18F140078D659 /* SignTransaction.swift in Sources */,
 				48BAC4E02195D83000A626FD /* L10n-Constants.swift in Sources */,
 				4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */,
+				48053F4221EBEF98008FCE13 /* TextFieldDelegate.swift in Sources */,
 				48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
 				48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */,
@@ -1992,7 +2079,7 @@
 				483CE9CC2194E9E300BED31C /* Tracker.swift in Sources */,
 				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
-				4898FB48215423D6009501DC /* ScrollView.swift in Sources */,
+				4898FB48215423D6009501DC /* BaseScrollableStackViewOwner.swift in Sources */,
 				4805A7E921E95300008D6778 /* InputError.swift in Sources */,
 				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
 				4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */,
@@ -2008,6 +2095,7 @@
 				48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */,
 				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
+				48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
@@ -2033,6 +2121,7 @@
 				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,
 				48ECF5E421A18F140078D659 /* TermsOfService.swift in Sources */,
 				480B0E9921CF852600A72133 /* Rx+Validation.swift in Sources */,
+				48053F2921EBDB0C008FCE13 /* ScrollViewOwner.swift in Sources */,
 				48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */,
 				4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */,
 				48ECF5DD21A18F140078D659 /* ReceiveCoordinator.swift in Sources */,
@@ -2060,6 +2149,7 @@
 				48ECF60E21A1D0AC0078D659 /* Coordinating+Scene+Push.swift in Sources */,
 				48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
+				48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
 				4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */,
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,
@@ -2076,6 +2166,7 @@
 				483CE9D42194E9E300BED31C /* DeepLink.swift in Sources */,
 				48C89FF62143326F0063B0FA /* UIButton+Styling.swift in Sources */,
 				4898FB4521542333009501DC /* StackViewStyling.swift in Sources */,
+				48053F2621EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift in Sources */,
 				483CE9EC2194E9E300BED31C /* AppDelegate.swift in Sources */,
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
 				48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */,
@@ -2107,9 +2198,11 @@
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
 				48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
+				48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */,
 				5BF1DFAB21A4288E00FE8068 /* AskForAnalyticsPermissions.swift in Sources */,
 				48ECF4B821A17B7A0078D659 /* TitledValueView.swift in Sources */,
 				48241B5321B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift in Sources */,
+				48053F3021EBDC6E008FCE13 /* TableViewOwner.swift in Sources */,
 				4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */,
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
@@ -2138,7 +2231,6 @@
 				48ECF5F721A18F140078D659 /* CreateNewWalletCoordinator.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
 				48ECF5F421A18F140078D659 /* ChooseWalletView.swift in Sources */,
-				48ECF4B621A16B9D0078D659 /* ScrollingStackView.swift in Sources */,
 				48ECF5CB21A18F140078D659 /* SendCoordinator.swift in Sources */,
 				48ECF5FD21A18F140078D659 /* BackupWallet.swift in Sources */,
 				48ECF62221A3416D0078D659 /* SettingsItem.swift in Sources */,
@@ -2163,7 +2255,9 @@
 				480B0EBC21D0A74600A72133 /* ErrorTracker.swift in Sources */,
 				483CE9C72194E9E300BED31C /* AbstractTarget.swift in Sources */,
 				48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */,
+				48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */,
 				48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */,
+				48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

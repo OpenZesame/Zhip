@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class MainView: ScrollingStackView, PullToRefreshCapable {
+final class MainView: ScrollableStackViewOwner, PullToRefreshCapable {
 
     private lazy var motionEffectAuroraImageView    = UIView()
     private lazy var balanceTitleLabel              = UILabel()
@@ -34,12 +34,6 @@ final class MainView: ScrollingStackView, PullToRefreshCapable {
     }
 }
 
-extension MainView: BackgroundColorSpecifying {
-	var colorOfBackground: UIColor {
-		return .teal
-	}
-}
-
 extension MainView: ViewModelled {
     typealias ViewModel = MainViewModel
 
@@ -53,8 +47,9 @@ extension MainView: ViewModelled {
 
     func populate(with viewModel: MainViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isFetchingBalance     --> rx.isRefreshing,
-            viewModel.balance               --> balanceValueLabel.rx.text
+            viewModel.isFetchingBalance                 --> rx.isRefreshing,
+            viewModel.balance                           --> balanceValueLabel.rx.text,
+            viewModel.refreshControlLastUpdatedTitle    --> rx.pullToRefreshTitle
         ]
     }
 }
@@ -94,7 +89,7 @@ private extension MainView {
 
         buttonsView.height(184)
 
-        insertSubview(motionEffectAuroraImageView, belowSubview: stackView)
+        insertSubview(motionEffectAuroraImageView, belowSubview: scrollView)
         motionEffectAuroraImageView.edgesToSuperview()
         setupAuroraImageViewWithMotionEffect()
     }

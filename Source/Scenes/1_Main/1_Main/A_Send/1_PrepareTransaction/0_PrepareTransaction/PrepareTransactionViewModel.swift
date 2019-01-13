@@ -70,6 +70,9 @@ final class PrepareTransactionViewModel: BaseViewModel<
 				.trackActivity(activityIndicator)
 				.trackError(errorTracker)
 				.asDriverOnErrorReturnEmpty()
+                .do(onNext: { [unowned self] in
+                    self.transactionUseCase.cacheBalance($0.balance)
+                })
 		}
 
 		let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
@@ -199,7 +202,16 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let gasPriceFormatted = gasPrice.filterNil().map { formatter.format(amount: $0, in: .li) }
 
+        let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
+            self.transactionUseCase.balanceUpdatedAt
+        }
+
+        let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
+            BalanceLastUpdatedFormatter().string(from: $0)
+        }
+
         return Output(
+            refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
             isFetchingBalance: activityIndicator.asDriver(),
             isSendButtonEnabled: isSendButtonEnabled,
             balance: balanceFormatted,
@@ -236,6 +248,7 @@ extension PrepareTransactionViewModel {
 	}
 
 	struct Output {
+        let refreshControlLastUpdatedTitle: Driver<String>
 		let isFetchingBalance: Driver<Bool>
 		let isSendButtonEnabled: Driver<Bool>
 		let balance: Driver<String>

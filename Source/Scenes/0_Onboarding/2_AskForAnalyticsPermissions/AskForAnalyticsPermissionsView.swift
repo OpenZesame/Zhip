@@ -11,7 +11,7 @@ import UIKit
 import TinyConstraints
 import RxSwift
 
-final class AskForAnalyticsPermissionsView: ScrollingStackView {
+final class AskForAnalyticsPermissionsView: ScrollableStackViewOwner {
 
     private lazy var imageView                      = UIImageView()
     private lazy var headerLabel                    = UILabel()

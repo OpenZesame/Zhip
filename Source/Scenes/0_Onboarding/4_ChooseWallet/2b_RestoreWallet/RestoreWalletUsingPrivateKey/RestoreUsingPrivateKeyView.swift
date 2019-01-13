@@ -10,7 +10,7 @@ import UIKit
 
 import RxSwift
 
-final class RestoreUsingPrivateKeyView: ScrollingStackView {
+final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
     private lazy var privateKeyField                        = FloatingLabelTextField()

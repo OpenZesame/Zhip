@@ -37,6 +37,9 @@
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
 
+"Formatter.BalanceWasUpdatedAt" = "Balance last updated %@.";
+"Formatter.BalanceFirstFetch" = "Fetching balance...";
+
 // MARK: - Onboarding
 
 // MARK: Welcome

@@ -64,6 +64,12 @@ extension UIStackView.Style: ExpressibleByArrayLiteral {
     }
 }
 
+extension UIEdgeInsets {
+    var isZero: Bool {
+        return top == 0 && bottom == 0 && left == 0 && right == 0
+    }
+}
+
 // MARK: - Apply Style
 extension UIStackView {
     func apply(style: Style) {
@@ -74,7 +80,7 @@ extension UIStackView {
         alignment = style.alignment ?? .fill
         distribution = style.distribution ?? .fill
         spacing = style.spacing ?? 0
-        if let layoutMargins = style.layoutMargins {
+        if let layoutMargins = style.layoutMargins, !layoutMargins.isZero {
             self.layoutMargins = layoutMargins
             isLayoutMarginsRelativeArrangement = style.isLayoutMarginsRelativeArrangement ?? true
         } else {

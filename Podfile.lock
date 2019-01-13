@@ -4,6 +4,7 @@ PODS:
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CryptoSwift (0.13.1)
+  - DateToolsSwift (4.0.0)
   - Differentiator (3.1.0)
   - EFQRCode (4.4.1):
     - swift_qrcodejs (~> 1.0.1)
@@ -98,6 +99,7 @@ PODS:
     - SwiftProtobuf
 
 DEPENDENCIES:
+  - DateToolsSwift
   - EFQRCode
   - Firebase/Core
   - IQKeyboardManagerSwift
@@ -122,6 +124,7 @@ SPEC REPOS:
     - APIKit
     - BigInt
     - CryptoSwift
+    - DateToolsSwift
     - Differentiator
     - EFQRCode
     - EllipticCurveKit
@@ -173,6 +176,7 @@ SPEC CHECKSUMS:
   APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
+  DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
@@ -206,6 +210,6 @@ SPEC CHECKSUMS:
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: 5c5593265a8651adb27822d43b458078cfa687ea
 
-PODFILE CHECKSUM: c207f382f0a8b2f5296c809b31151b04ace10946
+PODFILE CHECKSUM: 9eb8d60ec7fc04f86f207ac35c7788a92a62c9c5
 
 COCOAPODS: 1.5.3

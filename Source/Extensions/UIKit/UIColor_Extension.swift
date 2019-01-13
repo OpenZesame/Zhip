@@ -17,10 +17,15 @@ public extension UIColor {
 extension UIColor {
     enum Hex: Int {
         case teal = 0x00A88D
+
+        case darkTeal = 0x0F675B
         case deepBlue = 0x1F292F
         case bloodRed = 0xFF4C4F
         case asphaltGrey = 0x40484D
         case silverGrey = 0x6F7579
+
+        // Dark color used for navigation bar
+        case dusk = 0x192226
     }
 }
 
@@ -42,10 +47,12 @@ extension UIColor {
 
 extension UIColor {
     static let teal = UIColor(hex: .teal)
+    static let darkTeal = UIColor(hex: .darkTeal)
     static let deepBlue = UIColor(hex: .deepBlue)
     static let bloodRed = UIColor(hex: .bloodRed)
     static let asphaltGrey = UIColor(hex: .asphaltGrey)
     static let silverGrey = UIColor(hex: .silverGrey)
+    static let dusk = UIColor(hex: .dusk)
 }
 
 // MARK: - Private
