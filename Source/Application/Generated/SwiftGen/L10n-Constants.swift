@@ -523,8 +523,16 @@ internal enum L10n {
       }
     }
     internal enum UnlockAppWithPincode {
+      /// Unlock app with PIN or FaceId/TouchId
+      internal static let label = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Label")
       /// Unlock app
       internal static let title = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Title")
+      internal enum Biometrics {
+        /// Use PIN
+        internal static let fallBack = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Biometrics.FallBack")
+        /// Unlock app easily with FaceId/TouchId
+        internal static let reason = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Biometrics.Reason")
+      }
     }
     internal enum WarningERC20 {
       internal enum Button {

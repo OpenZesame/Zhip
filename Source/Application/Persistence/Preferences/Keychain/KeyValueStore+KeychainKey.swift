@@ -12,6 +12,17 @@ import Zesame
 // MARK: - Wallet
 extension KeyValueStore where KeyType == KeychainKey {
     var wallet: Wallet? {
+        // Delete wallet upon reinstall if needed. This makes sure that after a reinstall of the app, the flag
+        // `hasRunAppBefore`, which recides in UserDefaults - which gets reset after uninstalls, will be false
+        // thus we should not have any wallet configured. Delete previous one if needed and always return nil
+        guard Preferences.default.isTrue(.hasRunAppBefore) else {
+            Preferences.default.save(value: true, for: .hasRunAppBefore)
+            deleteWallet()
+            deletePincode()
+            Preferences.default.deleteValue(for: .cachedBalance)
+            Preferences.default.deleteValue(for: .balanceWasUpdatedAt)
+            return nil
+        }
         return loadCodable(Wallet.self, for: .keystore)
     }
 

@@ -148,6 +148,9 @@
 
 // MARK: Unlock App
 "Scene.UnlockAppWithPincode.Title" = "Unlock app";
+"Scene.UnlockAppWithPincode.Label" = "Unlock app with PIN or FaceId/TouchId";
+"Scene.UnlockAppWithPincode.Biometrics.Reason" = "Unlock app easily with FaceId/TouchId";
+"Scene.UnlockAppWithPincode.Biometrics.FallBack" = "Use PIN";
 
 // MARK: Remove Pincode
 "Scene.RemovePincode.Title" = "Unlock to remove";
