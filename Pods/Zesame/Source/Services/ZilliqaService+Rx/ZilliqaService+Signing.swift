@@ -25,7 +25,7 @@ public extension ZilliqaService {
 
     func sign(payment: Payment, using keyPair: KeyPair) -> SignedTransaction {
 
-        let transaction = Transaction(payment: payment)
+        let transaction = Transaction(payment: payment, network: network)
 
         let message = messageFromUnsignedTransaction(transaction, publicKey: keyPair.publicKey)
 

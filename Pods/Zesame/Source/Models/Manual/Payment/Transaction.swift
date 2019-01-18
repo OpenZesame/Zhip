@@ -14,10 +14,17 @@ public struct Transaction {
     let data: String
     let code: String
 
-    init(payment: Payment, version: Version = .default, data: String = "", code: String = "") {
+    init(payment: Payment, version: Version, data: String = "", code: String = "") {
         self.version = version
         self.payment = payment
         self.data = data
         self.code = code
     }
 }
+
+public extension Transaction {
+    init(payment: Payment, network: Network, data: String = "", code: String = "") {
+        self.init(payment: payment, version: Version(network: network), data: data, code: code)
+    }
+}
+

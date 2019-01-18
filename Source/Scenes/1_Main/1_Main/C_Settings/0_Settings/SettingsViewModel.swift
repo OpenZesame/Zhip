@@ -7,6 +7,9 @@
 //
 
 import Foundation
+
+import Zesame
+
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -139,6 +142,21 @@ private extension SettingsViewModel {
             let build = bundle.build,
             let appName = bundle.name
             else { incorrectImplementation("Should be able to read name, version and build number") }
-        return "\(appName) v\(version) (\(build))"
+        
+        let networkDisplayName = DefaultUseCaseProvider.zilliqaNetwork.displayName
+        return "\(appName) v\(version) (\(build))\n\(L10n.Scene.Settings.Footer.network(networkDisplayName))"
+    }
+}
+
+private extension Network {
+    var displayName: String {
+        switch self {
+        case .mainnet: return "mainnet"
+        case .testnet(let testnet):
+            switch testnet {
+            case .prod: return "testnet prod"
+            case .staging: return "testnet stag"
+            }
+        }
     }
 }
