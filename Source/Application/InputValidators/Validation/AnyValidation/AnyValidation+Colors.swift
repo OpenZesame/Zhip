@@ -12,7 +12,7 @@ import UIKit
 extension AnyValidation {
     enum Color {
         static let validWithoutRemark: UIColor = .teal
-        static let validWithRemark: UIColor = .yellow
+        static let validWithRemark: UIColor = .mellowYellow
         static let error: UIColor = .bloodRed
         static let empty: UIColor = .silverGrey
     }

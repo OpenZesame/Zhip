@@ -13,3 +13,9 @@ private typealias € = L10n.Scene.PollTransactionStatus
 final class PollTransactionStatus: Scene<PollTransactionStatusView> {}
 
 extension PollTransactionStatus: BackButtonHiding {}
+
+extension PollTransactionStatus: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .transluscent
+    }
+}

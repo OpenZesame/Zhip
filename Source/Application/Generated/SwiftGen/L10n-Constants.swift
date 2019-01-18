@@ -15,7 +15,7 @@ internal enum L10n {
   internal enum Error {
     internal enum Input {
       internal enum Address {
-        /// Are you sure this is a Zilliqa address? It is not checksummed. This might still be a valid address.
+        /// This address isn't checksummed, yet can still be valid.
         internal static let addressNotChecksummed = L10n.tr("Localizable", "Error.Input.Address.AddressNotChecksummed")
         /// Only 0-9 and A-F allowed
         internal static let containsNonHexadecimal = L10n.tr("Localizable", "Error.Input.Address.ContainsNonHexadecimal")
@@ -476,8 +476,6 @@ internal enum L10n {
       internal enum Cell {
         /// Acknowledgements
         internal static let acknowledgements = L10n.tr("Localizable", "Scene.Settings.Cell.Acknowledgements")
-        /// Version
-        internal static let appVersion = L10n.tr("Localizable", "Scene.Settings.Cell.AppVersion")
         /// Backup wallet
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
         /// Change analytics permissions
@@ -496,6 +494,12 @@ internal enum L10n {
         internal static let starUsOnGithub = L10n.tr("Localizable", "Scene.Settings.Cell.StarUsOnGithub")
         /// Terms of service
         internal static let termsOfService = L10n.tr("Localizable", "Scene.Settings.Cell.Terms of service")
+      }
+      internal enum Footer {
+        /// Connected to %s
+        internal static func network(_ p1: UnsafePointer<CChar>) -> String {
+          return L10n.tr("Localizable", "Scene.Settings.Footer.Network", p1)
+        }
       }
     }
     internal enum SignTransaction {
