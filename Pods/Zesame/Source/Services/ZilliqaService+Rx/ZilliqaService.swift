@@ -15,6 +15,7 @@ import RxSwift
 import CryptoSwift
 
 public protocol ZilliqaService: AnyObject {
+    var network: Network { get }
     var apiClient: APIClient { get }
 
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore, done: @escaping Done<Bool>)
@@ -27,7 +28,6 @@ public protocol ZilliqaService: AnyObject {
 }
 
 public protocol ZilliqaServiceReactive {
-
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore) -> Observable<Bool>
     func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>

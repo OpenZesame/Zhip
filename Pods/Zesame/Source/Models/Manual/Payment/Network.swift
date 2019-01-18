@@ -9,28 +9,35 @@
 import Foundation
 import EllipticCurveKit
 
-/// ⚠️ THE VALUES ARE NOT CONFIRMED
-public enum Network: UInt32 {
-    case mainnet = 1
-    case testnet = 2
-}
-
-public extension Network {
-    static var `default`: Network {
-        return .mainnet
+public enum Network {
+    case mainnet
+    case testnet(Testnet)
+    public enum Testnet {
+        case prod
+        case staging
     }
 }
 
 public extension Network {
-
+    var baseURL: URL {
+        let baseUrlString: String
+        switch self {
+        case .mainnet: baseUrlString = "https://api.zilliqa.com"
+        case .testnet(let testnet):
+            switch testnet {
+            case .prod:
+                // Before mainnet launch testnet prod is "borrowing" that url.
+                return Network.mainnet.baseURL
+            case .staging: baseUrlString = "https://staging-api.aws.zilliqa.com"
+            }
+        }
+        return URL(string: baseUrlString)!
+    }
+    
     var chainId: UInt32 {
-        print("⚠️ Using uncofirmed chain id. Verify that this is the correct chain id before launch.")
-        return rawValue
-    }
-
-    func compressedHashForAddressFromPublicKey(_ publicKey: PublicKey) -> Data {
-        // Actually using Bitcoin `mainnet` settings for address formatting. As of not not related to `Zesame.Network`
-        let system = EllipticCurveKit.Zilliqa(EllipticCurveKit.Zilliqa.Network.mainnet)
-        return system.compressedHash(from: publicKey)
+        switch self {
+        case .mainnet: return 1
+        case .testnet: return 62
+        }
     }
 }
