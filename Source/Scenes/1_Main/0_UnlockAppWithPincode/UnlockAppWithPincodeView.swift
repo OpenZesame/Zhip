@@ -14,11 +14,17 @@ private typealias € = L10n.Scene.UnlockAppWithPincode
 final class UnlockAppWithPincodeView: ScrollableStackViewOwner {
 
     private lazy var inputPincodeView = InputPincodeView()
+    private lazy var descriptionLabel = UILabel()
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
+        descriptionLabel,
         .spacer
     ]
+
+    override func setup() {
+        setupSubviews()
+    }
 }
 
 extension UnlockAppWithPincodeView: ViewModelled {
@@ -35,5 +41,14 @@ extension UnlockAppWithPincodeView: ViewModelled {
         return InputFromView(
             pincode: inputPincodeView.rx.pincode.asDriver()
         )
+    }
+}
+
+private extension UnlockAppWithPincodeView {
+    func setupSubviews() {
+
+        descriptionLabel.withStyle(.body) {
+            $0.text(€.label).textAlignment(.center)
+        }
     }
 }

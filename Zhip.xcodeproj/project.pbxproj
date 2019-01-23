@@ -179,6 +179,7 @@
 		48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */; };
 		48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */; };
 		48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */; };
+		48CDB8DA21EFB397005D67C6 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CDB8D921EFB397005D67C6 /* LocalAuthentication.framework */; };
 		48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */; };
 		48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B121A06C4D0078D659 /* SpinnerView.swift */; };
 		48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */; };
@@ -479,6 +480,7 @@
 		48CA697A2183529100C05F5F /* UILayoutPriority_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILayoutPriority_Extension.swift; sourceTree = "<group>"; };
 		48CA697D218352BB00C05F5F /* ScrollableContentSizedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextView.swift; sourceTree = "<group>"; };
 		48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder_Extensions.swift; sourceTree = "<group>"; };
+		48CDB8D921EFB397005D67C6 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutOwner.swift; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48CDB8DA21EFB397005D67C6 /* LocalAuthentication.framework in Frameworks */,
 				0C89F7165F988BE2FB42A729 /* libPods-Zhip.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1066,6 +1069,7 @@
 		484B06AA20BA107A00C4E50A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48CDB8D921EFB397005D67C6 /* LocalAuthentication.framework */,
 				489EB0F121C8FAAD00664AA7 /* libRxCocoa.a */,
 				489EB0EE21C7E5A700664AA7 /* libRxSwift.a */,
 				489EB0EC21C7E59100664AA7 /* libRxTest.a */,

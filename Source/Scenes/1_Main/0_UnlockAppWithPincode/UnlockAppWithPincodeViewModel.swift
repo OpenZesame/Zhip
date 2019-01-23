@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LocalAuthentication
 import RxCocoa
 import RxSwift
 
@@ -34,6 +35,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
         self.pincode = pincode
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -45,9 +47,33 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
 
+        func unlockUsingBiometrics() -> Driver<Void> {
+            let context = LAContext()
+            context.localizedFallbackTitle = €.Biometrics.fallBack
+            var authError: NSError?
+
+            // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
+            let reasonString = €.Biometrics.reason
+
+            return Observable.create { observer in
+                if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
+                    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { didAuth, _ in
+                        if didAuth {
+                            observer.onNext(())
+                        }
+                    }
+                }
+                return Disposables.create {}
+            }.asDriverOnErrorReturnEmpty()
+        }
+
+        let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
+
         bag <~ [
-             pincodeValidationValue.filter { $0.isValid }
-                .mapToVoid()
+            Driver.merge(
+                pincodeValidationValue.filter { $0.isValid }.mapToVoid(),
+                unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }
+            )
                 .do(onNext: { userDid(.unlockApp) })
                 .drive()
 
