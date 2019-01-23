@@ -30,7 +30,7 @@ extension FooterView {
 
 private extension FooterView {
     func setup() {
-        label.withStyle(.init(textAlignment: .center, textColor: .silverGrey, font: .hint))
+        label.withStyle(.init(textAlignment: .center, textColor: .silverGrey, font: .hint, numberOfLines: 2))
 
         contentView.addSubview(label)
         label.edgesToSuperview()

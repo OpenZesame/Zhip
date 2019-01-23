@@ -3,14 +3,34 @@
 Zesame is an *unofficial* Swift SDK for Zilliqa. It is written in Swift 4.2. This SDK contains cryptographic methods allowing you to create and restore a wallet, sign and broadcast transactions. The cryptographic methods are implemented in [EllipticCurveKit](https://github.com/Sajjon/EllipticCurveKit). This SDK uses Zilliqas [JSON-RPC API](https://apidocs.zilliqa.com/#introduction)
 
 # Installation
-Zesame uses the JSON-RPC API and not the protobuf API, however, for the packaging of the transaction we need to use protobuf. Please not that protocolbuffers is **only** used for the *packaging of the transaction*, it is not used at all for any communication with the API. All data is sent as JSON to the JSON-RPC API.
+
+## Install [Brew](https://brew.sh/)
+
+## Install [Carthage](https://github.com/Carthage/Carthage/)
+```bash
+brew install carthage
+```
+
+## Build Carthage projects
+```bash
+carthage bootstrap --platform iOS,macOS --cache-builds --no-use-binaries
+```
 
 ## Protobuf
-We use the apple/swift-protobuf project for protocol buffers, and it is important to note two different programs associated with swift protobuf:
+Zesame uses the JSON-RPC API and not the protobuf API, however, for the packaging of the transaction we need to use protobuf. Please not that protocolbuffers is **only** used for the *packaging of the transaction*, it is not used at all for any communication with the API. All data is sent as JSON to the JSON-RPC API.
+
+We use the [apple/swift-protobuf](https://github.com/apple/swift-protobuf) project for protocol buffers, and it is important to note the two different programs associated with swift protobuf:
 
 ### Install protobuf
 #### `protoc-gen-swift`
-This program is used only for generating our swift files from our `.proto` files and we install this program using [brew](https://brew.sh/) (it can also be manually downloaded and built). Follow [installation instructions using brew here](https://github.com/apple/swift-protobuf#alternatively-install-via-homebrew). After this is done we can generate `.pb.swift` files using;
+This program is used only for generating our swift files from our `.proto` files and we install this program using [brew](https://brew.sh/) (it can also be manually downloaded and built). 
+
+Follow [installation instructions using brew here](https://github.com/apple/swift-protobuf#alternatively-install-via-homebrew). 
+```bash
+brew install swift-protobuf
+```
+
+After this is done we can generate `.pb.swift` files using
 
 ```bash
 $ protoc --swift_out=. my.proto

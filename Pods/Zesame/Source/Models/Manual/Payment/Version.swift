@@ -15,7 +15,7 @@ public struct Version {
         self.value = value
     }
 
-    public init(network: Network = .default, transactionVersion: UInt32 = 1) {
+    public init(network: Network, transactionVersion: UInt32 = 1) {
         self.init(value: network.chainId << 16 + transactionVersion)
     }
 }
@@ -27,13 +27,6 @@ public extension Version {
         self.init(value: value)
     }
 }
-
-public extension Version {
-    static var `default`: Version {
-        return Version()
-    }
-}
-
 
 // MARK: - Encodable
 extension Version: Encodable {

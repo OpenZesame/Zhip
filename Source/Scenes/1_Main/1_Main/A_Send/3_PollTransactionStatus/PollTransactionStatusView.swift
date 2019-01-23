@@ -18,18 +18,15 @@ final class PollTransactionStatusView: ScrollableStackViewOwner {
     private lazy var mightTakeSomeMinutesLabel 		 	= UILabel()
     private lazy var seeTxDetailsWhenAvailableButton	= ButtonWithSpinner(mode: .nextToText)
     private lazy var skipWaitingOrDoneButton      		= UIButton()
-	private lazy var topSpacer: UIView = .spacer
-	private lazy var middleSpacer: UIView = .spacer
 
     lazy var stackViewStyle = UIStackView.Style([
-		topSpacer,
 		checkmarkLogoImageView,
-		middleSpacer,
+        .spacer,
         transactionBroadcastedLabel,
         mightTakeSomeMinutesLabel,
         seeTxDetailsWhenAvailableButton,
 		skipWaitingOrDoneButton
-        ])
+        ], layoutMargins: UIEdgeInsets(top: 50, bottom: 0))
 
     override func setup() {
         setupSubviews()
@@ -58,8 +55,6 @@ extension PollTransactionStatusView: ViewModelled {
 private typealias € = L10n.Scene.PollTransactionStatus
 private extension PollTransactionStatusView {
     func setupSubviews() {
-
-		topSpacer.height(to: middleSpacer)
 
 		checkmarkLogoImageView.withStyle(.default) {
 			$0.image(Asset.Icons.Large.checkmark.image)
