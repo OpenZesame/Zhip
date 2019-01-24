@@ -19,8 +19,8 @@ import Result
 
 public extension Keystore {
 
-    func toKeypair(encryptedBy passphrase: String, done: @escaping Done<KeyPair>) {
-        decryptPrivateKeyWith(passphrase: passphrase) {
+    func toKeypair(encryptedBy password: String, done: @escaping Done<KeyPair>) {
+        decryptPrivateKeyWith(password: password) {
             switch $0 {
             case .failure(let error): done(Result.failure(error))
             case .success(let privateKeyHex):
@@ -30,14 +30,14 @@ public extension Keystore {
         }
     }
 
-    func decryptPrivateKeyWith(passphrase: String, done: @escaping Done<String>) {
-        guard passphrase.count >= Keystore.minumumPasshraseLength else { done(.failure(.keystorePasshraseTooShort(provided: passphrase.count, minimum: Keystore.minumumPasshraseLength))); return }
+    func decryptPrivateKeyWith(password: String, done: @escaping Done<String>) {
+        guard password.count >= Keystore.minumumPasswordLength else { done(.failure(.keystorePasswordTooShort(provided: password.count, minimum: Keystore.minumumPasswordLength))); return }
 
         let encryptedPrivateKey = crypto.encryptedPrivateKey
 
-        Scrypt(kdfParameters: crypto.keyDerivationFunctionParameters).deriveKey(passphrase: passphrase) { derivedKey in
+        Scrypt(kdfParameters: crypto.keyDerivationFunctionParameters).deriveKey(password: password) { derivedKey in
             let mac = (derivedKey.asData.suffix(16) + encryptedPrivateKey).sha3(.sha256)
-            guard mac == self.crypto.messageAuthenticationCode else { done(.failure(.walletImport(.incorrectPasshrase))); return }
+            guard mac == self.crypto.messageAuthenticationCode else { done(.failure(.walletImport(.incorrectPassword))); return }
 
             let aesCtr = try! AES(key: derivedKey.asData.prefix(16).bytes, blockMode: CTR(iv: self.crypto.cipherParameters.initializationVector.bytes))
             let decryptedPrivateKey = try! aesCtr.decrypt(encryptedPrivateKey.bytes).asHex

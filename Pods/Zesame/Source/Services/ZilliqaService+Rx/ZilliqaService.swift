@@ -27,10 +27,10 @@ public protocol ZilliqaService: AnyObject {
 
     func getNetworkFromAPI(done: @escaping Done<NetworkResponse>)
 
-    func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore, done: @escaping Done<Bool>)
-    func createNewWallet(encryptionPassphrase: String, done: @escaping Done<Wallet>)
+    func verifyThat(encryptionPassword: String, canDecryptKeystore: Keystore, done: @escaping Done<Bool>)
+    func createNewWallet(encryptionPassword: String, done: @escaping Done<Wallet>)
     func restoreWallet(from restoration: KeyRestoration, done: @escaping Done<Wallet>)
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>)
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String, done: @escaping Done<Keystore>)
 
     func getBalance(for address: AddressChecksummedConvertible, done: @escaping Done<BalanceResponse>)
     func send(transaction: SignedTransaction, done: @escaping Done<TransactionResponse>)
@@ -39,14 +39,14 @@ public protocol ZilliqaService: AnyObject {
 public protocol ZilliqaServiceReactive {
 
     func getNetworkFromAPI() -> Observable<NetworkResponse>
-    func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore) -> Observable<Bool>
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
+    func verifyThat(encryptionPassword: String, canDecryptKeystore: Keystore) -> Observable<Bool>
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore>
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair>
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
 
     func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse>
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, network: Network) -> Observable<TransactionResponse>
+    func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network) -> Observable<TransactionResponse>
     func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, network: Network) -> Observable<TransactionResponse>
 
     func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling) -> Observable<TransactionReceipt>
@@ -54,14 +54,14 @@ public protocol ZilliqaServiceReactive {
 
 public extension ZilliqaServiceReactive {
 
-    func extractKeyPairFrom(wallet: Wallet, encryptedBy passphrase: String) -> Observable<KeyPair> {
-        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: passphrase)
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> Observable<KeyPair> {
+        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
         return Observable.create { observer in
 
-            keystore.toKeypair(encryptedBy: passphrase) {
+            keystore.toKeypair(encryptedBy: password) {
                 switch $0 {
                 case .success(let keyPair):
                     observer.onNext(keyPair)

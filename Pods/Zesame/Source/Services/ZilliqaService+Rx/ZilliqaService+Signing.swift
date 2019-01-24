@@ -19,8 +19,8 @@ import Result
 
 public extension ZilliqaService {
 
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, network: Network, done: @escaping Done<TransactionResponse>) {
-        keystore.toKeypair(encryptedBy: passphrase) {
+    func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network, done: @escaping Done<TransactionResponse>) {
+        keystore.toKeypair(encryptedBy: password) {
             guard case .success(let keyPair) = $0 else { done(Result.failure($0.error!)); return }
             self.sendTransaction(for: payment, signWith: keyPair, network: network, done: done)
         }

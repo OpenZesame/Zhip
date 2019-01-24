@@ -38,15 +38,15 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
+    func verifyThat(encryptionPassword: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
         return callBase {
-            $0.verifyThat(encryptionPasshrase: encryptionPasshrase, canDecryptKeystore: keystore, done: $1)
+            $0.verifyThat(encryptionPassword: encryptionPassword, canDecryptKeystore: keystore, done: $1)
         }
     }
 
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
         return callBase {
-            $0.createNewWallet(encryptionPassphrase: encryptionPassphrase, done: $1)
+            $0.createNewWallet(encryptionPassword: encryptionPassword, done: $1)
         }
     }
 
@@ -56,9 +56,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore> {
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore> {
         return callBase {
-            $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: passphrase, done: $1)
+            $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: password, done: $1)
         }
     }
 
@@ -68,9 +68,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, network: Network) -> Observable<TransactionResponse> {
+    func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network) -> Observable<TransactionResponse> {
         return callBase {
-            $0.sendTransaction(for: payment, keystore: keystore, passphrase: passphrase, network: network, done: $1)
+            $0.sendTransaction(for: payment, keystore: keystore, password: password, network: network, done: $1)
         }
     }
 

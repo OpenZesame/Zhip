@@ -34,9 +34,9 @@ public extension DerivedKey {
 }
 
 public extension Scrypt {
-    public func deriveKey(passphrase: String, done: @escaping (DerivedKey) -> Void) {
+    public func deriveKey(password: String, done: @escaping (DerivedKey) -> Void) {
         background {
-            let data = try! self.calculate(password: passphrase)
+            let data = try! self.calculate(password: password)
             let derivedKey = DerivedKey(data: data, parametersUsed: self.params)
             main {
                 done(derivedKey)

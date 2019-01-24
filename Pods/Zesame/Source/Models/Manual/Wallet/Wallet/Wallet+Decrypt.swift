@@ -17,7 +17,7 @@
 import Foundation
 
 public extension Wallet {
-    func decrypt(passphrase: String, done: @escaping Done<KeyPair>) {
-        keystore.toKeypair(encryptedBy: passphrase, done: done)
+    func decrypt(password: String, done: @escaping Done<KeyPair>) {
+        keystore.toKeypair(encryptedBy: password, done: done)
     }
 }
