@@ -27,15 +27,15 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
     private let bag = DisposeBag()
 
     private lazy var keystoreTextView           = UITextView()
-    private lazy var encryptionPassphraseField  = FloatingLabelTextField()
+    private lazy var encryptionPasswordField  = FloatingLabelTextField()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
             keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing.asDriver(),
             isEditingKeystore: keystoreTextView.rx.isEditing,
             keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing
+            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing
         )
     )
 
@@ -43,7 +43,7 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
 
     lazy var stackViewStyle: UIStackView.Style = [
         keystoreTextView,
-        encryptionPassphraseField
+        encryptionPasswordField
     ]
 
     override func setup() {
@@ -52,14 +52,14 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
     }
 
     func restorationErrorValidation(_ validation: AnyValidation) {
-        encryptionPassphraseField.validate(validation)
+        encryptionPasswordField.validate(validation)
     }
 }
 
 private extension RestoreUsingKeystoreView {
 
     func setupSubviews() {
-        encryptionPassphraseField.withStyle(.passphrase)
+        encryptionPasswordField.withStyle(.password)
         keystoreTextView.withStyle(.editable)
         keystoreTextView.addBorderBy(validation: .empty)
     }
@@ -67,9 +67,9 @@ private extension RestoreUsingKeystoreView {
     func setupViewModelBinding() {
         bag <~ [
             viewModelOutput.keyRestorationValidation            --> keystoreTextView.rx.validationByBorder,
-            viewModelOutput.encryptionPassphraseValidation      --> encryptionPassphraseField.rx.validation,
+            viewModelOutput.encryptionPasswordValidation      --> encryptionPasswordField.rx.validation,
             viewModelOutput.keystoreTextFieldPlaceholder        --> keystoreTextView.rx.text,
-            viewModelOutput.encryptionPassphrasePlaceholder     --> encryptionPassphraseField.rx.placeholder
+            viewModelOutput.encryptionPasswordPlaceholder     --> encryptionPasswordField.rx.placeholder
         ]
     }
 }

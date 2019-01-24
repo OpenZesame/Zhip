@@ -90,7 +90,7 @@ extension FloatingLabelTextField.Style {
         )
     }
 
-    static var passphrase: FloatingLabelTextField.Style {
+    static var password: FloatingLabelTextField.Style {
         return FloatingLabelTextField.Style(
             typeOfInput: .text,
             isSecureTextEntry: true

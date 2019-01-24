@@ -1,9 +1,17 @@
 //
-//  ZilliqaService+DefaultImplementations.swift
-//  Zesame
+// Copyright 2019 Open Zesame
 //
-//  Created by Alexander Cyon on 2018-09-23.
-//  Copyright © 2018 Open Zesame. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under thexc License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 import Foundation
@@ -13,9 +21,9 @@ import CryptoSwift
 
 public extension ZilliqaService {
 
-    func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore, done: @escaping Done<Bool>) {
+    func verifyThat(encryptionPassword: String, canDecryptKeystore keystore: Keystore, done: @escaping Done<Bool>) {
         background {
-            keystore.decryptPrivateKeyWith(passphrase: encryptionPasshrase) { result in
+            keystore.decryptPrivateKeyWith(password: encryptionPassword) { result in
                 main {
                     done(.success(result.value != nil))
                 }
@@ -23,10 +31,10 @@ public extension ZilliqaService {
         }
     }
 
-    func createNewWallet(encryptionPassphrase: String, done: @escaping Done<Wallet>) {
+    func createNewWallet(encryptionPassword: String, done: @escaping Done<Wallet>) {
         background {
             let privateKey = PrivateKey.generateNew()
-            let keyRestoration: KeyRestoration = .privateKey(privateKey, encryptBy: encryptionPassphrase)
+            let keyRestoration: KeyRestoration = .privateKey(privateKey, encryptBy: encryptionPassword)
             self.restoreWallet(from: keyRestoration, done: done)
         }
     }
@@ -35,8 +43,8 @@ public extension ZilliqaService {
     func restoreWallet(from restoration: KeyRestoration, done: @escaping Done<Wallet>) {
         background {
             switch restoration {
-            case .keystore(let keystore, let passphrase):
-                keystore.decryptPrivateKeyWith(passphrase: passphrase) {
+            case .keystore(let keystore, let password):
+                keystore.decryptPrivateKeyWith(password: password) {
                     switch $0 {
                     case .failure(let error):
                         main {
@@ -56,9 +64,9 @@ public extension ZilliqaService {
 
                     }
                 }
-            case .privateKey(let privateKey, let newPassphrase):
+            case .privateKey(let privateKey, let newPassword):
                 let address = AddressNotNecessarilyChecksummed(privateKey: privateKey)
-                Keystore.from(address: address, privateKey: privateKey, encryptBy: newPassphrase) {
+                Keystore.from(address: address, privateKey: privateKey, encryptBy: newPassword) {
                     guard case .success(let keystore) = $0 else { done(Result.failure($0.error!)); return }
                     main {
                         done(.success(Wallet(keystore: keystore, address: address)))
@@ -68,7 +76,7 @@ public extension ZilliqaService {
         }
     }
 
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String, done: @escaping Done<Keystore>) {
-        Keystore.from(address: address, privateKey: privateKey, encryptBy: passphrase, done: done)
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String, done: @escaping Done<Keystore>) {
+        Keystore.from(address: address, privateKey: privateKey, encryptBy: password, done: done)
     }
 }

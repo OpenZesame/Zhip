@@ -19,10 +19,10 @@
 "Error.Input.Amount.TooLarge" = "Must be at most %@";
 "Error.Input.Amount.ExceedingBalance" = "Insufficient funds";
 
-"Error.Input.Passphrase.TooShort" = "Passphrase have length >%d";
-"Error.Input.Passphrase.ConfirmingPassphraseMismatch" = "Passphrases does not match";
-"Error.Input.Passphrase.IncorrectPassphrase" = "Incorrect passphrase";
-"Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet" = "Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.";
+"Error.Input.Password.TooShort" = "Password have length >%d";
+"Error.Input.Password.ConfirmingPasswordMismatch" = "Passwords does not match";
+"Error.Input.Password.IncorrectPassword" = "Incorrect password";
+"Error.Input.Password.IncorrectPasswordDuringBackupOfNewlyCreatedWallet" = "Incorrect password, if you can't remember it do NOT continue, restart the wallet creation from the beginning.";
 
 "Error.Input.Pincode.PincodesDoesNotMatch" = "PIN does not match";
 "Error.Input.Pincode.IncorrectPincode" = "Incorrect PIN";
@@ -32,7 +32,7 @@
 "Error.Input.PrivateKey.BadKey" = "Bad private key";
 
 "Error.Input.Keystore.BadFormatOrInput" = "Bad JSON, control format.";
-"Error.Input.Keystore.IncorrectPassphrase" = "Keystore was not encrypted by this passphrase";
+"Error.Input.Keystore.IncorrectPassword" = "Keystore was not encrypted by this password";
 
 // MARK: - Common for Views
 "View.PullToRefreshControl.Title" = "Pull to refresh";
@@ -78,16 +78,16 @@
 
 // MARK: CreateNewWallet
 "Scene.CreateNewWallet.Title" = "New wallet";
-"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title" = "Set an encryption passphrase";
-"Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value" = "Your encryption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.";
-"Scene.CreateNewWallet.Field.EncryptionPassphrase" = "Encryption passphrase (min %d chars)";
-"Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
-"Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp" = "I have securely backed up my encryption passphrase";
+"Scene.CreateNewWallet.Labels.ChooseNewPassword.Title" = "Set an encryption password";
+"Scene.CreateNewWallet.Labels.ChooseNewPassword.Value" = "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding.";
+"Scene.CreateNewWallet.Field.EncryptionPassword" = "Encryption password (min %d chars)";
+"Scene.CreateNewWallet.Field.ConfirmEncryptionPassword" = "Confirm encryption password";
+"Scene.CreateNewWallet.Checkbox.PasswordIsBackedUp" = "I have securely backed up my encryption password";
 "Scene.CreateNewWallet.Button.Continue" = "Continue";
 
 // MARK: BackupWallet
 "Scene.BackupWallet.Label.BackUpKeys" = "Back up keys";
-"Scene.BackupWallet.Label.UrgeBackup" = "Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption passphrase, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.";
+"Scene.BackupWallet.Label.UrgeBackup" = "Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption password, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.";
 "Scene.BackupWallet.Label.Keystore" = "Keystore";
 "Scene.BackupWallet.Button.Copy" = "Copy";
 "Scene.BackupWallet.Label.PrivateKey" = "Private Key";
@@ -98,8 +98,8 @@
 
 // MARK: Backup KeyPair
 "Scene.DecryptKeystoreToRevealKeyPair.Title" = "Private key";
-"Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal" = "Enter your encryption passphrase to reveal your private and public key.";
-"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal" = "Enter your encryption password to reveal your private and public key.";
+"Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassword" = "Encryption password";
 "Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal" = "Reveal";
 
 "Scene.BackUpRevealedKeyPair.Title" = "Backup key pair";
@@ -121,9 +121,9 @@
 "Scene.RestoreWallet.Segment.PrivateKey" = "Private key";
 "Scene.RestoreWallet.Segment.Keystore" = "Keystore";
 "Scene.RestoreWallet.Field.PrivateKey" = "Private key";
-"Scene.RestoreWallet.Field.EncryptionPassphrase.PrivateKey" = "New encryption passphrase (min %d chars)";
-"Scene.RestoreWallet.Field.EncryptionPassphrase.Keystore" = "Encryption passphrase (min %d chars)";
-"Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase" = "Confirm encryption passphrase";
+"Scene.RestoreWallet.Field.EncryptionPassword.PrivateKey" = "New encryption password (min %d chars)";
+"Scene.RestoreWallet.Field.EncryptionPassword.Keystore" = "Encryption password (min %d chars)";
+"Scene.RestoreWallet.Field.ConfirmEncryptionPassword" = "Confirm encryption password";
 "Scene.RestoreWallet.Button.RestoreWallet" = "Restore";
 
 // MARK: ChoosePincode
@@ -162,7 +162,7 @@
 "Scene.PrepareTransaction.Button.MaxAmount" = "Max";
 "Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in %@";
 "Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
-"Scene.PrepareTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.PrepareTransaction.Field.EncryptionPassword" = "Encryption password";
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
@@ -171,8 +171,8 @@
 "Scene.ScanQRCode.Title" = "Scan QR";
 
 // MARK: SignTransaction
-"Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase" = "Confirm transaction with your passphrase";
-"Scene.SignTransaction.Field.EncryptionPassphrase" = "Encryption passphrase";
+"Scene.SignTransaction.Label.SignTransactionWithEncryptionPassword" = "Confirm transaction with your password";
+"Scene.SignTransaction.Field.EncryptionPassword" = "Encryption password";
 "Scene.SignTransaction.Button.Confirm" = "Confirm";
 
 // MARK: PollTransactionStatus

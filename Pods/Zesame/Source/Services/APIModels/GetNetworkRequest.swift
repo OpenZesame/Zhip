@@ -15,16 +15,18 @@
 //
 
 import Foundation
+import JSONRPCKit
 
-public extension AddressNotNecessarilyChecksummed {
-    static func validate(hexString: HexStringConvertible) throws {
-        let length = hexString.length
-        if length < Address.lengthOfValidAddresses {
-            throw Address.Error.tooShort
-        }
-        if length > Address.lengthOfValidAddresses {
-            throw Address.Error.tooLong
-        }
-        // is valid
+public struct GetNetworkRequest: JSONRPCKit.Request {
+    public typealias Response = NetworkResponse
+}
+
+public extension GetNetworkRequest {
+    var method: String {
+        return "GetNetworkId"
+    }
+
+    var parameters: Encodable? {
+        return [""]
     }
 }

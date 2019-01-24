@@ -24,11 +24,11 @@ struct KeystoreValidator: InputValidator {
     enum Error: InputError {
         case stringToDataConversionFailed
         case badJSON(Swift.DecodingError)
-        case incorrectPassphrase
+        case incorrectPassword
 
         init?(walletImportError: Zesame.Error.WalletImport) {
             switch walletImportError {
-            case .incorrectPasshrase: self = .incorrectPassphrase
+            case .incorrectPassword: self = .incorrectPassword
             default: return nil
             }
         }
@@ -73,7 +73,7 @@ extension KeystoreValidator.Error {
 
         switch self {
         case .badJSON, .stringToDataConversionFailed: return Message.badFormatOrInput
-        case .incorrectPassphrase: return Message.incorrectPassphrase
+        case .incorrectPassword: return Message.incorrectPassword
         }
     }
 }

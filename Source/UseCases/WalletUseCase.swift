@@ -26,27 +26,27 @@ protocol SecurePersisting: AnyObject {
 }
 
 protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
     func save(wallet: Wallet)
     func deleteWallet()
 
-    /// Checks if the passed `passphrase` was used to encypt the Keystore
-    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool>
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair>
+    /// Checks if the passed `password` was used to encypt the Keystore
+    func verify(Password: String, forKeystore keystore: Keystore) -> Observable<Bool>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
     func loadWallet() -> Wallet?
     var hasConfiguredWallet: Bool { get }
 }
 
 extension WalletUseCase {
 
-    /// Checks if the passed `passphrase` was used to encypt the Keystore inside the Wallet
-    func verify(passhrase: String, forWallet wallet: Wallet) -> Observable<Bool> {
-        return verify(passhrase: passhrase, forKeystore: wallet.keystore)
+    /// Checks if the passed `password` was used to encypt the Keystore inside the Wallet
+    func verify(Password: String, forWallet wallet: Wallet) -> Observable<Bool> {
+        return verify(Password: Password, forKeystore: wallet.keystore)
     }
 
-    func extractKeyPairFrom(wallet: Wallet, encryptedBy passphrase: String) -> Observable<KeyPair> {
-        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: passphrase)
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> Observable<KeyPair> {
+        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }
 

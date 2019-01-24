@@ -1,9 +1,17 @@
 //
-//  Rx+ZilliqaService.swift
-//  Zesame
+// Copyright 2019 Open Zesame
 //
-//  Created by Alexander Cyon on 2018-09-10.
-//  Copyright © 2018 Open Zesame. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under thexc License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 import Foundation
@@ -17,21 +25,28 @@ import EllipticCurveKit
 extension Reactive: ZilliqaServiceReactive where Base: ZilliqaService {}
 public extension Reactive where Base: ZilliqaService {
 
+    func getNetworkFromAPI() -> Observable<NetworkResponse> {
+        return callBase {
+            $0.getNetworkFromAPI(done: $1)
+        }
+    }
+
+
     func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling) -> Observable<TransactionReceipt> {
         return callBase {
             $0.hasNetworkReachedConsensusYetForTransactionWith(id: id, polling: polling, done: $1)
         }
     }
 
-    func verifyThat(encryptionPasshrase: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
+    func verifyThat(encryptionPassword: String, canDecryptKeystore keystore: Keystore) -> Observable<Bool> {
         return callBase {
-            $0.verifyThat(encryptionPasshrase: encryptionPasshrase, canDecryptKeystore: keystore, done: $1)
+            $0.verifyThat(encryptionPassword: encryptionPassword, canDecryptKeystore: keystore, done: $1)
         }
     }
 
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
         return callBase {
-            $0.createNewWallet(encryptionPassphrase: encryptionPassphrase, done: $1)
+            $0.createNewWallet(encryptionPassword: encryptionPassword, done: $1)
         }
     }
 
@@ -41,9 +56,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy passphrase: String) -> Observable<Keystore> {
+    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore> {
         return callBase {
-            $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: passphrase, done: $1)
+            $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: password, done: $1)
         }
     }
 
@@ -53,15 +68,15 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionResponse> {
+    func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network) -> Observable<TransactionResponse> {
         return callBase {
-            $0.sendTransaction(for: payment, keystore: keystore, passphrase: passphrase, done: $1)
+            $0.sendTransaction(for: payment, keystore: keystore, password: password, network: network, done: $1)
         }
     }
 
-    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionResponse> {
+    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, network: Network) -> Observable<TransactionResponse> {
         return callBase {
-            $0.sendTransaction(for: payment, signWith: keyPair, done: $1)
+            $0.sendTransaction(for: payment, signWith: keyPair, network: network, done: $1)
         }
     }
 

@@ -20,7 +20,7 @@ import RxCocoa
 import Zesame
 
 private typealias € = L10n.Scene.CreateNewWallet
-private let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .newOrRestorePrivateKey
+private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .newOrRestorePrivateKey
 
 // MARK: - CreateNewWalletUserAction
 enum CreateNewWalletUserAction: TrackableEvent {
@@ -54,21 +54,21 @@ BaseViewModel<
             navigator.next(userAction)
         }
 
-        let unconfirmedPassphrase = input.fromView.newEncryptionPassphrase
-        let confirmingPassphrase = input.fromView.confirmedNewEncryptionPassphrase
+        let unconfirmedPassword = input.fromView.newEncryptionPassword
+        let confirmingPassword = input.fromView.confirmedNewEncryptionPassword
 
         let validator = InputValidator()
 
-        let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(unconfirmedPassphrase, confirmingPassphrase)
+        let confirmEncryptionPasswordValidationValue = Driver.combineLatest(unconfirmedPassword, confirmingPassword)
             .map {
-                validator.validateConfirmedEncryptionPassphrase($0.0, confirmedBy: $0.1)
+                validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
             }
 
         let isContinueButtonEnabled = Driver.combineLatest(
-            confirmEncryptionPassphraseValidationValue.map { $0.isValid },
-            input.fromView.isHaveBackedUpPassphraseCheckboxChecked
-        ) { (isPassphraseConfirmed, isBackedUpChecked) in
-            isPassphraseConfirmed && isBackedUpChecked
+            confirmEncryptionPasswordValidationValue.map { $0.isValid },
+            input.fromView.isHaveBackedUpPasswordCheckboxChecked
+        ) { (isPasswordConfirmed, isBackedUpChecked) in
+            isPasswordConfirmed && isBackedUpChecked
         }
 
         let activityIndicator = ActivityIndicator()
@@ -79,9 +79,9 @@ BaseViewModel<
                 .drive(),
 
             input.fromView.createWalletTrigger
-                .withLatestFrom(confirmEncryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()) { $1 }
+                .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) { $1 }
                 .flatMapLatest {
-                    self.useCase.createNewWallet(encryptionPassphrase: $0)
+                    self.useCase.createNewWallet(encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }
@@ -89,32 +89,32 @@ BaseViewModel<
                 .drive()
         ]
 
-        let encryptionPassphraseValidationTrigger = Driver.merge(
-            unconfirmedPassphrase.mapToVoid().map { true },
-            input.fromView.isEditingNewEncryptionPassphrase
+        let encryptionPasswordValidationTrigger = Driver.merge(
+            unconfirmedPassword.mapToVoid().map { true },
+            input.fromView.isEditingNewEncryptionPassword
         )
 
-        let encryptionPassphraseValidation: Driver<AnyValidation> = encryptionPassphraseValidationTrigger.withLatestFrom(
-            unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
+        let encryptionPasswordValidation: Driver<AnyValidation> = encryptionPasswordValidationTrigger.withLatestFrom(
+            unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPassphraseValidation: Driver<AnyValidation> = Driver.combineLatest(
+        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = Driver.combineLatest(
             Driver.merge(
                 // map `editingChanged` to `editingDidBegin`
-                confirmingPassphrase.mapToVoid().map { true },
-                input.fromView.isEditingConfirmedEncryptionPassphrase
+                confirmingPassword.mapToVoid().map { true },
+                input.fromView.isEditingConfirmedEncryptionPassword
             ),
-            encryptionPassphraseValidationTrigger // used for triggering, but value never used
-        ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
+            encryptionPasswordValidationTrigger // used for triggering, but value never used
+        ).withLatestFrom(confirmEncryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0.0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         return Output(
-            encryptionPassphrasePlaceholder: Driver.just(€.Field.encryptionPassphrase(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode))),
-            encryptionPassphraseValidation: encryptionPassphraseValidation,
-            confirmEncryptionPassphraseValidation: confirmEncryptionPassphraseValidation,
+            encryptionPasswordPlaceholder: Driver.just(€.Field.encryptionPassword(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode))),
+            encryptionPasswordValidation: encryptionPasswordValidation,
+            confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             isContinueButtonEnabled: isContinueButtonEnabled,
             isButtonLoading: activityIndicator.asDriver()
         )
@@ -124,33 +124,33 @@ BaseViewModel<
 extension CreateNewWalletViewModel {
 
     struct InputFromView {
-        let newEncryptionPassphrase: Driver<String>
-        let isEditingNewEncryptionPassphrase: Driver<Bool>
-        let confirmedNewEncryptionPassphrase: Driver<String>
-        let isEditingConfirmedEncryptionPassphrase: Driver<Bool>
+        let newEncryptionPassword: Driver<String>
+        let isEditingNewEncryptionPassword: Driver<Bool>
+        let confirmedNewEncryptionPassword: Driver<String>
+        let isEditingConfirmedEncryptionPassword: Driver<Bool>
         
-        let isHaveBackedUpPassphraseCheckboxChecked: Driver<Bool>
+        let isHaveBackedUpPasswordCheckboxChecked: Driver<Bool>
         let createWalletTrigger: Driver<Void>
     }
 
     struct Output {
-        let encryptionPassphrasePlaceholder: Driver<String>
-        let encryptionPassphraseValidation: Driver<AnyValidation>
-        let confirmEncryptionPassphraseValidation: Driver<AnyValidation>
+        let encryptionPasswordPlaceholder: Driver<String>
+        let encryptionPasswordValidation: Driver<AnyValidation>
+        let confirmEncryptionPasswordValidation: Driver<AnyValidation>
         let isContinueButtonEnabled: Driver<Bool>
         let isButtonLoading: Driver<Bool>
     }
 
     struct InputValidator {
 
-        func validateNewEncryptionPassphrase(_ passphrase: String) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
-            return validator.validate(input: (passphrase, passphrase))
+        func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
+            return validator.validate(input: (password, password))
         }
 
-        func validateConfirmedEncryptionPassphrase(_ passphrase: String, confirmedBy confirming: String) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
-            return validator.validate(input: (passphrase, confirming))
+        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
+            return validator.validate(input: (password, confirming))
         }
     }
 }

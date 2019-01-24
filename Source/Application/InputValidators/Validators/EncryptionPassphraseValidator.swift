@@ -16,50 +16,50 @@
 
 import Zesame
 
-struct EncryptionPassphraseValidator: InputValidator {
-    typealias Input = (passphrase: String, confirmingPassphrase: String)
-    typealias Output = WalletEncryptionPassphrase
-    typealias Error = WalletEncryptionPassphrase.Error
+struct EncryptionPasswordValidator: InputValidator {
+    typealias Input = (password: String, confirmingPassword: String)
+    typealias Output = WalletEncryptionPassword
+    typealias Error = WalletEncryptionPassword.Error
 
-    private let mode: WalletEncryptionPassphrase.Mode
-    init(mode: WalletEncryptionPassphrase.Mode) {
+    private let mode: WalletEncryptionPassword.Mode
+    init(mode: WalletEncryptionPassword.Mode) {
         self.mode = mode
     }
 
     func validate(input: Input) -> Validation<Output, Error> {
-        let passphrase = input.passphrase
-        let confirmingPassphrase = input.confirmingPassphrase
+        let password = input.password
+        let confirmingPassword = input.confirmingPassword
         do {
-            return .valid(try WalletEncryptionPassphrase(passphrase: passphrase, confirm: confirmingPassphrase, mode: mode))
-        } catch let passphraseError as Error {
-            return .invalid(.error(passphraseError))
+            return .valid(try WalletEncryptionPassword(password: password, confirm: confirmingPassword, mode: mode))
+        } catch let passwordError as Error {
+            return .invalid(.error(passwordError))
         } catch {
             incorrectImplementation("Address.Error should cover all errors")
         }
     }
 }
 
-extension WalletEncryptionPassphrase.Error: InputError, Equatable {
+extension WalletEncryptionPassword.Error: InputError, Equatable {
     var errorMessage: String {
-        let Message = L10n.Error.Input.Passphrase.self
+        let Message = L10n.Error.Input.Password.self
 
         switch self {
-        case .passphraseIsTooShort(let minLength): return Message.tooShort(minLength)
-        case .passphrasesDoesNotMatch: return Message.confirmingPassphraseMismatch
-        case .incorrectPassphrase(let backingUpWalletJustCreated):
+        case .passwordIsTooShort(let minLength): return Message.tooShort(minLength)
+        case .passwordsDoesNotMatch: return Message.confirmingPasswordMismatch
+        case .incorrectPassword(let backingUpWalletJustCreated):
             if backingUpWalletJustCreated {
-                return Message.incorrectPassphraseDuringBackupOfNewlyCreatedWallet
+                return Message.incorrectPasswordDuringBackupOfNewlyCreatedWallet
             } else {
-                return Message.incorrectPassphrase
+                return Message.incorrectPassword
             }
         }
     }
 
-    static func == (lhs: WalletEncryptionPassphrase.Error, rhs: WalletEncryptionPassphrase.Error) -> Bool {
+    static func == (lhs: WalletEncryptionPassword.Error, rhs: WalletEncryptionPassword.Error) -> Bool {
         switch (lhs, rhs) {
-        case (.passphraseIsTooShort, passphraseIsTooShort): return true
-        case (.passphrasesDoesNotMatch, passphrasesDoesNotMatch): return true
-        case (.incorrectPassphrase, incorrectPassphrase): return true
+        case (.passwordIsTooShort, passwordIsTooShort): return true
+        case (.passwordsDoesNotMatch, passwordsDoesNotMatch): return true
+        case (.incorrectPassword, incorrectPassword): return true
         default: return false
         }
     }

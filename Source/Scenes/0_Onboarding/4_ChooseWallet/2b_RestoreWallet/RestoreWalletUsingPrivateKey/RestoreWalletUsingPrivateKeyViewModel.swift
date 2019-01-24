@@ -20,7 +20,7 @@ import RxCocoa
 import RxSwift
 
 private typealias € = L10n.Scene.RestoreWallet
-private let encryptionPassphraseMode = WalletEncryptionPassphrase.Mode.newOrRestorePrivateKey
+private let encryptionPasswordMode = WalletEncryptionPassword.Mode.newOrRestorePrivateKey
 
 // MARK: - RestoreWalletUsingPrivateKeyViewModel
 final class RestoreWalletUsingPrivateKeyViewModel {
@@ -34,15 +34,15 @@ final class RestoreWalletUsingPrivateKeyViewModel {
         
         let privateKeyValidationValue = inputFromView.privateKey.map { validator.validatePrivateKey($0) }
 
-        let unconfirmedPassphrase = inputFromView.newEncryptionPassphrase
-        let confirmingPassphrase = inputFromView.confirmEncryptionPassphrase
+        let unconfirmedPassword = inputFromView.newEncryptionPassword
+        let confirmingPassword = inputFromView.confirmEncryptionPassword
 
-        let confirmEncryptionPassphraseValidationValue = Driver.combineLatest(unconfirmedPassphrase, confirmingPassphrase)
+        let confirmEncryptionPasswordValidationValue = Driver.combineLatest(unconfirmedPassword, confirmingPassword)
             .map {
-                validator.validateConfirmedEncryptionPassphrase($0.0, confirmedBy: $0.1)
+                validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
         }
 
-        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.EncryptionPassphrase.privateKey(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+        let encryptionPasswordPlaceHolder = Driver.just(€.Field.EncryptionPassword.privateKey(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))
 
         let privateKeyFieldIsSecureTextEntry = inputFromView.showPrivateKeyTrigger.scan(true) { lastState, newState in
             return !lastState
@@ -52,36 +52,36 @@ final class RestoreWalletUsingPrivateKeyViewModel {
             $0 ? L10n.Generic.show : L10n.Generic.hide
         }
 
-        let encryptionPassphraseValidationTrigger = Driver.merge(
-            unconfirmedPassphrase.mapToVoid().map { true },
-            inputFromView.isEditingNewEncryptionPassphrase
+        let encryptionPasswordValidationTrigger = Driver.merge(
+            unconfirmedPassword.mapToVoid().map { true },
+            inputFromView.isEditingNewEncryptionPassword
             )
 
-        let encryptionPassphraseValidation: Driver<AnyValidation> = encryptionPassphraseValidationTrigger.withLatestFrom(
-            unconfirmedPassphrase.map { validator.validateNewEncryptionPassphrase($0) }
+        let encryptionPasswordValidation: Driver<AnyValidation> = encryptionPasswordValidationTrigger.withLatestFrom(
+            unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPassphraseValidation: Driver<AnyValidation> = Driver.combineLatest(
+        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = Driver.combineLatest(
             Driver.merge(
                 // map `editingChanged` to `editingDidBegin`
-                confirmingPassphrase.mapToVoid().map { true },
-                inputFromView.isEditingConfirmedEncryptionPassphrase
+                confirmingPassword.mapToVoid().map { true },
+                inputFromView.isEditingConfirmedEncryptionPassword
             ),
-            encryptionPassphraseValidationTrigger // used for triggering, but value never used
-        ).withLatestFrom(confirmEncryptionPassphraseValidationValue) {
+            encryptionPasswordValidationTrigger // used for triggering, but value never used
+        ).withLatestFrom(confirmEncryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0.0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
             privateKeyValidationValue.map { $0.value },
-            confirmEncryptionPassphraseValidationValue.map { $0.value }
+            confirmEncryptionPasswordValidationValue.map { $0.value }
         ).map {
-            guard let privateKey = $0.0, let newEncryptionPassphrase = $0.1?.validPassphrase else {
+            guard let privateKey = $0.0, let newEncryptionPassword = $0.1?.validPassword else {
                 return nil
             }
-            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassphrase)
+            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassword)
         }
 
         let privateKeyValidation = inputFromView.isEditingPrivateKey.withLatestFrom(privateKeyValidationValue) {
@@ -92,9 +92,9 @@ final class RestoreWalletUsingPrivateKeyViewModel {
             togglePrivateKeyVisibilityButtonTitle: togglePrivateKeyVisibilityButtonTitle,
             privateKeyFieldIsSecureTextEntry: privateKeyFieldIsSecureTextEntry,
             privateKeyValidation: privateKeyValidation,
-            encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
-            encryptionPassphraseValidation: encryptionPassphraseValidation,
-            confirmEncryptionPassphraseValidation: confirmEncryptionPassphraseValidation,
+            encryptionPasswordPlaceholder: encryptionPasswordPlaceHolder,
+            encryptionPasswordValidation: encryptionPasswordValidation,
+            confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             keyRestoration: keyRestoration
         )
     }
@@ -106,19 +106,19 @@ extension RestoreWalletUsingPrivateKeyViewModel {
         let privateKey: Driver<String>
         let isEditingPrivateKey: Driver<Bool>
         let showPrivateKeyTrigger: Driver<Void>
-        let newEncryptionPassphrase: Driver<String>
-        let isEditingNewEncryptionPassphrase: Driver<Bool>
-        let confirmEncryptionPassphrase: Driver<String>
-        let isEditingConfirmedEncryptionPassphrase: Driver<Bool>
+        let newEncryptionPassword: Driver<String>
+        let isEditingNewEncryptionPassword: Driver<Bool>
+        let confirmEncryptionPassword: Driver<String>
+        let isEditingConfirmedEncryptionPassword: Driver<Bool>
     }
 
     struct Output {
         let togglePrivateKeyVisibilityButtonTitle: Driver<String>
         let privateKeyFieldIsSecureTextEntry: Driver<Bool>
         let privateKeyValidation: Driver<AnyValidation>
-        let encryptionPassphrasePlaceholder: Driver<String>
-        let encryptionPassphraseValidation: Driver<AnyValidation>
-        let confirmEncryptionPassphraseValidation: Driver<AnyValidation>
+        let encryptionPasswordPlaceholder: Driver<String>
+        let encryptionPasswordValidation: Driver<AnyValidation>
+        let confirmEncryptionPasswordValidation: Driver<AnyValidation>
         let keyRestoration: Driver<KeyRestoration?>
     }
 
@@ -129,14 +129,14 @@ extension RestoreWalletUsingPrivateKeyViewModel {
             return privateKeyValidator.validate(input: privateKey)
         }
 
-        func validateNewEncryptionPassphrase(_ passphrase: String) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
-            return validator.validate(input: (passphrase, passphrase))
+        func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
+            return validator.validate(input: (password, password))
         }
 
-        func validateConfirmedEncryptionPassphrase(_ passphrase: String, confirmedBy confirming: String) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
-            return validator.validate(input: (passphrase, confirming))
+        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
+            return validator.validate(input: (password, confirming))
         }
     }
 }

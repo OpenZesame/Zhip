@@ -20,7 +20,7 @@ import RxCocoa
 import RxSwift
 
 private typealias € = L10n.Scene.RestoreWallet
-private let encryptionPassphraseMode: WalletEncryptionPassphrase.Mode = .restoreKeystore
+private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .restoreKeystore
 
 // MARK: - RestoreWalletViewModel
 final class RestoreWalletUsingKeystoreViewModel {
@@ -33,31 +33,31 @@ final class RestoreWalletUsingKeystoreViewModel {
         // MARK: - Validate input
         let validator = InputValidator()
 
-        let encryptionPassphraseValidationValue = inputFromView.encryptionPassphrase.map { validator.validateEncryptionPassphrase($0) }
+        let encryptionPasswordValidationValue = inputFromView.encryptionPassword.map { validator.validateEncryptionPassword($0) }
 
         let keyStoreValidationValue = inputFromView.keystoreText.map { validator.validateKeystore($0) }
 
-        let encryptionPassphrase = encryptionPassphraseValidationValue.map { $0.value?.validPassphrase }
+        let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }
 
-        let encryptionPassphraseValidation = Driver.merge(
+        let encryptionPasswordValidation = Driver.merge(
             // map `editingChanged` to `editingDidBegin`
-            inputFromView.encryptionPassphrase.mapToVoid().map { true },
-            inputFromView.isEditingEncryptionPassphrase
-            ).withLatestFrom(encryptionPassphraseValidationValue) {
+            inputFromView.encryptionPassword.mapToVoid().map { true },
+            inputFromView.isEditingEncryptionPassword
+            ).withLatestFrom(encryptionPasswordValidationValue) {
                 EditingValidation(isEditing: $0, validation: $1.validation)
             }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
             keyStoreValidationValue.map { $0.value },
-            encryptionPassphrase
+            encryptionPassword
             ).map {
-                guard let keystore = $0, let passphrase = $1 else {
+                guard let keystore = $0, let password = $1 else {
                     return nil
                 }
-                return KeyRestoration.keystore(keystore, passphrase: passphrase)
+                return KeyRestoration.keystore(keystore, password: password)
         }
 
-        let encryptionPassphrasePlaceHolder = Driver.just(€.Field.EncryptionPassphrase.keystore(WalletEncryptionPassphrase.minimumLenght(mode: encryptionPassphraseMode)))
+        let encryptionPasswordPlaceHolder = Driver.just(€.Field.EncryptionPassword.keystore(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))
 
         let keystoreValidation = inputFromView.isEditingKeystore.withLatestFrom(keyStoreValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
@@ -70,9 +70,9 @@ final class RestoreWalletUsingKeystoreViewModel {
 
         self.output = Output(
             keystoreTextFieldPlaceholder: keystoreTextFieldPlaceholder,
-            encryptionPassphrasePlaceholder: encryptionPassphrasePlaceHolder,
+            encryptionPasswordPlaceholder: encryptionPasswordPlaceHolder,
             keyRestorationValidation: keystoreValidation,
-            encryptionPassphraseValidation: encryptionPassphraseValidation,
+            encryptionPasswordValidation: encryptionPasswordValidation,
             keyRestoration: keyRestoration
         )
     }
@@ -84,21 +84,21 @@ extension RestoreWalletUsingKeystoreViewModel {
         let keystoreDidBeginEditing: Driver<Void>
         let isEditingKeystore: Driver<Bool>
         let keystoreText: Driver<String>
-        let encryptionPassphrase: Driver<String>
-        let isEditingEncryptionPassphrase: Driver<Bool>
+        let encryptionPassword: Driver<String>
+        let isEditingEncryptionPassword: Driver<Bool>
     }
 
     struct Output {
         let keystoreTextFieldPlaceholder: Driver<String>
-        let encryptionPassphrasePlaceholder: Driver<String>
+        let encryptionPasswordPlaceholder: Driver<String>
         let keyRestorationValidation: Driver<AnyValidation>
-        let encryptionPassphraseValidation: Driver<AnyValidation>
+        let encryptionPasswordValidation: Driver<AnyValidation>
         let keyRestoration: Driver<KeyRestoration?>
     }
 
     struct InputValidator {
 
-        private let encryptionPassphraseValidator = EncryptionPassphraseValidator(mode: encryptionPassphraseMode)
+        private let encryptionPasswordValidator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
 
         private let keystoreValidator = KeystoreValidator()
 
@@ -106,8 +106,8 @@ extension RestoreWalletUsingKeystoreViewModel {
             return keystoreValidator.validate(input: keystore)
         }
 
-        func validateEncryptionPassphrase(_ passphrase: String) -> EncryptionPassphraseValidator.Result {
-            return encryptionPassphraseValidator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
+        func validateEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.Result {
+            return encryptionPasswordValidator.validate(input: (password: password, confirmingPassword: password))
         }
     }
 }
