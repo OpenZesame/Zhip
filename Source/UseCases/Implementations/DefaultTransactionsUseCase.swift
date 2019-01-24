@@ -62,7 +62,9 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
     }
 
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
-        return zilliqaService.sendTransaction(for: payment, keystore: wallet.keystore, passphrase: encryptionPassphrase)
+        return zilliqaService.getNetworkFromAPI().flatMapLatest { [unowned self] in
+            self.zilliqaService.sendTransaction(for: payment, keystore: wallet.keystore, passphrase: encryptionPassphrase, network: $0.network)
+        }
     }
 
     func receiptOfTransaction(byId txId: String, polling: Polling) -> Observable<TransactionReceipt> {

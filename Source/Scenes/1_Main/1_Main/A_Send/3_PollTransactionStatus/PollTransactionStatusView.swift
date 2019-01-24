@@ -34,7 +34,7 @@ final class PollTransactionStatusView: ScrollableStackViewOwner {
         mightTakeSomeMinutesLabel,
         seeTxDetailsWhenAvailableButton,
 		skipWaitingOrDoneButton
-        ], layoutMargins: UIEdgeInsets(top: 50, bottom: 0))
+        ], layoutMargins: UIEdgeInsets(top: 50, left: 16, bottom: 0, right: 16))
 
     override func setup() {
         setupSubviews()
