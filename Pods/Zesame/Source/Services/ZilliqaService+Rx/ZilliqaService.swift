@@ -1,9 +1,17 @@
 //
-//  ZilliqaService.swift
-//  Zesame iOS
+// Copyright 2019 Open Zesame
 //
-//  Created by Alexander Cyon on 2018-09-09.
-//  Copyright © 2018 Open Zesame. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under thexc License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 import Foundation
@@ -15,8 +23,9 @@ import RxSwift
 import CryptoSwift
 
 public protocol ZilliqaService: AnyObject {
-    var network: Network { get }
     var apiClient: APIClient { get }
+
+    func getNetworkFromAPI(done: @escaping Done<NetworkResponse>)
 
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore, done: @escaping Done<Bool>)
     func createNewWallet(encryptionPassphrase: String, done: @escaping Done<Wallet>)
@@ -28,6 +37,8 @@ public protocol ZilliqaService: AnyObject {
 }
 
 public protocol ZilliqaServiceReactive {
+
+    func getNetworkFromAPI() -> Observable<NetworkResponse>
     func verifyThat(encryptionPasshrase: String, canDecryptKeystore: Keystore) -> Observable<Bool>
     func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
@@ -35,8 +46,8 @@ public protocol ZilliqaServiceReactive {
     func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair>
 
     func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse>
-    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String) -> Observable<TransactionResponse>
-    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionResponse>
+    func sendTransaction(for payment: Payment, keystore: Keystore, passphrase: String, network: Network) -> Observable<TransactionResponse>
+    func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, network: Network) -> Observable<TransactionResponse>
 
     func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling) -> Observable<TransactionReceipt>
 }

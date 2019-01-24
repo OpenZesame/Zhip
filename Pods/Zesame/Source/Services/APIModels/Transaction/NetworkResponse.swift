@@ -16,15 +16,11 @@
 
 import Foundation
 
-public extension AddressNotNecessarilyChecksummed {
-    static func validate(hexString: HexStringConvertible) throws {
-        let length = hexString.length
-        if length < Address.lengthOfValidAddresses {
-            throw Address.Error.tooShort
-        }
-        if length > Address.lengthOfValidAddresses {
-            throw Address.Error.tooLong
-        }
-        // is valid
+public struct NetworkResponse: Decodable {
+    public let network: Network
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.network = try container.decode(Network.self)
     }
 }
