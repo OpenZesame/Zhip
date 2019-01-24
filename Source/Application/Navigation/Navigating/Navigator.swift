@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 /// marked as `Trackable`.
+
+import RxSwift
+
 final class Navigator<NavigationStep> {
 
     private let navigationSubject: PublishSubject<NavigationStep>
