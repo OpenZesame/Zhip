@@ -39,7 +39,7 @@ import Zesame
 //        return .just(mockedBalanceResponse)
 //    }
 //
-//    func sendTransaction(for payment: Payment, wallet: Zhip.Wallet, encryptionPassphrase: String) -> Observable<TransactionResponse> {
+//    func sendTransaction(for payment: Payment, wallet: Zhip.Wallet, encryptionPassword: String) -> Observable<TransactionResponse> {
 //        abstract
 //    }
 //

@@ -22,12 +22,12 @@ import RxCocoa
 final class DecryptKeystoreToRevealKeyPairView: ScrollableStackViewOwner {
 
     private lazy var decryptToRevealLabel       = UILabel()
-    private lazy var encryptionPassphraseField  = FloatingLabelTextField()
+    private lazy var encryptionPasswordField  = FloatingLabelTextField()
     private lazy var revealButton               = ButtonWithSpinner()
 
     lazy var stackViewStyle = UIStackView.Style([
         decryptToRevealLabel,
-        encryptionPassphraseField,
+        encryptionPasswordField,
         .spacer,
         revealButton
         ], spacing: 20)
@@ -42,7 +42,7 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
+            viewModel.encryptionPasswordValidation    --> encryptionPasswordField.rx.validation,
             viewModel.isRevealButtonLoading             --> revealButton.rx.isLoading,
             viewModel.isRevealButtonEnabled             --> revealButton.rx.isEnabled
         ]
@@ -50,8 +50,8 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
+            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
             revealTrigger: revealButton.rx.tap.asDriver()
         )
     }
@@ -65,8 +65,8 @@ private extension DecryptKeystoreToRevealKeyPairView {
             $0.text(€.Label.decryptToReaveal)
         }
 
-        encryptionPassphraseField.withStyle(.passphrase) {
-            $0.placeholder(€.Field.encryptionPassphrase)
+        encryptionPasswordField.withStyle(.password) {
+            $0.placeholder(€.Field.encryptionPassword)
         }
 
         revealButton .withStyle(.primary) {

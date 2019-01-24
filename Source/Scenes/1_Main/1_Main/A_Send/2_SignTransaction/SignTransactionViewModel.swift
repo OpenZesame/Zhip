@@ -60,16 +60,16 @@ final class SignTransactionViewModel: BaseViewModel<
         // MARK: - Validate input
         let validator = InputValidator()
 
-        let encryptionPassphraseValidationValue = input.fromView.encryptionPassphrase
-            .map { validator.validateEncryptionPassphrase($0, for: _wallet) }
+        let encryptionPasswordValidationValue = input.fromView.encryptionPassword
+            .map { validator.validateEncryptionPassword($0, for: _wallet) }
 
-        let encryptionPassphrase = encryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()
-        
+        let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
+
         bag <~ [
             input.fromView.signAndSendTrigger
-                .withLatestFrom(encryptionPassphrase)
+                .withLatestFrom(encryptionPassword)
                 .flatMapLatest {
-                    self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassphrase: $0)
+                    self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .asDriverOnErrorReturnEmpty()
@@ -78,24 +78,24 @@ final class SignTransactionViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let encryptionPassphraseValidation = Driver.merge(
+        let encryptionPasswordValidation = Driver.merge(
             // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassphrase.mapToVoid().map { true },
-            input.fromView.isEditingEncryptionPassphrase
-            ).withLatestFrom(encryptionPassphraseValidationValue) {
+            input.fromView.encryptionPassword.mapToVoid().map { true },
+            input.fromView.isEditingEncryptionPassword
+            ).withLatestFrom(encryptionPasswordValidationValue) {
                 EditingValidation(isEditing: $0, validation: $1.validation)
             }.eagerValidLazyErrorTurnedToEmptyOnEdit(
                 directlyDisplayErrorsTrackedBy: errorTracker
             ) {
-                WalletEncryptionPassphrase.Error.incorrectPassphraseErrorFrom(error: $0)
+                WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0)
         }
 
-        let isSignButtonEnabled = encryptionPassphraseValidation.map { $0.isValid }
+        let isSignButtonEnabled = encryptionPasswordValidation.map { $0.isValid }
 
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
             isSignButtonLoading: activityIndicator.asDriver(),
-            encryptionPassphraseValidation: encryptionPassphraseValidation,
+            encryptionPasswordValidation: encryptionPasswordValidation,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
     }
@@ -105,23 +105,23 @@ final class SignTransactionViewModel: BaseViewModel<
 extension SignTransactionViewModel {
 
     struct InputFromView {
-        let encryptionPassphrase: Driver<String>
-        let isEditingEncryptionPassphrase: Driver<Bool>
+        let encryptionPassword: Driver<String>
+        let isEditingEncryptionPassword: Driver<Bool>
         let signAndSendTrigger: Driver<Void>
     }
 
     struct Output {
         let isSignButtonEnabled: Driver<Bool>
         let isSignButtonLoading: Driver<Bool>
-        let encryptionPassphraseValidation: Driver<AnyValidation>
+        let encryptionPasswordValidation: Driver<AnyValidation>
         let inputBecomeFirstResponder: Driver<Void>
     }
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
-            return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
+        func validateEncryptionPassword(_ password: String, for wallet: Wallet) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: WalletEncryptionPassword.modeFrom(wallet: wallet))
+            return validator.validate(input: (password: password, confirmingPassword: password))
         }
     }
 }

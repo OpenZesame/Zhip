@@ -21,12 +21,12 @@ import RxCocoa
 final class SignTransactionView: ScrollableStackViewOwner {
 
     private lazy var confirmTransactionLabel        = UILabel()
-    private lazy var encryptionPassphraseField      = FloatingLabelTextField()
+    private lazy var encryptionPasswordField      = FloatingLabelTextField()
     private lazy var signButton                     = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,
-        encryptionPassphraseField,
+        encryptionPasswordField,
         signButton,
         .spacer
     ]
@@ -41,8 +41,8 @@ extension SignTransactionView: ViewModelled {
 
     func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
         return [
-            viewModel.inputBecomeFirstResponder --> encryptionPassphraseField.rx.becomeFirstResponder,
-            viewModel.encryptionPassphraseValidation    --> encryptionPassphraseField.rx.validation,
+            viewModel.inputBecomeFirstResponder --> encryptionPasswordField.rx.becomeFirstResponder,
+            viewModel.encryptionPasswordValidation    --> encryptionPasswordField.rx.validation,
             viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
             viewModel.isSignButtonLoading               --> signButton.rx.isLoading
         ]
@@ -50,8 +50,8 @@ extension SignTransactionView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            encryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
-            isEditingEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
+            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
+            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
@@ -61,11 +61,11 @@ private typealias € = L10n.Scene.SignTransaction
 private extension SignTransactionView {
     func setupSubviews() {
         confirmTransactionLabel.withStyle(.body) {
-            $0.text(€.Label.signTransactionWithEncryptionPassphrase)
+            $0.text(€.Label.signTransactionWithEncryptionPassword)
         }
 
-        encryptionPassphraseField.withStyle(.passphrase) {
-            $0.placeholder(€.Field.encryptionPassphrase)
+        encryptionPasswordField.withStyle(.password) {
+            $0.placeholder(€.Field.encryptionPassword)
         }
 
         signButton.withStyle(.primary) {

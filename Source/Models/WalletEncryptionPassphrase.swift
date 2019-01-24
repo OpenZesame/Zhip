@@ -17,78 +17,78 @@
 import Foundation
 import Zesame
 
-struct WalletEncryptionPassphrase {
+struct WalletEncryptionPassword {
 
-    let validPassphrase: String
+    let validPassword: String
     
-    init(passphrase: String, confirm: String, mode: Mode) throws {
-        let minLength = mode.mimimumPassphraseLength
-        guard confirm == passphrase else { throw Error.passphrasesDoesNotMatch }
-        guard passphrase.count >= minLength else { throw Error.passphraseIsTooShort(mustAtLeastHaveLength: minLength) }
-        validPassphrase = passphrase
+    init(password: String, confirm: String, mode: Mode) throws {
+        let minLength = mode.mimimumPasswordLength
+        guard confirm == password else { throw Error.passwordsDoesNotMatch }
+        guard password.count >= minLength else { throw Error.passwordIsTooShort(mustAtLeastHaveLength: minLength) }
+        validPassword = password
     }
 }
 
-extension WalletEncryptionPassphrase {
+extension WalletEncryptionPassword {
     static func minimumLenght(mode: Mode) -> Int {
-        return mode.mimimumPassphraseLength
+        return mode.mimimumPasswordLength
     }
 
-    static func modeFrom(wallet: Wallet) -> WalletEncryptionPassphrase.Mode {
-        return wallet.passphraseMode
+    static func modeFrom(wallet: Wallet) -> WalletEncryptionPassword.Mode {
+        return wallet.passwordMode
     }
 
     static func minimumLengthForWallet(_ wallet: Wallet) -> Int {
-        return minimumLenght(mode: wallet.passphraseMode)
+        return minimumLenght(mode: wallet.passwordMode)
     }
 }
 
 // MARK: - Error
 import Zesame
-extension WalletEncryptionPassphrase {
+extension WalletEncryptionPassword {
     enum Error: Swift.Error {
-        case passphrasesDoesNotMatch
-        case passphraseIsTooShort(mustAtLeastHaveLength: Int)
-        case incorrectPassphrase(backingUpWalletJustCreated: Bool)
+        case passwordsDoesNotMatch
+        case passwordIsTooShort(mustAtLeastHaveLength: Int)
+        case incorrectPassword(backingUpWalletJustCreated: Bool)
 
-        static func incorrectPassphraseErrorFrom(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) -> Error? {
+        static func incorrectPasswordErrorFrom(walletImportError: Zesame.Error.WalletImport, backingUpWalletJustCreated: Bool = false) -> Error? {
             switch walletImportError {
-            case .incorrectPasshrase: return .incorrectPassphrase(backingUpWalletJustCreated: backingUpWalletJustCreated)
+            case .incorrectPassword: return .incorrectPassword(backingUpWalletJustCreated: backingUpWalletJustCreated)
             default: return nil
             }
         }
 
-        static func incorrectPassphraseErrorFrom(error: Swift.Error, backingUpWalletJustCreated: Bool = false) -> Error? {
+        static func incorrectPasswordErrorFrom(error: Swift.Error, backingUpWalletJustCreated: Bool = false) -> Error? {
 			guard
 				let zesameError = error as? Zesame.Error,
 				case .walletImport(let walletImportError) = zesameError
 				else { return nil }
 
-            return incorrectPassphraseErrorFrom(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
+            return incorrectPasswordErrorFrom(walletImportError: walletImportError, backingUpWalletJustCreated: backingUpWalletJustCreated)
         }
     }
 }
 
 // MARK: - Mode
-extension WalletEncryptionPassphrase {
+extension WalletEncryptionPassword {
     enum Mode: CaseIterable {
         case newOrRestorePrivateKey
         case restoreKeystore
     }
 }
 
-extension WalletEncryptionPassphrase.Mode {
-    var mimimumPassphraseLength: Int {
+extension WalletEncryptionPassword.Mode {
+    var mimimumPasswordLength: Int {
         switch self {
         case .newOrRestorePrivateKey: return 8
-        case .restoreKeystore: return Zesame.Keystore.minumumPasshraseLength
+        case .restoreKeystore: return Zesame.Keystore.minumumPasswordLength
         }
     }
 }
 
 // MARK: Wallet.Origin -> Mode
 private extension Wallet.Origin {
-    var passphraseMode: WalletEncryptionPassphrase.Mode {
+    var passwordMode: WalletEncryptionPassword.Mode {
         switch self {
         case .generatedByThisApp, .importedPrivateKey: return .newOrRestorePrivateKey
         case .importedKeystore: return .restoreKeystore
@@ -98,9 +98,9 @@ private extension Wallet.Origin {
 
 // MARK: Wallet -> Mode
 private extension Wallet {
-    var passphraseMode: WalletEncryptionPassphrase.Mode {
-        return origin.passphraseMode
+    var passwordMode: WalletEncryptionPassword.Mode {
+        return origin.passwordMode
     }
 }
 
-extension WalletEncryptionPassphrase: Equatable {}
+extension WalletEncryptionPassword: Equatable {}

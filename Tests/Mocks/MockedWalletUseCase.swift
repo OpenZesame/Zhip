@@ -26,7 +26,7 @@ import RxTest
 import Zesame
 
 final class MockedWalletUseCase: WalletUseCase {
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
         abstract
     }
 
@@ -37,7 +37,7 @@ final class MockedWalletUseCase: WalletUseCase {
         self.wallet = wallet
     }
 
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Zhip.Wallet> {
+    func createNewWallet(encryptionPassword: String) -> Observable<Zhip.Wallet> {
         abstract
     }
 
@@ -53,7 +53,7 @@ final class MockedWalletUseCase: WalletUseCase {
         wallet = nil
     }
 
-    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+    func verify(Password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
         abstract
     }
 

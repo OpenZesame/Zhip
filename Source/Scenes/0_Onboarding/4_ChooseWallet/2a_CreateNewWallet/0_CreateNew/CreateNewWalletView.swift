@@ -21,19 +21,19 @@ final class CreateNewWalletView: ScrollableStackViewOwner {
 
     private lazy var headerLabel                        = UILabel()
     private lazy var subtitleLabel                      = UILabel()
-    private lazy var encryptionPassphraseField          = FloatingLabelTextField()
-    private lazy var confirmEncryptionPassphraseField   = FloatingLabelTextField()
-    private lazy var haveBackedUpPassphraseCheckbox     = CheckboxWithLabel()
+    private lazy var encryptionPasswordField          = FloatingLabelTextField()
+    private lazy var confirmEncryptionPasswordField   = FloatingLabelTextField()
+    private lazy var haveBackedUpPasswordCheckbox     = CheckboxWithLabel()
     private lazy var continueButton                     = ButtonWithSpinner()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
         headerLabel,
         subtitleLabel,
-        encryptionPassphraseField,
-        confirmEncryptionPassphraseField,
+        encryptionPasswordField,
+        confirmEncryptionPasswordField,
         .spacer,
-        haveBackedUpPassphraseCheckbox,
+        haveBackedUpPasswordCheckbox,
         continueButton
     ]
 
@@ -48,9 +48,9 @@ extension CreateNewWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.encryptionPassphrasePlaceholder       --> encryptionPassphraseField.rx.placeholder,
-            viewModel.encryptionPassphraseValidation        --> encryptionPassphraseField.rx.validation,
-            viewModel.confirmEncryptionPassphraseValidation --> confirmEncryptionPassphraseField.rx.validation,
+            viewModel.encryptionPasswordPlaceholder       --> encryptionPasswordField.rx.placeholder,
+            viewModel.encryptionPasswordValidation        --> encryptionPasswordField.rx.validation,
+            viewModel.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.rx.validation,
             viewModel.isContinueButtonEnabled               --> continueButton.rx.isEnabled,
             viewModel.isButtonLoading                       --> continueButton.rx.isLoading
         ]
@@ -58,12 +58,12 @@ extension CreateNewWalletView: ViewModelled {
 
     var inputFromView: InputFromView {
         return InputFromView(
-            newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            isEditingNewEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
+            newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
             
-            confirmedNewEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            isEditingConfirmedEncryptionPassphrase: confirmEncryptionPassphraseField.rx.isEditing,
-            isHaveBackedUpPassphraseCheckboxChecked: haveBackedUpPassphraseCheckbox.rx.isChecked.asDriver(),
+            confirmedNewEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
+            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing,
+            isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.rx.isChecked.asDriver(),
             createWalletTrigger: continueButton.rx.tap.asDriver()
         )
     }
@@ -73,21 +73,21 @@ private typealias € = L10n.Scene.CreateNewWallet
 private extension CreateNewWalletView {
     func setupSubviews() {
         headerLabel.withStyle(.header) {
-            $0.text(€.Labels.ChooseNewPassphrase.title)
+            $0.text(€.Labels.ChooseNewPassword.title)
         }
 
         subtitleLabel.withStyle(.body) {
-            $0.text(€.Labels.ChooseNewPassphrase.value)
+            $0.text(€.Labels.ChooseNewPassword.value)
         }
 
-        encryptionPassphraseField.withStyle(.passphrase)
+        encryptionPasswordField.withStyle(.password)
 
-        confirmEncryptionPassphraseField.withStyle(.passphrase) {
-            $0.placeholder(€.Field.confirmEncryptionPassphrase)
+        confirmEncryptionPasswordField.withStyle(.password) {
+            $0.placeholder(€.Field.confirmEncryptionPassword)
         }
 
-        haveBackedUpPassphraseCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.passphraseIsBackedUp)
+        haveBackedUpPasswordCheckbox.withStyle(.default) {
+            $0.text(€.Checkbox.passwordIsBackedUp)
         }
 
         continueButton.withStyle(.primary) {

@@ -24,8 +24,8 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     private lazy var privateKeyField                        = FloatingLabelTextField()
     private lazy var showPrivateKeyButton = privateKeyField.addBottomAlignedButton(titled: L10n.Generic.show)
 
-    private lazy var encryptionPassphraseField              = FloatingLabelTextField()
-    private lazy var confirmEncryptionPassphraseField       = FloatingLabelTextField()
+    private lazy var encryptionPasswordField              = FloatingLabelTextField()
+    private lazy var confirmEncryptionPasswordField       = FloatingLabelTextField()
 
     private let bag = DisposeBag()
 
@@ -34,10 +34,10 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
             privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
             isEditingPrivateKey: privateKeyField.rx.isEditing,
             showPrivateKeyTrigger: showPrivateKeyButton.rx.tap.asDriver(),
-            newEncryptionPassphrase: encryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            isEditingNewEncryptionPassphrase: encryptionPassphraseField.rx.isEditing,
-            confirmEncryptionPassphrase: confirmEncryptionPassphraseField.rx.text.orEmpty.asDriver(),
-            isEditingConfirmedEncryptionPassphrase: confirmEncryptionPassphraseField.rx.isEditing
+            newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
+            confirmEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
+            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing
         )
     )
 
@@ -45,8 +45,8 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
 
     lazy var stackViewStyle: UIStackView.Style = [
         privateKeyField,
-        encryptionPassphraseField,
-        confirmEncryptionPassphraseField,
+        encryptionPasswordField,
+        confirmEncryptionPasswordField,
         .spacer
     ]
 
@@ -64,10 +64,10 @@ private extension RestoreUsingPrivateKeyView {
             $0.placeholder(€.Field.privateKey)
         }
 
-        encryptionPassphraseField.withStyle(.passphrase)
+        encryptionPasswordField.withStyle(.password)
 
-        confirmEncryptionPassphraseField.withStyle(.passphrase) {
-            $0.placeholder(€.Field.confirmEncryptionPassphrase)
+        confirmEncryptionPasswordField.withStyle(.password) {
+            $0.placeholder(€.Field.confirmEncryptionPassword)
         }
     }
 
@@ -75,10 +75,10 @@ private extension RestoreUsingPrivateKeyView {
         bag <~ [
             viewModelOutput.togglePrivateKeyVisibilityButtonTitle   --> showPrivateKeyButton.rx.title(for: .normal),
             viewModelOutput.privateKeyFieldIsSecureTextEntry        --> privateKeyField.rx.isSecureTextEntry,
-            viewModelOutput.encryptionPassphrasePlaceholder         --> encryptionPassphraseField.rx.placeholder,
+            viewModelOutput.encryptionPasswordPlaceholder         --> encryptionPasswordField.rx.placeholder,
             viewModelOutput.privateKeyValidation                    --> privateKeyField.rx.validation,
-            viewModelOutput.encryptionPassphraseValidation          --> encryptionPassphraseField.rx.validation,
-            viewModelOutput.confirmEncryptionPassphraseValidation   --> confirmEncryptionPassphraseField.rx.validation
+            viewModelOutput.encryptionPasswordValidation          --> encryptionPasswordField.rx.validation,
+            viewModelOutput.confirmEncryptionPasswordValidation   --> confirmEncryptionPasswordField.rx.validation
         ]
     }
 }

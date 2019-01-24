@@ -45,19 +45,19 @@ internal enum L10n {
       internal enum Keystore {
         /// Bad JSON, control format.
         internal static let badFormatOrInput = L10n.tr("Localizable", "Error.Input.Keystore.BadFormatOrInput")
-        /// Keystore was not encrypted by this passphrase
-        internal static let incorrectPassphrase = L10n.tr("Localizable", "Error.Input.Keystore.IncorrectPassphrase")
+        /// Keystore was not encrypted by this password
+        internal static let incorrectPassword = L10n.tr("Localizable", "Error.Input.Keystore.IncorrectPassword")
       }
-      internal enum Passphrase {
-        /// Passphrases does not match
-        internal static let confirmingPassphraseMismatch = L10n.tr("Localizable", "Error.Input.Passphrase.ConfirmingPassphraseMismatch")
-        /// Incorrect passphrase
-        internal static let incorrectPassphrase = L10n.tr("Localizable", "Error.Input.Passphrase.IncorrectPassphrase")
-        /// Incorrect passphrase, if you can't remember it do NOT continue, restart the wallet creation from the beginning.
-        internal static let incorrectPassphraseDuringBackupOfNewlyCreatedWallet = L10n.tr("Localizable", "Error.Input.Passphrase.IncorrectPassphraseDuringBackupOfNewlyCreatedWallet")
-        /// Passphrase have length >%d
+      internal enum Password {
+        /// Passwords does not match
+        internal static let confirmingPasswordMismatch = L10n.tr("Localizable", "Error.Input.Password.ConfirmingPasswordMismatch")
+        /// Incorrect password
+        internal static let incorrectPassword = L10n.tr("Localizable", "Error.Input.Password.IncorrectPassword")
+        /// Incorrect password, if you can't remember it do NOT continue, restart the wallet creation from the beginning.
+        internal static let incorrectPasswordDuringBackupOfNewlyCreatedWallet = L10n.tr("Localizable", "Error.Input.Password.IncorrectPasswordDuringBackupOfNewlyCreatedWallet")
+        /// Password have length >%d
         internal static func tooShort(_ p1: Int) -> String {
-          return L10n.tr("Localizable", "Error.Input.Passphrase.TooShort", p1)
+          return L10n.tr("Localizable", "Error.Input.Password.TooShort", p1)
         }
       }
       internal enum Pincode {
@@ -192,7 +192,7 @@ internal enum L10n {
         internal static let keystore = L10n.tr("Localizable", "Scene.BackupWallet.Label.Keystore")
         /// Private Key
         internal static let privateKey = L10n.tr("Localizable", "Scene.BackupWallet.Label.PrivateKey")
-        /// Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption passphrase, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.
+        /// Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption password, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.
         internal static let urgeBackup = L10n.tr("Localizable", "Scene.BackupWallet.Label.UrgeBackup")
       }
     }
@@ -262,23 +262,23 @@ internal enum L10n {
         internal static let `continue` = L10n.tr("Localizable", "Scene.CreateNewWallet.Button.Continue")
       }
       internal enum Checkbox {
-        /// I have securely backed up my encryption passphrase
-        internal static let passphraseIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.Checkbox.PassphraseIsBackedUp")
+        /// I have securely backed up my encryption password
+        internal static let passwordIsBackedUp = L10n.tr("Localizable", "Scene.CreateNewWallet.Checkbox.PasswordIsBackedUp")
       }
       internal enum Field {
-        /// Confirm encryption passphrase
-        internal static let confirmEncryptionPassphrase = L10n.tr("Localizable", "Scene.CreateNewWallet.Field.ConfirmEncryptionPassphrase")
-        /// Encryption passphrase (min %d chars)
-        internal static func encryptionPassphrase(_ p1: Int) -> String {
-          return L10n.tr("Localizable", "Scene.CreateNewWallet.Field.EncryptionPassphrase", p1)
+        /// Confirm encryption password
+        internal static let confirmEncryptionPassword = L10n.tr("Localizable", "Scene.CreateNewWallet.Field.ConfirmEncryptionPassword")
+        /// Encryption password (min %d chars)
+        internal static func encryptionPassword(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "Scene.CreateNewWallet.Field.EncryptionPassword", p1)
         }
       }
       internal enum Labels {
-        internal enum ChooseNewPassphrase {
-          /// Set an encryption passphrase
-          internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Title")
-          /// Your encryption passphrase is used to encrypt your private key. Make sure to back up your encryption passphrase before proceeding.
-          internal static let value = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassphrase.Value")
+        internal enum ChooseNewPassword {
+          /// Set an encryption password
+          internal static let title = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassword.Title")
+          /// Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding.
+          internal static let value = L10n.tr("Localizable", "Scene.CreateNewWallet.Labels.ChooseNewPassword.Value")
         }
       }
     }
@@ -290,11 +290,11 @@ internal enum L10n {
         internal static let reveal = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Button.Reveal")
       }
       internal enum Field {
-        /// Encryption passphrase
-        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassphrase")
+        /// Encryption password
+        internal static let encryptionPassword = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Field.EncryptionPassword")
       }
       internal enum Label {
-        /// Enter your encryption passphrase to reveal your private and public key.
+        /// Enter your encryption password to reveal your private and public key.
         internal static let decryptToReaveal = L10n.tr("Localizable", "Scene.DecryptKeystoreToRevealKeyPair.Label.DecryptToReaveal")
       }
     }
@@ -376,8 +376,8 @@ internal enum L10n {
       internal enum Field {
         /// Amount
         internal static let amount = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount")
-        /// Encryption passphrase
-        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassphrase")
+        /// Encryption password
+        internal static let encryptionPassword = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassword")
         /// Gas price (min %@)
         internal static func gasPrice(_ p1: String) -> String {
           return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", p1)
@@ -436,18 +436,18 @@ internal enum L10n {
         internal static let restoreWallet = L10n.tr("Localizable", "Scene.RestoreWallet.Button.RestoreWallet")
       }
       internal enum Field {
-        /// Confirm encryption passphrase
-        internal static let confirmEncryptionPassphrase = L10n.tr("Localizable", "Scene.RestoreWallet.Field.ConfirmEncryptionPassphrase")
+        /// Confirm encryption password
+        internal static let confirmEncryptionPassword = L10n.tr("Localizable", "Scene.RestoreWallet.Field.ConfirmEncryptionPassword")
         /// Private key
         internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Field.PrivateKey")
-        internal enum EncryptionPassphrase {
-          /// Encryption passphrase (min %d chars)
+        internal enum EncryptionPassword {
+          /// Encryption password (min %d chars)
           internal static func keystore(_ p1: Int) -> String {
-            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassphrase.Keystore", p1)
+            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassword.Keystore", p1)
           }
-          /// New encryption passphrase (min %d chars)
+          /// New encryption password (min %d chars)
           internal static func privateKey(_ p1: Int) -> String {
-            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassphrase.PrivateKey", p1)
+            return L10n.tr("Localizable", "Scene.RestoreWallet.Field.EncryptionPassword.PrivateKey", p1)
           }
         }
       }
@@ -508,12 +508,12 @@ internal enum L10n {
         internal static let confirm = L10n.tr("Localizable", "Scene.SignTransaction.Button.Confirm")
       }
       internal enum Field {
-        /// Encryption passphrase
-        internal static let encryptionPassphrase = L10n.tr("Localizable", "Scene.SignTransaction.Field.EncryptionPassphrase")
+        /// Encryption password
+        internal static let encryptionPassword = L10n.tr("Localizable", "Scene.SignTransaction.Field.EncryptionPassword")
       }
       internal enum Label {
-        /// Confirm transaction with your passphrase
-        internal static let signTransactionWithEncryptionPassphrase = L10n.tr("Localizable", "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassphrase")
+        /// Confirm transaction with your password
+        internal static let signTransactionWithEncryptionPassword = L10n.tr("Localizable", "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassword")
       }
     }
     internal enum TermsOfService {

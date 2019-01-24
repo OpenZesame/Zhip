@@ -60,11 +60,11 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         // MARK: - Validate input
         let validator = InputValidator()
 
-        let encryptionPassphraseValidationValue = input.fromView.encryptionPassphrase
-            .withLatestFrom(wallet) { (passphrase: $0, wallet: $1) }
-            .map { validator.validateEncryptionPassphrase($0.passphrase, for: $0.wallet) }
+        let encryptionPasswordValidationValue = input.fromView.encryptionPassword
+            .withLatestFrom(wallet) { (password: $0, wallet: $1) }
+            .map { validator.validateEncryptionPassword($0.password, for: $0.wallet) }
 
-        let encryptionPassphrase = encryptionPassphraseValidationValue.map { $0.value?.validPassphrase }.filterNil()
+        let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -75,11 +75,11 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                 .withLatestFrom(
                     Driver.combineLatest(
                         wallet,
-                        encryptionPassphrase
+                        encryptionPassword
                     )
-                ) { (wallet: $1.0, passphrase: $1.1) }
+                ) { (wallet: $1.0, password: $1.1) }
                 .flatMapLatest { [unowned useCase] in
-                    useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.passphrase)
+                    useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .asDriverOnErrorReturnEmpty()
@@ -88,21 +88,21 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                 .drive()
         ]
 
-        let encryptionPassphraseValidation = Driver.merge(
+        let encryptionPasswordValidation = Driver.merge(
             // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassphrase.mapToVoid().map { true },
-            input.fromView.isEditingEncryptionPassphrase
-        ).withLatestFrom(encryptionPassphraseValidationValue) {
+            input.fromView.encryptionPassword.mapToVoid().map { true },
+            input.fromView.isEditingEncryptionPassword
+        ).withLatestFrom(encryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit(
             directlyDisplayErrorsTrackedBy: errorTracker
         ) {
-            WalletEncryptionPassphrase.Error.incorrectPassphraseErrorFrom(error: $0, backingUpWalletJustCreated: true)
+            WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0, backingUpWalletJustCreated: true)
         }
 
         return Output(
-            encryptionPassphraseValidation: encryptionPassphraseValidation,
-            isRevealButtonEnabled: encryptionPassphraseValidationValue.map { $0.isValid },
+            encryptionPasswordValidation: encryptionPasswordValidation,
+            isRevealButtonEnabled: encryptionPasswordValidationValue.map { $0.isValid },
             isRevealButtonLoading: activityIndicator.asDriver()
         )
     }
@@ -111,22 +111,22 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 extension DecryptKeystoreToRevealKeyPairViewModel {
 
     struct InputFromView {
-        let encryptionPassphrase: Driver<String>
-        let isEditingEncryptionPassphrase: Driver<Bool>
+        let encryptionPassword: Driver<String>
+        let isEditingEncryptionPassword: Driver<Bool>
         let revealTrigger: Driver<Void>
     }
 
     struct Output {
-        let encryptionPassphraseValidation: Driver<AnyValidation>
+        let encryptionPasswordValidation: Driver<AnyValidation>
         let isRevealButtonEnabled: Driver<Bool>
         let isRevealButtonLoading: Driver<Bool>
     }
 
     struct InputValidator {
 
-        func validateEncryptionPassphrase(_ passphrase: String, for wallet: Wallet) -> EncryptionPassphraseValidator.Result {
-            let validator = EncryptionPassphraseValidator(mode: WalletEncryptionPassphrase.modeFrom(wallet: wallet))
-            return validator.validate(input: (passphrase: passphrase, confirmingPassphrase: passphrase))
+        func validateEncryptionPassword(_ password: String, for wallet: Wallet) -> EncryptionPasswordValidator.Result {
+            let validator = EncryptionPasswordValidator(mode: WalletEncryptionPassword.modeFrom(wallet: wallet))
+            return validator.validate(input: (password: password, confirmingPassword: password))
         }
     }
 }

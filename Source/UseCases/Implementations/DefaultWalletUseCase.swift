@@ -29,18 +29,18 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 
 extension DefaultWalletUseCase {
 
-    /// Checks if the passed `passphrase` was used to encypt the Keystore
-    func verify(passhrase: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+    /// Checks if the passed `password` was used to encypt the Keystore
+    func verify(Password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
 
-        return zilliqaService.verifyThat(encryptionPasshrase: passhrase, canDecryptKeystore: keystore)
+        return zilliqaService.verifyThat(encryptionPassword: Password, canDecryptKeystore: keystore)
     }
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy passphrase: String) -> Observable<KeyPair> {
-        return zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: passphrase)
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
+        return zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
     }
 
-    func createNewWallet(encryptionPassphrase: String) -> Observable<Wallet> {
-        return zilliqaService.createNewWallet(encryptionPassphrase: encryptionPassphrase).map {
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
+        return zilliqaService.createNewWallet(encryptionPassword: encryptionPassword).map {
             Wallet(wallet: $0, origin: .generatedByThisApp)
         }
     }
