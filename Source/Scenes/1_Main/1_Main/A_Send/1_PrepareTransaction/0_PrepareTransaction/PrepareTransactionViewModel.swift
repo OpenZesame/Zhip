@@ -235,7 +235,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             recipient: recipientFormatted,
             recipientAddressValidation: recipientValidation,
 
-            amount: amountFormatted,
+            amount: amountFormatted.map { $0 == "0" ? "" : $0 },
             amountValidation: amountValidation,
 
             gasPriceMeasuredInLi: gasPriceFormatted,
