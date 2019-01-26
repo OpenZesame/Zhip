@@ -61,7 +61,8 @@ extension UIView {
         back: UIImage, motionEffectStrength backStrength: CGFloat = 48,
         verticalInsetForImageViews: CGFloat = -40,
         horizontalInsetForImageViews: CGFloat = -80
-        ) -> (frontImageView: UIImageView, middleImageView: UIImageView, backImageView: UIImageView){
+        // swiftlint:disable:next large_tuple
+        ) -> (frontImageView: UIImageView, middleImageView: UIImageView, backImageView: UIImageView) {
 
 		let imageViews = [back, middle, front].map { image -> UIImageView in
 			let imageView = UIImageView()

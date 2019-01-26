@@ -73,7 +73,6 @@ extension PollTransactionStatusView: ViewModelled {
 
 private typealias € = L10n.Scene.PollTransactionStatus
 private extension PollTransactionStatusView {
-    // swiftlint:disable:next function_body_length
     func setupSubviews() {
 
 		checkmarkLogoImageView.withStyle(.default) {
