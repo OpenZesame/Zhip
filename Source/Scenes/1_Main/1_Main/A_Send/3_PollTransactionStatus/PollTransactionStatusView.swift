@@ -28,14 +28,13 @@ import RxCocoa
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
 
-    private lazy var gradientView = GradientView()
-    private lazy var motionEffectStarsImageView         = UIView()
-	private lazy var checkmarkLogoImageView				= UIImageView()
-    private lazy var transactionBroadcastedLabel  		= UILabel()
-    private lazy var mightTakeSomeMinutesLabel 		 	= UILabel()
-    private lazy var copyTransactionIdButton            = UIButton()
-    private lazy var seeTxDetailsWhenAvailableButton    = ButtonWithSpinner(mode: .nextToText)
-    private lazy var skipWaitingOrDoneButton            = UIButton()
+    private lazy var motionEffectStarsImageViewWithGradient = GradientView()
+	private lazy var checkmarkLogoImageView				    = UIImageView()
+    private lazy var transactionBroadcastedLabel  		    = UILabel()
+    private lazy var mightTakeSomeMinutesLabel 		 	    = UILabel()
+    private lazy var copyTransactionIdButton                = UIButton()
+    private lazy var seeTxDetailsWhenAvailableButton        = ButtonWithSpinner(mode: .nextToText)
+    private lazy var skipWaitingOrDoneButton                = UIButton()
 
     lazy var stackViewStyle = UIStackView.Style([
 		checkmarkLogoImageView,
@@ -99,23 +98,20 @@ private extension PollTransactionStatusView {
 
 		skipWaitingOrDoneButton.withStyle(.secondary)
 
-        insertSubview(motionEffectStarsImageView, belowSubview: scrollView)
-        motionEffectStarsImageView.edgesToSuperview()
-        setupStarsImageWithMotionEffect()
-
-        insertSubview(gradientView, belowSubview: motionEffectStarsImageView)
-        gradientView.edgesToSuperview()
+        insertSubview(motionEffectStarsImageViewWithGradient, belowSubview: scrollView)
+        motionEffectStarsImageViewWithGradient.edgesToSuperview()
+        addStarsImagesWithMotionEffect(to: motionEffectStarsImageViewWithGradient)
     }
 
-    func setupStarsImageWithMotionEffect() {
-        motionEffectStarsImageView.backgroundColor = .clear
-        motionEffectStarsImageView.translatesAutoresizingMaskIntoConstraints = false
+    func addStarsImagesWithMotionEffect(to view: UIView) {
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         let stars = Asset.Images.ChooseWallet.middleStars.image
         let starsVerticallyFlipped = stars.withVerticallyFlippedOrientation(yOffset: -stars.size.height/2)
         let starsHorizontallyFlipped = stars.withHorizontallyFlippedOrientation()
 
-        motionEffectStarsImageView.addMotionEffectFromImages(
+        view.addMotionEffectFromImages(
             front: stars,
             middle: starsVerticallyFlipped,
             back: starsHorizontallyFlipped
