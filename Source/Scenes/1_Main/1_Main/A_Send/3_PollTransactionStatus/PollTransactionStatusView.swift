@@ -32,14 +32,16 @@ final class PollTransactionStatusView: ScrollableStackViewOwner {
 	private lazy var checkmarkLogoImageView				= UIImageView()
     private lazy var transactionBroadcastedLabel  		= UILabel()
     private lazy var mightTakeSomeMinutesLabel 		 	= UILabel()
-    private lazy var seeTxDetailsWhenAvailableButton	= ButtonWithSpinner(mode: .nextToText)
-    private lazy var skipWaitingOrDoneButton      		= UIButton()
+    private lazy var copyTransactionIdButton            = UIButton()
+    private lazy var seeTxDetailsWhenAvailableButton    = ButtonWithSpinner(mode: .nextToText)
+    private lazy var skipWaitingOrDoneButton            = UIButton()
 
     lazy var stackViewStyle = UIStackView.Style([
 		checkmarkLogoImageView,
         .spacer,
         transactionBroadcastedLabel,
         mightTakeSomeMinutesLabel,
+        copyTransactionIdButton,
         seeTxDetailsWhenAvailableButton,
 		skipWaitingOrDoneButton
         ], layoutMargins: UIEdgeInsets(top: 50, left: 16, bottom: 0, right: 16))
@@ -54,14 +56,15 @@ extension PollTransactionStatusView: ViewModelled {
 
 	func populate(with viewModel: PollTransactionStatusViewModel.Output) -> [Disposable] {
 		return [
-			viewModel.skipWaitingOrDoneButtonTitle	-->	skipWaitingOrDoneButton.rx.title(for: .normal),
-			viewModel.isSeeTxDetailsEnabled 		--> seeTxDetailsWhenAvailableButton.rx.isEnabled,
-			viewModel.isSeeTxDetailsButtonLoading 	--> seeTxDetailsWhenAvailableButton.rx.isLoading
-		]
-	}
+            viewModel.skipWaitingOrDoneButtonTitle    -->    skipWaitingOrDoneButton.rx.title(for: .normal),
+            viewModel.isSeeTxDetailsEnabled         --> seeTxDetailsWhenAvailableButton.rx.isEnabled,
+            viewModel.isSeeTxDetailsButtonLoading     --> seeTxDetailsWhenAvailableButton.rx.isLoading
+        ]
+    }
 
     var inputFromView: InputFromView {
         return InputFromView(
+            copyTransactionIdTrigger: copyTransactionIdButton.rx.tap.asDriverOnErrorReturnEmpty(),
             skipWaitingOrDoneTrigger: skipWaitingOrDoneButton.rx.tap.asDriverOnErrorReturnEmpty(),
 			seeTxDetails: seeTxDetailsWhenAvailableButton.rx.tap.asDriver()
         )
@@ -83,6 +86,10 @@ private extension PollTransactionStatusView {
 		mightTakeSomeMinutesLabel.withStyle(.body) {
 			$0.text(€.Label.mightTakeSomeMinutes).textAlignment(.center)
 		}
+
+        copyTransactionIdButton.withStyle(.secondary) {
+            $0.title(€.Button.copyTransactionId)
+        }
 
         seeTxDetailsWhenAvailableButton.withStyle(.primary) {
             $0.title(€.Button.seeTransactionDetails)

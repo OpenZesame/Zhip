@@ -178,6 +178,8 @@
 // MARK: PollTransactionStatus
 "Scene.PollTransactionStatus.Label.TransactionBroadcasted" = "Transaction broadcasted";
 "Scene.PollTransactionStatus.Label.MightTakeSomeMinutes" = "In a minute or two, when the network's finished processing, your balance will be updated and you can view transaction details.";
+"Scene.PollTransactionStatus.Event.Toast.DidCopyTransactionId" = "Copied transaction id";
+"Scene.PollTransactionStatus.Button.CopyTransactionId" = "Copy transaction id";
 "Scene.PollTransactionStatus.Button.SeeTransactionDetails" = "Transaction details";
 "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Skip" = "Skip waiting";
 "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Done" = "Done";
