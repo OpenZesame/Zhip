@@ -44,7 +44,12 @@ struct AmountFormatter {
 
 extension ExpressibleByAmount {
     func formatted(unit targetUnit: Zesame.Unit) -> String {
-        return asString(in: targetUnit).thousands
+        let separator = Locale.current.decimalSeparator ?? "."
+        let string = asString(in: targetUnit)
+        guard !string.contains(separator) else {
+            return string
+        }
+        return string.thousands
     }
 }
 
