@@ -3,6 +3,8 @@ PODS:
     - Result (~> 4.0)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
   - CryptoSwift (0.13.1)
   - DateToolsSwift (4.0.0)
   - Differentiator (3.1.0)
@@ -11,6 +13,7 @@ PODS:
   - EllipticCurveKit (0.0.1):
     - BigInt (~> 3.1)
     - CryptoSwift (~> 0.12)
+  - Fabric (1.9.0)
   - Firebase/Core (5.15.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.4.0)
@@ -99,8 +102,10 @@ PODS:
     - SwiftProtobuf
 
 DEPENDENCIES:
+  - Crashlytics (~> 3.12.0)
   - DateToolsSwift
   - EFQRCode
+  - Fabric (~> 1.9.0)
   - Firebase/Core
   - IQKeyboardManagerSwift
   - JSONRPCKit (from `https://github.com/ollitapa/JSONRPCKit.git`, branch `master`)
@@ -123,11 +128,13 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - APIKit
     - BigInt
+    - Crashlytics
     - CryptoSwift
     - DateToolsSwift
     - Differentiator
     - EFQRCode
     - EllipticCurveKit
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -175,11 +182,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
   FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
   FirebaseCore: 35747502d9e8c6ee217385ad04446c7c2aaf9c5c
@@ -210,6 +219,6 @@ SPEC CHECKSUMS:
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: 5c5593265a8651adb27822d43b458078cfa687ea
 
-PODFILE CHECKSUM: 9eb8d60ec7fc04f86f207ac35c7788a92a62c9c5
+PODFILE CHECKSUM: 9f46854f2f43f15b2ea852795eb6725493a3af6e
 
 COCOAPODS: 1.5.3
