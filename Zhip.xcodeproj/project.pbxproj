@@ -123,6 +123,7 @@
 		485AACA221AAE764005C56CC /* InputValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA121AAE764005C56CC /* InputValidator.swift */; };
 		485AACA421AAF3B3005C56CC /* FloatingLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */; };
 		485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AACA721AAF66E005C56CC /* UIButton_Extension.swift */; };
+		4862CC6821FCAE730076B773 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4862CC6721FCAE730076B773 /* GradientView.swift */; };
 		486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C3621D21701006F3DFA /* TableViewCell.swift */; };
 		486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486D2C7A21D23A4C006F3DFA /* Digit.swift */; };
 		4877B50021BFA36F00A94318 /* Zhip-Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4877B4FF21BFA36F00A94318 /* Zhip-Tests-Info.plist */; };
@@ -424,6 +425,7 @@
 		485AACA121AAE764005C56CC /* InputValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidator.swift; sourceTree = "<group>"; };
 		485AACA321AAF3B3005C56CC /* FloatingLabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLabelTextField.swift; sourceTree = "<group>"; };
 		485AACA721AAF66E005C56CC /* UIButton_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton_Extension.swift; sourceTree = "<group>"; };
+		4862CC6721FCAE730076B773 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		486D2C3621D21701006F3DFA /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		486D2C7A21D23A4C006F3DFA /* Digit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Digit.swift; sourceTree = "<group>"; };
 		4877B4FF21BFA36F00A94318 /* Zhip-Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Tests-Info.plist"; sourceTree = "<group>"; };
@@ -1241,6 +1243,7 @@
 				48FD562721B632E50026690E /* CheckboxWithLabel.swift */,
 				48053F0021EB86FD008FCE13 /* RefreshControl.swift */,
 				48ECF4B721A17B7A0078D659 /* TitledValueView.swift */,
+				4862CC6721FCAE730076B773 /* GradientView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2062,6 +2065,7 @@
 				480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
 				48ECF5C221A18F140078D659 /* TitledScene.swift in Sources */,
 				48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */,
+				4862CC6821FCAE730076B773 /* GradientView.swift in Sources */,
 				48BAC4E12195D83000A626FD /* Assets-Constants.swift in Sources */,
 				48ECF5CD21A18F140078D659 /* SignTransaction.swift in Sources */,
 				48BAC4E02195D83000A626FD /* L10n-Constants.swift in Sources */,

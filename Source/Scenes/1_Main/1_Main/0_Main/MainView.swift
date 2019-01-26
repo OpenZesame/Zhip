@@ -71,6 +71,7 @@ extension MainView: ViewModelled {
 }
 
 private typealias € = L10n.Scene.Main
+private typealias Image = Asset.Images.Main
 private extension MainView {
 
     // swiftlint:disable:next function_body_length
@@ -114,10 +115,10 @@ private extension MainView {
         motionEffectAuroraImageView.backgroundColor = .clear
         motionEffectAuroraImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        motionEffectAuroraImageView.addMotionEffectFromImages(
-            front: Asset.Images.Aurora.front.image, motionEffectStrength: 4,
-            middle: Asset.Images.Aurora.background.image, motionEffectStrength: 10,
-            back: Asset.Images.Aurora.background.image, motionEffectStrength: 20
+        motionEffectAuroraImageView.addMotionEffectFromImageAssets(
+            front: Image.frontAurora,
+            middle: Image.middleAurora,
+            back: Image.backAurora
         )
     }
 }

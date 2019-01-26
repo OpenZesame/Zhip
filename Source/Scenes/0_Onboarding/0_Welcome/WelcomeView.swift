@@ -60,7 +60,7 @@ extension WelcomeView: ViewModelled {
 
 // MARK: - Private
 private typealias € = L10n.Scene.Welcome
-private typealias Image = Asset.Images.Spaceship
+private typealias Image = Asset.Images.Welcome
 private extension WelcomeView {
 
     func setup() {
@@ -95,9 +95,9 @@ private extension WelcomeView {
         motionEffectSpaceshipImageView.translatesAutoresizingMaskIntoConstraints = false
 
         motionEffectSpaceshipImageView.addMotionEffectFromImageAssets(
-            front: Image.spaceship,
-            middle: Image.stars,
-            back: Image.clouds
+            front: Image.frontBlastOff,
+            middle: Image.middleSpaceship,
+            back: Image.backClouds
         )
     }
 }

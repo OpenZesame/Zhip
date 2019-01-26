@@ -84,6 +84,12 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
 		// MARK: Navigate
 		bag <~ [
+            input.fromView.copyTransactionIdTrigger
+                .do(onNext: { [unowned self] in
+                    UIPasteboard.general.string = self.transactionId
+                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyTransactionId))
+                }).drive(),
+
 			input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
 				.do(onNext: { hasReceivedReceipt in
 					let action: NavigationStep = hasReceivedReceipt ? .dismiss : .skip
@@ -112,6 +118,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 extension PollTransactionStatusViewModel {
 
 	struct InputFromView {
+        let copyTransactionIdTrigger: Driver<Void>
 		let skipWaitingOrDoneTrigger: Driver<Void>
 		let seeTxDetails: Driver<Void>
 	}

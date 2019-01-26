@@ -348,6 +348,8 @@ internal enum L10n {
     }
     internal enum PollTransactionStatus {
       internal enum Button {
+        /// Copy transaction id
+        internal static let copyTransactionId = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.CopyTransactionId")
         /// Transaction details
         internal static let seeTransactionDetails = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SeeTransactionDetails")
         internal enum SkipWaitingOrDone {
@@ -355,6 +357,12 @@ internal enum L10n {
           internal static let done = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Done")
           /// Skip waiting
           internal static let skip = L10n.tr("Localizable", "Scene.PollTransactionStatus.Button.SkipWaitingOrDone.Skip")
+        }
+      }
+      internal enum Event {
+        internal enum Toast {
+          /// Copied transaction id
+          internal static let didCopyTransactionId = L10n.tr("Localizable", "Scene.PollTransactionStatus.Event.Toast.DidCopyTransactionId")
         }
       }
       internal enum Label {

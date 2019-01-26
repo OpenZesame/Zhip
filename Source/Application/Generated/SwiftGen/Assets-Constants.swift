@@ -50,15 +50,19 @@ internal enum Asset {
   }
   internal enum Images {
 
-    internal enum Aurora {
-      internal static let background = ImageAsset(name: "Images/Aurora/Background")
-      internal static let front = ImageAsset(name: "Images/Aurora/Front")
+    internal enum ChooseWallet {
+      internal static let frontPlanets = ImageAsset(name: "Images/ChooseWallet/FrontPlanets")
+      internal static let middleStars = ImageAsset(name: "Images/ChooseWallet/MiddleStars")
     }
-    internal static let planets = ImageAsset(name: "Images/Planets")
-    internal enum Spaceship {
-      internal static let clouds = ImageAsset(name: "Images/Spaceship/Clouds")
-      internal static let spaceship = ImageAsset(name: "Images/Spaceship/Spaceship")
-      internal static let stars = ImageAsset(name: "Images/Spaceship/Stars")
+    internal enum Main {
+      internal static let backAurora = ImageAsset(name: "Images/Main/BackAurora")
+      internal static let frontAurora = ImageAsset(name: "Images/Main/FrontAurora")
+      internal static let middleAurora = ImageAsset(name: "Images/Main/MiddleAurora")
+    }
+    internal enum Welcome {
+      internal static let backClouds = ImageAsset(name: "Images/Welcome/BackClouds")
+      internal static let frontBlastOff = ImageAsset(name: "Images/Welcome/FrontBlastOff")
+      internal static let middleSpaceship = ImageAsset(name: "Images/Welcome/MiddleSpaceship")
     }
   }
 }
