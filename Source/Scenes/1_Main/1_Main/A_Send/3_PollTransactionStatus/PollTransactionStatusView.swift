@@ -28,7 +28,7 @@ import RxCocoa
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
 
-    private lazy var motionEffectStarsImageView         = UIImageView()
+    private lazy var motionEffectStarsImageView         = UIView()
 	private lazy var checkmarkLogoImageView				= UIImageView()
     private lazy var transactionBroadcastedLabel  		= UILabel()
     private lazy var mightTakeSomeMinutesLabel 		 	= UILabel()
