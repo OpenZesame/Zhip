@@ -66,7 +66,7 @@ And searching in the code for [`save(value: acceptsTracking, for: .hasAcceptedAn
 
 
 # Donate
-This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit in Zesame](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4#diff-04c6e90faac2675aa89e2176d2eec7d8)). 
+This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit in Zesame](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4)). 
 
 **Any donation would be much appreciated**:
 
