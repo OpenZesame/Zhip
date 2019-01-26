@@ -29,7 +29,7 @@ This app uses a novel architecture named *SLC: Single-Line Controller*, I **stro
 It is a kind of MVVM where the `UIViewController` in most cases is one single line and all view and flow of data logic is put in the ViewModel. It also uses the [Coordinator pattern](http://khanlou.com/2015/10/coordinators-redux/).
 
 # Dependencies
-You will find all dependencies inside the [Podfile](./PodFile), but to mention the most important:
+You will find all dependencies inside the [Podfile](https://github.com/OpenZesame/Zhip/blob/develop/Podfile), but to mention the most important:
 
 ## Zesame
 This iOS wallet is entirely dependent on the [Zilliqa Swift SDK known as Zesame](https://github.com/OpenZesame/Zesame), without that this wallet couldn't exist. All cryptographic methods and all interaction with the Zilliqa Ledger through their [API](https://apidocs.zilliqa.com/#introduction) is done using Zesame.
