@@ -53,14 +53,15 @@ extension UIView {
     func addMotionEffectFromImageAssets(front: ImageAsset, middle: ImageAsset, back: ImageAsset) {
         addMotionEffectFromImages(front: front.image, middle: middle.image, back: back.image)
     }
-    
+
+    @discardableResult
     func addMotionEffectFromImages(
         front: UIImage, motionEffectStrength frontStrength: CGFloat = 6,
         middle: UIImage, motionEffectStrength middleStrength: CGFloat = 20,
         back: UIImage, motionEffectStrength backStrength: CGFloat = 48,
         verticalInsetForImageViews: CGFloat = -40,
         horizontalInsetForImageViews: CGFloat = -80
-        ) {
+        ) -> (frontImageView: UIImageView, middleImageView: UIImageView, backImageView: UIImageView){
 
 		let imageViews = [back, middle, front].map { image -> UIImageView in
 			let imageView = UIImageView()
@@ -78,6 +79,7 @@ extension UIView {
 		}
 
         addMotionEffectTo(views: (imageViews[0], imageViews[1], imageViews[2]), strengths: (frontStrength, middleStrength, backStrength))
+        return (imageViews[2], imageViews[1], imageViews[0])
     }
 
     // swiftlint:disable large_tuple

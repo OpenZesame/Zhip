@@ -28,6 +28,7 @@ import RxCocoa
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
 
+    private lazy var gradientView = GradientView()
     private lazy var motionEffectStarsImageView         = UIView()
 	private lazy var checkmarkLogoImageView				= UIImageView()
     private lazy var transactionBroadcastedLabel  		= UILabel()
@@ -73,6 +74,7 @@ extension PollTransactionStatusView: ViewModelled {
 
 private typealias € = L10n.Scene.PollTransactionStatus
 private extension PollTransactionStatusView {
+    // swiftlint:disable:next function_body_length
     func setupSubviews() {
 
 		checkmarkLogoImageView.withStyle(.default) {
@@ -100,6 +102,9 @@ private extension PollTransactionStatusView {
         insertSubview(motionEffectStarsImageView, belowSubview: scrollView)
         motionEffectStarsImageView.edgesToSuperview()
         setupStarsImageWithMotionEffect()
+
+        insertSubview(gradientView, belowSubview: motionEffectStarsImageView)
+        gradientView.edgesToSuperview()
     }
 
     func setupStarsImageWithMotionEffect() {
