@@ -240,7 +240,18 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
             gasPriceMeasuredInLi: gasPriceFormatted,
             gasPricePlaceholder: gasPricePlaceholder,
-            gasPriceValidation: gasPriceValidation
+            gasPriceValidation: gasPriceValidation,
+
+            costOfTransaction: gasPrice.flatMapLatest {
+                guard let gasPrice = $0 else {
+                    return Driver<String?>.just(nil)
+                }
+                return Observable<GasPrice>.just(gasPrice)
+                    .map { try Payment.estimatedTotalTransactionFee(gasPrice: $0) }
+                    .asDriverOnErrorReturnEmpty()
+                    .map { formatter.format(amount: $0, in: .zil, showUnit: true) }
+                    .map { €.Label.costOfTransactionInZil($0) }
+            }
         )
 	}
 }
@@ -278,6 +289,8 @@ extension PrepareTransactionViewModel {
 		let gasPriceMeasuredInLi: Driver<String>
 		let gasPricePlaceholder: Driver<String>
 		let gasPriceValidation: Driver<AnyValidation>
+
+        let costOfTransaction: Driver<String?>
 	}
 }
 

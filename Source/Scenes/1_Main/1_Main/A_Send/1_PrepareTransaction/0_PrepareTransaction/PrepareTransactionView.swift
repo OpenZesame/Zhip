@@ -42,6 +42,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     private lazy var gasPriceField                  = FloatingLabelTextField()
     private lazy var sendButton                     = UIButton()
+    private lazy var costOfTransactionLabel         = UILabel()
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -49,6 +50,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
         recipientAddressField,
         amountToSendField,
         gasPriceField,
+        costOfTransactionLabel,
         .spacer,
         sendButton
     ]
@@ -76,7 +78,8 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
             viewModel.gasPriceMeasuredInLi              --> gasPriceField.rx.text,
             viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
-            viewModel.gasPriceValidation                --> gasPriceField.rx.validation
+            viewModel.gasPriceValidation                --> gasPriceField.rx.validation,
+            viewModel.costOfTransaction                 --> costOfTransactionLabel.rx.text
         ]
     }
 
@@ -128,6 +131,10 @@ private extension PrepareTransactionView {
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
             $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))
+        }
+
+        costOfTransactionLabel.withStyle(.body) {
+            $0.textAlignment(.center)
         }
 
         gasPriceField.withStyle(.number)

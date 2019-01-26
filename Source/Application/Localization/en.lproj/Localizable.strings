@@ -166,6 +166,7 @@
 "Scene.PrepareTransaction.Button.Send" = "Send";
 "Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
+"Scene.PrepareTransaction.Label.CostOfTransactionInZil" = "Transaction fee: %@";
 
 // MARK: ScanQRCode
 "Scene.ScanQRCode.Title" = "Scan QR";

@@ -394,6 +394,10 @@ internal enum L10n {
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
       }
       internal enum Label {
+        /// Transaction fee: %@
+        internal static func costOfTransactionInZil(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.CostOfTransactionInZil", p1)
+        }
         /// Gas price is measured in %@
         internal static func gasInSmallUnits(_ p1: String) -> String {
           return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits", p1)
