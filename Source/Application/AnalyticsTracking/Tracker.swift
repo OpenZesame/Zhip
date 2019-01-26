@@ -52,8 +52,14 @@ extension Tracker: Tracking {
             context = event.eventContext
         }
 
-        Firebase.Analytics.logEvent(event.eventName, parameters: [
-            "Context": context
+        Firebase.Analytics.logEvent(event.eventName.whitespacesToUnderscores, parameters: [
+            "Context": context.whitespacesToUnderscores
         ])
+    }
+}
+
+extension String {
+    var whitespacesToUnderscores: String {
+        return replacingOccurrences(of: " ", with: "_")
     }
 }
