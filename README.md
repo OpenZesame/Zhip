@@ -8,16 +8,9 @@
 Zhip is the worlds first and only iOS wallet for Zilliqa. The app is entirely open source. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame).
 
 # Getting started
+-  Xcode 10
+- Clone this repo
 
-
-## 0. Install Xcode 10
-
-Install it from the [App Store](https://itunes.apple.com/gb/app/xcode/id497799835?mt=12).
-
-## 1. Clone this repo
-```bash
-git clone git@github.com:OpenZesame/Zhip.git && cd Zhip`
-```
 *Since cocoapods* folder `Pods/` is under version control and thus downloaded when you cloned this repo the following tools are optional but needed if you would like to add a new pod.
 
 You can thus get started right away:
@@ -26,30 +19,9 @@ open Zhip.xcworkspace
 ```
 
 ## Optional
-
-### 2. Install `brew`
-```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-#### Issues?
-[See brew troubleshooting page](https://docs.brew.sh/Troubleshooting)
-
-### 3. Rbenv
-```bash
-brew install rbenv
-```
-#### Issues?
-[See rbenv's Github page](https://github.com/rbenv/rbenv)
-
-### 4. Bundler
-```bash
-gem install bundler
-```
-
-### 5. Done
-```bash
-open Zhip.xcworkspace
-```
+- Install [brew](https://brew.sh/)
+- Install [rbenv](https://github.com/rbenv/rbenv)
+- Install [Bundler](https://bundler.io/)
 
 # Architecture
 This app uses a novel architecture named *SLC: Single-Line Controller*, I **strongly** suggest that you begin by reading [this medium article about it](https://medium.com/@sajjon/single-line-controller-fbe474857787) and make sure to [read the second part](https://medium.com/@sajjon/single-line-controller-advanced-case-406e76731ee6) as well.
@@ -94,7 +66,7 @@ And searching in the code for [`save(value: acceptsTracking, for: .hasAcceptedAn
 
 
 # Donate
-This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018. 
+This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit in Zesame](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4#diff-04c6e90faac2675aa89e2176d2eec7d8)). 
 
 **Any donation would be much appreciated**:
 
