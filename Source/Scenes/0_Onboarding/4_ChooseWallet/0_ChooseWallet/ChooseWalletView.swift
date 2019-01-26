@@ -60,6 +60,7 @@ extension ChooseWalletView: ViewModelled {
 }
 
 private typealias € = L10n.Scene.ChooseWallet
+private typealias Image = Asset.Images.ChooseWallet
 private extension ChooseWalletView {
 
     // swiftlint:disable:next function_body_length
@@ -98,11 +99,11 @@ private extension ChooseWalletView {
         motionEffectPlanetsImageView.backgroundColor = .clear
         motionEffectPlanetsImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        let stars = Asset.Images.Spaceship.stars.image
+        let stars = Image.middleStars.image
         let starsFlipped = stars.withVerticallyFlippedOrientation(yOffset: -stars.size.height/2).withHorizontallyFlippedOrientation()
 
         motionEffectPlanetsImageView.addMotionEffectFromImages(
-            front: Asset.Images.planets.image,
+            front: Image.frontPlanets.image,
             middle: stars,
             back: starsFlipped // yes double stars, but flipped
 

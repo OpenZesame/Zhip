@@ -28,7 +28,7 @@ import RxCocoa
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
 
-	private lazy var backgroundImageView    			= UIImageView()
+    private lazy var motionEffectStarsImageView         = UIImageView()
 	private lazy var checkmarkLogoImageView				= UIImageView()
     private lazy var transactionBroadcastedLabel  		= UILabel()
     private lazy var mightTakeSomeMinutesLabel 		 	= UILabel()
@@ -90,8 +90,23 @@ private extension PollTransactionStatusView {
 
 		skipWaitingOrDoneButton.withStyle(.secondary)
 
-		backgroundImageView.withStyle(.background(image: Asset.Images.Spaceship.stars.image))
-		
-		insertSubview(backgroundImageView, belowSubview: scrollView)
+        insertSubview(motionEffectStarsImageView, belowSubview: scrollView)
+        motionEffectStarsImageView.edgesToSuperview()
+        setupStarsImageWithMotionEffect()
+    }
+
+    func setupStarsImageWithMotionEffect() {
+        motionEffectStarsImageView.backgroundColor = .clear
+        motionEffectStarsImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stars = Asset.Images.ChooseWallet.middleStars.image
+        let starsVerticallyFlipped = stars.withVerticallyFlippedOrientation(yOffset: -stars.size.height/2)
+        let starsHorizontallyFlipped = stars.withHorizontallyFlippedOrientation()
+
+        motionEffectStarsImageView.addMotionEffectFromImages(
+            front: stars,
+            middle: starsVerticallyFlipped,
+            back: starsHorizontallyFlipped
+        )
     }
 }
