@@ -9,6 +9,8 @@ def shared
   # Used for logging, search for "TrackableEvent" in the code base to see which events
   # are being logged
   pod 'Firebase/Core'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
 
   # RxSwift made this app
   pod 'RxCocoa'

@@ -1799,6 +1799,7 @@
 				484B063320BA0C2D00C4E50A /* Frameworks */,
 				484B063420BA0C2D00C4E50A /* Resources */,
 				12B257329559A05B696BA4ED /* [CP] Copy Pods Resources */,
+				4862CC6921FCF35F0076B773 /* 🐛 Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -1963,6 +1964,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		4862CC6921FCF35F0076B773 /* 🐛 Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "🐛 Crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		48A9EC4C2195CE6600A62D3A /* 🤖 SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;

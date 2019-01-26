@@ -51,6 +51,7 @@ func setupAnalyticsIfAllowed() {
     }
     FirebaseConfiguration().setLoggerLevel(FirebaseLoggerLevel.min)
     FirebaseApp.configure()
+    Fabric.with([Crashlytics.self])
 }
 
 private func setupKeyboardHiding() {
