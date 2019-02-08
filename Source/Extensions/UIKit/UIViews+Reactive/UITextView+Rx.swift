@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -22,22 +22,19 @@
 // SOFTWARE.
 //
 
-import Foundation
+import UIKit
 import RxSwift
+import RxCocoa
 
-protocol OnboardingUseCase: AnyObject {
+extension Reactive where Base: UITextView {
+    func isNearBottom(yThreshold: CGFloat = 0.98) -> Driver<Bool> {
+        return self.contentOffset.map { [unowned base] in
+            $0.y >= yThreshold * (base.contentSize.height - base.frame.height)
+            }.asDriverOnErrorReturnEmpty()
+    }
 
-    var hasAcceptedTermsOfService: Bool { get }
-    func didAcceptTermsOfService()
-
-    var hasAcceptedCustomECCWarning: Bool { get }
-    func didAcceptCustomECCWarning()
-
-    var hasAnsweredAnalyticsPermissionsQuestion: Bool { get }
-    func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool)
-
-    var hasAskedToSkipERC20Warning: Bool { get }
-    func doNotShowERC20WarningAgain()
-
-    var shouldPromptUserToChosePincode: Bool { get }
+    func didScrollNearBottom(yThreshold: CGFloat = 0.98) -> Driver<Void> {
+        return isNearBottom(yThreshold: yThreshold)
+            .filter { $0 }.mapToVoid()
+    }
 }

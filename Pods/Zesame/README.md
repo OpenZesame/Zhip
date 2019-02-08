@@ -2,16 +2,10 @@
 
 Zesame is an *unofficial* Swift SDK for Zilliqa. It is written in Swift 4.2. This SDK contains cryptographic methods allowing you to create and restore a wallet, sign and broadcast transactions. The cryptographic methods are implemented in [EllipticCurveKit](https://github.com/Sajjon/EllipticCurveKit). This SDK uses Zilliqas [JSON-RPC API](https://apidocs.zilliqa.com/#introduction)
 
-# Installation
-
-## Install [Brew](https://brew.sh/)
-
-## Install [Carthage](https://github.com/Carthage/Carthage/)
-```bash
-brew install carthage
-```
-
-## Build Carthage projects
+# Getting started
+- Install [Brew](https://brew.sh/)
+- Install [Carthage](https://github.com/Carthage/Carthage/)
+- Build Carthage projects
 ```bash
 carthage bootstrap --platform iOS,macOS --cache-builds --no-use-binaries
 ```
@@ -49,6 +43,18 @@ protoc --swift_opt=Visibility=Public --swift_out=. Source/Models/Protobuf/messag
 
 Add the generated file `messages.pb.swift` to corresponding Xcode group.
 
+# Dependencies
+You will find all dependencies inside the [Cartfile](https://github.com/OpenZesame/Zesame/blob/master/Cartfile), but to mention the most important:
+
+## EllipticCurveKit
+Zesame is dependent on the Elliptic Curve Cryptography of [EllipticCurveKit]((https://github.com/Sajjon/EllipticCurveKit)), for the generation of new wallets, restoration of existing ones, the encryption of your private keys into keystores and the signing of your transactions using [Schnorr Signatures](https://en.wikipedia.org/wiki/Schnorr_signature).
+
+## Other
+
+- [RxSwift](https://github.com/ReactiveX/RxSwift): The library uses RxSwift for async programming.
+
+- [JSONRPCKit](https://github.com/ollitapa/JSONRPCKit): For consuming the Zilliqa JSON-RPC API.
+
 # API
 ## Closure or Rx
 This SDK contains two implementations for each method, one that uses [Closures](https://docs.swift.org/swift-book/LanguageGuide/Closures.html)(a.k.a. "Callbacks") and one implementation using [RxSwift Observables](https://github.com/ReactiveX/RxSwift).
@@ -83,3 +89,19 @@ public protocol ZilliqaServiceReactive {
     func sendTransaction(for payment: Payment, signWith keyPair: KeyPair) -> Observable<TransactionIdentifier>
 }
 ```
+
+# Explorer
+While developing it might be useful for you to use the [Zilliqa explorer](https://explorer.zilliqa.com/home)
+
+# Donate
+This SDK and the foundation EllipticCurveKit its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4)). 
+
+**Any donation would be much appreciated**:
+
+- BTC: 3GarsdAzLpEYbhkryYz1WiZxhtTLLaNJwo
+- ETH: 0xAB8F0137295BFE37f50b581F76418518a91ab8DB
+- NEO: AbbnnCLP26ccSnLooDDcwPLDnfXbVL5skH
+
+# License
+
+**Zhip** is released under the [MIT License](LICENSE).

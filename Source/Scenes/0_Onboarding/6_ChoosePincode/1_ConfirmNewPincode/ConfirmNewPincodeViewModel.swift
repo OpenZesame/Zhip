@@ -66,8 +66,8 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map { $0.value }.filterNil())
-            .do(onNext: { [unowned useCase] in
-                useCase.userChoose(pincode: $0)
+            .do(onNext: { [unowned self] in
+                self.useCase.userChoose(pincode: $0)
                 userDid(.confirmPincode)
             }).drive(),
 

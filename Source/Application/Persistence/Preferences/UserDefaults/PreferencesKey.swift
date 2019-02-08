@@ -28,6 +28,7 @@ import Foundation
 enum PreferencesKey: String, KeyConvertible {
     case hasRunAppBefore
     case hasAcceptedTermsOfService
+    case hasAcceptedCustomECCWarning
     case hasAnsweredAnalyticsPermissionsQuestion
     case hasAcceptedAnalyticsTracking
     case skipShowingERC20Warning

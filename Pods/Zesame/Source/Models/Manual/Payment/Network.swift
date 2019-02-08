@@ -25,9 +25,10 @@
 import Foundation
 import EllipticCurveKit
 
+/// seemore: https://apidocs.zilliqa.com/#getnetworkid
 public enum Network: UInt32, Decodable {
     case mainnet = 1
-    case testnet = 2
+    case testnet = 333
 }
 
 // MARK: - Decodable

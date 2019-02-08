@@ -109,9 +109,29 @@
 		4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */; };
 		4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */; };
 		4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */; };
+		484B5B94220E118B002BA411 /* WarningCustomECCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B90220E118A002BA411 /* WarningCustomECCView.swift */; };
+		484B5B95220E118B002BA411 /* WarningCustomECCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B91220E118A002BA411 /* WarningCustomECCController.swift */; };
+		484B5B96220E118B002BA411 /* WarningCustomECCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */; };
 		484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */; };
 		484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
+		4855793B220E3A2D00846704 /* CustomECCWarning.html in Resources */ = {isa = PBXBuildFile; fileRef = 4855793A220E3A2D00846704 /* CustomECCWarning.html */; };
+		48557966220E473900846704 /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557958220E473800846704 /* Barlow-Black.ttf */; };
+		48557967220E473900846704 /* Barlow-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557959220E473800846704 /* Barlow-ExtraBoldItalic.ttf */; };
+		48557968220E473900846704 /* Barlow-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795A220E473800846704 /* Barlow-Thin.ttf */; };
+		48557969220E473900846704 /* Barlow-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795B220E473800846704 /* Barlow-Light.ttf */; };
+		4855796A220E473900846704 /* Barlow-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795C220E473800846704 /* Barlow-ExtraLight.ttf */; };
+		4855796B220E473900846704 /* Barlow-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795D220E473800846704 /* Barlow-ThinItalic.ttf */; };
+		4855796C220E473900846704 /* Barlow-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795E220E473800846704 /* Barlow-ExtraBold.ttf */; };
+		4855796D220E473900846704 /* Barlow-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4855795F220E473800846704 /* Barlow-BoldItalic.ttf */; };
+		4855796E220E473900846704 /* Barlow-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557960220E473800846704 /* Barlow-LightItalic.ttf */; };
+		4855796F220E473900846704 /* Barlow-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557961220E473800846704 /* Barlow-BlackItalic.ttf */; };
+		48557970220E473900846704 /* Barlow-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557962220E473900846704 /* Barlow-ExtraLightItalic.ttf */; };
+		48557971220E473900846704 /* Barlow-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557963220E473900846704 /* Barlow-Italic.ttf */; };
+		48557972220E473900846704 /* Barlow-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557964220E473900846704 /* Barlow-MediumItalic.ttf */; };
+		48557973220E473900846704 /* Barlow-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48557965220E473900846704 /* Barlow-SemiBoldItalic.ttf */; };
+		48557975220E4AD200846704 /* NSAttributedString+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48557974220E4AD200846704 /* NSAttributedString+HTML.swift */; };
+		48557977220E4B5800846704 /* UITextView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48557976220E4B5800846704 /* UITextView+Rx.swift */; };
 		485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AA29021DD303200E700C5 /* AmountFormatter.swift */; };
 		485AA29621DD744F00E700C5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485AA29521DD744F00E700C5 /* GoogleService-Info.plist */; };
 		485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */; };
@@ -407,9 +427,29 @@
 		4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebView_Extensions.swift; sourceTree = "<group>"; };
 		484B063620BA0C2D00C4E50A /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484B064A20BA0C2F00C4E50A /* Zhip.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Zhip.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		484B5B90220E118A002BA411 /* WarningCustomECCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCustomECCView.swift; sourceTree = "<group>"; };
+		484B5B91220E118A002BA411 /* WarningCustomECCController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCustomECCController.swift; sourceTree = "<group>"; };
+		484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningCustomECCViewModel.swift; sourceTree = "<group>"; };
 		484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeyValidator.swift; sourceTree = "<group>"; };
 		484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidator.swift; sourceTree = "<group>"; };
 		4850A407214C122900EBB85B /* Mergeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
+		4855793A220E3A2D00846704 /* CustomECCWarning.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = CustomECCWarning.html; sourceTree = "<group>"; };
+		48557958220E473800846704 /* Barlow-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Black.ttf"; sourceTree = "<group>"; };
+		48557959220E473800846704 /* Barlow-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		4855795A220E473800846704 /* Barlow-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Thin.ttf"; sourceTree = "<group>"; };
+		4855795B220E473800846704 /* Barlow-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Light.ttf"; sourceTree = "<group>"; };
+		4855795C220E473800846704 /* Barlow-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ExtraLight.ttf"; sourceTree = "<group>"; };
+		4855795D220E473800846704 /* Barlow-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ThinItalic.ttf"; sourceTree = "<group>"; };
+		4855795E220E473800846704 /* Barlow-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ExtraBold.ttf"; sourceTree = "<group>"; };
+		4855795F220E473800846704 /* Barlow-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-BoldItalic.ttf"; sourceTree = "<group>"; };
+		48557960220E473800846704 /* Barlow-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-LightItalic.ttf"; sourceTree = "<group>"; };
+		48557961220E473800846704 /* Barlow-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-BlackItalic.ttf"; sourceTree = "<group>"; };
+		48557962220E473900846704 /* Barlow-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		48557963220E473900846704 /* Barlow-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Italic.ttf"; sourceTree = "<group>"; };
+		48557964220E473900846704 /* Barlow-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-MediumItalic.ttf"; sourceTree = "<group>"; };
+		48557965220E473900846704 /* Barlow-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		48557974220E4AD200846704 /* NSAttributedString+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+HTML.swift"; sourceTree = "<group>"; };
+		48557976220E4B5800846704 /* UITextView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Rx.swift"; sourceTree = "<group>"; };
 		4858D7B22194F91A00030237 /* ZhipTests-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZhipTests-Release.xcconfig"; sourceTree = "<group>"; };
 		4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ZhipTests-Debug.xcconfig"; sourceTree = "<group>"; };
 		4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Zhip-Debug.xcconfig"; sourceTree = "<group>"; };
@@ -705,6 +745,7 @@
 			isa = PBXGroup;
 			children = (
 				4806AE72218369A7002734C8 /* UITextField+Rx.swift */,
+				48557976220E4B5800846704 /* UITextView+Rx.swift */,
 				48ECF60F21A1F4AB0078D659 /* UIControl+Rx.swift */,
 				4819BDA821C2403800443F2A /* UIView+Rx.swift */,
 			);
@@ -996,6 +1037,7 @@
 			children = (
 				489EB10221CA30F200664AA7 /* Fonts */,
 				483CE9C32194E9E300BED31C /* TermsOfService.html */,
+				4855793A220E3A2D00846704 /* CustomECCWarning.html */,
 				48ECF62521A34E780078D659 /* Settings.bundle */,
 			);
 			path = Assets;
@@ -1079,6 +1121,16 @@
 				71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		484B5B8D220E103B002BA411 /* 4_WarningCustomECC */ = {
+			isa = PBXGroup;
+			children = (
+				484B5B91220E118A002BA411 /* WarningCustomECCController.swift */,
+				484B5B90220E118A002BA411 /* WarningCustomECCView.swift */,
+				484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */,
+			);
+			path = 4_WarningCustomECC;
 			sourceTree = "<group>";
 		};
 		4850A401214C112000EBB85B /* Views */ = {
@@ -1207,6 +1259,20 @@
 			isa = PBXGroup;
 			children = (
 				489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */,
+				48557958220E473800846704 /* Barlow-Black.ttf */,
+				48557961220E473800846704 /* Barlow-BlackItalic.ttf */,
+				4855795F220E473800846704 /* Barlow-BoldItalic.ttf */,
+				4855795E220E473800846704 /* Barlow-ExtraBold.ttf */,
+				48557959220E473800846704 /* Barlow-ExtraBoldItalic.ttf */,
+				4855795C220E473800846704 /* Barlow-ExtraLight.ttf */,
+				48557962220E473900846704 /* Barlow-ExtraLightItalic.ttf */,
+				48557963220E473900846704 /* Barlow-Italic.ttf */,
+				4855795B220E473800846704 /* Barlow-Light.ttf */,
+				48557960220E473800846704 /* Barlow-LightItalic.ttf */,
+				48557964220E473900846704 /* Barlow-MediumItalic.ttf */,
+				48557965220E473900846704 /* Barlow-SemiBoldItalic.ttf */,
+				4855795A220E473800846704 /* Barlow-Thin.ttf */,
+				4855795D220E473800846704 /* Barlow-ThinItalic.ttf */,
 				489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */,
 				489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */,
 				489EB10721CA30F200664AA7 /* Barlow-SemiBold.ttf */,
@@ -1381,6 +1447,7 @@
 				48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */,
 				487C19E1219A116400308550 /* Error+CustomStringConvertible.swift */,
 				485AAC9221AAC658005C56CC /* CharacterSet_Hexadecimal.swift */,
+				48557974220E4AD200846704 /* NSAttributedString+HTML.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -1558,8 +1625,9 @@
 				48ECF59A21A18F140078D659 /* 1_TermsOfService */,
 				5BF1DFA621A4288E00FE8068 /* 2_AskForAnalyticsPermissions */,
 				48ECF5A821A18F140078D659 /* 3_WarningERC20 */,
-				48ECF5AC21A18F140078D659 /* 4_ChooseWallet */,
-				48ECF59E21A18F140078D659 /* 5_ChoosePincode */,
+				484B5B8D220E103B002BA411 /* 4_WarningCustomECC */,
+				48ECF5AC21A18F140078D659 /* 5_ChooseWallet */,
+				48ECF59E21A18F140078D659 /* 6_ChoosePincode */,
 			);
 			path = 0_Onboarding;
 			sourceTree = "<group>";
@@ -1574,14 +1642,14 @@
 			path = 1_TermsOfService;
 			sourceTree = "<group>";
 		};
-		48ECF59E21A18F140078D659 /* 5_ChoosePincode */ = {
+		48ECF59E21A18F140078D659 /* 6_ChoosePincode */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */,
 				48ECF5A321A18F140078D659 /* 0_ChoosePincode */,
 				48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */,
 			);
-			path = 5_ChoosePincode;
+			path = 6_ChoosePincode;
 			sourceTree = "<group>";
 		};
 		48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */ = {
@@ -1614,7 +1682,7 @@
 			path = 3_WarningERC20;
 			sourceTree = "<group>";
 		};
-		48ECF5AC21A18F140078D659 /* 4_ChooseWallet */ = {
+		48ECF5AC21A18F140078D659 /* 5_ChooseWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */,
@@ -1623,7 +1691,7 @@
 				48ECF5B721A18F140078D659 /* 2a_CreateNewWallet */,
 				48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */,
 			);
-			path = 4_ChooseWallet;
+			path = 5_ChooseWallet;
 			sourceTree = "<group>";
 		};
 		48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */ = {
@@ -1877,15 +1945,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48557968220E473900846704 /* Barlow-Thin.ttf in Resources */,
+				48557971220E473900846704 /* Barlow-Italic.ttf in Resources */,
+				4855796A220E473900846704 /* Barlow-ExtraLight.ttf in Resources */,
 				483CE9CE2194E9E300BED31C /* Assets.xcassets in Resources */,
+				48557970220E473900846704 /* Barlow-ExtraLightItalic.ttf in Resources */,
+				4855796C220E473900846704 /* Barlow-ExtraBold.ttf in Resources */,
+				4855793B220E3A2D00846704 /* CustomECCWarning.html in Resources */,
 				4809354E2195D1BE009CA3FD /* LaunchScreen.storyboard in Resources */,
+				4855796D220E473900846704 /* Barlow-BoldItalic.ttf in Resources */,
+				48557967220E473900846704 /* Barlow-ExtraBoldItalic.ttf in Resources */,
+				4855796E220E473900846704 /* Barlow-LightItalic.ttf in Resources */,
 				489EB10921CA30F200664AA7 /* Barlow-Medium.ttf in Resources */,
 				489EB10821CA30F200664AA7 /* Barlow-Bold.ttf in Resources */,
+				48557966220E473900846704 /* Barlow-Black.ttf in Resources */,
+				48557972220E473900846704 /* Barlow-MediumItalic.ttf in Resources */,
+				4855796F220E473900846704 /* Barlow-BlackItalic.ttf in Resources */,
 				489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */,
 				48ECF62621A34E780078D659 /* Settings.bundle in Resources */,
 				4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */,
+				48557969220E473900846704 /* Barlow-Light.ttf in Resources */,
 				485AA29621DD744F00E700C5 /* GoogleService-Info.plist in Resources */,
+				48557973220E473900846704 /* Barlow-SemiBoldItalic.ttf in Resources */,
 				489EB10B21CA30F200664AA7 /* Barlow-SemiBold.ttf in Resources */,
+				4855796B220E473900846704 /* Barlow-ThinItalic.ttf in Resources */,
 				483CE9ED2194E9E300BED31C /* TermsOfService.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2198,6 +2281,7 @@
 				483CE9EC2194E9E300BED31C /* AppDelegate.swift in Sources */,
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
 				48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */,
+				48557977220E4B5800846704 /* UITextView+Rx.swift in Sources */,
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
 				485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,
@@ -2217,6 +2301,7 @@
 				48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */,
 				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
 				485AACA421AAF3B3005C56CC /* FloatingLabelTextField.swift in Sources */,
+				484B5B94220E118B002BA411 /* WarningCustomECCView.swift in Sources */,
 				483CE9CB2194E9E300BED31C /* Tracking.swift in Sources */,
 				48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
 				4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */,
@@ -2234,6 +2319,7 @@
 				4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */,
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
+				484B5B96220E118B002BA411 /* WarningCustomECCViewModel.swift in Sources */,
 				5BF1DFAA21A4288E00FE8068 /* AskForAnalyticsPermissionsViewModel.swift in Sources */,
 				48ECF62821A356A50078D659 /* TrackedError.swift in Sources */,
 				48ECF5CE21A18F140078D659 /* SignTransactionViewModel.swift in Sources */,
@@ -2270,8 +2356,10 @@
 				484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */,
 				4805A7E721E952DC008D6778 /* Validation+ValidationConvertible.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
+				484B5B95220E118B002BA411 /* WarningCustomECCController.swift in Sources */,
 				483CE9DB2194E9E300BED31C /* Toast.swift in Sources */,
 				483CE9E32194E9E300BED31C /* PreferencesKey.swift in Sources */,
+				48557975220E4AD200846704 /* NSAttributedString+HTML.swift in Sources */,
 				480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */,
 				48ECF5EC21A18F140078D659 /* WarningERC20View.swift in Sources */,
 				4805A7E121E95273008D6778 /* AnyValidation+Equatable.swift in Sources */,

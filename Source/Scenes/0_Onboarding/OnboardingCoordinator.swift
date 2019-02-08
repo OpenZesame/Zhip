@@ -71,6 +71,10 @@ private extension OnboardingCoordinator {
             return toWarningERC20()
         }
 
+        guard onboardingUseCase.hasAcceptedCustomECCWarning else {
+            return toCustomECCWarning()
+        }
+
         guard walletUseCase.hasConfiguredWallet else {
             return toChooseWallet()
         }
@@ -107,7 +111,17 @@ private extension OnboardingCoordinator {
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understandRisks: self.toChooseWallet()
+            case .understandRisks: self.toCustomECCWarning()
+            }
+        }
+    }
+
+    func toCustomECCWarning() {
+        let viewModel = WarningCustomECCViewModel(useCase: onboardingUseCase)
+
+        push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .acceptRisks: self.toChooseWallet()
             }
         }
     }
