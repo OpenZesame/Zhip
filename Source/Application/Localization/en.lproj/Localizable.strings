@@ -65,6 +65,10 @@
 "Scene.WarningERC20.Button.Accept" = "Accept";
 "Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
 
+// MARK: WarningCustomECC
+"Scene.WarningCustomECC.Label.Header" = "Unreliable ECC";
+"Scene.WarningCustomECC.Button.Accept" = "Accept";
+
 // MARK: ChooseWallet
 "Scene.ChooseWallet.Label.Impression" = "Wallet";
 "Scene.ChooseWallet.Label.SetUpWallet" = "It is time to set up the wallet. Do you want to start fresh, or restore an existing wallet?";

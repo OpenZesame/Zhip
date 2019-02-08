@@ -54,6 +54,14 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         preferences.save(value: true, for: .hasAcceptedTermsOfService)
     }
 
+    var hasAcceptedCustomECCWarning: Bool {
+        return preferences.isTrue(.hasAcceptedCustomECCWarning)
+    }
+
+    func didAcceptCustomECCWarning() {
+        preferences.save(value: true, for: .hasAcceptedCustomECCWarning)
+    }
+
     func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
         preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
         preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)

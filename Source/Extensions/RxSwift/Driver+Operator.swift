@@ -47,6 +47,10 @@ func --> (driver: Driver<String>, controlProperty: ControlProperty<String?>) -> 
     return driver.drive(controlProperty.orEmpty)
 }
 
+func --> (driver: Driver<NSAttributedString>, controlProperty: ControlProperty<NSAttributedString?>) -> Disposable {
+    return driver.drive(controlProperty)
+}
+
 func --> (driver: Driver<String>, label: UILabel) -> Disposable {
     return driver --> label.rx.text
 }

@@ -550,6 +550,16 @@ internal enum L10n {
         internal static let reason = L10n.tr("Localizable", "Scene.UnlockAppWithPincode.Biometrics.Reason")
       }
     }
+    internal enum WarningCustomECC {
+      internal enum Button {
+        /// Accept
+        internal static let accept = L10n.tr("Localizable", "Scene.WarningCustomECC.Button.Accept")
+      }
+      internal enum Label {
+        /// Unreliable ECC
+        internal static let header = L10n.tr("Localizable", "Scene.WarningCustomECC.Label.Header")
+      }
+    }
     internal enum WarningERC20 {
       internal enum Button {
         /// Accept

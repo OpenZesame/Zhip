@@ -59,12 +59,8 @@ extension TermsOfServiceView: ViewModelled {
     }
 
     var inputFromView: InputFromView {
-        let didScrollNearBottom = textView.rx.contentOffset.map { [unowned textView] in
-            $0.y >= 0.95 * textView.contentSize.height
-        }.filter { $0 }.mapToVoid().asDriverOnErrorReturnEmpty()
-
         return InputFromView(
-            didScrollToBottom: didScrollNearBottom,
+            didScrollToBottom: textView.rx.didScrollNearBottom(),
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
@@ -89,67 +85,6 @@ private extension TermsOfServiceView {
 
         textView.withStyle(.nonSelectable)
         textView.backgroundColor = .clear
-        textView.attributedText = htmlAsAttributedString()
-    }
-
-    private func htmlAsAttributedString(
-        textColor: UIColor = .white,
-        font: UIFont = .body
-    ) -> NSAttributedString {
-
-        guard let path = Bundle.main.path(forResource: "TermsOfService", ofType: "html") else {
-            incorrectImplementation("bad path")
-        }
-        do {
-            let htmlBodyString = try String(contentsOfFile: path, encoding: .utf8)
-
-            return generateTermsOfServiceHTMLWithCSS(
-                htmlBodyString: htmlBodyString,
-                textColor: textColor,
-                font: font
-            )
-        } catch {
-            incorrectImplementation("Failed to read contents of file, error: \(error)")
-        }
-    }
-
-    // swiftlint:disable:next function_body_length
-    private func generateTermsOfServiceHTMLWithCSS(
-        htmlBodyString: String,
-        textColor: UIColor,
-        font: UIFont
-    ) -> NSAttributedString {
-
-        let htmlString = """
-            <html>
-                <head>
-                    <style>
-                        body {
-                            color: \(textColor.hexString);
-                        }
-                    </style>
-                </head>
-                <body>
-                    \(htmlBodyString)
-                </body>
-            </html>
-        """
-
-        guard let htmlData = NSString(string: htmlString).data(using: String.Encoding.unicode.rawValue) else {
-            incorrectImplementation("Failed to convert html to data")
-        }
-
-        do {
-            let attributexText = try NSMutableAttributedString(
-                data: htmlData,
-                options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil
-            )
-            let range = NSRange(location: 0, length: attributexText.string.count)
-            attributexText.addAttribute(.font, value: font, range: range)
-            return attributexText
-        } catch {
-            incorrectImplementation("Failed to create attributed string")
-        }
+        textView.attributedText = htmlAsAttributedString(htmlFileName: "TermsOfService")
     }
 }
