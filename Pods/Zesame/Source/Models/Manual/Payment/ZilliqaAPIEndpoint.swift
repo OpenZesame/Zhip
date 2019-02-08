@@ -24,26 +24,16 @@
 
 import Foundation
 
-public enum ZilliqaAPIEndpoint {
-    case mainnet
-    case testnet
+public enum ZilliqaAPIEndpoint: String {
+    case mainnet = "https://api.zilliqa.com"
+    case testnet = "https://dev-api.zilliqa.com"
 }
 
 public extension ZilliqaAPIEndpoint {
     var baseURL: URL {
-        let urlString: String
-        switch self {
-        // Testnet endpoint is unknown at this time, the url used
-        // by the testnet before mainnet launch is the url that
-        // will become the mainnet url in the future, and the
-        // testnet will get its own
-        case .mainnet, .testnet: urlString = "https://api.zilliqa.com"
-        }
-
-        guard let url = URL(string: urlString) else {
+        guard let url = URL(string: rawValue) else {
             fatalError("Incorrect implementation should be able to construct url")
         }
-
         return url
     }
 }

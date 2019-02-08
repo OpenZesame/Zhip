@@ -5,7 +5,7 @@ PODS:
     - SipHash (~> 1.2)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
-  - CryptoSwift (0.13.1)
+  - CryptoSwift (0.14.0)
   - DateToolsSwift (4.0.0)
   - Differentiator (3.1.0)
   - EFQRCode (4.4.1):
@@ -176,14 +176,14 @@ CHECKOUT OPTIONS:
     :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :commit: 27bb7e181e34b18375a36d147b1a7acd52ca047c
+    :commit: f1249f75d1fad9a1c77149317d636b0314489bd4
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:
   APIKit: 23ddce4be7eccd746d2ab3c62713cd80d5846d5a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
-  CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
+  CryptoSwift: 35a10419f4dbf0619c13f8c1c180037e115323fa
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
