@@ -126,6 +126,39 @@ private extension PincodeTextField.Presentation {
 }
 
 private final class PincodeTextField: UITextField {
+
+    /// creds: https://stackoverflow.com/a/44701936/1311272
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        switch action {
+        case #selector(UIResponderStandardEditActions.paste(_:)),
+             #selector(UIResponderStandardEditActions.select(_:)),
+             #selector(UIResponderStandardEditActions.selectAll(_:)),
+             #selector(UIResponderStandardEditActions.copy(_:)),
+             #selector(UIResponderStandardEditActions.cut(_:)),
+             #selector(UIResponderStandardEditActions.delete(_:)):
+            return false
+        default:
+            return super.canPerformAction(action, withSender: sender)
+        }
+    }
+
+    /// creds: https://stackoverflow.com/a/10641203/1311272
+    override func addGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+        //Prevent long press to show the magnifying glass
+        if gestureRecognizer is UILongPressGestureRecognizer {
+            gestureRecognizer.isEnabled = false
+        }
+
+        super.addGestureRecognizer(gestureRecognizer)
+    }
+
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UILongPressGestureRecognizer && !gestureRecognizer.delaysTouchesEnded {
+            return false
+        }
+        return true
+    }
+
     final class Presentation: UIStackView {
 
         private var digitViews: [DigitView] {

@@ -204,7 +204,7 @@ internal enum L10n {
         internal static let done = L10n.tr("Localizable", "Scene.ChoosePincode.Button.Done")
       }
       internal enum Text {
-        /// The app PIN is an additional safety measure used only to unlock the app. It is not used to encrypt your private key. Make sure that you have backed up you wallet, since you might get locked out of the app if you forget the PIN.
+        /// The app PIN is an extra safety measure used only to unlock the app. It is not used to encrypt your private key. Before setting a PIN back up the wallet, otherwise you might get locked out if you forget it.
         internal static let pincodeOnlyLocksApp = L10n.tr("Localizable", "Scene.ChoosePincode.Text.PincodeOnlyLocksApp")
       }
     }

@@ -34,7 +34,8 @@ final class ChoosePincodeView: ScrollableStackViewOwner {
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
         pinOnlyLocksAppTextView,
-        doneButton
+        doneButton,
+        .spacer
     ]
 
     override func setup() {
@@ -66,6 +67,8 @@ private extension ChoosePincodeView {
         pinOnlyLocksAppTextView.withStyle(.nonSelectable) {
             $0.text(€.Text.pincodeOnlyLocksApp).textColor(.silverGrey)
         }
+
+        pinOnlyLocksAppTextView.isScrollEnabled = false
 
         doneButton.withStyle(.primary) {
             $0.title(€.Button.done)
