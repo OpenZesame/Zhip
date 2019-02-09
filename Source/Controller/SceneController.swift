@@ -31,7 +31,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
-    private let viewModel: ViewModel
+    let viewModel: ViewModel
     private lazy var rootContentView = View()
 
     // MARK: - Initialization

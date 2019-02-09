@@ -31,17 +31,8 @@ extension Coordinating {
 
     /// This method is used to push a new Scene (ViewController).
     ///
-    /// - Parameters:
-    ///   - scene: Type of `Scene` (UIViewController) to present.
-    ///   - viewModel: An instance of the ViewModel used by the `Scene`s View.
-    ///   - animated: Whether to animate the presentation of the scene or not.
-    ///   - navigationPresentationCompletion: Optional closure invoked when the
-    ///       presentation of the scene is done (animation has finished). This
-    ///       is convenient when you want to present any other scene after this
-    ///       scene.
-    ///   - navigationHandler: **Required** closure for handling navigation steps
-    ///       from the ViewModel.
-    ///   - step: Navigation step emitted by the scene's `viewModel`
+    /// Identical to push:scene:animated:navigationPresentationCompletion:navigationHandler
+    /// But takes a viewModel instance instead of a scene instance and a Scene type instead of an instance of said scene type.
     func push<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
@@ -52,6 +43,34 @@ extension Coordinating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)
+        push(
+            scene: scene,
+            animated: animated,
+            navigationPresentationCompletion: navigationPresentationCompletion,
+            navigationHandler: navigationHandler
+        )
+    }
+
+    /// This method is used to push a new Scene (ViewController).
+    ///
+    /// - Parameters:
+    ///   - scene: A `Scene` (UIViewController) to present.
+    ///   - animated: Whether to animate the presentation of the scene or not.
+    ///   - navigationPresentationCompletion: Optional closure invoked when the
+    ///       presentation of the scene is done (animation has finished). This
+    ///       is convenient when you want to present any other scene after this
+    ///       scene.
+    ///   - navigationHandler: **Required** closure for handling navigation steps
+    ///       from the ViewModel.
+    ///   - step: Navigation step emitted by the scene's `viewModel`
+    func push<S, V>(
+        scene: S,
+        animated: Bool = true,
+        navigationPresentationCompletion: Completion? = nil,
+        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep) -> Void
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
+
+        let viewModel = scene.viewModel
 
         // Present the viewController
         navigationController.setRootViewControllerIfEmptyElsePush(

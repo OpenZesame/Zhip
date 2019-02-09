@@ -34,11 +34,14 @@ final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
     }
 
     private let useCaseProvider: UseCaseProvider
+    private let onboardingUseCase: OnboardingUseCase
     private let transactionIntent: Driver<TransactionIntent>
     private let scannedQRTransactionSubject = PublishSubject<TransactionIntent>()
 
     init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<TransactionIntent>) {
         self.useCaseProvider = useCaseProvider
+        self.onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
+        
         self.transactionIntent = Driver.merge(deeplinkedTransaction, scannedQRTransactionSubject.asDriverOnErrorReturnEmpty())
         super.init(navigationController: navigationController)
     }
@@ -60,11 +63,14 @@ private extension SendCoordinator {
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(useCase: useCaseProvider.makeOnboardingUseCase())
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: true)
+        )
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understandRisks: self.toPrepareTransaction()
+            case .understandRisks, .dismiss: self.toPrepareTransaction()
             }
         }
     }

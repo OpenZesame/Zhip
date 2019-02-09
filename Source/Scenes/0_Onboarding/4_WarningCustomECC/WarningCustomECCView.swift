@@ -36,6 +36,7 @@ extension WarningCustomECCView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
+            viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
             viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
         ]
     }
@@ -69,6 +70,8 @@ private extension WarningCustomECCView {
         textView.withStyle(.nonSelectable)
         textView.backgroundColor = .clear
         textView.attributedText = htmlAsAttributedString(htmlFileName: "CustomECCWarning")
+
+        // Makes hyperlinks in HTML (href) clickable
         textView.isSelectable = true
     }
 }

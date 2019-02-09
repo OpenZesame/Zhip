@@ -492,6 +492,8 @@ internal enum L10n {
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
         /// Change analytics permissions
         internal static let changeAnalyticsPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.ChangeAnalyticsPermissions")
+        /// Read ECC warning
+        internal static let readCustomECCWarning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadCustomECCWarning")
         /// Read ERC-20 warning
         internal static let readERC20Warning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadERC20Warning")
         /// Remove pincode

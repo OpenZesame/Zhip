@@ -87,11 +87,10 @@ private extension OnboardingCoordinator {
     }
 
     func toTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissable: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptTermsOfService: self.toAnalyticsPermission()
+            case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
             }
         }
     }
@@ -107,21 +106,27 @@ private extension OnboardingCoordinator {
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: false)
+        )
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understandRisks: self.toCustomECCWarning()
+            case .understandRisks, .dismiss: self.toCustomECCWarning()
             }
         }
     }
 
     func toCustomECCWarning() {
-        let viewModel = WarningCustomECCViewModel(useCase: onboardingUseCase)
+        let viewModel = WarningCustomECCViewModel(
+            useCase: onboardingUseCase,
+            isDismissable: false
+        )
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptRisks: self.toChooseWallet()
+            case .acceptRisks, .dismiss: self.toChooseWallet()
             }
         }
     }

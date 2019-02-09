@@ -28,7 +28,7 @@ import RxCocoa
 
 // MARK: - WarningCustomECCUserAction
 enum WarningCustomECCUserAction: String, TrackedUserAction {
-    case acceptRisks
+    case acceptRisks, dismiss
 }
 
 private typealias € = L10n.Scene.WarningCustomECC
@@ -41,17 +41,27 @@ final class WarningCustomECCViewModel: BaseViewModel<
 > {
 
     private let useCase: OnboardingUseCase
+    private let isDismissable: Bool
 
-    init(useCase: OnboardingUseCase) {
+    init(useCase: OnboardingUseCase, isDismissable: Bool) {
         self.useCase = useCase
+        self.isDismissable = isDismissable
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
         let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
+
+        if isDismissable {
+            input.fromController.rightBarButtonContentSubject.onBarButton(.done)
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.dismiss) })
+                .drive().disposed(by: bag)
+        }
 
         bag <~ [
             input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
@@ -61,6 +71,7 @@ final class WarningCustomECCViewModel: BaseViewModel<
         ]
 
         return Output(
+            isAcceptButtonVisible: Driver.just(!isDismissable),
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
     }
@@ -73,6 +84,7 @@ extension WarningCustomECCViewModel {
     }
 
     struct Output {
+        let isAcceptButtonVisible: Driver<Bool>
         let isAcceptButtonEnabled: Driver<Bool>
     }
 }

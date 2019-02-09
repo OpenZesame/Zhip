@@ -24,10 +24,20 @@
 
 import Foundation
 
-final class TermsOfService: Scene<TermsOfServiceView> {}
+final class TermsOfService: Scene<TermsOfServiceView>, NavigationBarLayoutOwner {
+    let navigationBarLayout: NavigationBarLayout
 
-extension TermsOfService: NavigationBarLayoutOwner {
-    var navigationBarLayout: NavigationBarLayout {
-        return .hidden
+    init(viewModel: ViewModel, navigationBarLayout: NavigationBarLayout) {
+        self.navigationBarLayout = navigationBarLayout
+        super.init(viewModel: viewModel)
+    }
+
+    required init(viewModel: ViewModel) {
+        self.navigationBarLayout = .hidden
+        super.init(viewModel: viewModel)
+    }
+
+    required init?(coder: NSCoder) {
+        interfaceBuilderSucks
     }
 }

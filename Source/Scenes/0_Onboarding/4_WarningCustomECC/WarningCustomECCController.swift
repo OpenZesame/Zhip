@@ -8,10 +8,20 @@
 
 import UIKit
 
-final class WarningCustomECC: Scene<WarningCustomECCView> {}
+final class WarningCustomECC: Scene<WarningCustomECCView>, NavigationBarLayoutOwner {
+    let navigationBarLayout: NavigationBarLayout
 
-extension WarningCustomECC: NavigationBarLayoutOwner {
-    var navigationBarLayout: NavigationBarLayout {
-        return .hidden
+    init(viewModel: ViewModel, navigationBarLayout: NavigationBarLayout) {
+        self.navigationBarLayout = navigationBarLayout
+        super.init(viewModel: viewModel)
+    }
+
+    required init(viewModel: ViewModel) {
+        self.navigationBarLayout = .hidden
+        super.init(viewModel: viewModel)
+    }
+
+    required init?(coder: NSCoder) {
+        interfaceBuilderSucks
     }
 }

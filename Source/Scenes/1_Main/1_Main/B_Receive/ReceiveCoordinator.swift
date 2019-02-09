@@ -35,10 +35,12 @@ final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.NavigationSte
     private let deepLinkGenerator: DeepLinkGenerator
     private let useCaseProvider: UseCaseProvider
     private let walletUseCase: WalletUseCase
+    private let onboardingUseCase: OnboardingUseCase
 
     init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deepLinkGenerator: DeepLinkGenerator) {
         self.useCaseProvider = useCaseProvider
         self.walletUseCase = useCaseProvider.makeWalletUseCase()
+        self.onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
         self.deepLinkGenerator = deepLinkGenerator
         super.init(navigationController: navigationController)
     }
@@ -60,11 +62,14 @@ private extension ReceiveCoordinator {
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(useCase: useCaseProvider.makeOnboardingUseCase())
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: true)
+        )
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understandRisks: self.toReceive()
+            case .understandRisks, .dismiss: self.toReceive()
             }
         }
     }

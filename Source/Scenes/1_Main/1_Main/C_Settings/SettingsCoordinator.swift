@@ -78,6 +78,7 @@ private extension SettingsCoordinator {
             case .readTermsOfService: self.toReadTermsOfService()
             case .readERC20Warning: self.toReadERC20Warning()
             case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
+            case .readCustomECCWarning: self.toReadCustomECCWarning()
 
             // Section 3
             case .backupWallet: self.toBackupWallet()
@@ -119,11 +120,16 @@ private extension SettingsCoordinator {
     }
 
     func toReadERC20Warning() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .dismissable
+        )
 
-        modallyPresent(scene: WarningERC20.self, viewModel: viewModel) { userDid, dismissScene in
+        let warningErc20 = WarningERC20(viewModel: viewModel, navigationBarLayout: .opaque)
+
+        modallyPresent(scene: warningErc20) { userDid, dismissScene in
             switch userDid {
-            case .understandRisks: dismissScene(true, nil)
+            case .understandRisks, .dismiss: dismissScene(true, nil)
             }
         }
     }
@@ -139,11 +145,26 @@ private extension SettingsCoordinator {
     }
 
     func toReadTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-
-        modallyPresent(scene: TermsOfService.self, viewModel: viewModel) { userDid, dismissScene in
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissable: true)
+        let termsOfService = TermsOfService(viewModel: viewModel, navigationBarLayout: .opaque)
+        modallyPresent(scene: termsOfService) { userDid, dismissScene in
             switch userDid {
-            case .acceptTermsOfService: dismissScene(true, nil)
+            case .acceptTermsOfService, .dismiss: dismissScene(true, nil)
+            }
+        }
+    }
+
+    func toReadCustomECCWarning() {
+        let viewModel = WarningCustomECCViewModel(
+            useCase: onboardingUseCase,
+            isDismissable: true
+        )
+
+        let scene = WarningCustomECC(viewModel: viewModel, navigationBarLayout: .opaque)
+
+        modallyPresent(scene: scene) { userDid, dismissScene in
+            switch userDid {
+            case .acceptRisks, .dismiss: dismissScene(true, nil)
             }
         }
     }
