@@ -115,6 +115,20 @@ extension UITextView.Style {
         style.textColor = textColor
         return style
     }
+
+    @discardableResult
+    func isSelectable(_ isSelectable: Bool) -> UITextView.Style {
+        var style = self
+        style.isSelectable = isSelectable
+        return style
+    }
+
+    @discardableResult
+    func isScrollEnabled(_ isScrollEnabled: Bool) -> UITextView.Style {
+        var style = self
+        style.isScrollEnabled = isScrollEnabled
+        return style
+    }
 }
 
 // MARK: - Style Presets

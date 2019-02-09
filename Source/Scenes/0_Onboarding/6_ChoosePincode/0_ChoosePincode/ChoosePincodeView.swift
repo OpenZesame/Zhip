@@ -65,10 +65,10 @@ private typealias € = L10n.Scene.ChoosePincode
 private extension ChoosePincodeView {
     func setupSubviews() {
         pinOnlyLocksAppTextView.withStyle(.nonSelectable) {
-            $0.text(€.Text.pincodeOnlyLocksApp).textColor(.silverGrey)
+            $0.text(€.Text.pincodeOnlyLocksApp)
+                .textColor(.silverGrey)
+                .isScrollEnabled(false)
         }
-
-        pinOnlyLocksAppTextView.isScrollEnabled = false
 
         doneButton.withStyle(.primary) {
             $0.title(€.Button.done)

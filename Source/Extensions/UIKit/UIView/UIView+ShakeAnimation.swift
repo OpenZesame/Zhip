@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -22,22 +22,18 @@
 // SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-final class AskForCrashReportingPermissions: Scene<AskForCrashReportingPermissionsView>, NavigationBarLayoutOwner {
-    let navigationBarLayout: NavigationBarLayout
+public extension UIView {
 
-    init(viewModel: ViewModel, navigationBarLayout: NavigationBarLayout) {
-        self.navigationBarLayout = navigationBarLayout
-        super.init(viewModel: viewModel)
-    }
-
-    required init(viewModel: ViewModel) {
-        self.navigationBarLayout = .hidden
-        super.init(viewModel: viewModel)
-    }
-
-    required init?(coder: NSCoder) {
-        interfaceBuilderSucks
+    func shake(count: Float = 3, duration: TimeInterval = 0.3, withTranslation translation: CGFloat = 5) {
+        let animation = CABasicAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        animation.repeatCount = count
+        animation.duration = duration / TimeInterval(animation.repeatCount)
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: -translation, y: center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: translation, y: center.y))
+        layer.add(animation, forKey: "shake")
     }
 }

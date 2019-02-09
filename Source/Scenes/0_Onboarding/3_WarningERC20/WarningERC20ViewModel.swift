@@ -38,7 +38,7 @@ final class WarningERC20ViewModel: BaseViewModel<
     WarningERC20ViewModel.Output
 > {
     enum Mode {
-        case dismissable
+        case dismissible
         case userHaveToAccept(isDoNotShowAgainButtonVisible: Bool)
     }
 
@@ -61,7 +61,7 @@ final class WarningERC20ViewModel: BaseViewModel<
 
         let understandsRisks = Driver.merge(input.fromView.accept, input.fromView.doNotShowAgain)
 
-        if isDismissable {
+        if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.dismiss) })
@@ -79,7 +79,7 @@ final class WarningERC20ViewModel: BaseViewModel<
 
         return Output(
             isDoNotShowAgainButtonVisible: Driver.just(isDoNotShowAgainButtonVisible),
-            isAcceptButtonCheckboxVisible: Driver.just(!isDismissable),
+            isAcceptButtonCheckboxVisible: Driver.just(!isDismissible),
             isAcceptButtonEnabled: input.fromView.isUnderstandsERC20IncompatibilityCheckboxChecked
         )
     }
@@ -88,14 +88,14 @@ final class WarningERC20ViewModel: BaseViewModel<
 private extension WarningERC20ViewModel {
     var isDoNotShowAgainButtonVisible: Bool {
         switch mode {
-        case .dismissable: return false
+        case .dismissible: return false
         case .userHaveToAccept(let isDoNotShowAgainButtonVisible): return isDoNotShowAgainButtonVisible
         }
     }
 
-    var isDismissable: Bool {
+    var isDismissible: Bool {
         switch mode {
-        case .dismissable: return true
+        case .dismissible: return true
         case .userHaveToAccept: return false
         }
     }

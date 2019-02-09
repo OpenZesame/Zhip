@@ -120,7 +120,7 @@ private extension SettingsCoordinator {
     func toReadERC20Warning() {
         let viewModel = WarningERC20ViewModel(
             useCase: onboardingUseCase,
-            mode: .dismissable
+            mode: .dismissible
         )
 
         let warningErc20 = WarningERC20(viewModel: viewModel, navigationBarLayout: .opaque)
@@ -133,17 +133,18 @@ private extension SettingsCoordinator {
     }
 
     func toChangeAnalyticsPermissions() {
-        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase, isDismissible: true)
+        let scene = AskForCrashReportingPermissions(viewModel: viewModel, navigationBarLayout: .opaque)
 
-        modallyPresent(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { userDid, dismissScene in
+        modallyPresent(scene: scene) { userDid, dismissScene in
             switch userDid {
-            case .answerQuestionAboutCrashReporting: dismissScene(true, nil)
+            case .answerQuestionAboutCrashReporting, .dismiss: dismissScene(true, nil)
             }
         }
     }
 
     func toReadTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissable: true)
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: true)
         let termsOfService = TermsOfService(viewModel: viewModel, navigationBarLayout: .opaque)
         modallyPresent(scene: termsOfService) { userDid, dismissScene in
             switch userDid {
@@ -155,7 +156,7 @@ private extension SettingsCoordinator {
     func toReadCustomECCWarning() {
         let viewModel = WarningCustomECCViewModel(
             useCase: onboardingUseCase,
-            isDismissable: true
+            isDismissible: true
         )
 
         let scene = WarningCustomECC(viewModel: viewModel, navigationBarLayout: .opaque)

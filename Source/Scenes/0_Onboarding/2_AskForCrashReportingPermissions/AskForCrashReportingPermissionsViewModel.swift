@@ -28,7 +28,7 @@ import RxCocoa
 
 // MARK: - AnalyticsPermissionNavigation
 enum AskForCrashReportingPermissionsNavigation {
-    case answerQuestionAboutCrashReporting
+    case answerQuestionAboutCrashReporting, dismiss
 }
 
 // MARK: - AnalyticsPermissionViewModel
@@ -39,11 +39,14 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
 > {
 
     private let useCase: OnboardingUseCase
+    private let isDismissible: Bool
 
-    init(useCase: OnboardingUseCase) {
+    init(useCase: OnboardingUseCase, isDismissible: Bool) {
         self.useCase = useCase
+        self.isDismissible = isDismissible
     }
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -53,7 +56,14 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
             input.fromView.acceptTrigger.map { true },
             input.fromView.declineTrigger.map { false }
         )
-        
+
+        if isDismissible {
+            input.fromController.rightBarButtonContentSubject.onBarButton(.done)
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.dismiss) })
+                .drive().disposed(by: bag)
+        }
+
         bag <~ [
             hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
                 self.useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)

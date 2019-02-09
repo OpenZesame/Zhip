@@ -87,7 +87,7 @@ private extension OnboardingCoordinator {
     }
 
     func toTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissable: false)
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
@@ -96,11 +96,11 @@ private extension OnboardingCoordinator {
     }
 
     func toAnalyticsPermission() {
-        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase, isDismissible: false)
 
         push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutCrashReporting: self.toWarningERC20()
+            case .answerQuestionAboutCrashReporting, .dismiss: self.toWarningERC20()
             }
         }
     }
@@ -121,7 +121,7 @@ private extension OnboardingCoordinator {
     func toCustomECCWarning() {
         let viewModel = WarningCustomECCViewModel(
             useCase: onboardingUseCase,
-            isDismissable: false
+            isDismissible: false
         )
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in

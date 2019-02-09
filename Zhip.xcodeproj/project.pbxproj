@@ -296,6 +296,11 @@
 		48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
+		48F96C65220F8009008B7E22 /* DigitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C64220F8009008B7E22 /* DigitView.swift */; };
+		48F96C67220F803C008B7E22 /* PincodeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C66220F803B008B7E22 /* PincodeTextField.swift */; };
+		48F96C69220F807C008B7E22 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C68220F807C008B7E22 /* UIView+ShakeAnimation.swift */; };
+		48F96C6B220F808E008B7E22 /* InputPincodeView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C6A220F808E008B7E22 /* InputPincodeView+Rx.swift */; };
+		48F96C6D220F812E008B7E22 /* PincodeTextField+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C6C220F812E008B7E22 /* PincodeTextField+Presentation.swift */; };
 		48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562721B632E50026690E /* CheckboxWithLabel.swift */; };
 		48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */; };
 		48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */; };
@@ -613,6 +618,11 @@
 		48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystoreViewModel.swift; sourceTree = "<group>"; };
 		48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController_Extension.swift; sourceTree = "<group>"; };
 		48F832ED2185DE0200EDAD40 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
+		48F96C64220F8009008B7E22 /* DigitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitView.swift; sourceTree = "<group>"; };
+		48F96C66220F803B008B7E22 /* PincodeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PincodeTextField.swift; sourceTree = "<group>"; };
+		48F96C68220F807C008B7E22 /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
+		48F96C6A220F808E008B7E22 /* InputPincodeView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InputPincodeView+Rx.swift"; sourceTree = "<group>"; };
+		48F96C6C220F812E008B7E22 /* PincodeTextField+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PincodeTextField+Presentation.swift"; sourceTree = "<group>"; };
 		48FD562721B632E50026690E /* CheckboxWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabel.swift; sourceTree = "<group>"; };
 		48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingPrivateKeyViewModel.swift; sourceTree = "<group>"; };
 		48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingKeystoreViewModel.swift; sourceTree = "<group>"; };
@@ -756,6 +766,7 @@
 			children = (
 				48C89FFE2143355A0063B0FA /* UIView+Spacer.swift */,
 				480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */,
+				48F96C68220F807C008B7E22 /* UIView+ShakeAnimation.swift */,
 			);
 			path = UIView;
 			sourceTree = "<group>";
@@ -1332,6 +1343,10 @@
 			isa = PBXGroup;
 			children = (
 				48C467BC21986528006DA5EE /* InputPincodeView.swift */,
+				48F96C6A220F808E008B7E22 /* InputPincodeView+Rx.swift */,
+				48F96C64220F8009008B7E22 /* DigitView.swift */,
+				48F96C66220F803B008B7E22 /* PincodeTextField.swift */,
+				48F96C6C220F812E008B7E22 /* PincodeTextField+Presentation.swift */,
 				486D2C7A21D23A4C006F3DFA /* Digit.swift */,
 			);
 			path = InputPincodeView;
@@ -2184,6 +2199,7 @@
 				48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */,
+				48F96C69220F807C008B7E22 /* UIView+ShakeAnimation.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
 				48ECF5EB21A18F140078D659 /* SetPincodeCoordinator.swift in Sources */,
 				4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */,
@@ -2212,6 +2228,7 @@
 				4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */,
 				48ECF5DD21A18F140078D659 /* ReceiveCoordinator.swift in Sources */,
 				483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */,
+				48F96C6B220F808E008B7E22 /* InputPincodeView+Rx.swift in Sources */,
 				48F4097A21BCD560001C499F /* EncryptionPassphraseValidator.swift in Sources */,
 				48ECF61721A29F9E0078D659 /* SettingsTableViewCell.swift in Sources */,
 				48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */,
@@ -2283,6 +2300,7 @@
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
 				48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */,
+				48F96C6D220F812E008B7E22 /* PincodeTextField+Presentation.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
 				48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */,
 				5BF1DFAB21A4288E00FE8068 /* AskForCrashReportingPermissions.swift in Sources */,
@@ -2293,6 +2311,7 @@
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
 				484B5B96220E118B002BA411 /* WarningCustomECCViewModel.swift in Sources */,
+				48F96C67220F803C008B7E22 /* PincodeTextField.swift in Sources */,
 				5BF1DFAA21A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift in Sources */,
 				48ECF5CE21A18F140078D659 /* SignTransactionViewModel.swift in Sources */,
 				483CE9E52194E9E300BED31C /* KeyConvertible.swift in Sources */,
@@ -2345,6 +2364,7 @@
 				48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */,
 				48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */,
 				48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */,
+				48F96C65220F8009008B7E22 /* DigitView.swift in Sources */,
 				48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
 			);

@@ -84,7 +84,7 @@ private extension AskForCrashReportingPermissionsView {
         }
 
         disclaimerTextView.withStyle(.nonEditable) {
-            $0.text(€.Text.disclaimer)
+            $0.text(€.Text.disclaimer).isSelectable(false)
         }
 
         hasReadDisclaimerCheckbox.withStyle(.default) {

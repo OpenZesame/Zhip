@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -22,22 +22,23 @@
 // SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-final class AskForCrashReportingPermissions: Scene<AskForCrashReportingPermissionsView>, NavigationBarLayoutOwner {
-    let navigationBarLayout: NavigationBarLayout
+import RxSwift
+import RxCocoa
 
-    init(viewModel: ViewModel, navigationBarLayout: NavigationBarLayout) {
-        self.navigationBarLayout = navigationBarLayout
-        super.init(viewModel: viewModel)
+extension Reactive where Base == InputPincodeView {
+    var becomeFirstResponder: Binder<Void> {
+        return base.pinField.rx.becomeFirstResponder
     }
 
-    required init(viewModel: ViewModel) {
-        self.navigationBarLayout = .hidden
-        super.init(viewModel: viewModel)
+    var pincode: Driver<Pincode?> {
+        return base.pinField.pincodeDriver
     }
 
-    required init?(coder: NSCoder) {
-        interfaceBuilderSucks
+    var validation: Binder<AnyValidation> {
+        return Binder<AnyValidation>(base) {
+            $0.validate($1)
+        }
     }
 }

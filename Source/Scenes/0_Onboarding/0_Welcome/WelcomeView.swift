@@ -34,10 +34,8 @@ final class WelcomeView: UIView {
     private lazy var startButton                    = UIButton()
     private lazy var lowerTintGradientView          = GradientView(colors: [
         UIColor.deepBlue.withAlphaComponent(0.2),
-        UIColor.teal.withAlphaComponent(0.05),
-        UIColor.teal.withAlphaComponent(0.15),
-        UIColor.teal.withAlphaComponent(0.05),
-        UIColor.deepBlue.withAlphaComponent(0.4),
+        UIColor.teal.withAlphaComponent(0.1),
+        UIColor.deepBlue.withAlphaComponent(0.4)
     ])
 
     private lazy var stackView = UIStackView(arrangedSubviews: [
@@ -70,6 +68,7 @@ private typealias € = L10n.Scene.Welcome
 private typealias Image = Asset.Images.Welcome
 private extension WelcomeView {
 
+    // swiftlint:disable:next function_body_length
     func setup() {
         stackView.withStyle(.default) {
             $0.spacing(0)
@@ -99,7 +98,7 @@ private extension WelcomeView {
         motionEffectSpaceshipImageView.addSubview(lowerTintGradientView)
         motionEffectSpaceshipImageView.bringSubviewToFront(lowerTintGradientView)
         lowerTintGradientView.edgesToSuperview(excluding: .top)
-        lowerTintGradientView.heightToSuperview(multiplier: 0.4)
+        lowerTintGradientView.heightToSuperview(multiplier: 0.3)
     }
 
     func setupSpaceshipImageWithMotionEffect() {

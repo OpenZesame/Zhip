@@ -39,11 +39,11 @@ final class TermsOfServiceViewModel: BaseViewModel<
 > {
 
     private let useCase: OnboardingUseCase
-    private let isDismissable: Bool
+    private let isDismissible: Bool
 
-    init(useCase: OnboardingUseCase, isDismissable: Bool) {
+    init(useCase: OnboardingUseCase, isDismissible: Bool) {
         self.useCase = useCase
-        self.isDismissable = isDismissable
+        self.isDismissible = isDismissible
     }
 
     // swiftlint:disable:next function_body_length
@@ -54,7 +54,7 @@ final class TermsOfServiceViewModel: BaseViewModel<
 
         let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
 
-        if isDismissable {
+        if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.dismiss) })
@@ -69,7 +69,7 @@ final class TermsOfServiceViewModel: BaseViewModel<
         ]
 
         return Output(
-            isAcceptButtonVisible: Driver.just(!isDismissable),
+            isAcceptButtonVisible: Driver.just(!isDismissible),
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
     }

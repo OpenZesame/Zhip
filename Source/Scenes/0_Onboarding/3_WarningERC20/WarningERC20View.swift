@@ -88,7 +88,7 @@ private extension WarningERC20View {
         }
 
         warningTextView.withStyle(.nonEditable) {
-            $0.text(€.Text.warningERC20)
+            $0.text(€.Text.warningERC20).isSelectable(false)
         }
 
         understandCheckbox.withStyle(.default) {
