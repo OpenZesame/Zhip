@@ -40,7 +40,7 @@ extension UIView {
 
         spacer.setContentHuggingPriority(.medium, for: .horizontal)
         spacer.setContentHuggingPriority(verticalContentHuggingPriority, for: .vertical)
-
+        spacer.backgroundColor = .clear
         return spacer
     }
 

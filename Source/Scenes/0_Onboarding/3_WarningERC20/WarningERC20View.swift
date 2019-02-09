@@ -41,7 +41,6 @@ final class WarningERC20View: ScrollableStackViewOwner {
         imageView,
         headerLabel,
         warningTextView,
-        .spacer,
         understandCheckbox,
         acceptButton,
         doNotShowThisAgainButton
@@ -57,8 +56,10 @@ extension WarningERC20View: ViewModelled {
 
     func populate(with viewModel: WarningERC20ViewModel.Output) -> [Disposable] {
         return [
-            viewModel.isAcceptButtonEnabled         --> acceptButton.rx.isEnabled,
-            viewModel.isDoNotShowAgainButtonVisible --> doNotShowThisAgainButton.rx.isVisible
+            viewModel.isDoNotShowAgainButtonVisible --> doNotShowThisAgainButton.rx.isVisible,
+            viewModel.isAcceptButtonCheckboxVisible --> acceptButton.rx.isVisible,
+            viewModel.isAcceptButtonCheckboxVisible --> understandCheckbox.rx.isVisible,
+            viewModel.isAcceptButtonEnabled         --> acceptButton.rx.isEnabled
         ]
     }
 
@@ -87,7 +88,7 @@ private extension WarningERC20View {
         }
 
         warningTextView.withStyle(.nonEditable) {
-            $0.text(€.Text.warningERC20)
+            $0.text(€.Text.warningERC20).isSelectable(false)
         }
 
         understandCheckbox.withStyle(.default) {

@@ -31,7 +31,7 @@ import RxCocoa
 import RxDataSources
 
 // MARK: SettingsNavigation
-enum SettingsNavigation: String, TrackedUserAction {
+enum SettingsNavigation {
     // Navigation Bar
     case closeSettings
 
@@ -46,6 +46,7 @@ enum SettingsNavigation: String, TrackedUserAction {
     // Section 2
     case readTermsOfService
     case readERC20Warning
+    case readCustomECCWarning
     case changeAnalyticsPermissions
 
     // Section 3
@@ -136,7 +137,8 @@ private extension SettingsViewModel {
             .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
             .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning, icon: Icon.warning),
             // TOOO change icon when asset available
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.document)
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.document),
+            .whenSelectedNavigate(to: .readCustomECCWarning, titled: €.readCustomECCWarning, icon: Icon.warning)
         ]
 
         sections += [

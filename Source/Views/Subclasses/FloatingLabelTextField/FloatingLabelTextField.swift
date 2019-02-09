@@ -116,6 +116,7 @@ private extension FloatingLabelTextField {
         }
         translatesAutoresizingMaskIntoConstraints = false
         lineErrorColor = AnyValidation.Color.error
+        lineColor = AnyValidation.Color.empty
         textErrorColor = .white
         titleLabel.numberOfLines = 2
         titleLabel.minimumScaleFactor = 0.8

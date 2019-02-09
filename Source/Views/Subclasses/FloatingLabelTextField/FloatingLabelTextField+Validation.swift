@@ -50,17 +50,6 @@ extension FloatingLabelTextField {
         }
     }
 
-    var lineColorWhenNoError: UIColor {
-        set {
-            selectedLineColor = newValue
-            lineColor = newValue
-        }
-        get {
-            assert(selectedLineColor == lineColor)
-            return lineColor
-        }
-    }
-
     func updateColorsWithValidation(_ validation: AnyValidation) {
         updateLineColorWithValidation(validation)
         updatePlaceholderColorWithValidation(validation)
@@ -78,7 +67,7 @@ extension FloatingLabelTextField {
             // color of line in case of error is handled by the property `lineErrorColor` in the superclass
             color = Color.empty
         }
-        lineColorWhenNoError = color
+        selectedLineColor = color
     }
 
     func updatePlaceholderColorWithValidation(_ validation: AnyValidation) {

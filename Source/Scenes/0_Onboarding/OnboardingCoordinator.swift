@@ -63,7 +63,7 @@ private extension OnboardingCoordinator {
             return toTermsOfService()
         }
 
-        guard onboardingUseCase.hasAnsweredAnalyticsPermissionsQuestion else {
+        guard onboardingUseCase.hasAnsweredCrashReportingQuestion else {
             return toAnalyticsPermission()
         }
 
@@ -87,41 +87,46 @@ private extension OnboardingCoordinator {
     }
 
     func toTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptTermsOfService: self.toAnalyticsPermission()
+            case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
             }
         }
     }
 
     func toAnalyticsPermission() {
-        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase, isDismissible: false)
 
-        push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid in
+        push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutAnalyticsPermission: self.toWarningERC20()
+            case .answerQuestionAboutCrashReporting, .dismiss: self.toWarningERC20()
             }
         }
     }
 
     func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: false)
+        )
 
         push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understandRisks: self.toCustomECCWarning()
+            case .understandRisks, .dismiss: self.toCustomECCWarning()
             }
         }
     }
 
     func toCustomECCWarning() {
-        let viewModel = WarningCustomECCViewModel(useCase: onboardingUseCase)
+        let viewModel = WarningCustomECCViewModel(
+            useCase: onboardingUseCase,
+            isDismissible: false
+        )
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptRisks: self.toChooseWallet()
+            case .acceptRisks, .dismiss: self.toChooseWallet()
             }
         }
     }

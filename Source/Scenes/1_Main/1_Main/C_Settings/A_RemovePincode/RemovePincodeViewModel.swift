@@ -27,7 +27,7 @@ import RxCocoa
 import RxSwift
 
 // MARK: - RemovePincodeUserAction
-enum RemovePincodeUserAction: String, TrackedUserAction {
+enum RemovePincodeUserAction {
     case cancelPincodeRemoval
     case removePincode
 }

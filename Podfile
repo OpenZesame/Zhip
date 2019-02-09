@@ -6,8 +6,7 @@ def shared
   # The Zilliqa Swift SDK
   pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'master'
 
-  # Used for logging, search for "TrackableEvent" in the code base to see which events
-  # are being logged
+  # Used for Crash reporting
   pod 'Firebase/Core'
   pod 'Fabric', '~> 1.9.0'
   pod 'Crashlytics', '~> 3.12.0'

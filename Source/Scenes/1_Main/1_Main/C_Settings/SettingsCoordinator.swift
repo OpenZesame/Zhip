@@ -40,11 +40,9 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationS
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-    private let tracker: Tracker
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, tracker: Tracker = Tracker()) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
-        self.tracker = tracker
         super.init(navigationController: navigationController)
     }
 
@@ -78,6 +76,7 @@ private extension SettingsCoordinator {
             case .readTermsOfService: self.toReadTermsOfService()
             case .readERC20Warning: self.toReadERC20Warning()
             case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
+            case .readCustomECCWarning: self.toReadCustomECCWarning()
 
             // Section 3
             case .backupWallet: self.toBackupWallet()
@@ -107,43 +106,64 @@ private extension SettingsCoordinator {
     }
 
     func toStarUsOnGitHub() {
-        openUrl(string: githubUrlString, tracker: tracker, context: self)
+        openUrl(string: githubUrlString)
     }
 
     func toReportIssueOnGithub() {
-        openUrl(string: githubUrlString, relative: "issues/new", tracker: tracker, context: self)
+        openUrl(string: githubUrlString, relative: "issues/new")
     }
 
     func toAcknowledgments() {
-        openUrl(string: UIApplication.openSettingsURLString, tracker: tracker, context: self)
+        openUrl(string: UIApplication.openSettingsURLString)
     }
 
     func toReadERC20Warning() {
-        let viewModel = WarningERC20ViewModel(useCase: onboardingUseCase, allowedToSupress: false)
+        let viewModel = WarningERC20ViewModel(
+            useCase: onboardingUseCase,
+            mode: .dismissible
+        )
 
-        modallyPresent(scene: WarningERC20.self, viewModel: viewModel) { userDid, dismissScene in
+        let warningErc20 = WarningERC20(viewModel: viewModel, navigationBarLayout: .opaque)
+
+        modallyPresent(scene: warningErc20) { userDid, dismissScene in
             switch userDid {
-            case .understandRisks: dismissScene(true, nil)
+            case .understandRisks, .dismiss: dismissScene(true, nil)
             }
         }
     }
 
     func toChangeAnalyticsPermissions() {
-        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase, isDismissible: true)
+        let scene = AskForCrashReportingPermissions(viewModel: viewModel, navigationBarLayout: .opaque)
 
-        modallyPresent(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { userDid, dismissScene in
+        modallyPresent(scene: scene) { userDid, dismissScene in
             switch userDid {
-            case .answerQuestionAboutAnalyticsPermission: dismissScene(true, nil)
+            case .answerQuestionAboutCrashReporting, .dismiss: dismissScene(true, nil)
             }
         }
     }
 
     func toReadTermsOfService() {
-        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase)
-
-        modallyPresent(scene: TermsOfService.self, viewModel: viewModel) { userDid, dismissScene in
+        let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: true)
+        let termsOfService = TermsOfService(viewModel: viewModel, navigationBarLayout: .opaque)
+        modallyPresent(scene: termsOfService) { userDid, dismissScene in
             switch userDid {
-            case .acceptTermsOfService: dismissScene(true, nil)
+            case .acceptTermsOfService, .dismiss: dismissScene(true, nil)
+            }
+        }
+    }
+
+    func toReadCustomECCWarning() {
+        let viewModel = WarningCustomECCViewModel(
+            useCase: onboardingUseCase,
+            isDismissible: true
+        )
+
+        let scene = WarningCustomECC(viewModel: viewModel, navigationBarLayout: .opaque)
+
+        modallyPresent(scene: scene) { userDid, dismissScene in
+            switch userDid {
+            case .acceptRisks, .dismiss: dismissScene(true, nil)
             }
         }
     }

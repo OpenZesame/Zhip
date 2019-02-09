@@ -31,7 +31,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
-    private let viewModel: ViewModel
+    let viewModel: ViewModel
     private lazy var rootContentView = View()
 
     // MARK: - Initialization
@@ -75,15 +75,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyLayoutIfNeeded()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        logSceneAppearanceToAnalyticsIfAllowed()
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
 }
 
@@ -167,10 +158,5 @@ private extension SceneController {
             // always apply layout if this is the first scene of this navigation controller
             barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)
         }
-    }
-
-    func logSceneAppearanceToAnalyticsIfAllowed() {
-        guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
-        GlobalTracker.shared.track(scene: self)
     }
 }

@@ -54,6 +54,7 @@ extension TermsOfServiceView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
+            viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
             viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
         ]
     }

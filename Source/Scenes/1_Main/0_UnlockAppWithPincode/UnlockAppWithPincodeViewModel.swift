@@ -28,7 +28,7 @@ import RxCocoa
 import RxSwift
 
 // MARK: - UnlockAppWithPincodeUserAction
-enum UnlockAppWithPincodeUserAction: String, TrackedUserAction {
+enum UnlockAppWithPincodeUserAction {
     case unlockApp
 }
 

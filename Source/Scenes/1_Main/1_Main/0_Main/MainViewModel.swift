@@ -27,7 +27,7 @@ import RxCocoa
 import Zesame
 
 // MARK: - MainUserAction
-enum MainUserAction: String, TrackedUserAction {
+enum MainUserAction {
     case send
     case receive
     case goToSettings

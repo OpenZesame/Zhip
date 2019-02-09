@@ -42,8 +42,8 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         return preferences.isTrue(.hasAcceptedTermsOfService)
     }
 
-    var hasAnsweredAnalyticsPermissionsQuestion: Bool {
-        return preferences.isTrue(.hasAnsweredAnalyticsPermissionsQuestion)
+    var hasAnsweredCrashReportingQuestion: Bool {
+        return preferences.isTrue(.hasAnsweredCrashReportingQuestion)
     }
 
     var hasAskedToSkipERC20Warning: Bool {
@@ -62,10 +62,10 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         preferences.save(value: true, for: .hasAcceptedCustomECCWarning)
     }
 
-    func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool) {
-        preferences.save(value: true, for: .hasAnsweredAnalyticsPermissionsQuestion)
-        preferences.save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)
-        setupAnalyticsIfAllowed()
+    func answeredCrashReportingQuestion(acceptsCrashReporting: Bool) {
+        preferences.save(value: true, for: .hasAnsweredCrashReportingQuestion)
+        preferences.save(value: acceptsCrashReporting, for: .hasAcceptedCrashReporting)
+        setupCrashReportingIfAllowed()
     }
 
     func doNotShowERC20WarningAgain() {

@@ -27,8 +27,8 @@ import RxSwift
 import RxCocoa
 
 // MARK: - WarningERC20UserAction
-enum WarningERC20UserAction: String, TrackedUserAction {
-    case understandRisks
+enum WarningERC20UserAction {
+    case understandRisks, dismiss
 }
 
 // MARK: - WarningERC20ViewModel
@@ -37,24 +37,39 @@ final class WarningERC20ViewModel: BaseViewModel<
     WarningERC20ViewModel.InputFromView,
     WarningERC20ViewModel.Output
 > {
-
-    private let useCase: OnboardingUseCase
-    private let allowedToSupress: Bool
-
-    init(useCase: OnboardingUseCase, allowedToSupress: Bool = true) {
-        self.useCase = useCase
-        self.allowedToSupress = allowedToSupress
+    enum Mode {
+        case dismissible
+        case userHaveToAccept(isDoNotShowAgainButtonVisible: Bool)
     }
 
+    private let useCase: OnboardingUseCase
+    private let mode: Mode
+
+    init(
+        useCase: OnboardingUseCase,
+        mode: Mode
+    ) {
+        self.useCase = useCase
+        self.mode = mode
+    }
+
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
-        func userDo(_ userAction: NavigationStep) {
+        func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
         let understandsRisks = Driver.merge(input.fromView.accept, input.fromView.doNotShowAgain)
 
+        if isDismissible {
+            input.fromController.rightBarButtonContentSubject.onBarButton(.done)
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.dismiss) })
+                .drive().disposed(by: bag)
+        }
+
         bag <~ [
-            understandsRisks.do(onNext: { userDo(.understandRisks) })
+            understandsRisks.do(onNext: { userDid(.understandRisks) })
                 .drive(),
 
             input.fromView.doNotShowAgain.do(onNext: { [unowned useCase] in
@@ -63,9 +78,26 @@ final class WarningERC20ViewModel: BaseViewModel<
         ]
 
         return Output(
-            isAcceptButtonEnabled: input.fromView.isUnderstandsERC20IncompatibilityCheckboxChecked,
-            isDoNotShowAgainButtonVisible: Driver.just(allowedToSupress)
+            isDoNotShowAgainButtonVisible: Driver.just(isDoNotShowAgainButtonVisible),
+            isAcceptButtonCheckboxVisible: Driver.just(!isDismissible),
+            isAcceptButtonEnabled: input.fromView.isUnderstandsERC20IncompatibilityCheckboxChecked
         )
+    }
+}
+
+private extension WarningERC20ViewModel {
+    var isDoNotShowAgainButtonVisible: Bool {
+        switch mode {
+        case .dismissible: return false
+        case .userHaveToAccept(let isDoNotShowAgainButtonVisible): return isDoNotShowAgainButtonVisible
+        }
+    }
+
+    var isDismissible: Bool {
+        switch mode {
+        case .dismissible: return true
+        case .userHaveToAccept: return false
+        }
     }
 }
 
@@ -77,7 +109,8 @@ extension WarningERC20ViewModel {
     }
 
     struct Output {
-        let isAcceptButtonEnabled: Driver<Bool>
         let isDoNotShowAgainButtonVisible: Driver<Bool>
+        let isAcceptButtonCheckboxVisible: Driver<Bool>
+        let isAcceptButtonEnabled: Driver<Bool>
     }
 }

@@ -33,13 +33,8 @@ typealias DismissScene = (_ animatedDismiss: Bool, _ presentationCompletion: Com
 extension Coordinating {
     /// This method is used to modally present a Scene.
     ///
-    /// - Parameters:
-    ///   - scene: Type of `Scene` (UIViewController) to present.
-    ///   - viewModel: An instance of the ViewModel used by the `Scene`s View.
-    ///   - animated: Whether to animate the presentation of the scene or not.
-    ///   - navigationHandler: **Required** closure handling the navigation steps emitted by the scene's ViewModel.
-    ///   - step: The navigation steps emitted by the `viewmodel`
-    ///   - dismiss: Closure you **should** invoke when you want to dimiss the scene.
+    /// Identical to modallyPresent:scene:animated:navigationPresentationCompletion:navigationHandler
+    /// But takes a viewModel instance instead of a scene instance and a Scene type instead of an instance of said scene type.
     func modallyPresent<S, V>(
         scene _: S.Type,
         viewModel: V.ViewModel,
@@ -49,6 +44,29 @@ extension Coordinating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)
+
+        modallyPresent(
+            scene: scene,
+            animated: animated,
+            navigationHandler: navigationHandler
+        )
+    }
+
+    /// This method is used to modally present a Scene.
+    ///
+    /// - Parameters:
+    ///   - scene: A `Scene` (UIViewController) to present.
+    ///   - animated: Whether to animate the presentation of the scene or not.
+    ///   - navigationHandler: **Required** closure handling the navigation steps emitted by the scene's ViewModel.
+    ///   - step: The navigation steps emitted by the `viewmodel`
+    ///   - dismiss: Closure you **should** invoke when you want to dimiss the scene.
+    func modallyPresent<S, V>(
+        scene: S,
+        animated: Bool = true,
+        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
+        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
+
+        let viewModel = scene.viewModel
 
         // Create a new `UINavigationController` having the scene as root ViewController.
         // Since this is starting a new modal flow we should use a new NavigationController.

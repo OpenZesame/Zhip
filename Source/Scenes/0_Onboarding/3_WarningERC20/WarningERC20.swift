@@ -24,10 +24,20 @@
 
 import Foundation
 
-final class WarningERC20: Scene<WarningERC20View> {}
+final class WarningERC20: Scene<WarningERC20View>, NavigationBarLayoutOwner {
+    let navigationBarLayout: NavigationBarLayout
 
-extension WarningERC20: NavigationBarLayoutOwner {
-    var navigationBarLayout: NavigationBarLayout {
-        return .hidden
+    init(viewModel: ViewModel, navigationBarLayout: NavigationBarLayout) {
+        self.navigationBarLayout = navigationBarLayout
+        super.init(viewModel: viewModel)
+    }
+
+    required init(viewModel: ViewModel) {
+        self.navigationBarLayout = .hidden
+        super.init(viewModel: viewModel)
+    }
+
+    required init?(coder: NSCoder) {
+        interfaceBuilderSucks
     }
 }

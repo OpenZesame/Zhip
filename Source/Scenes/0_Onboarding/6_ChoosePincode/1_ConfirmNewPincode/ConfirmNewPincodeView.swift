@@ -36,9 +36,9 @@ final class ConfirmNewPincodeView: ScrollableStackViewOwner {
 
     lazy var stackViewStyle: UIStackView.Style = [
         inputPincodeView,
-        .spacer,
         haveBackedUpPincodeCheckbox,
-        confirmPincodeButton
+        confirmPincodeButton,
+        .spacer
     ]
 
     override func setup() {

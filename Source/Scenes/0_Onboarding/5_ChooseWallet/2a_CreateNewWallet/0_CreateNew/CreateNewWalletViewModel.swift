@@ -31,16 +31,8 @@ private typealias € = L10n.Scene.CreateNewWallet
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .newOrRestorePrivateKey
 
 // MARK: - CreateNewWalletUserAction
-enum CreateNewWalletUserAction: TrackableEvent {
+enum CreateNewWalletUserAction {
     case createWallet(Wallet), cancel
-
-    // Analytics
-    var eventName: String {
-        switch self {
-        case .createWallet: return "createWallet"
-        case .cancel: return "cancel"
-        }
-    }
 }
 
 // MARK: - CreateNewWalletViewModel

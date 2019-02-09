@@ -27,7 +27,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum EnsureThatYouAreNotBeingWatchedUserAction: String, TrackedUserAction {
+enum EnsureThatYouAreNotBeingWatchedUserAction {
     case /*user did*/understand, cancel
 }
 

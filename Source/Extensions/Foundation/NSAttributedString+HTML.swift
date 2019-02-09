@@ -46,7 +46,6 @@ func htmlAsAttributedString(
     }
 }
 
-// swiftlint:disable:next function_body_length
 func generateHTMLWithCSS(
     htmlBodyString: String,
     textColor: UIColor,

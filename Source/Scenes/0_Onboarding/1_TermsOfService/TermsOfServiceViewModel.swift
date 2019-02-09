@@ -27,8 +27,8 @@ import RxSwift
 import RxCocoa
 
 // MARK: TermsOfServiceNavigation
-enum TermsOfServiceNavigation: String, TrackedUserAction {
-    case acceptTermsOfService
+enum TermsOfServiceNavigation {
+    case acceptTermsOfService, dismiss
 }
 
 // MARK: - TermsOfServiceViewModel
@@ -39,17 +39,27 @@ final class TermsOfServiceViewModel: BaseViewModel<
 > {
 
     private let useCase: OnboardingUseCase
+    private let isDismissible: Bool
 
-    init(useCase: OnboardingUseCase) {
+    init(useCase: OnboardingUseCase, isDismissible: Bool) {
         self.useCase = useCase
+        self.isDismissible = isDismissible
     }
-    
+
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
         let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
+
+        if isDismissible {
+            input.fromController.rightBarButtonContentSubject.onBarButton(.done)
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.dismiss) })
+                .drive().disposed(by: bag)
+        }
 
         bag <~ [
             input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
@@ -59,6 +69,7 @@ final class TermsOfServiceViewModel: BaseViewModel<
         ]
 
         return Output(
+            isAcceptButtonVisible: Driver.just(!isDismissible),
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
     }
@@ -72,6 +83,7 @@ extension TermsOfServiceViewModel {
     }
 
     struct Output {
+        let isAcceptButtonVisible: Driver<Bool>
         let isAcceptButtonEnabled: Driver<Bool>
     }
 }

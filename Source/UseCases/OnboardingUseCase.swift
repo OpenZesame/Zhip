@@ -33,8 +33,8 @@ protocol OnboardingUseCase: AnyObject {
     var hasAcceptedCustomECCWarning: Bool { get }
     func didAcceptCustomECCWarning()
 
-    var hasAnsweredAnalyticsPermissionsQuestion: Bool { get }
-    func answeredAnalyticsPermissionsQuestion(acceptsTracking: Bool)
+    var hasAnsweredCrashReportingQuestion: Bool { get }
+    func answeredCrashReportingQuestion(acceptsCrashReporting: Bool)
 
     var hasAskedToSkipERC20Warning: Bool { get }
     func doNotShowERC20WarningAgain()

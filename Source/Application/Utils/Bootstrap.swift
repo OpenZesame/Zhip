@@ -33,12 +33,12 @@ let log = SwiftyBeaver.self
 func bootstrap() {
     AppAppearance.setupDefault()
     setupKeyboardHiding()
-    setupAnalyticsIfAllowed()
+    setupCrashReportingIfAllowed()
     setupLogging()
 }
 
-func setupAnalyticsIfAllowed() {
-    guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else {
+func setupCrashReportingIfAllowed() {
+    guard Preferences.default.isTrue(.hasAcceptedCrashReporting) else {
         // unsure if this does anything or if it is needed, but seems prudent.
         FirebaseApp.app()?.delete { _ in
             /* some required strange ObjC callback that we dont care about `- (void)deleteApp:(FIRAppVoidBoolCallback)completion;` */
@@ -49,7 +49,10 @@ func setupAnalyticsIfAllowed() {
         // already configured, will crash if called twice
         return
     }
-    FirebaseConfiguration().setLoggerLevel(FirebaseLoggerLevel.min)
+    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
+    // Firebase analytics is not enabled, but Crashlytics is setup via Firebase
+    // (the new way of doing it since Google bought Fabric)
+    // So Crashlytics is setup via Firebase.
     FirebaseApp.configure()
     Fabric.with([Crashlytics.self])
 }

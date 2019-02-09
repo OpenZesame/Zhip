@@ -68,8 +68,6 @@ extension ErrorTracker {
             }
 
             guard let mappedError = mapError(swiftError) else {
-                print("mapping from swiftError to `\(IE.self)` failed, swiftError: \(swiftError)")
-                GlobalTracker.shared.track(error: .failedToMapSwiftErrorTo(type: IE.self))
                 return nil
             }
 

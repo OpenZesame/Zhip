@@ -24,7 +24,7 @@
 
 import UIKit
 
-func openUrl(string baseUrlString: String, relative path: String? = nil, tracker: Tracker? = nil, context: Any = NoContext()) {
+func openUrl(string baseUrlString: String, relative path: String? = nil) {
     func createUrl() -> URL? {
         guard let baseUrl = URL(string: baseUrlString) else { return nil }
         guard let path = path else { return baseUrl }
@@ -32,7 +32,7 @@ func openUrl(string baseUrlString: String, relative path: String? = nil, tracker
     }
 
     guard let url = createUrl() else {
-        tracker?.track(event: TrackedError.failedToCreateUrl(from: baseUrlString), context: context)
+        log.error("Failed to create url")
         return
     }
 
