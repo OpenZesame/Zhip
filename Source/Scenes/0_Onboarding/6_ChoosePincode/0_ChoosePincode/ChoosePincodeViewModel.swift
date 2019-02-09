@@ -26,16 +26,9 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-enum ChoosePincodeUserAction: TrackableEvent {
+enum ChoosePincodeUserAction {
     case chosePincode(Pincode)
     case skip
-
-    var eventName: String {
-        switch self {
-        case .chosePincode: return "chosePincode"
-        case .skip: return "skip"
-        }
-    }
 }
 
 final class ChoosePincodeViewModel: BaseViewModel<

@@ -27,14 +27,8 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-enum SignTransactionUserAction: TrackableEvent {
+enum SignTransactionUserAction {
     case sign(TransactionResponse)
-
-    var eventName: String {
-        switch self {
-        case .sign: return "sign"
-        }
-    }
 }
 
 final class SignTransactionViewModel: BaseViewModel<

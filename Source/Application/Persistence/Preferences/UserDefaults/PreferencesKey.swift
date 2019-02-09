@@ -29,8 +29,8 @@ enum PreferencesKey: String, KeyConvertible {
     case hasRunAppBefore
     case hasAcceptedTermsOfService
     case hasAcceptedCustomECCWarning
-    case hasAnsweredAnalyticsPermissionsQuestion
-    case hasAcceptedAnalyticsTracking
+    case hasAnsweredCrashReportingQuestion
+    case hasAcceptedCrashReporting
     case skipShowingERC20Warning
     case skipPincodeSetup
     case cachedBalance

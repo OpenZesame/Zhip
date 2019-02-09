@@ -31,7 +31,7 @@ import RxCocoa
 import RxDataSources
 
 // MARK: SettingsNavigation
-enum SettingsNavigation: String, TrackedUserAction {
+enum SettingsNavigation {
     // Navigation Bar
     case closeSettings
 

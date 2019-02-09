@@ -36,7 +36,6 @@ final class ScanQRCodeView: UIView {
     private let scannedQrCodeSubject = PublishSubject<String>()
     private lazy var readerView = QRCodeReaderView()
     private lazy var reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
-    private let tracker: Tracking = Tracker()
 
     init() {
         super.init(frame: .zero)
@@ -62,10 +61,6 @@ private extension ScanQRCodeView {
             self.scannedQrCodeSubject.onNext($0.value)
         }
 
-        reader.didFailDecoding = { [unowned self] in
-            self.tracker.track(event: ScanQRCodeViewEvents.failedToScanQRCode, context: self)
-        }
-
         reader.startScanning()
     }
 }
@@ -78,8 +73,4 @@ extension ScanQRCodeView: ViewModelled {
             scannedQrCodeString: scannedQrCodeSubject.asDriverOnErrorReturnEmpty()
         )
     }
-}
-
-enum ScanQRCodeViewEvents: String, TrackableEvent {
-    case failedToScanQRCode
 }

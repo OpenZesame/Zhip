@@ -145,7 +145,6 @@ private extension SendCoordinator {
         let baseURL = "https://explorer.zilliqa.com/"
         let urlString = "transactions/\(transactionId)"
         guard let url = URL(string: urlString, relativeTo: URL(string: baseURL)) else {
-            GlobalTracker.shared.track(error: .failedToCreateUrl(from: baseURL))
             return
         }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)

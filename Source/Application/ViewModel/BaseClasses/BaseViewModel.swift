@@ -38,10 +38,6 @@ class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: Abstrac
     init(navigator: Navigator<NavigationStep> = Navigator<NavigationStep>()) {
         self.navigator = navigator
     }
-
-    func track(event: TrackableEvent) {
-        navigator.track(event: event, context: self)
-    }
 }
 
 extension BaseViewModel: Navigating {}

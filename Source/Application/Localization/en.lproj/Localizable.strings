@@ -51,12 +51,12 @@
 "Scene.TermsOfService.Label.TermsOfService" = "Terms of service";
 "Scene.TermsOfService.Button.Accept" = "Accept";
 
-// MARK: AskForAnalyticsPermissions
-"Scene.AskForAnalyticsPermissions.Title" = "Analytics";
-"Scene.AskForAnalyticsPermissions.Text.Disclaimer" = "We would love to improve this app by collecting and analyzing anonymized events sent by the app while you are using it. Such events could for example be menu selections and button taps (so we know if you use the QR code scanning feature for example). You can opt out of this at anytime from the settings menu. We never send any sensitive information of course, which you can verify yourself since this app is open source. Search for 'TrackableEvent' in the source code (you will find a link to Github in the settings meny).";
-"Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer" = "I have read and understood the analytics disclaimer";
-"Scene.AskForAnalyticsPermissions.Button.Accept" = "Accept";
-"Scene.AskForAnalyticsPermissions.Button.Decline" = "Decline";
+// MARK: AskForCrashReportingPermissions
+"Scene.AskForCrashReportingPermissions.Title" = "Crash reporting";
+"Scene.AskForCrashReportingPermissions.Text.Disclaimer" = "We would love to improve this app by collecting and analyzing anonymized crash reports sent by the app if it crashes. \n\nYou can opt out of this at anytime from the settings menu.\n\nThe app does not use any analytics beside crash reporting (Crashlytics), which you can verify yourself since this app is open source, search for `Analytics.logEvent` or `Analytics.setScreenName` in the code base which will not yield any search results.\n\nPlease 'Opt In' or 'Opt Out' of crash reporting.";
+"Scene.AskForCrashReportingPermissions.Checkbox.ReadDisclaimer" = "I have read and understood the crash reporting disclaimer";
+"Scene.AskForCrashReportingPermissions.Button.Accept" = "Opt in";
+"Scene.AskForCrashReportingPermissions.Button.Decline" = "Opt out";
 
 // MARK: WarningERC20
 "Scene.WarningERC20.Label.Erc20Tokens" = "ERC-20 tokens";
@@ -216,7 +216,7 @@
 "Scene.Settings.Cell.Acknowledgements" = "Acknowledgements";
 "Scene.Settings.Cell.Terms of service" = "Terms of service";
 "Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";
-"Scene.Settings.Cell.ReadCustomECCWarning" = "Read ECC warning";
+"Scene.Settings.Cell.ReadCustomECCWarning" = "Unreliable cryptography";
 "Scene.Settings.Cell.ChangeAnalyticsPermissions" = "Change analytics permissions";
 "Scene.Settings.Cell.BackupWallet" = "Backup wallet";
 "Scene.Settings.Cell.RemoveWallet" = "Remove wallet";

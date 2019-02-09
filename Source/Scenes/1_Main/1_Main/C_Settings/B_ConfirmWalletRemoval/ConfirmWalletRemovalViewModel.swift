@@ -27,7 +27,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum ConfirmWalletRemovalUserAction: String, TrackedUserAction {
+enum ConfirmWalletRemovalUserAction {
     case /*user did*/cancel, confirm
 }
 

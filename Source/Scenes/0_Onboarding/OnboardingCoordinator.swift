@@ -63,7 +63,7 @@ private extension OnboardingCoordinator {
             return toTermsOfService()
         }
 
-        guard onboardingUseCase.hasAnsweredAnalyticsPermissionsQuestion else {
+        guard onboardingUseCase.hasAnsweredCrashReportingQuestion else {
             return toAnalyticsPermission()
         }
 
@@ -96,11 +96,11 @@ private extension OnboardingCoordinator {
     }
 
     func toAnalyticsPermission() {
-        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase)
 
-        push(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { [unowned self] userDid in
+        push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutAnalyticsPermission: self.toWarningERC20()
+            case .answerQuestionAboutCrashReporting: self.toWarningERC20()
             }
         }
     }

@@ -27,7 +27,7 @@ import RxSwift
 import RxCocoa
 
 // MARK: - WarningCustomECCUserAction
-enum WarningCustomECCUserAction: String, TrackedUserAction {
+enum WarningCustomECCUserAction {
     case acceptRisks, dismiss
 }
 

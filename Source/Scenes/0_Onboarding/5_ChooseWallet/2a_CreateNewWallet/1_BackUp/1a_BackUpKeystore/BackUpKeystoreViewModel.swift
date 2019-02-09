@@ -29,7 +29,7 @@ import RxCocoa
 
 private typealias € = L10n.Scene.BackUpKeystore
 
-enum BackUpKeystoreUserAction: String, TrackedUserAction {
+enum BackUpKeystoreUserAction {
     case finished
 }
 

@@ -27,17 +27,9 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-enum DecryptKeystoreToRevealKeyPairUserAction: TrackableEvent {
+enum DecryptKeystoreToRevealKeyPairUserAction {
     case dismiss
     case decryptKeystoreReavealing(keyPair: KeyPair)
-
-    // Analytics
-    var eventName: String {
-        switch self {
-        case .dismiss: return "dismiss"
-        case .decryptKeystoreReavealing: return "decryptKeystoreReavealing"
-        }
-    }
 }
 
 private typealias € = L10n.Scene.DecryptKeystoreToRevealKeyPair

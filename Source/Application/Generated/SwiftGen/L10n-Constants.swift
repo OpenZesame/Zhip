@@ -110,22 +110,22 @@ internal enum L10n {
   }
 
   internal enum Scene {
-    internal enum AskForAnalyticsPermissions {
-      /// Analytics
-      internal static let title = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Title")
+    internal enum AskForCrashReportingPermissions {
+      /// Crash reporting
+      internal static let title = L10n.tr("Localizable", "Scene.AskForCrashReportingPermissions.Title")
       internal enum Button {
-        /// Accept
-        internal static let accept = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Accept")
-        /// Decline
-        internal static let decline = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Button.Decline")
+        /// Opt in
+        internal static let accept = L10n.tr("Localizable", "Scene.AskForCrashReportingPermissions.Button.Accept")
+        /// Opt out
+        internal static let decline = L10n.tr("Localizable", "Scene.AskForCrashReportingPermissions.Button.Decline")
       }
       internal enum Checkbox {
-        /// I have read and understood the analytics disclaimer
-        internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Checkbox.ReadDisclaimer")
+        /// I have read and understood the crash reporting disclaimer
+        internal static let readDisclaimer = L10n.tr("Localizable", "Scene.AskForCrashReportingPermissions.Checkbox.ReadDisclaimer")
       }
       internal enum Text {
-        /// We would love to improve this app by collecting and analyzing anonymized events sent by the app while you are using it. Such events could for example be menu selections and button taps (so we know if you use the QR code scanning feature for example). You can opt out of this at anytime from the settings menu. We never send any sensitive information of course, which you can verify yourself since this app is open source. Search for 'TrackableEvent' in the source code (you will find a link to Github in the settings meny).
-        internal static let disclaimer = L10n.tr("Localizable", "Scene.AskForAnalyticsPermissions.Text.Disclaimer")
+        /// We would love to improve this app by collecting and analyzing anonymized crash reports sent by the app if it crashes. \n\nYou can opt out of this at anytime from the settings menu.\n\nThe app does not use any analytics beside crash reporting (Crashlytics), which you can verify yourself since this app is open source, search for `Analytics.logEvent` or `Analytics.setScreenName` in the code base which will not yield any search results.\n\nPlease 'Opt In' or 'Opt Out' of crash reporting.
+        internal static let disclaimer = L10n.tr("Localizable", "Scene.AskForCrashReportingPermissions.Text.Disclaimer")
       }
     }
     internal enum BackUpKeystore {
@@ -492,7 +492,7 @@ internal enum L10n {
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
         /// Change analytics permissions
         internal static let changeAnalyticsPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.ChangeAnalyticsPermissions")
-        /// Read ECC warning
+        /// Unreliable cryptography
         internal static let readCustomECCWarning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadCustomECCWarning")
         /// Read ERC-20 warning
         internal static let readERC20Warning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadERC20Warning")

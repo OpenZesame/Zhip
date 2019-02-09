@@ -76,11 +76,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         super.viewWillAppear(animated)
         applyLayoutIfNeeded()
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        logSceneAppearanceToAnalyticsIfAllowed()
-    }
 }
 
 // MARK: Private
@@ -163,10 +158,5 @@ private extension SceneController {
             // always apply layout if this is the first scene of this navigation controller
             barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)
         }
-    }
-
-    func logSceneAppearanceToAnalyticsIfAllowed() {
-        guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
-        GlobalTracker.shared.track(scene: self)
     }
 }

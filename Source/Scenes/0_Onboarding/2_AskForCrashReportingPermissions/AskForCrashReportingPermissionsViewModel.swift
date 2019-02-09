@@ -27,15 +27,15 @@ import RxSwift
 import RxCocoa
 
 // MARK: - AnalyticsPermissionNavigation
-enum AskForAnalyticsPermissionsNavigation: String, TrackedUserAction {
-    case answerQuestionAboutAnalyticsPermission
+enum AskForCrashReportingPermissionsNavigation {
+    case answerQuestionAboutCrashReporting
 }
 
 // MARK: - AnalyticsPermissionViewModel
-final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
-    AskForAnalyticsPermissionsNavigation,
-    AskForAnalyticsPermissionsViewModel.InputFromView,
-    AskForAnalyticsPermissionsViewModel.Output
+final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
+    AskForCrashReportingPermissionsNavigation,
+    AskForCrashReportingPermissionsViewModel.InputFromView,
+    AskForCrashReportingPermissionsViewModel.Output
 > {
 
     private let useCase: OnboardingUseCase
@@ -56,8 +56,8 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
         
         bag <~ [
             hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
-                self.useCase.answeredAnalyticsPermissionsQuestion(acceptsTracking: $0)
-                self.navigator.next(.answerQuestionAboutAnalyticsPermission)
+                self.useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
+                self.navigator.next(.answerQuestionAboutCrashReporting)
             }).drive()
         ]
         
@@ -67,7 +67,7 @@ final class AskForAnalyticsPermissionsViewModel: BaseViewModel<
     }
 }
 
-extension AskForAnalyticsPermissionsViewModel {
+extension AskForCrashReportingPermissionsViewModel {
     struct InputFromView {
         let isHaveReadDisclaimerCheckboxChecked: Driver<Bool>
         let acceptTrigger: Driver<Void>

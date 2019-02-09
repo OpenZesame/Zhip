@@ -30,18 +30,8 @@ import RxSwift
 import RxCocoa
 
 // MARK: - User action and navigation steps
-enum PollTransactionStatusUserAction: TrackableEvent {
+enum PollTransactionStatusUserAction {
 	case /*user did*/skip, dismiss, viewTransactionDetailsInBrowser(id: String), waitUntilTimeout
-
-    // Analytics
-    var eventName: String {
-        switch self {
-        case .skip: return "skip"
-        case .dismiss: return "dismss"
-        case .viewTransactionDetailsInBrowser: return "viewTransactionDetailsInBrowser"
-        case .waitUntilTimeout: return "waitUntilTimeout"
-        }
-    }
 }
 
 // MARK: - PollTransactionStatusViewModel

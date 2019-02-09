@@ -30,17 +30,9 @@ import Zesame
 private typealias € = L10n.Scene.Receive
 
 // MARK: - ReceiveUserAction
-enum ReceiveUserAction: TrackableEvent {
+enum ReceiveUserAction {
     case finish
     case requestTransaction(TransactionIntent)
-
-    // Analytics
-    var eventName: String {
-        switch self {
-        case .finish: return "finish"
-        case .requestTransaction: return "requestTransaction"
-        }
-    }
 }
 
 // MARK: - ReceiveViewModel
@@ -56,6 +48,7 @@ final class ReceiveViewModel: BaseViewModel<
     init(useCase: WalletUseCase, qrCoder: QRCoding = QRCoder()) {
         self.useCase = useCase
         self.qrCoder = qrCoder
+
     }
 
     // swiftlint:disable:next function_body_length
@@ -105,7 +98,6 @@ final class ReceiveViewModel: BaseViewModel<
 
         return Output(
             receivingAddress: receivingAddress,
-            amountBecomeFirstResponder: input.fromController.viewWillAppear,
             amountValidation: amountValidation,
             qrImage: qrImage
         )
@@ -124,7 +116,6 @@ extension ReceiveViewModel {
 
     struct Output {
         let receivingAddress: Driver<String>
-        let amountBecomeFirstResponder: Driver<Void>
         let amountValidation: Driver<AnyValidation>
         let qrImage: Driver<UIImage?>
     }

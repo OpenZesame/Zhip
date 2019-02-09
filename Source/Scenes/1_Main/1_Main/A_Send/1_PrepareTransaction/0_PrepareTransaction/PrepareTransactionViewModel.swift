@@ -28,18 +28,10 @@ import RxCocoa
 import Zesame
 
 // MARK: - PrepareTransactionUserAction
-enum PrepareTransactionUserAction: TrackableEvent {
+enum PrepareTransactionUserAction {
 	case cancel
 	case signPayment(Payment)
 	case scanQRCode
-
-    var eventName: String {
-        switch self {
-        case .cancel: return "cancel"
-        case .signPayment: return "signPayment"
-        case .scanQRCode: return "scanQRCode"
-        }
-    }
 }
 
 // MARK: - PrepareTransactionViewModel
@@ -59,10 +51,6 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		self.transactionUseCase = transactionUseCase
 		self.scannedOrDeeplinkedTransaction = scannedOrDeeplinkedTransaction
 	}
-
-    enum Event: String, TrackableEvent {
-        case maxAmount
-    }
 
 	// swiftlint:disable:next function_body_length
 	override func transform(input: Input) -> Output {
@@ -119,7 +107,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let gasPrice = gasPriceValidationValue.map { $0.value }
 
-        let maxAmountTrigger = input.fromView.maxAmountTrigger.do(onNext: { [unowned self] in self.track(event: Event.maxAmount) })
+        let maxAmountTrigger = input.fromView.maxAmountTrigger
 
         let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
             input.fromView.didEndEditingGasPrice,

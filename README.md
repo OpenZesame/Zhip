@@ -47,23 +47,35 @@ In turn, Zesame is dependent on the Elliptic Curve Cryptography of [EllipticCurv
 
 
 # Privacy
-When starting the app for the first time you will be asked to opt-in or opt-out for analytics. Currently, you cannot opt in for just crash reporting but not analytics events, you opt-in for both or neither. 
+When starting the app for the first time you will be asked to opt-in or opt-out for crashreporting. 
 
 If you chose to opt in and would like to opt out at a later time - or the other way around - you can do so from Settings at any time. 
 
-If you choose to opt out neither Google Firebase Analytics nor Firebase (former Fabric) Crashlytics will be initialized and no analytics events and no crash reports will be sent from your app. 
+If you choose to opt out Crashlytics will not be initialized and no crash reports will be sent from your app. 
 
-## Crash reports
 If you chose to opt in it will make it easier to fix potential bugs in the apps, especially those crucial ones resulting in crashes. Crashlytics has been added for this sole purpose, make the app more reliable and less likely to crash. 
 
-## Analytics
-If you are curious which events are being tracked, it is button taps and screen events - **no sensitive data is ever being saved/sent to Google**, you can verify this yourself by [searchin here on Github in this repo for "TrackableEvent"](https://github.com/OpenZesame/Zhip/search?q=TrackableEvent). You can also find the two instances in the code where events are being sent by [searching for "Firebase.Analytics" in Swift files](https://github.com/OpenZesame/Zhip/search?l=Swift&q=%22Firebase.Analytics%22). Both calls appear after this line respectively: 
+## Disabled by default
+Open the file [Zhip-Info.plist](Source/Application/Zhip-Info.plist) and you will see that the value for the key `firebase_crashlytics_collection_enabled` is set to `false`, which is the [documented way of turning of crash reports by default](https://firebase.google.com/docs/crashlytics/customize-crash-reports)
+
+When the app starts it checks if you accepted crash reporting, you can verify this by looking in the file [Bootstrap.swift](Source/Application/Utils/Bootstrap.swift) 
 ```swift
-guard preferences.isTrue(.hasAcceptedAnalyticsTracking) else { return }
+func setupCrashReportingIfAllowed() {
+    guard Preferences.default.isTrue(.hasAcceptedCrashReporting)
 ```
 
-And searching in the code for [`save(value: acceptsTracking, for: .hasAcceptedAnalyticsTracking)`](https://github.com/OpenZesame/Zhip/search?q=%22save%28value%3A+acceptsTracking%2C+for%3A+.hasAcceptedAnalyticsTracking%29%22&unscoped_q=%22save%28value%3A+acceptsTracking%2C+for%3A+.hasAcceptedAnalyticsTracking%29%22) shows when and how the boolean flag `hasAcceptedAnalyticsTracking` gets written.
+And searching in the code for [`"for .hasAcceptedCrashReporting"`](https://github.com/OpenZesame/Zhip/search?l=Swift&q=%22for%3A+.hasAcceptedCrashReporting%22) shows when and how the boolean flag `hasAcceptedCrashReporting` gets written.
 
+## Analytics not used
+In the function `setupCrashReportingIfAllowed` in `Bootstrap.swift` you will see calls to `Firebase`:
+```swift
+    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
+    FirebaseApp.configure()
+    Fabric.with([Crashlytics.self])
+```
+Firebase analytics is not used, but Crashlytics is setup using Firebase.
+
+You can search for `Analytics.logEvent` or `Analytics.setScreenName` in the code and you will not find any search results.
 
 # Donate
 This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit in Zesame](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4)). 

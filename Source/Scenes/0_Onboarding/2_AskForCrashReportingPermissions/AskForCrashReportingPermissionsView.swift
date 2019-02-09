@@ -27,7 +27,7 @@ import UIKit
 import TinyConstraints
 import RxSwift
 
-final class AskForAnalyticsPermissionsView: ScrollableStackViewOwner {
+final class AskForCrashReportingPermissionsView: ScrollableStackViewOwner {
 
     private lazy var imageView                      = UIImageView()
     private lazy var headerLabel                    = UILabel()
@@ -52,8 +52,8 @@ final class AskForAnalyticsPermissionsView: ScrollableStackViewOwner {
 }
 
 // MARK: - ViewModelled
-extension AskForAnalyticsPermissionsView: ViewModelled {
-    typealias ViewModel = AskForAnalyticsPermissionsViewModel
+extension AskForCrashReportingPermissionsView: ViewModelled {
+    typealias ViewModel = AskForCrashReportingPermissionsViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
@@ -71,9 +71,9 @@ extension AskForAnalyticsPermissionsView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.AskForAnalyticsPermissions
+private typealias € = L10n.Scene.AskForCrashReportingPermissions
 private typealias Icon = Asset.Icons.Large
-private extension AskForAnalyticsPermissionsView {
+private extension AskForCrashReportingPermissionsView {
     func setupSubviews() {
         imageView.withStyle(.default) {
             $0.asset(Icon.analytics)

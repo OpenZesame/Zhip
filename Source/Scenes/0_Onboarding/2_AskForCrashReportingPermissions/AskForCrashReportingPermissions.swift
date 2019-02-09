@@ -23,20 +23,11 @@
 //
 
 import Foundation
-import UIKit
-import Firebase
 
-/// A type that can track events that are trackable
-protocol Tracking {
-    /// `context` should be made optional in your implementation, by using `NoContext`
-    func track(event: TrackableEvent, context: Any)
-    func track<S>(scene: S) where S: UIViewController
-}
+final class AskForCrashReportingPermissions: Scene<AskForCrashReportingPermissionsView> {}
 
-extension Tracking {
-    func track<S>(scene: S) where S: UIViewController {
-        guard Preferences.default.isTrue(.hasAcceptedAnalyticsTracking) else { return }
-        let sceneName = "\(type(of: scene))"
-        Firebase.Analytics.setScreenName(sceneName, screenClass: sceneName)
+extension AskForCrashReportingPermissions: NavigationBarLayoutOwner {
+    var navigationBarLayout: NavigationBarLayout {
+        return .hidden
     }
 }

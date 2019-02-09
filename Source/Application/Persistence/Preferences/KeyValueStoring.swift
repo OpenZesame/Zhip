@@ -65,7 +65,7 @@ extension KeyValueStoring {
             let json = try encoder.encode(model)
             save(value: json, for: key)
         } catch {
-            GlobalTracker.shared.track(error: .failedToSaveCodable(type: C.self))
+            log.error("Failed to save codable")
         }
     }
 }
@@ -79,21 +79,5 @@ extension KeyValueStoring {
 
     func isFalse(_ key: Key) -> Bool {
         return !isTrue(key)
-    }
-}
-
-final class GlobalTracker: Tracking {
-    static let shared = GlobalTracker()
-    private let tracker: Tracking = Tracker()
-    func track(event: TrackableEvent, context: Any) {
-        tracker.track(event: event, context: context)
-    }
-
-    func track(error: TrackedError, contextFile: String = #file, contextFunction: String = #function) {
-        track(error: error, context: "\(contextFile):\(contextFunction)")
-    }
-
-    func track(error: TrackedError, context: String) {
-        track(event: error, context: context)
     }
 }

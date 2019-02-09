@@ -27,7 +27,7 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-enum BackUpRevealedKeyPairUserAction: String, TrackedUserAction {
+enum BackUpRevealedKeyPairUserAction {
     case finish
 }
 

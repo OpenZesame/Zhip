@@ -25,10 +25,7 @@
 import Foundation
 
 final class DeepLinkGenerator {
-    private let tracker: Tracker
-    init(tracker: Tracker = Tracker()) {
-        self.tracker = tracker
-    }
+    init() {}
 }
 
 extension DeepLinkGenerator {

@@ -27,29 +27,14 @@ import RxSwift
 import RxCocoa
 
 final class DeepLinkHandler {
-    enum AnalyticsEvent: TrackableEvent {
-        case handlingIncomingDeeplink
-        case sourceOfDeepLink(sendingAppId: String)
-        case failedToParseLink
 
-        var eventName: String {
-            switch self {
-            case .handlingIncomingDeeplink: return "handlingIncomingDeeplink"
-            case .sourceOfDeepLink(let sendingAppId): return "sourceOfDeepLink: \(sendingAppId)"
-            case .failedToParseLink: return "failedToParseLink"
-            }
-        }
-    }
-
-    private let tracker: Tracker
     private let navigator: Navigator<DeepLink>
 
     /// This buffered link gets set when the app is locked with a PIN code
     private var bufferedLink: DeepLink?
     private var appIsLockedSoBufferLink = false
 
-    init(tracker: Tracker = Tracker(), navigator: Navigator<DeepLink> = Navigator<DeepLink>()) {
-        self.tracker = tracker
+    init(navigator: Navigator<DeepLink> = Navigator<DeepLink>()) {
         self.navigator = navigator
     }
 
@@ -71,14 +56,7 @@ extension DeepLinkHandler {
     ///
     /// return: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
     func handle(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
-        track(event: .handlingIncomingDeeplink)
-
-        if let sendingAppID = options[.sourceApplication] as? String {
-            track(event: .sourceOfDeepLink(sendingAppId: sendingAppID))
-        }
-
         guard let destination = DeepLink(url: url) else {
-            track(event: .failedToParseLink)
             return false
         }
 
@@ -100,10 +78,6 @@ private extension DeepLinkHandler {
         } else {
             navigator.next(destination)
         }
-    }
-
-    func track(event: AnalyticsEvent) {
-        tracker.track(event: event)
     }
 }
 

@@ -40,11 +40,9 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationS
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-    private let tracker: Tracker
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, tracker: Tracker = Tracker()) {
+    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
-        self.tracker = tracker
         super.init(navigationController: navigationController)
     }
 
@@ -108,15 +106,15 @@ private extension SettingsCoordinator {
     }
 
     func toStarUsOnGitHub() {
-        openUrl(string: githubUrlString, tracker: tracker, context: self)
+        openUrl(string: githubUrlString)
     }
 
     func toReportIssueOnGithub() {
-        openUrl(string: githubUrlString, relative: "issues/new", tracker: tracker, context: self)
+        openUrl(string: githubUrlString, relative: "issues/new")
     }
 
     func toAcknowledgments() {
-        openUrl(string: UIApplication.openSettingsURLString, tracker: tracker, context: self)
+        openUrl(string: UIApplication.openSettingsURLString)
     }
 
     func toReadERC20Warning() {
@@ -135,11 +133,11 @@ private extension SettingsCoordinator {
     }
 
     func toChangeAnalyticsPermissions() {
-        let viewModel = AskForAnalyticsPermissionsViewModel(useCase: onboardingUseCase)
+        let viewModel = AskForCrashReportingPermissionsViewModel(useCase: onboardingUseCase)
 
-        modallyPresent(scene: AskForAnalyticsPermissions.self, viewModel: viewModel) { userDid, dismissScene in
+        modallyPresent(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
-            case .answerQuestionAboutAnalyticsPermission: dismissScene(true, nil)
+            case .answerQuestionAboutCrashReporting: dismissScene(true, nil)
             }
         }
     }
