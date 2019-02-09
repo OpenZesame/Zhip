@@ -69,5 +69,6 @@ private extension WarningCustomECCView {
         textView.withStyle(.nonSelectable)
         textView.backgroundColor = .clear
         textView.attributedText = htmlAsAttributedString(htmlFileName: "CustomECCWarning")
+        textView.isSelectable = true
     }
 }
