@@ -63,7 +63,7 @@ private extension QRCoding {
         content: String,
         size cgFloatSize: CGFloat,
         backgroundColor: UIColor = .teal,
-        foregroundColor: UIColor = .black,
+        foregroundColor: UIColor = .deepBlue,
         watermarkImage: UIImage? = nil
         ) -> UIImage? {
         let intSize = Int(cgFloatSize)
