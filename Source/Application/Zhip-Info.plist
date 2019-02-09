@@ -27,6 +27,8 @@
 		<string>Barlow-Thin.ttf</string>
 		<string>Barlow-ThinItalic.ttf</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

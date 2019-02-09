@@ -81,10 +81,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         super.viewDidAppear(animated)
         logSceneAppearanceToAnalyticsIfAllowed()
     }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 }
 
 // MARK: Private
