@@ -62,6 +62,17 @@ private extension ScanQRCodeView {
         }
 
         reader.startScanning()
+
+        readerView.switchCameraButton?.addTarget(self, action: #selector(switchCameraAction), for: .primaryActionTriggered)
+        readerView.toggleTorchButton?.addTarget(self, action: #selector(toggleTorchAction), for: .primaryActionTriggered)
+    }
+
+    @objc func toggleTorchAction() {
+        reader.toggleTorch()
+    }
+
+    @objc func switchCameraAction() {
+        reader.switchDeviceInput()
     }
 }
 
