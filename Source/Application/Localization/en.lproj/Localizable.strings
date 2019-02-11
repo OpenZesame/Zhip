@@ -217,7 +217,7 @@
 "Scene.Settings.Cell.Terms of service" = "Terms of service";
 "Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";
 "Scene.Settings.Cell.ReadCustomECCWarning" = "Unreliable cryptography";
-"Scene.Settings.Cell.ChangeAnalyticsPermissions" = "Change analytics permissions";
+"Scene.Settings.Cell.CrashReportingPermissions" = "Crash reporting permissions";
 "Scene.Settings.Cell.BackupWallet" = "Backup wallet";
 "Scene.Settings.Cell.RemoveWallet" = "Remove wallet";
 "Scene.Settings.Footer.Network" = "Connected to %s";

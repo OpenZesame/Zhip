@@ -136,9 +136,8 @@ private extension SettingsViewModel {
         sections += [
             .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
             .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning, icon: Icon.warning),
-            // TOOO change icon when asset available
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.changeAnalyticsPermissions, icon: Icon.document),
-            .whenSelectedNavigate(to: .readCustomECCWarning, titled: €.readCustomECCWarning, icon: Icon.warning)
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.crashReportingPermissions, icon: Icon.analytics),
+            .whenSelectedNavigate(to: .readCustomECCWarning, titled: €.readCustomECCWarning, icon: Icon.ecc)
         ]
 
         sections += [
