@@ -36,6 +36,10 @@ final class SettingsView: HeaderlessTableViewSceneView<SettingsTableViewCell> {
     }
 
     required init?(coder: NSCoder) { interfaceBuilderSucks }
+
+    override func setup() {
+        tableView.contentInset = UIEdgeInsets(top: 0, bottom: 30)
+    }
 }
 
 extension SettingsView: ViewModelled {

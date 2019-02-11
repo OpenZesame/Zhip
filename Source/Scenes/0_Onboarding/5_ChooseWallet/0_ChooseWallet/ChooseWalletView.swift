@@ -99,14 +99,10 @@ private extension ChooseWalletView {
         motionEffectPlanetsImageView.backgroundColor = .clear
         motionEffectPlanetsImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        let stars = Image.middleStars.image
-        let starsFlipped = stars.withVerticallyFlippedOrientation(yOffset: -stars.size.height/2).withHorizontallyFlippedOrientation()
-
         motionEffectPlanetsImageView.addMotionEffectFromImages(
             front: Image.frontPlanets.image,
-            middle: stars,
-            back: starsFlipped // yes double stars, but flipped
-
+            middle: Image.middleStars.image,
+            back: Image.backAbyss.image
         )
     }
 }

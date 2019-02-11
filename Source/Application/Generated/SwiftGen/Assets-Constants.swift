@@ -32,6 +32,7 @@ internal enum Asset {
       internal static let warning = ImageAsset(name: "Icons/Large/Warning")
     }
     internal enum Small {
+      internal static let analytics = ImageAsset(name: "Icons/Small/Analytics")
       internal static let backUp = ImageAsset(name: "Icons/Small/BackUp")
       internal static let camera = ImageAsset(name: "Icons/Small/Camera")
       internal static let checkmark = ImageAsset(name: "Icons/Small/Checkmark")
@@ -40,6 +41,7 @@ internal enum Asset {
       internal static let cup = ImageAsset(name: "Icons/Small/Cup")
       internal static let delete = ImageAsset(name: "Icons/Small/Delete")
       internal static let document = ImageAsset(name: "Icons/Small/Document")
+      internal static let ecc = ImageAsset(name: "Icons/Small/ECC")
       internal static let githubIssue = ImageAsset(name: "Icons/Small/GithubIssue")
       internal static let githubStar = ImageAsset(name: "Icons/Small/GithubStar")
       internal static let pinCode = ImageAsset(name: "Icons/Small/PinCode")
@@ -51,6 +53,7 @@ internal enum Asset {
   internal enum Images {
 
     internal enum ChooseWallet {
+      internal static let backAbyss = ImageAsset(name: "Images/ChooseWallet/BackAbyss")
       internal static let frontPlanets = ImageAsset(name: "Images/ChooseWallet/FrontPlanets")
       internal static let middleStars = ImageAsset(name: "Images/ChooseWallet/MiddleStars")
     }

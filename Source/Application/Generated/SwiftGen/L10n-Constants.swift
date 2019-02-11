@@ -490,8 +490,8 @@ internal enum L10n {
         internal static let acknowledgements = L10n.tr("Localizable", "Scene.Settings.Cell.Acknowledgements")
         /// Backup wallet
         internal static let backupWallet = L10n.tr("Localizable", "Scene.Settings.Cell.BackupWallet")
-        /// Change analytics permissions
-        internal static let changeAnalyticsPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.ChangeAnalyticsPermissions")
+        /// Crash reporting permissions
+        internal static let crashReportingPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.CrashReportingPermissions")
         /// Unreliable cryptography
         internal static let readCustomECCWarning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadCustomECCWarning")
         /// Read ERC-20 warning
