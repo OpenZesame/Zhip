@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "1448308194.org.openzesame.Zhip",
+                "paths": [ "/send/to"]
+            }
+        ]
+    }
+}
