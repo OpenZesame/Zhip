@@ -89,7 +89,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		// MARK: Recipient Input ->  Value + Validation
         let recipientValidationValue: Driver<Validation<Address, AddressValidator.Error>> = Driver.merge(
 			input.fromView.recepientAddress.map { validator.validateRecipient($0) },
-			scannedOrDeeplinkedTransaction.map { .valid(Address.checksummed($0.recipient)) }
+			scannedOrDeeplinkedTransaction.map { .valid(Address.checksummed($0.to)) }
 		)
 
 		let recipient: Driver<Address?> = recipientValidationValue.map { $0.value }

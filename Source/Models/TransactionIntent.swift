@@ -26,12 +26,12 @@ import Foundation
 import Zesame
 
 struct TransactionIntent: Codable {
+    let to: AddressChecksummed
     let amount: ZilAmount
-    let recipient: AddressChecksummed
 
     init(amount: ZilAmount, to recipient: AddressChecksummedConvertible) {
         self.amount = amount
-        self.recipient = recipient.checksummedAddress
+        self.to = recipient.checksummedAddress
     }
 }
 
@@ -47,11 +47,17 @@ extension TransactionIntent {
     init?(queryParameters params: [URLQueryItem]) {
         guard let amount = params.first(where: { $0.name == TransactionIntent.CodingKeys.amount.stringValue })?.value,
 
-            let hexAddress = params.first(where: { $0.name == TransactionIntent.CodingKeys.recipient.stringValue })?.value
+            let hexAddress = params.first(where: { $0.name == TransactionIntent.CodingKeys.to.stringValue })?.value
 
             else {
                 return nil
         }
         self.init(amount: amount, to: hexAddress)
+    }
+
+    var queryItems: [URLQueryItem] {
+        return dictionaryRepresentation.compactMap {
+            URLQueryItem(name: $0.key, value: String(describing: $0.value))
+        }.sorted(by: { $0.name.count < $1.name.count })
     }
 }
