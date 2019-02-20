@@ -3,8 +3,8 @@
         "apps": [],
         "details": [
             {
-                "appID": "1448308194.org.openzesame.Zhip",
-                "paths": [ "/send/to"]
+                "appID": "7A6XYE8ZR7.org.openzesame.Zhip",
+                "paths": [ "*"]
             }
         ]
     }
