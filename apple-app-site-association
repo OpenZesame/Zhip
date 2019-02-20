@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "7A6XYE8ZR7.org.openzesame.Zhip",
-                "paths": [ "*"]
+                "paths": [ "/send/to"]
             }
         ]
     }
