@@ -49,8 +49,13 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return appCoordinator.handleDeepLink(url, options: options)
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb, let incomingURL = userActivity.webpageURL else {
+                return false
+        }
+
+        return appCoordinator.handleDeepLink(incomingURL)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

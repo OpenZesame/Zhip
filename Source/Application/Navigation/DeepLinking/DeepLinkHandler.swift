@@ -51,11 +51,11 @@ final class DeepLinkHandler {
 
 extension DeepLinkHandler {
 
-    /// Read more: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app
-    /// Handles incoming `url`, e.g. `Zhip://send?to=0x1a2b3c&amount=1337`
+    /// Read more: https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/handling_universal_links
+    /// Handles universal link `url`, e.g. `https://zhip.app/send?to=0x1a2b3c&amount=1337`
     ///
     /// return: `true` if the delegate successfully handled the request or `false` if the attempt to open the URL resource failed.
-    func handle(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+    func handle(url: URL) -> Bool {
         guard let destination = DeepLink(url: url) else {
             return false
         }

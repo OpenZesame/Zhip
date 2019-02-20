@@ -37,11 +37,8 @@ extension DeepLink {
 }
 
 extension DeepLink {
-    
-    static let scheme: String = "zhip://"
-
-    enum Path: String, CaseIterable {
-        case send
+    enum Path: String {
+        case send = "/send"
     }
 }
 
@@ -52,12 +49,14 @@ extension DeepLink {
 
     init?(url: URL) {
         guard
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            let urlHost = components.host,
-            let params = components.queryItems,
-            let deepLinkPath = DeepLink.Path(rawValue: urlHost)
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let params = components.queryItems
             else {
                 return nil
+        }
+
+        guard let deepLinkPath = DeepLink.Path(rawValue: components.path) else {
+            return nil
         }
 
         switch deepLinkPath {

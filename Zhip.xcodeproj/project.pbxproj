@@ -520,6 +520,7 @@
 		48CA6980218352FF00C05F5F /* JSONEncoder_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder_Extensions.swift; sourceTree = "<group>"; };
 		48CDB8D921EFB397005D67C6 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutOwner.swift; sourceTree = "<group>"; };
+		48EB6780221DED1600A4ED9F /* Zhip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Zhip.entitlements; sourceTree = "<group>"; };
 		48ECF4B121A06C4D0078D659 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		48ECF4B321A16B8D0078D659 /* PullToRefreshCapable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshCapable.swift; sourceTree = "<group>"; };
 		48ECF4B721A17B7A0078D659 /* TitledValueView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitledValueView.swift; sourceTree = "<group>"; };
@@ -1046,6 +1047,7 @@
 		484B062D20BA0C2D00C4E50A = {
 			isa = PBXGroup;
 			children = (
+				48EB6780221DED1600A4ED9F /* Zhip.entitlements */,
 				484B067C20BA0D8800C4E50A /* Source */,
 				484B067820BA0D2C00C4E50A /* Tests */,
 				484B063720BA0C2D00C4E50A /* Products */,
@@ -1903,6 +1905,9 @@
 						CreatedOnToolsVersion = 9.4;
 						SystemCapabilities = {
 							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
 						};
@@ -2435,6 +2440,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Zhip.entitlements;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
@@ -2443,6 +2449,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B52194F92800030237 /* Zhip-Release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Zhip.entitlements;
 			};
 			name = Release;
 		};

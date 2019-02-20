@@ -30,15 +30,13 @@ final class DeepLinkGenerator {
 
 extension DeepLinkGenerator {
     func linkTo(transaction: TransactionIntent) -> URL {
-        guard var urlComponents = URLComponents(string: DeepLink.scheme) else {
-            incorrectImplementation("Should be possible to create deep links, control the scheme: '\(DeepLink.scheme)'")
-        }
-        urlComponents.host = "send"
-        urlComponents.queryItems = transaction.dictionaryRepresentation.compactMap {
-            URLQueryItem(name: $0.key, value: String(describing: $0.value))
-        }
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "zhip.app"
+        urlComponents.path = DeepLink.Path.send.rawValue
+        urlComponents.queryItems = transaction.queryItems
         guard let shareUrl = urlComponents.url else {
-            incorrectImplementation("Should be possible to create share link for transaction: \(transaction), check implementation")
+            incorrectImplementation("Should be possible to create share link for transaction: \(transaction), check implementation, urlComponents: `\(urlComponents.debugDescription)`")
         }
         return shareUrl
     }
