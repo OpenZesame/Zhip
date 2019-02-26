@@ -25,26 +25,26 @@
 //  THE SOFTWARE.
 
 #if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
+import UIKit
 
 #if os(iOS) || os(tvOS)
-    import CoreImage
+import CoreImage
 #endif
 
-    public extension UIImage {
+public extension UIImage {
 
-        #if os(iOS) || os(tvOS)
-        public func toCIImage() -> CIImage? {
-            return CIImage(image: self)
-        }
-        #endif
-
-        public func toCGImage() -> CGImage? {
-            #if os(watchOS)
-                return cgImage
-            #else
-                return toCIImage()?.toCGImage()
-            #endif
-        }
+    #if os(iOS) || os(tvOS)
+    public func toCIImage() -> CIImage? {
+        return CIImage(image: self)
     }
+    #endif
+
+    public func toCGImage() -> CGImage? {
+        #if os(watchOS)
+        return cgImage
+        #else
+        return toCIImage()?.toCGImage()
+        #endif
+    }
+}
 #endif

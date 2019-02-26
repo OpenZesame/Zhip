@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -24,17 +24,8 @@
 
 import Foundation
 
-public extension Scrypt {
-
-    convenience init(kdfParameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
-        self.init(params:
-            Parameters(
-                costParameter: kdfParameters.costParameter,
-                blockSize: kdfParameters.blockSize,
-                parallelizationParameter: kdfParameters.parallelizationParameter,
-                lengthOfDerivedKey: kdfParameters.lengthOfDerivedKey,
-                salt: kdfParameters.salt
-            )
-        )
-    }
+public typealias KDF = KeyDerivationFunction
+public enum KeyDerivationFunction: String, Codable {
+    case scrypt
+    case pbkdf2
 }

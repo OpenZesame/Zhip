@@ -26,8 +26,8 @@ public struct Wallet {
     public let keystore: Keystore
     public let address: AddressChecksummed
 
-    public init(keystore: Keystore, address: AddressChecksummedConvertible) {
+    public init(keystore: Keystore) {
         self.keystore = keystore
-        self.address = address.checksummedAddress
+        self.address = keystore.address
     }
 }

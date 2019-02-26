@@ -43,13 +43,11 @@ public extension DefaultZilliqaService {
     }
 }
 
-
 public extension DefaultZilliqaService {
 
     func getNetworkFromAPI(done: @escaping Done<NetworkResponse>) {
         return apiClient.send(request: GetNetworkRequest(), done: done)
     }
-
 
     func getBalance(for address: AddressChecksummedConvertible, done: @escaping Done<BalanceResponse>) -> Void {
         return apiClient.send(request: BalanceRequest(address: address), done: done)

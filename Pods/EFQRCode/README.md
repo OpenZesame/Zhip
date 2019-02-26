@@ -99,7 +99,7 @@ EFQRCode is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'EFQRCode', '~> 4.4.1'
+pod 'EFQRCode', '~> 4.5.0'
 ```
 
 Then, run the following command:
@@ -122,7 +122,7 @@ $ brew install carthage
 To integrate EFQRCode into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "EFPrefix/EFQRCode" ~> 4.4.1
+github "EFPrefix/EFQRCode" ~> 4.5.0
 ```
 
 Run `carthage update` to build the framework and drag the built `EFQRCode.framework` into your Xcode project.
@@ -135,7 +135,7 @@ Once you have your Swift package set up, adding EFQRCode as a dependency is as e
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/EFPrefix/EFQRCode.git", Version(4, 4, 1))
+    .Package(url: "https://github.com/EFPrefix/EFQRCode.git", Version(4, 5, 0))
 ]
 ```
 
@@ -248,6 +248,7 @@ The original generation code of QRCode in `watchOS` is based on [swift_qrcodejs]
 
 Platforms/Languages|Link
 :-------------------------|:-------------------------
+Objective-C|[https://github.com/z624821876/YSQRCode](https://github.com/z624821876/YSQRCode)
 Java|[https://github.com/SumiMakito/AwesomeQRCode](https://github.com/SumiMakito/AwesomeQRCode)
 JavaScript|[https://github.com/SumiMakito/Awesome-qr.js](https://github.com/SumiMakito/Awesome-qr.js)
 Kotlin|[https://github.com/SumiMakito/AwesomeQRCode-Kotlin](https://github.com/SumiMakito/AwesomeQRCode-Kotlin)
@@ -310,8 +311,7 @@ If you think this project has brought you help, you can buy me a cup of coffee. 
 
 If you don't have a `Open Collective` account or you think it is too complicated, the following way of payment is also supported:
 
-![AliPay](https://raw.githubusercontent.com/EFPrefix/EFQRCode/assets/QRCode/AliPay.jpg?raw=true)|![WeChat](https://raw.githubusercontent.com/EFPrefix/EFQRCode/assets/QRCode/WeChat.jpg?raw=true)|![PayPal](https://raw.githubusercontent.com/EFPrefix/EFQRCode/assets/QRCode/PayPal.jpg?raw=true)  
-:---------------------:|:---------------------:|:---------------------:
+![Donations](https://raw.githubusercontent.com/EFPrefix/EFQRCode/assets/QRCode/Donations.jpg?raw=true)
 
 Thank you for your support, 🙏!
 

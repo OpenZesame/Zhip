@@ -8,33 +8,33 @@ PODS:
   - CryptoSwift (0.14.0)
   - DateToolsSwift (4.0.0)
   - Differentiator (3.1.0)
-  - EFQRCode (4.4.1):
+  - EFQRCode (4.5.0):
     - swift_qrcodejs (~> 1.0.1)
   - EllipticCurveKit (0.0.1):
     - BigInt (~> 3.1)
     - CryptoSwift (~> 0.12)
   - Fabric (1.9.0)
-  - Firebase/Core (5.16.0):
+  - Firebase/Core (5.17.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.5.0)
-  - Firebase/CoreOnly (5.16.0):
-    - FirebaseCore (= 5.2.0)
-  - FirebaseAnalytics (5.5.0):
-    - FirebaseCore (~> 5.2)
-    - FirebaseInstanceID (~> 3.4)
-    - GoogleAppMeasurement (= 5.5.0)
+    - FirebaseAnalytics (= 5.6.0)
+  - Firebase/CoreOnly (5.17.0):
+    - FirebaseCore (= 5.3.0)
+  - FirebaseAnalytics (5.6.0):
+    - FirebaseCore (~> 5.3)
+    - FirebaseInstanceID (~> 3.5)
+    - GoogleAppMeasurement (= 5.6.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - FirebaseCore (5.2.0):
+  - FirebaseCore (5.3.0):
     - GoogleUtilities/Logger (~> 5.2)
-  - FirebaseInstanceID (3.4.0):
-    - FirebaseCore (~> 5.2)
+  - FirebaseInstanceID (3.5.0):
+    - FirebaseCore (~> 5.3)
     - GoogleUtilities/Environment (~> 5.3)
     - GoogleUtilities/UserDefaults (~> 5.3)
-  - GoogleAppMeasurement (5.5.0):
+  - GoogleAppMeasurement (5.6.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
@@ -62,40 +62,41 @@ PODS:
   - JSONRPCKit (4.0.0):
     - Result (~> 4.0.0)
   - KeychainSwift (13.0.0)
-  - M13Checkbox (3.2.2)
+  - M13Checkbox (3.3.2)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - QRCodeReader.swift (9.0.1)
-  - Result (4.0.0)
-  - RxAtomic (4.4.0)
-  - RxBlocking (4.4.0):
+  - QRCodeReader.swift (10.0.0)
+  - Result (4.0.1)
+  - RxAtomic (4.4.1)
+  - RxBlocking (4.4.1):
     - RxAtomic (~> 4.4)
     - RxSwift (~> 4.0)
-  - RxCocoa (4.4.0):
+  - RxCocoa (4.4.1):
     - RxSwift (~> 4.0)
   - RxDataSources (3.1.0):
     - Differentiator (~> 3.0)
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
-  - RxSwift (4.4.0):
+  - RxSwift (4.4.1):
     - RxAtomic (~> 4.4)
-  - RxTest (4.4.0):
+  - RxTest (4.4.1):
     - RxAtomic (~> 4.4)
     - RxSwift (~> 4.0)
   - SipHash (1.2.2)
   - SkyFloatingLabelTextField (3.6.0)
   - swift_qrcodejs (1.0.1)
-  - SwiftGen (6.0.2)
-  - SwiftLint (0.27.0)
+  - SwiftGen (6.1.0)
+  - SwiftLint (0.30.1)
   - SwiftProtobuf (1.3.1)
-  - SwiftyBeaver (1.6.1)
+  - SwiftyBeaver (1.6.2)
   - TinyConstraints (3.3.1)
   - Validator (3.1.1)
   - Zesame (0.0.2):
     - APIKit
+    - CryptoSwift
     - EllipticCurveKit
     - JSONRPCKit
     - RxSwift
@@ -122,7 +123,7 @@ DEPENDENCIES:
   - SwiftyBeaver
   - TinyConstraints
   - Validator
-  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `master`)
+  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `keystore_support_pbkdf2_update_scrypt`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -168,7 +169,7 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :branch: master
+    :branch: keystore_support_pbkdf2_update_scrypt
     :git: https://github.com/OpenZesame/Zesame.git
 
 CHECKOUT OPTIONS:
@@ -176,7 +177,7 @@ CHECKOUT OPTIONS:
     :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :commit: f1249f75d1fad9a1c77149317d636b0314489bd4
+    :commit: 301c372a7189553ff3f9efbef29bb7bd41530090
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:
@@ -186,39 +187,39 @@ SPEC CHECKSUMS:
   CryptoSwift: 35a10419f4dbf0619c13f8c1c180037e115323fa
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
-  EFQRCode: bffe9cf023327c433e8a65f7b6169cffe989ea59
+  EFQRCode: 842f431e660da841f518993af8f4cbd275601d84
   EllipticCurveKit: 3418824c08dfec7fd84927e4bc02f7ed5c9f9625
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
-  Firebase: 749a8ff4962f9d8c79dda1966de20f6f77583d67
-  FirebaseAnalytics: d35d47c03c50c73c14a7fd31463c5775843e78a9
-  FirebaseCore: ea2d1816723ef21492b8e9113303e1350db5e08c
-  FirebaseInstanceID: 97ea7a5dca9afd72c79bfcdddb7a44aa1cbb42a1
-  GoogleAppMeasurement: 621f3bc6211d5ba548debe01fafad30cf5ab6859
+  Firebase: 59d557e064217fab6a03ff00baa73c06e73832e6
+  FirebaseAnalytics: 75e4bbc6417d190cc98ec1f17c41a4fad4c2c976
+  FirebaseCore: c0c4befb82374d6aef64d800e569f47625352edc
+  FirebaseInstanceID: 4522aad88f69297622062c0e9ffccdee3dd9b151
+  GoogleAppMeasurement: 008e04ecd8efedd97a693aea8634aefe220bd26e
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
   JSONRPCKit: ce08ee53ac1afd6150351531836e0ab842cf567e
   KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
-  M13Checkbox: a8c2491cfbbca10797925fd0b9154a782bf40d89
+  M13Checkbox: d75dca81d61c9903e7f091f32b35a3254bc97dce
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  QRCodeReader.swift: 96292a5612fbc2fd9a0b26f93fa5164c8d02f59d
-  Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
-  RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
-  RxBlocking: 138ad53217434444d6eeeb4fb406a45431d92e31
-  RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
+  QRCodeReader.swift: 74d0378eb0c7807828552b49626bbc8307495aee
+  Result: a6e784bebf48b471d59cddc1adb81f41f678c487
+  RxAtomic: f8d6adc1ccb87a767811269e4875887bc74dbf19
+  RxBlocking: 5508e90d36ca2304632dc9378ece4e9b5d4bf656
+  RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
-  RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
-  RxTest: 19d03286bdc0a3aaea5d61d4cde31fdf4bb8a5ba
+  RxSwift: 92fcf68dfef21f3e2ab1965363d9e7b3d787597e
+  RxTest: f8e548755ca3c7502dc41c7d3b28802c90115a38
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
   swift_qrcodejs: c181fe5c849d30c699546a23762d7e3dd143ab37
-  SwiftGen: e5b047067aa84082826a0c4f1c4c2ddc95bcf74c
-  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   SwiftProtobuf: 84cd6b8f4fd2fc3d9fbd80a0aaf2e957d52824ec
-  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+  SwiftyBeaver: 8e67ab3cd94389cbbb7a9c7cc02748d98bfee68e
   TinyConstraints: dbf7519aefc01ea59d62244300c7718aec68e280
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
-  Zesame: 5c5593265a8651adb27822d43b458078cfa687ea
+  Zesame: 61efbd2b959bc3b9d93088af431d154eab5234d4
 
-PODFILE CHECKSUM: d56608319419d4ef5068460ccadb6839655ca8b4
+PODFILE CHECKSUM: 237e7e7964afc35a4c9fc93e7c083e2a60c0dc00
 
 COCOAPODS: 1.5.3
