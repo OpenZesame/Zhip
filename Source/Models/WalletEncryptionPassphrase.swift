@@ -52,7 +52,6 @@ extension WalletEncryptionPassword {
 }
 
 // MARK: - Error
-import Zesame
 extension WalletEncryptionPassword {
     enum Error: Swift.Error {
         case passwordsDoesNotMatch

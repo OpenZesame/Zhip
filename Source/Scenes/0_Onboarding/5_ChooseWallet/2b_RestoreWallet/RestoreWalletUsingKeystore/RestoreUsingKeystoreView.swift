@@ -25,6 +25,7 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 private typealias € = L10n.Scene.RestoreWallet
 
@@ -82,8 +83,6 @@ private extension RestoreUsingKeystoreView {
     }
 }
 
-import RxSwift
-import RxCocoa
 extension Reactive where Base: UITextView {
     var validationByBorder: Binder<AnyValidation> {
         return Binder(base) {

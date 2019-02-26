@@ -25,6 +25,7 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
@@ -91,8 +92,6 @@ private extension RestoreUsingPrivateKeyView {
     }
 }
 
-import RxSwift
-import RxCocoa
 extension Reactive where Base: UITextField {
     var isSecureTextEntry: Binder<Bool> {
         return Binder(base) {

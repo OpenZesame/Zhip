@@ -49,13 +49,20 @@ final class ScanQRCodeView: UIView {
 
 private extension ScanQRCodeView {
 
+    // swiftlint:disable:next function_body_length
     func setup() {
         reader.stopScanningWhenCodeIsFound = true
         readerView.backgroundColor = .black
         addSubview(readerView)
         readerView.translatesAutoresizingMaskIntoConstraints = false
         readerView.edgesToSuperview()
-        readerView.setupComponents(showCancelButton: false, showSwitchCameraButton: true, showTorchButton: true, showOverlayView: true, reader: reader)
+        readerView.setupComponents(with: QRCodeReaderViewControllerBuilder {
+            $0.showCancelButton = false
+            $0.showSwitchCameraButton = true
+            $0.showTorchButton = true
+            $0.showOverlayView = true
+            $0.reader = reader
+        })
 
         reader.didFindCode = { [unowned self] in
             self.scannedQrCodeSubject.onNext($0.value)
