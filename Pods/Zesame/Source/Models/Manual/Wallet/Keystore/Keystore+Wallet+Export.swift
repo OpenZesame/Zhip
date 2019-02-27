@@ -46,7 +46,7 @@ public extension Keystore {
             return
         }
 
-        let kdfParams = kdfParams ?? kdf.defaultParameters
+        let kdfParams = kdfParams ?? KDF.defaultParameters
 
         AnyKeyDeriving(kdf: kdf, kdfParams: kdfParams).deriveKey(password: password) { derivedKey in
 

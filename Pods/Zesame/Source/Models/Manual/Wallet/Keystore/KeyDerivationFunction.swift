@@ -29,3 +29,9 @@ public enum KeyDerivationFunction: String, Codable {
     case scrypt
     case pbkdf2
 }
+
+public extension KDF {
+    static var defaultParameters: KDFParams {
+        return KDFParams()
+    }
+}

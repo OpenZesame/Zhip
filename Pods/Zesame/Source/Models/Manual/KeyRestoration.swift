@@ -44,7 +44,7 @@ public extension KeyRestoration {
             self = .keystore(keystore, password: password)
         } catch let error as Swift.DecodingError {
             throw Error.walletImport(.jsonDecoding(error))
-        } catch { fatalError("incorrect implementation") }
+        } catch { fatalError("incorrect implementation, error: \(error)") }
     }
 
     init(keyStoreJSONString: String, encodedBy encoding: String.Encoding = .utf8, encryptedBy password: String) throws {

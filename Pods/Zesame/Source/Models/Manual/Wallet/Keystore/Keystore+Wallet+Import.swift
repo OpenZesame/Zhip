@@ -24,6 +24,7 @@
 
 import CryptoSwift
 import Result
+import EllipticCurveKit
 
 public extension Keystore {
 
@@ -50,11 +51,14 @@ public extension Keystore {
         }
 
         let encryptedPrivateKey = crypto.encryptedPrivateKey
+        let iv = crypto.cipherParameters.initializationVector
+        let cipher = crypto.cipherType
+        let expectedMAC = crypto.messageAuthenticationCodeHex.uppercased()
 
         deriveKey(password: password) { derivedKey in
-            let mac = (derivedKey.asData.suffix(16) + encryptedPrivateKey).sha3(.sha256)
+            let MAC = calculateMac(derivedKey: derivedKey, encryptedPrivateKey: encryptedPrivateKey, iv: iv, cipherType: cipher).asHex.uppercased()
 
-            guard mac == self.crypto.messageAuthenticationCode else {
+            guard MAC == expectedMAC else {
                 let error = Error.walletImport(.incorrectPassword)
                 done(.failure(error))
                 return
@@ -62,12 +66,58 @@ public extension Keystore {
 
             let aesCtr = try! AES(
                 key: derivedKey.asData.prefix(16).bytes,
-                blockMode: CTR(iv: self.crypto.cipherParameters.initializationVector.bytes)
+                blockMode: CTR(iv: iv.bytes)
             )
 
             let decryptedPrivateKey = try! aesCtr.decrypt(encryptedPrivateKey.bytes).asHex
 
             done(.success(decryptedPrivateKey))
         }
+    }
+}
+
+private func calculateMac(
+    derivedKey: DerivedKey,
+    encryptedPrivateKey: Data,
+    iv: Data,
+    cipherType: String? = nil
+    ) -> Data {
+
+    let cipher = cipherType ?? Keystore.Crypto.cipherDefault
+    let algo = cipher.data(using: .utf8)!
+
+    return try! HMAC(
+        key: derivedKey.bytes,
+        variant: .sha256
+    ).authenticate(
+        ((derivedKey.asData.suffix(16) + encryptedPrivateKey + iv + algo) as DataConvertible).bytes
+    ).asData
+}
+
+// MARK: - Convenience Init
+public extension Keystore.Crypto {
+    init(
+        derivedKey: DerivedKey,
+        privateKey: PrivateKey,
+        kdf: KDF,
+        parameters: KDFParams
+        ) {
+
+        /// initializationVector
+        let iv = try! securelyGenerateBytes(count: 16).asData
+
+        let aesCtr = try! AES(key: derivedKey.asData.prefix(16).bytes, blockMode: CTR(iv: iv.bytes))
+
+        let encryptedPrivateKey = try! aesCtr.encrypt(privateKey.bytes).asData
+
+        let mac = calculateMac(derivedKey: derivedKey, encryptedPrivateKey: encryptedPrivateKey, iv: iv)
+
+        self.init(
+            cipherParameters:
+            Keystore.Crypto.CipherParameters(initializationVectorHex: iv.asHex),
+            encryptedPrivateKeyHex: encryptedPrivateKey.asHex,
+            kdf: kdf,
+            kdfParams: parameters,
+            messageAuthenticationCodeHex: mac.asHex)
     }
 }

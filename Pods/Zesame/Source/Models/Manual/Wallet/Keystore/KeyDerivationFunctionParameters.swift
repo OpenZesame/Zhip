@@ -28,9 +28,11 @@ import EllipticCurveKit
 public typealias KDFParams = KDF.Parameters
 
 public extension KDF {
+    /// Same default values for parameters used by Zilliqa Javascript SDK: https://github.com/Zilliqa/Zilliqa-JavaScript-Library/blob/dev/packages/zilliqa-js-crypto/src/keystore.ts#L77-L82
     public struct Parameters: Codable, Equatable {
         /// "N", CPU/memory cost parameter, must be power of 2.
-        let costParameter: Int
+        let costParameterN: Int
+        let costParameterC: Int
 
         /// "r", blocksize
         let blockSize: Int
@@ -44,17 +46,30 @@ public extension KDF {
         let salt: Data
 
         init(
-            costParameter: Int,
+            costParameterN: Int = 8192,
+            costParameterC: Int = 262144,
             blockSize: Int = 8,
             parallelizationParameter: Int = 1,
             lengthOfDerivedKey: Int = 32,
             salt: Data? = nil
             ) {
-            self.costParameter = costParameter
+            self.costParameterN = costParameterN
+            self.costParameterC = costParameterC
             self.blockSize = blockSize
             self.parallelizationParameter = parallelizationParameter
             self.lengthOfDerivedKey = lengthOfDerivedKey
             self.salt = salt ?? (try! securelyGenerateBytes(count: 32).asData)
+        }
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            costParameterN = try container.decode(Int.self, forKey: .costParameterN)
+            costParameterC = try container.decode(Int.self, forKey: .costParameterC)
+            blockSize = try container.decode(Int.self, forKey: .blockSize)
+            parallelizationParameter = try container.decode(Int.self, forKey: .parallelizationParameter)
+            lengthOfDerivedKey = try container.decode(Int.self, forKey: .lengthOfDerivedKey)
+            let saltHex = try container.decode(String.self, forKey: .salt)
+            self.salt = Data(hex: saltHex)
         }
     }
 }
@@ -62,7 +77,8 @@ public extension KDF {
 extension KDFParams {
     enum CodingKeys: String, CodingKey {
         /// Should be lowercase "n", since that is what Zilliqa JS SDK uses
-        case costParameter = "n"
+        case costParameterN = "n"
+        case costParameterC = "c"
         case blockSize = "r"
         case parallelizationParameter = "p"
         case lengthOfDerivedKey = "dklen"

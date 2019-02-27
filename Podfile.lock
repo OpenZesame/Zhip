@@ -177,7 +177,7 @@ CHECKOUT OPTIONS:
     :commit: 82fb8c89d8a1a38614e2b89214a95fef2d8265c4
     :git: https://github.com/ollitapa/JSONRPCKit.git
   Zesame:
-    :commit: 301c372a7189553ff3f9efbef29bb7bd41530090
+    :commit: 1352b71350dd57bc9f9a8338e1821f437d4f8f94
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:

@@ -36,8 +36,18 @@ public extension Keystore {
             public enum CodingKeys: String, CodingKey {
                 case initializationVectorHex = "iv"
             }
+
+            public init(initializationVectorHex: String) {
+                self.initializationVectorHex = initializationVectorHex
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.initializationVectorHex = try container.decode(String.self, forKey: .initializationVectorHex)
+            }
         }
 
+        public static let cipherDefault = "aes-128-ctr"
         /// "cipher"
         let cipherType: String
 
@@ -57,7 +67,7 @@ public extension Keystore {
         var messageAuthenticationCode: Data { return Data(hex: messageAuthenticationCodeHex) }
 
         public init(
-            cipherType: String = "aes-128-ctr",
+            cipherType: String = Crypto.cipherDefault,
             cipherParameters: CipherParameters,
             encryptedPrivateKeyHex: String,
             kdf: KDF,
@@ -71,36 +81,19 @@ public extension Keystore {
             self.keyDerivationFunctionParameters = kdfParams
             self.messageAuthenticationCodeHex = messageAuthenticationCodeHex
         }
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.cipherType = try container.decode(String.self, forKey: .cipherType)
+            self.cipherParameters = try container.decode(CipherParameters.self, forKey: .cipherParameters)
+            self.encryptedPrivateKeyHex = try container.decode(String.self, forKey: .encryptedPrivateKeyHex)
+            self.kdf = try container.decode(KDF.self, forKey: .kdf)
+            self.keyDerivationFunctionParameters = try container.decode(KDFParams.self, forKey: .keyDerivationFunctionParameters)
+            self.messageAuthenticationCodeHex = try container.decode(String.self, forKey: .messageAuthenticationCodeHex)
+        }
     }
 }
 
-// MARK: - Convenience Init
-public extension Keystore.Crypto {
-    init(
-        derivedKey: DerivedKey,
-        privateKey: PrivateKey,
-        kdf: KDF,
-        parameters: KDFParams
-        ) {
-
-        /// initializationVector
-        let iv = try! securelyGenerateBytes(count: 16).asData
-
-        let aesCtr = try! AES(key: derivedKey.asData.prefix(16).bytes, blockMode: CTR(iv: iv.bytes))
-
-        let encryptedPrivateKey = try! aesCtr.encrypt(privateKey.bytes).asData
-
-        let mac = (derivedKey.asData.suffix(16) + encryptedPrivateKey).asData.sha3(.sha256)
-
-        self.init(
-            cipherParameters:
-            Keystore.Crypto.CipherParameters(initializationVectorHex: iv.asHex),
-            encryptedPrivateKeyHex: encryptedPrivateKey.asHex,
-            kdf: kdf,
-            kdfParams: parameters,
-            messageAuthenticationCodeHex: mac.asHex)
-    }
-}
 
 // MARK: - Codable
 extension Keystore.Crypto {

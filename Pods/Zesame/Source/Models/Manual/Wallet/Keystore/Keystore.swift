@@ -26,7 +26,6 @@ import Foundation
 import EllipticCurveKit
 import CryptoSwift
 
-/// JSON Keys matching those used by Zilliqa JavaScript library: https://github.com/Zilliqa/Zilliqa-Wallet/blob/master/src/app/zilliqa.service.ts
 public struct Keystore: Codable, Equatable {
     public static let minumumPasswordLength = 2
 
@@ -34,6 +33,23 @@ public struct Keystore: Codable, Equatable {
     public let crypto: Crypto
     public let id: String
     public let version: Int
+}
+
+public extension Keystore {
+
+    public enum CodingKeys: CodingKey {
+        /// JSON Keys matching those used by Zilliqa JavaScript library: https://github.com/Zilliqa/Zilliqa-Wallet/blob/master/src/app/zilliqa.service.ts
+        case address, crypto, id, version
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let addressHex = try container.decode(HexString.self, forKey: .address)
+        address = try AddressNotNecessarilyChecksummed(hexString: addressHex).checksummedAddress
+        crypto = try container.decode(Crypto.self, forKey: .crypto)
+        id = try container.decode(String.self, forKey: .id)
+        version = try container.decode(Int.self, forKey: .version)
+    }
 }
 
 // MARK: Initialization

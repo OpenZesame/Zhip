@@ -30,12 +30,12 @@ public typealias Scrypt = CryptoSwift.Scrypt
 public extension Scrypt {
 
     convenience init(kdfParams: KDFParams? = nil, password: String) {
-        let params = kdfParams ?? KDF.scrypt.defaultParameters
+        let params = kdfParams ?? KDF.defaultParameters
         try! self.init(
             password: Array(password.data(using: .ascii)!),
             salt: params.salt.bytes,
             dkLen: params.lengthOfDerivedKey,
-            N: params.costParameter,
+            N: params.costParameterN,
             r: params.blockSize,
             p: params.parallelizationParameter)
     }

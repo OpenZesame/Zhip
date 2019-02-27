@@ -33,7 +33,7 @@ public extension PBKDF2 {
         try! self.init(
             password: passwordBytes,
             salt: kdfParams.salt.bytes,
-            iterations: kdfParams.costParameter,
+            iterations: kdfParams.costParameterC,
             keyLength: kdfParams.lengthOfDerivedKey
         )
     }
