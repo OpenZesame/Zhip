@@ -27,7 +27,7 @@ import EllipticCurveKit
 import CryptoSwift
 
 public struct Keystore: Codable, Equatable {
-    public static let minumumPasswordLength = 2
+    public static let minumumPasswordLength = 8
 
     public let address: AddressChecksummed
     public let crypto: Crypto
@@ -65,9 +65,9 @@ public extension Keystore {
         from derivedKey: DerivedKey,
         privateKey: PrivateKey,
         kdf: KDF,
-        parameters: KDFParams) {
+        parameters: KDFParams) throws {
 
-        let crypto = Keystore.Crypto(
+        let crypto = try Keystore.Crypto(
             derivedKey: derivedKey,
             privateKey: privateKey,
             kdf: kdf,
@@ -81,7 +81,7 @@ public extension Keystore {
 }
 
 public extension Keystore {
-    func toJson() -> [String: Any] {
-        return try! asDictionary()
+    func toJson() throws -> [String: Any] {
+        return try asDictionary()
     }
 }

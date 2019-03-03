@@ -28,9 +28,9 @@ import CryptoSwift
 public typealias PBKDF2 = CryptoSwift.PKCS5.PBKDF2
 
 public extension PBKDF2 {
-    init(kdfParams: KDFParams, password: String) {
+    init(kdfParams: KDFParams, password: String) throws {
         let passwordBytes = Array(password.data(using: .ascii)!)
-        try! self.init(
+        try self.init(
             password: passwordBytes,
             salt: kdfParams.salt.bytes,
             iterations: kdfParams.costParameterC,

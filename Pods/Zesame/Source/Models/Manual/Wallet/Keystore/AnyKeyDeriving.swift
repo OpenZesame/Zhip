@@ -33,15 +33,15 @@ public struct AnyKeyDeriving: KeyDeriving {
         self.kdfParams = kdfParams
     }
 
-    public func deriveKey(password: String, done: @escaping (DerivedKey) -> Void) {
+    public func deriveKey(password: String, done: @escaping (DerivedKey) throws -> Void) throws {
         let data: Data
         switch kdf {
         case .pbkdf2:
-            data = Data(bytes: try! PBKDF2(kdfParams: kdfParams, password: password).calculate())
+            data = Data(bytes: try PBKDF2(kdfParams: kdfParams, password: password).calculate())
         case .scrypt:
-            data = Data(bytes: try! Scrypt(kdfParams: kdfParams, password: password).calculate())
+            data = Data(bytes: try Scrypt(kdfParams: kdfParams, password: password).calculate())
         }
         let derivedKey = DerivedKey(data: data)
-        done(derivedKey)
+        try done(derivedKey)
     }
 }

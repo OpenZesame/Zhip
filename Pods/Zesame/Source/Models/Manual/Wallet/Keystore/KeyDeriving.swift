@@ -25,5 +25,5 @@
 import Foundation
 
 public protocol KeyDeriving {
-    func deriveKey(password: String, done: @escaping (DerivedKey) -> Void)
+    func deriveKey(password: String, done: @escaping (DerivedKey) throws -> Void) throws
 }

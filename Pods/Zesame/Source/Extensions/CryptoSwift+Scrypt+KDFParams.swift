@@ -29,9 +29,9 @@ public typealias Scrypt = CryptoSwift.Scrypt
 
 public extension Scrypt {
 
-    convenience init(kdfParams: KDFParams? = nil, password: String) {
+    convenience init(kdfParams: KDFParams? = nil, password: String) throws {
         let params = kdfParams ?? KDF.defaultParameters
-        try! self.init(
+        try self.init(
             password: Array(password.data(using: .ascii)!),
             salt: params.salt.bytes,
             dkLen: params.lengthOfDerivedKey,

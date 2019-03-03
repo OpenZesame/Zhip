@@ -43,7 +43,10 @@ public extension KDF {
         /// "dklen"
         let lengthOfDerivedKey: Int
 
-        let salt: Data
+        let saltHex: String
+        var salt: Data {
+            return Data(hex: saltHex)
+        }
 
         init(
             costParameterN: Int = 8192,
@@ -51,25 +54,36 @@ public extension KDF {
             blockSize: Int = 8,
             parallelizationParameter: Int = 1,
             lengthOfDerivedKey: Int = 32,
-            salt: Data? = nil
-            ) {
+            saltHex: String? = nil
+            ) throws {
             self.costParameterN = costParameterN
             self.costParameterC = costParameterC
             self.blockSize = blockSize
             self.parallelizationParameter = parallelizationParameter
             self.lengthOfDerivedKey = lengthOfDerivedKey
-            self.salt = salt ?? (try! securelyGenerateBytes(count: 32).asData)
+            if let saltHex = saltHex {
+                self.saltHex = saltHex
+            } else {
+                self.saltHex = try securelyGenerateBytes(count: 32).asData.asHex
+            }
         }
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            costParameterN = try container.decode(Int.self, forKey: .costParameterN)
-            costParameterC = try container.decode(Int.self, forKey: .costParameterC)
-            blockSize = try container.decode(Int.self, forKey: .blockSize)
-            parallelizationParameter = try container.decode(Int.self, forKey: .parallelizationParameter)
-            lengthOfDerivedKey = try container.decode(Int.self, forKey: .lengthOfDerivedKey)
-            let saltHex = try container.decode(String.self, forKey: .salt)
-            self.salt = Data(hex: saltHex)
+            let costParameterN = try container.decode(Int.self, forKey: .costParameterN)
+            let costParameterC = try container.decode(Int.self, forKey: .costParameterC)
+            let blockSize = try container.decode(Int.self, forKey: .blockSize)
+            let parallelizationParameter = try container.decode(Int.self, forKey: .parallelizationParameter)
+            let lengthOfDerivedKey = try container.decode(Int.self, forKey: .lengthOfDerivedKey)
+            let saltHex = try container.decode(String.self, forKey: .saltHex)
+
+            try self.init(
+                costParameterN: costParameterN,
+                costParameterC: costParameterC,
+                blockSize: blockSize,
+                parallelizationParameter: parallelizationParameter,
+                lengthOfDerivedKey: lengthOfDerivedKey,
+                saltHex: saltHex)
         }
     }
 }
@@ -83,6 +97,6 @@ extension KDFParams {
         case parallelizationParameter = "p"
         case lengthOfDerivedKey = "dklen"
 
-        case salt = "salt"
+        case saltHex = "salt"
     }
 }

@@ -32,6 +32,10 @@ public enum KeyDerivationFunction: String, Codable {
 
 public extension KDF {
     static var defaultParameters: KDFParams {
-        return KDFParams()
+        do {
+            return try KDFParams()
+        } catch {
+            fatalError("Incorrect implementation, should always be able to create default KDF params, unexpected error: \(error)")
+        }
     }
 }

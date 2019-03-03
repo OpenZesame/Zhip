@@ -35,7 +35,7 @@ public extension Keystore {
         kdf: KDF = .scrypt,
         kdfParams: KDFParams? = nil,
         done: @escaping Done<Keystore>
-        ) {
+        ) throws {
 
         guard password.count >= Keystore.minumumPasswordLength else {
             let error = Error.keystorePasswordTooShort(
@@ -48,9 +48,9 @@ public extension Keystore {
 
         let kdfParams = kdfParams ?? KDF.defaultParameters
 
-        AnyKeyDeriving(kdf: kdf, kdfParams: kdfParams).deriveKey(password: password) { derivedKey in
+        try AnyKeyDeriving(kdf: kdf, kdfParams: kdfParams).deriveKey(password: password) { derivedKey in
 
-            let keyStore = Keystore(
+            let keyStore = try Keystore(
                 from: derivedKey,
                 privateKey: privateKey,
                 kdf: kdf,

@@ -66,16 +66,21 @@ public extension ZilliqaService {
                     }
                 }
             case .privateKey(let privateKey, let newPassword):
+                do {
+                    try Keystore.from(privateKey: privateKey, encryptBy: newPassword) {
 
-                Keystore.from(privateKey: privateKey, encryptBy: newPassword) {
+                        guard case .success(let keystore) = $0 else {
+                            done(.failure($0.error!))
+                            return
+                        }
 
-                    guard case .success(let keystore) = $0 else {
-                        done(.failure($0.error!))
-                        return
+                        main {
+                            done(.success(Wallet(keystore: keystore)))
+                        }
                     }
-
+                } catch {
                     main {
-                        done(.success(Wallet(keystore: keystore)))
+                        done(.failure(Error.walletImport(.keystoreError(error))))
                     }
                 }
             }
@@ -87,11 +92,14 @@ public extension ZilliqaService {
         encryptWalletBy password: String,
         done: @escaping Done<Keystore>
         ) {
-
-        Keystore.from(
-            privateKey: privateKey,
-            encryptBy: password,
-            done: done
-        )
+        do {
+            try Keystore.from(
+                privateKey: privateKey,
+                encryptBy: password,
+                done: done
+            )
+        } catch {
+           done(.failure(Error.keystoreExport(error)))
+        }
     }
 }
