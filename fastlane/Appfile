@@ -1,7 +1,4 @@
-app_identifier("org.openzesame.Zhip") # The bundle identifier of your app
+app_identifier("com.openzesame.zhip") # The bundle identifier of your app
 
-itc_team_id("118096989") # App Store Connect Team ID
-team_id("7A6XYE8ZR7") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
+itc_team_id("119963635") # App Store Connect Team ID
+team_id("S33QJG3B86") # Developer Portal Team ID

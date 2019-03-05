@@ -3,7 +3,7 @@
 
 SDKROOT = iphoneos
 
-PRODUCT_BUNDLE_IDENTIFIER = org.openzesame.Zhip
+PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.zhip
 PRODUCT_NAME = $(_APP_NAME)
 
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
@@ -15,6 +15,6 @@ ENABLE_TESTABILITY = YES
 
 CODE_SIGN_IDENTITY[config=Debug] = iPhone Developer
 CODE_SIGN_IDENTITY[config=Release] = iPhone Distribution
-DEVELOPMENT_TEAM = 7A6XYE8ZR7
-PROVISIONING_PROFILE_SPECIFIER[config=Debug] = match Development org.openzesame.Zhip
-PROVISIONING_PROFILE_SPECIFIER[config=Release] = match AppStore org.openzesame.Zhip
+DEVELOPMENT_TEAM = S33QJG3B86
+PROVISIONING_PROFILE_SPECIFIER[config=Debug] = match Development com.openzesame.zhip
+PROVISIONING_PROFILE_SPECIFIER[config=Release] = match AppStore com.openzesame.zhip
