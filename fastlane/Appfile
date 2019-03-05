@@ -1,4 +1,4 @@
-app_identifier("com.openzesame.Zhip") # The bundle identifier of your app
+app_identifier("com.openzesame.zhip") # The bundle identifier of your app
 
 itc_team_id("119963635") # App Store Connect Team ID
 team_id("S33QJG3B86") # Developer Portal Team ID
