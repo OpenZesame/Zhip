@@ -13,7 +13,7 @@ markdown: kramdown
 theme: minima
 
 plugins:
-  - jekyll-redirect-to
+  - jekyll-redirect-from
   - jekyll-seo-tag
 
 header_pages:

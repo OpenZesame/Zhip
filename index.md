@@ -1,6 +1,6 @@
 ---
 layout: home
-redirect_from: "/send"
+redirect_from: /send/
 ---
 
 Zhip is the worlds first iOS wallet for the blockchain Zilliqa. The source code and the content is publically available at [Github](https://github.com/OpenZesame/Zhip).
