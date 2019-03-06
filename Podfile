@@ -4,9 +4,7 @@ use_modular_headers!
 
 def shared
   # The Zilliqa Swift SDK
-  pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'keystore_support_pbkdf2_update_scrypt'
-
-  # pod 'CryptoSwift', :git => 'https://github.com/krzyzanowskim/CryptoSwift.git', :branch => 'master'
+  pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'master'
 
   # Used for Crash reporting
   pod 'Firebase/Core'

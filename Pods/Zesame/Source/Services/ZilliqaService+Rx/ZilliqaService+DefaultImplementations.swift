@@ -39,10 +39,10 @@ public extension ZilliqaService {
         }
     }
 
-    func createNewWallet(encryptionPassword: String, done: @escaping Done<Wallet>) {
+    func createNewWallet(encryptionPassword: String, kdf: KDF = .scrypt, done: @escaping Done<Wallet>) {
         background {
             let privateKey = PrivateKey.generateNew()
-            let keyRestoration: KeyRestoration = .privateKey(privateKey, encryptBy: encryptionPassword)
+            let keyRestoration: KeyRestoration = .privateKey(privateKey, encryptBy: encryptionPassword, kdf: kdf)
             self.restoreWallet(from: keyRestoration, done: done)
         }
     }
@@ -65,9 +65,9 @@ public extension ZilliqaService {
                         }
                     }
                 }
-            case .privateKey(let privateKey, let newPassword):
+            case .privateKey(let privateKey, let newPassword, let kdf):
                 do {
-                    try Keystore.from(privateKey: privateKey, encryptBy: newPassword) {
+                    try Keystore.from(privateKey: privateKey, encryptBy: newPassword, kdf: kdf) {
 
                         guard case .success(let keystore) = $0 else {
                             done(.failure($0.error!))
@@ -90,12 +90,14 @@ public extension ZilliqaService {
     func exportKeystore(
         privateKey: PrivateKey,
         encryptWalletBy password: String,
+        kdf: KDF = .scrypt,
         done: @escaping Done<Keystore>
         ) {
         do {
             try Keystore.from(
                 privateKey: privateKey,
                 encryptBy: password,
+                kdf: kdf,
                 done: done
             )
         } catch {

@@ -32,7 +32,7 @@ public extension Keystore {
     static func from(
         privateKey: PrivateKey,
         encryptBy password: String,
-        kdf: KDF = .scrypt,
+        kdf: KDF,
         kdfParams: KDFParams? = nil,
         done: @escaping Done<Keystore>
         ) throws {

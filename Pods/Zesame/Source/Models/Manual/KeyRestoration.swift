@@ -25,17 +25,17 @@
 import Foundation
 
 public enum KeyRestoration {
-    case privateKey(PrivateKey, encryptBy: String)
+    case privateKey(PrivateKey, encryptBy: String, kdf: KDF)
     case keystore(Keystore, password: String)
 }
 
 public extension KeyRestoration {
 
-    init(privateKeyHexString: String, encryptBy newPassword: String) throws {
+    init(privateKeyHexString: String, encryptBy newPassword: String, kdf: KDF = .scrypt) throws {
         guard let privateKey = PrivateKey(hex: privateKeyHexString) else {
             throw Error.walletImport(.badPrivateKeyHex)
         }
-        self = .privateKey(privateKey, encryptBy: newPassword)
+        self = .privateKey(privateKey, encryptBy: newPassword, kdf: kdf)
     }
 
     init(keyStoreJSON: Data, encryptedBy password: String) throws {
