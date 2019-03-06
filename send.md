@@ -1,5 +1,5 @@
 ---
 title: Send Zillings
 redirect_to:
-  - zhip.app
+  - https://zhip.app/
 ---
