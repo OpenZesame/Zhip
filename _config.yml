@@ -1,7 +1,6 @@
 title: Zhip
 
 description: Zhip is the worlds first Zilliqa iOS wallet
-baseurl: "/" # the subpath of your site, e.g. /blog
 
 url: "zhip.app"
 
