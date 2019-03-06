@@ -1,1 +1,21 @@
-theme: jekyll-theme-cayman
+title: Zhip
+
+description: Zhip is the worlds first Zilliqa iOS wallet
+baseurl: "" # the subpath of your site, e.g. /blog
+
+url: "zhip.app"
+
+markdown: kramdown
+theme: minima
+exclude: [vendor]
+
+markdown: kramdown
+theme: minima
+
+plugins:
+  - jekyll-redirect-from
+  - jekyll-seo-tag
+
+header_pages:
+  - index.md
+  - privacy.md

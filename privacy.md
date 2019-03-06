@@ -1,3 +1,8 @@
+---
+layout: page
+title: Privacy Policy
+---
+
 ## Privacy Policy
 OpenZesame (seller name in App Store for the corporation *Alexander Cyon Consulting AB* registered in Sweden) built the Zhip app as an Open Source app. This SERVICE is provided by OpenZesame at no cost and is intended for use as is.
 
