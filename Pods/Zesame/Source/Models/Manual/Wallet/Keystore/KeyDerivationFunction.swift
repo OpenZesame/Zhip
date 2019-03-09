@@ -26,11 +26,13 @@ import Foundation
 
 public typealias KDF = KeyDerivationFunction
 public enum KeyDerivationFunction: String, Codable {
+    public static var `default`: KDF = .scrypt
     case scrypt
     case pbkdf2
 }
 
 public extension KDF {
+
     static var defaultParameters: KDFParams {
         do {
             return try KDFParams()

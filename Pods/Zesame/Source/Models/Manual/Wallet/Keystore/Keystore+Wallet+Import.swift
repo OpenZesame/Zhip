@@ -32,14 +32,14 @@ public extension Keystore {
         decryptPrivateKeyWith(password: password) {
                 switch $0 {
                 case .failure(let error): done(Result.failure(error))
-                case .success(let privateKeyHex):
-                    let keyPair = KeyPair(privateKeyHex: privateKeyHex)!
+                case .success(let privateKey):
+                    let keyPair = KeyPair(private: privateKey)
                     done(.success(keyPair))
                 }
         }
     }
 
-    func decryptPrivateKeyWith(password: String, done: @escaping Done<String>) {
+    func decryptPrivateKeyWith(password: String, done: @escaping Done<PrivateKey>) {
 
         guard password.count >= Keystore.minumumPasswordLength else {
             let error = Error.keystorePasswordTooShort(
@@ -67,8 +67,12 @@ public extension Keystore {
                 let aesCtr = try makeAesCtr(derivedKey: derivedKey, iv: iv)
 
                 let decryptedPrivateKey = try aesCtr.decrypt(encryptedPrivateKey.bytes).asHex
-
-                done(.success(decryptedPrivateKey))
+                guard let privateKey = PrivateKey(hex: decryptedPrivateKey) else {
+                    let error = Error.walletImport(.badPrivateKeyHex)
+                    done(.failure(error))
+                    return
+                }
+                done(.success(privateKey))
             }
         } catch {
             done(.failure(Error.decryptPrivateKey(error)))

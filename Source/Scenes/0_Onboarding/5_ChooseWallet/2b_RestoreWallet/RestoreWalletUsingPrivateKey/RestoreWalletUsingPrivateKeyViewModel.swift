@@ -89,7 +89,7 @@ final class RestoreWalletUsingPrivateKeyViewModel {
             guard let privateKey = $0.0, let newEncryptionPassword = $0.1?.validPassword else {
                 return nil
             }
-            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassword)
+            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassword, kdf: .default)
         }
 
         let privateKeyValidation = inputFromView.isEditingPrivateKey.withLatestFrom(privateKeyValidationValue) {

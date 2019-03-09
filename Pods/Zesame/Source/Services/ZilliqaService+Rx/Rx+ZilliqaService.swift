@@ -52,9 +52,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
+    func createNewWallet(encryptionPassword: String, kdf: KDF = .default) -> Observable<Wallet> {
         return callBase {
-            $0.createNewWallet(encryptionPassword: encryptionPassword, done: $1)
+            $0.createNewWallet(encryptionPassword: encryptionPassword, kdf: kdf, done: $1)
         }
     }
 
