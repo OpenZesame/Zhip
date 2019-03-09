@@ -25,24 +25,38 @@
 import Foundation
 import EllipticCurveKit
 import Result
+import CryptoSwift
 
 public extension Keystore {
-    static func from(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptBy password: String, done: @escaping Done<Keystore>) {
-        guard password.count >= Keystore.minumumPasswordLength else { done(.failure(.keystorePasswordTooShort(provided: password.count, minimum: Keystore.minumumPasswordLength))); return }
 
-        // Same parameters used by Zilliqa Javascript SDK: https://github.com/Zilliqa/Zilliqa-Wallet/blob/master/src/app/zilliqa.service.ts#L142
-        let salt = try! securelyGenerateBytes(count: 32).asData
+    static func from(
+        privateKey: PrivateKey,
+        encryptBy password: String,
+        kdf: KDF,
+        kdfParams: KDFParams? = nil,
+        done: @escaping Done<Keystore>
+        ) throws {
 
-        let kdfParams = Keystore.Crypto.KeyDerivationFunctionParameters(
-            costParameter: isDebug ? 2048 : 262144,
-            blockSize: 1,
-            parallelizationParameter: 8,
-            lengthOfDerivedKey: 32,
-            saltHex: salt.asHex
-        )
+        guard password.count >= Keystore.minumumPasswordLength else {
+            let error = Error.keystorePasswordTooShort(
+                provided: password.count,
+                minimum: Keystore.minumumPasswordLength
+            )
+            done(.failure(error))
+            return
+        }
 
-        Scrypt(kdfParameters: kdfParams).deriveKey(password: password) { derivedKey in
-            let keyStore = Keystore(from: derivedKey, address: address, privateKey: privateKey, parameters: kdfParams)
+        let kdfParams = kdfParams ?? KDF.defaultParameters
+
+        try AnyKeyDeriving(kdf: kdf, kdfParams: kdfParams).deriveKey(password: password) { derivedKey in
+
+            let keyStore = try Keystore(
+                from: derivedKey,
+                privateKey: privateKey,
+                kdf: kdf,
+                parameters: kdfParams
+            )
+
             done(Result.success(keyStore))
         }
     }

@@ -27,7 +27,7 @@ import APIKit
 
 public enum Error: Swift.Error {
 
-    indirect case api(API)
+    case api(API)
     public enum API: Swift.Error {
         /// Error of `URLSession`.
         case connectionError(Swift.Error)
@@ -51,12 +51,16 @@ public enum Error: Swift.Error {
 
     case keystorePasswordTooShort(provided: Int, minimum: Int)
 
-    indirect case walletImport(WalletImport)
+    case walletImport(WalletImport)
     public enum WalletImport: Swift.Error {
         case badAddress
         case badPrivateKeyHex
         case jsonStringDecoding
         case jsonDecoding(Swift.DecodingError)
         case incorrectPassword
+        case keystoreError(Swift.Error)
     }
+
+    case keystoreExport(Swift.Error)
+    case decryptPrivateKey(Swift.Error)
 }

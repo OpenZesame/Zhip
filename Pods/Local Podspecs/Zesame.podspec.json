@@ -21,6 +21,9 @@
   "source_files": "Source/**/*.swift",
   "social_media_url": "https://twitter.com/alexcyon",
   "dependencies": {
+    "CryptoSwift": [
+
+    ],
     "EllipticCurveKit": [
 
     ],

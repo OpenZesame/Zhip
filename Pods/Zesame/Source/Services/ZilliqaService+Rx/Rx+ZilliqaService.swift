@@ -52,9 +52,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
+    func createNewWallet(encryptionPassword: String, kdf: KDF = .default) -> Observable<Wallet> {
         return callBase {
-            $0.createNewWallet(encryptionPassword: encryptionPassword, done: $1)
+            $0.createNewWallet(encryptionPassword: encryptionPassword, kdf: kdf, done: $1)
         }
     }
 
@@ -64,9 +64,9 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func exportKeystore(address: AddressChecksummedConvertible, privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore> {
+    func exportKeystore(privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore> {
         return callBase {
-            $0.exportKeystore(address: address, privateKey: privateKey, encryptWalletBy: password, done: $1)
+            $0.exportKeystore(privateKey: privateKey, encryptWalletBy: password, done: $1)
         }
     }
 

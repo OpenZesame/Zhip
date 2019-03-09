@@ -73,7 +73,13 @@ public extension HexString {
     }
 }
 
-extension HexString: Codable {}
+extension HexString: Codable {
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.init(try container.decode(String.self))
+    }
+}
 extension HexString: Equatable {}
 extension HexString: ExpressibleByStringLiteral {}
 public extension HexString {

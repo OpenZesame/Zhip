@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -23,18 +23,18 @@
 //
 
 import Foundation
+import CryptoSwift
 
-public extension Scrypt {
+public typealias PBKDF2 = CryptoSwift.PKCS5.PBKDF2
 
-    convenience init(kdfParameters: Keystore.Crypto.KeyDerivationFunctionParameters) {
-        self.init(params:
-            Parameters(
-                costParameter: kdfParameters.costParameter,
-                blockSize: kdfParameters.blockSize,
-                parallelizationParameter: kdfParameters.parallelizationParameter,
-                lengthOfDerivedKey: kdfParameters.lengthOfDerivedKey,
-                salt: kdfParameters.salt
-            )
+public extension PBKDF2 {
+    init(kdfParams: KDFParams, password: String) throws {
+        let passwordBytes = Array(password.data(using: .ascii)!)
+        try self.init(
+            password: passwordBytes,
+            salt: kdfParams.salt.bytes,
+            iterations: kdfParams.costParameterC,
+            keyLength: kdfParams.lengthOfDerivedKey
         )
     }
 }

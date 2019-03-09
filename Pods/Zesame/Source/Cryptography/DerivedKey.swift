@@ -24,13 +24,12 @@
 
 import Foundation
 import EllipticCurveKit
+import CryptoSwift
 
 public struct DerivedKey {
     public let data: Data
-    public let parametersUsed: Scrypt.Parameters
-    fileprivate init(data: DataConvertible, parametersUsed: Scrypt.Parameters) {
+    init(data: DataConvertible) {
         self.data = data.asData
-        self.parametersUsed = parametersUsed
     }
 }
 
@@ -38,17 +37,5 @@ extension DerivedKey: DataConvertible {}
 public extension DerivedKey {
     var asData: Data {
         return data
-    }
-}
-
-public extension Scrypt {
-    public func deriveKey(password: String, done: @escaping (DerivedKey) -> Void) {
-        background {
-            let data = try! self.calculate(password: password)
-            let derivedKey = DerivedKey(data: data, parametersUsed: self.params)
-            main {
-                done(derivedKey)
-            }
-        }
     }
 }

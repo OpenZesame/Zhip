@@ -26,6 +26,7 @@ import Foundation
 import IQKeyboardManagerSwift
 import SwiftyBeaver
 import Firebase
+import Zesame
 
 /// The global logger used throughout the app.
 let log = SwiftyBeaver.self
