@@ -32,11 +32,6 @@ final class WelcomeView: UIView {
     private lazy var impressionLabel                = UILabel()
     private lazy var subtitleLabel                  = UILabel()
     private lazy var startButton                    = UIButton()
-    private lazy var lowerTintGradientView          = GradientView(colors: [
-        UIColor.deepBlue.withAlphaComponent(0.2),
-        UIColor.teal.withAlphaComponent(0.1),
-        UIColor.deepBlue.withAlphaComponent(0.4)
-    ])
 
     private lazy var stackView = UIStackView(arrangedSubviews: [
         .spacer,
@@ -94,11 +89,6 @@ private extension WelcomeView {
         startButton.withStyle(.primary) {
             $0.title(€.Button.start)
         }
-
-        motionEffectSpaceshipImageView.addSubview(lowerTintGradientView)
-        motionEffectSpaceshipImageView.bringSubviewToFront(lowerTintGradientView)
-        lowerTintGradientView.edgesToSuperview(excluding: .top)
-        lowerTintGradientView.heightToSuperview(multiplier: 0.3)
     }
 
     func setupSpaceshipImageWithMotionEffect() {
