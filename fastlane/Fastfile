@@ -10,7 +10,7 @@ lane :beta do
     
     # Build the IPA
     build_app(scheme: "Zhip")
-
+    upload_symbols_to_crashlytics(gsp_path: "./Source/Application/GoogleService-Info.plist") 
     upload_to_testflight
 
     slack(
