@@ -63,12 +63,11 @@ extension ViewModelTesting {
 
         let privateKey = PrivateKey(hex: "0507A445DAA5B543AB568BDBC8E9FBB167B45533DCEDEE0505B012677C86B3A0")!
         let password = "apabanan"
-        let address = Address(privateKey: privateKey)
-        Keystore.from(address: address, privateKey: privateKey, encryptBy: password) {
+        try! Keystore.from(privateKey: privateKey, encryptBy: password, kdf: .scrypt) {
             guard case .success(let keystore) = $0 else {
                 return XCTFail()
             }
-            let _wallet = Zesame.Wallet(keystore: keystore, address: address)
+            let _wallet = Zesame.Wallet(keystore: keystore)
             let wallet = Zhip.Wallet(wallet: _wallet, origin: .importedPrivateKey)
             self.cachedWallet = wallet
             success(wallet)
