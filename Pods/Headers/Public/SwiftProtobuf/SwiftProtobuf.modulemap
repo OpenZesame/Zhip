@@ -1,6 +1,1 @@
-module SwiftProtobuf {
-  umbrella header "SwiftProtobuf-umbrella.h"
-
-  export *
-  module * { export * }
-}
+../../../Target Support Files/SwiftProtobuf/SwiftProtobuf.modulemap

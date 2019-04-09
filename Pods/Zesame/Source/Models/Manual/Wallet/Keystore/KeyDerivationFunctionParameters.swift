@@ -29,7 +29,7 @@ public typealias KDFParams = KDF.Parameters
 
 public extension KDF {
     /// Same default values for parameters used by Zilliqa Javascript SDK: https://github.com/Zilliqa/Zilliqa-JavaScript-Library/blob/dev/packages/zilliqa-js-crypto/src/keystore.ts#L77-L82
-    public struct Parameters: Codable, Equatable {
+    struct Parameters: Codable, Equatable {
         /// "N", CPU/memory cost parameter, must be power of 2.
         let costParameterN: Int
         let costParameterC: Int

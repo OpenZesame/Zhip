@@ -27,7 +27,7 @@ import CryptoSwift
 import EllipticCurveKit
 
 public extension Keystore {
-    public struct Crypto: Codable, Equatable {
+    struct Crypto: Codable, Equatable {
         public struct CipherParameters: Codable, Equatable {
             /// "iv"
             let initializationVectorHex: String

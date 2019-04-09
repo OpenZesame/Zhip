@@ -37,7 +37,7 @@ public struct Keystore: Codable, Equatable {
 
 public extension Keystore {
 
-    public enum CodingKeys: CodingKey {
+    enum CodingKeys: CodingKey {
         /// JSON Keys matching those used by Zilliqa JavaScript library: https://github.com/Zilliqa/Zilliqa-Wallet/blob/master/src/app/zilliqa.service.ts
         case address, crypto, id, version
     }

@@ -27,7 +27,7 @@ import Foundation
 // MARK: - ExpressibleByStringLiteral
 extension Address: ExpressibleByStringLiteral {}
 public extension Address {
-    public init(stringLiteral value: String) {
+    init(stringLiteral value: String) {
         do {
             try self.init(string: value)
         } catch {

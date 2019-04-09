@@ -1,6 +1,1 @@
-module Zesame {
-  umbrella header "Zesame-umbrella.h"
-
-  export *
-  module * { export * }
-}
+../../../Target Support Files/Zesame/Zesame.modulemap
