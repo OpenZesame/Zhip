@@ -63,7 +63,6 @@ private typealias € = L10n.Scene.Welcome
 private typealias Image = Asset.Images.Welcome
 private extension WelcomeView {
 
-    // swiftlint:disable:next function_body_length
     func setup() {
         stackView.withStyle(.default) {
             $0.spacing(0)
