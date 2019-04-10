@@ -31,28 +31,10 @@ private typealias € = L10n.Scene.BackupWallet
 
 // MARK: - BackupWalletUserAction
 enum BackupWalletUserAction {
-    case cancel
+    case cancelOrDismiss
     case backupWallet
     case revealPrivateKey
     case revealKeystore
-}
-
-extension Wallet {
-    var keystoreAsJSON: String {
-       return keystore.asPrettyPrintedJSONString
-    }
-}
-
-extension Keystore {
-    var asPrettyPrintedJSONString: String {
-        guard let keystoreJSON = try? JSONEncoder(outputFormatting: .prettyPrinted).encode(self) else {
-            incorrectImplementation("should be able to JSON encode a keystore")
-        }
-        guard let jsonString = String(data: keystoreJSON, encoding: .utf8) else {
-            incorrectImplementation("Should be able to create JSON string from Data")
-        }
-        return jsonString
-    }
 }
 
 // MARK: - BackupWalletViewModel
@@ -63,9 +45,14 @@ final class BackupWalletViewModel: BaseViewModel<
 > {
 
     private let wallet: Driver<Wallet>
+    enum Mode: Int, Equatable {
+        case dismissable, cancellable
+    }
+    private let mode: Mode
 
-    init(wallet: Driver<Wallet>) {
+    init(wallet: Driver<Wallet>, mode: Mode = .cancellable) {
         self.wallet = wallet
+        self.mode = mode
     }
 
     // swiftlint:disable:next function_body_length
@@ -75,12 +62,20 @@ final class BackupWalletViewModel: BaseViewModel<
         }
 
         let isUnderstandsRiskCheckboxChecked = input.fromView.isUnderstandsRiskCheckboxChecked
+        
+        switch mode {
+        case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
+            input.fromController.rightBarButtonTrigger
+                .do(onNext: { userDid(.cancelOrDismiss) })
+                .drive().disposed(by: bag)
+        case .cancellable:
+             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
+            input.fromController.leftBarButtonTrigger
+                .do(onNext: { userDid(.cancelOrDismiss) })
+                .drive().disposed(by: bag)
+        }
 
         bag <~ [
-            input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
-
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
                 .do(onNext: { (keystoreText: String) -> Void in
                     UIPasteboard.general.string = keystoreText
@@ -102,6 +97,7 @@ final class BackupWalletViewModel: BaseViewModel<
         ]
 
         return Output(
+            isHaveSecurelyBackedUpViewsVisible: Driver<Mode>.just(mode).map { $0 == .cancellable },
             isDoneButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }
@@ -118,6 +114,25 @@ extension BackupWalletViewModel {
     }
 
     struct Output {
+        let isHaveSecurelyBackedUpViewsVisible: Driver<Bool>
         let isDoneButtonEnabled: Driver<Bool>
+    }
+}
+
+extension Wallet {
+    var keystoreAsJSON: String {
+        return keystore.asPrettyPrintedJSONString
+    }
+}
+
+extension Keystore {
+    var asPrettyPrintedJSONString: String {
+        guard let keystoreJSON = try? JSONEncoder(outputFormatting: .prettyPrinted).encode(self) else {
+            incorrectImplementation("should be able to JSON encode a keystore")
+        }
+        guard let jsonString = String(data: keystoreJSON, encoding: .utf8) else {
+            incorrectImplementation("Should be able to create JSON string from Data")
+        }
+        return jsonString
     }
 }

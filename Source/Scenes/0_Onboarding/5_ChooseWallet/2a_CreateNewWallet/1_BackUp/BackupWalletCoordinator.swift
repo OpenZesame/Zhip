@@ -39,9 +39,10 @@ final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavi
 
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>
-
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil) {
+    private let mode: BackupWalletViewModel.Mode
+    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil, mode: BackupWalletViewModel.Mode = .cancellable) {
         self.useCase = useCase
+        self.mode = mode
         if let wallet = wallet {
             self.wallet = wallet
         } else {
@@ -65,13 +66,13 @@ private extension BackupWalletCoordinator {
 
     func toBackUpWallet() {
 
-        let viewModel = BackupWalletViewModel(wallet: wallet)
+        let viewModel = BackupWalletViewModel(wallet: wallet, mode: mode)
 
         push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case .revealKeystore: self.toRevealKeystore()
             case .revealPrivateKey: self.toDecryptKeystoreToRevealKeyPair()
-            case .cancel: self.cancel()
+            case .cancelOrDismiss: self.cancel()
             case .backupWallet: self.finish()
             }
         }

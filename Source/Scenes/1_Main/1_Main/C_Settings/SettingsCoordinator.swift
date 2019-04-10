@@ -171,7 +171,7 @@ private extension SettingsCoordinator {
 
     func toBackupWallet() {
         presentModalCoordinator(
-            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase)
+            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase, mode: .dismissable)
         },
             navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {

@@ -41,8 +41,9 @@ final class BackupWalletView: ScrollableStackViewOwner {
     private lazy var keystoreButtons                = UIStackView(arrangedSubviews: [revealKeystoreButton, copyKeystoreButton, .spacer])
     private lazy var keystoreViews                  = UIStackView(arrangedSubviews: [keystoreLabel, keystoreButtons])
 
-    private lazy var understandsRisksCheckbox       = CheckboxWithLabel()
+    private lazy var haveSecurelyBackedUpCheckbox   = CheckboxWithLabel()
     private lazy var doneButton                     = UIButton()
+    private lazy var haveSecurelyBackedUpViews      = UIStackView(arrangedSubviews: [haveSecurelyBackedUpCheckbox, doneButton])
 
     // MARK: - StackViewStyling
     lazy var stackViewStyle: UIStackView.Style = [
@@ -51,8 +52,7 @@ final class BackupWalletView: ScrollableStackViewOwner {
         privateKeyViews,
         keystoreViews,
         .spacer,
-        understandsRisksCheckbox,
-        doneButton
+        haveSecurelyBackedUpViews
     ]
 
     override func setup() {
@@ -65,6 +65,7 @@ extension BackupWalletView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
+            viewModel.isHaveSecurelyBackedUpViewsVisible --> haveSecurelyBackedUpViews.rx.isVisible,
             viewModel.isDoneButtonEnabled    --> doneButton.rx.isEnabled
         ]
     }
@@ -74,7 +75,7 @@ extension BackupWalletView: ViewModelled {
             copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap.asDriver(),
             revealKeystoreTrigger: revealKeystoreButton.rx.tap.asDriver(),
             revealPrivateKeyTrigger: revealPrivateKeyButton.rx.tap.asDriver(),
-            isUnderstandsRiskCheckboxChecked: understandsRisksCheckbox.rx.isChecked.asDriver(),
+            isUnderstandsRiskCheckboxChecked: haveSecurelyBackedUpCheckbox.rx.isChecked.asDriver(),
             doneTrigger: doneButton.rx.tap.asDriver()
         )
     }
@@ -120,8 +121,10 @@ private extension BackupWalletView {
         keystoreButtons.withStyle(.horizontal)
 
         keystoreViews.withStyle(.vertical)
+        
+        haveSecurelyBackedUpViews.withStyle(.vertical)
 
-        understandsRisksCheckbox.withStyle(.default) {
+        haveSecurelyBackedUpCheckbox.withStyle(.default) {
             $0.text(€.Checkbox.haveSecurelyBackedUp)
         }
 

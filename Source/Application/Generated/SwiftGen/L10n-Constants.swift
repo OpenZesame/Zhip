@@ -165,6 +165,8 @@ internal enum L10n {
       }
     }
     internal enum BackupWallet {
+      /// Back up wallet
+      internal static let title = L10n.tr("Localizable", "Scene.BackupWallet.Title")
       internal enum Button {
         /// Copy
         internal static let copy = L10n.tr("Localizable", "Scene.BackupWallet.Button.Copy")

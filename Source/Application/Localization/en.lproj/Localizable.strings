@@ -90,6 +90,7 @@
 "Scene.CreateNewWallet.Button.Continue" = "Continue";
 
 // MARK: BackupWallet
+"Scene.BackupWallet.Title" = "Back up wallet";
 "Scene.BackupWallet.Label.BackUpKeys" = "Back up keys";
 "Scene.BackupWallet.Label.UrgeBackup" = "Backing up the private key is the most important, but is also the most sensitive data. The private key is not tied to the encryption password, but the keystore is. Failing to backup your wallet may result in irreversible loss of assets.";
 "Scene.BackupWallet.Label.Keystore" = "Keystore";
