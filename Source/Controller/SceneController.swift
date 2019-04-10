@@ -32,7 +32,14 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 
     private let bag = DisposeBag()
     let viewModel: ViewModel
-    private lazy var rootContentView = View()
+    
+    private lazy var rootContentView: View = {
+        // Beware, here be dragons!
+        // For some unknown reason (Xcode 10.2 / Swift 5 being drunk) Xcode decided to interpret `View()` (which worked fine before Xcode 10.2)
+        // as `UIView.init:frame:`. Why? Oh Why?! This terribly ugly hack fixes that.
+        // swiftlint:disable force_cast
+        return (View.self as EmptyInitializable.Type).init() as! View
+    }()
 
     // MARK: - Initialization
     required init(viewModel: ViewModel) {

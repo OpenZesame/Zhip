@@ -28,11 +28,12 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case create(wallet: Wallet), cancel
-    }
+enum CreateNewWalletCoordinatorNavigationStep {
+    case create(wallet: Wallet), cancel
+}
 
+final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinatorNavigationStep> {
+    
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
@@ -71,13 +72,14 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toBackupWallet(wallet: Wallet) {
-        let coordinator = BackupWalletCoordinator(
-            navigationController: navigationController,
-            useCase: useCaseProvider.makeWalletUseCase(),
-            wallet: .just(wallet)
-        )
 
-        start(coordinator: coordinator) { [unowned self] userFinished in
+        start(
+            coordinator: BackupWalletCoordinator(
+                navigationController: navigationController,
+                useCase: useCaseProvider.makeWalletUseCase(),
+                wallet: Driver.just(wallet)
+            )
+        ) { [unowned self] userFinished in
             switch userFinished {
             case .cancel: self.cancel()
             case .backUp: self.toMain(wallet: wallet)

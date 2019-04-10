@@ -29,10 +29,11 @@ import RxSwift
 
 private typealias € = L10n.Scene
 
-final class MainCoordinator: BaseCoordinator<MainCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case removeWallet
-    }
+enum MainCoordinatorNavigationStep {
+    case removeWallet
+}
+
+final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator

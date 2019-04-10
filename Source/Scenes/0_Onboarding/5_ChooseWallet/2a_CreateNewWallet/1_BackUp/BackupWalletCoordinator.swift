@@ -30,11 +30,12 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case backUp
-        case cancel
-    }
+enum BackupWalletCoordinatorNavigationStep {
+    case backUp
+    case cancel
+}
+
+final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
 
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>

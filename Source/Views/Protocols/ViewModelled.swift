@@ -28,11 +28,11 @@ protocol ViewModelled: EmptyInitializable {
     associatedtype ViewModel: ViewModelType
     typealias InputFromView = ViewModel.Input.FromView
     var inputFromView: InputFromView { get }
-    func populate(with viewModel: ViewModel.Output) -> [Disposable]
+    func populate(with viewModel: ViewModel.OutputVM) -> [Disposable]
 }
 
 extension ViewModelled {
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] { return [] }
+    func populate(with viewModel: ViewModel.OutputVM) -> [Disposable] { return [] }
 }
 
 struct NoControllerInput {}

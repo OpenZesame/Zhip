@@ -24,8 +24,6 @@
 
 import UIKit
 
-typealias SettingsItem = NavigatingCellModel<SettingsViewModel.NavigationStep>
-
 protocol CellModel {
     var labelStyle: UILabel.Style { get }
     var imageViewStyle: UIImageView.Style { get }

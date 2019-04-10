@@ -121,7 +121,7 @@ extension UnlockAppWithPincodeViewModel {
             self.existingPincode = existingPincode
         }
 
-        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.ValidationResult {
             return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
         }
     }

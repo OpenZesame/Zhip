@@ -23,14 +23,17 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+
 import Zesame
 
-final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case finish
-    }
+import RxSwift
+import RxCocoa
+
+enum ReceiveCoordinatorNavigationStep {
+    case finish
+}
+
+final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinatorNavigationStep> {
 
     private let deepLinkGenerator: DeepLinkGenerator
     private let useCaseProvider: UseCaseProvider

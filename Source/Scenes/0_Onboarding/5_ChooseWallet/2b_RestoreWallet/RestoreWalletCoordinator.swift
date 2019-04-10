@@ -25,10 +25,11 @@
 import UIKit
 import Zesame
 
-final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case finishedRestoring(wallet: Wallet), cancel
-    }
+enum RestoreWalletCoordinatorNavigationStep {
+    case finishedRestoring(wallet: Wallet), cancel
+}
+
+final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinatorNavigationStep> {
 
     private let useCase: WalletUseCase
 

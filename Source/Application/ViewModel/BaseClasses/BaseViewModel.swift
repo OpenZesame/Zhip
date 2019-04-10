@@ -27,7 +27,7 @@ import RxSwift
 import RxCocoa
 
 /// Subclasses passing the `Step` type to this class should not declare the `Step` type as a nested type due to a swift compiler bug
-/// read more: https://bugs.swift.org/browse/SR-9160
+/// read more: https://bugs.swift.org/browse/SR-9160 (Fixed in PR: https://github.com/apple/swift/pull/23920 )
 class BaseViewModel<NavigationStep, InputFromView, OutputFromViewModel>: AbstractViewModel<
     InputFromView,
     InputFromController,

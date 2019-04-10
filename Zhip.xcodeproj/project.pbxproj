@@ -36,22 +36,10 @@
 		4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 480935482195D1BE009CA3FD /* Localizable.strings */; };
 		4809354E2195D1BE009CA3FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4809354B2195D1BE009CA3FD /* LaunchScreen.storyboard */; };
 		480B0E8A21CCEFDE00A72133 /* UIView+MotionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E8921CCEFDE00A72133 /* UIView+MotionEffect.swift */; };
-		480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E8F21CE0B2800A72133 /* EnsureThatYouAreNotBeingWatchedView.swift */; };
-		480B0E9421CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */; };
-		480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */; };
 		480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9621CE2C8E00A72133 /* AppAppearance.swift */; };
 		480B0E9921CF852600A72133 /* Rx+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9821CF852600A72133 /* Rx+Validation.swift */; };
 		480B0EBC21D0A74600A72133 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0EBB21D0A74600A72133 /* ErrorTracker.swift */; };
-		4819BD8B21C0CAEF00443F2A /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
-		4819BD8D21C0CAEF00443F2A /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
-		4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
-		4819BD9A21C223B200443F2A /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
-		4819BD9B21C223B200443F2A /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
-		4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
 		4819BDA921C2403800443F2A /* UIView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDA821C2403800443F2A /* UIView+Rx.swift */; };
-		4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */; };
-		4819BDB421C27D2900443F2A /* ScanQRCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */; };
-		4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB121C27D2900443F2A /* ScanQRCodeViewModel.swift */; };
 		4819BDBF21C4AB2700443F2A /* GasPriceValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */; };
 		4819BDC121C4AE9A00443F2A /* SufficientFundsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */; };
 		48241B4921B153EA0054ED8E /* Coordinating+Scene+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48241B4821B153EA0054ED8E /* Coordinating+Scene+Present.swift */; };
@@ -105,9 +93,6 @@
 		4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */; };
 		4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDFF21611F97002FF978 /* UIScrollView_Extensions.swift */; };
 		4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EE0121611FA9002FF978 /* WKWebView_Extensions.swift */; };
-		484B5B94220E118B002BA411 /* WarningCustomECCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B90220E118A002BA411 /* WarningCustomECCView.swift */; };
-		484B5B95220E118B002BA411 /* WarningCustomECCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B91220E118A002BA411 /* WarningCustomECCController.swift */; };
-		484B5B96220E118B002BA411 /* WarningCustomECCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */; };
 		484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */; };
 		484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */; };
 		4850A408214C122900EBB85B /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4850A407214C122900EBB85B /* Mergeable.swift */; };
@@ -208,60 +193,7 @@
 		48ECF5C521A18F140078D659 /* BarButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF56F21A18F140078D659 /* BarButtonContent.swift */; };
 		48ECF5C621A18F140078D659 /* AbstractController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57021A18F140078D659 /* AbstractController.swift */; };
 		48ECF5C721A18F140078D659 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57121A18F140078D659 /* SceneController.swift */; };
-		48ECF5C821A18F140078D659 /* PrepareTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57721A18F140078D659 /* PrepareTransaction.swift */; };
-		48ECF5C921A18F140078D659 /* PrepareTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57821A18F140078D659 /* PrepareTransactionViewModel.swift */; };
-		48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57921A18F140078D659 /* PrepareTransactionView.swift */; };
-		48ECF5CB21A18F140078D659 /* SendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57A21A18F140078D659 /* SendCoordinator.swift */; };
-		48ECF5CC21A18F140078D659 /* SignTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57C21A18F140078D659 /* SignTransactionView.swift */; };
-		48ECF5CD21A18F140078D659 /* SignTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57D21A18F140078D659 /* SignTransaction.swift */; };
-		48ECF5CE21A18F140078D659 /* SignTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57E21A18F140078D659 /* SignTransactionViewModel.swift */; };
-		48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58121A18F140078D659 /* SettingsView.swift */; };
-		48ECF5D021A18F140078D659 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58221A18F140078D659 /* SettingsViewModel.swift */; };
-		48ECF5D121A18F140078D659 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58321A18F140078D659 /* Settings.swift */; };
-		48ECF5D221A18F140078D659 /* RemovePincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58521A18F140078D659 /* RemovePincodeView.swift */; };
-		48ECF5D321A18F140078D659 /* RemovePincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58621A18F140078D659 /* RemovePincodeViewModel.swift */; };
-		48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58721A18F140078D659 /* RemovePincode.swift */; };
-		48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58821A18F140078D659 /* SettingsCoordinator.swift */; };
-		48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58A21A18F140078D659 /* MainViewModel.swift */; };
-		48ECF5D721A18F140078D659 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58B21A18F140078D659 /* MainView.swift */; };
-		48ECF5D821A18F140078D659 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58C21A18F140078D659 /* Main.swift */; };
-		48ECF5DA21A18F140078D659 /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59021A18F140078D659 /* ReceiveView.swift */; };
-		48ECF5DB21A18F140078D659 /* ReceiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59121A18F140078D659 /* ReceiveViewModel.swift */; };
-		48ECF5DC21A18F140078D659 /* Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59221A18F140078D659 /* Receive.swift */; };
-		48ECF5DD21A18F140078D659 /* ReceiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59321A18F140078D659 /* ReceiveCoordinator.swift */; };
-		48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59521A18F140078D659 /* UnlockAppWithPincodeView.swift */; };
-		48ECF5DF21A18F140078D659 /* UnlockAppWithPincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59621A18F140078D659 /* UnlockAppWithPincodeViewModel.swift */; };
-		48ECF5E021A18F140078D659 /* UnlockAppWithPincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59721A18F140078D659 /* UnlockAppWithPincode.swift */; };
 		48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59921A18F140078D659 /* OnboardingCoordinator.swift */; };
-		48ECF5E221A18F140078D659 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59B21A18F140078D659 /* TermsOfServiceViewModel.swift */; };
-		48ECF5E321A18F140078D659 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59C21A18F140078D659 /* TermsOfServiceView.swift */; };
-		48ECF5E421A18F140078D659 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59D21A18F140078D659 /* TermsOfService.swift */; };
-		48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A021A18F140078D659 /* ConfirmNewPincode.swift */; };
-		48ECF5E621A18F140078D659 /* ConfirmNewPincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A121A18F140078D659 /* ConfirmNewPincodeViewModel.swift */; };
-		48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A221A18F140078D659 /* ConfirmNewPincodeView.swift */; };
-		48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A421A18F140078D659 /* ChoosePincodeViewModel.swift */; };
-		48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A521A18F140078D659 /* ChoosePincode.swift */; };
-		48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A621A18F140078D659 /* ChoosePincodeView.swift */; };
-		48ECF5EB21A18F140078D659 /* SetPincodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */; };
-		48ECF5EC21A18F140078D659 /* WarningERC20View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A921A18F140078D659 /* WarningERC20View.swift */; };
-		48ECF5ED21A18F140078D659 /* WarningERC20ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */; };
-		48ECF5EE21A18F140078D659 /* WarningERC20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AB21A18F140078D659 /* WarningERC20.swift */; };
-		48ECF5EF21A18F140078D659 /* RestoreWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AE21A18F140078D659 /* RestoreWalletViewModel.swift */; };
-		48ECF5F021A18F140078D659 /* RestoreWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AF21A18F140078D659 /* RestoreWalletView.swift */; };
-		48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B021A18F140078D659 /* RestoreWallet.swift */; };
-		48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B121A18F140078D659 /* RestoreWalletCoordinator.swift */; };
-		48ECF5F321A18F140078D659 /* ChooseWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B321A18F140078D659 /* ChooseWalletViewModel.swift */; };
-		48ECF5F421A18F140078D659 /* ChooseWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B421A18F140078D659 /* ChooseWalletView.swift */; };
-		48ECF5F521A18F140078D659 /* ChooseWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B521A18F140078D659 /* ChooseWallet.swift */; };
-		48ECF5F621A18F140078D659 /* ChooseWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */; };
-		48ECF5F721A18F140078D659 /* CreateNewWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B821A18F140078D659 /* CreateNewWalletCoordinator.swift */; };
-		48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BA21A18F140078D659 /* CreateNewWallet.swift */; };
-		48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BB21A18F140078D659 /* CreateNewWalletViewModel.swift */; };
-		48ECF5FA21A18F140078D659 /* CreateNewWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BC21A18F140078D659 /* CreateNewWalletView.swift */; };
-		48ECF5FB21A18F140078D659 /* BackupWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BE21A18F140078D659 /* BackupWalletView.swift */; };
-		48ECF5FC21A18F140078D659 /* BackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BF21A18F140078D659 /* BackupWalletViewModel.swift */; };
-		48ECF5FD21A18F140078D659 /* BackupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5C021A18F140078D659 /* BackupWallet.swift */; };
-		48ECF5FF21A18F5B0078D659 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5FE21A18F5B0078D659 /* MainCoordinator.swift */; };
 		48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60021A1A8160078D659 /* AbstractController+BarButtonContent.swift */; };
 		48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60221A1A83D0078D659 /* LeftBarButtonMaking.swift */; };
 		48ECF60521A1CA050078D659 /* ButtonWithSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60421A1CA050078D659 /* ButtonWithSpinner.swift */; };
@@ -270,30 +202,15 @@
 		48ECF60C21A1D0170078D659 /* CoordinatorTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60B21A1D0170078D659 /* CoordinatorTransition.swift */; };
 		48ECF60E21A1D0AC0078D659 /* Coordinating+Scene+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60D21A1D0AC0078D659 /* Coordinating+Scene+Push.swift */; };
 		48ECF61021A1F4AB0078D659 /* UIControl+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF60F21A1F4AB0078D659 /* UIControl+Rx.swift */; };
-		48ECF61721A29F9E0078D659 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF61621A29F9E0078D659 /* SettingsTableViewCell.swift */; };
 		48ECF61A21A29FE10078D659 /* CellConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF61921A29FE10078D659 /* CellConfigurable.swift */; };
 		48ECF61C21A29FF20078D659 /* ClassIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF61B21A29FF20078D659 /* ClassIdentifiable.swift */; };
 		48ECF61E21A2A02E0078D659 /* SingleCellTypeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF61D21A2A02E0078D659 /* SingleCellTypeTableView.swift */; };
-		48ECF62221A3416D0078D659 /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF62121A3416D0078D659 /* SettingsItem.swift */; };
 		48ECF62621A34E780078D659 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48ECF62521A34E780078D659 /* Settings.bundle */; };
 		48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF62921A356DA0078D659 /* OpenUrl.swift */; };
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* TransactionIntent.swift */; };
-		48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096A21BBB503001C499F /* RestoreUsingKeystoreView.swift */; };
-		48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096C21BBB547001C499F /* RestoreUsingPrivateKeyView.swift */; };
-		48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097021BBC349001C499F /* BackupWalletCoordinator.swift */; };
-		48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097221BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift */; };
-		48F4097521BBC673001C499F /* BackUpRevealedKeyPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097421BBC673001C499F /* BackUpRevealedKeyPairView.swift */; };
-		48F4097721BBC67D001C499F /* BackUpRevealedKeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097621BBC67D001C499F /* BackUpRevealedKeyPair.swift */; };
 		48F4097A21BCD560001C499F /* EncryptionPassphraseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097921BCD560001C499F /* EncryptionPassphraseValidator.swift */; };
-		48F4098621BCEE96001C499F /* DecryptKeystoreToRevealKeyPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098321BCEE96001C499F /* DecryptKeystoreToRevealKeyPairView.swift */; };
-		48F4098721BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098421BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift */; };
-		48F4098821BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098521BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift */; };
-		48F4098B21BD08C5001C499F /* DecryptKeystoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098A21BD08C5001C499F /* DecryptKeystoreCoordinator.swift */; };
-		48F4098D21BD270B001C499F /* BackUpKeystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098C21BD270B001C499F /* BackUpKeystore.swift */; };
-		48F4098F21BD2726001C499F /* BackUpKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098E21BD2726001C499F /* BackUpKeystoreView.swift */; };
-		48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */; };
 		48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832E82184E8C000EDAD40 /* UINavigationController_Extension.swift */; };
 		48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F832ED2185DE0200EDAD40 /* UIWindow.swift */; };
 		48F96C65220F8009008B7E22 /* DigitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C64220F8009008B7E22 /* DigitView.swift */; };
@@ -302,12 +219,95 @@
 		48F96C6B220F808E008B7E22 /* InputPincodeView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C6A220F808E008B7E22 /* InputPincodeView+Rx.swift */; };
 		48F96C6D220F812E008B7E22 /* PincodeTextField+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F96C6C220F812E008B7E22 /* PincodeTextField+Presentation.swift */; };
 		48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562721B632E50026690E /* CheckboxWithLabel.swift */; };
-		48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */; };
-		48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */; };
-		5BF1DFAA21A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift */; };
-		5BF1DFAB21A4288E00FE8068 /* AskForCrashReportingPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForCrashReportingPermissions.swift */; };
-		5BF1DFAC21A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift */; };
 		7BFDCAE30FF2195FF7E88F54 /* libPods-ZhipTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */; };
+		E6019A47225E74920079DDE8 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5FE21A18F5B0078D659 /* MainCoordinator.swift */; };
+		E6019A48225E74E50079DDE8 /* UnlockAppWithPincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59521A18F140078D659 /* UnlockAppWithPincodeView.swift */; };
+		E6019A49225E74E50079DDE8 /* UnlockAppWithPincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59621A18F140078D659 /* UnlockAppWithPincodeViewModel.swift */; };
+		E6019A4A225E74E50079DDE8 /* UnlockAppWithPincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59721A18F140078D659 /* UnlockAppWithPincode.swift */; };
+		E6019A4B225E75020079DDE8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58A21A18F140078D659 /* MainViewModel.swift */; };
+		E6019A4C225E75020079DDE8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58B21A18F140078D659 /* MainView.swift */; };
+		E6019A4D225E75020079DDE8 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58C21A18F140078D659 /* Main.swift */; };
+		E6019A4E225E75320079DDE8 /* SendCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57A21A18F140078D659 /* SendCoordinator.swift */; };
+		E6019A5B225E754D0079DDE8 /* PrepareTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57721A18F140078D659 /* PrepareTransaction.swift */; };
+		E6019A5C225E754D0079DDE8 /* PrepareTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57821A18F140078D659 /* PrepareTransactionViewModel.swift */; };
+		E6019A5D225E754D0079DDE8 /* PrepareTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57921A18F140078D659 /* PrepareTransactionView.swift */; };
+		E6019A5E225E754D0079DDE8 /* ScanQRCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB021C27D2900443F2A /* ScanQRCodeController.swift */; };
+		E6019A5F225E754D0079DDE8 /* ScanQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDAE21C27D2800443F2A /* ScanQRCodeView.swift */; };
+		E6019A60225E754D0079DDE8 /* ScanQRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BDB121C27D2900443F2A /* ScanQRCodeViewModel.swift */; };
+		E6019A61225E754D0079DDE8 /* SignTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57C21A18F140078D659 /* SignTransactionView.swift */; };
+		E6019A62225E754D0079DDE8 /* SignTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57D21A18F140078D659 /* SignTransaction.swift */; };
+		E6019A63225E754D0079DDE8 /* SignTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF57E21A18F140078D659 /* SignTransactionViewModel.swift */; };
+		E6019A64225E754D0079DDE8 /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
+		E6019A65225E754D0079DDE8 /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
+		E6019A66225E754D0079DDE8 /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
+		E635A4A2225D2FDB00124823 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59B21A18F140078D659 /* TermsOfServiceViewModel.swift */; };
+		E635A4A3225D2FDB00124823 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59C21A18F140078D659 /* TermsOfServiceView.swift */; };
+		E635A4A4225D2FDB00124823 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59D21A18F140078D659 /* TermsOfService.swift */; };
+		E635A4A5225D2FDB00124823 /* AskForCrashReportingPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForCrashReportingPermissions.swift */; };
+		E635A4A6225D2FDB00124823 /* AskForCrashReportingPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift */; };
+		E635A4A7225D2FDB00124823 /* AskForCrashReportingPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift */; };
+		E635A4A8225D2FDB00124823 /* WarningERC20View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A921A18F140078D659 /* WarningERC20View.swift */; };
+		E635A4A9225D2FDB00124823 /* WarningERC20ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */; };
+		E635A4AA225D2FDB00124823 /* WarningERC20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AB21A18F140078D659 /* WarningERC20.swift */; };
+		E635A4AB225D2FDB00124823 /* WarningCustomECCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B91220E118A002BA411 /* WarningCustomECCController.swift */; };
+		E635A4AC225D2FDB00124823 /* WarningCustomECCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B90220E118A002BA411 /* WarningCustomECCView.swift */; };
+		E635A4AD225D2FDB00124823 /* WarningCustomECCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */; };
+		E635A4AE225D301B00124823 /* ChooseWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */; };
+		E635A4AF225D301B00124823 /* ChooseWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B321A18F140078D659 /* ChooseWalletViewModel.swift */; };
+		E635A4B0225D301B00124823 /* ChooseWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B421A18F140078D659 /* ChooseWalletView.swift */; };
+		E635A4B1225D301B00124823 /* ChooseWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B521A18F140078D659 /* ChooseWallet.swift */; };
+		E635A4B2225D301B00124823 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9021CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift */; };
+		E635A4B3225D301B00124823 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E8F21CE0B2800A72133 /* EnsureThatYouAreNotBeingWatchedView.swift */; };
+		E635A4B4225D301B00124823 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480B0E9121CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift */; };
+		E635A4B5225D301B00124823 /* CreateNewWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B821A18F140078D659 /* CreateNewWalletCoordinator.swift */; };
+		E635A4B6225D301B00124823 /* CreateNewWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BA21A18F140078D659 /* CreateNewWallet.swift */; };
+		E635A4B7225D301B00124823 /* CreateNewWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BB21A18F140078D659 /* CreateNewWalletViewModel.swift */; };
+		E635A4B8225D301B00124823 /* CreateNewWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BC21A18F140078D659 /* CreateNewWalletView.swift */; };
+		E635A4B9225D301B00124823 /* BackupWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097021BBC349001C499F /* BackupWalletCoordinator.swift */; };
+		E635A4BA225D301B00124823 /* BackupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5C021A18F140078D659 /* BackupWallet.swift */; };
+		E635A4BB225D301B00124823 /* BackupWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BE21A18F140078D659 /* BackupWalletView.swift */; };
+		E635A4BC225D301B00124823 /* BackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5BF21A18F140078D659 /* BackupWalletViewModel.swift */; };
+		E635A4BD225D301B00124823 /* BackUpKeystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098C21BD270B001C499F /* BackUpKeystore.swift */; };
+		E635A4BE225D301B00124823 /* BackUpKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098E21BD2726001C499F /* BackUpKeystoreView.swift */; };
+		E635A4BF225D301B00124823 /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4099021BD27DA001C499F /* BackUpKeystoreViewModel.swift */; };
+		E635A4C0225D301B00124823 /* DecryptKeystoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098A21BD08C5001C499F /* DecryptKeystoreCoordinator.swift */; };
+		E635A4C1225D301B00124823 /* DecryptKeystoreToRevealKeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098521BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift */; };
+		E635A4C2225D301B00124823 /* DecryptKeystoreToRevealKeyPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098321BCEE96001C499F /* DecryptKeystoreToRevealKeyPairView.swift */; };
+		E635A4C3225D301B00124823 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4098421BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift */; };
+		E635A4C4225D301B00124823 /* BackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097221BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift */; };
+		E635A4C5225D301B00124823 /* BackUpRevealedKeyPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097421BBC673001C499F /* BackUpRevealedKeyPairView.swift */; };
+		E635A4C6225D301B00124823 /* BackUpRevealedKeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4097621BBC67D001C499F /* BackUpRevealedKeyPair.swift */; };
+		E635A4C7225D301B00124823 /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562D21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift */; };
+		E635A4C8225D301B00124823 /* RestoreUsingKeystoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096A21BBB503001C499F /* RestoreUsingKeystoreView.swift */; };
+		E635A4C9225D301B00124823 /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FD562A21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift */; };
+		E635A4CA225D301B00124823 /* RestoreUsingPrivateKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4096C21BBB547001C499F /* RestoreUsingPrivateKeyView.swift */; };
+		E635A4CB225D301B00124823 /* RestoreWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AE21A18F140078D659 /* RestoreWalletViewModel.swift */; };
+		E635A4CC225D301B00124823 /* RestoreWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AF21A18F140078D659 /* RestoreWalletView.swift */; };
+		E635A4CD225D301B00124823 /* RestoreWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B021A18F140078D659 /* RestoreWallet.swift */; };
+		E635A4CE225D301B00124823 /* RestoreWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5B121A18F140078D659 /* RestoreWalletCoordinator.swift */; };
+		E635A4CF225D301B00124823 /* SetPincodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */; };
+		E635A4D0225D301B00124823 /* ChoosePincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A421A18F140078D659 /* ChoosePincodeViewModel.swift */; };
+		E635A4D1225D301B00124823 /* ChoosePincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A521A18F140078D659 /* ChoosePincode.swift */; };
+		E635A4D2225D301B00124823 /* ChoosePincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A621A18F140078D659 /* ChoosePincodeView.swift */; };
+		E635A4D3225D301B00124823 /* ConfirmNewPincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A021A18F140078D659 /* ConfirmNewPincode.swift */; };
+		E635A4D4225D301B00124823 /* ConfirmNewPincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A121A18F140078D659 /* ConfirmNewPincodeViewModel.swift */; };
+		E635A4D5225D301B00124823 /* ConfirmNewPincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A221A18F140078D659 /* ConfirmNewPincodeView.swift */; };
+		E6414439225E76A4008C146D /* ReceiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59321A18F140078D659 /* ReceiveCoordinator.swift */; };
+		E641443A225E76AA008C146D /* ReceiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59021A18F140078D659 /* ReceiveView.swift */; };
+		E641443B225E76AA008C146D /* ReceiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59121A18F140078D659 /* ReceiveViewModel.swift */; };
+		E641443C225E76AA008C146D /* Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59221A18F140078D659 /* Receive.swift */; };
+		E641443D225E76E3008C146D /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58821A18F140078D659 /* SettingsCoordinator.swift */; };
+		E6414448225E76F3008C146D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58121A18F140078D659 /* SettingsView.swift */; };
+		E6414449225E76F3008C146D /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58221A18F140078D659 /* SettingsViewModel.swift */; };
+		E641444A225E76F3008C146D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58321A18F140078D659 /* Settings.swift */; };
+		E641444B225E76F3008C146D /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF61621A29F9E0078D659 /* SettingsTableViewCell.swift */; };
+		E641444C225E76F3008C146D /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF62121A3416D0078D659 /* SettingsItem.swift */; };
+		E641444D225E76F3008C146D /* RemovePincodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58521A18F140078D659 /* RemovePincodeView.swift */; };
+		E641444E225E76F3008C146D /* RemovePincodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58621A18F140078D659 /* RemovePincodeViewModel.swift */; };
+		E641444F225E76F3008C146D /* RemovePincode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF58721A18F140078D659 /* RemovePincode.swift */; };
+		E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
+		E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
+		E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -631,7 +631,11 @@
 		5BF1DFA821A4288E00FE8068 /* AskForCrashReportingPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForCrashReportingPermissions.swift; sourceTree = "<group>"; };
 		5BF1DFA921A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AskForCrashReportingPermissionsView.swift; sourceTree = "<group>"; };
 		71461FDB24E2088DB0EDFB36 /* libPods-ZhipTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZhipTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CA35ED8B23EC598C988622C /* Pods-Zhip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zhip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.debug.xcconfig"; sourceTree = "<group>"; };
+		9EB4BCDE257479EA253AEBA5 /* Pods-ZhipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhipTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZhipTests/Pods-ZhipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zhip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFC68C812D61AEF04B2C537A /* Pods-Zhip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zhip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.release.xcconfig"; sourceTree = "<group>"; };
+		D072578D42806D1D0CB17AEE /* Pods-ZhipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZhipTests/Pods-ZhipTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1843,6 +1847,10 @@
 		DEA4890CF1DEE89F5F357C1B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				8CA35ED8B23EC598C988622C /* Pods-Zhip.debug.xcconfig */,
+				CFC68C812D61AEF04B2C537A /* Pods-Zhip.release.xcconfig */,
+				9EB4BCDE257479EA253AEBA5 /* Pods-ZhipTests.debug.xcconfig */,
+				D072578D42806D1D0CB17AEE /* Pods-ZhipTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1989,7 +1997,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh",
 				"${PODS_ROOT}/DateToolsSwift/DateToolsSwift/DateTools/DateTools.bundle",
 				"${PODS_ROOT}/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resources/IQKeyboardManager.bundle",
 			);
@@ -2002,7 +2010,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Zhip/Pods-Zhip-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1D4F5CBD7BA4C346FE074D7D /* [CP] Check Pods Manifest.lock */ = {
@@ -2111,267 +2119,267 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4819BD8B21C0CAEF00443F2A /* ConfirmWalletRemovalController.swift in Sources */,
+				E641443B225E76AA008C146D /* ReceiveViewModel.swift in Sources */,
 				483DDECC219CB860009D3F4C /* InputType.swift in Sources */,
-				48ECF5EF21A18F140078D659 /* RestoreWalletViewModel.swift in Sources */,
 				48053F3321EBDCA2008FCE13 /* FooterView.swift in Sources */,
 				48ECF61E21A2A02E0078D659 /* SingleCellTypeTableView.swift in Sources */,
-				4819BDB421C27D2900443F2A /* ScanQRCodeController.swift in Sources */,
+				E6019A60225E754D0079DDE8 /* ScanQRCodeViewModel.swift in Sources */,
+				E6019A47225E74920079DDE8 /* MainCoordinator.swift in Sources */,
 				486D2C7B21D23A4C006F3DFA /* Digit.swift in Sources */,
-				48ECF5DA21A18F140078D659 /* ReceiveView.swift in Sources */,
 				4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */,
 				48ECF60821A1CFCD0078D659 /* Coordinating.swift in Sources */,
-				48F4098721BCEE96001C499F /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				48ECF5C321A18F140078D659 /* BarButton.swift in Sources */,
 				485AAC9E21AAC6FA005C56CC /* AddressValidator.swift in Sources */,
+				E635A4C4225D301B00124823 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
+				E635A4A2225D2FDB00124823 /* TermsOfServiceViewModel.swift in Sources */,
+				E635A4A6225D2FDB00124823 /* AskForCrashReportingPermissionsView.swift in Sources */,
+				E6019A5B225E754D0079DDE8 /* PrepareTransaction.swift in Sources */,
 				48053F2E21EBDC61008FCE13 /* BaseTableViewOwner.swift in Sources */,
+				E635A4CF225D301B00124823 /* SetPincodeCoordinator.swift in Sources */,
 				48ECF60A21A1CFF30078D659 /* Coordinating+Stack.swift in Sources */,
+				E635A4C0225D301B00124823 /* DecryptKeystoreCoordinator.swift in Sources */,
 				480B0E8A21CCEFDE00A72133 /* UIView+MotionEffect.swift in Sources */,
 				48053F2C21EBDB92008FCE13 /* AbstractSceneView.swift in Sources */,
-				48ECF5E021A18F140078D659 /* UnlockAppWithPincode.swift in Sources */,
 				48ECF5C521A18F140078D659 /* BarButtonContent.swift in Sources */,
-				48ECF5D821A18F140078D659 /* Main.swift in Sources */,
-				48F4098821BCEE96001C499F /* DecryptKeystoreToRevealKeyPair.swift in Sources */,
-				48ECF5E921A18F140078D659 /* ChoosePincode.swift in Sources */,
 				48ECF5C421A18F140078D659 /* RightBarButtonMaking.swift in Sources */,
 				48FD562821B632E50026690E /* CheckboxWithLabel.swift in Sources */,
 				48053F0121EB86FD008FCE13 /* RefreshControl.swift in Sources */,
-				48ECF5E821A18F140078D659 /* ChoosePincodeViewModel.swift in Sources */,
-				48F4097321BBC66B001C499F /* BackUpRevealedKeyPairViewModel.swift in Sources */,
+				E635A4A5225D2FDB00124823 /* AskForCrashReportingPermissions.swift in Sources */,
 				485AAC9321AAC658005C56CC /* CharacterSet_Hexadecimal.swift in Sources */,
+				E635A4C5225D301B00124823 /* BackUpRevealedKeyPairView.swift in Sources */,
+				E6019A4C225E75020079DDE8 /* MainView.swift in Sources */,
 				487C19E6219A2FCD00308550 /* Weak.swift in Sources */,
 				487C19E4219A2F4A00308550 /* Array_Extension.swift in Sources */,
+				E641444A225E76F3008C146D /* Settings.swift in Sources */,
+				E635A4C7225D301B00124823 /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
 				48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */,
-				48ECF5DB21A18F140078D659 /* ReceiveViewModel.swift in Sources */,
 				48A640022186273300B08C67 /* WalletEncryptionPassphrase.swift in Sources */,
-				48ECF5C821A18F140078D659 /* PrepareTransaction.swift in Sources */,
-				48F4097721BBC67D001C499F /* BackUpRevealedKeyPair.swift in Sources */,
-				4819BD8E21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift in Sources */,
+				E635A4B7225D301B00124823 /* CreateNewWalletViewModel.swift in Sources */,
 				48053F3D21EBEF17008FCE13 /* FloatingLabelTextField+RightLeftView.swift in Sources */,
 				48ECF61C21A29FF20078D659 /* ClassIdentifiable.swift in Sources */,
 				483CE9D32194E9E300BED31C /* Navigator.swift in Sources */,
+				E6019A4D225E75020079DDE8 /* Main.swift in Sources */,
+				E6414439225E76A4008C146D /* ReceiveCoordinator.swift in Sources */,
 				48C89FDB214331050063B0FA /* UseCaseProvider.swift in Sources */,
 				4819BDA921C2403800443F2A /* UIView+Rx.swift in Sources */,
 				483CE9E02194E9E300BED31C /* Bootstrap.swift in Sources */,
 				483CE9C82194E9E300BED31C /* ViewModelType.swift in Sources */,
-				48ECF5F321A18F140078D659 /* ChooseWalletViewModel.swift in Sources */,
+				E635A4BA225D301B00124823 /* BackupWallet.swift in Sources */,
 				48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */,
 				483C0BE0219ECF89006947C7 /* ObserverType+BarButtonContent.swift in Sources */,
 				48C8A0032143C5B20063B0FA /* FloatingLabelTextField+Styling.swift in Sources */,
+				E635A4A7225D2FDB00124823 /* AskForCrashReportingPermissionsViewModel.swift in Sources */,
 				48C8A0112143CE8F0063B0FA /* UIColor_Extension.swift in Sources */,
 				48ECF60121A1A8160078D659 /* AbstractController+BarButtonContent.swift in Sources */,
 				486D2C3721D21701006F3DFA /* TableViewCell.swift in Sources */,
-				480B0E9321CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
 				48ECF5C221A18F140078D659 /* TitledScene.swift in Sources */,
 				48ECF60321A1A83D0078D659 /* LeftBarButtonMaking.swift in Sources */,
+				E6019A66225E754D0079DDE8 /* PollTransactionStatusViewModel.swift in Sources */,
+				E635A4D2225D301B00124823 /* ChoosePincodeView.swift in Sources */,
 				4862CC6821FCAE730076B773 /* GradientView.swift in Sources */,
+				E635A4BB225D301B00124823 /* BackupWalletView.swift in Sources */,
 				48BAC4E12195D83000A626FD /* Assets-Constants.swift in Sources */,
-				48ECF5CD21A18F140078D659 /* SignTransaction.swift in Sources */,
 				48BAC4E02195D83000A626FD /* L10n-Constants.swift in Sources */,
+				E641444D225E76F3008C146D /* RemovePincodeView.swift in Sources */,
+				E635A4C8225D301B00124823 /* RestoreUsingKeystoreView.swift in Sources */,
 				4805A7DD21E951DA008D6778 /* AnyValidation.swift in Sources */,
 				48053F4221EBEF98008FCE13 /* TextFieldDelegate.swift in Sources */,
-				48ECF5D521A18F140078D659 /* SettingsCoordinator.swift in Sources */,
 				4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */,
-				48ECF5F221A18F140078D659 /* RestoreWalletCoordinator.swift in Sources */,
+				E6019A64225E754D0079DDE8 /* PollTransactionStatusController.swift in Sources */,
 				48241B5521B2BCB50054ED8E /* Coordinating+DebugPrinting.swift in Sources */,
-				48ECF5CC21A18F140078D659 /* SignTransactionView.swift in Sources */,
 				483DDEAB219B6456009D3F4C /* DefaultPincodeUseCase.swift in Sources */,
 				48ECF61021A1F4AB0078D659 /* UIControl+Rx.swift in Sources */,
 				4819BDBF21C4AB2700443F2A /* GasPriceValidator.swift in Sources */,
 				485AACA021AAE752005C56CC /* ValidationRulesOwner.swift in Sources */,
-				48ECF5C921A18F140078D659 /* PrepareTransactionViewModel.swift in Sources */,
-				48FD562B21B92A050026690E /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
-				48ECF5DC21A18F140078D659 /* Receive.swift in Sources */,
 				489EB13621CA7A6100664AA7 /* WelcomeViewModel.swift in Sources */,
 				483CE9D22194E9E300BED31C /* Navigating.swift in Sources */,
+				E6019A61225E754D0079DDE8 /* SignTransactionView.swift in Sources */,
 				483CE9DF2194E9E300BED31C /* ReflectionNameOfCaseInNestedEnum.swift in Sources */,
+				E635A4CA225D301B00124823 /* RestoreUsingPrivateKeyView.swift in Sources */,
 				4898FB48215423D6009501DC /* BaseScrollableStackViewOwner.swift in Sources */,
 				4805A7E921E95300008D6778 /* InputError.swift in Sources */,
-				48ECF5D721A18F140078D659 /* MainView.swift in Sources */,
 				4805A7D921E951B2008D6778 /* ValidationConvertible.swift in Sources */,
+				E635A4A4225D2FDB00124823 /* TermsOfService.swift in Sources */,
 				489EB12E21CA459000664AA7 /* UIImageView+Styling.swift in Sources */,
 				485AAC9C21AAC6EB005C56CC /* AmountValidator.swift in Sources */,
 				4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */,
 				48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */,
+				E635A4B0225D301B00124823 /* ChooseWalletView.swift in Sources */,
 				4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */,
 				487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */,
-				48ECF5F621A18F140078D659 /* ChooseWalletCoordinator.swift in Sources */,
 				48379C6C21AE925400B95DB9 /* BaseViewModel.swift in Sources */,
 				484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */,
 				48947B7F21D3F28900604D90 /* ImageAboveLabelButton.swift in Sources */,
-				48ECF5EA21A18F140078D659 /* ChoosePincodeView.swift in Sources */,
+				E635A4AE225D301B00124823 /* ChooseWalletCoordinator.swift in Sources */,
 				48C467BD21986528006DA5EE /* InputPincodeView.swift in Sources */,
+				E635A4BE225D301B00124823 /* BackUpKeystoreView.swift in Sources */,
 				48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
 				485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */,
 				48F96C69220F807C008B7E22 /* UIView+ShakeAnimation.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
-				48ECF5EB21A18F140078D659 /* SetPincodeCoordinator.swift in Sources */,
 				4833C34F219221BC00D7D312 /* WalletUseCase.swift in Sources */,
-				48ECF5DF21A18F140078D659 /* UnlockAppWithPincodeViewModel.swift in Sources */,
 				48CA697B2183529100C05F5F /* UILayoutPriority_Extension.swift in Sources */,
 				483CE9D52194E9E300BED31C /* DeepLinkHandler.swift in Sources */,
-				48F4098F21BD2726001C499F /* BackUpKeystoreView.swift in Sources */,
+				E6019A5E225E754D0079DDE8 /* ScanQRCodeController.swift in Sources */,
 				485AACA821AAF66E005C56CC /* UIButton_Extension.swift in Sources */,
-				4819BD9A21C223B200443F2A /* PollTransactionStatusView.swift in Sources */,
 				483CE9EB2194E9E300BED31C /* KeyValueStoring.swift in Sources */,
 				489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */,
 				485AACA221AAE764005C56CC /* InputValidator.swift in Sources */,
 				489EB13521CA7A6100664AA7 /* WelcomeView.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
+				E6019A4B225E75020079DDE8 /* MainViewModel.swift in Sources */,
 				483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */,
-				4819BD9B21C223B200443F2A /* PollTransactionStatusController.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
+				E635A4C3225D301B00124823 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
+				E641444E225E76F3008C146D /* RemovePincodeViewModel.swift in Sources */,
 				48ECF61A21A29FE10078D659 /* CellConfigurable.swift in Sources */,
 				4805A7E321E95281008D6778 /* AnyValidation+CustomStringConvertible.swift in Sources */,
-				48ECF5F921A18F140078D659 /* CreateNewWalletViewModel.swift in Sources */,
-				48ECF5E421A18F140078D659 /* TermsOfService.swift in Sources */,
+				E635A4D1225D301B00124823 /* ChoosePincode.swift in Sources */,
 				480B0E9921CF852600A72133 /* Rx+Validation.swift in Sources */,
 				48053F2921EBDB0C008FCE13 /* ScrollViewOwner.swift in Sources */,
 				48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */,
-				4819BDB521C27D2900443F2A /* ScanQRCodeViewModel.swift in Sources */,
-				48ECF5DD21A18F140078D659 /* ReceiveCoordinator.swift in Sources */,
+				E6019A5C225E754D0079DDE8 /* PrepareTransactionViewModel.swift in Sources */,
+				E635A4B6225D301B00124823 /* CreateNewWallet.swift in Sources */,
 				483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */,
 				48F96C6B220F808E008B7E22 /* InputPincodeView+Rx.swift in Sources */,
 				48F4097A21BCD560001C499F /* EncryptionPassphraseValidator.swift in Sources */,
-				48ECF61721A29F9E0078D659 /* SettingsTableViewCell.swift in Sources */,
-				48F4099121BD27DA001C499F /* BackUpKeystoreViewModel.swift in Sources */,
-				48F4098621BCEE96001C499F /* DecryptKeystoreToRevealKeyPairView.swift in Sources */,
+				E641444F225E76F3008C146D /* RemovePincode.swift in Sources */,
 				4806AE73218369A7002734C8 /* UITextField+Rx.swift in Sources */,
 				4805A7EB21E95311008D6778 /* Validation+Equatable.swift in Sources */,
 				48ECF5C721A18F140078D659 /* SceneController.swift in Sources */,
 				48241B4921B153EA0054ED8E /* Coordinating+Scene+Present.swift in Sources */,
-				48ECF5E621A18F140078D659 /* ConfirmNewPincodeViewModel.swift in Sources */,
-				48ECF5E221A18F140078D659 /* TermsOfServiceViewModel.swift in Sources */,
 				4847EE0221611FA9002FF978 /* WKWebView_Extensions.swift in Sources */,
-				48ECF5FC21A18F140078D659 /* BackupWalletViewModel.swift in Sources */,
 				4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */,
+				E635A4D0225D301B00124823 /* ChoosePincodeViewModel.swift in Sources */,
 				48C89FEE214331FE0063B0FA /* ViewModelled.swift in Sources */,
-				48ECF5F021A18F140078D659 /* RestoreWalletView.swift in Sources */,
-				4819BDB221C27D2900443F2A /* ScanQRCodeView.swift in Sources */,
+				E6019A48225E74E50079DDE8 /* UnlockAppWithPincodeView.swift in Sources */,
 				485AAC9821AAC6C9005C56CC /* Validation.swift in Sources */,
-				48ECF5D121A18F140078D659 /* Settings.swift in Sources */,
+				E635A4C1225D301B00124823 /* DecryptKeystoreToRevealKeyPair.swift in Sources */,
 				48BA52F22180EC47009775D5 /* UIView+Border.swift in Sources */,
+				E635A4CC225D301B00124823 /* RestoreWalletView.swift in Sources */,
+				E635A4AA225D2FDB00124823 /* WarningERC20.swift in Sources */,
 				48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */,
 				48ECF60E21A1D0AC0078D659 /* Coordinating+Scene+Push.swift in Sources */,
-				48ECF5F121A18F140078D659 /* RestoreWallet.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
 				48053F3721EBE908008FCE13 /* BalanceLastUpdatedFormatter.swift in Sources */,
 				48ECF5C121A18F140078D659 /* Scene.swift in Sources */,
 				4847EE0021611F97002FF978 /* UIScrollView_Extensions.swift in Sources */,
+				E635A4D4225D301B00124823 /* ConfirmNewPincodeViewModel.swift in Sources */,
 				483CE9C62194E9E300BED31C /* ActivityIndicator.swift in Sources */,
 				483CE9E12194E9E300BED31C /* ConfigurationDetection.swift in Sources */,
 				4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */,
+				E641443C225E76AA008C146D /* Receive.swift in Sources */,
 				48241B4F21B158B60054ED8E /* Coordinating+NavigationStack.swift in Sources */,
 				48ECF60521A1CA050078D659 /* ButtonWithSpinner.swift in Sources */,
-				48ECF5ED21A18F140078D659 /* WarningERC20ViewModel.swift in Sources */,
 				48C89FFD2143353C0063B0FA /* UIFont_Extension.swift in Sources */,
 				483CE9E92194E9E300BED31C /* KeyValueStore.swift in Sources */,
+				E635A4A3225D2FDB00124823 /* TermsOfServiceView.swift in Sources */,
+				E6019A5D225E754D0079DDE8 /* PrepareTransactionView.swift in Sources */,
 				4847EDF92160FA53002FF978 /* OnboardingUseCase.swift in Sources */,
 				489EB13721CA7A6100664AA7 /* WelcomeController.swift in Sources */,
-				48ECF5D021A18F140078D659 /* SettingsViewModel.swift in Sources */,
 				483CE9D42194E9E300BED31C /* DeepLink.swift in Sources */,
+				E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */,
 				48C89FF62143326F0063B0FA /* UIButton+Styling.swift in Sources */,
 				4898FB4521542333009501DC /* StackViewStyling.swift in Sources */,
 				48053F2621EBBA69008FCE13 /* NavigationBarLayoutingNavigationController.swift in Sources */,
 				483CE9EC2194E9E300BED31C /* AppDelegate.swift in Sources */,
 				48ECF5E121A18F140078D659 /* OnboardingCoordinator.swift in Sources */,
-				48F4097121BBC349001C499F /* BackupWalletCoordinator.swift in Sources */,
 				48557977220E4B5800846704 /* UITextView+Rx.swift in Sources */,
 				483DDEA9219B6448009D3F4C /* PincodeUseCase.swift in Sources */,
 				485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,
-				48ECF5CF21A18F140078D659 /* SettingsView.swift in Sources */,
-				48F4096B21BBB503001C499F /* RestoreUsingKeystoreView.swift in Sources */,
-				48F4098B21BD08C5001C499F /* DecryptKeystoreCoordinator.swift in Sources */,
-				48F4098D21BD270B001C499F /* BackUpKeystore.swift in Sources */,
-				48ECF5F821A18F140078D659 /* CreateNewWallet.swift in Sources */,
-				48ECF5E721A18F140078D659 /* ConfirmNewPincodeView.swift in Sources */,
+				E635A4A9225D2FDB00124823 /* WarningERC20ViewModel.swift in Sources */,
 				480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */,
 				4805A7E521E952C5008D6778 /* Validation+CustomStringConvertible.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
-				48ECF5D221A18F140078D659 /* RemovePincodeView.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */,
-				5BF1DFAC21A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift in Sources */,
+				E635A4A8225D2FDB00124823 /* WarningERC20View.swift in Sources */,
+				E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */,
+				E635A4B4225D301B00124823 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,
+				E635A4CB225D301B00124823 /* RestoreWalletViewModel.swift in Sources */,
 				48DEF91421D2080100B02E98 /* NavigationBarLayoutOwner.swift in Sources */,
-				48ECF5DE21A18F140078D659 /* UnlockAppWithPincodeView.swift in Sources */,
 				485AACA421AAF3B3005C56CC /* FloatingLabelTextField.swift in Sources */,
-				484B5B94220E118B002BA411 /* WarningCustomECCView.swift in Sources */,
-				48FD562E21B92F450026690E /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
+				E635A4C2225D301B00124823 /* DecryptKeystoreToRevealKeyPairView.swift in Sources */,
 				4805A7DF21E9525D008D6778 /* AnyValidation+Colors.swift in Sources */,
+				E6019A4E225E75320079DDE8 /* SendCoordinator.swift in Sources */,
+				E635A4B3225D301B00124823 /* EnsureThatYouAreNotBeingWatchedView.swift in Sources */,
 				48947B7D21D3F21900604D90 /* String_Extensions.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
-				48ECF5D621A18F140078D659 /* MainViewModel.swift in Sources */,
+				E635A4B8225D301B00124823 /* CreateNewWalletView.swift in Sources */,
+				E635A4AD225D2FDB00124823 /* WarningCustomECCViewModel.swift in Sources */,
+				E635A4BC225D301B00124823 /* BackupWalletViewModel.swift in Sources */,
+				E635A4AB225D2FDB00124823 /* WarningCustomECCController.swift in Sources */,
 				48F96C6D220F812E008B7E22 /* PincodeTextField+Presentation.swift in Sources */,
 				48AC6CCB2145AF3E00B4D036 /* UITabBarItem_Extension.swift in Sources */,
 				48053F3521EBDCD5008FCE13 /* UITableView+Footer.swift in Sources */,
-				5BF1DFAB21A4288E00FE8068 /* AskForCrashReportingPermissions.swift in Sources */,
+				E635A4C6225D301B00124823 /* BackUpRevealedKeyPair.swift in Sources */,
 				48ECF4B821A17B7A0078D659 /* TitledValueView.swift in Sources */,
 				48241B5321B15CA10054ED8E /* Coordinating+Child+ModalPresent.swift in Sources */,
 				48053F3021EBDC6E008FCE13 /* TableViewOwner.swift in Sources */,
-				4819BD9C21C223B200443F2A /* PollTransactionStatusViewModel.swift in Sources */,
 				483CE9DC2194E9E300BED31C /* Never.swift in Sources */,
 				4806AE9621837F5F002734C8 /* QRCoding.swift in Sources */,
-				484B5B96220E118B002BA411 /* WarningCustomECCViewModel.swift in Sources */,
 				48F96C67220F803C008B7E22 /* PincodeTextField.swift in Sources */,
-				5BF1DFAA21A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift in Sources */,
-				48ECF5CE21A18F140078D659 /* SignTransactionViewModel.swift in Sources */,
 				483CE9E52194E9E300BED31C /* KeyConvertible.swift in Sources */,
-				48ECF5FA21A18F140078D659 /* CreateNewWalletView.swift in Sources */,
 				4850A408214C122900EBB85B /* Mergeable.swift in Sources */,
-				48ECF5FB21A18F140078D659 /* BackupWalletView.swift in Sources */,
-				48ECF5F521A18F140078D659 /* ChooseWallet.swift in Sources */,
+				E635A4B1225D301B00124823 /* ChooseWallet.swift in Sources */,
 				483CE9E72194E9E300BED31C /* KeyValueStore+KeychainKey.swift in Sources */,
+				E635A4C9225D301B00124823 /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
 				4819BDC121C4AE9A00443F2A /* SufficientFundsValidator.swift in Sources */,
 				48C0613721BD3107006E3E0A /* Wallet.swift in Sources */,
 				483CE9E62194E9E300BED31C /* KeychainKey.swift in Sources */,
 				48BAC4E32195E5F200A626FD /* ImageConvertible.swift in Sources */,
 				483CE9C92194E9E300BED31C /* AbstractViewModel.swift in Sources */,
+				E641443D225E76E3008C146D /* SettingsCoordinator.swift in Sources */,
+				E6019A49225E74E50079DDE8 /* UnlockAppWithPincodeViewModel.swift in Sources */,
+				E635A4B5225D301B00124823 /* CreateNewWalletCoordinator.swift in Sources */,
 				483CE9E42194E9E300BED31C /* UserDefaults+KeyValueStoring.swift in Sources */,
-				48ECF5D421A18F140078D659 /* RemovePincode.swift in Sources */,
-				48F4096D21BBB547001C499F /* RestoreUsingPrivateKeyView.swift in Sources */,
-				480B0E9421CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */,
+				E635A4B9225D301B00124823 /* BackupWalletCoordinator.swift in Sources */,
+				E641443A225E76AA008C146D /* ReceiveView.swift in Sources */,
 				48C44435218C602A00C0D201 /* Bundle+Version+Build.swift in Sources */,
 				48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */,
-				4819BD8D21C0CAEF00443F2A /* ConfirmWalletRemovalViewModel.swift in Sources */,
 				483CE9CF2194E9E300BED31C /* AppCoordinator.swift in Sources */,
-				48ECF5F721A18F140078D659 /* CreateNewWalletCoordinator.swift in Sources */,
 				48C469F521445417008D0DD7 /* UILabel+Styling.swift in Sources */,
-				48ECF5F421A18F140078D659 /* ChooseWalletView.swift in Sources */,
-				48ECF5CB21A18F140078D659 /* SendCoordinator.swift in Sources */,
-				48ECF5FD21A18F140078D659 /* BackupWallet.swift in Sources */,
-				48ECF62221A3416D0078D659 /* SettingsItem.swift in Sources */,
 				48F832E92184E8C000EDAD40 /* UINavigationController_Extension.swift in Sources */,
-				48ECF5E321A18F140078D659 /* TermsOfServiceView.swift in Sources */,
 				48ECF60C21A1D0170078D659 /* CoordinatorTransition.swift in Sources */,
 				483CE9D02194E9E300BED31C /* BaseCoordinator.swift in Sources */,
+				E635A4D5225D301B00124823 /* ConfirmNewPincodeView.swift in Sources */,
 				48ECF5C621A18F140078D659 /* AbstractController.swift in Sources */,
 				484D1AF821D7A0B000589E38 /* PrivateKeyValidator.swift in Sources */,
+				E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */,
+				E635A4AF225D301B00124823 /* ChooseWalletViewModel.swift in Sources */,
 				4805A7E721E952DC008D6778 /* Validation+ValidationConvertible.swift in Sources */,
+				E635A4D3225D301B00124823 /* ConfirmNewPincode.swift in Sources */,
 				48C89FFF2143355A0063B0FA /* UIView+Spacer.swift in Sources */,
-				484B5B95220E118B002BA411 /* WarningCustomECCController.swift in Sources */,
 				483CE9DB2194E9E300BED31C /* Toast.swift in Sources */,
+				E641444B225E76F3008C146D /* SettingsTableViewCell.swift in Sources */,
+				E6019A5F225E754D0079DDE8 /* ScanQRCodeView.swift in Sources */,
+				E635A4B2225D301B00124823 /* EnsureThatYouAreNotBeingWatchedController.swift in Sources */,
+				E6019A65225E754D0079DDE8 /* PollTransactionStatusView.swift in Sources */,
+				E635A4CE225D301B00124823 /* RestoreWalletCoordinator.swift in Sources */,
 				483CE9E32194E9E300BED31C /* PreferencesKey.swift in Sources */,
+				E6414448225E76F3008C146D /* SettingsView.swift in Sources */,
+				E6019A63225E754D0079DDE8 /* SignTransactionViewModel.swift in Sources */,
 				48557975220E4AD200846704 /* NSAttributedString+HTML.swift in Sources */,
-				480B0E9521CE0B2900A72133 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */,
-				48ECF5EC21A18F140078D659 /* WarningERC20View.swift in Sources */,
+				E6019A4A225E74E50079DDE8 /* UnlockAppWithPincode.swift in Sources */,
+				E635A4BD225D301B00124823 /* BackUpKeystore.swift in Sources */,
 				4805A7E121E95273008D6778 /* AnyValidation+Equatable.swift in Sources */,
-				48F4097521BBC673001C499F /* BackUpRevealedKeyPairView.swift in Sources */,
 				483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */,
-				48ECF5D321A18F140078D659 /* RemovePincodeViewModel.swift in Sources */,
-				48ECF5EE21A18F140078D659 /* WarningERC20.swift in Sources */,
-				48ECF5FF21A18F5B0078D659 /* MainCoordinator.swift in Sources */,
+				E635A4CD225D301B00124823 /* RestoreWallet.swift in Sources */,
+				E635A4BF225D301B00124823 /* BackUpKeystoreViewModel.swift in Sources */,
 				480B0EBC21D0A74600A72133 /* ErrorTracker.swift in Sources */,
 				483CE9C72194E9E300BED31C /* AbstractTarget.swift in Sources */,
-				48ECF5E521A18F140078D659 /* ConfirmNewPincode.swift in Sources */,
 				48053F3F21EBEF35008FCE13 /* FloatingLabelTextField+Validation.swift in Sources */,
-				48ECF5CA21A18F140078D659 /* PrepareTransactionView.swift in Sources */,
 				48F96C65220F8009008B7E22 /* DigitView.swift in Sources */,
 				48053F3921EBEEBD008FCE13 /* ImageOrText.swift in Sources */,
 				48C89FF92143328E0063B0FA /* UIStackView+Styling.swift in Sources */,
+				E635A4AC225D2FDB00124823 /* WarningCustomECCView.swift in Sources */,
+				E6019A62225E754D0079DDE8 /* SignTransaction.swift in Sources */,
+				E6414449225E76F3008C146D /* SettingsViewModel.swift in Sources */,
+				E641444C225E76F3008C146D /* SettingsItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

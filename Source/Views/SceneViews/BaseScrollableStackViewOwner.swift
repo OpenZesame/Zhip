@@ -26,10 +26,10 @@ import UIKit
 
 typealias ScrollableStackViewOwner = BaseScrollableStackViewOwner & StackViewStyling
 
-class BaseScrollableStackViewOwner: AbstractSceneView {
+class BaseScrollableStackViewOwner: AbstractSceneView, EmptyInitializable {
 
     // MARK: Initialization
-    init() {
+    required init() {
         super.init(scrollView: UIScrollView(frame: .zero))
         setupBaseScrollableStackViewOwner()
     }

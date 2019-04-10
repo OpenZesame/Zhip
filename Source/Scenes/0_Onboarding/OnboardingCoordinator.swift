@@ -26,10 +26,11 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case finishOnboarding
-    }
+enum OnboardingCoordinatorNavigationStep {
+    case finishOnboarding
+}
+
+final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinatorNavigationStep> {
 
     private let useCaseProvider: UseCaseProvider
     
@@ -52,7 +53,7 @@ private extension OnboardingCoordinator {
     func toWelcome() {
         push(scene: Welcome.self, viewModel: WelcomeViewModel()) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .start: self.toNextStep()
+            case .start:  self.toNextStep()
             }
         }
     }
@@ -145,12 +146,13 @@ private extension OnboardingCoordinator {
     }
 
     func toChoosePincode() {
-        let coordinator = SetPincodeCoordinator(
-            navigationController: navigationController,
-            useCase: useCaseProvider.makePincodeUseCase()
-        )
 
-        start(coordinator: coordinator) { [unowned self] userDid in
+        start(
+            coordinator: SetPincodeCoordinator(
+                navigationController: navigationController,
+                useCase: useCaseProvider.makePincodeUseCase()
+            )
+        ) { [unowned self] (userDid: SetPincodeCoordinatorNavigationStep) in
             switch userDid {
             case .setPincode: self.finish()
             }

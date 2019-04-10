@@ -47,7 +47,7 @@ final class SignTransactionView: ScrollableStackViewOwner {
 extension SignTransactionView: ViewModelled {
     typealias ViewModel = SignTransactionViewModel
 
-    func populate(with viewModel: SignTransactionViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.OutputVM) -> [Disposable] {
         return [
             viewModel.inputBecomeFirstResponder --> encryptionPasswordField.rx.becomeFirstResponder,
             viewModel.encryptionPasswordValidation    --> encryptionPasswordField.rx.validation,
@@ -56,8 +56,8 @@ extension SignTransactionView: ViewModelled {
         ]
     }
 
-    var inputFromView: InputFromView {
-        return InputFromView(
+    var inputFromView: ViewModel.InputFromView {
+        return SignTransactionViewModel.InputFromView(
             encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()

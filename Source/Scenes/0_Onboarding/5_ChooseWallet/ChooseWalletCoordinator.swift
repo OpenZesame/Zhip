@@ -26,10 +26,11 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case finishChoosingWallet
-    }
+enum ChooseWalletCoordinatorNavigationStep {
+    case finishChoosingWallet
+}
+
+final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinatorNavigationStep> {
 
     private let useCaseProvider: UseCaseProvider
     private lazy var useCase = useCaseProvider.makeWalletUseCase()
