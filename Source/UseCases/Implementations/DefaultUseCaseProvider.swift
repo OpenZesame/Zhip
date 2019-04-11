@@ -35,7 +35,7 @@ extension KeyValueStore where KeyType == PreferencesKey {
 
 final class DefaultUseCaseProvider {
 
-    static let zilliqaAPIEndpoint: ZilliqaAPIEndpoint = .testnet
+    static let zilliqaAPIEndpoint: ZilliqaAPIEndpoint = .mainnet
 
     static let shared = DefaultUseCaseProvider(
         zilliqaService: DefaultZilliqaService(endpoint: zilliqaAPIEndpoint).rx,
