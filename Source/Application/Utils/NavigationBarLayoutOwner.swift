@@ -122,19 +122,19 @@ public struct NavigationBarLayout: Equatable {
 }
 
 public extension NavigationBarLayout {
-    public static var `default`: NavigationBarLayout = .opaque
+    static var `default`: NavigationBarLayout = .opaque
 
-    public static var opaque: NavigationBarLayout {
+    static var opaque: NavigationBarLayout {
         return NavigationBarLayout(
             isTranslucent: false
         )
     }
 
-    public static var transluscent: NavigationBarLayout {
+    static var transluscent: NavigationBarLayout {
         return transluscent()
     }
 
-    public static func transluscent(tintColor: UIColor? = nil, titleColor: UIColor? = nil) -> NavigationBarLayout {
+    static func transluscent(tintColor: UIColor? = nil, titleColor: UIColor? = nil) -> NavigationBarLayout {
         return NavigationBarLayout(
             isTranslucent: true,
             tintColor: tintColor,
@@ -143,7 +143,7 @@ public extension NavigationBarLayout {
         )
     }
 
-    public static var hidden: NavigationBarLayout {
+    static var hidden: NavigationBarLayout {
         return NavigationBarLayout(
             visibility: .hidden(animated: false)
         )

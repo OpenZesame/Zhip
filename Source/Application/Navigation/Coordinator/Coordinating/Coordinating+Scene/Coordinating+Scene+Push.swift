@@ -43,8 +43,8 @@ extension Coordinating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
         let scene = S.init(viewModel: viewModel)
-        push(
-            scene: scene,
+        pushSceneInstance(
+            scene,
             animated: animated,
             navigationPresentationCompletion: navigationPresentationCompletion,
             navigationHandler: navigationHandler
@@ -63,8 +63,8 @@ extension Coordinating {
     ///   - navigationHandler: **Required** closure for handling navigation steps
     ///       from the ViewModel.
     ///   - step: Navigation step emitted by the scene's `viewModel`
-    func push<S, V>(
-        scene: S,
+    func pushSceneInstance<S, V>(
+        _ scene: S,
         animated: Bool = true,
         navigationPresentationCompletion: Completion? = nil,
         navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep) -> Void

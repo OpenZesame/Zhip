@@ -52,14 +52,14 @@ final class RemovePincodeViewModel: BaseViewModel<
     }
 
     // swiftlint:disable:next function_body_length
-    override func transform(input: Input) -> Output {
+    override func transform(input: Input) -> RemovePincodeViewModel.Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
         let validator = InputValidator(existingPincode: pincode)
 
-        let pincodeValidationValue: Driver<PincodeValidator.Result> = input.fromView.pincode.map {
+        let pincodeValidationValue: Driver<PincodeValidator.ValidationResult> = input.fromView.pincode.map {
             return validator.validate(unconfirmedPincode: $0)
         }
 
@@ -103,7 +103,7 @@ extension RemovePincodeViewModel {
             self.existingPincode = existingPincode
         }
 
-        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.ValidationResult {
             return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
         }
     }

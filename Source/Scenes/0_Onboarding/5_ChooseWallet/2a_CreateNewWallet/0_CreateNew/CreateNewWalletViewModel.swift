@@ -143,12 +143,12 @@ extension CreateNewWalletViewModel {
 
     struct InputValidator {
 
-        func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.Result {
+        func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.ValidationResult {
             let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
             return validator.validate(input: (password, password))
         }
 
-        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.Result {
+        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.ValidationResult {
             let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
             return validator.validate(input: (password, confirming))
         }

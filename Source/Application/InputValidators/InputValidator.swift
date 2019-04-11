@@ -34,20 +34,20 @@ protocol InputValidator {
 
 extension InputValidator {
 
-    typealias Result = Validation<Output, Error>
+    typealias ValidationResult = Validation<Output, Error>
 
-    func validate(input: Input?) -> Result {
+    func validate(input: Input?) -> ValidationResult {
         guard let input = input else { return .invalid(.empty) }
         return validate(input: input)
     }
 
-    func error(_ error: Error) -> Result {
+    func error(_ error: Error) -> ValidationResult {
         return .invalid(.error(error))
     }
 }
 
 extension InputValidator where Self: ValidationRulesOwner, Self.RuleInput == Input, Output == Input {
-    func validate(input: Input) -> Result {
+    func validate(input: Input) -> ValidationResult {
         let validationResult = input.validate(rules: rules)
         switch validationResult {
         case .valid: return .valid(input)
@@ -60,7 +60,7 @@ extension InputValidator where Self: ValidationRulesOwner, Self.RuleInput == Inp
 
 // MARK: - String to Double
 extension InputValidator where Input == Double, Output == Double {
-    func validate(string: String?) -> Result {
+    func validate(string: String?) -> ValidationResult {
         guard let input = string, let double = Double(input) else { return Validation.invalid(.empty) }
         return validate(input: double)
     }

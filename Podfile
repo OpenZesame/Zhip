@@ -1,10 +1,11 @@
-platform :ios, '11.0'
+platform :ios, '11.3'
 inhibit_all_warnings!
 use_modular_headers!
 
 def shared
   # The Zilliqa Swift SDK
-  pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'master'
+  pod 'Zesame', '~> 1.0.0'
+  pod 'BigInt', :git => 'https://github.com/attaswift/BigInt.git', :branch => 'master'
 
   # Used for Crash reporting
   pod 'Firebase/Core'
@@ -44,8 +45,6 @@ def shared
   # Simple keyboard avoiding solution
   pod 'IQKeyboardManagerSwift'
 
-  pod 'JSONRPCKit', :git => 'https://github.com/ollitapa/JSONRPCKit.git', :branch => 'master'
-
   pod 'SwiftGen'
 
   pod 'M13Checkbox'
@@ -65,9 +64,7 @@ target 'Zhip' do
 end
 
 pods_to_set_swift_verstion_to_42 = [
-  'BigInt',
   'IQKeyboardManagerSwift',
-  'JSONRPCKit',
   'RxAtomic',
   'RxBlocking',
   'RxCocoa',

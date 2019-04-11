@@ -29,12 +29,13 @@ import Zesame
 
 let githubUrlString = "https://github.com/OpenZesame/Zhip"
 
-final class SettingsCoordinator: BaseCoordinator<SettingsCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case removeWallet
-        case closeSettings
-    }
+enum SettingsCoordinatorNavigationStep {
+    case removeWallet
+    case closeSettings
+}
 
+final class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorNavigationStep> {
+  
     private let useCaseProvider: UseCaseProvider
     private lazy var transactionUseCase = useCaseProvider.makeTransactionsUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
@@ -170,7 +171,7 @@ private extension SettingsCoordinator {
 
     func toBackupWallet() {
         presentModalCoordinator(
-            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase)
+            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase, mode: .dismissable)
         },
             navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {

@@ -37,9 +37,9 @@ public struct AnyKeyDeriving: KeyDeriving {
         let data: Data
         switch kdf {
         case .pbkdf2:
-            data = Data(bytes: try PBKDF2(kdfParams: kdfParams, password: password).calculate())
+            data = Data(try PBKDF2(kdfParams: kdfParams, password: password).calculate())
         case .scrypt:
-            data = Data(bytes: try Scrypt(kdfParams: kdfParams, password: password).calculate())
+            data = Data(try Scrypt(kdfParams: kdfParams, password: password).calculate())
         }
         let derivedKey = DerivedKey(data: data)
         try done(derivedKey)

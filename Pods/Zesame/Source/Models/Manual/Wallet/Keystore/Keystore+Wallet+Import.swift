@@ -23,7 +23,6 @@
 //
 
 import CryptoSwift
-import Result
 import EllipticCurveKit
 
 public extension Keystore {

@@ -87,11 +87,11 @@ public extension NavigationBarLayoutingNavigationController {
 // MARK: - UIGestureRecognizerDelegate Methods
 extension NavigationBarLayoutingNavigationController: UIGestureRecognizerDelegate {}
 public extension NavigationBarLayoutingNavigationController {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return (otherGestureRecognizer is UIScreenEdgePanGestureRecognizer)
     }
 }

@@ -26,8 +26,9 @@ import UIKit
 import RxSwift
 import Zesame
 
-final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
-    enum NavigationStep {}
+enum AppCoordinatorNavigationStep {}
+
+final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 
     private let useCaseProvider: UseCaseProvider
     private let deepLinkHandler: DeepLinkHandler
@@ -43,7 +44,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinator.NavigationStep> {
     }
 
     override func start(didStart: Completion? = nil) {
-		if walletUseCase.hasConfiguredWallet {
+        if walletUseCase.hasConfiguredWallet {
             toMain(lockIfNeeded: true)
         } else {
             toOnboarding()
@@ -87,7 +88,7 @@ private extension AppCoordinator {
                 }
         })
     }
-
+    
     func toUnlockAppWithPincodeIfNeeded() {
         guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
 

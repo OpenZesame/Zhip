@@ -23,36 +23,23 @@
 //
 
 import Foundation
-import APIKit
+import Alamofire
 
 public enum Error: Swift.Error {
 
     case api(API)
-    public enum API: Swift.Error {
-        /// Error of `URLSession`.
-        case connectionError(Swift.Error)
-
-        /// Error while creating `URLRequest` from `Request`.
-        case requestError(Swift.Error)
-
-        case timeout
-
-        /// Error while creating `Request.Response` from `(Data, URLResponse)`.
-        case responseError(Swift.Error)
-
-        init(from error: APIKit.SessionTaskError) {
-            switch error {
-            case .connectionError(let inner): self = .connectionError(inner)
-            case .requestError(let inner): self = .requestError(inner)
-            case .responseError(let inner): self = .responseError(inner)
-            }
-        }
-    }
-
     case keystorePasswordTooShort(provided: Int, minimum: Int)
-
     case walletImport(WalletImport)
-    public enum WalletImport: Swift.Error {
+    case keystoreExport(Swift.Error)
+    case decryptPrivateKey(Swift.Error)
+}
+
+public extension Error {
+    enum API: Swift.Error {
+        case request(Swift.Error)
+        case timeout
+    }
+    enum WalletImport: Swift.Error {
         case badAddress
         case badPrivateKeyHex
         case jsonStringDecoding
@@ -60,7 +47,4 @@ public enum Error: Swift.Error {
         case incorrectPassword
         case keystoreError(Swift.Error)
     }
-
-    case keystoreExport(Swift.Error)
-    case decryptPrivateKey(Swift.Error)
 }

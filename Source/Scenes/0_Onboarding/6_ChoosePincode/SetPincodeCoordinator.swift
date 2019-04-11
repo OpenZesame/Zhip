@@ -24,11 +24,12 @@
 
 import UIKit
 
-final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case setPincode
-    }
+enum SetPincodeCoordinatorNavigationStep {
+    case setPincode
+}
 
+final class SetPincodeCoordinator: BaseCoordinator<SetPincodeCoordinatorNavigationStep> {
+  
     private let useCase: PincodeUseCase
 
     init(navigationController: UINavigationController, useCase: PincodeUseCase) {

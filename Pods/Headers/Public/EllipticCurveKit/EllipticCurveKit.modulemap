@@ -1,6 +1,1 @@
-module EllipticCurveKit {
-  umbrella header "EllipticCurveKit-umbrella.h"
-
-  export *
-  module * { export * }
-}
+../../../Target Support Files/EllipticCurveKit/EllipticCurveKit.modulemap

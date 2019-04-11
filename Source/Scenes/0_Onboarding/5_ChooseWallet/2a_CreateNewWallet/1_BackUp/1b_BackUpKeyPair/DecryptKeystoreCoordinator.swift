@@ -30,10 +30,11 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case /* "user finished" */ backingUpKeyPair, dismiss
-    }
+enum DecryptKeystoreCoordinatorNavigationStep {
+    case /* "user finished" */ backingUpKeyPair, dismiss
+}
+
+final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
 
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>

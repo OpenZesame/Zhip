@@ -123,7 +123,7 @@ extension ReceiveViewModel {
     struct InputValidator {
         private let amountValidator = AmountValidator()
 
-        func validateAmount(_ amount: String) -> AmountValidator.Result {
+        func validateAmount(_ amount: String) -> AmountValidator.ValidationResult {
             return amountValidator.validate(input: amount)
         }
     }

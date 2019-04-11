@@ -24,7 +24,7 @@
 
 import Foundation
 import EllipticCurveKit
-import Result
+
 import CryptoSwift
 
 public extension Keystore {

@@ -148,7 +148,7 @@ extension UIStackView.Style {
 // MARK: - Style Presets
 extension UIStackView.Style {
     static var `default`: UIStackView.Style {
-        return UIStackView.Style()
+        return UIStackView.Style([])
     }
 
     static var vertical: UIStackView.Style {

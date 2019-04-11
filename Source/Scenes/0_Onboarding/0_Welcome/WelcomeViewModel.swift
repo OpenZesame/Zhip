@@ -37,7 +37,7 @@ final class WelcomeViewModel: BaseViewModel<
     WelcomeViewModel.Output
 > {
 
-    override func transform(input: Input) -> Output {
+    override func transform(input: Input) -> WelcomeViewModel.Output {
         func userIntends(to userAction: NavigationStep) {
             navigator.next(userAction)
         }

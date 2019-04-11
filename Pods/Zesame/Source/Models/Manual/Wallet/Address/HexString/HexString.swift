@@ -83,7 +83,7 @@ extension HexString: Codable {
 extension HexString: Equatable {}
 extension HexString: ExpressibleByStringLiteral {}
 public extension HexString {
-    public init(stringLiteral value: String) {
+    init(stringLiteral value: String) {
         do {
             try self.init(value)
         } catch {

@@ -39,7 +39,7 @@ public struct Version {
 extension Version: Equatable {}
 extension Version: ExpressibleByIntegerLiteral {}
 public extension Version {
-    public init(integerLiteral value: UInt32) {
+    init(integerLiteral value: UInt32) {
         self.init(value: value)
     }
 }

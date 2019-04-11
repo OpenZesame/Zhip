@@ -1,6 +1,1 @@
-module BigInt {
-  umbrella header "BigInt-umbrella.h"
-
-  export *
-  module * { export * }
-}
+../../../Target Support Files/BigInt/BigInt.modulemap

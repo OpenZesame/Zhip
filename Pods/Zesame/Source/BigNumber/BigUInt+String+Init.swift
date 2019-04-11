@@ -43,7 +43,7 @@ extension String {
 
 // MARK: - From String
 public extension BigUInt {
-    public init?(string: String) {
+    init?(string: String) {
         if string.starts(with: "0x") {
             self.init(String(string.dropFirst(2)), radix: 16)
         } else {

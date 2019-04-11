@@ -27,9 +27,9 @@ import Foundation
 // MARK: - Validation
 public extension Address {
 
-    public static let lengthOfValidAddresses: Int = 40
+    static let lengthOfValidAddresses: Int = 40
 
-    public enum Error: Swift.Error {
+    enum Error: Swift.Error {
         case tooLong
         case tooShort
         case notHexadecimal

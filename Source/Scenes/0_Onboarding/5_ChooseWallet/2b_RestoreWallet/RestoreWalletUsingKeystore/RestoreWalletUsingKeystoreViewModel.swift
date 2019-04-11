@@ -110,11 +110,11 @@ extension RestoreWalletUsingKeystoreViewModel {
 
         private let keystoreValidator = KeystoreValidator()
 
-        func validateKeystore(_ keystore: String) -> KeystoreValidator.Result {
+        func validateKeystore(_ keystore: String) -> KeystoreValidator.ValidationResult {
             return keystoreValidator.validate(input: keystore)
         }
 
-        func validateEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.Result {
+        func validateEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.ValidationResult {
             return encryptionPasswordValidator.validate(input: (password: password, confirmingPassword: password))
         }
     }

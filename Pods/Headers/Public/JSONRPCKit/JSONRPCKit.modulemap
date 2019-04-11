@@ -1,6 +1,0 @@
-module JSONRPCKit {
-  umbrella header "JSONRPCKit-umbrella.h"
-
-  export *
-  module * { export * }
-}

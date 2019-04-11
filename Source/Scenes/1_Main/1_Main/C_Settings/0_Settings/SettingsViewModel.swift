@@ -30,6 +30,8 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+typealias SettingsItem = NavigatingCellModel<SettingsViewModel.NavigationStep>
+
 // MARK: SettingsNavigation
 enum SettingsNavigation {
     // Navigation Bar

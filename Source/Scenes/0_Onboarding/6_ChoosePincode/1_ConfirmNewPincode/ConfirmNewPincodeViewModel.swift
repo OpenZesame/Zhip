@@ -106,7 +106,7 @@ extension ConfirmNewPincodeViewModel {
             self.existingPincode = existingPincode
         }
 
-        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.Result {
+        func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.ValidationResult {
             return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
         }
     }
@@ -123,7 +123,7 @@ struct PincodeValidator: InputValidator {
         self.settingNew = settingNew
     }
 
-    func validate(input: (unconfirmed: Pincode?, existing: Pincode)) -> Result {
+    func validate(input: (unconfirmed: Pincode?, existing: Pincode)) -> ValidationResult {
 
         let pincode = input.existing
 

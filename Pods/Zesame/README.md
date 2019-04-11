@@ -1,6 +1,6 @@
 # Zesame
 
-Zesame is an *unofficial* Swift SDK for Zilliqa. It is written in Swift 4.2. This SDK contains cryptographic methods allowing you to create and restore a wallet, sign and broadcast transactions. The cryptographic methods are implemented in [EllipticCurveKit](https://github.com/Sajjon/EllipticCurveKit). This SDK uses Zilliqas [JSON-RPC API](https://apidocs.zilliqa.com/#introduction)
+Zesame is an *unofficial* Swift SDK for Zilliqa. It is written in Swift 5.0. This SDK contains cryptographic methods allowing you to create and restore a wallet, sign and broadcast transactions. The cryptographic methods are implemented in [EllipticCurveKit](https://github.com/Sajjon/EllipticCurveKit). This SDK uses Zilliqas [JSON-RPC API](https://apidocs.zilliqa.com/#introduction)
 
 # Getting started
 - Install [Brew](https://brew.sh/)

@@ -127,7 +127,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value }
 
-        let amountValidationValue: Driver<SufficientFundsValidator.Result> = Driver.combineLatest(
+        let amountValidationValue: Driver<SufficientFundsValidator.ValidationResult> = Driver.combineLatest(
 
             Driver.merge(
                 // Input from fields or deeplinked/scanned
@@ -290,19 +290,19 @@ extension PrepareTransactionViewModel {
 		private let gasPriceValidator = GasPriceValidator()
 		private let sufficientFundsValidator = SufficientFundsValidator()
 
-		func validateRecipient(_ recipient: String?) -> AddressValidator.Result {
+		func validateRecipient(_ recipient: String?) -> AddressValidator.ValidationResult {
 			return addressValidator.validate(input: recipient)
 		}
 
-		func validate(amount: ZilAmount?, gasPrice: GasPrice?, lessThanBalance balance: ZilAmount?) -> SufficientFundsValidator.Result {
+		func validate(amount: ZilAmount?, gasPrice: GasPrice?, lessThanBalance balance: ZilAmount?) -> SufficientFundsValidator.ValidationResult {
 			return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
 		}
 
-		func validateAmount(_ amount: String) -> AmountValidator.Result {
+		func validateAmount(_ amount: String) -> AmountValidator.ValidationResult {
 			return amountValidator.validate(input: amount)
 		}
 
-		func validateGasPrice(_ gasPrice: String?) -> GasPriceValidator.Result {
+		func validateGasPrice(_ gasPrice: String?) -> GasPriceValidator.ValidationResult {
 			return gasPriceValidator.validate(input: gasPrice)
 		}
 	}

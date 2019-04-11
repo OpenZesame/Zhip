@@ -27,12 +27,13 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-// MARK: - SendCoordinator
-final class SendCoordinator: BaseCoordinator<SendCoordinator.NavigationStep> {
-    enum NavigationStep {
-        case finish(fetchBalance: Bool)
-    }
+enum SendCoordinatorNavigationStep {
+    case finish(fetchBalance: Bool)
+}
 
+// MARK: - SendCoordinator
+final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
+    
     private let useCaseProvider: UseCaseProvider
     private let onboardingUseCase: OnboardingUseCase
     private let transactionIntent: Driver<TransactionIntent>
