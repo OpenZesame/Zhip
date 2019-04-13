@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.0.0-beta.4)
+  - Alamofire (5.0.0-beta.5)
   - BigInt (4.0.0)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
@@ -166,7 +166,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/attaswift/BigInt.git
 
 SPEC CHECKSUMS:
-  Alamofire: 6458d95477bc40adf10129f22c67cfb014162dc8
+  Alamofire: 9afb08f7f43efcc71c072374e720fcf67521317d
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
