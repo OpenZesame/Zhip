@@ -42,7 +42,7 @@ protocol ViewModelSpecifier where ViewModel.Input.FromController == InputFromCon
 extension ViewModelSpecifier {
     typealias Input = ViewModel.Input
     typealias InputFromView = ViewModel.Input.FromView
-    typealias Output = ViewModel.Output
+    typealias Output = ViewModel.OutputVM
 }
 
 // MARK: Helpers

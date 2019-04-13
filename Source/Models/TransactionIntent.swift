@@ -27,37 +27,53 @@ import Zesame
 
 struct TransactionIntent: Codable {
     let to: AddressChecksummed
-    let amount: ZilAmount
+    let amount: ZilAmount?
 
-    init(amount: ZilAmount, to recipient: AddressChecksummedConvertible) {
-        self.amount = amount
+    init(to recipient: AddressChecksummedConvertible, amount: ZilAmount? = nil) {
         self.to = recipient.checksummedAddress
+        self.amount = amount
     }
 }
 
 extension TransactionIntent {
-    init?(amount amountString: String, to addresssHex: String) {
-        guard
-            let amount = try? ZilAmount(qa: amountString),
-            let recipient = try? AddressChecksummed(string: addresssHex)
-            else { return nil }
-        self.init(amount: amount, to: recipient)
+    static func fromScannedQrCodeString(_ scannedString: String) -> TransactionIntent? {
+        if let adddress = try? AddressNotNecessarilyChecksummed(string: scannedString) {
+            return TransactionIntent(to: adddress)
+        } else {
+            guard
+                let json = scannedString.data(using: .utf8),
+                let transaction = try? JSONDecoder().decode(TransactionIntent.self, from: json) else {
+                    return nil
+            }
+            return transaction
+        }
+    }
+}
+
+extension TransactionIntent {
+    init?(to addresssHex: String, amount: String?) {
+        guard let recipient = try? AddressChecksummed(string: addresssHex) else { return nil }
+        self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
     }
 
     init?(queryParameters params: [URLQueryItem]) {
-        guard let amount = params.first(where: { $0.name == TransactionIntent.CodingKeys.amount.stringValue })?.value,
-
-            let hexAddress = params.first(where: { $0.name == TransactionIntent.CodingKeys.to.stringValue })?.value
-
-            else {
-                return nil
+        guard let hexAddress = params.first(where: { $0.name == TransactionIntent.CodingKeys.to.stringValue })?.value else {
+            return nil
         }
-        self.init(amount: amount, to: hexAddress)
+        let amount = params.first(where: { $0.name == TransactionIntent.CodingKeys.amount.stringValue })?.value
+        self.init(to: hexAddress, amount: amount)
     }
 
     var queryItems: [URLQueryItem] {
         return dictionaryRepresentation.compactMap {
             URLQueryItem(name: $0.key, value: String(describing: $0.value))
         }.sorted(by: { $0.name.count < $1.name.count })
+    }
+}
+
+private extension ZilAmount {
+    static func fromQa(optionalString: String?) -> ZilAmount? {
+        guard let qaAmountString = optionalString else { return nil }
+        return try? ZilAmount(qa: qaAmountString)
     }
 }

@@ -54,8 +54,6 @@ open class Session {
                 redirectHandler: RedirectHandler? = nil,
                 cachedResponseHandler: CachedResponseHandler? = nil,
                 eventMonitors: [EventMonitor] = []) {
-        precondition(session.delegate === delegate,
-                     "SessionManager(session:) initializer must be passed the delegate that has been assigned to the URLSession as the SessionDataProvider.")
         precondition(session.delegateQueue.underlyingQueue === rootQueue,
                      "SessionManager(session:) intializer must be passed the DispatchQueue used as the delegateQueue's underlyingQueue as rootQueue.")
 
@@ -318,7 +316,7 @@ open class Session {
     }
 
     open func upload(multipartFormData: @escaping (MultipartFormData) -> Void,
-                     usingThreshold encodingMemoryThreshold: UInt64 = MultipartUpload.encodingMemoryThreshold,
+                     usingThreshold encodingMemoryThreshold: UInt64 = MultipartFormData.encodingMemoryThreshold,
                      fileManager: FileManager = .default,
                      to url: URLConvertible,
                      method: HTTPMethod = .post,
@@ -336,7 +334,7 @@ open class Session {
     }
 
     open func upload(multipartFormData: MultipartFormData,
-                     usingThreshold encodingMemoryThreshold: UInt64 = MultipartUpload.encodingMemoryThreshold,
+                     usingThreshold encodingMemoryThreshold: UInt64 = MultipartFormData.encodingMemoryThreshold,
                      with request: URLRequestConvertible,
                      interceptor: RequestInterceptor? = nil) -> UploadRequest {
         let multipartUpload = MultipartUpload(isInBackgroundSession: (session.configuration.identifier != nil),
@@ -457,7 +455,7 @@ open class Session {
         requestTaskMap[request] = task
         request.didCreateTask(task)
 
-        resumeOrSuspendTask(task, ifNecessaryForRequest: request)
+        updateStatesForTask(task, request: request)
     }
 
     func didReceiveResumeData(_ data: Data, for request: DownloadRequest) {
@@ -467,18 +465,25 @@ open class Session {
         requestTaskMap[request] = task
         request.didCreateTask(task)
 
-        resumeOrSuspendTask(task, ifNecessaryForRequest: request)
+        updateStatesForTask(task, request: request)
     }
 
-    func resumeOrSuspendTask(_ task: URLSessionTask, ifNecessaryForRequest request: Request) {
-        if startRequestsImmediately || request.isResumed {
+    func updateStatesForTask(_ task: URLSessionTask, request: Request) {
+        switch (startRequestsImmediately, request.state) {
+        case (true, .initialized):
+            request.resume()
+        case (false, .initialized):
+            // Do nothing.
+            break
+        case (_, .resumed):
             task.resume()
-            request.didResume()
-        }
-
-        if request.isSuspended {
+            request.didResumeTask(task)
+        case (_, .suspended):
             task.suspend()
-            request.didSuspend()
+            request.didSuspendTask(task)
+        case (_, .cancelled):
+            task.cancel()
+            request.didCancelTask(task)
         }
     }
 
@@ -549,21 +554,23 @@ extension Session: RequestDelegate {
 
     public func cancelRequest(_ request: Request) {
         rootQueue.async {
+            request.didCancel()
+
             guard let task = self.requestTaskMap[request] else {
-                request.didCancel()
                 request.finish()
                 return
             }
 
             task.cancel()
-            request.didCancel()
+            request.didCancelTask(task)
         }
     }
 
     public func cancelDownloadRequest(_ request: DownloadRequest, byProducingResumeData: @escaping (Data?) -> Void) {
         rootQueue.async {
+            request.didCancel()
+
             guard let downloadTask = self.requestTaskMap[request] as? URLSessionDownloadTask else {
-                request.didCancel()
                 request.finish()
                 return
             }
@@ -571,7 +578,7 @@ extension Session: RequestDelegate {
             downloadTask.cancel { (data) in
                 self.rootQueue.async {
                     byProducingResumeData(data)
-                    request.didCancel()
+                    request.didCancelTask(downloadTask)
                 }
             }
         }
@@ -579,19 +586,27 @@ extension Session: RequestDelegate {
 
     public func suspendRequest(_ request: Request) {
         rootQueue.async {
-            guard !request.isCancelled, let task = self.requestTaskMap[request] else { return }
+            guard !request.isCancelled else { return }
+
+            request.didSuspend()
+
+            guard let task = self.requestTaskMap[request] else { return }
 
             task.suspend()
-            request.didSuspend()
+            request.didSuspendTask(task)
         }
     }
 
     public func resumeRequest(_ request: Request) {
         rootQueue.async {
-            guard !request.isCancelled, let task = self.requestTaskMap[request] else { return }
+            guard !request.isCancelled else { return }
+
+            request.didResume()
+
+            guard let task = self.requestTaskMap[request] else { return }
 
             task.resume()
-            request.didResume()
+            request.didResumeTask(task)
         }
     }
 }

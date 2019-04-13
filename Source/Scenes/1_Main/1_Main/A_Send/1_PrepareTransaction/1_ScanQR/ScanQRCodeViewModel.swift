@@ -40,20 +40,13 @@ final class ScanQRCodeViewModel: BaseViewModel<
     ScanQRCodeViewModel.Output
 > {
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
-        let transactionIntent = input.fromView.scannedQrCodeString.map { (qrString) -> TransactionIntent? in
-            guard
-                let json = qrString.data(using: .utf8),
-                let transaction = try? JSONDecoder().decode(TransactionIntent.self, from: json)
-                else {
-                return nil
-            }
-            return transaction
+        let transactionIntent = input.fromView.scannedQrCodeString.map {
+            TransactionIntent.fromScannedQrCodeString($0)
         }.filterNil()
 
         // MARK: Navigate

@@ -72,7 +72,10 @@ final class ReceiveViewModel: BaseViewModel<
             amountValidationValue.nonErrors()
         )
 
-        let transactionToReceive = Driver.combineLatest(amount.filterNil(), wallet.map { $0.address }) { TransactionIntent(amount: $0, to: $1) }
+        let transactionToReceive = Driver.combineLatest(
+            wallet.map { $0.address },
+            amount.filterNil()
+        ) { TransactionIntent(to: $0, amount: $1) }
 
         let qrImage = transactionToReceive.map { [unowned qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
