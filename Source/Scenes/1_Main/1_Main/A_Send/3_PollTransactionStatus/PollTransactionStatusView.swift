@@ -27,6 +27,8 @@ import RxSwift
 import RxCocoa
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
+    private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
+    private var player: AVAudioPlayer?
 
     private lazy var motionEffectStarsImageViewWithGradient = GradientView()
 	private lazy var checkmarkLogoImageView				    = UIImageView()
@@ -55,10 +57,19 @@ extension PollTransactionStatusView: ViewModelled {
     typealias ViewModel = PollTransactionStatusViewModel
 
 	func populate(with viewModel: PollTransactionStatusViewModel.Output) -> [Disposable] {
+        
+        let vibrateSuccessTrigger = viewModel.isSeeTxDetailsEnabled
+        
 		return [
             viewModel.skipWaitingOrDoneButtonTitle    -->    skipWaitingOrDoneButton.rx.title(for: .normal),
             viewModel.isSeeTxDetailsEnabled         --> seeTxDetailsWhenAvailableButton.rx.isEnabled,
-            viewModel.isSeeTxDetailsButtonLoading     --> seeTxDetailsWhenAvailableButton.rx.isLoading
+            viewModel.isSeeTxDetailsButtonLoading     --> seeTxDetailsWhenAvailableButton.rx.isLoading,
+            vibrateSuccessTrigger.drive(onNext: { [weak self] finishedPolling in
+                if !finishedPolling {
+                    self?.playSound()
+                }
+                self?.vibrate()
+            })
         ]
     }
 
@@ -115,5 +126,32 @@ private extension PollTransactionStatusView {
             middle: starsVerticallyFlipped,
             back: starsHorizontallyFlipped
         )
+    }
+    
+    func vibrate() {
+        vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
+    }
+}
+
+import AVFoundation
+private extension PollTransactionStatusView {
+    
+    // https://stackoverflow.com/a/32036291/1311272
+    func playSound() {
+
+        // Sound found here: https://freesound.org/people/MATTIX/sounds/445723/
+        guard let url = Bundle.main.url(forResource: "freesound_mattix_radar", withExtension: "wav") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            guard let player = player else { return }
+            player.play()
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 }

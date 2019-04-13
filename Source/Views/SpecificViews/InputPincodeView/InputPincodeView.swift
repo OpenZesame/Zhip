@@ -70,17 +70,30 @@ private extension InputPincodeView {
         }
     }
 
-    func vibrate(style: UINotificationFeedbackGenerator.FeedbackType?) {
-        guard let style = style else { return }
-        hapticFeedbackGenerator.notificationOccurred(style)
-    }
-
     func vibrateOnInvalid() {
-        vibrate(style: .error)
+        vibrateOnInvalid(hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
 
     func vibrateOnValid() {
-        vibrate(style: .success)
+        vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
 
+}
+
+extension UIView {
+    
+    func vibrateOnInvalid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
+        vibrate(style: .error, hapticFeedbackGenerator: hapticFeedbackGenerator)
+    }
+    
+    func vibrateOnValid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
+        vibrate(style: .success, hapticFeedbackGenerator: hapticFeedbackGenerator)
+    }
+    
+    func vibrate(
+        style: UINotificationFeedbackGenerator.FeedbackType,
+        hapticFeedbackGenerator: UINotificationFeedbackGenerator
+    ) {
+        hapticFeedbackGenerator.notificationOccurred(style)
+    }
 }
