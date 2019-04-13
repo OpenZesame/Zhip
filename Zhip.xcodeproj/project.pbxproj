@@ -138,9 +138,6 @@
 		4898FB48215423D6009501DC /* BaseScrollableStackViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
-		489EB0ED21C7E59100664AA7 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0EC21C7E59100664AA7 /* libRxTest.a */; };
-		489EB0EF21C7E5A700664AA7 /* libRxSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0EE21C7E5A700664AA7 /* libRxSwift.a */; };
-		489EB0F221C8FAAD00664AA7 /* libRxCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 489EB0F121C8FAAD00664AA7 /* libRxCocoa.a */; };
 		489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */; };
 		489EB0F821C9028800664AA7 /* MockedTransactionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0F721C9028800664AA7 /* MockedTransactionUseCase.swift */; };
 		489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */; };
@@ -308,6 +305,10 @@
 		E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
 		E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
+		E6942A4E2262180700778FF6 /* libRxCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A4D2262180700778FF6 /* libRxCocoa.a */; };
+		E6942A502262180700778FF6 /* libRxSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A4F2262180700778FF6 /* libRxSwift.a */; };
+		E6942A522262180700778FF6 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A512262180700778FF6 /* libRxTest.a */; };
+		E6942A542262183200778FF6 /* libRxBlocking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A532262183200778FF6 /* libRxBlocking.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -636,6 +637,10 @@
 		CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zhip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFC68C812D61AEF04B2C537A /* Pods-Zhip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zhip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.release.xcconfig"; sourceTree = "<group>"; };
 		D072578D42806D1D0CB17AEE /* Pods-ZhipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZhipTests/Pods-ZhipTests.release.xcconfig"; sourceTree = "<group>"; };
+		E6942A4D2262180700778FF6 /* libRxCocoa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxCocoa.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6942A4F2262180700778FF6 /* libRxSwift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxSwift.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6942A512262180700778FF6 /* libRxTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxTest.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6942A532262183200778FF6 /* libRxBlocking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxBlocking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -652,9 +657,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				489EB0F221C8FAAD00664AA7 /* libRxCocoa.a in Frameworks */,
-				489EB0EF21C7E5A700664AA7 /* libRxSwift.a in Frameworks */,
-				489EB0ED21C7E59100664AA7 /* libRxTest.a in Frameworks */,
+				E6942A542262183200778FF6 /* libRxBlocking.a in Frameworks */,
+				E6942A4E2262180700778FF6 /* libRxCocoa.a in Frameworks */,
+				E6942A502262180700778FF6 /* libRxSwift.a in Frameworks */,
+				E6942A522262180700778FF6 /* libRxTest.a in Frameworks */,
 				7BFDCAE30FF2195FF7E88F54 /* libPods-ZhipTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1107,6 +1113,10 @@
 		484B06AA20BA107A00C4E50A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E6942A532262183200778FF6 /* libRxBlocking.a */,
+				E6942A4D2262180700778FF6 /* libRxCocoa.a */,
+				E6942A4F2262180700778FF6 /* libRxSwift.a */,
+				E6942A512262180700778FF6 /* libRxTest.a */,
 				48CDB8D921EFB397005D67C6 /* LocalAuthentication.framework */,
 				489EB0F121C8FAAD00664AA7 /* libRxCocoa.a */,
 				489EB0EE21C7E5A700664AA7 /* libRxSwift.a */,
@@ -2467,6 +2477,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxBlocking\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxTest\"",
+				);
 			};
 			name = Debug;
 		};
