@@ -309,6 +309,7 @@
 		E6942A502262180700778FF6 /* libRxSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A4F2262180700778FF6 /* libRxSwift.a */; };
 		E6942A522262180700778FF6 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A512262180700778FF6 /* libRxTest.a */; };
 		E6942A542262183200778FF6 /* libRxBlocking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A532262183200778FF6 /* libRxBlocking.a */; };
+		E6942A5C2262561000778FF6 /* freesound_mattix_radar.wav in Resources */ = {isa = PBXBuildFile; fileRef = E6942A5B2262560F00778FF6 /* freesound_mattix_radar.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -641,6 +642,7 @@
 		E6942A4F2262180700778FF6 /* libRxSwift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxSwift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6942A512262180700778FF6 /* libRxTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxTest.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6942A532262183200778FF6 /* libRxBlocking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxBlocking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6942A5B2262560F00778FF6 /* freesound_mattix_radar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = freesound_mattix_radar.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1034,6 +1036,7 @@
 		483CE9C22194E9E300BED31C /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				E6942A5B2262560F00778FF6 /* freesound_mattix_radar.wav */,
 				489EB10221CA30F200664AA7 /* Fonts */,
 				483CE9C32194E9E300BED31C /* TermsOfService.html */,
 				4855793A220E3A2D00846704 /* CustomECCWarning.html */,
@@ -1979,6 +1982,7 @@
 				489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */,
 				48ECF62621A34E780078D659 /* Settings.bundle in Resources */,
 				4809354D2195D1BE009CA3FD /* Localizable.strings in Resources */,
+				E6942A5C2262561000778FF6 /* freesound_mattix_radar.wav in Resources */,
 				48557969220E473900846704 /* Barlow-Light.ttf in Resources */,
 				485AA29621DD744F00E700C5 /* GoogleService-Info.plist in Resources */,
 				48557973220E473900846704 /* Barlow-SemiBoldItalic.ttf in Resources */,

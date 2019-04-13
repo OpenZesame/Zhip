@@ -89,3 +89,7 @@ This **free** wallet and the foundation Zesame its built upon has been developed
 # License
 
 **Zhip** is released under the [MIT License](LICENSE).
+
+# Acknowledgments
+Sound effect when transaction is sent is called ["RADAR"](https://freesound.org/people/MATTIX/sounds/445723/) by [Mattias "MATTIX" Lahoud](https://freesound.org/people/MATTIX/) under [CreativeCommons](https://creativecommons.org/licenses/by/3.0/), thanks a lot!
+
