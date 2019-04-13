@@ -122,7 +122,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		// MARK: Amount + MaxAmountTrigger Input -> Value + Validation
 		let amountWithoutSufficientFundsCheckValidationValue = Driver.merge(
 			input.fromView.amountToSend.map { validator.validateAmount($0) },
-			scannedOrDeeplinkedTransaction.map { .valid($0.amount) }
+            scannedOrDeeplinkedTransaction.map { $0.amount }.filterNil().map { .valid($0) }
 		)
 
 		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value }
