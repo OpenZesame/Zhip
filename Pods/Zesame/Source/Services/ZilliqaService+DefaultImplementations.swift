@@ -99,15 +99,22 @@ public extension ZilliqaService {
         kdf: KDF = .default,
         done: @escaping Done<Keystore>
         ) {
-        do {
-            try Keystore.from(
-                privateKey: privateKey,
-                encryptBy: password,
-                kdf: kdf,
-                done: done
-            )
-        } catch {
-           done(.failure(Error.keystoreExport(error)))
+        background {
+            do {
+                try Keystore.from(
+                    privateKey: privateKey,
+                    encryptBy: password,
+                    kdf: kdf) { newKeystoreResult in
+                        main {
+                            done(newKeystoreResult)
+                        }
+                }
+            } catch {
+                main {
+                    done(.failure(Error.keystoreExport(error)))
+                }
+            }
         }
+        
     }
 }

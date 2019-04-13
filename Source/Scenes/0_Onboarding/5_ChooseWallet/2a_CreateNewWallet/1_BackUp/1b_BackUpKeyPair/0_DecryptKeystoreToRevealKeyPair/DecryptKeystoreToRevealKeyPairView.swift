@@ -77,7 +77,7 @@ private extension DecryptKeystoreToRevealKeyPairView {
             $0.placeholder(€.Field.encryptionPassword)
         }
 
-        revealButton .withStyle(.primary) {
+        revealButton.withStyle(.primary) {
             $0.title(€.Button.reveal)
                 .disabled()
         }

@@ -66,14 +66,19 @@ public extension ZilliqaServiceReactive {
 
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
         return Observable.create { observer in
-
-            keystore.toKeypair(encryptedBy: password) {
-                switch $0 {
-                case .success(let keyPair):
-                    observer.onNext(keyPair)
-                    observer.onCompleted()
-                case .failure(let error):
-                    observer.onError(error)
+            background {
+                keystore.toKeypair(encryptedBy: password) {
+                    switch $0 {
+                    case .success(let keyPair):
+                        main {
+                            observer.onNext(keyPair)
+                            observer.onCompleted()
+                        }
+                    case .failure(let error):
+                        main {
+                            observer.onError(error)
+                        }
+                    }
                 }
             }
             return Disposables.create()
