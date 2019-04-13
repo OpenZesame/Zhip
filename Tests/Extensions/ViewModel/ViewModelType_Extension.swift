@@ -29,7 +29,7 @@ import RxSwift
 import RxCocoa
 
 extension ViewModelType where Input: InputType, Self.Input.FromController == InputFromController {
-    func transform(inputFromView: Input.FromView) -> Output {
+    func transform(inputFromView: Input.FromView) -> OutputVM {
         let input = Input.init(fromView: inputFromView, fromController: .empty)
         return transform(input: input)
     }
