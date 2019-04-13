@@ -26,14 +26,20 @@ import UIKit
 
 public extension UIView {
 
-    func shake(count: Float = 3, duration: TimeInterval = 0.3, withTranslation translation: CGFloat = 5) {
-        let animation = CABasicAnimation(keyPath: "transform.translation.x")
-        animation.timingFunction = CAMediaTimingFunction(name: .linear)
-        animation.repeatCount = count
-        animation.duration = duration / TimeInterval(animation.repeatCount)
-        animation.autoreverses = true
-        animation.fromValue = NSValue(cgPoint: CGPoint(x: -translation, y: center.y))
-        animation.toValue = NSValue(cgPoint: CGPoint(x: translation, y: center.y))
-        layer.add(animation, forKey: "shake")
+    // https://stackoverflow.com/a/50080005/1311272
+    func shake(duration: TimeInterval = 0.42, withTranslation translation: CGFloat = 10, done: (() -> Void)? = nil) {
+        let propertyAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.2) { [weak self] in
+            self?.transform = CGAffineTransform(translationX: translation, y: 0)
+        }
+        
+        propertyAnimator.addAnimations({ [weak self] in
+            self?.transform = CGAffineTransform(translationX: 0, y: 0)
+        }, delayFactor: CGFloat(duration/2))
+        
+        propertyAnimator.addCompletion { (_: UIViewAnimatingPosition) in
+            done?()
+        }
+        
+        propertyAnimator.startAnimation()
     }
 }

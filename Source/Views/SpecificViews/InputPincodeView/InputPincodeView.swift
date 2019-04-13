@@ -52,8 +52,9 @@ final class InputPincodeView: UIView {
         case .errorMessage(let errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage
-            shake()
-            pinField.clearInput()
+            shake { [weak self] in
+                self?.pinField.clearInput()
+            }
         }
     }
 }
