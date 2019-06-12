@@ -4,13 +4,14 @@ use_modular_headers!
 
 def shared
   # The Zilliqa Swift SDK
-  pod 'Zesame', '~> 1.0.0'
-  pod 'BigInt', :git => 'https://github.com/attaswift/BigInt.git', :branch => 'master'
+  pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'bech32'
 
   # Used for Crash reporting
   pod 'Firebase/Core'
   pod 'Fabric', '~> 1.9.0'
   pod 'Crashlytics', '~> 3.12.0'
+
+  pod 'SwiftProtobuf', '1.5.0'
 
   # RxSwift made this app
   pod 'RxCocoa'

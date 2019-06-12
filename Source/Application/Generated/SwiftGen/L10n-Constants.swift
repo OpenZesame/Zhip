@@ -15,10 +15,10 @@ internal enum L10n {
   internal enum Error {
     internal enum Input {
       internal enum Address {
-        /// This address isn't checksummed, yet can still be valid.
+        /// Invalid checksum.
         internal static let addressNotChecksummed = L10n.tr("Localizable", "Error.Input.Address.AddressNotChecksummed")
-        /// Only 0-9 and A-F allowed
-        internal static let containsNonHexadecimal = L10n.tr("Localizable", "Error.Input.Address.ContainsNonHexadecimal")
+        /// Invalid address
+        internal static let invalid = L10n.tr("Localizable", "Error.Input.Address.Invalid")
         /// Address is too long, should be %d
         internal static func tooLong(_ p1: Int) -> String {
           return L10n.tr("Localizable", "Error.Input.Address.TooLong", p1)

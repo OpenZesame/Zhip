@@ -23,10 +23,24 @@
 //
 
 import Foundation
+import Zesame
 
 extension CharacterSet {
     static var hexadecimalDigits: CharacterSet {
         let afToAF = CharacterSet(charactersIn: "abcdefABCDEF")
         return CharacterSet.decimalDigits.union(afToAF)
     }
+    
+    static var bech32: CharacterSet {
+        
+        let lowercase = Zesame.Bech32.alphabetString.lowercased()
+        let uppercase = Zesame.Bech32.alphabetString.uppercased()
+        
+        return CharacterSet(charactersIn: lowercase).union(CharacterSet(charactersIn: uppercase))
+    }
+    
+    static var bech32OrHex: CharacterSet {
+        return CharacterSet.bech32.union(hexadecimalDigits)
+    }
+    
 }

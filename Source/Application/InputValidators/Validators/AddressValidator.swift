@@ -27,32 +27,55 @@ import Zesame
 struct AddressValidator: InputValidator {
     typealias Input = String
     typealias Output = Address
-    typealias Error = Address.Error
+//    typealias Error = Address.Error
 
     func validate(input: Input) -> Validation<Output, Error> {
         do {
             let address = try Address(string: input)
-            if address.isChecksummed {
-                return .valid(address)
-            } else {
-                return .valid(address, remark: Error.notChecksummed)
-            }
+            return .valid(address)
         } catch let addressError as Address.Error {
-            return .invalid(.error(addressError))
+            let mappedError = Error(fromAddressError: addressError)
+            return .invalid(.error(mappedError))
         } catch {
             incorrectImplementation("Address.Error should cover all errors")
         }
     }
+    
 }
 
-extension Address.Error: InputError {
-    public var errorMessage: String {
+extension AddressValidator {
+    enum Error: InputError {
+        case incorrectLength(expectedLength: Int, butGot: Int)
+        case notChecksummed
+        case noBech32NorHexstring
+    }
+}
+
+extension AddressValidator.Error {
+    init(fromAddressError: Zesame.Address.Error) {
+        switch fromAddressError {
+        case .incorrectLength(let expected, _, let butGot): self = .incorrectLength(expectedLength: expected, butGot: butGot)
+        case .notChecksummed: self = .notChecksummed
+        case .bech32DataEmpty, .notHexadecimal: self = .noBech32NorHexstring
+        case .invalidBech32Address(let bechError):
+            switch bechError {
+            case .checksumMismatch: self = .notChecksummed
+            default: self = .noBech32NorHexstring
+            }
+        }
+    }
+
+    var errorMessage: String {
         let Message = L10n.Error.Input.Address.self
 
         switch self {
-        case .notHexadecimal: return Message.containsNonHexadecimal
-        case .tooLong: return Message.tooLong(Address.lengthOfValidAddresses)
-        case .tooShort: return Message.tooShort(Address.lengthOfValidAddresses)
+        case .noBech32NorHexstring: return Message.invalid
+        case .incorrectLength(let expected, let incorrect):
+            if incorrect > expected {
+                return Message.tooLong(expected)
+            } else {
+                return Message.tooShort(expected)
+            }
         case .notChecksummed: return Message.addressNotChecksummed
         }
     }

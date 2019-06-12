@@ -26,19 +26,24 @@ import Foundation
 import Zesame
 
 struct TransactionIntent: Codable {
-    let to: AddressChecksummed
+    let to: LegacyAddress
     let amount: ZilAmount?
-
-    init(to recipient: AddressChecksummedConvertible, amount: ZilAmount? = nil) {
-        self.to = recipient.checksummedAddress
+    
+    init(to recipient: LegacyAddress, amount: ZilAmount? = nil) {
+        self.to = recipient
         self.amount = amount
+    }
+    
+    init(to address: Address, amount: ZilAmount? = nil) throws {
+        let recipient = try address.toChecksummedLegacyAddress()
+        self.init(to: recipient, amount: amount)
     }
 }
 
 extension TransactionIntent {
     static func fromScannedQrCodeString(_ scannedString: String) -> TransactionIntent? {
-        if let adddress = try? AddressNotNecessarilyChecksummed(string: scannedString) {
-            return TransactionIntent(to: adddress)
+        if let address = try? Address(string: scannedString) {
+            return try? TransactionIntent(to: address)
         } else {
             guard
                 let json = scannedString.data(using: .utf8),
@@ -51,17 +56,17 @@ extension TransactionIntent {
 }
 
 extension TransactionIntent {
-    init?(to addresssHex: String, amount: String?) {
-        guard let recipient = try? AddressChecksummed(string: addresssHex) else { return nil }
-        self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
+    init?(to recipientString: String, amount: String?) {
+        guard let recipient = try? Address(string: recipientString) else { return nil }
+        try? self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
     }
 
     init?(queryParameters params: [URLQueryItem]) {
-        guard let hexAddress = params.first(where: { $0.name == TransactionIntent.CodingKeys.to.stringValue })?.value else {
+        guard let addressFromParam = params.first(where: { $0.name == TransactionIntent.CodingKeys.to.stringValue })?.value else {
             return nil
         }
         let amount = params.first(where: { $0.name == TransactionIntent.CodingKeys.amount.stringValue })?.value
-        self.init(to: hexAddress, amount: amount)
+        self.init(to: addressFromParam, amount: amount)
     }
 
     var queryItems: [URLQueryItem] {

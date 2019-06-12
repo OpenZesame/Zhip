@@ -118,7 +118,7 @@ private extension PrepareTransactionView {
 
         balanceLabels.withStyle(.horizontal)
 
-        recipientAddressField.withStyle(.address) {
+        recipientAddressField.withStyle(.addressBech32OrHex) {
             $0.placeholder(€.Field.recipient)
         }
 
@@ -150,7 +150,7 @@ private extension PrepareTransactionView {
 private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         #if DEBUG
-        recipientAddressField.text = "89a810e6dB25912028f704b4947a6dCF724139Ae"
+        recipientAddressField.text = "zil175grxdeqchwnc0qghj8qsh5vnqwww353msqj82"
         amountToSendField.text = Int.random(in: 100...500).description
         gasPriceField.text = Int.random(in: 1000...2000).description
 
