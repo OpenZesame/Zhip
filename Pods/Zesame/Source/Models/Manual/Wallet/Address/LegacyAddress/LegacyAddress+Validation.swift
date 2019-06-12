@@ -27,10 +27,10 @@ import CryptoSwift
 import EllipticCurveKit
 
 // MARK: - Validation
-public extension AddressChecksummed {
+public extension LegacyAddress {
     static func isChecksummed(hexString: HexStringConvertible) -> Bool {
         guard
-            hexString.isValidAddressButNotNecessarilyChecksummed,
+            hexString.isValidLegacyAddressButNotNecessarilyChecksummed,
             case let checksummed = checksummedHexstringFrom(hexString: hexString),
             checksummed == hexString
             else { return false }

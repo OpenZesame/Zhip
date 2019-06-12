@@ -25,9 +25,9 @@
 import Foundation
 
 public extension HexStringConvertible {
-    var isValidAddressButNotNecessarilyChecksummed: Bool {
+    var isValidLegacyAddressButNotNecessarilyChecksummed: Bool {
         do {
-            try AddressNotNecessarilyChecksummed.validate(hexString: self)
+            try LegacyAddress.isValidLegacyAddressButNotNecessarilyChecksummed(hexString: self)
             // passed validation
             return true
         } catch {

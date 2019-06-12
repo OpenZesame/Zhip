@@ -23,17 +23,29 @@
 //
 
 import Foundation
+import EllipticCurveKit
 
-public protocol HexStringConvertible {
+
+public protocol HexStringConvertible: DataConvertible, StringConvertible {
     var hexString: HexString { get }
 }
 
-// MARK: - Convenience
+// MARK: - DataConvertible
+public extension HexStringConvertible {
+    var asData: Data {
+        return hexString.asData
+    }
+}
+
+// MARK: - StringConvertible
 public extension HexStringConvertible {
     var asString: String {
         return hexString.value
     }
+}
 
+// MARK: - Convenience
+public extension HexStringConvertible {
     var length: Int {
         return hexString.length
     }

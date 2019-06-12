@@ -69,7 +69,7 @@ public extension Reactive where Base: ZilliqaService {
         }
     }
 
-    func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse> {
+    func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse> {
         return callBase {
             $0.getBalance(for: address, done: $1)
         }

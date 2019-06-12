@@ -38,7 +38,7 @@ public protocol ZilliqaService: AnyObject {
     func restoreWallet(from restoration: KeyRestoration, done: @escaping Done<Wallet>)
     func exportKeystore(privateKey: PrivateKey, encryptWalletBy password: String, kdf: KDF, done: @escaping Done<Keystore>)
 
-    func getBalance(for address: AddressChecksummedConvertible, done: @escaping Done<BalanceResponse>)
+    func getBalance(for address: LegacyAddress, done: @escaping Done<BalanceResponse>)
     func send(transaction: SignedTransaction, done: @escaping Done<TransactionResponse>)
 }
 
@@ -51,7 +51,7 @@ public protocol ZilliqaServiceReactive {
     func exportKeystore(privateKey: PrivateKey, encryptWalletBy password: String) -> Observable<Keystore>
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
 
-    func getBalance(for address: AddressChecksummedConvertible) -> Observable<BalanceResponse>
+    func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse>
     func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network) -> Observable<TransactionResponse>
     func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, network: Network) -> Observable<TransactionResponse>
 

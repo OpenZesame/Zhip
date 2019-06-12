@@ -24,7 +24,7 @@
 
 public struct Wallet {
     public let keystore: Keystore
-    public let address: AddressChecksummed
+    public let address: LegacyAddress
 
     public init(keystore: Keystore) {
         self.keystore = keystore

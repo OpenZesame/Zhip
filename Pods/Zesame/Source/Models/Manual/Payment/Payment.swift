@@ -25,20 +25,20 @@
 import Foundation
 
 public struct Payment {
-    public let recipient: AddressChecksummed
+    public let recipient: LegacyAddress
     public let amount: ZilAmount
     public let gasLimit: GasLimit
     public let gasPrice: GasPrice
     public let nonce: Nonce
 
     public init(
-        to recipient: AddressChecksummedConvertible,
+        to recipient: LegacyAddress,
         amount: ZilAmount,
         gasLimit: GasLimit = .defaultGasLimit,
         gasPrice: GasPrice,
         nonce: Nonce = 0
         ) {
-        self.recipient = recipient.checksummedAddress
+        self.recipient = recipient
         self.amount = amount
         self.gasLimit = gasLimit
         self.gasPrice = gasPrice

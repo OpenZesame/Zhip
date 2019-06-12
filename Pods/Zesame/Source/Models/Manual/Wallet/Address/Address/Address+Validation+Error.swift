@@ -26,24 +26,22 @@ import Foundation
 
 // MARK: - Validation
 public extension Address {
-
-    static let lengthOfValidAddresses: Int = 40
-
-    enum Error: Swift.Error {
-        case tooLong
-        case tooShort
-        case notHexadecimal
-        case notChecksummed
-    }
-}
-
-// MARK: - Convenience getters
-public extension Address {
-    var isChecksummed: Bool {
-        switch self {
-        case .checksummed: return true
-        case .notNecessarilyChecksummed(let maybeChecksummed):
-            return AddressChecksummed.isChecksummed(hexString: maybeChecksummed)
+    enum Style: Equatable {
+        case bech32, ethereum
+        
+        var expectedLength: Int {
+            switch self {
+            case .bech32: return 32 // excluding prefix, delimiter and checksum
+            case .ethereum: return 40
+            }
         }
+    }
+
+    enum Error: Swift.Error, Equatable {
+        case incorrectLength(expectedLength: Int, forStyle: Style, butGot: Int)
+        case bech32DataEmpty
+        case notHexadecimal
+        case invalidBech32Address(bechError: Bech32.DecodingError)
+        case notChecksummed
     }
 }

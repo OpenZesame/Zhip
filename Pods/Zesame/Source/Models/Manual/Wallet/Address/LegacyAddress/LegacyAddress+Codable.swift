@@ -24,15 +24,17 @@
 
 import Foundation
 
-public extension AddressNotNecessarilyChecksummed {
-    static func validate(hexString: HexStringConvertible) throws {
-        let length = hexString.length
-        if length < Address.lengthOfValidAddresses {
-            throw Address.Error.tooShort
-        }
-        if length > Address.lengthOfValidAddresses {
-            throw Address.Error.tooLong
-        }
-        // is valid
+extension LegacyAddress: Encodable {
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(asString)
+    }
+}
+
+extension LegacyAddress: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let hexString = try container.decode(String.self)
+        try self.init(string: hexString)
     }
 }
