@@ -25,40 +25,48 @@
 import Foundation
 import Zesame
 
-struct TransactionIntent: Codable {
-    let to: LegacyAddress
-    let amount: ZilAmount?
-    
-    init(to recipient: LegacyAddress, amount: ZilAmount? = nil) {
-        self.to = recipient
-        self.amount = amount
+extension Address: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let addressString = try container.decode(String.self).lowercased()
+        try self.init(string: addressString)
     }
     
-    init(to address: Address, amount: ZilAmount? = nil) throws {
-        let recipient = try address.toChecksummedLegacyAddress()
-        self.init(to: recipient, amount: amount)
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.asString.uppercased())
+    }
+}
+
+struct TransactionIntent: Codable, Equatable {
+    let to: Address
+    let amount: ZilAmount?
+    
+    init(to recipient: Address, amount: ZilAmount? = nil) {
+        self.to = recipient
+        self.amount = amount
     }
 }
 
 extension TransactionIntent {
-    static func fromScannedQrCodeString(_ scannedString: String) -> TransactionIntent? {
-        if let address = try? Address(string: scannedString) {
-            return try? TransactionIntent(to: address)
-        } else {
-            guard
-                let json = scannedString.data(using: .utf8),
-                let transaction = try? JSONDecoder().decode(TransactionIntent.self, from: json) else {
-                    return nil
-            }
-            return transaction
+    static func fromScannedQrCodeString(_ scannedString: String) throws -> TransactionIntent {
+        do {
+            return TransactionIntent(to: try Address(string: scannedString))
+        } catch {
+            guard let json = scannedString.data(using: .utf8) else { throw Error.scannedStringNotAddressNorJson }
+            return try JSONDecoder().decode(TransactionIntent.self, from: json)
         }
+    }
+    
+    enum Error: Swift.Error, Equatable {
+        case scannedStringNotAddressNorJson
     }
 }
 
 extension TransactionIntent {
     init?(to recipientString: String, amount: String?) {
         guard let recipient = try? Address(string: recipientString) else { return nil }
-        try? self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
+        self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
     }
 
     init?(queryParameters params: [URLQueryItem]) {
@@ -71,8 +79,27 @@ extension TransactionIntent {
 
     var queryItems: [URLQueryItem] {
         return dictionaryRepresentation.compactMap {
-            URLQueryItem(name: $0.key, value: String(describing: $0.value))
+            URLQueryItem(name: $0.key, value: String(describing: $0.value).lowercased())
         }.sorted(by: { $0.name.count < $1.name.count })
+    }
+}
+
+// MARK: - Codable
+extension TransactionIntent {
+    enum CodingKeys: CodingKey {
+        case to, amount
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        to = try container.decode(Address.self, forKey: .to)
+        amount = try container.decodeIfPresent(ZilAmount.self, forKey: .amount)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(to, forKey: .to)
+        try container.encodeIfPresent(amount, forKey: .amount)
     }
 }
 
@@ -82,3 +109,4 @@ private extension ZilAmount {
         return try? ZilAmount(qa: qaAmountString)
     }
 }
+

@@ -177,6 +177,8 @@
 
 // MARK: ScanQRCode
 "Scene.ScanQRCode.Title" = "Scan QR";
+"Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Title" = "QR code contains no compatible Zilliqa address";
+"Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Dismiss" = "Dismiss";
 
 // MARK: SignTransaction
 "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassword" = "Confirm transaction with your password";

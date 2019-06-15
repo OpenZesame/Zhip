@@ -33,7 +33,7 @@ private typealias € = L10n.Scene.ScanQRCode
 
 final class ScanQRCodeView: UIView {
 
-    private let scannedQrCodeSubject = PublishSubject<String>()
+    private let scannedQrCodeSubject = PublishSubject<String?>()
     private lazy var readerView = QRCodeReaderView()
     private lazy var reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
 
@@ -67,8 +67,10 @@ private extension ScanQRCodeView {
         reader.didFindCode = { [unowned self] in
             self.scannedQrCodeSubject.onNext($0.value)
         }
-
-        reader.startScanning()
+        
+        reader.didFailDecoding = { [unowned self] in
+           self.scannedQrCodeSubject.onNext(nil)
+        }
 
         readerView.switchCameraButton?.addTarget(self, action: #selector(switchCameraAction), for: .primaryActionTriggered)
         readerView.toggleTorchButton?.addTarget(self, action: #selector(toggleTorchAction), for: .primaryActionTriggered)
@@ -90,5 +92,13 @@ extension ScanQRCodeView: ViewModelled {
         return InputFromView(
             scannedQrCodeString: scannedQrCodeSubject.asDriverOnErrorReturnEmpty()
         )
+    }
+    
+    func populate(with viewModel: ScanQRCodeViewModel.Output) -> [Disposable] {
+        return [
+            viewModel.startScanning.do(onNext: { [weak self] in
+                self?.reader.startScanning()
+            }).drive()
+        ]
     }
 }

@@ -483,6 +483,16 @@ internal enum L10n {
     internal enum ScanQRCode {
       /// Scan QR
       internal static let title = L10n.tr("Localizable", "Scene.ScanQRCode.Title")
+      internal enum Event {
+        internal enum Toast {
+          internal enum IncompatibleQrCode {
+            /// Dismiss
+            internal static let dismiss = L10n.tr("Localizable", "Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Dismiss")
+            /// QR code contains no compatible Zilliqa address
+            internal static let title = L10n.tr("Localizable", "Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Title")
+          }
+        }
+      }
     }
     internal enum Settings {
       /// Settings

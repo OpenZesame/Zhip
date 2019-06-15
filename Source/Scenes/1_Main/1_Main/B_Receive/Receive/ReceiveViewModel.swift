@@ -73,7 +73,7 @@ final class ReceiveViewModel: BaseViewModel<
         )
 
         let transactionToReceive = Driver.combineLatest(
-            wallet.map { $0.legacyAddress },
+            wallet.map { Address.bech32($0.bech32Address) },
             amount.filterNil()
         ) { TransactionIntent(to: $0, amount: $1) }
 
