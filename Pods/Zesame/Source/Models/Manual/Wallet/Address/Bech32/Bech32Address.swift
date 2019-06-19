@@ -190,14 +190,6 @@ public extension Bech32Address {
 }
 
 extension Network {
-    var bech32Prefix: String {
-        switch self {
-        case .testnet:
-            return "tzil"
-        case .mainnet:
-            return "zil"
-        }
-    }
     
     init(bech32Prefix: String) throws {
         let bech32Prefix = bech32Prefix.lowercased()
@@ -215,5 +207,14 @@ extension Network {
 public extension Network {
     enum Bech32Error: Swift.Error {
         case unrecognizedBech32Prefix(String)
+    }
+    
+    var bech32Prefix: String {
+        switch self {
+        case .testnet:
+            return "tzil"
+        case .mainnet:
+            return "zil"
+        }
     }
 }
