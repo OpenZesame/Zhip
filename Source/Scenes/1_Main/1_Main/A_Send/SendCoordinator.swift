@@ -94,7 +94,7 @@ private extension SendCoordinator {
             switch userIntendsTo {
             case .cancel: self.finish()
             case .scanQRCode: self.toScanQRCode()
-            case .signPayment(let payment): self.toSignPayment(payment)
+            case .reviewPayment(let payment): self.toReviewPaymentBeforeSigning(payment)
             }
         }
     }
@@ -108,6 +108,19 @@ private extension SendCoordinator {
                 }
             case .cancel:
                 dismissScene(true, nil)
+            }
+        }
+    }
+    
+    func toReviewPaymentBeforeSigning(_ payment: Payment) {
+        let viewModel = ReviewTransactionBeforeSigningViewModel(
+            paymentToReview: payment
+        )
+        
+        push(scene: ReviewTransactionBeforeSigning.self, viewModel: viewModel) { [unowned self] userDid in
+            switch userDid {
+            case .acceptPaymentProceedWithSigning(let reviewedPayment):
+                self.toSignPayment(reviewedPayment)
             }
         }
     }
