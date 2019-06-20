@@ -41,6 +41,7 @@ final class DeepLinkHandler {
     func appIsLockedBufferDeeplinks() {
         appIsLockedSoBufferLink = true
     }
+    
     func appIsUnlockedEmitBufferedDeeplinks() {
         defer { bufferedLink = nil }
         appIsLockedSoBufferLink = false

@@ -108,17 +108,17 @@ private extension MainView {
 
         insertSubview(motionEffectAuroraImageView, belowSubview: scrollView)
         motionEffectAuroraImageView.edgesToSuperview()
-        setupAuroraImageViewWithMotionEffect()
+        addAuroraImagesWithMotionEffect(to: motionEffectAuroraImageView)
     }
+}
 
-    func setupAuroraImageViewWithMotionEffect() {
-        motionEffectAuroraImageView.backgroundColor = .clear
-        motionEffectAuroraImageView.translatesAutoresizingMaskIntoConstraints = false
-
-        motionEffectAuroraImageView.addMotionEffectFromImageAssets(
-            front: Image.frontAurora,
-            middle: Image.middleAurora,
-            back: Image.backAurora
-        )
-    }
+func addAuroraImagesWithMotionEffect(to effectView: UIView) {
+    effectView.backgroundColor = .clear
+    effectView.translatesAutoresizingMaskIntoConstraints = false
+    
+    effectView.addMotionEffectFromImageAssets(
+        front: Image.frontAurora,
+        middle: Image.middleAurora,
+        back: Image.backAurora
+    )
 }

@@ -30,12 +30,19 @@ class AppDelegate: UIResponder {
 
     fileprivate lazy var appCoordinator: AppCoordinator = {
         let navigationController = NavigationBarLayoutingNavigationController()
+        
         window?.rootViewController = navigationController
 
         return AppCoordinator(
             navigationController: navigationController,
             deepLinkHandler: DeepLinkHandler(),
-            useCaseProvider: DefaultUseCaseProvider.shared
+            useCaseProvider: DefaultUseCaseProvider.shared,
+            isViewControllerRootOfWindow: { [weak self] in
+                self?.window?.rootViewController == $0
+            },
+            setRootViewControllerOfWindow: { [weak self] in
+                self?.window?.rootViewController = $0
+            }
         )
     }()
 }
@@ -51,8 +58,10 @@ extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         guard
-            userActivity.activityType == NSUserActivityTypeBrowsingWeb, let incomingURL = userActivity.webpageURL else {
-                return false
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL
+        else {
+            return false
         }
 
         return appCoordinator.handleDeepLink(incomingURL)
@@ -60,5 +69,9 @@ extension AppDelegate: UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         appCoordinator.appWillResignActive()
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        appCoordinator.appDidBecomeActive()
     }
 }

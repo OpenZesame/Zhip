@@ -39,7 +39,9 @@ extension Coordinating {
         scene _: S.Type,
         viewModel: V.ViewModel,
         animated: Bool = true,
-        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
+        presentationCompletion: Completion? = nil,
+//        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: @escaping DismissScene) -> Void
+        navigationHandler: @escaping NavigationHandlerModalScene<V.ViewModel>
         ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         // Create a new instance of the `Scene`, injecting its ViewModel
@@ -48,6 +50,7 @@ extension Coordinating {
         modallyPresent(
             scene: scene,
             animated: animated,
+            presentationCompletion: presentationCompletion,
             navigationHandler: navigationHandler
         )
     }
@@ -58,13 +61,13 @@ extension Coordinating {
     ///   - scene: A `Scene` (UIViewController) to present.
     ///   - animated: Whether to animate the presentation of the scene or not.
     ///   - navigationHandler: **Required** closure handling the navigation steps emitted by the scene's ViewModel.
-    ///   - step: The navigation steps emitted by the `viewmodel`
-    ///   - dismiss: Closure you **should** invoke when you want to dimiss the scene.
     func modallyPresent<S, V>(
         scene: S,
         animated: Bool = true,
-        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: DismissScene) -> Void
-        ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
+        presentationCompletion: Completion? = nil,
+//        navigationHandler: @escaping (_ step: V.ViewModel.NavigationStep, _ dismiss: @escaping DismissScene) -> Void
+        navigationHandler: @escaping NavigationHandlerModalScene<V.ViewModel>
+    ) where S: Scene<V>, V: ContentView, V.ViewModel: Navigating {
 
         let viewModel = scene.viewModel
 
@@ -72,7 +75,7 @@ extension Coordinating {
         // Since this is starting a new modal flow we should use a new NavigationController.
         let viewControllerToPresent = NavigationBarLayoutingNavigationController(rootViewController: scene)
 
-        navigationController.present(viewControllerToPresent, animated: true, completion: nil)
+        navigationController.present(viewControllerToPresent, animated: animated, completion: presentationCompletion)
 
         // Subscribe to the navigation steps emitted by the viewModel's navigator
         // And invoke the navigationHandler closure passed in to this method

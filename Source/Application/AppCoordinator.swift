@@ -35,21 +35,49 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+    private lazy var lockAppScene = LockAppScene()
+   
+    private lazy var unlockAppScene: UnlockAppWithPincode = {
+        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        let scene = UnlockAppWithPincode(viewModel: viewModel)
+        
+        self.bag <~ scene.viewModel.navigator.navigation.do(onNext: { [weak self] userDid in
+            switch userDid {
+            case .unlockApp:
+                self?.didJustUnlockAppWithPinOrBiometrics = true
+                self?.appIsUnlockedEmitBufferedDeeplinks()
+                self?.restoreMainNavigationStack()
+            }
+        }).drive()
+        return scene
+    }()
 
-    init(navigationController: UINavigationController, deepLinkHandler: DeepLinkHandler, useCaseProvider: UseCaseProvider) {
+    private let __setRootViewControllerOfWindow: (UIViewController) -> Void
+    private let isViewControllerRootOfWindow: (UIViewController) -> Bool
+    
+    init(
+        navigationController: UINavigationController,
+        deepLinkHandler: DeepLinkHandler,
+        useCaseProvider: UseCaseProvider,
+        isViewControllerRootOfWindow: @escaping (UIViewController) -> Bool,
+        setRootViewControllerOfWindow: @escaping (UIViewController) -> Void
+    ) {
         self.deepLinkHandler = deepLinkHandler
         self.useCaseProvider = useCaseProvider
-
+        self.__setRootViewControllerOfWindow = setRootViewControllerOfWindow
+        self.isViewControllerRootOfWindow = isViewControllerRootOfWindow
         super.init(navigationController: navigationController)
     }
 
     override func start(didStart: Completion? = nil) {
         if walletUseCase.hasConfiguredWallet {
-            toMain(lockIfNeeded: true)
+            toMain(displayUnlockSceneIfNeeded: true)
         } else {
             toOnboarding()
         }
     }
+    
+    private var didJustUnlockAppWithPinOrBiometrics = false
 }
 
 // MARK: - Private
@@ -69,7 +97,7 @@ private extension AppCoordinator {
         }
     }
 
-    func toMain(lockIfNeeded lock: Bool = false) {
+    func toMain(displayUnlockSceneIfNeeded displayUnlockScene: Bool = false) {
 
         let main = MainCoordinator(
             navigationController: navigationController,
@@ -79,8 +107,8 @@ private extension AppCoordinator {
         )
 
         start(coordinator: main, transition: .replace, didStart: { [unowned self] in
-                if lock {
-                    self.lockApp()
+                if displayUnlockScene {
+                    self.toUnlockAppWithPincodeIfNeeded()
                 }
             }, navigationHandler: { [unowned self] userDid in
                 switch userDid {
@@ -89,42 +117,84 @@ private extension AppCoordinator {
         })
     }
     
+    var hasConfiguredPincode: Bool {
+        return pincodeUseCase.hasConfiguredPincode
+    }
+    
     func toUnlockAppWithPincodeIfNeeded() {
-        guard pincodeUseCase.hasConfiguredPincode, !isCurrentlyPresentingLockScene else { return }
-
-        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
-
-        deepLinkHandler.appIsLockedBufferDeeplinks()
-
-        topMostCoordinator.modallyPresent(
-            scene: UnlockAppWithPincode.self,
-            viewModel: viewModel
-        ) { [unowned self] userDid, dismissScene in
-            switch userDid {
-            case .unlockApp:
-                dismissScene(true, { [unowned self] in
-                    self.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
-                })
-            }
+        
+        guard hasConfiguredPincode, !isCurrentlyPresentingUnLockScene else {
+            return
         }
+        
+        setRootViewControllerOfWindow(to: unlockAppScene)
+    }
+}
+
+private extension AppCoordinator {
+    
+    func restoreMainNavigationStack() {
+        setRootViewControllerOfWindow(to: navigationController)
+    }
+    
+    func setRootViewControllerOfWindow(to viewController: UIViewController) {
+        __setRootViewControllerOfWindow(viewController)
     }
 }
 
 // MARK: - Lock app with pincode
 extension AppCoordinator {
+    
     func appWillResignActive() {
         lockApp()
+    }
+    
+    func appDidBecomeActive() {
+        /// When we prompt user for pin code or biometrics AppDelegate's `applicationWillResignActive` will get called
+        /// we need to handle this, we do it using this ugly trick.
+        if didJustUnlockAppWithPinOrBiometrics {
+            didJustUnlockAppWithPinOrBiometrics = false
+            return
+        }
+        unlockApp()
     }
 }
 
 // MARK: - Private Lock app with pincode
 private extension AppCoordinator {
+    
     func lockApp() {
-        toUnlockAppWithPincodeIfNeeded()
+        deepLinkHandler.appIsLockedBufferDeeplinks()
+        print("🔐 Trying to lock app")
+        if isCurrentlyPresentingUnLockScene || isCurrentlyPresentingLockScene {
+            print("🙅🏻‍♀️ Avoided locking app 🔒")
+            return
+        }
+        setRootViewControllerOfWindow(to: lockAppScene)
+    }
+    
+    func unlockApp() {
+        print("🔓 Trying to unlock app")
+        if hasConfiguredPincode {
+            toUnlockAppWithPincodeIfNeeded()
+        } else {
+            restoreMainNavigationStack()
+            appIsUnlockedEmitBufferedDeeplinks()
+        }
     }
 
+    var isCurrentlyPresentingUnLockScene: Bool {
+        return isViewControllerRootOfWindow(unlockAppScene)
+    }
+    
     var isCurrentlyPresentingLockScene: Bool {
-        return topMostScene is UnlockAppWithPincode
+        return isViewControllerRootOfWindow(lockAppScene)
+    }
+    
+    func appIsUnlockedEmitBufferedDeeplinks(delayInSeconds: TimeInterval = 1) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) { [weak self] in
+            self?.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
+        }
     }
 }
 
