@@ -60,6 +60,8 @@ extension ReceiveView: ViewModelled {
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         return [
             viewModel.receivingAddress              --> addressValueTextView.rx.text,
+            viewModel.amountPlaceholder             --> requestingAmountField.rx.placeholder,
+//            viewModel.amount                        --> requestingAmountField.rx.text,
             viewModel.amountValidation              --> requestingAmountField.rx.validation,
             viewModel.qrImage                       --> qrImageView.rx.image
         ]
@@ -104,9 +106,7 @@ private extension ReceiveView {
             $0.layoutMargins(.zero)
         }
 
-        requestingAmountField.withStyle(.number) {
-            $0.placeholder(€.Field.requestAmount)
-        }
+        requestingAmountField.withStyle(.decimal)
 
         requestPaymentButton.withStyle(.primary) {
             $0.title(€.Button.requestPayment)

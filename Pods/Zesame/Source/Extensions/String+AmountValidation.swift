@@ -64,11 +64,14 @@ extension String {
     }
 }
 
-func asStringUsingLocalizedDecimalSeparator(nsDecimalNumber: NSDecimalNumber, maxFractionDigits: Int) -> String? {
+func asStringUsingLocalizedDecimalSeparator(nsDecimalNumber: NSDecimalNumber, maxFractionDigits: Int, minFractionDigits: Int? = nil) -> String? {
     let formatter = NumberFormatter()
     formatter.decimalSeparator = Locale.current.decimalSeparatorForSure
     formatter.maximumFractionDigits = maxFractionDigits
     formatter.minimumIntegerDigits = 1
+    if let minFractionDigits = minFractionDigits {
+        formatter.minimumFractionDigits = minFractionDigits
+    }
     let formattedString = formatter.string(from: nsDecimalNumber)
     return formattedString
 }

@@ -118,14 +118,16 @@ final class PrepareTransactionViewModel: BaseViewModel<
             gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
 			gasPriceValidationValue.nonErrors()
         )
+        
+        let zilAmountFromScannedOrDeeplinkedTransaction: Driver<AmountValidator<ZilAmount>.ValidationResult> = scannedOrDeeplinkedTransaction.map { $0.amount }.filterNil().map { .valid(.amount($0, in: .zil)) }
 
-		// MARK: Amount + MaxAmountTrigger Input -> Value + Validation
-		let amountWithoutSufficientFundsCheckValidationValue = Driver.merge(
-			input.fromView.amountToSend.map { validator.validateAmount($0) },
-            scannedOrDeeplinkedTransaction.map { $0.amount }.filterNil().map { .valid($0) }
-		)
+        // MARK: Amount + MaxAmountTrigger Input -> Value + Validation
+        let amountWithoutSufficientFundsCheckValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> = Driver.merge(
+            input.fromView.amountToSend.map { validator.validateAmount($0) },
+            zilAmountFromScannedOrDeeplinkedTransaction
+        )
 
-		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value }
+		let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue.map { $0.value?.amount }
 
         let amountValidationValue: Driver<SufficientFundsValidator.ValidationResult> = Driver.combineLatest(
 
@@ -160,13 +162,15 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let amountValidationErrorTrigger: Driver<Void> = Driver.merge(
             input.fromView.didEndEditingAmount,
-			scannedOrDeeplinkedTransaction.mapToVoid()
+			scannedOrDeeplinkedTransaction.mapToVoid(),
+            gasPriceValidationValue.mapToVoid()
 		)
 
 		let amountValidation = Driver.merge(
-            amountValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
-			amountValidationValue.nonErrors()
-		)
+            amountValidationErrorTrigger.withLatestFrom(amountValidationValue)
+                .map { AnyValidation($0) },
+                amountValidationValue.nonErrors()
+            )
 
 		let payment: Driver<Payment?> = Driver.combineLatest(recipient, amountBoundByBalance, gasPrice, nonce) {
 			guard let to = try? $0?.toChecksummedLegacyAddress(), let amount = $1, let price = $2, case let nonce = $3 else {
@@ -198,7 +202,9 @@ final class PrepareTransactionViewModel: BaseViewModel<
         // she might have pasted an unchecksummed address.
 		let recipientFormatted = recipient.filterNil().map { $0.asString }
 
-        let amountFormatted = amountBoundByBalance.filterNil().map { formatter.format(amount: $0, in: .zil) }
+        let amountFormatted: Driver<String?> = amountBoundByBalance.filterNil()
+            .map { formatter.format(amount: $0, in: .zil) }
+            .ifEmpty(switchTo: amountWithoutSufficientFundsCheckValidationValue.map { $0.value?.display })
 
 		let isSendButtonEnabled = payment.map { $0 != nil }
 
@@ -213,6 +219,13 @@ final class PrepareTransactionViewModel: BaseViewModel<
         let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
             BalanceLastUpdatedFormatter().string(from: $0)
         }
+        
+        let setAmountInViewTrigger = Driver.merge(
+            input.fromView.maxAmountTrigger,
+            scannedOrDeeplinkedTransaction.mapToVoid()
+        )
+        
+        let setAmountInViewOnlyByExternalTrigger = setAmountInViewTrigger.withLatestFrom(amountFormatted)
 
         return Output(
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
@@ -223,7 +236,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
             recipient: recipientFormatted,
             recipientAddressValidation: recipientValidation,
 
-            amount: amountFormatted.map { $0 == "0" ? "" : $0 },
+            amountPlaceholder: Driver.just(€.Field.amount(Unit.zil.displayName)),
+            amount: setAmountInViewOnlyByExternalTrigger,
             amountValidation: amountValidation,
 
             gasPriceMeasuredInLi: gasPriceFormatted,
@@ -271,7 +285,8 @@ extension PrepareTransactionViewModel {
 		let recipient: Driver<String>
 		let recipientAddressValidation: Driver<AnyValidation>
 
-		let amount: Driver<String>
+        let amountPlaceholder: Driver<String>
+		let amount: Driver<String?>
 		let amountValidation: Driver<AnyValidation>
 
 		let gasPriceMeasuredInLi: Driver<String>
@@ -286,7 +301,7 @@ extension PrepareTransactionViewModel {
 extension PrepareTransactionViewModel {
 	struct InputValidator {
 		private let addressValidator = AddressValidator()
-		private let amountValidator = AmountValidator()
+		private let zilAmountValidator = AmountValidator<ZilAmount>()
 		private let gasPriceValidator = GasPriceValidator()
 		private let sufficientFundsValidator = SufficientFundsValidator()
 
@@ -298,8 +313,8 @@ extension PrepareTransactionViewModel {
 			return sufficientFundsValidator.validate(input: (amount, gasPrice, balance))
 		}
 
-		func validateAmount(_ amount: String) -> AmountValidator.ValidationResult {
-			return amountValidator.validate(input: amount)
+		func validateAmount(_ amount: String) -> AmountValidator<ZilAmount>.ValidationResult {
+			return zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
 		}
 
 		func validateGasPrice(_ gasPrice: String?) -> GasPriceValidator.ValidationResult {

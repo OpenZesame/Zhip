@@ -305,6 +305,8 @@
 		E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
 		E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
+		E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6622DF822B5123B0086134D /* CharacterSetTests.swift */; };
+		E682358522BB70BE0028F1EC /* AmountFromText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358422BB70BE0028F1EC /* AmountFromText.swift */; };
 		E6942A4E2262180700778FF6 /* libRxCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A4D2262180700778FF6 /* libRxCocoa.a */; };
 		E6942A502262180700778FF6 /* libRxSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A4F2262180700778FF6 /* libRxSwift.a */; };
 		E6942A522262180700778FF6 /* libRxTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6942A512262180700778FF6 /* libRxTest.a */; };
@@ -638,6 +640,8 @@
 		CE78846B53E531ED7D309BA6 /* libPods-Zhip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zhip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFC68C812D61AEF04B2C537A /* Pods-Zhip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zhip.release.xcconfig"; path = "Pods/Target Support Files/Pods-Zhip/Pods-Zhip.release.xcconfig"; sourceTree = "<group>"; };
 		D072578D42806D1D0CB17AEE /* Pods-ZhipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhipTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZhipTests/Pods-ZhipTests.release.xcconfig"; sourceTree = "<group>"; };
+		E6622DF822B5123B0086134D /* CharacterSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetTests.swift; sourceTree = "<group>"; };
+		E682358422BB70BE0028F1EC /* AmountFromText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFromText.swift; sourceTree = "<group>"; };
 		E6942A4D2262180700778FF6 /* libRxCocoa.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxCocoa.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6942A4F2262180700778FF6 /* libRxSwift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxSwift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6942A512262180700778FF6 /* libRxTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRxTest.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1188,6 +1192,7 @@
 			isa = PBXGroup;
 			children = (
 				485AAC9B21AAC6EB005C56CC /* AmountValidator.swift */,
+				E682358422BB70BE0028F1EC /* AmountFromText.swift */,
 				4819BDBE21C4AB2700443F2A /* GasPriceValidator.swift */,
 				485AAC9D21AAC6FA005C56CC /* AddressValidator.swift */,
 				48F4097921BCD560001C499F /* EncryptionPassphraseValidator.swift */,
@@ -1353,6 +1358,7 @@
 			children = (
 				48C25DBB21DCD3BB00619620 /* PrepareTransactionViewModelTests.swift */,
 				48C25DBC21DCD3BB00619620 /* AutoEnumCaseNameTests.swift */,
+				E6622DF822B5123B0086134D /* CharacterSetTests.swift */,
 				48C25DBD21DCD3BB00619620 /* StringFormattingTests.swift */,
 			);
 			path = Tests;
@@ -2323,6 +2329,7 @@
 				48947B7D21D3F21900604D90 /* String_Extensions.swift in Sources */,
 				48C89FEC214331F00063B0FA /* EmptyInitializable.swift in Sources */,
 				483CE9E82194E9E300BED31C /* KeyChainSwift+KeyValueStoring.swift in Sources */,
+				E682358522BB70BE0028F1EC /* AmountFromText.swift in Sources */,
 				E635A4B8225D301B00124823 /* CreateNewWalletView.swift in Sources */,
 				E635A4AD225D2FDB00124823 /* WarningCustomECCViewModel.swift in Sources */,
 				E635A4BC225D301B00124823 /* BackupWalletViewModel.swift in Sources */,
@@ -2402,6 +2409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */,
+				E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */,
 				489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */,
 				489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */,
 				48C25DC021DCD3BB00619620 /* StringFormattingTests.swift in Sources */,

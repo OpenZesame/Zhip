@@ -61,7 +61,7 @@ final class ReceiveViewModel: BaseViewModel<
 
         let validator = InputValidator()
 
-        let amountValidationValue = input.fromView.amountToReceive.map { validator.validateAmount($0) }.startWith(.valid(0))
+        let amountValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> = input.fromView.amountToReceive.map { validator.validateAmount($0) }.startWith(.valid(.amount(0, in: .zil)))
 
         let amount = amountValidationValue.map { $0.value }
 
@@ -74,7 +74,7 @@ final class ReceiveViewModel: BaseViewModel<
 
         let transactionToReceive = Driver.combineLatest(
             wallet.map { Address.bech32($0.bech32Address) },
-            amount.filterNil()
+            amount.map { $0?.amount }.filterNil()
         ) { TransactionIntent(to: $0, amount: $1) }
 
         let qrImage = transactionToReceive.map { [unowned qrCoder] in
@@ -98,9 +98,26 @@ final class ReceiveViewModel: BaseViewModel<
                 .do(onNext: { userDid(.requestTransaction($0)) })
                 .drive()
         ]
-
+        
+//        let amountFormatted: Driver<String?> = amountValidationValue.map { $0.value?.display }
+//            /* ugly fix to fix bug where if you've entered an incorrect decimal separator then the text
+//             never is formatted using the thousands formatting again.
+//             */
+//            .ifNil(switchTo:
+//                input.fromView.amountToReceive.map {
+//                    if let zilAmount = try? ZilAmount(trimming: $0) {
+//                        let formattedFallback = AmountFormatter().format(amount: zilAmount, in: .zil)
+//                        return formattedFallback
+//                    } else {
+//                        return $0
+//                    }
+//                }
+//            )
+        
         return Output(
             receivingAddress: receivingAddress,
+            amountPlaceholder: Driver.just(€.Field.requestAmount(Unit.zil.name)),
+//            amount: amountFormatted,
             amountValidation: amountValidation,
             qrImage: qrImage
         )
@@ -119,15 +136,17 @@ extension ReceiveViewModel {
 
     struct Output {
         let receivingAddress: Driver<String>
+        let amountPlaceholder: Driver<String>
+//        let amount: Driver<String?>
         let amountValidation: Driver<AnyValidation>
         let qrImage: Driver<UIImage?>
     }
 
     struct InputValidator {
-        private let amountValidator = AmountValidator()
+        private let zilAmountValidator = AmountValidator<ZilAmount>()
 
-        func validateAmount(_ amount: String) -> AmountValidator.ValidationResult {
-            return amountValidator.validate(input: amount)
+        func validateAmount(_ amount: String) -> AmountValidator<ZilAmount>.ValidationResult {
+            return zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
         }
     }
 }

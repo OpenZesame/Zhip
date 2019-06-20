@@ -28,6 +28,20 @@ enum AnyValidation {
     case valid(withRemark: String?)
     case empty
     case errorMessage(String)
+    
+    init<Value, Error>(_ validation: Validation<Value, Error>) where Error: InputError {
+        switch validation {
+        case .invalid(let invalid):
+            switch invalid {
+            case .empty:
+                self = .empty
+            case .error(let error):
+                self = .errorMessage(error.errorMessage)
+            }
+        case .valid(_, let maybeRemark):
+            self = .valid(withRemark: maybeRemark?.errorMessage)
+        }
+    }
 }
 
 // MARK: - Convenience Getters

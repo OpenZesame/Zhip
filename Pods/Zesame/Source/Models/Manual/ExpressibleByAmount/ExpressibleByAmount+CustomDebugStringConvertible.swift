@@ -61,7 +61,7 @@ public extension ExpressibleByAmount {
         return qa.asDecimalString()
     }
 
-    func asString(`in` targetUnit: Unit, roundingIfNeeded: NSDecimalNumber.RoundingMode? = nil, roundingNumberOfDigits: Int = 2) -> String {
+    func asString(`in` targetUnit: Unit, roundingIfNeeded: NSDecimalNumber.RoundingMode? = nil, roundingNumberOfDigits: Int = 2, minFractionDigits: Int? = nil) -> String {
         // handle trivial edge case
         if targetUnit == .qa {
             return "\(qa)"
@@ -69,7 +69,7 @@ public extension ExpressibleByAmount {
 
         let decimal = decimalValue(in: targetUnit, rounding: roundingIfNeeded, roundingNumberOfDigits: roundingNumberOfDigits)
         let nsDecimalNumber = NSDecimalNumber(decimal: decimal)
-        guard let decimalString = asStringUsingLocalizedDecimalSeparator(nsDecimalNumber: nsDecimalNumber, maxFractionDigits: 12) else {
+        guard let decimalString = asStringUsingLocalizedDecimalSeparator(nsDecimalNumber: nsDecimalNumber, maxFractionDigits: 12, minFractionDigits: minFractionDigits) else {
             fatalError("should be able to create string")
         }
         return decimalString

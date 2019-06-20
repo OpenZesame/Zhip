@@ -55,6 +55,10 @@ public extension SharedSequenceConvertibleType where SharingStrategy == DriverSh
     func mapToVoid() -> Driver<Void> {
         return map { _ in }
     }
+    
+    func ifEmpty(switchTo replacement: Driver<E>) -> Driver<E> {
+        return self.asObservable().ifEmpty(switchTo: replacement.asObservable()).asDriverOnErrorReturnEmpty()
+    }
 }
 
 extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E: ValidationConvertible {

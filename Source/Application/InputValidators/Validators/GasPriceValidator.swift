@@ -35,7 +35,7 @@ struct GasPriceValidator: InputValidator {
         do {
             gasPrice = try GasPrice.init(li: li)
         } catch {
-            return self.error(Error(error: error)!)
+            return self.error(Error(error: error))
         }
         return .valid(gasPrice)
     }

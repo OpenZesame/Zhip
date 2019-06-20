@@ -116,7 +116,7 @@ DEPENDENCIES:
   - SwiftyBeaver
   - TinyConstraints
   - Validator
-  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `bech32`)
+  - Zesame (from `https://github.com/OpenZesame/Zesame.git`, branch `decimal_amount`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -157,12 +157,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Zesame:
-    :branch: bech32
+    :branch: decimal_amount
     :git: https://github.com/OpenZesame/Zesame.git
 
 CHECKOUT OPTIONS:
   Zesame:
-    :commit: 2cc80066fbd3b0346269ddfa66defc597968ff06
+    :commit: 8da70b2c224da9d186867cf462078b5603f1d21c
     :git: https://github.com/OpenZesame/Zesame.git
 
 SPEC CHECKSUMS:
@@ -202,6 +202,6 @@ SPEC CHECKSUMS:
   Validator: b34ab17a8fffd0c1ffd8f9002ead4d1e02cd9e6e
   Zesame: c7bbd6548ef648af5480338f37a94bd4fe0bc4e3
 
-PODFILE CHECKSUM: 6e65ec8728ce77747f9fc47866b42ac7c7bfa1f6
+PODFILE CHECKSUM: 1fe225be0adb22d399a61c5e12f3713681222bb3
 
 COCOAPODS: 1.6.1
