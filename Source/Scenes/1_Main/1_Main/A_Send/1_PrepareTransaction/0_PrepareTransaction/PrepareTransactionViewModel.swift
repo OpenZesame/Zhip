@@ -81,7 +81,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let nonce = latestBalanceAndNonce.map { $0.nonce }.startWith(0)
 		let _startingBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
-		let balance: Driver<ZilAmount> = latestBalanceAndNonce.map { $0.balance }.startWith(_startingBalance)
+        let balance: Driver<ZilAmount> =  latestBalanceAndNonce.map { $0.balance }.startWith(_startingBalance)
 
 		// MARK: - VALIDATION -> VALUE
 		let validator = InputValidator()
@@ -196,21 +196,28 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		// MARK: FORMATTING
 		let formatter = AmountFormatter()
-        let balanceFormatted = balance.map { formatter.format(amount: $0, in: .zil, showUnit: true) }
+        let balanceFormatted = balance.map { formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true) }
 
         // It is deliberate that we do NOT auto checksum the address here. We would like to be able to inform the user that
         // she might have pasted an unchecksummed address.
 		let recipientFormatted = recipient.filterNil().map { $0.asString }
 
         let amountFormatted: Driver<String?> = amountBoundByBalance.filterNil()
-            .map { formatter.format(amount: $0, in: .zil) }
-            .ifEmpty(switchTo: amountWithoutSufficientFundsCheckValidationValue.map { $0.value?.display })
+            .map { formatter.format(amount: $0, in: .zil, formatThousands: false) }
+            .ifEmpty(switchTo: amountWithoutSufficientFundsCheckValidationValue.map {
+                guard let value = $0.value else { return nil }
+                switch value {
+                case .string(let string): return string
+                case .amount(let amount, _):
+                    return formatter.format(amount: amount, in: .zil, formatThousands: false)
+                }
+            })
 
 		let isSendButtonEnabled = payment.map { $0 != nil }
 
-        let gasPricePlaceholder = Driver.just(GasPrice.min).map { €.Field.gasPrice(formatter.format(amount: $0, in: .li, showUnit: true)) }
+        let gasPricePlaceholder = Driver.just(GasPrice.min).map { €.Field.gasPrice(formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: true)) }
 
-        let gasPriceFormatted = gasPrice.filterNil().map { formatter.format(amount: $0, in: .li) }
+        let gasPriceFormatted = gasPrice.filterNil().map { formatter.format(amount: $0, in: .li, formatThousands: true) }
 
         let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
             self.transactionUseCase.balanceUpdatedAt
@@ -251,7 +258,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 return Observable<GasPrice>.just(gasPrice)
                     .map { try Payment.estimatedTotalTransactionFee(gasPrice: $0) }
                     .asDriverOnErrorReturnEmpty()
-                    .map { formatter.format(amount: $0, in: .zil, showUnit: true) }
+                    .map { formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true) }
                     .map { €.Label.costOfTransactionInZil($0) }
             }
         )

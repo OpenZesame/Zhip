@@ -99,25 +99,9 @@ final class ReceiveViewModel: BaseViewModel<
                 .drive()
         ]
         
-//        let amountFormatted: Driver<String?> = amountValidationValue.map { $0.value?.display }
-//            /* ugly fix to fix bug where if you've entered an incorrect decimal separator then the text
-//             never is formatted using the thousands formatting again.
-//             */
-//            .ifNil(switchTo:
-//                input.fromView.amountToReceive.map {
-//                    if let zilAmount = try? ZilAmount(trimming: $0) {
-//                        let formattedFallback = AmountFormatter().format(amount: zilAmount, in: .zil)
-//                        return formattedFallback
-//                    } else {
-//                        return $0
-//                    }
-//                }
-//            )
-        
         return Output(
             receivingAddress: receivingAddress,
             amountPlaceholder: Driver.just(€.Field.requestAmount(Unit.zil.name)),
-//            amount: amountFormatted,
             amountValidation: amountValidation,
             qrImage: qrImage
         )
@@ -137,7 +121,6 @@ extension ReceiveViewModel {
     struct Output {
         let receivingAddress: Driver<String>
         let amountPlaceholder: Driver<String>
-//        let amount: Driver<String?>
         let amountValidation: Driver<AnyValidation>
         let qrImage: Driver<UIImage?>
     }

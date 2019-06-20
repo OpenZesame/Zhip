@@ -44,6 +44,7 @@ extension AmountFromText {
 
 extension AmountFromText {
     
+    // swiftlint:disable:next function_body_length
     init(string amountString: String, unit: Zesame.Unit) throws {
         let correctSeparator = Locale.current.decimalSeparatorForSure
         let wrongSeparator = correctSeparator == "." ? "," : "."
@@ -68,15 +69,6 @@ extension AmountFromText {
             } else {
                 throw error
             }
-        }
-    }
-    
-    var display: String {
-        switch self {
-        case .amount(let amount, let unit):
-            return AmountFormatter().format(amount: amount, in: unit)
-        case .string(let string):
-            return string
         }
     }
 }

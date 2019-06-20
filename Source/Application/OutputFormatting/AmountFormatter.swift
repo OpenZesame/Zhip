@@ -37,8 +37,8 @@ extension Zesame.Unit {
 }
 
 struct AmountFormatter {
-    func format<Amount>(amount: Amount, in unit: Zesame.Unit, minFractionDigits: Int? = nil, showUnit: Bool = false) -> String where Amount: ExpressibleByAmount {
-        let amountString = amount.formatted(unit: unit, minFractionDigits: minFractionDigits)
+    func format<Amount>(amount: Amount, in unit: Zesame.Unit, formatThousands: Bool, minFractionDigits: Int? = nil, showUnit: Bool = false) -> String where Amount: ExpressibleByAmount {
+        let amountString = amount.formatted(unit: unit, formatThousands: formatThousands, minFractionDigits: minFractionDigits)
         guard showUnit else {
             return amountString
         }
@@ -51,9 +51,11 @@ struct AmountFormatter {
 }
 
 extension ExpressibleByAmount {
-    func formatted(unit targetUnit: Zesame.Unit, minFractionDigits: Int? = nil) -> String {
+    func formatted(unit targetUnit: Zesame.Unit, formatThousands: Bool = false, minFractionDigits: Int? = nil) -> String {
         let string = asString(in: targetUnit, roundingIfNeeded: .down, roundingNumberOfDigits: AmountFormatter.maxNumberOfDecimalDigits, minFractionDigits: minFractionDigits)
-        
+        guard formatThousands else {
+            return string
+        }
         let decimalSeparator = Locale.current.decimalSeparatorForSure
         let components = string.components(separatedBy: decimalSeparator)
         if components.count == 2 {
