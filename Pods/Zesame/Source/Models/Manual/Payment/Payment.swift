@@ -47,7 +47,6 @@ public struct Payment {
 }
 
 public extension Payment {
-    
     static func estimatedTotalTransactionFee(gasPrice: GasPrice, gasLimit: GasLimit = .defaultGasLimit) throws -> Qa {
         return Qa(qa: Qa.Magnitude(gasLimit) * gasPrice.qa)
     }
