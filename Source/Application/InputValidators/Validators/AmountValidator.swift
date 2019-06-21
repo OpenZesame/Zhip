@@ -88,8 +88,7 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
         case .tooLarge(let max, let unit): return €.tooLarge("\(max.thousands) \(unit.name)")
         case .tooSmall(let min, let unit): return €.tooSmall("\(min.thousands) \(unit.name)")
         case .nonNumericString: return €.nonNumericString
-        case .other(let anyError):
-            return €.nonNumericString // TODO which error message to display?
+        case .other: return €.nonNumericString // TODO which error message to display?
         }
     }
 }

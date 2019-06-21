@@ -61,7 +61,6 @@ extension ReceiveView: ViewModelled {
         return [
             viewModel.receivingAddress              --> addressValueTextView.rx.text,
             viewModel.amountPlaceholder             --> requestingAmountField.rx.placeholder,
-//            viewModel.amount                        --> requestingAmountField.rx.text,
             viewModel.amountValidation              --> requestingAmountField.rx.validation,
             viewModel.qrImage                       --> qrImageView.rx.image
         ]
