@@ -30,7 +30,7 @@ import Zesame
 // MARK: - PrepareTransactionUserAction
 enum PrepareTransactionUserAction {
 	case cancel
-	case signPayment(Payment)
+	case reviewPayment(Payment)
 	case scanQRCode
 }
 
@@ -189,8 +189,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
 				.do(onNext: { userIntends(to: .scanQRCode) })
 				.drive(),
 
-			input.fromView.sendTrigger.withLatestFrom(payment.filterNil())
-				.do(onNext: { userIntends(to: .signPayment($0)) })
+			input.fromView.toReviewTrigger.withLatestFrom(payment.filterNil())
+				.do(onNext: { userIntends(to: .reviewPayment($0)) })
 				.drive()
 		]
 
@@ -213,7 +213,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 }
             })
 
-		let isSendButtonEnabled = payment.map { $0 != nil }
+		let isReviewButtonEnabled = payment.map { $0 != nil }
 
         let gasPricePlaceholder = Driver.just(GasPrice.min).map { €.Field.gasPrice(formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: true)) }
 
@@ -237,7 +237,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         return Output(
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
             isFetchingBalance: activityIndicator.asDriver(),
-            isSendButtonEnabled: isSendButtonEnabled,
+            isReviewButtonEnabled: isReviewButtonEnabled,
             balance: balanceFormatted,
 
             recipient: recipientFormatted,
@@ -271,7 +271,7 @@ extension PrepareTransactionViewModel {
 		let pullToRefreshTrigger: Driver<Void>
 		let scanQRTrigger: Driver<Void>
 		let maxAmountTrigger: Driver<Void>
-		let sendTrigger: Driver<Void>
+		let toReviewTrigger: Driver<Void>
 
 		let recepientAddress: Driver<String>
 		let didEndEditingRecipientAddress: Driver<Void>
@@ -286,7 +286,7 @@ extension PrepareTransactionViewModel {
 	struct Output {
         let refreshControlLastUpdatedTitle: Driver<String>
 		let isFetchingBalance: Driver<Bool>
-		let isSendButtonEnabled: Driver<Bool>
+		let isReviewButtonEnabled: Driver<Bool>
 		let balance: Driver<String>
 
 		let recipient: Driver<String>

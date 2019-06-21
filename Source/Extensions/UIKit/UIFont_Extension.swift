@@ -26,6 +26,8 @@ import UIKit
 extension UIFont {
     // For `UITextField` floating placeholder
     static let hint = Font(.𝟙𝟞, .medium).make()
+    static let valueTitle = Font(.𝟙𝟞, .regular).make()
+    static let value = Font(.𝟙𝟠, .bold).make()
 
     /// For bread text
     static let body = Font(.𝟙𝟠, .regular).make()

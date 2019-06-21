@@ -170,8 +170,8 @@
 "Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in %@";
 "Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassword" = "Encryption password";
-"Scene.PrepareTransaction.Button.Send" = "Send";
-"Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
+"Scene.PrepareTransaction.Button.ReviewPayment" = "Review Payment";
+//"Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";
 "Scene.PrepareTransaction.Labels.Balance.Title" = "Current balance";
 "Scene.PrepareTransaction.Label.CostOfTransactionInZil" = "Transaction fee: %@";
 
@@ -179,6 +179,19 @@
 "Scene.ScanQRCode.Title" = "Scan QR";
 "Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Title" = "QR code contains no compatible Zilliqa address";
 "Scene.ScanQRCode.Event.Toast.IncompatibleQrCode.Dismiss" = "Dismiss";
+
+// MARK: ReviewTransaction
+"Scene.ReviewTransactionBeforeSigning.Title" = "Summary";
+"Scene.ReviewTransactionBeforeSigning.Label.Recipient" = "Recipient";
+"Scene.ReviewTransactionBeforeSigning.Label.Address.Legacy" = "Address on old base16 format";
+"Scene.ReviewTransactionBeforeSigning.Label.Address.Bech32" = "Address on new bech32 format";
+"Scene.ReviewTransactionBeforeSigning.Label.Amount" = "Amount";
+"Scene.ReviewTransactionBeforeSigning.Label.AmountToSend" = "Amount to recipient";
+"Scene.ReviewTransactionBeforeSigning.Label.TransactionFee" = "Transaction fee";
+"Scene.ReviewTransactionBeforeSigning.Label.TotalCostOfTransaction" = "Transaction total cost";
+"Scene.ReviewTransactionBeforeSigning.Checkbox.HasReviewedPayment" = "I've reviewed the payment and understand I'm responsible for any loss if anything is incorrect. ";
+"Scene.ReviewTransactionBeforeSigning.Button.HasReviewedProceedToSigning" = "To signing";
+
 
 // MARK: SignTransaction
 "Scene.SignTransaction.Label.SignTransactionWithEncryptionPassword" = "Confirm transaction with your password";

@@ -43,6 +43,7 @@ extension TitledValueView {
     func withStyles(
         forTitle titleStyle: UILabel.Style? = nil,
         forValue valueStyle: UITextView.Style? = nil,
+        forStackView stackViewStyle: UIStackView.Style? = nil,
         customizeTitleStyle: ((UILabel.Style) -> (UILabel.Style))? = nil
     ) {
         defer { isSetup = true }
@@ -66,8 +67,10 @@ extension TitledValueView {
             layoutMargins: .zero,
             isLayoutMarginsRelativeArrangement: false
         )
+        
+        let stackViewStyleUsed = stackViewStyle ?? defaultStackViewStyle
 
-        apply(style: defaultStackViewStyle)
+        apply(style: stackViewStyleUsed)
         [valueTextView, titleLabel].forEach { insertArrangedSubview($0, at: 0) }
     }
 

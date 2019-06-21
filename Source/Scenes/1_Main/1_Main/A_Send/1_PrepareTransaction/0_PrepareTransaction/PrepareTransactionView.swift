@@ -41,7 +41,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
     private lazy var maxAmounButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     private lazy var gasPriceField                  = FloatingLabelTextField()
-    private lazy var sendButton                     = UIButton()
+    private lazy var toReviewButton                     = UIButton()
     private lazy var costOfTransactionLabel         = UILabel()
 
     // MARK: - StackViewStyling
@@ -52,7 +52,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
         gasPriceField,
         costOfTransactionLabel,
         .spacer,
-        sendButton
+        toReviewButton
     ]
 
     override func setup() {
@@ -73,7 +73,7 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.amountPlaceholder                 --> amountToSendField.rx.placeholder,
             viewModel.amount                            --> amountToSendField.rx.text,
             viewModel.recipient                         --> recipientAddressField.rx.text,
-            viewModel.isSendButtonEnabled               --> sendButton.rx.isEnabled,
+            viewModel.isReviewButtonEnabled             --> toReviewButton.rx.isEnabled,
             viewModel.balance                           --> balanceValueLabel.rx.text,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
@@ -89,7 +89,7 @@ extension PrepareTransactionView: ViewModelled {
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
             scanQRTrigger: scanQRButton.rx.tap.asDriver(),
             maxAmountTrigger: maxAmounButton.rx.tap.asDriver(),
-            sendTrigger: sendButton.rx.tap.asDriver(),
+            toReviewTrigger: toReviewButton.rx.tap.asDriver(),
 
             recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
@@ -138,8 +138,8 @@ private extension PrepareTransactionView {
 
         gasPriceField.withStyle(.number)
 
-        sendButton.withStyle(.primary) {
-            $0.title(€.Button.send)
+        toReviewButton.withStyle(.primary) {
+            $0.title(€.Button.reviewPayment)
                 .disabled()
         }
     }
@@ -150,7 +150,7 @@ private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         #if DEBUG
         recipientAddressField.text = "zil175grxdeqchwnc0qghj8qsh5vnqwww353msqj82"
-        amountToSendField.text = Int.random(in: 100...500).description
+        amountToSendField.text = Int.random(in: 1...5).description
         gasPriceField.text = Int.random(in: 1000...2000).description
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in

@@ -380,8 +380,8 @@ internal enum L10n {
       internal enum Button {
         /// Max
         internal static let maxAmount = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.MaxAmount")
-        /// Send
-        internal static let send = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.Send")
+        /// Review Payment
+        internal static let reviewPayment = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.ReviewPayment")
       }
       internal enum Field {
         /// Amount in %@
@@ -406,8 +406,6 @@ internal enum L10n {
         internal static func gasInSmallUnits(_ p1: String) -> String {
           return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits", p1)
         }
-        /// Transaction Id
-        internal static let transactionId = L10n.tr("Localizable", "Scene.PrepareTransaction.Label.TransactionId")
       }
       internal enum Labels {
         internal enum Balance {
@@ -482,6 +480,36 @@ internal enum L10n {
         internal static let keystore = L10n.tr("Localizable", "Scene.RestoreWallet.Segment.Keystore")
         /// Private key
         internal static let privateKey = L10n.tr("Localizable", "Scene.RestoreWallet.Segment.PrivateKey")
+      }
+    }
+    internal enum ReviewTransactionBeforeSigning {
+      /// Summary
+      internal static let title = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Title")
+      internal enum Button {
+        /// To signing
+        internal static let hasReviewedProceedToSigning = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Button.HasReviewedProceedToSigning")
+      }
+      internal enum Checkbox {
+        /// I've reviewed the payment and understand I'm responsible for any loss if anything is incorrect. 
+        internal static let hasReviewedPayment = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Checkbox.HasReviewedPayment")
+      }
+      internal enum Label {
+        /// Amount
+        internal static let amount = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.Amount")
+        /// Amount to recipient
+        internal static let amountToSend = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.AmountToSend")
+        /// Recipient
+        internal static let recipient = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.Recipient")
+        /// Transaction total cost
+        internal static let totalCostOfTransaction = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.TotalCostOfTransaction")
+        /// Transaction fee
+        internal static let transactionFee = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.TransactionFee")
+        internal enum Address {
+          /// Address on new bech32 format
+          internal static let bech32 = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.Address.Bech32")
+          /// Address on old base16 format
+          internal static let legacy = L10n.tr("Localizable", "Scene.ReviewTransactionBeforeSigning.Label.Address.Legacy")
+        }
       }
     }
     internal enum ScanQRCode {
