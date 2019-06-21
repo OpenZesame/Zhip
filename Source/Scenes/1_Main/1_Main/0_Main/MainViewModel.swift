@@ -70,7 +70,7 @@ final class MainViewModel: BaseViewModel<
 
         let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest { [unowned self] in
             self.transactionUseCase
-                .getBalance(for: $0.address)
+                .getBalance(for: $0.legacyAddress)
                 .trackActivity(activityIndicator)
                 .asDriverOnErrorReturnEmpty()
                 .do(onNext: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })

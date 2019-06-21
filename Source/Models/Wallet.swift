@@ -50,7 +50,13 @@ extension Wallet {
         return wallet.keystore
     }
 
-    var address: AddressChecksummed {
+    var bech32Address: Bech32Address {
+        do {
+            return try Bech32Address(ethStyleAddress: wallet.address, network: network)
+        } catch { incorrectImplementation("should work") }
+    }
+    
+    var legacyAddress: LegacyAddress {
         return wallet.address
     }
 }

@@ -73,7 +73,7 @@ final class ReceiveViewModel: BaseViewModel<
         )
 
         let transactionToReceive = Driver.combineLatest(
-            wallet.map { $0.address },
+            wallet.map { Address.bech32($0.bech32Address) },
             amount.filterNil()
         ) { TransactionIntent(to: $0, amount: $1) }
 
@@ -81,7 +81,7 @@ final class ReceiveViewModel: BaseViewModel<
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }
 
-        let receivingAddress = wallet.map { $0.address.checksummedAddress.asString }
+        let receivingAddress = wallet.map { $0.bech32Address.asString }
 
         bag <~ [
             input.fromController.rightBarButtonTrigger

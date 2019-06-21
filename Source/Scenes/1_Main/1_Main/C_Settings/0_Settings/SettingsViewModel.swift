@@ -162,12 +162,12 @@ private extension SettingsViewModel {
             let appName = bundle.name
             else { incorrectImplementation("Should be able to read name, version and build number") }
         
-        let networkDisplayName = DefaultUseCaseProvider.zilliqaAPIEndpoint.displayName
+        let networkDisplayName = network.displayName
         return "\(appName) v\(version) (\(build))\n\(L10n.Scene.Settings.Footer.network(networkDisplayName))"
     }
 }
 
-private extension ZilliqaAPIEndpoint {
+private extension Network {
     var displayName: String {
         switch self {
         case .mainnet: return "mainnet"

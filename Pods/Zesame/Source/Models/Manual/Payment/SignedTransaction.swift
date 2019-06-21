@@ -51,7 +51,8 @@ extension SignedTransaction: Encodable {
 
         try container.encode(tx.version, forKey: .version)
         try container.encode(p.nonce.nonce, forKey: .nonce)
-        try container.encode(p.recipient.checksummed.hexString.value, forKey: .toAddr)
+        let addressChecksummed = try p.recipient.toChecksummedLegacyAddress()
+        try container.encode(addressChecksummed.hexString.value, forKey: .toAddr)
         try container.encode(publicKeyCompressed, forKey: .pubKey)
 
         try container.encode(p.amount, forKey: .amount)

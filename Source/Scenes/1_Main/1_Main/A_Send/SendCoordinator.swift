@@ -143,8 +143,8 @@ private extension SendCoordinator {
     }
 
     func openInBrowserDetailsForTransaction(id transactionId: String) {
-        let baseURL = "https://explorer.zilliqa.com/"
-        let urlString = "transactions/\(transactionId)"
+        let baseURL = "https://viewblock.io/zilliqa/"
+        let urlString = "tx/\(transactionId)"
         guard let url = URL(string: urlString, relativeTo: URL(string: baseURL)) else {
             return
         }

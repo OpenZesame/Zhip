@@ -31,6 +31,16 @@ public enum Network: UInt32, Decodable {
     case testnet = 333
 }
 
+extension Network {
+    var baseURL: URL {
+        switch self {
+        case .mainnet: return ZilliqaAPIEndpoint.mainnet.baseURL
+        case .testnet: return ZilliqaAPIEndpoint.testnet.baseURL
+        }
+    }
+}
+
+
 // MARK: - Decodable
 public extension Network {
     init(from decoder: Decoder) throws {

@@ -24,9 +24,64 @@
 
 import Foundation
 
-public enum Address: AddressChecksummedConvertible {
+public enum Address:
+    AddressChecksummedConvertible,
+    StringConvertible,
+    Equatable,
+    ExpressibleByStringLiteral
+{
 
-    case checksummed(AddressChecksummed)
-    case notNecessarilyChecksummed(AddressNotNecessarilyChecksummed)
+    case legacy(LegacyAddress)
+    case bech32(Bech32Address)
 
+}
+
+public extension Address {
+    
+    init(string: String) throws {
+        
+        do {
+            self = .bech32(try Bech32Address(bech32String: string))
+        } catch let bech32Error as Bech32.DecodingError {
+            let hexString: HexString
+            do {
+                hexString = try HexString(string)
+            } catch {
+                throw Address.Error.invalidBech32Address(bechError: bech32Error)
+            }
+            self = .legacy(try LegacyAddress(hexString: hexString))
+        } catch {
+            fatalError("Incorrect implementation, expected error of type Bech32.DecodingError, but got: \(error) of type: \(type(of: error))")
+        }
+    }
+}
+
+// MARK: - AddressChecksummedConvertible
+public extension Address {
+    func toChecksummedLegacyAddress() throws -> LegacyAddress {
+        switch self {
+        case .bech32(let bech32): return try bech32.toChecksummedLegacyAddress()
+        case .legacy(let legacy): return try legacy.toChecksummedLegacyAddress()
+        }
+    }
+}
+
+// MARK: - StringConvertible
+public extension Address {
+    var asString: String {
+        switch self {
+        case .bech32(let bech32): return bech32.asString
+        case .legacy(let legacy): return legacy.asString
+        }
+    }
+}
+
+public extension Address {
+    static func == (lhs: Address, rhs: Address) -> Bool {
+        do {
+            return try lhs.toChecksummedLegacyAddress() == rhs.toChecksummedLegacyAddress()
+        } catch {
+            return false
+        }
+    }
 }

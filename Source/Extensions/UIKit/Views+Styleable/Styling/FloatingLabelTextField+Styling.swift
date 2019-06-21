@@ -92,15 +92,15 @@ extension FloatingLabelTextField.Style {
         )
     }
 
-    static var address: FloatingLabelTextField.Style {
+    static var addressBech32OrHex: FloatingLabelTextField.Style {
         return FloatingLabelTextField.Style(
-            typeOfInput: .hexadecimal
+            typeOfInput: .bech32OrHex
         )
     }
 
     static var password: FloatingLabelTextField.Style {
         return FloatingLabelTextField.Style(
-            typeOfInput: .text,
+            typeOfInput: .password,
             isSecureTextEntry: true
         )
     }

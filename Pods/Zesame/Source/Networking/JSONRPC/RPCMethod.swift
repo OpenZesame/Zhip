@@ -28,7 +28,7 @@ import Foundation
 ///
 /// [1]: https://apidocs.zilliqa.com/#introduction
 public enum RPCMethod {
-    case getBalance(AddressChecksummedConvertible)
+    case getBalance(LegacyAddress)
     case createTransaction(SignedTransaction)
     case getTransaction(TransactionId)
     case getNetworkId
@@ -58,7 +58,7 @@ public extension RPCMethod {
         }
         
         switch self {
-        case .getBalance(let address): return innerEncode(address.checksummedAddress)
+        case .getBalance(let address): return innerEncode(address)
         case .createTransaction(let signedTransaction): return innerEncode(signedTransaction)
         case .getTransaction(let txId): return innerEncode(txId)
         case .getNetworkId: return nil

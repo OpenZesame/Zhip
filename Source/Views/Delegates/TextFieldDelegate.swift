@@ -26,30 +26,34 @@ import UIKit
 
 final class TextFieldDelegate: NSObject {
     private let maxLength: Int?
-    private var allowedCharacters: CharacterSet
-    init(allowedCharacters: CharacterSet, maxLength: Int? = nil) {
-        self.allowedCharacters = allowedCharacters
+    private var limitingCharacterSet: CharacterSet?
+    init(limitingCharacterSet: CharacterSet?, maxLength: Int? = nil) {
+        self.limitingCharacterSet = limitingCharacterSet
         self.maxLength = maxLength
     }
 }
 
 extension TextFieldDelegate {
     convenience init(type: FloatingLabelTextField.TypeOfInput = .text, maxLength: Int? = nil) {
-        self.init(allowedCharacters: type.characterSet, maxLength: maxLength)
+        self.init(limitingCharacterSet: type.limitingCharacterSet, maxLength: maxLength)
     }
 
     func setTypeOfInput( _ typeOfInput: FloatingLabelTextField.TypeOfInput) {
-        allowedCharacters = typeOfInput.characterSet
+        limitingCharacterSet = typeOfInput.limitingCharacterSet
     }
 }
 
 extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Always allow erasing of digit
-        guard !string.isBackspace else { return true }
+        if string.isBackspace { return true }
 
-        // Dont allow pasting of non numbers
-        guard allowedCharacters.isSuperset(of: CharacterSet(charactersIn: string)) else { return false }
+        if let limitingCharacterSet = limitingCharacterSet {
+            if !limitingCharacterSet.isSuperset(of: CharacterSet(charactersIn: string)) {
+                // Dont allow pasting of non allowed chacracters
+                return false
+            }
+        }
 
         guard let maxLength = maxLength else {
             return true

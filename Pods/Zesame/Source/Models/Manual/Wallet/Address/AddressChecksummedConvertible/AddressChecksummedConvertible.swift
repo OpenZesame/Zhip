@@ -25,7 +25,6 @@
 import Foundation
 import EllipticCurveKit
 
-public protocol AddressChecksummedConvertible: HexStringConvertible {
-    var checksummedAddress: AddressChecksummed { get }
-    init(hexString: HexStringConvertible) throws
+public protocol AddressChecksummedConvertible {
+    func toChecksummedLegacyAddress() throws -> LegacyAddress
 }

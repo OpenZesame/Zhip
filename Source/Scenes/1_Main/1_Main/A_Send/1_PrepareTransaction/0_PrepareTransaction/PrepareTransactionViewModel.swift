@@ -70,7 +70,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		// Fetch latest balance from API
 		let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
 			self.transactionUseCase
-				.getBalance(for: $0.address)
+				.getBalance(for: $0.legacyAddress)
 				.trackActivity(activityIndicator)
 				.trackError(errorTracker)
 				.asDriverOnErrorReturnEmpty()
@@ -89,7 +89,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		// MARK: Recipient Input ->  Value + Validation
         let recipientValidationValue: Driver<Validation<Address, AddressValidator.Error>> = Driver.merge(
 			input.fromView.recepientAddress.map { validator.validateRecipient($0) },
-			scannedOrDeeplinkedTransaction.map { .valid(Address.checksummed($0.to)) }
+			scannedOrDeeplinkedTransaction.map { .valid($0.to) }
 		)
 
 		let recipient: Driver<Address?> = recipientValidationValue.map { $0.value }
@@ -169,7 +169,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		)
 
 		let payment: Driver<Payment?> = Driver.combineLatest(recipient, amountBoundByBalance, gasPrice, nonce) {
-			guard let to = $0, let amount = $1, let price = $2, case let nonce = $3 else {
+			guard let to = try? $0?.toChecksummedLegacyAddress(), let amount = $1, let price = $2, case let nonce = $3 else {
 				return nil
 			}
 			return Payment(to: to, amount: amount, gasLimit: 1, gasPrice: price, nonce: nonce)
@@ -196,7 +196,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         // It is deliberate that we do NOT auto checksum the address here. We would like to be able to inform the user that
         // she might have pasted an unchecksummed address.
-		let recipientFormatted = recipient.filterNil().map { $0.hexString.value }
+		let recipientFormatted = recipient.filterNil().map { $0.asString }
 
         let amountFormatted = amountBoundByBalance.filterNil().map { formatter.format(amount: $0, in: .zil) }
 

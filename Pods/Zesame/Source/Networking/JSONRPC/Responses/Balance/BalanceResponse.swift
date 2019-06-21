@@ -29,6 +29,11 @@ public struct BalanceResponse: Codable {
     public let balance: ZilAmount
     public let nonce: Nonce
     
+    public init(balance: ZilAmount, nonce: Nonce) {
+        self.balance = balance
+        self.nonce = nonce
+    }
+    
     public enum CodingKeys: CodingKey {
         case nonce, balance
     }

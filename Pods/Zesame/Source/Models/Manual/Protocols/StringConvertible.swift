@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -24,28 +24,18 @@
 
 import Foundation
 
-public struct AddressNotNecessarilyChecksummed: AddressChecksummedConvertible {
+public protocol StringConvertible: CustomStringConvertible {
+    var asString: String { get }
+}
 
-    public let hexString: HexString
-
-    // AddressChecksummedConvertible init
-    public init(hexString: HexStringConvertible) throws {
-        try AddressNotNecessarilyChecksummed.validate(hexString: hexString)
-        self.hexString = hexString.hexString
+public extension StringConvertible {
+    var description: String {
+        return asString
     }
 }
 
-// MARK: - AddressChecksummedConvertible
-public extension AddressNotNecessarilyChecksummed {
-    var checksummedAddress: AddressChecksummed {
-        let checksummedHexString = AddressChecksummed.checksummedHexstringFrom(hexString: hexString)
-        do {
-            return try AddressChecksummed(hexString: checksummedHexString)
-        } catch {
-            fatalError("Should be able to checksum address, unexpected error: \(error)")
-        }
+public extension Equatable where Self: StringConvertible {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.asString == rhs.asString
     }
 }
-
-// MARK: - Equatable
-extension AddressNotNecessarilyChecksummed: Equatable {}

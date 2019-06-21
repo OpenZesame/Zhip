@@ -39,15 +39,28 @@ final class ScanQRCodeViewModel: BaseViewModel<
     ScanQRCodeViewModel.InputFromView,
     ScanQRCodeViewModel.Output
 > {
+    
+    typealias ScannedQRResult = Result<TransactionIntent, Swift.Error>
+    
+    private let startScanningSubject = BehaviorSubject(value: ())
 
+    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
-        let transactionIntent = input.fromView.scannedQrCodeString.map {
-            TransactionIntent.fromScannedQrCodeString($0)
-        }.filterNil()
+        let transactionIntentResult: Driver<ScannedQRResult> = input.fromView.scannedQrCodeString.map {
+            guard let stringFromQR = $0 else {
+                 return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
+            }
+    
+            do {
+                return ScannedQRResult.success(try TransactionIntent.fromScannedQrCodeString(stringFromQR))
+            } catch {
+                return ScannedQRResult.failure(error)
+            }
+        }
 
         // MARK: Navigate
         bag <~ [
@@ -55,19 +68,32 @@ final class ScanQRCodeViewModel: BaseViewModel<
                 .do(onNext: { userDid(.cancel) })
                 .drive(),
 
-            transactionIntent.do(onNext: { userDid(.scanQRContainingTransaction($0)) })
-                .drive()
+            transactionIntentResult.do(onNext: { [unowned self] in
+                switch $0 {
+                case .failure:
+                    let LocalizedToast = €.Event.Toast.IncompatibleQrCode.self
+                    let toast = Toast(LocalizedToast.title, dismissing: .manual(dismissButtonTitle: LocalizedToast.dismiss)) {
+                        self.startScanningSubject.onNext(())
+                    }
+                    input.fromController.toastSubject.onNext(toast)
+                case .success(let transactionIntent):  userDid(.scanQRContainingTransaction(transactionIntent))
+                }
+            }).drive()
         ]
 
-        return Output()
+        return Output(
+            startScanning: startScanningSubject.asDriverOnErrorReturnEmpty()
+        )
     }
 }
 
 extension ScanQRCodeViewModel {
     
     struct InputFromView {
-        let scannedQrCodeString: Driver<String>
+        let scannedQrCodeString: Driver<String?>
     }
 
-    struct Output {}
+    struct Output {
+        let startScanning: Driver<Void>
+    }
 }
