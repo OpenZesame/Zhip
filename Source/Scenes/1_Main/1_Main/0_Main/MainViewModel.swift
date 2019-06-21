@@ -106,7 +106,7 @@ final class MainViewModel: BaseViewModel<
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil) },
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) },
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle
         )
     }

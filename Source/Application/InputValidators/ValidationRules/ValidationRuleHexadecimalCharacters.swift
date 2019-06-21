@@ -32,7 +32,7 @@ public struct ValidationRuleHexadecimalCharacters: ValidationRule {
     public init(error: Swift.Error) {
         nestedRule = ValidationRuleCondition<InputType>(error: error) {
             guard let inputString = $0 else { return false }
-            return CharacterSet.hexadecimalDigits.isSuperset(of: CharacterSet(charactersIn: inputString))
+            return CharacterSet.hexadecimalDigitsIncluding0x.isSuperset(of: CharacterSet(charactersIn: inputString))
         }
         self.error = error
     }

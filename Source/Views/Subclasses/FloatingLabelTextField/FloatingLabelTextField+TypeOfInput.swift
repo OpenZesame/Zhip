@@ -27,7 +27,7 @@ import Zesame
 
 extension FloatingLabelTextField {
     enum TypeOfInput {
-        case number, hexadecimal, text, password, bech32, bech32OrHex
+        case number, hexadecimal, text, password, bech32, bech32OrHex, decimalWithSeparator
     }
 }
 
@@ -36,11 +36,12 @@ extension FloatingLabelTextField.TypeOfInput {
     var limitingCharacterSet: CharacterSet? {
         switch self {
         case .number: return .decimalDigits
-        case .hexadecimal: return .hexadecimalDigits
-        case .bech32: return .bech32
+        case .decimalWithSeparator: return .decimalWithSeparator
+        case .hexadecimal: return .hexadecimalDigitsIncluding0x
+        case .bech32: return .bech32IncludingPrefix
         case .password: return nil
         case .text: return .alphanumerics
-        case .bech32OrHex: return .bech32OrHex
+        case .bech32OrHex: return .bech32OrHexIncludingPrefix
         }
     }
 }

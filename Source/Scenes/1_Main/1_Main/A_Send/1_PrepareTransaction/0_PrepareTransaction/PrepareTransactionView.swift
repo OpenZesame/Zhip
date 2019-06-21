@@ -70,6 +70,7 @@ extension PrepareTransactionView: ViewModelled {
         return [
             viewModel.refreshControlLastUpdatedTitle    --> rx.pullToRefreshTitle,
             viewModel.isFetchingBalance                 --> rx.isRefreshing,
+            viewModel.amountPlaceholder                 --> amountToSendField.rx.placeholder,
             viewModel.amount                            --> amountToSendField.rx.text,
             viewModel.recipient                         --> recipientAddressField.rx.text,
             viewModel.isSendButtonEnabled               --> sendButton.rx.isEnabled,
@@ -125,9 +126,7 @@ private extension PrepareTransactionView {
         recipientAddressField.rightView = scanQRButton
         recipientAddressField.rightViewMode = .always
 
-        amountToSendField.withStyle(.number) {
-            $0.placeholder(€.Field.amount)
-        }
+        amountToSendField.withStyle(.decimal)
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
             $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))

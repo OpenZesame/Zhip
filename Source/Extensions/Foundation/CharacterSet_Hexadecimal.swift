@@ -26,21 +26,31 @@ import Foundation
 import Zesame
 
 extension CharacterSet {
-    static var hexadecimalDigits: CharacterSet {
+    static var hexadecimalDigitsIncluding0x: CharacterSet {
         let afToAF = CharacterSet(charactersIn: "abcdefABCDEF")
-        return CharacterSet.decimalDigits.union(afToAF)
+        return CharacterSet.decimalDigits
+            .union(afToAF)
+            .union(CharacterSet(charactersIn: "0x"))
     }
     
-    static var bech32: CharacterSet {
+    static var bech32IncludingPrefix: CharacterSet {
         
         let lowercase = Zesame.Bech32.alphabetString.lowercased()
         let uppercase = Zesame.Bech32.alphabetString.uppercased()
         
-        return CharacterSet(charactersIn: lowercase).union(CharacterSet(charactersIn: uppercase))
+        return CharacterSet(charactersIn: lowercase)
+            .union(CharacterSet(charactersIn: uppercase))
+            .union(CharacterSet(charactersIn: network.bech32Prefix))
     }
     
-    static var bech32OrHex: CharacterSet {
-        return CharacterSet.bech32.union(hexadecimalDigits)
+    static var bech32OrHexIncludingPrefix: CharacterSet {
+        return CharacterSet.bech32IncludingPrefix.union(hexadecimalDigitsIncluding0x)
     }
     
+    static var decimalWithSeparator: CharacterSet {
+        return CharacterSet.decimalDigits
+            .union(CharacterSet(charactersIn: Locale.current.decimalSeparatorForSure))
+            .union(CharacterSet(charactersIn: "."))
+            .union(CharacterSet(charactersIn: ","))
+    }
 }

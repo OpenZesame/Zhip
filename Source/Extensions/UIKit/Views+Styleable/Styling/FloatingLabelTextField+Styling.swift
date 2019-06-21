@@ -118,4 +118,11 @@ extension FloatingLabelTextField.Style {
             keyboardType: .numberPad
         )
     }
+    
+    static var decimal: FloatingLabelTextField.Style {
+        return FloatingLabelTextField.Style(
+            typeOfInput: .decimalWithSeparator,
+            keyboardType: .decimalPad
+        )
+    }
 }

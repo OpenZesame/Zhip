@@ -384,8 +384,10 @@ internal enum L10n {
         internal static let send = L10n.tr("Localizable", "Scene.PrepareTransaction.Button.Send")
       }
       internal enum Field {
-        /// Amount
-        internal static let amount = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount")
+        /// Amount in %@
+        internal static func amount(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount", p1)
+        }
         /// Encryption password
         internal static let encryptionPassword = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassword")
         /// Gas price (min %@)
@@ -430,8 +432,10 @@ internal enum L10n {
         }
       }
       internal enum Field {
-        /// Request amount
-        internal static let requestAmount = L10n.tr("Localizable", "Scene.Receive.Field.RequestAmount")
+        /// Request amount in %@
+        internal static func requestAmount(_ p1: String) -> String {
+          return L10n.tr("Localizable", "Scene.Receive.Field.RequestAmount", p1)
+        }
       }
       internal enum Label {
         /// My public address

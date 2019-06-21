@@ -46,7 +46,7 @@ extension Double {
 
 public extension ExpressibleByAmount {
     var debugDescription: String {
-        return "\(qa) qa (\(zilString) Zils)"
+        return "\(qa) qa (\(asString(in: .zil, roundingIfNeeded: nil)) Zils)"
     }
 
     var zilString: String {
@@ -61,19 +61,17 @@ public extension ExpressibleByAmount {
         return qa.asDecimalString()
     }
 
-    func asString(`in` targetUnit: Unit, roundingIfNeeded: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> String {
+    func asString(`in` targetUnit: Unit, roundingIfNeeded: NSDecimalNumber.RoundingMode? = nil, roundingNumberOfDigits: Int = 2, minFractionDigits: Int? = nil) -> String {
         // handle trivial edge case
-        if qa == 0 {
-            return "0"
+        if targetUnit == .qa {
+            return "\(qa)"
         }
 
-        if let qaAsDecimal = decimalValue(in: targetUnit, rounding: roundingIfNeeded) {
-            return qaAsDecimal.asStringWithoutTrailingZeros
-        } else {
-            let numberOfCharactersToDrop = abs(Unit.qa.exponent - targetUnit.exponent)
-            let qaDecimalString = qa.asDecimalString()
-            let string = String(qaDecimalString.dropLast(numberOfCharactersToDrop))
-            return string
+        let decimal = decimalValue(in: targetUnit, rounding: roundingIfNeeded, roundingNumberOfDigits: roundingNumberOfDigits)
+        let nsDecimalNumber = NSDecimalNumber(decimal: decimal)
+        guard let decimalString = asStringUsingLocalizedDecimalSeparator(nsDecimalNumber: nsDecimalNumber, maxFractionDigits: 12, minFractionDigits: minFractionDigits) else {
+            fatalError("should be able to create string")
         }
+        return decimalString
     }
 }

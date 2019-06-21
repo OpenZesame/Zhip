@@ -45,14 +45,18 @@ extension TextFieldDelegate {
 
 extension TextFieldDelegate: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        defer {
+            let correctSeparator = Locale.current.decimalSeparatorForSure
+            let wrongSeparator = correctSeparator == "." ? "," : "."
+            textField.text = textField.text?.replacingOccurrences(of: wrongSeparator, with: correctSeparator)
+        }
+        
         // Always allow erasing of digit
         if string.isBackspace { return true }
-
-        if let limitingCharacterSet = limitingCharacterSet {
-            if !limitingCharacterSet.isSuperset(of: CharacterSet(charactersIn: string)) {
-                // Dont allow pasting of non allowed chacracters
-                return false
-            }
+        
+        if let limitingCharacterSet = limitingCharacterSet, limitingCharacterSet.isSubset(of: CharacterSet(charactersIn: string)) {
+            // Dont allow pasting of non allowed chacracters
+            return false
         }
 
         guard let maxLength = maxLength else {

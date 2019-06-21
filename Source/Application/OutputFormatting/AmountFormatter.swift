@@ -25,36 +25,66 @@
 import Foundation
 import Zesame
 
+extension Zesame.Unit {
+    var displayName: String {
+        let unitName: String
+        switch self {
+        case .li, .qa: unitName = self.name
+        case .zil: unitName = L10n.Generic.zils
+        }
+        return unitName
+    }
+}
+
 struct AmountFormatter {
-    func format<Amount>(amount: Amount, in unit: Zesame.Unit, showUnit: Bool = false) -> String where Amount: ExpressibleByAmount {
-        let amountString = amount.formatted(unit: unit)
+    func format<Amount>(amount: Amount, in unit: Zesame.Unit, formatThousands: Bool, minFractionDigits: Int? = nil, showUnit: Bool = false) -> String where Amount: ExpressibleByAmount {
+        let amountString = amount.formatted(unit: unit, formatThousands: formatThousands, minFractionDigits: minFractionDigits)
         guard showUnit else {
             return amountString
         }
 
-        let unitName: String
-        switch unit {
-        case .li, .qa: unitName = unit.name
-        case .zil: unitName = L10n.Generic.zils
-        }
-
-        return "\(amountString) \(unitName)"
+        return "\(amountString) \(unit.displayName)"
     }
+    
+    /// Because we display default tx fee of 1000 li, which is 0.001 zil, so good to show one more digit than that => 5
+    static let maxNumberOfDecimalDigits = 5
 }
 
 extension ExpressibleByAmount {
-    func formatted(unit targetUnit: Zesame.Unit) -> String {
-        let separator = Locale.current.decimalSeparator ?? "."
-        let string = asString(in: targetUnit)
-        guard !string.contains(separator) else {
+    func formatted(unit targetUnit: Zesame.Unit, formatThousands: Bool = false, minFractionDigits: Int? = nil) -> String {
+        let string = asString(in: targetUnit, roundingIfNeeded: .down, roundingNumberOfDigits: AmountFormatter.maxNumberOfDecimalDigits, minFractionDigits: minFractionDigits)
+        guard formatThousands else {
             return string
         }
-        return string.thousands
+        let decimalSeparator = Locale.current.decimalSeparatorForSure
+        let components = string.components(separatedBy: decimalSeparator)
+        if components.count == 2 {
+            let integerPart = components[0]
+            let decimalPart = components[1]
+            return "\(integerPart.thousands)\(decimalSeparator)\(decimalPart)"
+        } else if components.count == 1 {
+            return string.thousands
+        } else {
+            incorrectImplementation("Got components.count: \(components.count)")
+        }
     }
 }
 
 extension String {
     var thousands: String {
-        return inserting(string: " ", every: 3)
+        let thousandsInserted = inserting(string: " ", every: 3)
+        if thousandsInserted.hasSuffix(" ") {
+            let trailingSpaceRemoved = String(thousandsInserted.dropLast())
+            return trailingSpaceRemoved
+        } else {
+            return thousandsInserted
+        }
+    }
+    
+    func containsOnlyDecimalNumbers() -> Bool {
+        guard CharacterSet(charactersIn: self).isSubset(of: CharacterSet.decimalDigits) else {
+            return false
+        }
+        return true
     }
 }

@@ -44,31 +44,32 @@ internal extension Double {
 }
 
 internal extension ExpressibleByAmount {
-    func decimalValue(in targetUnit: Unit, rounding: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> Double? {
-        guard targetUnit.exponent >= self.unit.exponent else {
-            return nil
-        }
-
+    func decimalValue(in targetUnit: Unit, rounding: NSDecimalNumber.RoundingMode?, roundingNumberOfDigits: Int = 2) -> Decimal {
         guard qa <= BigInt(Double.greatestFiniteMagnitude) else {
-            return nil
+            fatalError("Too big amount")
         }
+        let qaFittingInDecimal = Decimal(string: "\(qa)", locale: Locale.current)!
 
-        let qaFittingInDouble = Double(qa)
-
-        guard qaFittingInDouble.isInteger else {
-            return nil
-        }
-
-        let exponentDiff = abs(Qa.unit.exponent - targetUnit.exponent)
-        let powerFactor = pow(10, Double(exponentDiff))
-
-        var decimalValueInTargetUnit = qaFittingInDouble / powerFactor
-
+        let exponentDiff = Qa.unit.exponent - targetUnit.exponent
+        
+        var decimalValueInTargetUnit: Decimal
+        if exponentDiff > 0 {
+            let factor = pow(10, Double(exponentDiff))
+            decimalValueInTargetUnit = qaFittingInDecimal * Decimal(factor)
+        } else if exponentDiff < 0 {
+            let denominator = pow(10, Double(abs(exponentDiff)))
+            decimalValueInTargetUnit = qaFittingInDecimal / Decimal(denominator)
+        } else if exponentDiff == 0 {
+            decimalValueInTargetUnit = qaFittingInDecimal
+        } else { fatalError("forgot case?") }
+        
         // Only round when for UnitX -> UnitX decimal value representation, i.e. ZilAmount(0.51) expressed in Zil rounds to 1.0
-        let shouldPerformRounding = targetUnit.exponent == self.unit.exponent
-
-        if shouldPerformRounding {
-            decimalValueInTargetUnit.round(rounding)
+        let tryToPerformRounding = targetUnit.exponent == self.unit.exponent
+        
+        if tryToPerformRounding, let rounding = rounding {
+            var rounded = Decimal()
+            NSDecimalRound(&rounded, &decimalValueInTargetUnit, roundingNumberOfDigits, rounding)
+            decimalValueInTargetUnit = rounded
         }
 
         return decimalValueInTargetUnit

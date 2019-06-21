@@ -71,4 +71,14 @@ extension SharedSequence where S == DriverSharingStrategy, Element: OptionalType
             }
         }
     }
+    
+    func ifNil(switchTo replacement: Driver<Element.Wrapped?>) -> Driver<Element.Wrapped?> {
+        return flatMap { (element) -> Driver<Element.Wrapped?> in
+            if let value = element.value {
+                return .just(value)
+            } else {
+                return replacement
+            }
+        }
+    }
 }

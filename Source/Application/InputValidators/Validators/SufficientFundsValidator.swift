@@ -46,9 +46,10 @@ struct SufficientFundsValidator: InputValidator {
                 return self.error(Error.insufficientFunds)
             }
         } catch let error as AmountError<ZilAmount> {
-            return .invalid(.error(.amountError(error)))
-        } catch {
-            incorrectImplementation("AmountError should cover all errors")
+            return self.error(Error.amountError(error))
+        } catch let otherError {
+            let zilAmountError: AmountError<ZilAmount> = .init(error: otherError)
+            return self.error(Error.amountError(zilAmountError))
         }
 
         return .valid(amount)

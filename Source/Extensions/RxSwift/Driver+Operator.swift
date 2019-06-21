@@ -47,6 +47,10 @@ func --> (driver: Driver<String>, controlProperty: ControlProperty<String?>) -> 
     return driver.drive(controlProperty.orEmpty)
 }
 
+func --> (driver: Driver<String?>, controlProperty: ControlProperty<String?>) -> Disposable {
+    return driver.drive(controlProperty)
+}
+
 func --> (driver: Driver<NSAttributedString>, controlProperty: ControlProperty<NSAttributedString?>) -> Disposable {
     return driver.drive(controlProperty)
 }
