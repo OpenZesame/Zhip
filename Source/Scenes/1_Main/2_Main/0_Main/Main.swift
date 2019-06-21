@@ -35,8 +35,3 @@ extension Main: NavigationBarLayoutOwner {
         return .transluscent
     }
 }
-
-
-
-//final class AppLocked: Scene<AppLockedView> {}
-//final class AppLockedView: UIView {}

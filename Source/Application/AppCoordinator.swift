@@ -160,9 +160,7 @@ extension AppCoordinator {
 private extension AppCoordinator {
     
     func lockApp() {
-        print("🔐 Trying to lock app")
         if isCurrentlyPresentingUnLockScene || isCurrentlyPresentingLockScene {
-            print("🙅🏻‍♀️ Avoided locking app 🔒")
             return
         }
         deepLinkHandler.appIsLockedBufferDeeplinks()
@@ -172,7 +170,6 @@ private extension AppCoordinator {
     func unlockApp() {
         if isCurrentlyPresentingUnLockScene { return }
         guard isCurrentlyPresentingLockScene else { return }
-        print("🔓 Trying to unlock app")
         if hasConfiguredPincode {
             toUnlockAppWithPincodeIfNeeded()
         } else {

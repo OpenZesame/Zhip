@@ -4,7 +4,7 @@ use_modular_headers!
 
 def shared
   # The Zilliqa Swift SDK
-  pod 'Zesame', :git => 'https://github.com/OpenZesame/Zesame.git', :branch => 'decimal_amount'
+  pod 'Zesame', '~> 1.0.1'
 
   # Used for Crash reporting
   pod 'Firebase/Core'

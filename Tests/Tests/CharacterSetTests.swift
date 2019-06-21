@@ -46,85 +46,14 @@ class CharacterSetTests: XCTestCase {
         
     }
     
-    private func doTest(_ amountString: String, expected: Double) {
-        
-        func doubleFromAnyLocale(numberString: String) -> Double? {
-            func tryLocale(locale: Locale) -> Double? {
-                let formatter = NumberFormatter()
-                formatter.locale = locale
-                return formatter.number(from: amountString)?.doubleValue
-            }
-            
-            for localeIdentifier in Locale.availableIdentifiers {
-                let locale = Locale(identifier: localeIdentifier)
-                if let double = tryLocale(locale: locale) {
-                    print("Successfully created number from locale with id: \(localeIdentifier)")
-                    return double
-                } else {
-                    print("Failed to create number from locale with id: \(localeIdentifier)")
-                }
-            }
-            return nil
-        }
-        guard let number = doubleFromAnyLocale(numberString: amountString) else {
-            return XCTFail("failed to get number from: `\(amountString)`")
-        }
-        XCTAssertEqual(number, expected)
-    }
-  
-    func testFo() {
-        doTest("0,1", expected: 0.1)
-        doTest("0.1", expected: 0.1)
-    }
-    
-    func testZilAmountFromDecimalStringWithDot() {
-        XCTAssertNotNil(Double("0.01"))
-//        XCTAssertNoThrow(try ZilAmount.init(zil: "0.01"))
-    }
-    
     func testZilAmountFromDecimalStringWithComma() {
-        XCTAssertNotNil(Double("0,01"))
-//        XCTAssertNoThrow(try ZilAmount.init(zil: "0,01"))
+        XCTAssertNotNil(Double("0\(decSep)01"))
     }
     
-    
-    func testCurrntLocaleIsSweden() {
-        XCTAssertEqual(Locale.current.identifier, "en_US")
-    }
-    
-    func testAmountFromStringLocale() {
-        XCTAssertEqual(Locale.current.identifier, "en_US")
-        XCTAssertNotNil(Locale(identifier: "sv_SE"))
-        
-//        let languages = ["bs", "zh-Hant", "en", "fi", "ko", "lv", "ms", "pl", "pt-BR", "ru", "sr-Latn", "sk", "es", "tr"]
-//        UserDefaults.standard.set([languages[0]], forKey: "AppleLanguages")
-        
-        func assertLanguages(equal: [String]) {
-            if let anyLang = UserDefaults.standard.value(forKey: .languagesKey) {
-                if let languages = anyLang as? [String] {
-                    XCTAssertEqual(languages.count, equal.count)
-                    XCTAssertEqual(languages, equal)
-                    
-                } else {
-                    XCTFail("not a string array")
-                }
-            } else {
-                XCTFail("nu value for key `AppleLanguages`")
-            }
-        }
-        
-        assertLanguages(equal: ["en-SE"])
-//        UserDefaults.standard.set(["en-SE"], forKey: .languagesKey)
-//        assertLanguages(equal: ["sv-SE"])
-//        XCTAssertEqual(Locale.current.identifier, "sv-SE")
-        
-//        let swedish = Locale(identifier: "sv_SE")
-//        Locale.current = swedish
-        
-//        try Amount(zil: amountString)
-    }
 }
 
 private extension String {
     static let languagesKey = "AppleLanguages"
 }
+
+private let decSep = Locale.current.decimalSeparatorForSure
