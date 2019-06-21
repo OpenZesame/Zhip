@@ -41,14 +41,18 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
         let scene = UnlockAppWithPincode(viewModel: viewModel)
         
-        self.bag <~ scene.viewModel.navigator.navigation.do(onNext: { [weak self] userDid in
-            switch userDid {
-            case .unlockApp:
-                self?.didJustUnlockAppWithPinOrBiometrics = true
-                self?.appIsUnlockedEmitBufferedDeeplinks()
-                self?.restoreMainNavigationStack()
-            }
-        }).drive()
+        self.bag <~ scene.viewModel.navigator.navigation
+            .asObservable()
+            .observeOn(MainScheduler.asyncInstance)
+            .do(onNext: { [weak self] userDid in
+                switch userDid {
+                case .unlockApp:
+                    self?.appIsUnlockedEmitBufferedDeeplinks()
+                    self?.restoreMainNavigationStack()
+                }
+            })
+            .asDriverOnErrorReturnEmpty()
+            .drive()
         return scene
     }()
 
@@ -76,8 +80,6 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
             toOnboarding()
         }
     }
-    
-    private var didJustUnlockAppWithPinOrBiometrics = false
 }
 
 // MARK: - Private
@@ -150,12 +152,6 @@ extension AppCoordinator {
     }
     
     func appDidBecomeActive() {
-        /// When we prompt user for pin code or biometrics AppDelegate's `applicationWillResignActive` will get called
-        /// we need to handle this, we do it using this ugly trick.
-        if didJustUnlockAppWithPinOrBiometrics {
-            didJustUnlockAppWithPinOrBiometrics = false
-            return
-        }
         unlockApp()
     }
 }
@@ -164,16 +160,18 @@ extension AppCoordinator {
 private extension AppCoordinator {
     
     func lockApp() {
-        deepLinkHandler.appIsLockedBufferDeeplinks()
         print("🔐 Trying to lock app")
         if isCurrentlyPresentingUnLockScene || isCurrentlyPresentingLockScene {
             print("🙅🏻‍♀️ Avoided locking app 🔒")
             return
         }
+        deepLinkHandler.appIsLockedBufferDeeplinks()
         setRootViewControllerOfWindow(to: lockAppScene)
     }
     
     func unlockApp() {
+        if isCurrentlyPresentingUnLockScene { return }
+        guard isCurrentlyPresentingLockScene else { return }
         print("🔓 Trying to unlock app")
         if hasConfiguredPincode {
             toUnlockAppWithPincodeIfNeeded()
@@ -184,6 +182,7 @@ private extension AppCoordinator {
     }
 
     var isCurrentlyPresentingUnLockScene: Bool {
+        guard hasConfiguredPincode else { return false }
         return isViewControllerRootOfWindow(unlockAppScene)
     }
     
@@ -191,7 +190,7 @@ private extension AppCoordinator {
         return isViewControllerRootOfWindow(lockAppScene)
     }
     
-    func appIsUnlockedEmitBufferedDeeplinks(delayInSeconds: TimeInterval = 1) {
+    func appIsUnlockedEmitBufferedDeeplinks(delayInSeconds: TimeInterval = 0.2) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) { [weak self] in
             self?.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
         }
