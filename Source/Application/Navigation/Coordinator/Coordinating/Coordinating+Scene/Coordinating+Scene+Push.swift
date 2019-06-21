@@ -86,26 +86,3 @@ extension Coordinating {
         }).drive()
     }
 }
-
-private extension UINavigationController {
-    func setRootViewControllerIfEmptyElsePush(
-        viewController: UIViewController,
-        animated: Bool,
-        completion: Completion? = nil
-        ) {
-
-        if viewControllers.isEmpty {
-            setViewControllers([viewController], animated: false)
-        } else {
-            pushViewController(viewController, animated: animated)
-        }
-
-        // Add extra functionality to pass a "completion" closure even for `push`ed ViewControllers.
-        guard let completion = completion else { return }
-        guard animated, let coordinator = transitionCoordinator else {
-            DispatchQueue.main.async { completion() }
-            return
-        }
-        coordinator.animate(alongsideTransition: nil) { _ in completion() }
-    }
-}

@@ -145,6 +145,7 @@ private extension SceneController {
     }
 
     func applyLayoutIfNeeded() {
+        guard let navigationController = navigationController else { return }
         guard let barLayoutingNavController = navigationController as? NavigationBarLayoutingNavigationController else {
             incorrectImplementation("navigationController should be instance of `NavigationBarLayoutingNavigationController`")
         }

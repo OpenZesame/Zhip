@@ -35,8 +35,9 @@ final class InputPincodeView: UIView {
     private lazy var stackView      = UIStackView(arrangedSubviews: [pinField, errorLabel])
 
     private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
-
-    init() {
+    private let isClearedOnValidInput: Bool
+    init(isClearedOnValidInput: Bool = true) {
+        self.isClearedOnValidInput = isClearedOnValidInput
         super.init(frame: .zero)
         setup()
     }
@@ -47,8 +48,13 @@ final class InputPincodeView: UIView {
         pinField.validate(validation)
 
         switch validation {
-        case .valid: vibrateOnValid(); fallthrough
-        case .empty: errorLabel.text = nil
+        case .valid:
+            vibrateOnValid(); fallthrough
+        case .empty:
+            errorLabel.text = nil
+            if isClearedOnValidInput {
+                pinField.clearInput()
+            }
         case .errorMessage(let errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage

@@ -30,7 +30,7 @@ private typealias € = L10n.Scene.ConfirmNewPincode
 
 final class ConfirmNewPincodeView: ScrollableStackViewOwner {
 
-    private lazy var inputPincodeView               = InputPincodeView()
+    private lazy var inputPincodeView               = InputPincodeView(isClearedOnValidInput: false)
     private lazy var haveBackedUpPincodeCheckbox    = CheckboxWithLabel()
     private lazy var confirmPincodeButton           = UIButton()
 

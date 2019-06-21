@@ -1,4 +1,4 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
@@ -22,16 +22,27 @@
 // SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-final class Main: Scene<MainView> {}
-
-extension Main: RightBarButtonContentMaking {
-    static let makeRightContent = BarButtonContent(image: Asset.Icons.Small.settings.image)
-}
-
-extension Main: NavigationBarLayoutOwner {
-    var navigationBarLayout: NavigationBarLayout {
-        return .transluscent
+final class LockAppScene: AbstractController {
+    private lazy var motionEffectAuroraImageView = UIView()
+    private lazy var titleLabel = UILabel()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .black
+        view.addSubview(motionEffectAuroraImageView)
+        motionEffectAuroraImageView.addSubview(titleLabel)
+        motionEffectAuroraImageView.edgesToSuperview()
+        titleLabel.centerInSuperview()
+        
+        let appName = Bundle.main.name ?? "Zhip"
+        
+        titleLabel.withStyle(.impression) {
+            $0.font(.bigBang).text(appName).textColor(.white)
+        }
+        
+        addAuroraImagesWithMotionEffect(to: motionEffectAuroraImageView)
+        motionEffectAuroraImageView.bringSubviewToFront(titleLabel)
     }
 }
+
