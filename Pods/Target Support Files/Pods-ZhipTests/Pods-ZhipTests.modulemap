@@ -1,6 +1,0 @@
-module Pods_ZhipTests {
-  umbrella header "Pods-ZhipTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

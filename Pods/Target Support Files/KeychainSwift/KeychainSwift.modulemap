@@ -1,6 +1,0 @@
-module KeychainSwift {
-  umbrella header "KeychainSwift-umbrella.h"
-
-  export *
-  module * { export * }
-}

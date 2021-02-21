@@ -1,6 +1,0 @@
-module QRCodeReader {
-  umbrella header "QRCodeReader.swift-umbrella.h"
-
-  export *
-  module * { export * }
-}
