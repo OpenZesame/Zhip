@@ -230,7 +230,7 @@
 "Scene.Settings.Cell.SetPincode" = "Set pincode";
 
 "Scene.Settings.Cell.StarUsOnGithub" = "Star us on Github";
-"Scene.Settings.Cell.ReportIssueOnGithub" = "Report issue on Github";
+"Scene.Settings.Cell.ReportIssueOnGithub" = "Report issue (Github login required)";
 "Scene.Settings.Cell.Acknowledgements" = "Acknowledgements";
 "Scene.Settings.Cell.Terms of service" = "Terms of service";
 "Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";

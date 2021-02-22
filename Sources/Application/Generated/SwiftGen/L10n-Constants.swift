@@ -543,7 +543,7 @@ internal enum L10n {
         internal static let removePincode = L10n.tr("Localizable", "Scene.Settings.Cell.RemovePincode")
         /// Remove wallet
         internal static let removeWallet = L10n.tr("Localizable", "Scene.Settings.Cell.RemoveWallet")
-        /// Report issue on Github
+        /// Report issue (Github login required)
         internal static let reportIssueOnGithub = L10n.tr("Localizable", "Scene.Settings.Cell.ReportIssueOnGithub")
         /// Set pincode
         internal static let setPincode = L10n.tr("Localizable", "Scene.Settings.Cell.SetPincode")

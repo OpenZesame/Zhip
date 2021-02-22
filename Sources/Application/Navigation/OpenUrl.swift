@@ -27,8 +27,11 @@ import UIKit
 func openUrl(string baseUrlString: String, relative path: String? = nil) {
     func createUrl() -> URL? {
         guard let baseUrl = URL(string: baseUrlString) else { return nil }
-        guard let path = path else { return baseUrl }
-        return URL(string: path, relativeTo: baseUrl)
+        guard let path = path else {
+            return baseUrl
+            
+        }
+        return baseUrl.appendingPathComponent(path)
     }
 
     guard let url = createUrl() else {
