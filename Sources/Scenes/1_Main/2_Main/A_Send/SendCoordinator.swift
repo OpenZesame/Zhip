@@ -56,24 +56,8 @@ final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
 private extension SendCoordinator {
 
     func toFirst() {
-        guard useCaseProvider.makeOnboardingUseCase().hasAskedToSkipERC20Warning else {
-            return toWarningERC20()
-        }
 
         toPrepareTransaction()
-    }
-
-    func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(
-            useCase: onboardingUseCase,
-            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: true)
-        )
-
-        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .understandRisks, .dismiss: self.toPrepareTransaction()
-            }
-        }
     }
 
     func toPrepareTransaction() {

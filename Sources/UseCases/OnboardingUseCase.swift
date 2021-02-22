@@ -36,8 +36,5 @@ protocol OnboardingUseCase: AnyObject {
     var hasAnsweredCrashReportingQuestion: Bool { get }
     func answeredCrashReportingQuestion(acceptsCrashReporting: Bool)
 
-    var hasAskedToSkipERC20Warning: Bool { get }
-    func doNotShowERC20WarningAgain()
-
     var shouldPromptUserToChosePincode: Bool { get }
 }

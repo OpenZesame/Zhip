@@ -47,7 +47,6 @@ enum SettingsNavigation {
 
     // Section 2
     case readTermsOfService
-    case readERC20Warning
     case readCustomECCWarning
     case changeAnalyticsPermissions
 
@@ -137,7 +136,6 @@ private extension SettingsViewModel {
 
         sections += [
             .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
-            .whenSelectedNavigate(to: .readERC20Warning, titled: €.readERC20Warning, icon: Icon.warning),
             .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.crashReportingPermissions, icon: Icon.analytics),
             .whenSelectedNavigate(to: .readCustomECCWarning, titled: €.readCustomECCWarning, icon: Icon.ecc)
         ]

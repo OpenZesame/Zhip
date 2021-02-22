@@ -537,8 +537,6 @@ internal enum L10n {
         internal static let crashReportingPermissions = L10n.tr("Localizable", "Scene.Settings.Cell.CrashReportingPermissions")
         /// Unreliable cryptography
         internal static let readCustomECCWarning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadCustomECCWarning")
-        /// Read ERC-20 warning
-        internal static let readERC20Warning = L10n.tr("Localizable", "Scene.Settings.Cell.ReadERC20Warning")
         /// Remove pincode
         internal static let removePincode = L10n.tr("Localizable", "Scene.Settings.Cell.RemovePincode")
         /// Remove wallet
@@ -603,26 +601,6 @@ internal enum L10n {
       internal enum Label {
         /// Unreliable ECC
         internal static let header = L10n.tr("Localizable", "Scene.WarningCustomECC.Label.Header")
-      }
-    }
-    internal enum WarningERC20 {
-      internal enum Button {
-        /// Accept
-        internal static let accept = L10n.tr("Localizable", "Scene.WarningERC20.Button.Accept")
-        /// Do not show this again
-        internal static let doNotShowAgain = L10n.tr("Localizable", "Scene.WarningERC20.Button.DoNotShowAgain")
-      }
-      internal enum Checkbox {
-        /// I understand that ERC-20 ZILs are not supported
-        internal static let understandsERC20Incompatibility = L10n.tr("Localizable", "Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility")
-      }
-      internal enum Label {
-        /// ERC-20 tokens
-        internal static let erc20Tokens = L10n.tr("Localizable", "Scene.WarningERC20.Label.Erc20Tokens")
-      }
-      internal enum Text {
-        /// This is a wallet for the Zilliqa network. Do NOT send ERC-20 ZILs to native Zilliqa addresses.\n\nTransferring ERC-20 ZILs to a native Zilliqa address - or vice versa - will cause irreparable loss.
-        internal static let warningERC20 = L10n.tr("Localizable", "Scene.WarningERC20.Text.WarningERC20")
       }
     }
     internal enum Welcome {

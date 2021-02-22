@@ -60,13 +60,6 @@
 "Scene.AskForCrashReportingPermissions.Button.Accept" = "Opt in";
 "Scene.AskForCrashReportingPermissions.Button.Decline" = "Opt out";
 
-// MARK: WarningERC20
-"Scene.WarningERC20.Label.Erc20Tokens" = "ERC-20 tokens";
-"Scene.WarningERC20.Text.WarningERC20" = "This is a wallet for the Zilliqa network. Do NOT send ERC-20 ZILs to native Zilliqa addresses.\n\nTransferring ERC-20 ZILs to a native Zilliqa address - or vice versa - will cause irreparable loss.";
-"Scene.WarningERC20.Checkbox.UnderstandsERC20Incompatibility" = "I understand that ERC-20 ZILs are not supported";
-"Scene.WarningERC20.Button.Accept" = "Accept";
-"Scene.WarningERC20.Button.DoNotShowAgain" = "Do not show this again";
-
 // MARK: WarningCustomECC
 "Scene.WarningCustomECC.Label.Header" = "Unreliable ECC";
 "Scene.WarningCustomECC.Button.Accept" = "Accept";
@@ -233,7 +226,6 @@
 "Scene.Settings.Cell.ReportIssueOnGithub" = "Report issue (Github login required)";
 "Scene.Settings.Cell.Acknowledgements" = "Acknowledgements";
 "Scene.Settings.Cell.Terms of service" = "Terms of service";
-"Scene.Settings.Cell.ReadERC20Warning" = "Read ERC-20 warning";
 "Scene.Settings.Cell.ReadCustomECCWarning" = "Unreliable cryptography";
 "Scene.Settings.Cell.CrashReportingPermissions" = "Crash reporting permissions";
 "Scene.Settings.Cell.BackupWallet" = "Backup wallet";

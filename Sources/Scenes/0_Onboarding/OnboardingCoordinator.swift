@@ -68,10 +68,6 @@ private extension OnboardingCoordinator {
             return toAnalyticsPermission()
         }
 
-        guard onboardingUseCase.hasAskedToSkipERC20Warning else {
-            return toWarningERC20()
-        }
-
         guard onboardingUseCase.hasAcceptedCustomECCWarning else {
             return toCustomECCWarning()
         }
@@ -101,20 +97,7 @@ private extension OnboardingCoordinator {
 
         push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutCrashReporting, .dismiss: self.toWarningERC20()
-            }
-        }
-    }
-
-    func toWarningERC20() {
-        let viewModel = WarningERC20ViewModel(
-            useCase: onboardingUseCase,
-            mode: .userHaveToAccept(isDoNotShowAgainButtonVisible: false)
-        )
-
-        push(scene: WarningERC20.self, viewModel: viewModel) { [unowned self] userDid in
-            switch userDid {
-            case .understandRisks, .dismiss: self.toCustomECCWarning()
+            case .answerQuestionAboutCrashReporting, .dismiss: self.toCustomECCWarning()
             }
         }
     }

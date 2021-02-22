@@ -46,10 +46,6 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         return preferences.isTrue(.hasAnsweredCrashReportingQuestion)
     }
 
-    var hasAskedToSkipERC20Warning: Bool {
-        return preferences.isTrue(.skipShowingERC20Warning)
-    }
-
     func didAcceptTermsOfService() {
         preferences.save(value: true, for: .hasAcceptedTermsOfService)
     }
@@ -66,10 +62,6 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
         preferences.save(value: true, for: .hasAnsweredCrashReportingQuestion)
         preferences.save(value: acceptsCrashReporting, for: .hasAcceptedCrashReporting)
         setupCrashReportingIfAllowed()
-    }
-
-    func doNotShowERC20WarningAgain() {
-        preferences.save(value: true, for: .skipShowingERC20Warning)
     }
 
     var shouldPromptUserToChosePincode: Bool {

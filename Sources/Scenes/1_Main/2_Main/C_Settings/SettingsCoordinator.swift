@@ -75,7 +75,6 @@ private extension SettingsCoordinator {
 
             // Section 2
             case .readTermsOfService: self.toReadTermsOfService()
-            case .readERC20Warning: self.toReadERC20Warning()
             case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
             case .readCustomECCWarning: self.toReadCustomECCWarning()
 
@@ -116,21 +115,6 @@ private extension SettingsCoordinator {
 
     func toAcknowledgments() {
         openUrl(string: UIApplication.openSettingsURLString)
-    }
-
-    func toReadERC20Warning() {
-        let viewModel = WarningERC20ViewModel(
-            useCase: onboardingUseCase,
-            mode: .dismissible
-        )
-
-        let warningErc20 = WarningERC20(viewModel: viewModel, navigationBarLayout: .opaque)
-
-        modallyPresent(scene: warningErc20) { userDid, dismissScene in
-            switch userDid {
-            case .understandRisks, .dismiss: dismissScene(true, nil)
-            }
-        }
     }
 
     func toChangeAnalyticsPermissions() {

@@ -249,9 +249,6 @@
 		E635A4A5225D2FDB00124823 /* AskForCrashReportingPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA821A4288E00FE8068 /* AskForCrashReportingPermissions.swift */; };
 		E635A4A6225D2FDB00124823 /* AskForCrashReportingPermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA921A4288E00FE8068 /* AskForCrashReportingPermissionsView.swift */; };
 		E635A4A7225D2FDB00124823 /* AskForCrashReportingPermissionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF1DFA721A4288E00FE8068 /* AskForCrashReportingPermissionsViewModel.swift */; };
-		E635A4A8225D2FDB00124823 /* WarningERC20View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5A921A18F140078D659 /* WarningERC20View.swift */; };
-		E635A4A9225D2FDB00124823 /* WarningERC20ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */; };
-		E635A4AA225D2FDB00124823 /* WarningERC20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF5AB21A18F140078D659 /* WarningERC20.swift */; };
 		E635A4AB225D2FDB00124823 /* WarningCustomECCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B91220E118A002BA411 /* WarningCustomECCController.swift */; };
 		E635A4AC225D2FDB00124823 /* WarningCustomECCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B90220E118A002BA411 /* WarningCustomECCView.swift */; };
 		E635A4AD225D2FDB00124823 /* WarningCustomECCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */; };
@@ -577,9 +574,6 @@
 		48ECF5A521A18F140078D659 /* ChoosePincode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoosePincode.swift; sourceTree = "<group>"; };
 		48ECF5A621A18F140078D659 /* ChoosePincodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoosePincodeView.swift; sourceTree = "<group>"; };
 		48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPincodeCoordinator.swift; sourceTree = "<group>"; };
-		48ECF5A921A18F140078D659 /* WarningERC20View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningERC20View.swift; sourceTree = "<group>"; };
-		48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningERC20ViewModel.swift; sourceTree = "<group>"; };
-		48ECF5AB21A18F140078D659 /* WarningERC20.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningERC20.swift; sourceTree = "<group>"; };
 		48ECF5AE21A18F140078D659 /* RestoreWalletViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewModel.swift; sourceTree = "<group>"; };
 		48ECF5AF21A18F140078D659 /* RestoreWalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestoreWalletView.swift; sourceTree = "<group>"; };
 		48ECF5B021A18F140078D659 /* RestoreWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestoreWallet.swift; sourceTree = "<group>"; };
@@ -1125,14 +1119,14 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		484B5B8D220E103B002BA411 /* 4_WarningCustomECC */ = {
+		484B5B8D220E103B002BA411 /* 3_WarningCustomECC */ = {
 			isa = PBXGroup;
 			children = (
 				484B5B91220E118A002BA411 /* WarningCustomECCController.swift */,
 				484B5B90220E118A002BA411 /* WarningCustomECCView.swift */,
 				484B5B92220E118A002BA411 /* WarningCustomECCViewModel.swift */,
 			);
-			path = 4_WarningCustomECC;
+			path = 3_WarningCustomECC;
 			sourceTree = "<group>";
 		};
 		4850A401214C112000EBB85B /* Views */ = {
@@ -1634,10 +1628,9 @@
 				489EB12F21CA7A3600664AA7 /* 0_Welcome */,
 				48ECF59A21A18F140078D659 /* 1_TermsOfService */,
 				5BF1DFA621A4288E00FE8068 /* 2_AskForCrashReportingPermissions */,
-				48ECF5A821A18F140078D659 /* 3_WarningERC20 */,
-				484B5B8D220E103B002BA411 /* 4_WarningCustomECC */,
-				48ECF5AC21A18F140078D659 /* 5_ChooseWallet */,
-				48ECF59E21A18F140078D659 /* 6_ChoosePincode */,
+				484B5B8D220E103B002BA411 /* 3_WarningCustomECC */,
+				48ECF5AC21A18F140078D659 /* 4_ChooseWallet */,
+				48ECF59E21A18F140078D659 /* 5_ChoosePincode */,
 			);
 			path = 0_Onboarding;
 			sourceTree = "<group>";
@@ -1652,14 +1645,14 @@
 			path = 1_TermsOfService;
 			sourceTree = "<group>";
 		};
-		48ECF59E21A18F140078D659 /* 6_ChoosePincode */ = {
+		48ECF59E21A18F140078D659 /* 5_ChoosePincode */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5A721A18F140078D659 /* SetPincodeCoordinator.swift */,
 				48ECF5A321A18F140078D659 /* 0_ChoosePincode */,
 				48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */,
 			);
-			path = 6_ChoosePincode;
+			path = 5_ChoosePincode;
 			sourceTree = "<group>";
 		};
 		48ECF59F21A18F140078D659 /* 1_ConfirmNewPincode */ = {
@@ -1682,17 +1675,7 @@
 			path = 0_ChoosePincode;
 			sourceTree = "<group>";
 		};
-		48ECF5A821A18F140078D659 /* 3_WarningERC20 */ = {
-			isa = PBXGroup;
-			children = (
-				48ECF5A921A18F140078D659 /* WarningERC20View.swift */,
-				48ECF5AA21A18F140078D659 /* WarningERC20ViewModel.swift */,
-				48ECF5AB21A18F140078D659 /* WarningERC20.swift */,
-			);
-			path = 3_WarningERC20;
-			sourceTree = "<group>";
-		};
-		48ECF5AC21A18F140078D659 /* 5_ChooseWallet */ = {
+		48ECF5AC21A18F140078D659 /* 4_ChooseWallet */ = {
 			isa = PBXGroup;
 			children = (
 				48ECF5B621A18F140078D659 /* ChooseWalletCoordinator.swift */,
@@ -1701,7 +1684,7 @@
 				48ECF5B721A18F140078D659 /* 2a_CreateNewWallet */,
 				48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */,
 			);
-			path = 5_ChooseWallet;
+			path = 4_ChooseWallet;
 			sourceTree = "<group>";
 		};
 		48ECF5AD21A18F140078D659 /* 2b_RestoreWallet */ = {
@@ -2241,7 +2224,6 @@
 				E635A4C1225D301B00124823 /* DecryptKeystoreToRevealKeyPair.swift in Sources */,
 				48BA52F22180EC47009775D5 /* UIView+Border.swift in Sources */,
 				E635A4CC225D301B00124823 /* RestoreWalletView.swift in Sources */,
-				E635A4AA225D2FDB00124823 /* WarningERC20.swift in Sources */,
 				48CA697E218352BB00C05F5F /* ScrollableContentSizedTextView.swift in Sources */,
 				48ECF60E21A1D0AC0078D659 /* Coordinating+Scene+Push.swift in Sources */,
 				4847EDFB2160FD7B002FF978 /* DefaultOnboardingUseCase.swift in Sources */,
@@ -2273,12 +2255,10 @@
 				485AA29121DD303200E700C5 /* AmountFormatter.swift in Sources */,
 				48241B5121B15C740054ED8E /* Coordinating+Child+Start.swift in Sources */,
 				E682358D22BB86620028F1EC /* ReviewTransactionBeforeSigning.swift in Sources */,
-				E635A4A9225D2FDB00124823 /* WarningERC20ViewModel.swift in Sources */,
 				480B0E9721CE2C8E00A72133 /* AppAppearance.swift in Sources */,
 				4805A7E521E952C5008D6778 /* Validation+CustomStringConvertible.swift in Sources */,
 				48ECF4B421A16B8D0078D659 /* PullToRefreshCapable.swift in Sources */,
 				48CA6981218352FF00C05F5F /* JSONEncoder_Extensions.swift in Sources */,
-				E635A4A8225D2FDB00124823 /* WarningERC20View.swift in Sources */,
 				E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */,
 				E635A4B4225D301B00124823 /* EnsureThatYouAreNotBeingWatchedViewModel.swift in Sources */,
 				489FA4B0217FAB8C00B297D1 /* UIViewController+Rx.swift in Sources */,

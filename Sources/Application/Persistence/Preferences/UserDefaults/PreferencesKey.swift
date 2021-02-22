@@ -31,7 +31,6 @@ enum PreferencesKey: String, KeyConvertible {
     case hasAcceptedCustomECCWarning
     case hasAnsweredCrashReportingQuestion
     case hasAcceptedCrashReporting
-    case skipShowingERC20Warning
     case skipPincodeSetup
     case cachedBalance
     case balanceWasUpdatedAt
