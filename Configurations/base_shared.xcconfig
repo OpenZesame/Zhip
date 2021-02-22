@@ -1,4 +1,4 @@
-// BuildSettings shared between both DEBUG and RELEASE and also identical for both FRAMEWORKS (Cocoa Touch Framework) and APPS (iOS)
+	// BuildSettings shared between both DEBUG and RELEASE and also identical for both FRAMEWORKS (Cocoa Touch Framework) and APPS (iOS)
 
 // Vanilla Xcode 9.3 settings
 ALWAYS_SEARCH_USER_PATHS = NO
@@ -65,7 +65,7 @@ MTL_ENABLE_DEBUG_INFO[config=Debug] = YES
 ONLY_ACTIVE_ARCH[config=Debug] = YES
 SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Debug] = $(inherited) $(_DEBUG)
 
-MACOSX_DEPLOYMENT_TARGET[sdk=macosx*] = 10.12
+MACOSX_DEPLOYMENT_TARGET[sdk=macosx*] = 10.15
 VALID_ARCHS[sdk=iphonesimulator*] = i386 x86_64
 VALID_ARCHS[sdk=macosx*] = x86_64
 
@@ -77,7 +77,7 @@ IPHONE_LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loade
 LD_RUNPATH_SEARCH_PATHS[sdk=iphoneos*] = $(IPHONE_LD_RUNPATH_SEARCH_PATHS)
 LD_RUNPATH_SEARCH_PATHS[sdk=iphonesimulator*] = $(IPHONE_LD_RUNPATH_SEARCH_PATHS)
 
-IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*] = 11.3
+IPHONEOS_DEPLOYMENT_TARGET[sdk=iphoneos*] = 13.0
 
 
 

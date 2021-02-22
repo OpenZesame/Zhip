@@ -5,23 +5,21 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 # Zhip
-Zhip is the worlds first and only iOS wallet for Zilliqa. The app is entirely open source. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame).
+This is the open source code code for the [iOS wallet app Zhip (App Store link)](https://apps.apple.com/us/app/zhip/id1455248315). Zhip is the worlds first iOS wallet for Zilliqa. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame).
 
 # Getting started
--  Xcode 10
+- Xcode 12 (Xcode 11 might work as well.)
 - Clone this repo
 
-*Since cocoapods* folder `Pods/` is under version control and thus downloaded when you cloned this repo the following tools are optional but needed if you would like to add a new pod.
-
 You can thus get started right away:
-```bash
-open Zhip.xcworkspace
+```sh
+open Zhip.xcodeproj
 ```
 
 ## Optional
 - Install [brew](https://brew.sh/)
-- Install [rbenv](https://github.com/rbenv/rbenv)
-- Install [Bundler](https://bundler.io/)
+- Install [SwiftLint](https://github.com/realm/SwiftLint) (using brew)
+- Install [SwiftGen](https://github.com/SwiftGen/SwiftGen) (using brew)
 
 # Architecture
 This app uses a novel architecture named *SLC: Single-Line Controller*, I **strongly** suggest that you begin by reading [this medium article about it](https://medium.com/@sajjon/single-line-controller-fbe474857787) and make sure to [read the second part](https://medium.com/@sajjon/single-line-controller-advanced-case-406e76731ee6) as well.
@@ -29,13 +27,13 @@ This app uses a novel architecture named *SLC: Single-Line Controller*, I **stro
 It is a kind of MVVM where the `UIViewController` in most cases is one single line and all view and flow of data logic is put in the ViewModel. It also uses the [Coordinator pattern](http://khanlou.com/2015/10/coordinators-redux/).
 
 # Dependencies
-You will find all dependencies inside the [Podfile](https://github.com/OpenZesame/Zhip/blob/develop/Podfile), but to mention the most important:
+You will find all dependencies inside the list of SPM packages in Xcode -> Project *Zhip* -> *Swift Packages* (or by *Show the Project navigator* and under *Swift Package Dependencies*), but here are the most important ones.
 
 ## Zesame
-This iOS wallet is entirely dependent on the [Zilliqa Swift SDK known as Zesame](https://github.com/OpenZesame/Zesame), without that this wallet couldn't exist. All cryptographic methods and all interaction with the Zilliqa Ledger through their [API](https://apidocs.zilliqa.com/#introduction) is done using Zesame.
+This iOS wallet is entirely dependent on the [Zilliqa Swift SDK known as `Zesame`](https://github.com/OpenZesame/Zesame), without that this wallet couldn't exist. All cryptographic methods and all interaction with the Zilliqa Ledger through their [API](https://apidocs.zilliqa.com/#introduction) is done using `Zesame`.
 
 ## EllipticCurveKit
-In turn, Zesame is dependent on the Elliptic Curve Cryptography of [EllipticCurveKit]((https://github.com/Sajjon/EllipticCurveKit)), for the generation of new wallets, restoration of existing ones, the encryption of your private keys into keystores and the signing of your transactions using [Schnorr Signatures](https://en.wikipedia.org/wiki/Schnorr_signature).
+In turn, `Zesame` is dependent on the Elliptic Curve Cryptography of [EllipticCurveKit]((https://github.com/Sajjon/EllipticCurveKit)), for the generation of new wallets, restoration of existing ones, the encryption of your private keys into keystores and the signing of your transactions using [Schnorr Signatures](https://en.wikipedia.org/wiki/Schnorr_signature).
 
 ## Other
 
@@ -56,9 +54,9 @@ If you choose to opt out Crashlytics will not be initialized and no crash report
 If you chose to opt in it will make it easier to fix potential bugs in the apps, especially those crucial ones resulting in crashes. Crashlytics has been added for this sole purpose, make the app more reliable and less likely to crash. 
 
 ## Disabled by default
-Open the file [Zhip-Info.plist](Source/Application/Zhip-Info.plist) and you will see that the value for the key `firebase_crashlytics_collection_enabled` is set to `false`, which is the [documented way of turning of crash reports by default](https://firebase.google.com/docs/crashlytics/customize-crash-reports)
+Open the file [Zhip-Info.plist](Sources/Application/Zhip-Info.plist) and you will see that the value for the key `firebase_crashlytics_collection_enabled` is set to `false`, which is the [documented way of turning of crash reports by default](https://firebase.google.com/docs/crashlytics/customize-crash-reports)
 
-When the app starts it checks if you accepted crash reporting, you can verify this by looking in the file [Bootstrap.swift](Source/Application/Utils/Bootstrap.swift) 
+When the app starts it checks if you accepted crash reporting, you can verify this by looking in the file [Bootstrap.swift](Sources/Application/Utils/Bootstrap.swift) 
 ```swift
 func setupCrashReportingIfAllowed() {
     guard Preferences.default.isTrue(.hasAcceptedCrashReporting)
@@ -82,6 +80,7 @@ This **free** wallet and the foundation Zesame its built upon has been developed
 
 **Any donation would be much appreciated**:
 
+- ZIL: zil108t2jdgse760d88qjqmffhe9uy0nk4wvzx404t
 - BTC: 3GarsdAzLpEYbhkryYz1WiZxhtTLLaNJwo
 - ETH: 0xAB8F0137295BFE37f50b581F76418518a91ab8DB
 - NEO: AbbnnCLP26ccSnLooDDcwPLDnfXbVL5skH

@@ -1,0 +1,76 @@
+// 
+// MIT License
+//
+// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
+import Foundation
+import RxSwift
+import RxCocoa
+
+public extension ObservableType {
+
+    func catchErrorReturnEmpty() -> Observable<Element> {
+        self.catch { _ in
+            Observable.empty()
+        }
+    }
+
+    func asDriverOnErrorReturnEmpty() -> Driver<Element> {
+        asDriver { _ in
+            Driver.empty()
+        }
+    }
+
+    func asDriverOnErrorJustComplete() -> Driver<Element> {
+        asDriver { error in
+            Driver.empty()
+        }
+    }
+
+    func mapToVoid() -> Observable<Void> {
+        map { _ in }
+    }
+}
+
+public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+    func mapToVoid() -> Driver<Void> {
+        map { _ in }
+    }
+    
+    func ifEmpty(switchTo replacement: Driver<Element>) -> Driver<Element> {
+        asObservable().ifEmpty(switchTo: replacement.asObservable()).asDriverOnErrorReturnEmpty()
+    }
+}
+
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, Element: ValidationConvertible {
+    func onlyErrors() -> Driver<AnyValidation> {
+        map { $0.validation }
+            .map { $0.isError ? $0 : nil }
+            .filterNil()
+    }
+
+    func nonErrors() -> Driver<AnyValidation> {
+        map { $0.validation }
+            .map { !$0.isError ? $0 : nil }
+            .filterNil()
+    }
+}
