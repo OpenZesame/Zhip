@@ -25,7 +25,7 @@
 import Foundation
 import IQKeyboardManagerSwift
 import SwiftyBeaver
-//import Firebase
+import Firebase
 import Zesame
 
 /// The global logger used throughout the app.
@@ -39,24 +39,21 @@ func bootstrap() {
 }
 
 func setupCrashReportingIfAllowed() {
-    print("⚠️⚠️⚠️ CRASH REPORTING DISABLED ⚠️⚠️⚠️")
-//    guard Preferences.default.isTrue(.hasAcceptedCrashReporting) else {
-//        // unsure if this does anything or if it is needed, but seems prudent.
-//        FirebaseApp.app()?.delete { _ in
-//            /* some required strange ObjC callback that we dont care about `- (void)deleteApp:(FIRAppVoidBoolCallback)completion;` */
-//        }
-//        return
-//    }
-//    guard FirebaseApp.app() == nil else {
-//        // already configured, will crash if called twice
-//        return
-//    }
-//    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
-//    // Firebase analytics is not enabled, but Crashlytics is setup via Firebase
-//    // (the new way of doing it since Google bought Fabric)
-//    // So Crashlytics is setup via Firebase.
-//    FirebaseApp.configure()
-//    Fabric.with([Crashlytics.self])
+    guard Preferences.default.isTrue(.hasAcceptedCrashReporting) else {
+        Analytics.setAnalyticsCollectionEnabled(false)
+        // unsure if this does anything or if it is needed, but seems prudent.
+        FirebaseApp.app()?.delete { _ in
+            /* some required strange ObjC callback that we dont care about `- (void)deleteApp:(FIRAppVoidBoolCallback)completion;` */
+        }
+        return
+    }
+    guard FirebaseApp.app() == nil else {
+        // already configured, will crash if called twice
+        return
+    }
+    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
+    FirebaseApp.configure()
+    Analytics.setAnalyticsCollectionEnabled(true)
 }
 
 private func setupKeyboardHiding() {

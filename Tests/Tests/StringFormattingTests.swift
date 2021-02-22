@@ -26,11 +26,10 @@ import Foundation
 import UIKit
 import XCTest
 @testable import Zhip
-//import DateToolsSwift
+import SwiftDate
 
 class StringFormattingTests: XCTestCase {
 
-    /*
     func testFormatting() {
         func f(_ s: String) -> String {
             let new = s.inserting(string: "x", every: 3)
@@ -52,37 +51,39 @@ class StringFormattingTests: XCTestCase {
     // These tests might fail if they are run exactly 00:01... kind of funny. Not so probable though.
     func testTimeAgoEnglish() {
         func s(_ date: Date) -> String {
-            return date.timeAgoSinceNow
+            return date.toRelative(
+                style: RelativeFormatter.defaultStyle(),
+                locale: Locale.current
+            )
         }
         XCTAssertEqual(
-            s(1.seconds.earlier),
-            "Just now"
+            s(1.seconds.ago),
+            "now"
         )
 
         XCTAssertEqual(
-            s(2.seconds.earlier),
-            "Just now"
+            s(2.seconds.ago),
+            "now"
         )
 
         XCTAssertEqual(
-            s(3.seconds.earlier),
-            "3 seconds ago"
+            s(29.seconds.ago),
+            "now"
         )
 
         XCTAssertEqual(
-            s(59.seconds.earlier),
-            "59 seconds ago"
+            s(45.seconds.ago),
+            "1 minute ago"
         )
 
         XCTAssertEqual(
-            s(1.minutes.earlier),
-            "A minute ago"
+            s(1.minutes.ago),
+            "1 minute ago"
         )
 
         XCTAssertEqual(
-            s(2.minutes.earlier),
+            s(2.minutes.ago),
             "2 minutes ago"
         )
     }
- */
 }

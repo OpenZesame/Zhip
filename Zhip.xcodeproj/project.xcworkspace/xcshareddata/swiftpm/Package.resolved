@@ -192,7 +192,7 @@
       },
       {
         "package": "RxSwift",
-        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "repositoryURL": "git@github.com:ReactiveX/RxSwift.git",
         "state": {
           "branch": null,
           "revision": "7e01c05f25c025143073eaa3be3532f9375c614b",
@@ -267,7 +267,7 @@
         "repositoryURL": "git@github.com:OpenZesame/Zesame.git",
         "state": {
           "branch": null,
-          "revision": "4a1978b980fd5fc706990fc1fbce13cbc1844111",
+          "revision": "aa0b8a7c9ebb0264e31014320d0a4487942fb0a3",
           "version": "1.1.0"
         }
       }

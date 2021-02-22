@@ -38,7 +38,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
     private lazy var recipientAddressField          = FloatingLabelTextField()
     private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(asset: Asset.Icons.Small.camera)
     private lazy var amountToSendField              = FloatingLabelTextField()
-    private lazy var maxAmounButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
+    private lazy var maxAmountButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     private lazy var gasPriceField                  = FloatingLabelTextField()
     private lazy var toReviewButton                     = UIButton()
@@ -56,7 +56,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
     ]
 
     override func setup() {
-        setupSubiews()
+        setupSubviews()
         prefillValuesForDebugBuilds()
     }
 }
@@ -88,10 +88,10 @@ extension PrepareTransactionView: ViewModelled {
         return InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
             scanQRTrigger: scanQRButton.rx.tap.asDriver(),
-            maxAmountTrigger: maxAmounButton.rx.tap.asDriver(),
+            maxAmountTrigger: maxAmountButton.rx.tap.asDriver(),
             toReviewTrigger: toReviewButton.rx.tap.asDriver(),
 
-            recepientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
+            recipientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
 
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
@@ -107,7 +107,7 @@ extension PrepareTransactionView: ViewModelled {
 private extension PrepareTransactionView {
 
     // swiftlint:disable function_body_length
-    func setupSubiews() {
+    func setupSubviews() {
 
         balanceTitleLabel.withStyle(.title) {
             $0.text(€.Labels.Balance.title)

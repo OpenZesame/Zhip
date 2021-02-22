@@ -88,7 +88,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		// MARK: Recipient Input ->  Value + Validation
         let recipientValidationValue: Driver<Validation<Address, AddressValidator.Error>> = Driver.merge(
-			input.fromView.recepientAddress.map { validator.validateRecipient($0) },
+			input.fromView.recipientAddress.map { validator.validateRecipient($0) },
 			scannedOrDeeplinkedTransaction.map { .valid($0.to) }
 		)
 
@@ -273,7 +273,7 @@ extension PrepareTransactionViewModel {
 		let maxAmountTrigger: Driver<Void>
 		let toReviewTrigger: Driver<Void>
 
-		let recepientAddress: Driver<String>
+		let recipientAddress: Driver<String>
 		let didEndEditingRecipientAddress: Driver<Void>
 
 		let amountToSend: Driver<String>
