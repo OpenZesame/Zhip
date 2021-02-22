@@ -30,6 +30,7 @@ protocol TransactionsUseCase {
 
     var cachedBalance: ZilAmount? { get }
     func cacheBalance(_ balance: ZilAmount)
+    func getMinimumGasPrice() -> Observable<ZilAmount>
     func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse>
     func deleteCachedBalance()
     var balanceUpdatedAt: Date? { get }

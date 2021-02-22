@@ -64,9 +64,15 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         preferences.save(value: balance.qaString, for: .cachedBalance)
         balanceWasUpdated(at: Date())
     }
+    
+    func getMinimumGasPrice() -> Observable<ZilAmount> {
+        zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true).map { $0.amount }
+        
+    }
 
     func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse> {
-        return zilliqaService.getBalance(for: address)
+        zilliqaService.getBalance(for: address)
+
     }
 
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassword: String) -> Observable<TransactionResponse> {

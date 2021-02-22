@@ -74,6 +74,7 @@ extension AskForCrashReportingPermissionsView: ViewModelled {
 private typealias € = L10n.Scene.AskForCrashReportingPermissions
 private typealias Icon = Asset.Icons.Large
 private extension AskForCrashReportingPermissionsView {
+    
     func setupSubviews() {
         imageView.withStyle(.default) {
             $0.asset(Icon.analytics)
@@ -87,7 +88,7 @@ private extension AskForCrashReportingPermissionsView {
             $0.text(€.Text.disclaimer).isSelectable(false)
         }
 
-        hasReadDisclaimerCheckbox.withStyle(.default) {
+        hasReadDisclaimerCheckbox.withStyle(.init(alignment: .center)) {
             $0.text(€.Checkbox.readDisclaimer)
         }
 

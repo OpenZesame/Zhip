@@ -243,7 +243,6 @@
 		E61BA15125E2F25B005B63C8 /* Validator in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15025E2F25B005B63C8 /* Validator */; };
 		E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15525E2F297005B63C8 /* KeychainSwift */; };
 		E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */; };
-		E61BA17625E30507005B63C8 /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA17525E30507005B63C8 /* Zesame */; };
 		E635A4A2225D2FDB00124823 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59B21A18F140078D659 /* TermsOfServiceViewModel.swift */; };
 		E635A4A3225D2FDB00124823 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59C21A18F140078D659 /* TermsOfServiceView.swift */; };
 		E635A4A4225D2FDB00124823 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59D21A18F140078D659 /* TermsOfService.swift */; };
@@ -312,6 +311,10 @@
 		E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
 		E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
+		E643724325E3A9520089C99D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E643724225E3A9520089C99D /* FirebaseAnalytics */; };
+		E643724525E3A9520089C99D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = E643724425E3A9520089C99D /* FirebaseCrashlytics */; };
+		E643724A25E3B01C0089C99D /* BEMCheckBox in Frameworks */ = {isa = PBXBuildFile; productRef = E643724925E3B01C0089C99D /* BEMCheckBox */; };
+		E646606125E3F04A00C4787C /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = E646606025E3F04A00C4787C /* Zesame */; };
 		E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6622DF822B5123B0086134D /* CharacterSetTests.swift */; };
 		E682358522BB70BE0028F1EC /* AmountFromText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358422BB70BE0028F1EC /* AmountFromText.swift */; };
 		E682358B22BB86620028F1EC /* ReviewTransactionBeforeSigningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358822BB86620028F1EC /* ReviewTransactionBeforeSigningViewModel.swift */; };
@@ -653,14 +656,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E61BA17625E30507005B63C8 /* Zesame in Frameworks */,
 				E61BA14025E2F1F2005B63C8 /* EFQRCode in Frameworks */,
+				E643724A25E3B01C0089C99D /* BEMCheckBox in Frameworks */,
+				E643724325E3A9520089C99D /* FirebaseAnalytics in Frameworks */,
 				E61BA14A25E2F240005B63C8 /* QRCodeReader in Frameworks */,
 				E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */,
+				E646606125E3F04A00C4787C /* Zesame in Frameworks */,
 				E61BA15125E2F25B005B63C8 /* Validator in Frameworks */,
 				E61BA12C25E2F084005B63C8 /* RxDataSources in Frameworks */,
 				E61BA12725E2EFE7005B63C8 /* SwiftDate in Frameworks */,
 				E61BA13625E2F0CF005B63C8 /* TinyConstraints in Frameworks */,
+				E643724525E3A9520089C99D /* FirebaseCrashlytics in Frameworks */,
 				E61BA13125E2F0A6005B63C8 /* SwiftyBeaver in Frameworks */,
 				E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */,
 				E61BA13B25E2F0EE005B63C8 /* SkyFloatingLabelTextField in Frameworks */,
@@ -1880,6 +1886,7 @@
 				484B063220BA0C2D00C4E50A /* Sources */,
 				484B063320BA0C2D00C4E50A /* Frameworks */,
 				484B063420BA0C2D00C4E50A /* Resources */,
+				E643724025E3A7D90089C99D /* 📣 Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -1897,7 +1904,10 @@
 				E61BA15025E2F25B005B63C8 /* Validator */,
 				E61BA15525E2F297005B63C8 /* KeychainSwift */,
 				E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */,
-				E61BA17525E30507005B63C8 /* Zesame */,
+				E643724225E3A9520089C99D /* FirebaseAnalytics */,
+				E643724425E3A9520089C99D /* FirebaseCrashlytics */,
+				E643724925E3B01C0089C99D /* BEMCheckBox */,
+				E646606025E3F04A00C4787C /* Zesame */,
 			);
 			productName = ZilliqaSDKiOSZhip;
 			productReference = 484B063620BA0C2D00C4E50A /* Zhip.app */;
@@ -1968,7 +1978,9 @@
 				E61BA14F25E2F25B005B63C8 /* XCRemoteSwiftPackageReference "Validator" */,
 				E61BA15425E2F297005B63C8 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
-				E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */,
+				E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */,
+				E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */,
 			);
 			productRefGroup = 484B063720BA0C2D00C4E50A /* Products */;
 			projectDirPath = "";
@@ -2024,6 +2036,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E643724025E3A7D90089C99D /* 📣 Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "📣 Crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\n";
+		};
 		E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2607,12 +2637,28 @@
 				minimumVersion = 6.5.6;
 			};
 		};
-		E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */ = {
+		E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.6.0;
+			};
+		};
+		E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:Boris-Em/BEMCheckBox.git";
+			requirement = {
+				kind = revision;
+				revision = a3292ebae9f0c2737b0c90281219dced2ce51ac8;
+			};
+		};
+		E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:OpenZesame/Zesame.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.3;
+				minimumVersion = 1.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -2668,9 +2714,24 @@
 			package = E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
 		};
-		E61BA17525E30507005B63C8 /* Zesame */ = {
+		E643724225E3A9520089C99D /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */;
+			package = E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		E643724425E3A9520089C99D /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		E643724925E3B01C0089C99D /* BEMCheckBox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */;
+			productName = BEMCheckBox;
+		};
+		E646606025E3F04A00C4787C /* Zesame */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */;
 			productName = Zesame;
 		};
 /* End XCSwiftPackageProductDependency section */

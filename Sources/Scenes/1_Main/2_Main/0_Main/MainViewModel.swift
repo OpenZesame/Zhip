@@ -95,7 +95,10 @@ final class MainViewModel: BaseViewModel<
 
             input.fromView.receiveTrigger
                 .do(onNext: { userIntends(to: .receive) })
-                .drive()
+                .drive(),
+            
+            transactionUseCase.getMinimumGasPrice().subscribe()
+            
         ]
 
         let formatter = AmountFormatter()

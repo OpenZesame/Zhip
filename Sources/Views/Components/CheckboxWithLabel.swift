@@ -27,46 +27,35 @@ import UIKit
 import TinyConstraints
 import RxSwift
 import RxCocoa
-
-class M13Checkbox: UIView {
-    struct CheckState {}
-    let e = "error"
-    override init(frame: CGRect) {
-        fatalError()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    func toggleCheckState(_ bool: Bool) {
-        fatalError()
-    }
-}
+import BEMCheckBox
 
 final class CheckboxWithLabel: UIControl {
     struct Style {
         var labelText: String?
         var numberOfLines: Int?
+        var alignment: UIStackView.Alignment?
         init(
             labelText: String? = nil,
-            numberOfLines: Int? = nil
+            numberOfLines: Int? = nil,
+            alignment: UIStackView.Alignment? = nil
             ) {
             self.labelText = labelText
             self.numberOfLines = numberOfLines
+            self.alignment = alignment
         }
     }
 
     static let checkboxSize: CGFloat = 24
 
-    fileprivate lazy var checkbox = M13Checkbox(frame: .zero)
+    fileprivate lazy var checkbox = BEMCheckBox(frame: .init(origin: .zero, size: .init(width: CheckboxWithLabel.checkboxSize, height: CheckboxWithLabel.checkboxSize)))
     private lazy var label = UILabel()
 
     private lazy var stackView = UIStackView(arrangedSubviews: [checkbox, label])
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         super.beginTracking(touch, with: event)
-//        checkbox.toggleCheckState(true)
-//        checkbox.sendActions(for: .valueChanged)
+        checkbox.setOn(!checkbox.on, animated: true)
+        checkbox.sendActions(for: .valueChanged)
         return true
     }
 }
@@ -81,16 +70,24 @@ extension CheckboxWithLabel {
         }
 
         stackView.withStyle(.horizontal) {
-            // only by using `.top` alignment together with a label having `numberOfLines` set to 0
-            // can we make the label span the height of the stackview. Altough we would like to add
-            // the constraint: `label.centerY(to: checkbox)`, which indeed layouts these views
-            // vertically aligned to their respective centers, it truncates the text of the label.
-            $0.alignment(style.numberOfLines == 0 ? .top : .fill)
+            
+            if let alignment = style.alignment {
+                return $0.alignment(alignment)
+            } else {
+                // only by using `.top` alignment together with a label having `numberOfLines` set to 0
+                // can we make the label span the height of the stackview. Altough we would like to add
+                // the constraint: `label.centerY(to: checkbox)`, which indeed layouts these views
+                // vertically aligned to their respective centers, it truncates the text of the label.
+                return $0.alignment(style.numberOfLines == 0 ? .top : .fill)
+            }
         }
     }
 
     @discardableResult
-    func withStyle(_ style: Style, customize: ((Style) -> Style)? = nil) -> CheckboxWithLabel {
+    func withStyle(
+        _ style: Style,
+        customize: ((Style) -> Style)? = nil
+    ) -> CheckboxWithLabel {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style
         apply(style: style)
@@ -119,7 +116,7 @@ extension CheckboxWithLabel.Style {
 // MARK: - Style Presets
 extension CheckboxWithLabel.Style {
     static var `default`: CheckboxWithLabel.Style {
-        return CheckboxWithLabel.Style(
+        .init(
             numberOfLines: 0
         )
     }
@@ -148,17 +145,16 @@ private extension CheckboxWithLabel {
     }
 
     func setupCheckbox() {
-//        checkbox.translatesAutoresizingMaskIntoConstraints = false
-//        checkbox.boxType = .square
-//        checkbox.cornerRadius = 3
-//        checkbox.boxLineWidth = 1
-//        checkbox.checkmarkLineWidth = 2
-//
-//        // Color of box line in unchecked state
-//        checkbox.secondaryTintColor = .teal
-//        // Color of checkmark and box when checked
-//        checkbox.tintColor = .teal
-
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.boxType = .square
+        checkbox.cornerRadius = 3
+        checkbox.lineWidth = 1
+        checkbox.onCheckColor = .teal
+        checkbox.onFillColor = .deepBlue
+        checkbox.onTintColor = .teal
+        checkbox.tintColor = .teal
+        checkbox.hideBox  = false
+        checkbox.animationDuration = 0.2
     }
 }
 
@@ -170,23 +166,12 @@ extension Reactive where Base: CheckboxWithLabel {
 }
 
 // MARK: - M13Checkbox + Reactive
-extension Reactive where Base: M13Checkbox {
+extension Reactive where Base: BEMCheckBox {
     var isChecked: ControlProperty<Bool> {
-//        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
-//            $0.checkState == .checked
-//        }, setter: {
-//            $0.setCheckState($1 ? .checked : .unchecked, animated: true)
-//        })
-        fatalError()
-    }
-
-    /// Reactive wrapper for `checkState` property.
-    var state: ControlProperty<M13Checkbox.CheckState> {
-//        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
-//            return $0.checkState
-//        }, setter: {
-//            $0.setCheckState($1, animated: true)
-//        })
-        fatalError()
+        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
+            $0.on
+        }, setter: {
+            $0.setOn($1, animated: true)
+        })
     }
 }
