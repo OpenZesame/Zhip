@@ -126,7 +126,10 @@ private extension RestoreWalletView {
             restorationMethodSegmentedControl.insertSegment(withTitle: title, at: segment.rawValue, animated: false)
         }
 
-        restorationMethodSegmentedControl.tintColor = .teal
+        restorationMethodSegmentedControl.selectedSegmentTintColor = .teal
+        
+        restorationMethodSegmentedControl.addBorder(.init(color: .teal, width: 1))
+        
         let whiteFontAttributes = [NSAttributedString.Key.font: UIFont.hint,
                                    NSAttributedString.Key.foregroundColor: UIColor.white]
 
