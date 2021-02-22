@@ -24,13 +24,12 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
 
 extension Reactive where Base: UIView {
 
     /// Bindable sink for `hidden` property.
-    public var isVisible: RxCocoa.Binder<Bool> {
+    public var isVisible: RxSwift.Binder<Bool> {
         return Binder(self.base) { view, isVisible in
             view.isHidden = !isVisible
         }

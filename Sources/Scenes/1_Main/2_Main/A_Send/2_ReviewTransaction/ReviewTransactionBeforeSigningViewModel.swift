@@ -39,7 +39,7 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
     private let paymentToReview: Payment
 
-    init(paymentToReview: Payment) { //}, walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase) {
+    init(paymentToReview: Payment) {
         self.paymentToReview = paymentToReview
     }
 

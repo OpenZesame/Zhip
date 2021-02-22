@@ -45,7 +45,7 @@ final class PincodeTextField: UITextField {
 
     /// creds: https://stackoverflow.com/a/10641203/1311272
     override func addGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
-        //Prevent long press to show the magnifying glass
+        // Prevent long press to show the magnifying glass
         if gestureRecognizer is UILongPressGestureRecognizer {
             gestureRecognizer.isEnabled = false
         }

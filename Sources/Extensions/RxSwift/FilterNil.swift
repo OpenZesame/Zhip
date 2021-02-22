@@ -60,7 +60,7 @@ extension Observable where Element: OptionalType {
     }
 }
 
-extension SharedSequence where S == DriverSharingStrategy, Element: OptionalType {
+extension SharedSequence where SharingStrategy == DriverSharingStrategy, Element: OptionalType {
 
     func filterNil() -> Driver<Element.Wrapped> {
         return flatMap { (element) -> Driver<Element.Wrapped> in

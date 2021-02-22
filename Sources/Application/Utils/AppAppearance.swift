@@ -75,7 +75,7 @@ public extension UINavigationBar {
     }
 
     static var defaultBarStyle: UIBarStyle {
-        return .blackTranslucent
+        return .black
     }
 
     static var defaultBackgroundImage: UIImage {

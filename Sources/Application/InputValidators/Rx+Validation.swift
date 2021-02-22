@@ -35,7 +35,7 @@ struct EditingValidation {
     }
 }
 
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E == EditingValidation {
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, Element == EditingValidation {
 
     func eagerValidLazyErrorTurnedToEmptyOnEdit(directlyDisplayErrorMessages: Driver<String> = .empty()) -> Driver<AnyValidation> {
         let editingValidation: Driver<AnyValidation> = asDriver().map {

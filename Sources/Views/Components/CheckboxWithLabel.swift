@@ -25,9 +25,23 @@
 import UIKit
 
 import TinyConstraints
-import M13Checkbox
 import RxSwift
 import RxCocoa
+
+class M13Checkbox: UIView {
+    struct CheckState {}
+    let e = "error"
+    override init(frame: CGRect) {
+        fatalError()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func toggleCheckState(_ bool: Bool) {
+        fatalError()
+    }
+}
 
 final class CheckboxWithLabel: UIControl {
     struct Style {
@@ -51,8 +65,8 @@ final class CheckboxWithLabel: UIControl {
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         super.beginTracking(touch, with: event)
-        checkbox.toggleCheckState(true)
-        checkbox.sendActions(for: .valueChanged)
+//        checkbox.toggleCheckState(true)
+//        checkbox.sendActions(for: .valueChanged)
         return true
     }
 }
@@ -134,16 +148,16 @@ private extension CheckboxWithLabel {
     }
 
     func setupCheckbox() {
-        checkbox.translatesAutoresizingMaskIntoConstraints = false
-        checkbox.boxType = .square
-        checkbox.cornerRadius = 3
-        checkbox.boxLineWidth = 1
-        checkbox.checkmarkLineWidth = 2
-
-        // Color of box line in unchecked state
-        checkbox.secondaryTintColor = .teal
-        // Color of checkmark and box when checked
-        checkbox.tintColor = .teal
+//        checkbox.translatesAutoresizingMaskIntoConstraints = false
+//        checkbox.boxType = .square
+//        checkbox.cornerRadius = 3
+//        checkbox.boxLineWidth = 1
+//        checkbox.checkmarkLineWidth = 2
+//
+//        // Color of box line in unchecked state
+//        checkbox.secondaryTintColor = .teal
+//        // Color of checkmark and box when checked
+//        checkbox.tintColor = .teal
 
     }
 }
@@ -158,19 +172,21 @@ extension Reactive where Base: CheckboxWithLabel {
 // MARK: - M13Checkbox + Reactive
 extension Reactive where Base: M13Checkbox {
     var isChecked: ControlProperty<Bool> {
-        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
-            $0.checkState == .checked
-        }, setter: {
-            $0.setCheckState($1 ? .checked : .unchecked, animated: true)
-        })
+//        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
+//            $0.checkState == .checked
+//        }, setter: {
+//            $0.setCheckState($1 ? .checked : .unchecked, animated: true)
+//        })
+        fatalError()
     }
 
     /// Reactive wrapper for `checkState` property.
     var state: ControlProperty<M13Checkbox.CheckState> {
-        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
-            return $0.checkState
-        }, setter: {
-            $0.setCheckState($1, animated: true)
-        })
+//        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
+//            return $0.checkState
+//        }, setter: {
+//            $0.setCheckState($1, animated: true)
+//        })
+        fatalError()
     }
 }

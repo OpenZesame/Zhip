@@ -25,7 +25,7 @@
 import Foundation
 import RxSwift
 
-extension ObserverType where Self.E == BarButtonContent {
+extension ObserverType where Self.Element == BarButtonContent {
     func onBarButton(_ predefined: BarButton) {
         onNext(predefined.content)
     }

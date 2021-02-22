@@ -27,9 +27,9 @@ import Validator
 
 public struct ValidationRuleHexadecimalCharacters: ValidationRule {
     public typealias InputType = String
-    public var error: Swift.Error
+    public var error: ValidationError
     private let nestedRule: ValidationRuleCondition<InputType>
-    public init(error: Swift.Error) {
+    public init(error: ValidationError) {
         nestedRule = ValidationRuleCondition<InputType>(error: error) {
             guard let inputString = $0 else { return false }
             return CharacterSet.hexadecimalDigitsIncluding0x.isSuperset(of: CharacterSet(charactersIn: inputString))

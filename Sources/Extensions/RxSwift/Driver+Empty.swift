@@ -28,48 +28,48 @@ import RxCocoa
 
 public extension ObservableType {
 
-    func catchErrorReturnEmpty() -> Observable<E> {
-        return catchError { _ in
-            return Observable.empty()
+    func catchErrorReturnEmpty() -> Observable<Element> {
+        self.catch { _ in
+            Observable.empty()
         }
     }
 
-    func asDriverOnErrorReturnEmpty() -> Driver<E> {
-        return asDriver { _ in
-            return Driver.empty()
+    func asDriverOnErrorReturnEmpty() -> Driver<Element> {
+        asDriver { _ in
+            Driver.empty()
         }
     }
 
-    func asDriverOnErrorJustComplete() -> Driver<E> {
-        return asDriver { error in
-            return Driver.empty()
+    func asDriverOnErrorJustComplete() -> Driver<Element> {
+        asDriver { error in
+            Driver.empty()
         }
     }
 
     func mapToVoid() -> Observable<Void> {
-        return map { _ in }
+        map { _ in }
     }
 }
 
 public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
     func mapToVoid() -> Driver<Void> {
-        return map { _ in }
+        map { _ in }
     }
     
-    func ifEmpty(switchTo replacement: Driver<E>) -> Driver<E> {
-        return self.asObservable().ifEmpty(switchTo: replacement.asObservable()).asDriverOnErrorReturnEmpty()
+    func ifEmpty(switchTo replacement: Driver<Element>) -> Driver<Element> {
+        asObservable().ifEmpty(switchTo: replacement.asObservable()).asDriverOnErrorReturnEmpty()
     }
 }
 
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, E: ValidationConvertible {
+extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy, Element: ValidationConvertible {
     func onlyErrors() -> Driver<AnyValidation> {
-        return map { $0.validation }
+        map { $0.validation }
             .map { $0.isError ? $0 : nil }
             .filterNil()
     }
 
     func nonErrors() -> Driver<AnyValidation> {
-        return map { $0.validation }
+        map { $0.validation }
             .map { !$0.isError ? $0 : nil }
             .filterNil()
     }

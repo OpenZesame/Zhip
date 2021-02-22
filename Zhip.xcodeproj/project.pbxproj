@@ -233,7 +233,6 @@
 		E6019A64225E754D0079DDE8 /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
 		E6019A65225E754D0079DDE8 /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
 		E6019A66225E754D0079DDE8 /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
-		E61BA12225E2EEF0005B63C8 /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA12125E2EEF0005B63C8 /* Zesame */; };
 		E61BA12725E2EFE7005B63C8 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA12625E2EFE7005B63C8 /* SwiftDate */; };
 		E61BA12C25E2F084005B63C8 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA12B25E2F084005B63C8 /* RxDataSources */; };
 		E61BA13125E2F0A6005B63C8 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA13025E2F0A6005B63C8 /* SwiftyBeaver */; };
@@ -244,8 +243,7 @@
 		E61BA15125E2F25B005B63C8 /* Validator in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15025E2F25B005B63C8 /* Validator */; };
 		E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15525E2F297005B63C8 /* KeychainSwift */; };
 		E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */; };
-		E61BA16025E2F345005B63C8 /* SwiftGenKit in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15F25E2F345005B63C8 /* SwiftGenKit */; };
-		E61BA16525E2F596005B63C8 /* M13Checkbox in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA16425E2F596005B63C8 /* M13Checkbox */; };
+		E61BA17625E30507005B63C8 /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA17525E30507005B63C8 /* Zesame */; };
 		E635A4A2225D2FDB00124823 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59B21A18F140078D659 /* TermsOfServiceViewModel.swift */; };
 		E635A4A3225D2FDB00124823 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59C21A18F140078D659 /* TermsOfServiceView.swift */; };
 		E635A4A4225D2FDB00124823 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59D21A18F140078D659 /* TermsOfService.swift */; };
@@ -655,6 +653,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E61BA17625E30507005B63C8 /* Zesame in Frameworks */,
 				E61BA14025E2F1F2005B63C8 /* EFQRCode in Frameworks */,
 				E61BA14A25E2F240005B63C8 /* QRCodeReader in Frameworks */,
 				E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */,
@@ -662,11 +661,8 @@
 				E61BA12C25E2F084005B63C8 /* RxDataSources in Frameworks */,
 				E61BA12725E2EFE7005B63C8 /* SwiftDate in Frameworks */,
 				E61BA13625E2F0CF005B63C8 /* TinyConstraints in Frameworks */,
-				E61BA12225E2EEF0005B63C8 /* Zesame in Frameworks */,
 				E61BA13125E2F0A6005B63C8 /* SwiftyBeaver in Frameworks */,
 				E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */,
-				E61BA16525E2F596005B63C8 /* M13Checkbox in Frameworks */,
-				E61BA16025E2F345005B63C8 /* SwiftGenKit in Frameworks */,
 				E61BA13B25E2F0EE005B63C8 /* SkyFloatingLabelTextField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1879,12 +1875,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zhip" */;
 			buildPhases = (
-				4802C7802194FFB7004E4980 /* ✅ SwiftLint */,
-				48A9EC4C2195CE6600A62D3A /* 🤖 SwiftGen */,
+				E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */,
 				484B063220BA0C2D00C4E50A /* Sources */,
 				484B063320BA0C2D00C4E50A /* Frameworks */,
 				484B063420BA0C2D00C4E50A /* Resources */,
-				4862CC6921FCF35F0076B773 /* 🐛 Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -1892,7 +1886,6 @@
 			);
 			name = Zhip;
 			packageProductDependencies = (
-				E61BA12125E2EEF0005B63C8 /* Zesame */,
 				E61BA12625E2EFE7005B63C8 /* SwiftDate */,
 				E61BA12B25E2F084005B63C8 /* RxDataSources */,
 				E61BA13025E2F0A6005B63C8 /* SwiftyBeaver */,
@@ -1903,8 +1896,7 @@
 				E61BA15025E2F25B005B63C8 /* Validator */,
 				E61BA15525E2F297005B63C8 /* KeychainSwift */,
 				E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */,
-				E61BA15F25E2F345005B63C8 /* SwiftGenKit */,
-				E61BA16425E2F596005B63C8 /* M13Checkbox */,
+				E61BA17525E30507005B63C8 /* Zesame */,
 			);
 			productName = ZilliqaSDKiOSZhip;
 			productReference = 484B063620BA0C2D00C4E50A /* Zhip.app */;
@@ -1914,7 +1906,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 484B066120BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "ZhipTests" */;
 			buildPhases = (
-				85D8528398A840E47CCD4B93 /* [CP] Check Pods Manifest.lock */,
 				484B064620BA0C2F00C4E50A /* Sources */,
 				484B064720BA0C2F00C4E50A /* Frameworks */,
 				484B064820BA0C2F00C4E50A /* Resources */,
@@ -1966,7 +1957,6 @@
 			);
 			mainGroup = 484B062D20BA0C2D00C4E50A;
 			packageReferences = (
-				E61BA12025E2EEF0005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */,
 				E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				E61BA12A25E2F084005B63C8 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				E61BA12F25E2F0A6005B63C8 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
@@ -1977,8 +1967,7 @@
 				E61BA14F25E2F25B005B63C8 /* XCRemoteSwiftPackageReference "Validator" */,
 				E61BA15425E2F297005B63C8 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
-				E61BA15E25E2F345005B63C8 /* XCRemoteSwiftPackageReference "SwiftGen" */,
-				E61BA16325E2F596005B63C8 /* XCRemoteSwiftPackageReference "M13Checkbox" */,
+				E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */,
 			);
 			productRefGroup = 484B063720BA0C2D00C4E50A /* Products */;
 			projectDirPath = "";
@@ -2034,7 +2023,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4802C7802194FFB7004E4980 /* ✅ SwiftLint */ = {
+		E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2043,73 +2032,14 @@
 			);
 			inputPaths = (
 			);
-			name = "✅ SwiftLint";
+			name = "✅ Swiftlint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-		4862CC6921FCF35F0076B773 /* 🐛 Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
-			);
-			name = "🐛 Crashlytics";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
-		};
-		48A9EC4C2195CE6600A62D3A /* 🤖 SwiftGen */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "🤖 SwiftGen";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/bin/xcrun --sdk macosx swift run swiftgen\n";
-		};
-		85D8528398A840E47CCD4B93 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ZhipTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2578,14 +2508,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E61BA12025E2EEF0005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:OpenZesame/Zesame.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 1.0.2;
-			};
-		};
 		E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:malcommac/SwiftDate.git";
@@ -2666,30 +2588,17 @@
 				minimumVersion = 6.5.6;
 			};
 		};
-		E61BA15E25E2F345005B63C8 /* XCRemoteSwiftPackageReference "SwiftGen" */ = {
+		E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:SwiftGen/SwiftGen.git";
+			repositoryURL = "git@github.com:OpenZesame/Zesame.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.4.0;
-			};
-		};
-		E61BA16325E2F596005B63C8 /* XCRemoteSwiftPackageReference "M13Checkbox" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:netmi/M13Checkbox.git";
-			requirement = {
-				kind = revision;
-				revision = 5103f8aa13ca87ed75e846335ab0f4fcef03430e;
+				minimumVersion = 1.0.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E61BA12125E2EEF0005B63C8 /* Zesame */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA12025E2EEF0005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */;
-			productName = Zesame;
-		};
 		E61BA12625E2EFE7005B63C8 /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */;
@@ -2740,15 +2649,10 @@
 			package = E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
 		};
-		E61BA15F25E2F345005B63C8 /* SwiftGenKit */ = {
+		E61BA17525E30507005B63C8 /* Zesame */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E61BA15E25E2F345005B63C8 /* XCRemoteSwiftPackageReference "SwiftGen" */;
-			productName = SwiftGenKit;
-		};
-		E61BA16425E2F596005B63C8 /* M13Checkbox */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA16325E2F596005B63C8 /* XCRemoteSwiftPackageReference "M13Checkbox" */;
-			productName = M13Checkbox;
+			package = E61BA17425E30507005B63C8 /* XCRemoteSwiftPackageReference "Zesame" */;
+			productName = Zesame;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

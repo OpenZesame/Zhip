@@ -43,7 +43,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         
         self.bag <~ scene.viewModel.navigator.navigation
             .asObservable()
-            .observeOn(MainScheduler.asyncInstance)
+            .observe(on: MainScheduler.asyncInstance)
             .do(onNext: { [weak self] userDid in
                 switch userDid {
                 case .unlockApp:

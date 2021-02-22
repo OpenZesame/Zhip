@@ -32,7 +32,7 @@ public final class ErrorTracker: SharedSequenceConvertibleType {
     public typealias SharingStrategy = DriverSharingStrategy
     private let _subject = PublishSubject<Error>()
 
-    public func trackError<O: ObservableConvertibleType>(from source: O) -> Observable<O.E> {
+    public func trackError<O: ObservableConvertibleType>(from source: O) -> Observable<O.Element> {
         return source.asObservable().do(onError: onError)
     }
 
@@ -54,7 +54,7 @@ public final class ErrorTracker: SharedSequenceConvertibleType {
 }
 
 public extension ObservableConvertibleType {
-    func trackError(_ errorTracker: ErrorTracker) -> Observable<E> {
+    func trackError(_ errorTracker: ErrorTracker) -> Observable<Element> {
         return errorTracker.trackError(from: self)
     }
 }

@@ -23,18 +23,21 @@
 //
 
 import Foundation
-
-//import DateToolsSwift
+import SwiftDate
 
 struct BalanceLastUpdatedFormatter {
 
     func string(from date: Date?) -> String {
-//        let Formatter = L10n.Formatter.self
-//        guard let updatedAt = date else {
-//            return  Formatter.balanceFirstFetch
-//        }
-//        return Formatter.balanceWasUpdatedAt(updatedAt.timeAgoSinceNow.lowercased())
-        fatalError()
+        let Formatter = L10n.Formatter.self
+        guard let updatedAt = date else {
+            return  Formatter.balanceFirstFetch
+        }
+        return Formatter.balanceWasUpdatedAt(
+            updatedAt.toRelative(
+                style: RelativeFormatter.defaultStyle(),
+                locale: Locale.current
+            )
+        )
     }
     
 }

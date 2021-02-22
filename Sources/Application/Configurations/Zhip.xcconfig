@@ -7,7 +7,7 @@ PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.zhip
 PRODUCT_NAME = $(_APP_NAME)
 
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
-INFOPLIST_FILE = Source/Application/Zhip-Info.plist
+INFOPLIST_FILE = Sources/Application/Zhip-Info.plist
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
 

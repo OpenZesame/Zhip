@@ -25,6 +25,7 @@
 import Zesame
 
 import RxSwift
+import UIKit
 import RxCocoa
 
 enum BackUpRevealedKeyPairUserAction {
