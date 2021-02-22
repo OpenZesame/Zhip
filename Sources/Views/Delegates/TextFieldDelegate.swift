@@ -54,7 +54,7 @@ extension TextFieldDelegate: UITextFieldDelegate {
         // Always allow erasing of digit
         if string.isBackspace { return true }
         
-        if let limitingCharacterSet = limitingCharacterSet, limitingCharacterSet.isSubset(of: CharacterSet(charactersIn: string)) {
+        if let limitingCharacterSet = limitingCharacterSet, !CharacterSet(charactersIn: string).isSubset(of: limitingCharacterSet) {
             // Dont allow pasting of non allowed chacracters
             return false
         }
