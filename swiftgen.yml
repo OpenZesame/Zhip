@@ -1,12 +1,12 @@
-input_dir: Source/Application/
-output_dir: Source/Application/Generated/SwiftGen
+input_dir: Sources/Application/
+output_dir: Sources/Application/Generated/SwiftGen
 strings:
   inputs: Localization/en.lproj/Localizable.strings
   outputs:
-    - templateName: structured-swift4
+    - templateName: structured-swift5
       output: L10n-Constants.swift
 xcassets:
   - inputs: Assets.xcassets
     outputs:
-      - templateName: swift4
+      - templateName: swift5
         output: Assets-Constants.swift

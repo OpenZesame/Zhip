@@ -3,13 +3,12 @@
 
 import Foundation
 
-// swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Strings
 
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:disable nesting type_body_length type_name
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
 
   internal enum Error {
@@ -34,12 +33,12 @@ internal enum L10n {
         /// String not a number
         internal static let nonNumericString = L10n.tr("Localizable", "Error.Input.Amount.NonNumericString")
         /// Must be at most %@
-        internal static func tooLarge(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", p1)
+        internal static func tooLarge(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Error.Input.Amount.TooLarge", String(describing: p1))
         }
         /// Must be at least %@
-        internal static func tooSmall(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", p1)
+        internal static func tooSmall(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Error.Input.Amount.TooSmall", String(describing: p1))
         }
       }
       internal enum Keystore {
@@ -85,8 +84,8 @@ internal enum L10n {
     /// Fetching balance...
     internal static let balanceFirstFetch = L10n.tr("Localizable", "Formatter.BalanceFirstFetch")
     /// Balance last updated %@.
-    internal static func balanceWasUpdatedAt(_ p1: String) -> String {
-      return L10n.tr("Localizable", "Formatter.BalanceWasUpdatedAt", p1)
+    internal static func balanceWasUpdatedAt(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "Formatter.BalanceWasUpdatedAt", String(describing: p1))
     }
   }
 
@@ -328,8 +327,8 @@ internal enum L10n {
           /// Transaction fee
           internal static let title = L10n.tr("Localizable", "Scene.GotTransactionReceipt.Labels.Fee.Title")
           /// %@E-12 Zil
-          internal static func value(_ p1: String) -> String {
-            return L10n.tr("Localizable", "Scene.GotTransactionReceipt.Labels.Fee.Value", p1)
+          internal static func value(_ p1: Any) -> String {
+            return L10n.tr("Localizable", "Scene.GotTransactionReceipt.Labels.Fee.Value", String(describing: p1))
           }
         }
       }
@@ -385,26 +384,26 @@ internal enum L10n {
       }
       internal enum Field {
         /// Amount in %@
-        internal static func amount(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount", p1)
+        internal static func amount(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Amount", String(describing: p1))
         }
         /// Encryption password
         internal static let encryptionPassword = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassword")
         /// Gas price (min %@)
-        internal static func gasPrice(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", p1)
+        internal static func gasPrice(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", String(describing: p1))
         }
         /// To address
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")
       }
       internal enum Label {
         /// Transaction fee: %@
-        internal static func costOfTransactionInZil(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.CostOfTransactionInZil", p1)
+        internal static func costOfTransactionInZil(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.CostOfTransactionInZil", String(describing: p1))
         }
         /// Gas price is measured in %@
-        internal static func gasInSmallUnits(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits", p1)
+        internal static func gasInSmallUnits(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Label.GasInSmallUnits", String(describing: p1))
         }
       }
       internal enum Labels {
@@ -431,8 +430,8 @@ internal enum L10n {
       }
       internal enum Field {
         /// Request amount in %@
-        internal static func requestAmount(_ p1: String) -> String {
-          return L10n.tr("Localizable", "Scene.Receive.Field.RequestAmount", p1)
+        internal static func requestAmount(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "Scene.Receive.Field.RequestAmount", String(describing: p1))
         }
       }
       internal enum Label {
@@ -648,16 +647,25 @@ internal enum L10n {
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:enable nesting type_body_length type_name
+// swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
 
 // MARK: - Implementation Details
 
 extension L10n {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    // swiftlint:disable:next nslocalizedstring_key
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = BundleToken.bundle.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

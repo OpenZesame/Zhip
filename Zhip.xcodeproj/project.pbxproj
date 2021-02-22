@@ -1876,6 +1876,7 @@
 			buildConfigurationList = 484B065E20BA0C2F00C4E50A /* Build configuration list for PBXNativeTarget "Zhip" */;
 			buildPhases = (
 				E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */,
+				E6DB181625E3A39000D223B8 /* 🤖 SwiftGen */,
 				484B063220BA0C2D00C4E50A /* Sources */,
 				484B063320BA0C2D00C4E50A /* Frameworks */,
 				484B063420BA0C2D00C4E50A /* Resources */,
@@ -2040,6 +2041,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		E6DB181625E3A39000D223B8 /* 🤖 SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🤖 SwiftGen";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swiftgen config run --config \"$SRCROOT/swiftgen.yml\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

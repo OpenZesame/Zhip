@@ -65,7 +65,7 @@ extension DefaultOnboardingUseCase: OnboardingUseCase {
     func answeredCrashReportingQuestion(acceptsCrashReporting: Bool) {
         preferences.save(value: true, for: .hasAnsweredCrashReportingQuestion)
         preferences.save(value: acceptsCrashReporting, for: .hasAcceptedCrashReporting)
-//        setupCrashReportingIfAllowed()
+        setupCrashReportingIfAllowed()
     }
 
     func doNotShowERC20WarningAgain() {

@@ -34,11 +34,12 @@ let log = SwiftyBeaver.self
 func bootstrap() {
     AppAppearance.setupDefault()
     setupKeyboardHiding()
-//    setupCrashReportingIfAllowed()
+    setupCrashReportingIfAllowed()
     setupLogging()
 }
 
-//func setupCrashReportingIfAllowed() {
+func setupCrashReportingIfAllowed() {
+    print("⚠️⚠️⚠️ CRASH REPORTING DISABLED ⚠️⚠️⚠️")
 //    guard Preferences.default.isTrue(.hasAcceptedCrashReporting) else {
 //        // unsure if this does anything or if it is needed, but seems prudent.
 //        FirebaseApp.app()?.delete { _ in
@@ -56,7 +57,7 @@ func bootstrap() {
 //    // So Crashlytics is setup via Firebase.
 //    FirebaseApp.configure()
 //    Fabric.with([Crashlytics.self])
-//}
+}
 
 private func setupKeyboardHiding() {
     IQKeyboardManager.shared.enable = true
