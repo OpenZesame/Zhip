@@ -2481,6 +2481,8 @@
 			baseConfigurationReference = 4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Zhip.entitlements;
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				PROVISIONING_PROFILE_SPECIFIER = "Zhip iOS Dev Cert";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
