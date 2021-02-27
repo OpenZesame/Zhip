@@ -44,8 +44,8 @@ func setupBarButtonItemAppearance() {
 
 private func replaceBackBarButtonImage() {
     let backImage = Asset.Icons.Small.chevronLeft.image
-    let streched = backImage.stretchableImage(withLeftCapWidth: 15, topCapHeight: 30)
-    UIBarButtonItem.appearance().setBackButtonBackgroundImage(streched, for: .normal, barMetrics: .default)
+    let stretched = backImage.stretchableImage(withLeftCapWidth: 15, topCapHeight: 30)
+    UIBarButtonItem.appearance().setBackButtonBackgroundImage(stretched, for: .normal, barMetrics: .default)
 }
 
 public extension UINavigationBar {

@@ -215,7 +215,13 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
 		let isReviewButtonEnabled = payment.map { $0 != nil }
 
-        let gasPricePlaceholder = Driver.just(GasPrice.min).map { €.Field.gasPrice(formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: true)) }
+        let gasPricePlaceholder = Driver.just(GasPrice.min).map {
+            €.Field.gasPrice(
+                formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: false),
+                formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true)
+            )
+            
+        }
 
         let gasPriceFormatted = gasPrice.filterNil().map { formatter.format(amount: $0, in: .li, formatThousands: true) }
 

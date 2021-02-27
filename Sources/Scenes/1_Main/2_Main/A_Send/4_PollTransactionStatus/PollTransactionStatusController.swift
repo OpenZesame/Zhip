@@ -32,6 +32,6 @@ extension PollTransactionStatus: BackButtonHiding {}
 
 extension PollTransactionStatus: NavigationBarLayoutOwner {
     var navigationBarLayout: NavigationBarLayout {
-        return .transluscent
+        return .translucent
     }
 }

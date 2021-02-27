@@ -51,8 +51,13 @@ final class ScanQRCodeViewModel: BaseViewModel<
         }
 
         let transactionIntentResult: Driver<ScannedQRResult> = input.fromView.scannedQrCodeString.map {
-            guard let stringFromQR = $0 else {
+            guard var stringFromQR = $0 else {
                  return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
+            }
+            
+            let zilliqaPrefix = "zilliqa://"
+            if stringFromQR.starts(with: zilliqaPrefix) {
+                stringFromQR = String(stringFromQR.dropFirst(zilliqaPrefix.count))
             }
     
             do {

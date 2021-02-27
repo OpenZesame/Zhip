@@ -161,7 +161,7 @@
 "Scene.PrepareTransaction.Field.Amount" = "Amount in %@";
 "Scene.PrepareTransaction.Button.MaxAmount" = "Max";
 "Scene.PrepareTransaction.Label.GasInSmallUnits" = "Gas price is measured in %@";
-"Scene.PrepareTransaction.Field.GasPrice" = "Gas price (min %@)";
+"Scene.PrepareTransaction.Field.GasPrice" = "Gas price in 'li' (min: %@ = %@)";
 "Scene.PrepareTransaction.Field.EncryptionPassword" = "Encryption password";
 "Scene.PrepareTransaction.Button.ReviewPayment" = "Review Payment";
 //"Scene.PrepareTransaction.Label.TransactionId" = "Transaction Id";

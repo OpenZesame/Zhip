@@ -29,24 +29,25 @@ extension FloatingLabelTextField {
         case right, left
     }
 
-    func addBottomAlignedButton(asset: ImageAsset, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(image: asset.image, position: position, offset: offset, mode: mode)
+    func addBottomAlignedButton(asset: ImageAsset, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(image: asset.image, position: position, yOffset: yOffset, mode: mode)
     }
 
-    func addBottomAlignedButton(image: UIImage, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(imageOrText: .image(image), position: position, offset: offset, mode: mode)
+    func addBottomAlignedButton(image: UIImage, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(imageOrText: .image(image), position: position, yOffset: yOffset, mode: mode)
     }
 
-    func addBottomAlignedButton(titled: String, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(imageOrText: .text(titled), position: position, offset: offset, mode: mode)
+    func addBottomAlignedButton(titled: String, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+        return addBottomAlignedButton(imageOrText: .text(titled), position: position, yOffset: yOffset, mode: mode)
     }
 
-    private func addBottomAlignedButton(imageOrText: ImageOrText, position: Position = .right, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+    private func addBottomAlignedButton(imageOrText: ImageOrText, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
         let button = UIButton()
         var width: CGFloat?
         switch imageOrText {
         case .image(let image):
             button.withStyle(.image(image))
+            button.contentEdgeInsets = .init(all: 10)
             width = image.size.width
         case .text(let title):
             button.withStyle(.title(title))
@@ -55,18 +56,17 @@ extension FloatingLabelTextField {
 
         button.setContentHuggingPriority(.required, for: .vertical)
 
-        addBottomAligned(view: button, position: position, width: width, offset: offset, mode: mode)
+        addBottomAligned(view: button, position: position, width: width, yOffset: yOffset, mode: mode)
 
         return button
     }
 
-    func addBottomAligned(view: UIView, position: Position = .right, width: CGFloat? = nil, offset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
+    func addBottomAligned(view: UIView, position: Position = .right, width: CGFloat? = nil, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
         view.translatesAutoresizingMaskIntoConstraints = true
         let bottomAligningContainerView = UIView()
         let width = width ?? FloatingLabelTextField.rightViewWidth
         let height: CGFloat = 40
-        let offset: CGFloat = 0
-        let y: CGFloat = FloatingLabelTextField.textFieldHeight - height - offset
+        let y: CGFloat = FloatingLabelTextField.textFieldHeight - height - yOffset
         view.frame = CGRect(x: 0, y: y, width: width, height: height)
         bottomAligningContainerView.addSubview(view)
 
