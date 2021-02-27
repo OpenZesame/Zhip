@@ -29,8 +29,8 @@ import RxSwift
 class AbstractController: UIViewController {
     let rightBarButtonSubject = PublishSubject<Void>()
     let leftBarButtonSubject = PublishSubject<Void>()
-    lazy var rightBarButtonAbtractTarget = AbstractTarget(triggerSubject: rightBarButtonSubject)
-    lazy var leftBarButtonAbtractTarget = AbstractTarget(triggerSubject: leftBarButtonSubject)
+    lazy var rightBarButtonAbstractTarget = AbstractTarget(triggerSubject: rightBarButtonSubject)
+    lazy var leftBarButtonAbstractTarget = AbstractTarget(triggerSubject: leftBarButtonSubject)
 }
 
 extension AbstractController {

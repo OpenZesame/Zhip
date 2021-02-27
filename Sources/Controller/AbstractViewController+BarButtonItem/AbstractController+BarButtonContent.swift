@@ -26,12 +26,12 @@ import UIKit
 
 extension AbstractController {
     func setRightBarButtonUsing(content barButtonContent: BarButtonContent) {
-        let item = barButtonContent.makeBarButtonItem(target: self.rightBarButtonAbtractTarget, selector: #selector(AbstractTarget.pressed))
+        let item = barButtonContent.makeBarButtonItem(target: self.rightBarButtonAbstractTarget, selector: #selector(AbstractTarget.pressed))
         navigationItem.rightBarButtonItem = item
     }
 
     func setLeftBarButtonUsing(content barButtonContent: BarButtonContent) {
-        let item = barButtonContent.makeBarButtonItem(target: self.leftBarButtonAbtractTarget, selector: #selector(AbstractTarget.pressed))
+        let item = barButtonContent.makeBarButtonItem(target: self.leftBarButtonAbstractTarget, selector: #selector(AbstractTarget.pressed))
         navigationItem.leftBarButtonItem = item
     }
 }
