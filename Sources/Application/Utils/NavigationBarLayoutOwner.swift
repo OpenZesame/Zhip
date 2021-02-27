@@ -48,7 +48,7 @@ public extension UINavigationBar {
 
 public struct NavigationBarLayout: Equatable {
     public static func == (lhs: NavigationBarLayout, rhs: NavigationBarLayout) -> Bool {
-        return lhs.visibility == rhs.visibility &&
+        lhs.visibility == rhs.visibility &&
             lhs.isTranslucent == rhs.isTranslucent &&
             lhs.tintColor == rhs.tintColor &&
             lhs.barTintColor == rhs.barTintColor &&
@@ -88,7 +88,7 @@ public struct NavigationBarLayout: Equatable {
         shadowImage: UIImage? = nil,
         titleFont: UIFont? = nil,
         titleColor: UIColor? = nil
-        ) {
+    ) {
         self.barStyle = barStyle
         self.visibility = visibility
         self.isTranslucent = isTranslucent ?? UINavigationBar.defaultIsTranslucent
@@ -103,7 +103,11 @@ public struct NavigationBarLayout: Equatable {
         self.titleFont = titleFont ?? UINavigationBar.defaultFont
         self.titleColor = titleColor ?? UINavigationBar.defaultTextColor
     }
-    public enum Visibility: Equatable {
+
+}
+
+public extension NavigationBarLayout {
+    enum Visibility: Equatable {
         case hidden(animated: Bool)
         case visible(animated: Bool)
         var isHidden: Bool {
@@ -125,17 +129,17 @@ public extension NavigationBarLayout {
     static var `default`: NavigationBarLayout = .opaque
 
     static var opaque: NavigationBarLayout {
-        return NavigationBarLayout(
+        NavigationBarLayout(
             isTranslucent: false
         )
     }
 
-    static var transluscent: NavigationBarLayout {
-        return transluscent()
+    static var translucent: NavigationBarLayout {
+        translucent()
     }
 
-    static func transluscent(tintColor: UIColor? = nil, titleColor: UIColor? = nil) -> NavigationBarLayout {
-        return NavigationBarLayout(
+    static func translucent(tintColor: UIColor? = nil, titleColor: UIColor? = nil) -> NavigationBarLayout {
+        NavigationBarLayout(
             isTranslucent: true,
             tintColor: tintColor,
             backgroundColor: .clear,
@@ -144,7 +148,7 @@ public extension NavigationBarLayout {
     }
 
     static var hidden: NavigationBarLayout {
-        return NavigationBarLayout(
+        NavigationBarLayout(
             visibility: .hidden(animated: false)
         )
     }

@@ -76,7 +76,7 @@ final class FloatingLabelTextField: SkyFloatingLabelTextField {
         return rightViewRect
     }
 
-    /// Allowing for slighly shrinkt font size for error messages that otherwise would not fit.
+    /// Allowing for slightly smaller font size for error messages that otherwise would not fit.
     /// Shrinking is only performed on the label when showing error messages.
     private func updateFontResizing() {
         titleLabel.adjustsFontSizeToFitWidth = errorMessage != nil

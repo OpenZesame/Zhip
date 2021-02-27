@@ -389,9 +389,9 @@ internal enum L10n {
         }
         /// Encryption password
         internal static let encryptionPassword = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.EncryptionPassword")
-        /// Gas price (min %@)
-        internal static func gasPrice(_ p1: Any) -> String {
-          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", String(describing: p1))
+        /// Gas price in 'li' (min: %@ = %@)
+        internal static func gasPrice(_ p1: Any, _ p2: Any) -> String {
+          return L10n.tr("Localizable", "Scene.PrepareTransaction.Field.GasPrice", String(describing: p1), String(describing: p2))
         }
         /// To address
         internal static let recipient = L10n.tr("Localizable", "Scene.PrepareTransaction.Field.Recipient")

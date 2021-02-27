@@ -32,6 +32,6 @@ extension Main: RightBarButtonContentMaking {
 
 extension Main: NavigationBarLayoutOwner {
     var navigationBarLayout: NavigationBarLayout {
-        return .transluscent
+        return .translucent
     }
 }

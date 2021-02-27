@@ -25,15 +25,17 @@
 import UIKit
 
 struct BarButtonContent {
-    enum ButtontType {
+    
+    enum ButtonType {
         case text(String)
         case image(UIImage)
         case system(UIBarButtonItem.SystemItem)
     }
-    let type: ButtontType
+    
+    let type: ButtonType
     let style: UIBarButtonItem.Style?
 
-    init(type: ButtontType, style: UIBarButtonItem.Style? = .plain) {
+    init(type: ButtonType, style: UIBarButtonItem.Style? = .plain) {
         self.type = type
         self.style = style
     }
