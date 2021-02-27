@@ -2481,6 +2481,7 @@
 			baseConfigurationReference = 4858D7B42194F92800030237 /* Zhip-Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Zhip.entitlements;
+				CURRENT_PROJECT_VERSION = 1003;
 				DEVELOPMENT_TEAM = S33QJG3B86;
 				PROVISIONING_PROFILE_SPECIFIER = "Zhip iOS Dev Cert";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -2492,6 +2493,9 @@
 			baseConfigurationReference = 4858D7B52194F92800030237 /* Zhip-Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Zhip.entitlements;
+				CURRENT_PROJECT_VERSION = 1003;
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				PROVISIONING_PROFILE_SPECIFIER = "Zhip iOS AppStore Release";
 			};
 			name = Release;
 		};
