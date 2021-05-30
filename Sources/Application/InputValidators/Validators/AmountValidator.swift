@@ -44,7 +44,7 @@ private typealias € = L10n.Error.Input.Amount
 
 enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
     case tooLarge(max: String, unit: Unit)
-    case tooSmall(min: String, unit: Unit)
+    case tooSmall(min: String, unit: Unit, showUnit: Bool = true)
     case nonNumericString
     case other(Swift.Error)
 
@@ -86,7 +86,12 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
     var errorMessage: String {
         switch self {
         case .tooLarge(let max, let unit): return €.tooLarge("\(max.thousands) \(unit.name)")
-        case .tooSmall(let min, let unit): return €.tooSmall("\(min.thousands) \(unit.name)")
+        case .tooSmall(let min, let unit, let shouldShowUnit):
+            if shouldShowUnit {
+                return €.tooSmall("\(min.thousands) \(unit.name)")
+            } else {
+                return €.tooSmall("\(min.thousands)")
+            }
         case .nonNumericString: return €.nonNumericString
         case .other: return €.nonNumericString // TODO which error message to display?
         }

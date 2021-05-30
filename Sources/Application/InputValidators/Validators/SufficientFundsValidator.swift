@@ -35,13 +35,13 @@ struct SufficientFundsValidator: InputValidator {
     }
 
     // swiftlint:disable:next large_tuple
-    func validate(input: (amount: ZilAmount?, gasPrice: GasPrice?, balance: ZilAmount?)) -> Validation<ZilAmount, Error> {
-		guard let amount = input.amount, let gasPrice = input.gasPrice, let balance = input.balance else {
+    func validate(input: (amount: ZilAmount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: ZilAmount?)) -> Validation<ZilAmount, Error> {
+        guard let amount = input.amount, let gasLimit = input.gasLimit, let gasPrice = input.gasPrice, let balance = input.balance else {
 			return .invalid(.empty)
 		}
 
         do {
-            let totalCost = try Payment.estimatedTotalCostOfTransaction(amount: amount, gasPrice: gasPrice)
+            let totalCost = try Payment.estimatedTotalCostOfTransaction(amount: amount, gasPrice: gasPrice, gasLimit: gasLimit)
             guard totalCost <= balance else {
                 return self.error(Error.insufficientFunds)
             }

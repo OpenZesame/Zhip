@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/firebase/abseil-cpp-SwiftPM.git",
         "state": {
           "branch": null,
-          "revision": "05d8107f2971a37e6c77245b7c4c6b0a7e97bc99",
-          "version": "0.20200225.0"
+          "revision": "ff5f5f0a3d3266836b9d722bb73cabdf7057482e",
+          "version": "0.20200225.3"
         }
       },
       {
@@ -21,7 +21,7 @@
       },
       {
         "package": "BEMCheckBox",
-        "repositoryURL": "git@github.com:Boris-Em/BEMCheckBox.git",
+        "repositoryURL": "https://github.com/Boris-Em/BEMCheckBox",
         "state": {
           "branch": null,
           "revision": "a3292ebae9f0c2737b0c90281219dced2ce51ac8",
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/firebase/boringssl-SwiftPM.git",
         "state": {
           "branch": null,
-          "revision": "7bcafa2660bc58715c39637494550d1ed7cd7229",
-          "version": "0.0.7"
+          "revision": "15889fadef7078dfa1392b0e2b08f3d0e9797104",
+          "version": "0.7.1"
         }
       },
       {
@@ -57,11 +57,11 @@
       },
       {
         "package": "EFQRCode",
-        "repositoryURL": "git@github.com:EFPrefix/EFQRCode.git",
+        "repositoryURL": "https://github.com/EFPrefix/EFQRCode",
         "state": {
           "branch": null,
-          "revision": "531dd44611d9df5721061eeaf6f65c2daf86cd58",
-          "version": "6.0.0"
+          "revision": "4a72d79f9cae6d2f189f768178cc8594b427c190",
+          "version": "6.1.0"
         }
       },
       {
@@ -75,11 +75,11 @@
       },
       {
         "package": "Firebase",
-        "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
+        "repositoryURL": "https://github.com/firebase/firebase-ios-sdk",
         "state": {
           "branch": null,
-          "revision": "14dff7e19375288c7e34df8444c85d314f26d7cf",
-          "version": "7.6.0"
+          "revision": "f2b8de559b084a56f65bff79f4e736b46d0dafd3",
+          "version": "8.0.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
         "state": {
           "branch": null,
-          "revision": "38205d8e39f806f71b048f93427337c9511c9402",
-          "version": "7.5.1"
+          "revision": "48fcea0c0a74fc89131696aa995043eaa971ccb1",
+          "version": "8.0.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
         "state": {
           "branch": null,
-          "revision": "2e8a342494d20fcf209b61a45cddc1668b5ccc6d",
-          "version": "8.2.0"
+          "revision": "369716b8d7518a530ce3c3a251436d72546debd8",
+          "version": "8.4.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/google/GoogleUtilities.git",
         "state": {
           "branch": null,
-          "revision": "2c7d33099a3c3da1139bb1e8eb94e46e0dacf075",
-          "version": "7.2.2"
+          "revision": "58359415d4ea29ebdc8fa5b41ce96c434d76d901",
+          "version": "7.4.1"
         }
       },
       {
@@ -114,8 +114,8 @@
         "repositoryURL": "https://github.com/firebase/grpc-SwiftPM.git",
         "state": {
           "branch": null,
-          "revision": "91b62619e6c83bc5f1b99d9d60fe46b2862d3a5a",
-          "version": "1.28.2"
+          "revision": "fb405dd2c7901485f7e158b24e3a0a47e4efd8b5",
+          "version": "1.28.4"
         }
       },
       {
@@ -129,7 +129,7 @@
       },
       {
         "package": "IQKeyboardManagerSwift",
-        "repositoryURL": "git@github.com:hackiftekhar/IQKeyboardManager.git",
+        "repositoryURL": "https://github.com/hackiftekhar/IQKeyboardManager",
         "state": {
           "branch": null,
           "revision": "4dc6bc7d1c9747bd0c261c8c055903f9fdef91f7",
@@ -138,7 +138,7 @@
       },
       {
         "package": "KeychainSwift",
-        "repositoryURL": "git@github.com:evgenyneu/keychain-swift.git",
+        "repositoryURL": "https://github.com/evgenyneu/keychain-swift",
         "state": {
           "branch": null,
           "revision": "96fb84f45a96630e7583903bd7e08cf095c7a7ef",
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/firebase/leveldb.git",
         "state": {
           "branch": null,
-          "revision": "fa1f25f296a766e5a789c4dacd4798dea798b2c2",
-          "version": "1.22.1"
+          "revision": "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
+          "version": "1.22.2"
         }
       },
       {
@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/firebase/nanopb.git",
         "state": {
           "branch": null,
-          "revision": "c2d43e59d8ec880ed261366818f0cacc5c8cc2e6",
-          "version": "2.30907.0"
+          "revision": "7ee9ef9f627d85cbe1b8c4f49a3ed26eed216c77",
+          "version": "2.30908.0"
         }
       },
       {
@@ -174,7 +174,7 @@
       },
       {
         "package": "QRCodeReader",
-        "repositoryURL": "git@github.com:yannickl/QRCodeReader.swift.git",
+        "repositoryURL": "https://github.com/yannickl/QRCodeReader.swift",
         "state": {
           "branch": null,
           "revision": "5020b5a47199d8ba80c83a4b4fafd70e9dc9dc7f",
@@ -183,7 +183,7 @@
       },
       {
         "package": "RxDataSources",
-        "repositoryURL": "git@github.com:RxSwiftCommunity/RxDataSources.git",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxDataSources",
         "state": {
           "branch": null,
           "revision": "241c62e7b578b2346c8b60efdf31b4eb2eab2966",
@@ -192,7 +192,7 @@
       },
       {
         "package": "RxSwift",
-        "repositoryURL": "git@github.com:ReactiveX/RxSwift.git",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
         "state": {
           "branch": null,
           "revision": "7e01c05f25c025143073eaa3be3532f9375c614b",
@@ -201,7 +201,7 @@
       },
       {
         "package": "SkyFloatingLabelTextField",
-        "repositoryURL": "git@github.com:Skyscanner/SkyFloatingLabelTextField.git",
+        "repositoryURL": "https://github.com/Skyscanner/SkyFloatingLabelTextField",
         "state": {
           "branch": null,
           "revision": "a0750ebbc7311f3b3debf99c5e59338e854afa59",
@@ -222,13 +222,13 @@
         "repositoryURL": "https://github.com/ApolloZhu/swift_qrcodejs.git",
         "state": {
           "branch": null,
-          "revision": "53da4ea930345cb3c7d72a0e639d3318179722b4",
-          "version": "1.2.0"
+          "revision": "374dc7f7b9e76c6aeb393f6a84590c6d387e1ecb",
+          "version": "2.2.2"
         }
       },
       {
         "package": "SwiftDate",
-        "repositoryURL": "git@github.com:malcommac/SwiftDate.git",
+        "repositoryURL": "https://github.com/malcommac/SwiftDate",
         "state": {
           "branch": null,
           "revision": "6190d0cefff3013e77ed567e6b074f324e5c5bf5",
@@ -237,16 +237,16 @@
       },
       {
         "package": "SwiftyBeaver",
-        "repositoryURL": "git@github.com:SwiftyBeaver/SwiftyBeaver.git",
+        "repositoryURL": "https://github.com/SwiftyBeaver/SwiftyBeaver",
         "state": {
           "branch": null,
-          "revision": "2c513a2e8fbfbd6495afc4a05941d8e3fdba68e9",
-          "version": "1.9.3"
+          "revision": "2c039501d6eeb4d4cd4aec4a8d884ad28862e044",
+          "version": "1.9.5"
         }
       },
       {
         "package": "TinyConstraints",
-        "repositoryURL": "git@github.com:roberthein/TinyConstraints.git",
+        "repositoryURL": "https://github.com/roberthein/TinyConstraints",
         "state": {
           "branch": null,
           "revision": "f413ea53b886de81b925eeb37a14538fe6ae4912",
@@ -255,7 +255,7 @@
       },
       {
         "package": "Validator",
-        "repositoryURL": "git@github.com:adamwaite/Validator.git",
+        "repositoryURL": "https://github.com/adamwaite/Validator",
         "state": {
           "branch": null,
           "revision": "8dacfee6a28b1b8ffe3aa082b0647328dde454d7",
@@ -264,11 +264,11 @@
       },
       {
         "package": "Zesame",
-        "repositoryURL": "git@github.com:OpenZesame/Zesame.git",
+        "repositoryURL": "https://github.com/OpenZesame/Zesame",
         "state": {
           "branch": null,
-          "revision": "aa0b8a7c9ebb0264e31014320d0a4487942fb0a3",
-          "version": "1.1.0"
+          "revision": "6c6b2ac63401b87cb93bd9540ca1cfe88fc30b55",
+          "version": "1.1.1"
         }
       }
     ]
