@@ -40,6 +40,8 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
     private lazy var amountToSendField              = FloatingLabelTextField()
     private lazy var maxAmountButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
+    
+    private lazy var gasLimitField                  = FloatingLabelTextField()
     private lazy var gasPriceField                  = FloatingLabelTextField()
     private lazy var toReviewButton                     = UIButton()
     private lazy var costOfTransactionLabel         = UILabel()
@@ -49,6 +51,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
         balanceLabels,
         recipientAddressField,
         amountToSendField,
+        gasLimitField,
         gasPriceField,
         costOfTransactionLabel,
         .spacer,
@@ -65,6 +68,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
 extension PrepareTransactionView: ViewModelled {
     typealias ViewModel = PrepareTransactionViewModel
 
+    // swiftlint:disable:next function_body_length
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
@@ -77,6 +81,11 @@ extension PrepareTransactionView: ViewModelled {
             viewModel.balance                           --> balanceValueLabel.rx.text,
             viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
             viewModel.amountValidation                  --> amountToSendField.rx.validation,
+            
+            viewModel.gasLimitMeasuredInLi              --> gasLimitField.rx.text,
+            viewModel.gasLimitPlaceholder               --> gasLimitField.rx.placeholder,
+            viewModel.gasLimitValidation                --> gasLimitField.rx.validation,
+            
             viewModel.gasPriceMeasuredInLi              --> gasPriceField.rx.text,
             viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
             viewModel.gasPriceValidation                --> gasPriceField.rx.validation,
@@ -96,6 +105,9 @@ extension PrepareTransactionView: ViewModelled {
 
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingAmount: amountToSendField.rx.didEndEditing,
+            
+            gasLimit: gasLimitField.rx.text.orEmpty.asDriver().skip(1),
+            didEndEditingGasLimit: gasLimitField.rx.didEndEditing,
 
             gasPrice: gasPriceField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingGasPrice: gasPriceField.rx.didEndEditing
@@ -136,6 +148,7 @@ private extension PrepareTransactionView {
             $0.textAlignment(.center)
         }
 
+        gasLimitField.withStyle(.number)
         gasPriceField.withStyle(.number)
 
         toReviewButton.withStyle(.primary) {
@@ -151,12 +164,14 @@ private extension PrepareTransactionView {
         #if DEBUG
         recipientAddressField.text = "zil175grxdeqchwnc0qghj8qsh5vnqwww353msqj82"
         amountToSendField.text = Int.random(in: 1...5).description
+        gasLimitField.text = Int.random(in: 50...100).description
         gasPriceField.text = Int.random(in: 1000...2000).description
 
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
             [
                 self.recipientAddressField,
                 self.amountToSendField,
+                self.gasLimitField,
                 self.gasPriceField
                 ].forEach {
                     $0.sendActions(for: .editingDidEnd)
