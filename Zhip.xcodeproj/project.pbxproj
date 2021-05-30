@@ -136,6 +136,22 @@
 		4898FB48215423D6009501DC /* BaseScrollableStackViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */; };
 		4898FB4A21542400009501DC /* ContentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4898FB4921542400009501DC /* ContentViewProvider.swift */; };
 		489CDBCF2143FF3E00318450 /* FilterNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CDBCE2143FF3E00318450 /* FilterNil.swift */; };
+		489D40C326636D5E000D35F2 /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40C226636D5E000D35F2 /* Zesame */; };
+		489D40C626636DBF000D35F2 /* BEMCheckBox in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40C526636DBF000D35F2 /* BEMCheckBox */; };
+		489D40C926636E00000D35F2 /* Validator in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40C826636E00000D35F2 /* Validator */; };
+		489D40CC26636E65000D35F2 /* EFQRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40CB26636E65000D35F2 /* EFQRCode */; };
+		489D40CF26636E87000D35F2 /* SkyFloatingLabelTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40CE26636E87000D35F2 /* SkyFloatingLabelTextField */; };
+		489D40D226636EAB000D35F2 /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40D126636EAB000D35F2 /* TinyConstraints */; };
+		489D40D526636ECF000D35F2 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40D426636ECF000D35F2 /* SwiftyBeaver */; };
+		489D40D826636F0B000D35F2 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40D726636F0B000D35F2 /* Differentiator */; };
+		489D40DA26636F0B000D35F2 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40D926636F0B000D35F2 /* RxDataSources */; };
+		489D40DD26636F3F000D35F2 /* QRCodeReader in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40DC26636F3F000D35F2 /* QRCodeReader */; };
+		489D40E026636F5A000D35F2 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40DF26636F5A000D35F2 /* KeychainSwift */; };
+		489D40E326636F8F000D35F2 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E226636F8F000D35F2 /* IQKeyboardManagerSwift */; };
+		489D40E62663707D000D35F2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E52663707D000D35F2 /* FirebaseAnalytics */; };
+		489D40E82663707D000D35F2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E72663707D000D35F2 /* FirebaseCrashlytics */; };
+		489D40EB26637136000D35F2 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40EA26637136000D35F2 /* SwiftDate */; };
+		489D40ED266373A2000D35F2 /* GasLimitValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489D40EC266373A2000D35F2 /* GasLimitValidator.swift */; };
 		489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */; };
 		489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */; };
 		489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */; };
@@ -231,16 +247,6 @@
 		E6019A64225E754D0079DDE8 /* PollTransactionStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9721C223B200443F2A /* PollTransactionStatusController.swift */; };
 		E6019A65225E754D0079DDE8 /* PollTransactionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9621C223B100443F2A /* PollTransactionStatusView.swift */; };
 		E6019A66225E754D0079DDE8 /* PollTransactionStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD9821C223B200443F2A /* PollTransactionStatusViewModel.swift */; };
-		E61BA12725E2EFE7005B63C8 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA12625E2EFE7005B63C8 /* SwiftDate */; };
-		E61BA12C25E2F084005B63C8 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA12B25E2F084005B63C8 /* RxDataSources */; };
-		E61BA13125E2F0A6005B63C8 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA13025E2F0A6005B63C8 /* SwiftyBeaver */; };
-		E61BA13625E2F0CF005B63C8 /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA13525E2F0CF005B63C8 /* TinyConstraints */; };
-		E61BA13B25E2F0EE005B63C8 /* SkyFloatingLabelTextField in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA13A25E2F0EE005B63C8 /* SkyFloatingLabelTextField */; };
-		E61BA14025E2F1F2005B63C8 /* EFQRCode in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA13F25E2F1F2005B63C8 /* EFQRCode */; };
-		E61BA14A25E2F240005B63C8 /* QRCodeReader in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA14925E2F240005B63C8 /* QRCodeReader */; };
-		E61BA15125E2F25B005B63C8 /* Validator in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15025E2F25B005B63C8 /* Validator */; };
-		E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15525E2F297005B63C8 /* KeychainSwift */; };
-		E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */; };
 		E635A4A2225D2FDB00124823 /* TermsOfServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59B21A18F140078D659 /* TermsOfServiceViewModel.swift */; };
 		E635A4A3225D2FDB00124823 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59C21A18F140078D659 /* TermsOfServiceView.swift */; };
 		E635A4A4225D2FDB00124823 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF59D21A18F140078D659 /* TermsOfService.swift */; };
@@ -306,10 +312,6 @@
 		E6414450225E76F3008C146D /* ConfirmWalletRemovalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8721C0CAEE00443F2A /* ConfirmWalletRemovalController.swift */; };
 		E6414451225E76F3008C146D /* ConfirmWalletRemovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8A21C0CAEF00443F2A /* ConfirmWalletRemovalView.swift */; };
 		E6414452225E76F3008C146D /* ConfirmWalletRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4819BD8921C0CAEE00443F2A /* ConfirmWalletRemovalViewModel.swift */; };
-		E643724325E3A9520089C99D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E643724225E3A9520089C99D /* FirebaseAnalytics */; };
-		E643724525E3A9520089C99D /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = E643724425E3A9520089C99D /* FirebaseCrashlytics */; };
-		E643724A25E3B01C0089C99D /* BEMCheckBox in Frameworks */ = {isa = PBXBuildFile; productRef = E643724925E3B01C0089C99D /* BEMCheckBox */; };
-		E646606125E3F04A00C4787C /* Zesame in Frameworks */ = {isa = PBXBuildFile; productRef = E646606025E3F04A00C4787C /* Zesame */; };
 		E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6622DF822B5123B0086134D /* CharacterSetTests.swift */; };
 		E682358522BB70BE0028F1EC /* AmountFromText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358422BB70BE0028F1EC /* AmountFromText.swift */; };
 		E682358B22BB86620028F1EC /* ReviewTransactionBeforeSigningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358822BB86620028F1EC /* ReviewTransactionBeforeSigningViewModel.swift */; };
@@ -317,9 +319,6 @@
 		E682358D22BB86620028F1EC /* ReviewTransactionBeforeSigning.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358A22BB86620028F1EC /* ReviewTransactionBeforeSigning.swift */; };
 		E682358F22BBC8E00028F1EC /* Coordinating+Scene+Replace.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682358E22BBC8E00028F1EC /* Coordinating+Scene+Replace.swift */; };
 		E682359222BC242E0028F1EC /* LockAppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E682359122BC242E0028F1EC /* LockAppScene.swift */; };
-		E685178E25E4001B00E74CAD /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E685178D25E4001B00E74CAD /* RxSwift */; };
-		E685179225E4002300E74CAD /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E685179125E4002300E74CAD /* RxCocoa */; };
-		E685179625E4002B00E74CAD /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E685179525E4002B00E74CAD /* RxRelay */; };
 		E6942A5C2262561000778FF6 /* freesound_mattix_radar.wav in Resources */ = {isa = PBXBuildFile; fileRef = E6942A5B2262560F00778FF6 /* freesound_mattix_radar.wav */; };
 /* End PBXBuildFile section */
 
@@ -488,6 +487,7 @@
 		4898FB47215423D6009501DC /* BaseScrollableStackViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScrollableStackViewOwner.swift; sourceTree = "<group>"; };
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
+		489D40EC266373A2000D35F2 /* GasLimitValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasLimitValidator.swift; sourceTree = "<group>"; };
 		489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedWalletUseCase.swift; sourceTree = "<group>"; };
 		489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestScheduler+Record.swift"; sourceTree = "<group>"; };
 		489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType_Extension.swift; sourceTree = "<group>"; };
@@ -649,23 +649,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E61BA14025E2F1F2005B63C8 /* EFQRCode in Frameworks */,
-				E643724A25E3B01C0089C99D /* BEMCheckBox in Frameworks */,
-				E643724325E3A9520089C99D /* FirebaseAnalytics in Frameworks */,
-				E61BA14A25E2F240005B63C8 /* QRCodeReader in Frameworks */,
-				E61BA15625E2F297005B63C8 /* KeychainSwift in Frameworks */,
-				E646606125E3F04A00C4787C /* Zesame in Frameworks */,
-				E685179225E4002300E74CAD /* RxCocoa in Frameworks */,
-				E61BA15125E2F25B005B63C8 /* Validator in Frameworks */,
-				E685179625E4002B00E74CAD /* RxRelay in Frameworks */,
-				E61BA12C25E2F084005B63C8 /* RxDataSources in Frameworks */,
-				E61BA12725E2EFE7005B63C8 /* SwiftDate in Frameworks */,
-				E61BA13625E2F0CF005B63C8 /* TinyConstraints in Frameworks */,
-				E643724525E3A9520089C99D /* FirebaseCrashlytics in Frameworks */,
-				E61BA13125E2F0A6005B63C8 /* SwiftyBeaver in Frameworks */,
-				E685178E25E4001B00E74CAD /* RxSwift in Frameworks */,
-				E61BA15B25E2F2CE005B63C8 /* IQKeyboardManagerSwift in Frameworks */,
-				E61BA13B25E2F0EE005B63C8 /* SkyFloatingLabelTextField in Frameworks */,
+				489D40C626636DBF000D35F2 /* BEMCheckBox in Frameworks */,
+				489D40CF26636E87000D35F2 /* SkyFloatingLabelTextField in Frameworks */,
+				489D40EB26637136000D35F2 /* SwiftDate in Frameworks */,
+				489D40D526636ECF000D35F2 /* SwiftyBeaver in Frameworks */,
+				489D40E82663707D000D35F2 /* FirebaseCrashlytics in Frameworks */,
+				489D40CC26636E65000D35F2 /* EFQRCode in Frameworks */,
+				489D40E62663707D000D35F2 /* FirebaseAnalytics in Frameworks */,
+				489D40D826636F0B000D35F2 /* Differentiator in Frameworks */,
+				489D40E326636F8F000D35F2 /* IQKeyboardManagerSwift in Frameworks */,
+				489D40C326636D5E000D35F2 /* Zesame in Frameworks */,
+				489D40E026636F5A000D35F2 /* KeychainSwift in Frameworks */,
+				489D40DA26636F0B000D35F2 /* RxDataSources in Frameworks */,
+				489D40C926636E00000D35F2 /* Validator in Frameworks */,
+				489D40D226636EAB000D35F2 /* TinyConstraints in Frameworks */,
+				489D40DD26636F3F000D35F2 /* QRCodeReader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1187,6 +1185,7 @@
 				484D1AF721D7A0B000589E38 /* PrivateKeyValidator.swift */,
 				484D1AF921D7A8B800589E38 /* KeystoreValidator.swift */,
 				4819BDC021C4AE9A00443F2A /* SufficientFundsValidator.swift */,
+				489D40EC266373A2000D35F2 /* GasLimitValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1885,23 +1884,21 @@
 			);
 			name = Zhip;
 			packageProductDependencies = (
-				E61BA12625E2EFE7005B63C8 /* SwiftDate */,
-				E61BA12B25E2F084005B63C8 /* RxDataSources */,
-				E61BA13025E2F0A6005B63C8 /* SwiftyBeaver */,
-				E61BA13525E2F0CF005B63C8 /* TinyConstraints */,
-				E61BA13A25E2F0EE005B63C8 /* SkyFloatingLabelTextField */,
-				E61BA13F25E2F1F2005B63C8 /* EFQRCode */,
-				E61BA14925E2F240005B63C8 /* QRCodeReader */,
-				E61BA15025E2F25B005B63C8 /* Validator */,
-				E61BA15525E2F297005B63C8 /* KeychainSwift */,
-				E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */,
-				E643724225E3A9520089C99D /* FirebaseAnalytics */,
-				E643724425E3A9520089C99D /* FirebaseCrashlytics */,
-				E643724925E3B01C0089C99D /* BEMCheckBox */,
-				E646606025E3F04A00C4787C /* Zesame */,
-				E685178D25E4001B00E74CAD /* RxSwift */,
-				E685179125E4002300E74CAD /* RxCocoa */,
-				E685179525E4002B00E74CAD /* RxRelay */,
+				489D40C226636D5E000D35F2 /* Zesame */,
+				489D40C526636DBF000D35F2 /* BEMCheckBox */,
+				489D40C826636E00000D35F2 /* Validator */,
+				489D40CB26636E65000D35F2 /* EFQRCode */,
+				489D40CE26636E87000D35F2 /* SkyFloatingLabelTextField */,
+				489D40D126636EAB000D35F2 /* TinyConstraints */,
+				489D40D426636ECF000D35F2 /* SwiftyBeaver */,
+				489D40D726636F0B000D35F2 /* Differentiator */,
+				489D40D926636F0B000D35F2 /* RxDataSources */,
+				489D40DC26636F3F000D35F2 /* QRCodeReader */,
+				489D40DF26636F5A000D35F2 /* KeychainSwift */,
+				489D40E226636F8F000D35F2 /* IQKeyboardManagerSwift */,
+				489D40E52663707D000D35F2 /* FirebaseAnalytics */,
+				489D40E72663707D000D35F2 /* FirebaseCrashlytics */,
+				489D40EA26637136000D35F2 /* SwiftDate */,
 			);
 			productName = ZilliqaSDKiOSZhip;
 			productReference = 484B063620BA0C2D00C4E50A /* Zhip.app */;
@@ -1962,20 +1959,19 @@
 			);
 			mainGroup = 484B062D20BA0C2D00C4E50A;
 			packageReferences = (
-				E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */,
-				E61BA12A25E2F084005B63C8 /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				E61BA12F25E2F0A6005B63C8 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
-				E61BA13425E2F0CF005B63C8 /* XCRemoteSwiftPackageReference "TinyConstraints" */,
-				E61BA13925E2F0ED005B63C8 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */,
-				E61BA13E25E2F1F2005B63C8 /* XCRemoteSwiftPackageReference "EFQRCode" */,
-				E61BA14825E2F240005B63C8 /* XCRemoteSwiftPackageReference "QRCodeReader.swift" */,
-				E61BA14F25E2F25B005B63C8 /* XCRemoteSwiftPackageReference "Validator" */,
-				E61BA15425E2F297005B63C8 /* XCRemoteSwiftPackageReference "keychain-swift" */,
-				E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
-				E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */,
-				E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */,
-				E6BB27DA25E3F66700118D20 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				489D40C126636D5E000D35F2 /* XCRemoteSwiftPackageReference "Zesame" */,
+				489D40C426636DBF000D35F2 /* XCRemoteSwiftPackageReference "BEMCheckBox" */,
+				489D40C726636E00000D35F2 /* XCRemoteSwiftPackageReference "Validator" */,
+				489D40CA26636E65000D35F2 /* XCRemoteSwiftPackageReference "EFQRCode" */,
+				489D40CD26636E87000D35F2 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */,
+				489D40D026636EAB000D35F2 /* XCRemoteSwiftPackageReference "TinyConstraints" */,
+				489D40D326636ECF000D35F2 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				489D40D626636F0B000D35F2 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				489D40DB26636F3F000D35F2 /* XCRemoteSwiftPackageReference "QRCodeReader" */,
+				489D40DE26636F5A000D35F2 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				489D40E126636F8F000D35F2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				489D40E42663707D000D35F2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				489D40E926637136000D35F2 /* XCRemoteSwiftPackageReference "SwiftDate" */,
 			);
 			productRefGroup = 484B063720BA0C2D00C4E50A /* Products */;
 			projectDirPath = "";
@@ -2192,6 +2188,7 @@
 				E635A4BE225D301B00124823 /* BackUpKeystoreView.swift in Sources */,
 				48053F4421EBF19C008FCE13 /* FloatingLabelTextField+TypeOfInput.swift in Sources */,
 				488EE4CC215FAD53009A3903 /* Driver+Empty.swift in Sources */,
+				489D40ED266373A2000D35F2 /* GasLimitValidator.swift in Sources */,
 				485AAC9621AAC6B7005C56CC /* ValidationRuleHexadecimalCharacters.swift in Sources */,
 				48F96C69220F807C008B7E22 /* UIView+ShakeAnimation.swift in Sources */,
 				48C467BB219619CC006DA5EE /* Pincode.swift in Sources */,
@@ -2553,205 +2550,187 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+		489D40C126636D5E000D35F2 /* XCRemoteSwiftPackageReference "Zesame" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:malcommac/SwiftDate.git";
+			repositoryURL = "https://github.com/OpenZesame/Zesame";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.3.1;
+				minimumVersion = 1.1.1;
 			};
 		};
-		E61BA12A25E2F084005B63C8 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+		489D40C426636DBF000D35F2 /* XCRemoteSwiftPackageReference "BEMCheckBox" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:RxSwiftCommunity/RxDataSources.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		E61BA12F25E2F0A6005B63C8 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:SwiftyBeaver/SwiftyBeaver.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.3;
-			};
-		};
-		E61BA13425E2F0CF005B63C8 /* XCRemoteSwiftPackageReference "TinyConstraints" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:roberthein/TinyConstraints.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.1;
-			};
-		};
-		E61BA13925E2F0ED005B63C8 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:Skyscanner/SkyFloatingLabelTextField.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
-		E61BA13E25E2F1F2005B63C8 /* XCRemoteSwiftPackageReference "EFQRCode" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:EFPrefix/EFQRCode.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.0;
-			};
-		};
-		E61BA14825E2F240005B63C8 /* XCRemoteSwiftPackageReference "QRCodeReader.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:yannickl/QRCodeReader.swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.1.1;
-			};
-		};
-		E61BA14F25E2F25B005B63C8 /* XCRemoteSwiftPackageReference "Validator" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:adamwaite/Validator.git";
-			requirement = {
-				kind = revision;
-				revision = 8dacfee6a28b1b8ffe3aa082b0647328dde454d7;
-			};
-		};
-		E61BA15425E2F297005B63C8 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:evgenyneu/keychain-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 19.0.0;
-			};
-		};
-		E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:hackiftekhar/IQKeyboardManager.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.5.6;
-			};
-		};
-		E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.6.0;
-			};
-		};
-		E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:Boris-Em/BEMCheckBox.git";
+			repositoryURL = "https://github.com/Boris-Em/BEMCheckBox";
 			requirement = {
 				kind = revision;
 				revision = a3292ebae9f0c2737b0c90281219dced2ce51ac8;
 			};
 		};
-		E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */ = {
+		489D40C726636E00000D35F2 /* XCRemoteSwiftPackageReference "Validator" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:OpenZesame/Zesame.git";
+			repositoryURL = "https://github.com/adamwaite/Validator";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
+				kind = revision;
+				revision = 8dacfee6a28b1b8ffe3aa082b0647328dde454d7;
 			};
 		};
-		E6BB27DA25E3F66700118D20 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		489D40CA26636E65000D35F2 /* XCRemoteSwiftPackageReference "EFQRCode" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:ReactiveX/RxSwift.git";
+			repositoryURL = "https://github.com/EFPrefix/EFQRCode";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 6.1.0;
 			};
 		};
+		489D40CD26636E87000D35F2 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Skyscanner/SkyFloatingLabelTextField";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		489D40D026636EAB000D35F2 /* XCRemoteSwiftPackageReference "TinyConstraints" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/roberthein/TinyConstraints";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
+		489D40D326636ECF000D35F2 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.5;
+			};
+		};
+		489D40D626636F0B000D35F2 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.0;
+			};
+		};
+		489D40DB26636F3F000D35F2 /* XCRemoteSwiftPackageReference "QRCodeReader" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yannickl/QRCodeReader.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.1.1;
+			};
+		};
+		489D40DE26636F5A000D35F2 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 19.0.0;
+			};
+		};
+		489D40E126636F8F000D35F2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.5.6;
+			};
+		};
+		489D40E42663707D000D35F2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		489D40E926637136000D35F2 /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E61BA12625E2EFE7005B63C8 /* SwiftDate */ = {
+		489D40C226636D5E000D35F2 /* Zesame */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E61BA12525E2EFE7005B63C8 /* XCRemoteSwiftPackageReference "SwiftDate" */;
-			productName = SwiftDate;
-		};
-		E61BA12B25E2F084005B63C8 /* RxDataSources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA12A25E2F084005B63C8 /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = RxDataSources;
-		};
-		E61BA13025E2F0A6005B63C8 /* SwiftyBeaver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA12F25E2F0A6005B63C8 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
-			productName = SwiftyBeaver;
-		};
-		E61BA13525E2F0CF005B63C8 /* TinyConstraints */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA13425E2F0CF005B63C8 /* XCRemoteSwiftPackageReference "TinyConstraints" */;
-			productName = TinyConstraints;
-		};
-		E61BA13A25E2F0EE005B63C8 /* SkyFloatingLabelTextField */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA13925E2F0ED005B63C8 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */;
-			productName = SkyFloatingLabelTextField;
-		};
-		E61BA13F25E2F1F2005B63C8 /* EFQRCode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA13E25E2F1F2005B63C8 /* XCRemoteSwiftPackageReference "EFQRCode" */;
-			productName = EFQRCode;
-		};
-		E61BA14925E2F240005B63C8 /* QRCodeReader */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA14825E2F240005B63C8 /* XCRemoteSwiftPackageReference "QRCodeReader.swift" */;
-			productName = QRCodeReader;
-		};
-		E61BA15025E2F25B005B63C8 /* Validator */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA14F25E2F25B005B63C8 /* XCRemoteSwiftPackageReference "Validator" */;
-			productName = Validator;
-		};
-		E61BA15525E2F297005B63C8 /* KeychainSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA15425E2F297005B63C8 /* XCRemoteSwiftPackageReference "keychain-swift" */;
-			productName = KeychainSwift;
-		};
-		E61BA15A25E2F2CE005B63C8 /* IQKeyboardManagerSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E61BA15925E2F2CE005B63C8 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
-			productName = IQKeyboardManagerSwift;
-		};
-		E643724225E3A9520089C99D /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		E643724425E3A9520089C99D /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E643724125E3A9520089C99D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		E643724925E3B01C0089C99D /* BEMCheckBox */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E643724825E3B01C0089C99D /* XCRemoteSwiftPackageReference "BEMCheckBox" */;
-			productName = BEMCheckBox;
-		};
-		E646606025E3F04A00C4787C /* Zesame */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E646605F25E3F04A00C4787C /* XCRemoteSwiftPackageReference "Zesame" */;
+			package = 489D40C126636D5E000D35F2 /* XCRemoteSwiftPackageReference "Zesame" */;
 			productName = Zesame;
 		};
-		E685178D25E4001B00E74CAD /* RxSwift */ = {
+		489D40C526636DBF000D35F2 /* BEMCheckBox */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E6BB27DA25E3F66700118D20 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
+			package = 489D40C426636DBF000D35F2 /* XCRemoteSwiftPackageReference "BEMCheckBox" */;
+			productName = BEMCheckBox;
 		};
-		E685179125E4002300E74CAD /* RxCocoa */ = {
+		489D40C826636E00000D35F2 /* Validator */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E6BB27DA25E3F66700118D20 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
+			package = 489D40C726636E00000D35F2 /* XCRemoteSwiftPackageReference "Validator" */;
+			productName = Validator;
 		};
-		E685179525E4002B00E74CAD /* RxRelay */ = {
+		489D40CB26636E65000D35F2 /* EFQRCode */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E6BB27DA25E3F66700118D20 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxRelay;
+			package = 489D40CA26636E65000D35F2 /* XCRemoteSwiftPackageReference "EFQRCode" */;
+			productName = EFQRCode;
+		};
+		489D40CE26636E87000D35F2 /* SkyFloatingLabelTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40CD26636E87000D35F2 /* XCRemoteSwiftPackageReference "SkyFloatingLabelTextField" */;
+			productName = SkyFloatingLabelTextField;
+		};
+		489D40D126636EAB000D35F2 /* TinyConstraints */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40D026636EAB000D35F2 /* XCRemoteSwiftPackageReference "TinyConstraints" */;
+			productName = TinyConstraints;
+		};
+		489D40D426636ECF000D35F2 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40D326636ECF000D35F2 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		489D40D726636F0B000D35F2 /* Differentiator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40D626636F0B000D35F2 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = Differentiator;
+		};
+		489D40D926636F0B000D35F2 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40D626636F0B000D35F2 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
+		489D40DC26636F3F000D35F2 /* QRCodeReader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40DB26636F3F000D35F2 /* XCRemoteSwiftPackageReference "QRCodeReader" */;
+			productName = QRCodeReader;
+		};
+		489D40DF26636F5A000D35F2 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40DE26636F5A000D35F2 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+		489D40E226636F8F000D35F2 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40E126636F8F000D35F2 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		489D40E52663707D000D35F2 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40E42663707D000D35F2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		489D40E72663707D000D35F2 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40E42663707D000D35F2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		489D40EA26637136000D35F2 /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489D40E926637136000D35F2 /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
