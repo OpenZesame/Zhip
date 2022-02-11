@@ -13,11 +13,13 @@ struct SetupWallet: View {
     @EnvironmentObject private var model: Model
     @State private var walletName: String = ""
     var body: some View {
-        Text("Setup wallet")
-        TextField(walletName, text: $walletName)
-        Button("Create new wallet") {
-            model.configuredNewWallet(.init(name: walletName))
-        }.disabled(walletName.isEmpty)
+        VStack {
+            Text("Setup wallet")
+            TextField(walletName, text: $walletName, prompt: Text("Name of wallet")).textFieldStyle(.roundedBorder)
+            Button("Create new wallet") {
+                model.configuredNewWallet(.init(name: walletName))
+            }.disabled(walletName.isEmpty)
+        }.padding()
     }
 }
 

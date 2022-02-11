@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import ZhipEngine
 
 struct Balances: View {
+    @EnvironmentObject private var wallet: Wallet
     var body: some View {
-        Text("Balances")
+        Text("Balances in wallet: \(wallet.name)")
     }
 }

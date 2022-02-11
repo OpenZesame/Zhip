@@ -40,6 +40,8 @@
 		487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */; };
 		4888991A27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
 		4888991B27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
+		48A80AD027B67615002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80ACF27B67615002271BB /* ZhipEngine */; };
+		48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80AD127B6761A002271BB /* ZhipEngine */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,7 @@
 		487CE3E627B64204003BD07A /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelNavigationItem.swift; sourceTree = "<group>"; };
 		4888991927B661A000FCBE5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		48A80ACE27B67605002271BB /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48A80AD027B67615002271BB /* ZhipEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,10 +91,12 @@
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
+				48A80AC527B670D3002271BB /* Packages */,
 				4872FA4D27B5573F008B7BD0 /* iOS */,
 				4872FA1C27B4F8F4008B7BD0 /* Shared */,
 				4872FA2B27B4F8F5008B7BD0 /* macOS */,
 				4872FA2527B4F8F5008B7BD0 /* Products */,
+				48A80AC927B675B6002271BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,6 +228,21 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		48A80AC527B670D3002271BB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				48A80ACE27B67605002271BB /* Backend */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		48A80AC927B675B6002271BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -237,6 +259,9 @@
 			dependencies = (
 			);
 			name = "Zhip (iOS)";
+			packageProductDependencies = (
+				48A80ACF27B67615002271BB /* ZhipEngine */,
+			);
 			productName = "Zhip (iOS)";
 			productReference = 4872FA2427B4F8F5008B7BD0 /* Zhip.app */;
 			productType = "com.apple.product-type.application";
@@ -254,6 +279,9 @@
 			dependencies = (
 			);
 			name = "Zhip (macOS)";
+			packageProductDependencies = (
+				48A80AD127B6761A002271BB /* ZhipEngine */,
+			);
 			productName = "Zhip (macOS)";
 			productReference = 4872FA2A27B4F8F5008B7BD0 /* Zhip.app */;
 			productType = "com.apple.product-type.application";
@@ -616,6 +644,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		48A80ACF27B67615002271BB /* ZhipEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZhipEngine;
+		};
+		48A80AD127B6761A002271BB /* ZhipEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZhipEngine;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4872FA1827B4F8F3008B7BD0 /* Project object */;
 }

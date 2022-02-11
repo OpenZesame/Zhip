@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZhipEngine
 
 struct Address: Hashable {}
 struct Contact: Hashable {
@@ -17,23 +18,21 @@ struct Contact: Hashable {
     }
 }
 
-final class Wallet: ObservableObject {
-    let name: String
-    init(name: String) {
-        self.name = name
-    }
-}
-
 struct Version {
     let version: String
     let build: String
 }
 
 final class Model: ObservableObject {
+    private let securePersistence = SecurePersistence()
     @Published private(set) var wallet: Wallet?
     
     @Published var currentRecipientAddress: Address?
     @Published var contacts = Set<Contact>()
+    
+    init() {
+        wallet = try! securePersistence.loadWallet()
+    }
 }
 
 extension Bundle {
@@ -45,10 +44,12 @@ extension Bundle {
 extension Model {
     
     func configuredNewWallet(_ wallet: Wallet) {
+        try! securePersistence.save(wallet: wallet)
         self.wallet = wallet
     }
     
     func deleteWallet() {
+        try! securePersistence.deleteWallet()
         wallet = nil
     }
     

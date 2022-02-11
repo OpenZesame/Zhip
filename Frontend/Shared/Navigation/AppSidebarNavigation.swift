@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZhipEngine
 
 struct AppSidebarNavigation: View {
 
