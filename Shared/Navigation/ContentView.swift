@@ -2,26 +2,47 @@
 //  ContentView.swift
 //  Zhip
 //
-//  Created by Alexander Cyon on 2022-02-10.
+//  Created by Alexander Cyon on 2022-02-11.
 //
 
 import SwiftUI
 
+struct SetupWallet: View {
+    
+    
+    @EnvironmentObject private var model: Model
+    @State private var walletName: String = ""
+    var body: some View {
+        Text("Setup wallet")
+        TextField(walletName, text: $walletName)
+        Button("Create new wallet") {
+            model.configuredNewWallet(.init(name: walletName))
+        }.disabled(walletName.isEmpty)
+    }
+}
+
+
 struct ContentView: View {
-    #if os(iOS)
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    #endif
+    
+    @EnvironmentObject private var model: Model
     
     var body: some View {
-        #if os(iOS)
-        if horizontalSizeClass == .compact {
-            AppTabNavigation()
+        if let wallet = model.wallet {
+            HomeView()
+                .environmentObject(wallet)
         } else {
-            AppSidebarNavigation()
+            SetupWallet()
         }
-        #else
-        AppSidebarNavigation()
-        #endif
+//        #if os(iOS)
+//        if horizontalSizeClass == .compact {
+//            AppTabNavigation()
+//        } else {
+//            AppSidebarNavigation()
+//        }
+//        #else
+//        AppSidebarNavigation()
+//        #endif
+        
     }
 }
 

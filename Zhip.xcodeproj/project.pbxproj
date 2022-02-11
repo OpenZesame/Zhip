@@ -17,8 +17,8 @@
 		4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3B27B509D1008B7BD0 /* Colors.swift */; };
 		4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */; };
 		4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */; };
-		4872FA4327B53A6F008B7BD0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4227B53A6F008B7BD0 /* ContentView.swift */; };
-		4872FA4427B53A6F008B7BD0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4227B53A6F008B7BD0 /* ContentView.swift */; };
+		4872FA4327B53A6F008B7BD0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4227B53A6F008B7BD0 /* HomeView.swift */; };
+		4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4227B53A6F008B7BD0 /* HomeView.swift */; };
 		4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4627B53ADD008B7BD0 /* Model.swift */; };
 		4872FA4827B53ADD008B7BD0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4627B53ADD008B7BD0 /* Model.swift */; };
 		4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */; };
@@ -38,6 +38,8 @@
 		487CE3E827B64204003BD07A /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* Contacts.swift */; };
 		487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */; };
 		487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */; };
+		4888991A27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
+		4888991B27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +51,7 @@
 		4872FA2C27B4F8F5008B7BD0 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		4872FA3B27B509D1008B7BD0 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
-		4872FA4227B53A6F008B7BD0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4872FA4227B53A6F008B7BD0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4872FA4627B53ADD008B7BD0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSidebarNavigation.swift; sourceTree = "<group>"; };
 		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		487CE3E227B641C6003BD07A /* Transfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transfer.swift; sourceTree = "<group>"; };
 		487CE3E627B64204003BD07A /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelNavigationItem.swift; sourceTree = "<group>"; };
+		4888991927B661A000FCBE5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,8 @@
 		4872FA1C27B4F8F4008B7BD0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4888991D27B6621E00FCBE5A /* Resources */,
+				4888991C27B6620A00FCBE5A /* Styling */,
 				487CE3EC27B64604003BD07A /* Onboarding */,
 				487CE3E127B641BB003BD07A /* Transfer */,
 				487CE3DA27B6384C003BD07A /* Contacts */,
@@ -100,10 +105,7 @@
 				4872FA5027B558D0008B7BD0 /* Balances */,
 				4872FA4927B53B29008B7BD0 /* Navigation */,
 				4872FA4527B53AB9008B7BD0 /* Model */,
-				4872FA3E27B523CC008B7BD0 /* Style */,
 				4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */,
-				4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */,
-				4872FA3B27B509D1008B7BD0 /* Colors.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -144,9 +146,10 @@
 		4872FA4927B53B29008B7BD0 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA4227B53A6F008B7BD0 /* ContentView.swift */,
+				4872FA4227B53A6F008B7BD0 /* HomeView.swift */,
 				4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */,
 				487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */,
+				4888991927B661A000FCBE5A /* ContentView.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -199,6 +202,23 @@
 				4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		4888991C27B6620A00FCBE5A /* Styling */ = {
+			isa = PBXGroup;
+			children = (
+				4872FA3B27B509D1008B7BD0 /* Colors.swift */,
+				4872FA3E27B523CC008B7BD0 /* Style */,
+			);
+			path = Styling;
+			sourceTree = "<group>";
+		};
+		4888991D27B6621E00FCBE5A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,9 +321,10 @@
 			files = (
 				4872FA2F27B4F8F5008B7BD0 /* WelcomeView.swift in Sources */,
 				4872FA4F27B55756008B7BD0 /* AppTabNavigation.swift in Sources */,
+				4888991A27B661A000FCBE5A /* ContentView.swift in Sources */,
 				487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */,
 				487CE3DF27B638B0003BD07A /* AddToContactsButton.swift in Sources */,
-				4872FA4327B53A6F008B7BD0 /* ContentView.swift in Sources */,
+				4872FA4327B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
 				4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				487CE3E727B64204003BD07A /* Contacts.swift in Sources */,
@@ -322,7 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4872FA3027B4F8F5008B7BD0 /* WelcomeView.swift in Sources */,
-				4872FA4427B53A6F008B7BD0 /* ContentView.swift in Sources */,
+				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				4872FA4827B53ADD008B7BD0 /* Model.swift in Sources */,
 				487CE3E027B638B0003BD07A /* AddToContactsButton.swift in Sources */,
@@ -332,6 +353,7 @@
 				487CE3E827B64204003BD07A /* Contacts.swift in Sources */,
 				487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
 				4872FA5627B558EC008B7BD0 /* Settings.swift in Sources */,
+				4888991B27B661A000FCBE5A /* ContentView.swift in Sources */,
 				4872FA5327B558DD008B7BD0 /* Balances.swift in Sources */,
 				487CE3E427B641C6003BD07A /* Transfer.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,

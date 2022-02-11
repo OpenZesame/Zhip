@@ -17,14 +17,20 @@ struct Contact: Hashable {
     }
 }
 
-struct Wallet {}
+final class Wallet: ObservableObject {
+    let name: String
+    init(name: String) {
+        self.name = name
+    }
+}
+
 struct Version {
     let version: String
     let build: String
 }
 
 final class Model: ObservableObject {
-    @Published var wallet: Wallet?
+    @Published private(set) var wallet: Wallet?
     
     @Published var currentRecipientAddress: Address?
     @Published var contacts = Set<Contact>()
@@ -37,6 +43,14 @@ extension Bundle {
 }
 
 extension Model {
+    
+    func configuredNewWallet(_ wallet: Wallet) {
+        self.wallet = wallet
+    }
+    
+    func deleteWallet() {
+        wallet = nil
+    }
     
     var version: Version {
         let bundle = Bundle.main
@@ -58,4 +72,5 @@ extension Model {
     func isContact(address: Address) -> Bool {
         contacts.contains(where: { $0.address == address })
     }
+    
 }

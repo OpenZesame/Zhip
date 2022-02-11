@@ -7,40 +7,10 @@
 
 import SwiftUI
 
-enum TopLevelNavigationItem {
-    case balances
-    case transfer
-    case contacts
-    case settings
-}
-
-extension TopLevelNavigationItem {
-    var name: String {
-        switch self {
-        case .balances: return "Balances"
-        case .transfer: return "Transfer"
-        case .contacts: return "Contacts"
-        case .settings: return "Settings"
-        }
-    }
-    var imageName: String {
-        switch self {
-        case .balances: return "bitcoinsign.circle"
-        case .transfer: return "arrow.up.circle"
-        case .contacts: return "heart"
-        case .settings: return "gear"
-        }
-    }
-    var label: some View {
-        Label(name, systemImage: imageName)
-    }
-}
-
-
-
 struct AppSidebarNavigation: View {
 
     @EnvironmentObject private var model: Model
+    @EnvironmentObject private var wallet: Wallet
     @State private var selection: TopLevelNavigationItem? = .balances
     
     var body: some View {
@@ -51,7 +21,7 @@ struct AppSidebarNavigation: View {
                 navigationLink(tag: .contacts) { Contacts() }
                 navigationLink(tag: .settings) { Settings() }
             }
-            .navigationTitle("Zhip")
+            .navigationTitle("Wallet: \(wallet.name)")
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 Text("Version: \(model.version.version) (#\(model.version.build))")
             }
