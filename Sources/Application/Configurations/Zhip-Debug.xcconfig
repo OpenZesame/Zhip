@@ -1,3 +1,0 @@
-#include "Zhip.xcconfig"
-
-SWIFT_OPTIMIZATION_LEVEL = -Onone
