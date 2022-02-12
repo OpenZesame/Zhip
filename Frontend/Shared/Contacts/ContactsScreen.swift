@@ -1,5 +1,5 @@
 //
-//  Transfer.swift
+//  Contacts.swift
 //  Zhip
 //
 //  Created by Alexander Cyon on 2022-02-11.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Transfer: View {
+struct ContactsScreen: View {
     var body: some View {
-        Text("Transfer")
+        Text("Contacts")
     }
 }

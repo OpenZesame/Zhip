@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+import ZhipEngine
+import Stinsen
+
+
 @main
 struct ZhipApp: App {
 
@@ -14,7 +18,8 @@ struct ZhipApp: App {
         
         var body: some Scene {
             WindowGroup {
-                ContentView()
+                AppCoordinator(model: model)
+                    .view()
                     .environmentObject(model)
             }
             .commands {

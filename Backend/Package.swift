@@ -3,25 +3,49 @@
 
 import PackageDescription
 
-// MARK: - Dep. Navigation / UI
-private let dependenciesNavigationOrUI: [Package.Dependency] = [
-    .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7")
-]
+struct Dependency {
+    enum Category {
+        case navigation
+        case `convenience`
+    }
+    let category: Category
+    let package: Package.Dependency
+    let product: PackageDescription.Target.Dependency
+    let rationale: String
+}
+extension Array where Element == Dependency {
+    var packageDependencies: [Package.Dependency] { map { $0.package } }
+    var targetDependencies: [PackageDescription.Target.Dependency] { map { $0.product } }
+}
 
-// MARK: - Dep. Other
-private let dependenciesNonUI: [Package.Dependency] = [
-    .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
-]
-
-// MARK: - Dependencies
-// MARK: -
-private let dependencies: [Package.Dependency] = dependenciesNavigationOrUI + dependenciesNonUI
-
-// MARK: - Target Dependency
-// MARK: -
-private let zhipTargetDependencies: [PackageDescription.Target.Dependency] = [
-    "KeychainAccess",
-    .product(name: "Stinsen", package: "stinsen"),
+private let dependencies: [Dependency] = [
+    .init(
+        category: .convenience,
+        package: .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
+        product: "KeychainAccess",
+        rationale: "Keychain is very low level"
+    ),
+    
+    .init(
+        category: .navigation,
+        package: .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7"),
+        product: .product(name: "Stinsen", package: "stinsen"),
+        rationale: "Coordinator pattern"
+    )
+    
+//    .init(
+//        category: .navigation,
+//        package: .package(url: "https://github.com/matteopuc/swiftui-navigation-stack", from: "1.0.4"),
+//        product: "NavigationStack",
+//        rationale: "Manual control over navigation stack"
+//    )
+    
+    //    .init(
+    //        category: .navigation,
+    //        package: .package(url: "https://github.com/pointfreeco/swiftui-navigation", branch: "main"),
+    //        product: "SwiftUINavigation",
+    //        rationale: "Routing and IfLet Switch, CaseLet convenience"
+    //    )
 ]
 
 let package = Package(
@@ -33,13 +57,13 @@ let package = Package(
             name: "ZhipEngine",
             targets: ["ZhipEngine"]),
     ],
-    dependencies: dependencies,
+    dependencies: dependencies.packageDependencies,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "ZhipEngine",
-            dependencies: zhipTargetDependencies),
+            dependencies: dependencies.targetDependencies),
         .testTarget(
             name: "ZhipEngineTests",
             dependencies: ["ZhipEngine"]),

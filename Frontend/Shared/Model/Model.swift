@@ -25,7 +25,15 @@ struct Version {
 
 final class Model: ObservableObject {
     private let securePersistence = SecurePersistence()
-    @Published private(set) var wallet: Wallet?
+    @Published var wallet: Wallet? {
+        didSet {
+            if let wallet = wallet {
+                try! securePersistence.save(wallet: wallet)
+            } else {
+                try! securePersistence.deleteWallet()
+            }
+        }
+    }
     
     @Published var currentRecipientAddress: Address?
     @Published var contacts = Set<Contact>()
@@ -43,16 +51,7 @@ extension Bundle {
 
 extension Model {
     
-    func configuredNewWallet(_ wallet: Wallet) {
-        try! securePersistence.save(wallet: wallet)
-        self.wallet = wallet
-    }
-    
-    func deleteWallet() {
-        try! securePersistence.deleteWallet()
-        wallet = nil
-    }
-    
+
     var version: Version {
         let bundle = Bundle.main
         

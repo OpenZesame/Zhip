@@ -8,8 +8,9 @@
 import SwiftUI
 import ZhipEngine
 
-struct Balances: View {
-    @EnvironmentObject private var wallet: Wallet
+struct BalancesScreen: View {
+//    @EnvironmentObject private var wallet: Wallet
+    let wallet: Wallet
     var body: some View {
         Text("Balances in wallet: \(wallet.name)")
     }

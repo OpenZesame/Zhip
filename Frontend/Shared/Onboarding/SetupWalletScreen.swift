@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SetupWallet: View {
+struct SetupWalletScreen: View {
 
     @EnvironmentObject private var model: Model
     @State private var walletName: String = ""
@@ -24,7 +24,7 @@ struct SetupWallet: View {
                 .textFieldStyle(.roundedBorder)
             
             Button("Create new wallet") {
-                model.configuredNewWallet(.init(name: walletName))
+                model.wallet = .init(name: walletName)
             }
             .disabled(walletName.isEmpty)
         }

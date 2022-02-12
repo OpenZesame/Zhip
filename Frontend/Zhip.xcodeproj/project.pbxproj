@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
+		4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
+		4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
+		4844290527B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
+		4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */; };
+		4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */; };
+		4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
+		4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
 		4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */; };
 		4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */; };
-		4872FA2F27B4F8F5008B7BD0 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */; };
-		4872FA3027B4F8F5008B7BD0 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */; };
+		4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */; };
+		4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */; };
 		4872FA3127B4F8F5008B7BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */; };
 		4872FA3227B4F8F5008B7BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */; };
 		4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3B27B509D1008B7BD0 /* Colors.swift */; };
@@ -24,31 +32,33 @@
 		4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */; };
 		4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */; };
 		4872FA4F27B55756008B7BD0 /* AppTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */; };
-		4872FA5227B558DD008B7BD0 /* Balances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* Balances.swift */; };
-		4872FA5327B558DD008B7BD0 /* Balances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* Balances.swift */; };
-		4872FA5527B558EC008B7BD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* Settings.swift */; };
-		4872FA5627B558EC008B7BD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* Settings.swift */; };
-		48761A8227B6DBBF002E4375 /* SetupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWallet.swift */; };
-		48761A8327B6DBBF002E4375 /* SetupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWallet.swift */; };
+		4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */; };
+		4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */; };
+		4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */; };
+		4872FA5627B558EC008B7BD0 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */; };
+		48761A8227B6DBBF002E4375 /* SetupWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWalletScreen.swift */; };
+		48761A8327B6DBBF002E4375 /* SetupWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWalletScreen.swift */; };
 		487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DB27B63862003BD07A /* ContactCommands.swift */; };
 		487CE3DD27B63862003BD07A /* ContactCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DB27B63862003BD07A /* ContactCommands.swift */; };
 		487CE3DF27B638B0003BD07A /* AddToContactsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */; };
 		487CE3E027B638B0003BD07A /* AddToContactsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */; };
-		487CE3E327B641C6003BD07A /* Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* Transfer.swift */; };
-		487CE3E427B641C6003BD07A /* Transfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* Transfer.swift */; };
-		487CE3E727B64204003BD07A /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* Contacts.swift */; };
-		487CE3E827B64204003BD07A /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* Contacts.swift */; };
+		487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* TransferScreen.swift */; };
+		487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* TransferScreen.swift */; };
+		487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
+		487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
 		487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */; };
 		487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */; };
-		4888991A27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
-		4888991B27B661A000FCBE5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4888991927B661A000FCBE5A /* ContentView.swift */; };
 		48A80AD027B67615002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80ACF27B67615002271BB /* ZhipEngine */; };
 		48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80AD127B6761A002271BB /* ZhipEngine */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
+		4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhipApp.swift; sourceTree = "<group>"; };
-		4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
 		4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,15 +69,14 @@
 		4872FA4627B53ADD008B7BD0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSidebarNavigation.swift; sourceTree = "<group>"; };
 		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
-		4872FA5127B558DD008B7BD0 /* Balances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balances.swift; sourceTree = "<group>"; };
-		4872FA5427B558EC008B7BD0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		48761A8127B6DBBF002E4375 /* SetupWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWallet.swift; sourceTree = "<group>"; };
+		4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesScreen.swift; sourceTree = "<group>"; };
+		4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		48761A8127B6DBBF002E4375 /* SetupWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletScreen.swift; sourceTree = "<group>"; };
 		487CE3DB27B63862003BD07A /* ContactCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCommands.swift; sourceTree = "<group>"; };
 		487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToContactsButton.swift; sourceTree = "<group>"; };
-		487CE3E227B641C6003BD07A /* Transfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transfer.swift; sourceTree = "<group>"; };
-		487CE3E627B64204003BD07A /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
+		487CE3E227B641C6003BD07A /* TransferScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferScreen.swift; sourceTree = "<group>"; };
+		487CE3E627B64204003BD07A /* ContactsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsScreen.swift; sourceTree = "<group>"; };
 		487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelNavigationItem.swift; sourceTree = "<group>"; };
-		4888991927B661A000FCBE5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		48A80ACE27B67605002271BB /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +100,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		484428FB27B7D91D00BAC575 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				4844290A27B7DA3600BAC575 /* Onboarding */,
+				4844290127B7D95100BAC575 /* App */,
+				484428FC27B7D92400BAC575 /* Main */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		484428FC27B7D92400BAC575 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				484428FD27B7D92E00BAC575 /* MainCoordinator */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		484428FD27B7D92E00BAC575 /* MainCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				484428FE27B7D93700BAC575 /* MainCoordinator.swift */,
+			);
+			path = MainCoordinator;
+			sourceTree = "<group>";
+		};
+		4844290127B7D95100BAC575 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4844290327B7D96700BAC575 /* AppCoordinator.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4844290627B7DA0E00BAC575 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		4844290A27B7DA3600BAC575 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +165,8 @@
 		4872FA1C27B4F8F4008B7BD0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4844290627B7DA0E00BAC575 /* UseCases */,
+				484428FB27B7D91D00BAC575 /* Coordinators */,
 				4888991D27B6621E00FCBE5A /* Resources */,
 				4888991C27B6620A00FCBE5A /* Styling */,
 				487CE3EC27B64604003BD07A /* Onboarding */,
@@ -159,7 +220,6 @@
 				4872FA4227B53A6F008B7BD0 /* HomeView.swift */,
 				4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */,
 				487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */,
-				4888991927B661A000FCBE5A /* ContentView.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -175,7 +235,7 @@
 		4872FA5027B558D0008B7BD0 /* Balances */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA5127B558DD008B7BD0 /* Balances.swift */,
+				4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */,
 			);
 			path = Balances;
 			sourceTree = "<group>";
@@ -183,7 +243,7 @@
 		487CE3D927B63707003BD07A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA5427B558EC008B7BD0 /* Settings.swift */,
+				4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -193,7 +253,7 @@
 			children = (
 				487CE3DB27B63862003BD07A /* ContactCommands.swift */,
 				487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */,
-				487CE3E627B64204003BD07A /* Contacts.swift */,
+				487CE3E627B64204003BD07A /* ContactsScreen.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -201,7 +261,7 @@
 		487CE3E127B641BB003BD07A /* Transfer */ = {
 			isa = PBXGroup;
 			children = (
-				487CE3E227B641C6003BD07A /* Transfer.swift */,
+				487CE3E227B641C6003BD07A /* TransferScreen.swift */,
 			);
 			path = Transfer;
 			sourceTree = "<group>";
@@ -209,8 +269,8 @@
 		487CE3EC27B64604003BD07A /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */,
-				48761A8127B6DBBF002E4375 /* SetupWallet.swift */,
+				4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */,
+				48761A8127B6DBBF002E4375 /* SetupWalletScreen.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -351,23 +411,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4872FA2F27B4F8F5008B7BD0 /* WelcomeView.swift in Sources */,
+				4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				4872FA4F27B55756008B7BD0 /* AppTabNavigation.swift in Sources */,
-				4888991A27B661A000FCBE5A /* ContentView.swift in Sources */,
 				487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */,
 				487CE3DF27B638B0003BD07A /* AddToContactsButton.swift in Sources */,
 				4872FA4327B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
+				484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */,
 				4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
-				487CE3E727B64204003BD07A /* Contacts.swift in Sources */,
-				4872FA5527B558EC008B7BD0 /* Settings.swift in Sources */,
-				4872FA5227B558DD008B7BD0 /* Balances.swift in Sources */,
+				487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */,
+				4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
+				4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
+				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
+				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
-				48761A8227B6DBBF002E4375 /* SetupWallet.swift in Sources */,
+				48761A8227B6DBBF002E4375 /* SetupWalletScreen.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
+				4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
-				487CE3E327B641C6003BD07A /* Transfer.swift in Sources */,
+				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,21 +438,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4872FA3027B4F8F5008B7BD0 /* WelcomeView.swift in Sources */,
+				4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */,
+				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				4872FA4827B53ADD008B7BD0 /* Model.swift in Sources */,
 				487CE3E027B638B0003BD07A /* AddToContactsButton.swift in Sources */,
+				4844290527B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				487CE3DD27B63862003BD07A /* ContactCommands.swift in Sources */,
-				48761A8327B6DBBF002E4375 /* SetupWallet.swift in Sources */,
+				48761A8327B6DBBF002E4375 /* SetupWalletScreen.swift in Sources */,
+				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */,
 				4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
-				487CE3E827B64204003BD07A /* Contacts.swift in Sources */,
+				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
 				487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
-				4872FA5627B558EC008B7BD0 /* Settings.swift in Sources */,
-				4888991B27B661A000FCBE5A /* ContentView.swift in Sources */,
-				4872FA5327B558DD008B7BD0 /* Balances.swift in Sources */,
-				487CE3E427B641C6003BD07A /* Transfer.swift in Sources */,
+				4872FA5627B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
+				4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
+				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
+				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
