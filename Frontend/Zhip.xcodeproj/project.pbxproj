@@ -28,6 +28,8 @@
 		4872FA5327B558DD008B7BD0 /* Balances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* Balances.swift */; };
 		4872FA5527B558EC008B7BD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* Settings.swift */; };
 		4872FA5627B558EC008B7BD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5427B558EC008B7BD0 /* Settings.swift */; };
+		48761A8227B6DBBF002E4375 /* SetupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWallet.swift */; };
+		48761A8327B6DBBF002E4375 /* SetupWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48761A8127B6DBBF002E4375 /* SetupWallet.swift */; };
 		487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DB27B63862003BD07A /* ContactCommands.swift */; };
 		487CE3DD27B63862003BD07A /* ContactCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DB27B63862003BD07A /* ContactCommands.swift */; };
 		487CE3DF27B638B0003BD07A /* AddToContactsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */; };
@@ -59,6 +61,7 @@
 		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
 		4872FA5127B558DD008B7BD0 /* Balances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balances.swift; sourceTree = "<group>"; };
 		4872FA5427B558EC008B7BD0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		48761A8127B6DBBF002E4375 /* SetupWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWallet.swift; sourceTree = "<group>"; };
 		487CE3DB27B63862003BD07A /* ContactCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCommands.swift; sourceTree = "<group>"; };
 		487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToContactsButton.swift; sourceTree = "<group>"; };
 		487CE3E227B641C6003BD07A /* Transfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transfer.swift; sourceTree = "<group>"; };
@@ -207,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				4872FA1E27B4F8F4008B7BD0 /* WelcomeView.swift */,
+				48761A8127B6DBBF002E4375 /* SetupWallet.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -359,6 +363,7 @@
 				4872FA5527B558EC008B7BD0 /* Settings.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* Balances.swift in Sources */,
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
+				48761A8227B6DBBF002E4375 /* SetupWallet.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
 				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
@@ -376,6 +381,7 @@
 				4872FA4827B53ADD008B7BD0 /* Model.swift in Sources */,
 				487CE3E027B638B0003BD07A /* AddToContactsButton.swift in Sources */,
 				487CE3DD27B63862003BD07A /* ContactCommands.swift in Sources */,
+				48761A8327B6DBBF002E4375 /* SetupWallet.swift in Sources */,
 				4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */,
 				4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				487CE3E827B64204003BD07A /* Contacts.swift in Sources */,
