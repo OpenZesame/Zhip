@@ -13,9 +13,12 @@ protocol WelcomeViewModel: ObservableObject {
 }
 
 final class DefaultWelcomeViewModel: WelcomeViewModel {
-    @RouterObject var router: NavigationRouter<OnboardingCoordinator>!
+    private unowned let coordinator: OnboardingCoordinator
+    init(coordinator: OnboardingCoordinator) {
+        self.coordinator = coordinator
+    }
     func startApp() {
-        router.coordinator.didStart()
+        coordinator.didStart()
     }
 }
 
@@ -57,12 +60,6 @@ extension WelcomeScreen {
             middle: "Images/Welcome/MiddleSpaceship",
             front: "Images/Welcome/FrontBlastOff"
         )
-    }
-}
-
-struct WelcomeScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeScreen(viewModel: DefaultWelcomeViewModel())
     }
 }
 

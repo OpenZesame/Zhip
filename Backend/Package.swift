@@ -40,12 +40,20 @@ private let dependencies: [Dependency] = [
 //        rationale: "Manual control over navigation stack"
 //    )
     
-    //    .init(
-    //        category: .navigation,
-    //        package: .package(url: "https://github.com/pointfreeco/swiftui-navigation", branch: "main"),
-    //        product: "SwiftUINavigation",
-    //        rationale: "Routing and IfLet Switch, CaseLet convenience"
-    //    )
+//    .init(
+//        category: .navigation,
+//        package: .package(url: "https://github.com/pointfreeco/swiftui-navigation", branch: "main"),
+//        product: "SwiftUINavigation",
+//        rationale: "Routing and IfLet Switch, CaseLet convenience"
+//    )
+
+//    .init(
+//        category: .navigation,
+//        package: .package(url: "  https://github.com/johnpatrickmorgan/FlowStacks", from: "0.1.0"),
+//        product: "FlowStacks",
+//        rationale: "Coordinator pattern and routing"
+//    )
+  
 ]
 
 let package = Package(
