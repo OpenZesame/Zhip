@@ -8,25 +8,52 @@
 import SwiftUI
 import Stinsen
 
-protocol RestoreWalletCoordinator: AnyObject {
+protocol RestoreWalletCoordinator: RestoreOrGenerateNewWalletCoordinator {
     
 }
 
 final class DefaultRestoreWalletCoordinator: RestoreWalletCoordinator, NavigationCoordinatable {
+    
     let stack = NavigationStack<DefaultRestoreWalletCoordinator>(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var restore = makeRestore
     
+    init() {}
+    deinit {
+        print("deinit DefaultRestoreWalletCoordinator")
+    }
+}
+
+extension DefaultRestoreWalletCoordinator {
+    func privacyIsEnsured() {
+        toRestoreWallet()
+    }
+    
+    func toRestoreWallet() {
+        route(to: \.restore)
+    }
+    
+    func myScreenMightBeWatched() {
+        dismissCoordinator {
+            print("dismissing \(self)")
+        }
+    }
+}
+
+extension DefaultRestoreWalletCoordinator {
+    
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
-        EnsurePrivacyScreen()
+        let viewModel = DefaultEnsurePrivacyViewModel<DefaultRestoreWalletCoordinator>(coordinator: self)
+        EnsurePrivacyScreen(viewModel: viewModel)
     }
     
     
     @ViewBuilder
     func makeRestore() -> some View {
-        RestoreWalletScreen()
+        let viewModel = DefaultRestoreWalletViewModel(coordinator: self)
+        RestoreWalletScreen(viewModel: viewModel)
     }
 }
 

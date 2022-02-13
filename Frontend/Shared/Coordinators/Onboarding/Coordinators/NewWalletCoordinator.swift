@@ -8,7 +8,12 @@
 import SwiftUI
 import Stinsen
 
-protocol NewWalletCoordinator: AnyObject {}
+protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
+    func privacyIsEnsured()
+    func myScreenMightBeWatched()
+}
+
+protocol NewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator {}
 
 final class DefaultNewWalletCoordinator: NewWalletCoordinator, NavigationCoordinatable {
     let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
@@ -16,13 +21,37 @@ final class DefaultNewWalletCoordinator: NewWalletCoordinator, NavigationCoordin
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var new = makeNew
     
+    init() {}
+    deinit {
+        print("deinit DefaultNewWalletCoordinator")
+    }
+
+}
+
+extension DefaultNewWalletCoordinator {
+    
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
-        EnsurePrivacyScreen()
+        let viewModel = DefaultEnsurePrivacyViewModel<DefaultNewWalletCoordinator>(coordinator: self)
+        EnsurePrivacyScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
     func makeNew() -> some View {
         NewWalletScreen()
+    }
+    
+    func privacyIsEnsured() {
+        toNewWallet()
+    }
+    
+    func toNewWallet() {
+        route(to: \.new)
+    }
+    
+    func myScreenMightBeWatched() {
+        dismissCoordinator {
+            print("dismissing \(self)")
+        }
     }
 }

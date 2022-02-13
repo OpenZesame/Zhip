@@ -45,10 +45,11 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
 
 extension DefaultSetupWalletCoordinator {
     func toGenerateNewWallet() {
-        fatalError("toGenerateNewWallet")
+        route(to: \.newWallet)
+        
     }
     
     func toRestoreExistingWallet() {
-        fatalError("toRestoreExistingWallet")
+        route(to: \.restoreWallet)
     }
 }
