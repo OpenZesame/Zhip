@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
+		481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
+		481EDEB727B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
+		481EDEB827B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
 		484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
@@ -75,6 +79,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFullScreen.swift; sourceTree = "<group>"; };
+		481EDEB627B98B3200D39DCB /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
@@ -133,6 +139,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		481EDEB227B98B1100D39DCB /* ViewFragments */ = {
+			isa = PBXGroup;
+			children = (
+				481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */,
+				481EDEB627B98B3200D39DCB /* Labels.swift */,
+			);
+			path = ViewFragments;
+			sourceTree = "<group>";
+		};
 		484428FB27B7D91D00BAC575 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +232,7 @@
 		4872FA1C27B4F8F4008B7BD0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				481EDEB227B98B1100D39DCB /* ViewFragments */,
 				4844290627B7DA0E00BAC575 /* UseCases */,
 				484428FB27B7D91D00BAC575 /* Coordinators */,
 				4888991D27B6621E00FCBE5A /* Resources */,
@@ -481,6 +497,7 @@
 				485FF73027B8361A0030266A /* SetupWalletScreen.swift in Sources */,
 				485FF73A27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
 				4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
+				481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
@@ -494,6 +511,7 @@
 				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
+				481EDEB727B98B3200D39DCB /* Labels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +543,9 @@
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
 				487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
 				4872FA5627B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
+				481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
 				4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
+				481EDEB827B98B3200D39DCB /* Labels.swift in Sources */,
 				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
 				485FF72E27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,

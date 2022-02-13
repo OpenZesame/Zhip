@@ -57,7 +57,7 @@ private let dependencies: [Dependency] = [
 
 //    .init(
 //        category: .navigation,
-//        package: .package(url: "  https://github.com/johnpatrickmorgan/FlowStacks", from: "0.1.0"),
+//        package: .package(url: "https://github.com/johnpatrickmorgan/FlowStacks", from: "0.1.0"),
 //        product: "FlowStacks",
 //        rationale: "Coordinator pattern and routing"
 //    )

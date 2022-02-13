@@ -28,20 +28,67 @@ extension DefaultEnsurePrivacyViewModel {
     }
 }
 
+
+
+struct CallToAction: View {
+    struct Choice {
+        let call: String
+        let action: () -> Void
+    }
+    let primary: Choice
+    let secondary: Choice?
+    
+    @ViewBuilder
+    private var primaryView: some View {
+        Button(primary.call) {
+            primary.action()
+        }.buttonStyle(.primary)
+    }
+    
+    @ViewBuilder
+    private var secondarView: some View {
+        if let secondary = secondary {
+            Button(secondary.call) {
+                secondary.action()
+            }.buttonStyle(.secondary)
+        } else {
+            EmptyView()
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            primaryView
+            secondarView
+        }
+        
+    }
+}
+
 struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
-        VStack {
-            Text("Ensure Privacy")
-            
-            Button("My screen is not being watched") {
-                viewModel.privacyIsEnsured()
-            }.buttonStyle(.primary)
-            
-            Button("My screen might be watched") {
-                viewModel.myScreenMightBeWatched()
-            }.buttonStyle(.secondary)
+        ForceFullScreen {
+            VStack {
+                Image("Icons/Large/Shield")
+                
+                Labels(
+                    title: "Security",
+                    subtitle: "Make sure ethat you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV's"
+                )
+ 
+                CallToAction(
+                    primary: .init(
+                        call: "My screen is not being watched",
+                        action: viewModel.privacyIsEnsured
+                    ),
+                    secondary: .init(
+                        call: "My screen might be watched",
+                        action: viewModel.myScreenMightBeWatched
+                    )
+                )
+            }
         }
     }
 }
