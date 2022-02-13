@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import Zesame
+import ZhipEngine
+
 
 protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
@@ -14,21 +17,38 @@ protocol UseCaseProvider {
 }
 
 final class DefaultUseCaseProvider: UseCaseProvider {
-    init() {}
+   
+    private let preferences: Preferences
+    private let securePersistence: SecurePersistence
+    private let zilliqaService: ZilliqaService
+    
+    init(
+        preferences: Preferences = .default,
+        securePersistence: SecurePersistence = .default,
+        zilliqaService: ZilliqaService = DefaultZilliqaService.default
+    ) {
+        self.preferences = preferences
+        self.securePersistence = securePersistence
+        self.zilliqaService = zilliqaService
+    }
 }
 
 extension DefaultUseCaseProvider {
-    static let shared: UseCaseProvider = DefaultUseCaseProvider(
-        
-    )
+    static let shared: UseCaseProvider = DefaultUseCaseProvider()
 }
 
 extension DefaultUseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase {
-        fatalError()
+        DefaultOnboardingUseCase(
+            preferences: preferences,
+            securePersistence: securePersistence
+        )
     }
     
     func makeWalletUseCase() -> WalletUseCase {
-        fatalError()
+        DefaultWalletUseCase(
+            securePersistence: securePersistence,
+            zilliqaService: zilliqaService
+        )
     }
 }

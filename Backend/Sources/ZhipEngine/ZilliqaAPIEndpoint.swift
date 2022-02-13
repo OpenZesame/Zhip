@@ -10,6 +10,13 @@ import Zesame
 
 public let network: Network = .mainnet
 
+public extension DefaultZilliqaService {
+    static var `default`: ZilliqaService {
+        DefaultZilliqaService(network: network)
+    }
+}
+
+
 public enum ZilliqaAPIEndpoint: String {
     case mainnet = "https://api.zilliqa.com"
     case testnet = "https://dev-api.zilliqa.com"

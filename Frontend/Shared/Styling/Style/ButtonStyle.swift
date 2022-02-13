@@ -26,9 +26,33 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
+
+struct SecondaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
+        
+    private let cornerRadius: CGFloat
+    init(cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius) {
+        self.cornerRadius = cornerRadius
+    }
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity, idealHeight: 50)
+            .padding()
+            .background(isEnabled ? Color.clear : .teal)
+            .foregroundColor(isEnabled ? Color.teal : .silverGrey)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
+}
+
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 extension ButtonStyle where Self == PrimaryButtonStyle {
 
+    /// A button style that applies the call to the **primary** action of the
+    /// current screen, rounded with the default corner radious.
+    ///
+    /// To apply this style to a button, or to a view that contains buttons, use
+    /// the ``View.buttonStyle(_:)`` modifier.
     static var primary: PrimaryButtonStyle {
         Self.primary(cornerRadius: PrimaryButtonStyle.defaultCornerRadius)
     }
@@ -41,4 +65,27 @@ extension ButtonStyle where Self == PrimaryButtonStyle {
     static func primary(cornerRadius: CGFloat) -> PrimaryButtonStyle {
         .init(cornerRadius: cornerRadius)
     }
+}
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+extension ButtonStyle where Self == SecondaryButtonStyle {
+    
+    /// A button style that applies the call to the **secondary** action of the
+    /// current screen, rounded with the default corner radious.
+    ///
+    /// To apply this style to a button, or to a view that contains buttons, use
+    /// the ``View.buttonStyle(_:)`` modifier.
+    static var secondary: SecondaryButtonStyle {
+        Self.secondary(cornerRadius: PrimaryButtonStyle.defaultCornerRadius)
+    }
+    
+    /// A button style that applies the call to the **secondary** action of the
+    /// current screen.
+    ///
+    /// To apply this style to a button, or to a view that contains buttons, use
+    /// the ``View.buttonStyle(_:)`` modifier.
+    static func secondary(cornerRadius: CGFloat) -> SecondaryButtonStyle {
+        .init(cornerRadius: cornerRadius)
+    }
+    
 }

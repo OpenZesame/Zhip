@@ -8,6 +8,7 @@ public final class KeychainManager: KeyValueStoring {
 
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
+    public static let `default` = KeychainManager()
     public init() {
         self.wrapped = Keychain(service: "com.openzesame.zhip")
             .label("Zhip")
@@ -56,7 +57,9 @@ public enum KeychainKey: String, KeyConvertible {
 
 /// Abstraction of Keychain
 public typealias SecurePersistence = KeyValueStore<KeychainKey>
-
+public extension SecurePersistence {
+    static let `default` = Self(KeychainManager.default)
+}
 
 public extension KeychainManager {
     typealias Key = KeychainKey

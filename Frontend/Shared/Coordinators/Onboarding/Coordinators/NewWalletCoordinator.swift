@@ -8,8 +8,10 @@
 import SwiftUI
 import Stinsen
 
-final class NewWalletCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<NewWalletCoordinator>(initial: \NewWalletCoordinator.ensurePrivacy)
+protocol NewWalletCoordinator: AnyObject {}
+
+final class DefaultNewWalletCoordinator: NewWalletCoordinator, NavigationCoordinatable {
+    let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var new = makeNew
@@ -18,7 +20,6 @@ final class NewWalletCoordinator: NavigationCoordinatable {
     func makeEnsurePrivacy() -> some View {
         EnsurePrivacyScreen()
     }
-    
     
     @ViewBuilder
     func makeNew() -> some View {

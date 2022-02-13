@@ -8,8 +8,13 @@
 import SwiftUI
 import Stinsen
 
-final class SetupWalletCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<SetupWalletCoordinator>(initial: \SetupWalletCoordinator.setupWallet)
+protocol SetupWalletCoordinator: AnyObject {
+    func generateNewWallet()
+    func restoreExistingWallet()
+}
+
+final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletCoordinator {
+    let stack = NavigationStack<DefaultSetupWalletCoordinator>(initial: \.setupWallet)
 
     @Root var setupWallet = makeSetupWallet
     @Route(.modal) var newWallet = makeNewWallet
@@ -17,15 +22,33 @@ final class SetupWalletCoordinator: NavigationCoordinatable {
     
     @ViewBuilder
     func makeSetupWallet() -> some View {
-        SetupWalletScreen()
+        let viewModel = DefaultSetupWalletViewModel(coordinator: self)
+        SetupWalletScreen(viewModel: viewModel)
     }
     
-    func makeNewWallet() -> NavigationViewCoordinator<NewWalletCoordinator> {
-        .init(NewWalletCoordinator())
+    func makeNewWallet() -> NavigationViewCoordinator<DefaultNewWalletCoordinator> {
+        .init(DefaultNewWalletCoordinator())
     }
     
-    func makeRestoreWallet() -> NavigationViewCoordinator<RestoreWalletCoordinator> {
-        .init(RestoreWalletCoordinator())
+    func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {
+        .init(DefaultRestoreWalletCoordinator())
     }
     
+    func generateNewWallet() {
+        toGenerateNewWallet()
+    }
+    
+    func restoreExistingWallet() {
+        toRestoreExistingWallet()
+    }
+}
+
+extension DefaultSetupWalletCoordinator {
+    func toGenerateNewWallet() {
+        fatalError("toGenerateNewWallet")
+    }
+    
+    func toRestoreExistingWallet() {
+        fatalError("toRestoreExistingWallet")
+    }
 }

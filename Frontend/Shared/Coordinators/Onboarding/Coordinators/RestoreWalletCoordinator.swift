@@ -8,8 +8,12 @@
 import SwiftUI
 import Stinsen
 
-final class RestoreWalletCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<RestoreWalletCoordinator>(initial: \RestoreWalletCoordinator.ensurePrivacy)
+protocol RestoreWalletCoordinator: AnyObject {
+    
+}
+
+final class DefaultRestoreWalletCoordinator: RestoreWalletCoordinator, NavigationCoordinatable {
+    let stack = NavigationStack<DefaultRestoreWalletCoordinator>(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var restore = makeRestore

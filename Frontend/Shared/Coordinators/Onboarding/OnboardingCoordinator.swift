@@ -10,13 +10,12 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
-
-
 protocol OnboardingCoordinator: AnyObject {
     func didStart()
+    func didAcceptTermsOfService()
 }
 
-final class DefaultOnboardingCoordinator: NavigationCoordinatable, OnboardingCoordinator {
+final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoordinatable {
 
     // MARK: Injected properties
     private let useCaseProvider: UseCaseProvider
@@ -52,6 +51,10 @@ extension DefaultOnboardingCoordinator {
     func didStart() {
         toNextStep()
     }
+    
+    func didAcceptTermsOfService() {
+        toNextStep()
+    }
 }
 
 // MARK: - Private
@@ -83,15 +86,21 @@ private extension DefaultOnboardingCoordinator {
     
     @ViewBuilder
     func makeTermsOfService() -> some View {
-        TermsOfServiceScreen()
+        
+        let viewModel = DefaultTermsOfServiceViewModel(
+            coordinator: self,
+            useCase: onboardingUseCase
+        )
+        
+        TermsOfServiceScreen(viewModel: viewModel)
     }
     
-    func makeSetupWallet() -> NavigationViewCoordinator<SetupWalletCoordinator> {
-        NavigationViewCoordinator(SetupWalletCoordinator())
+    func makeSetupWallet() -> NavigationViewCoordinator<DefaultSetupWalletCoordinator> {
+        NavigationViewCoordinator(DefaultSetupWalletCoordinator())
     }
     
-    func makeSetupPINCode(wallet: Wallet) -> SetupPINCodeCoordinator {
-        SetupPINCodeCoordinator()
+    func makeSetupPINCode(wallet: Wallet) -> DefaultSetupPINCodeCoordinator {
+        DefaultSetupPINCodeCoordinator()
     }
     
     @ViewBuilder

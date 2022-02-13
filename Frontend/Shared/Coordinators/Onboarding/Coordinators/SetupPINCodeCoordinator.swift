@@ -8,8 +8,12 @@
 import SwiftUI
 import Stinsen
 
-final class SetupPINCodeCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<SetupPINCodeCoordinator>(initial: \SetupPINCodeCoordinator.newPIN)
+protocol SetupPINCodeCoordinator: AnyObject {
+    
+}
+
+final class DefaultSetupPINCodeCoordinator: SetupPINCodeCoordinator, NavigationCoordinatable {
+    let stack = NavigationStack<DefaultSetupPINCodeCoordinator>(initial: \.newPIN)
     @Root var newPIN = makeNewPIN
     
     @ViewBuilder

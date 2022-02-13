@@ -74,7 +74,7 @@ struct ParallaxImage: View {
             image(\.back)
             image(\.middle)
             image(\.front)
-        }
+        }.background(Color.deepBlue)
         
     }
     

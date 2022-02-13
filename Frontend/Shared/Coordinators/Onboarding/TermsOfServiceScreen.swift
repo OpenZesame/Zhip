@@ -6,9 +6,39 @@
 //
 
 import SwiftUI
+import Stinsen
 
-struct TermsOfServiceScreen: View {
+protocol TermsOfServiceViewModel: ObservableObject {
+    func didAcceptTermsOfService()
+}
+
+final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
+    private unowned let coordinator: OnboardingCoordinator
+    private let useCase: OnboardingUseCase
+    
+    init(coordinator: OnboardingCoordinator, useCase: OnboardingUseCase) {
+        self.coordinator = coordinator
+        self.useCase = useCase
+    }
+}
+
+extension DefaultTermsOfServiceViewModel {
+    func didAcceptTermsOfService() {
+        useCase.didAcceptTermsOfService()
+        coordinator.didAcceptTermsOfService()
+    }
+}
+
+struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
+    @ObservedObject var viewModel: ViewModel
     var body: some View {
-        Text("Terms of Service")
+        VStack {
+            Text("Terms of Service")
+            Button("Accept") {
+                viewModel.didAcceptTermsOfService()
+            }
+            .buttonStyle(.primary)
+        }
+        
     }
 }

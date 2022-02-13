@@ -65,13 +65,14 @@ extension WalletUseCase {
 
 
 final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
-  
-
 
     private let zilliqaService: ZilliqaService
-    
     let securePersistence: SecurePersistence
-    init(securePersistence: SecurePersistence, zilliqaService: ZilliqaService) {
+    
+    init(
+        securePersistence: SecurePersistence,
+        zilliqaService: ZilliqaService
+    ) {
         self.securePersistence = securePersistence
         self.zilliqaService = zilliqaService
     }
