@@ -18,13 +18,15 @@ final class AppCoordinator: NavigationCoordinatable {
     @Root var onboarding = makeOnboarding
     @Root var main = makeMain
     
+    private let useCaseProvider: UseCaseProvider
     
-    init(model: Model) {
+    init(model: Model, useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
         switch model.wallet {
         case .some(let wallet):
             stack = NavigationStack(initial: \AppCoordinator.main, wallet)
         case .none:
-            stack = NavigationStack(initial: \AppCoordinator.onboarding, DefaultSetupWalletUseCase())
+            stack = NavigationStack(initial: \AppCoordinator.onboarding)
         }
     }
     
@@ -35,7 +37,7 @@ final class AppCoordinator: NavigationCoordinatable {
                 case .some(let wallet):
                     self.stack = NavigationStack(initial: \AppCoordinator.main, wallet)
                 case .none:
-                    self.stack = NavigationStack(initial: \AppCoordinator.onboarding, DefaultSetupWalletUseCase())
+                    self.stack = NavigationStack(initial: \AppCoordinator.onboarding)
                 }
             })
         
@@ -45,8 +47,8 @@ final class AppCoordinator: NavigationCoordinatable {
 
 
 extension AppCoordinator {
-    func makeOnboarding(setupWalletUseCase: SetupWalletUseCase) -> NavigationViewCoordinator<DefaultOnboardingCoordinator> {
-        NavigationViewCoordinator(DefaultOnboardingCoordinator(setupWalletUseCase: setupWalletUseCase))
+    func makeOnboarding() -> NavigationViewCoordinator<DefaultOnboardingCoordinator> {
+        NavigationViewCoordinator(DefaultOnboardingCoordinator(useCaseProvider: useCaseProvider))
     }
     
     func makeMain(wallet: Wallet) -> MainCoordinator {

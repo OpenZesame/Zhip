@@ -24,7 +24,8 @@ struct SetupWalletScreen: View {
                 .textFieldStyle(.roundedBorder)
             
             Button("Create new wallet") {
-                model.wallet = .init(name: walletName)
+//                model.wallet = .init(name: walletName)
+                fatalError("create new wallet here using UseCase but hmm in ViewModel")
             }
             .disabled(walletName.isEmpty)
         }

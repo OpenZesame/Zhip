@@ -10,6 +10,8 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
+
+
 protocol OnboardingCoordinator: AnyObject {
     func didStart()
 }
@@ -17,7 +19,7 @@ protocol OnboardingCoordinator: AnyObject {
 final class DefaultOnboardingCoordinator: NavigationCoordinatable, OnboardingCoordinator {
 
     // MARK: Injected properties
-    private let setupWalletUseCase: SetupWalletUseCase
+    private let useCaseProvider: UseCaseProvider
     
     // MARK: Self-init properties
     let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.welcome)
@@ -31,8 +33,11 @@ final class DefaultOnboardingCoordinator: NavigationCoordinatable, OnboardingCoo
     // Replace navigation stack
     @Root var setupPINCode = makeSetupPINCode
     
-    init(setupWalletUseCase: SetupWalletUseCase) {
-        self.setupWalletUseCase = setupWalletUseCase
+    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+    
+    init(useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
     }
     
     deinit {
@@ -43,17 +48,32 @@ final class DefaultOnboardingCoordinator: NavigationCoordinatable, OnboardingCoo
 // MARK: - OnboardingCoordinator
 // MARK: -
 extension DefaultOnboardingCoordinator {
-
+    
     func didStart() {
-        toSetupWallet()
+        toNextStep()
     }
 }
 
 // MARK: - Private
 // MARK: -
 private extension DefaultOnboardingCoordinator {
-     func toSetupWallet() {
+    
+    func toNextStep() {
+        if !onboardingUseCase.hasAcceptedTermsOfService {
+            return toTermsOfService()
+        }
+        
+        if !walletUseCase.hasConfiguredWallet {
+            return toSetupWallet()
+        }
+    }
+    
+    func toSetupWallet() {
         self.root(\.setupWallet)
+   }
+    
+    func toTermsOfService() {
+        self.route(to: \.termsOfService)
     }
 }
 

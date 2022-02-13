@@ -18,7 +18,7 @@ struct ZhipApp: App {
         
         var body: some Scene {
             WindowGroup {
-                AppCoordinator(model: model)
+                AppCoordinator(model: model, useCaseProvider: DefaultUseCaseProvider.shared)
                     .view()
                     .environmentObject(model)
             }

@@ -24,13 +24,14 @@ struct Version {
 }
 
 final class Model: ObservableObject {
-    private let securePersistence = SecurePersistence()
+    
+    let securePersistence: SecurePersistence = KeyValueStore(KeychainManager())
     @Published var wallet: Wallet? {
         didSet {
             if let wallet = wallet {
-                try! securePersistence.save(wallet: wallet)
+                securePersistence.save(wallet: wallet)
             } else {
-                try! securePersistence.deleteWallet()
+                securePersistence.deleteWallet()
             }
         }
     }
@@ -39,7 +40,7 @@ final class Model: ObservableObject {
     @Published var contacts = Set<Contact>()
     
     init() {
-        wallet = try! securePersistence.loadWallet()
+        wallet = securePersistence.wallet
     }
 }
 

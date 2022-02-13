@@ -5,6 +5,7 @@ import PackageDescription
 
 struct Dependency {
     enum Category {
+        case essential
         case navigation
         case `convenience`
     }
@@ -19,6 +20,13 @@ extension Array where Element == Dependency {
 }
 
 private let dependencies: [Dependency] = [
+    .init(
+        category: .essential,
+        package: .package(url: "https://github.com/OpenZesame/zesame.git", branch: "structured_concurrency"),
+        product: .product(name: "Zesame", package: "zesame"),
+        rationale: "Zilliqa toolset"
+    ),
+    
     .init(
         category: .convenience,
         package: .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
@@ -58,7 +66,7 @@ private let dependencies: [Dependency] = [
 
 let package = Package(
     name: "ZhipEngine",
-    platforms: [.macOS(.v10_15), .iOS(.v14)],
+    platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
