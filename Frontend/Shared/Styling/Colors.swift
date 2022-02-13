@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+extension Color {
+    static let appBackground: Self = .deepBlue
+}
+
 private extension Double {
     static let defaultOpacity: Self = 1
 }

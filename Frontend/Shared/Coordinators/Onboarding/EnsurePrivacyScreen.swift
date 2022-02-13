@@ -30,36 +30,17 @@ extension DefaultEnsurePrivacyViewModel {
 
 
 
-struct CallToAction: View {
-    struct Choice {
-        let call: String
-        let action: () -> Void
-    }
-    let primary: Choice
-    let secondary: Choice?
+struct CallToAction<PrimaryLabel: View, SecondaryLabel: View>: View {
     
-    @ViewBuilder
-    private var primaryView: some View {
-        Button(primary.call) {
-            primary.action()
-        }.buttonStyle(.primary)
-    }
-    
-    @ViewBuilder
-    private var secondarView: some View {
-        if let secondary = secondary {
-            Button(secondary.call) {
-                secondary.action()
-            }.buttonStyle(.secondary)
-        } else {
-            EmptyView()
-        }
-    }
-    
+    @ViewBuilder let primary: () -> Button<PrimaryLabel>
+    @ViewBuilder let secondary: () -> Button<SecondaryLabel>?
+ 
     var body: some View {
         VStack {
-            primaryView
-            secondarView
+            primary().buttonStyle(.primary)
+            if let secondary = secondary {
+                secondary().buttonStyle(.secondary)
+            }
         }
         
     }
@@ -70,25 +51,61 @@ struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
     
     var body: some View {
         ForceFullScreen {
-            VStack {
-                Image("Icons/Large/Shield")
-                
-                Labels(
-                    title: "Security",
-                    subtitle: "Make sure ethat you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV's"
-                )
- 
-                CallToAction(
-                    primary: .init(
-                        call: "My screen is not being watched",
-                        action: viewModel.privacyIsEnsured
-                    ),
-                    secondary: .init(
-                        call: "My screen might be watched",
-                        action: viewModel.myScreenMightBeWatched
-                    )
-                )
+            Onboard(
+                image: { Image("Icons/Large/Shield") },
+                title: "Security",
+                subtitle: "Make sure ethat you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV's",
+                primaryAction: {
+                    Button("My screen is not being watched") {
+                        viewModel.privacyIsEnsured()
+                    }
+                },
+                secondaryAction: {
+                    Button("My screen might be watched") {
+                        viewModel.myScreenMightBeWatched()
+                    }
+                }
+            )
+        }
+    }
+}
+
+struct Onboard<PrimaryLabel: View, SecondaryLabel: View>: View {
+
+    @ViewBuilder let image: () -> Image?
+    let title: String
+    let subtitle: String
+    @ViewBuilder let primaryAction: () -> Button<PrimaryLabel>
+    @ViewBuilder let secondaryAction: () -> Button<SecondaryLabel>?
+    
+    init(
+        @ViewBuilder image: @escaping () -> Image? = { nil },
+        title: String,
+        subtitle: String,
+        @ViewBuilder primaryAction: @escaping () -> Button<PrimaryLabel>,
+        @ViewBuilder secondaryAction: @escaping () -> Button<SecondaryLabel>? = { nil }
+    ) {
+        self.image = image
+        self.title = title
+        self.subtitle = subtitle
+        self.primaryAction = primaryAction
+        self.secondaryAction = secondaryAction
+    }
+    
+    var body: some View {
+        VStack {
+            if let image = image {
+                image()
             }
+            Labels(
+                title: title,
+                subtitle: subtitle
+            )
+            
+            CallToAction<PrimaryLabel, SecondaryLabel>(
+                primary: primaryAction,
+                secondary: secondaryAction
+            )
         }
     }
 }

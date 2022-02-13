@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ForceFullScreen<Content>: View where Content: View {
-    let content: () -> Content
+    @ViewBuilder let content: () -> Content
 
     var body: some View {
         ZStack {
-            Color.deepBlue.edgesIgnoringSafeArea(.all)
+            Color.appBackground.edgesIgnoringSafeArea(.all)
             content().padding()
         }
     }

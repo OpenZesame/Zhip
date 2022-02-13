@@ -11,6 +11,10 @@
 		481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
 		481EDEB727B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
 		481EDEB827B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
+		481EDEBA27B9943200D39DCB /* ParallaxImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB927B9943200D39DCB /* ParallaxImage.swift */; };
+		481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB927B9943200D39DCB /* ParallaxImage.swift */; };
+		481EDEBD27B9946700D39DCB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBC27B9946700D39DCB /* Screen.swift */; };
+		481EDEBE27B9946700D39DCB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBC27B9946700D39DCB /* Screen.swift */; };
 		484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
@@ -81,6 +85,8 @@
 /* Begin PBXFileReference section */
 		481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFullScreen.swift; sourceTree = "<group>"; };
 		481EDEB627B98B3200D39DCB /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
+		481EDEB927B9943200D39DCB /* ParallaxImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxImage.swift; sourceTree = "<group>"; };
+		481EDEBC27B9946700D39DCB /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
@@ -144,6 +150,8 @@
 			children = (
 				481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */,
 				481EDEB627B98B3200D39DCB /* Labels.swift */,
+				481EDEB927B9943200D39DCB /* ParallaxImage.swift */,
+				481EDEBC27B9946700D39DCB /* Screen.swift */,
 			);
 			path = ViewFragments;
 			sourceTree = "<group>";
@@ -479,6 +487,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				481EDEBD27B9946700D39DCB /* Screen.swift in Sources */,
 				4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				4872FA4F27B55756008B7BD0 /* AppTabNavigation.swift in Sources */,
 				487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */,
@@ -505,6 +514,7 @@
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
 				48761A8227B6DBBF002E4375 /* NewWalletScreen.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
+				481EDEBA27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				485FF72D27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */,
@@ -524,6 +534,7 @@
 				485FF72B27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
+				481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				485FF73527B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				485FF74127B836770030266A /* SetupPINCodeCoordinator.swift in Sources */,
@@ -549,6 +560,7 @@
 				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
 				485FF72E27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
+				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 				485FF73B27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
 			);

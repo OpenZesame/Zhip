@@ -27,8 +27,10 @@ struct WelcomeScreen<ViewModel: WelcomeViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
-        foregroundView.background {
-            backgroundView
+        Screen {
+            foregroundView.background {
+                backgroundView
+            }
         }
     }
 }
@@ -60,29 +62,5 @@ extension WelcomeScreen {
             middle: "Images/Welcome/MiddleSpaceship",
             front: "Images/Welcome/FrontBlastOff"
         )
-    }
-}
-
-struct ParallaxImage: View {
-    
-    let back: String
-    let middle: String
-    let front: String
-    
-    var body: some View {
-        ZStack {
-            image(\.back)
-            image(\.middle)
-            image(\.front)
-        }.background(Color.deepBlue)
-        
-    }
-    
-    @ViewBuilder
-    private func image(_ keyPath: KeyPath<Self, String>) -> some View {
-        Image(self[keyPath: keyPath])
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .ignoresSafeArea()
     }
 }

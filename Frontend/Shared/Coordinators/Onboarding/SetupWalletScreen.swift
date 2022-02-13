@@ -34,10 +34,12 @@ struct SetupWalletScreen<ViewModel: SetupWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
-        foregroundView.background {
-            backgroundView
+        Screen {
+            foregroundView.background {
+                backgroundView
+            }
         }
-
+        
     }
 }
 
