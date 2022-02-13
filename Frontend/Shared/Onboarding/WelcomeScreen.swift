@@ -40,19 +40,17 @@ extension WelcomeScreen {
     var foregroundView: some View {
         VStack {
             Spacer()
-            VStack(alignment: .leading) {
-                Text("Welcome!")
-                    .font(.largeTitle)
-                Text("Welcome to Zhip - the worlds first iOS wallet for Zilliqa.")
-                
-            }.foregroundColor(.white)
-           
+            
+            Labels(
+                title: "Welcome",
+                subtitle: "Welcome to Zhip - the worlds first iOS wallet for Zilliqa."
+            )
+            
             Button("Start") {
                 viewModel.startApp()
             }
             .buttonStyle(.primary)
-        }
-        .padding()
+        }.padding()
     }
   
     

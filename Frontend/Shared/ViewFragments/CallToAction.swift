@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct CallToAction<PrimaryLabel: View, SecondaryLabel: View>: View {
+struct CallToAction<PrimaryView: View, SecondaryView: View>: View {
     
-    @ViewBuilder let primary: () -> Button<PrimaryLabel>
-    @ViewBuilder let secondary: () -> Button<SecondaryLabel>?
+    @ViewBuilder let primary: () -> PrimaryView
+    @ViewBuilder let secondary: () -> SecondaryView?
  
     var body: some View {
         VStack {
