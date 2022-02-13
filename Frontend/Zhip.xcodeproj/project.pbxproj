@@ -15,6 +15,10 @@
 		481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB927B9943200D39DCB /* ParallaxImage.swift */; };
 		481EDEBD27B9946700D39DCB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBC27B9946700D39DCB /* Screen.swift */; };
 		481EDEBE27B9946700D39DCB /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBC27B9946700D39DCB /* Screen.swift */; };
+		481EDEC027B994DB00D39DCB /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBF27B994DB00D39DCB /* Onboard.swift */; };
+		481EDEC127B994DB00D39DCB /* Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEBF27B994DB00D39DCB /* Onboard.swift */; };
+		481EDEC327B994F700D39DCB /* CallToAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEC227B994F700D39DCB /* CallToAction.swift */; };
+		481EDEC427B994F700D39DCB /* CallToAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEC227B994F700D39DCB /* CallToAction.swift */; };
 		484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
 		4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
@@ -87,6 +91,8 @@
 		481EDEB627B98B3200D39DCB /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		481EDEB927B9943200D39DCB /* ParallaxImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxImage.swift; sourceTree = "<group>"; };
 		481EDEBC27B9946700D39DCB /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		481EDEBF27B994DB00D39DCB /* Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboard.swift; sourceTree = "<group>"; };
+		481EDEC227B994F700D39DCB /* CallToAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallToAction.swift; sourceTree = "<group>"; };
 		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
@@ -152,6 +158,8 @@
 				481EDEB627B98B3200D39DCB /* Labels.swift */,
 				481EDEB927B9943200D39DCB /* ParallaxImage.swift */,
 				481EDEBC27B9946700D39DCB /* Screen.swift */,
+				481EDEBF27B994DB00D39DCB /* Onboard.swift */,
+				481EDEC227B994F700D39DCB /* CallToAction.swift */,
 			);
 			path = ViewFragments;
 			sourceTree = "<group>";
@@ -511,6 +519,7 @@
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
+				481EDEC327B994F700D39DCB /* CallToAction.swift in Sources */,
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
 				48761A8227B6DBBF002E4375 /* NewWalletScreen.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
@@ -520,6 +529,7 @@
 				485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */,
 				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
+				481EDEC027B994DB00D39DCB /* Onboard.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
 				481EDEB727B98B3200D39DCB /* Labels.swift in Sources */,
 			);
@@ -557,11 +567,13 @@
 				481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
 				4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				481EDEB827B98B3200D39DCB /* Labels.swift in Sources */,
+				481EDEC127B994DB00D39DCB /* Onboard.swift in Sources */,
 				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
 				485FF72E27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
+				481EDEC427B994F700D39DCB /* CallToAction.swift in Sources */,
 				485FF73B27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

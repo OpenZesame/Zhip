@@ -28,24 +28,6 @@ extension DefaultEnsurePrivacyViewModel {
     }
 }
 
-
-
-struct CallToAction<PrimaryLabel: View, SecondaryLabel: View>: View {
-    
-    @ViewBuilder let primary: () -> Button<PrimaryLabel>
-    @ViewBuilder let secondary: () -> Button<SecondaryLabel>?
- 
-    var body: some View {
-        VStack {
-            primary().buttonStyle(.primary)
-            if let secondary = secondary {
-                secondary().buttonStyle(.secondary)
-            }
-        }
-        
-    }
-}
-
 struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
     @ObservedObject var viewModel: ViewModel
     
@@ -65,46 +47,6 @@ struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
                         viewModel.myScreenMightBeWatched()
                     }
                 }
-            )
-        }
-    }
-}
-
-struct Onboard<PrimaryLabel: View, SecondaryLabel: View>: View {
-
-    @ViewBuilder let image: () -> Image?
-    let title: String
-    let subtitle: String
-    @ViewBuilder let primaryAction: () -> Button<PrimaryLabel>
-    @ViewBuilder let secondaryAction: () -> Button<SecondaryLabel>?
-    
-    init(
-        @ViewBuilder image: @escaping () -> Image? = { nil },
-        title: String,
-        subtitle: String,
-        @ViewBuilder primaryAction: @escaping () -> Button<PrimaryLabel>,
-        @ViewBuilder secondaryAction: @escaping () -> Button<SecondaryLabel>? = { nil }
-    ) {
-        self.image = image
-        self.title = title
-        self.subtitle = subtitle
-        self.primaryAction = primaryAction
-        self.secondaryAction = secondaryAction
-    }
-    
-    var body: some View {
-        VStack {
-            if let image = image {
-                image()
-            }
-            Labels(
-                title: title,
-                subtitle: subtitle
-            )
-            
-            CallToAction<PrimaryLabel, SecondaryLabel>(
-                primary: primaryAction,
-                secondary: secondaryAction
             )
         }
     }
