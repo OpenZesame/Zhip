@@ -9,10 +9,8 @@ import SwiftUI
 import Stinsen
 
 protocol TermsOfServiceViewModel: ObservableObject {
-    var finishedReading: Bool { get }
+    var finishedReading: Bool { get set }
     func didAcceptTermsOfService()
-    func scrolled(to offset: CGFloat, of height: CGFloat)
-    var terms: AttributedString { get }
 }
 
 final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
@@ -20,13 +18,9 @@ final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
     private let useCase: OnboardingUseCase
     @Published var finishedReading: Bool = false
     
-    let terms: AttributedString
-    
     init(coordinator: OnboardingCoordinator, useCase: OnboardingUseCase) {
         self.coordinator = coordinator
         self.useCase = useCase
-        //        self.terms = htmlAsAttributedString(htmlFileName: "TermsOfService")
-        self.terms = markdownAsAttributedString(markdownFileName: "TermsOfService")
     }
 }
 
@@ -35,12 +29,6 @@ extension DefaultTermsOfServiceViewModel {
         useCase.didAcceptTermsOfService()
         coordinator.didAcceptTermsOfService()
     }
-    func scrolled(to offset: CGFloat, of height: CGFloat) {
-        let yThreshold: CGFloat = 0.98
-        finishedReading = offset >= yThreshold * height
-    }
-    
-    
 }
 
 struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
@@ -53,32 +41,41 @@ struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
                 
                 Text("Terms of service").font(.largeTitle).foregroundColor(.white)
                 
-//                GeometryReader { outerProxy in
-                    ScrollView(.vertical) {
-//                        GeometryReader { innerProxy in
-                                Text(viewModel.terms)
-                                    .frame(maxHeight: .infinity)
-//                                    .onAppear {
-//                                        viewModel.scrolled(
-//                                            to: outerProxy.frame(in: .global).minY - innerProxy.frame(in: .global).minY,
-//                                            of: innerProxy.size.height
-//                                        )
-//                                    }
-//                            }
-//                        }
+                ScrollView(.vertical) {
+                    // We must use `LazyVStack` instead of `VStack` here
+                    // because we don't want the `Color.clear` "view" to
+                    // get displayed eagerly, which it otherwise does.
+                    LazyVStack {
+                        termsOfService
+                            .frame(maxHeight: .infinity)
+                        
+                        detectIfBottomOfScrollViewProxy
+                        
+                    }
                 }
                 
                 Button("Accept") {
                     viewModel.didAcceptTermsOfService()
                 }
                 .buttonStyle(.primary)
-                .disabled(viewModel.finishedReading)
+                .disabled(!viewModel.finishedReading)
             }
             .padding()
         }
     }
     
-
+    @ViewBuilder var termsOfService: some View {
+        Text(markdownAsAttributedString(markdownFileName: "TermsOfService"))
+    }
+    
+    /// Must be wrapped in a `LazyVStack` and not `VStack`
+    @ViewBuilder var detectIfBottomOfScrollViewProxy: some View {
+        Color.clear
+            .frame(width: 0, height: 0, alignment: .bottom)
+            .onAppear {
+                viewModel.finishedReading = true
+            }
+    }
 }
 
 func markdownAsAttributedString(
