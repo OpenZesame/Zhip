@@ -45,7 +45,6 @@ struct SecondaryButtonStyle: ButtonStyle {
     }
 }
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 extension ButtonStyle where Self == PrimaryButtonStyle {
 
     /// A button style that applies the call to the **primary** action of the
@@ -67,7 +66,6 @@ extension ButtonStyle where Self == PrimaryButtonStyle {
     }
 }
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 extension ButtonStyle where Self == SecondaryButtonStyle {
     
     /// A button style that applies the call to the **secondary** action of the

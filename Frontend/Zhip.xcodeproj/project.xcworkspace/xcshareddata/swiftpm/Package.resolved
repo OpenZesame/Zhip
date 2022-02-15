@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "FloatingLabelTextFieldSwiftUI",
+        "repositoryURL": "https://github.com/Sajjon/FloatingLabelTextFieldSwiftUI.git",
+        "state": {
+          "branch": "main",
+          "revision": "d3bb5649016dac960e1ccf4ee75c31add1f79d7a",
+          "version": null
+        }
+      },
+      {
         "package": "KeychainAccess",
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
         "state": {
@@ -60,7 +69,7 @@
         "repositoryURL": "https://github.com/OpenZesame/zesame.git",
         "state": {
           "branch": "structured_concurrency",
-          "revision": "114ff9ac2e36b50ac4228fdb3fcca18f52da5bff",
+          "revision": "e1177ef3a314fdd941bc50ae1ca75531695ea709",
           "version": null
         }
       }

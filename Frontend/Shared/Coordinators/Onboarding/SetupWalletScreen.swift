@@ -51,7 +51,7 @@ extension SetupWalletScreen {
             VStack(alignment: .leading) {
                 Text("Wallet").font(.largeTitle)
                 Text("It is time to set up the wallet. Do you want to start fresh, or restore an existing")
-            }.foregroundColor(.white)
+            }
            
             VStack {
                 Button("Generate new") {

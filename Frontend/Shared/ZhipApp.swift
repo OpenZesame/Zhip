@@ -20,6 +20,8 @@ struct ZhipApp: App {
             WindowGroup {
                 AppCoordinator(model: model, useCaseProvider: DefaultUseCaseProvider.shared)
                     .view()
+                    .background(Color.appBackground)
+                    .foregroundColor(.white)
                     .environmentObject(model)
             }
             .commands {

@@ -20,6 +20,12 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     @Route(.modal) var newWallet = makeNewWallet
     @Route(.modal) var restoreWallet = makeRestoreWallet
     
+    private let useCaseProvider: UseCaseProvider
+    
+    init(useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+    }
+    
     @ViewBuilder
     func makeSetupWallet() -> some View {
         let viewModel = DefaultSetupWalletViewModel(coordinator: self)
@@ -27,7 +33,7 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     }
     
     func makeNewWallet() -> NavigationViewCoordinator<DefaultNewWalletCoordinator> {
-        .init(DefaultNewWalletCoordinator())
+        .init(DefaultNewWalletCoordinator(useCaseProvider: useCaseProvider))
     }
     
     func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {

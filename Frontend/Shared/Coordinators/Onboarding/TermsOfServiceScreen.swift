@@ -39,8 +39,7 @@ struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
             VStack {
                 Image("Icons/Large/TermsOfService")
                 
-                Text("Terms of service").font(.largeTitle).foregroundColor(.white)
-                
+                Text("Terms of service").font(.largeTitle)
                 ScrollView(.vertical) {
                     // We must use `LazyVStack` instead of `VStack` here
                     // because we don't want the `Color.clear` "view" to

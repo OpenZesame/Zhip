@@ -23,6 +23,6 @@ struct Labels: View {
         VStack(alignment: .leading) {
             title.font(.largeTitle)
             subtitle
-        }.foregroundColor(.white)
+        }
     }
 }

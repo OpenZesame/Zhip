@@ -23,6 +23,9 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     // MARK: Self-init properties
     let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.welcome)
     
+    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+    
     @Root var welcome = makeWelcome
     @Route(.push) var termsOfService = makeTermsOfService
     
@@ -31,9 +34,6 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
 
     // Replace navigation stack
     @Root var setupPINCode = makeSetupPINCode
-    
-    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     
     init(useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
@@ -96,7 +96,7 @@ private extension DefaultOnboardingCoordinator {
     }
     
     func makeSetupWallet() -> NavigationViewCoordinator<DefaultSetupWalletCoordinator> {
-        NavigationViewCoordinator(DefaultSetupWalletCoordinator())
+        NavigationViewCoordinator(DefaultSetupWalletCoordinator(useCaseProvider: useCaseProvider))
     }
     
     func makeSetupPINCode(wallet: Wallet) -> DefaultSetupPINCodeCoordinator {

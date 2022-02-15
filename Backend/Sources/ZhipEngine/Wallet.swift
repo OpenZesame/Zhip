@@ -8,14 +8,6 @@
 import Foundation
 import Zesame
 
-//public final class Wallet: Codable, ObservableObject {
-//    public let name: String
-//    public init(name: String) {
-//        self.name = name
-//    }
-//}
-
-
 public struct Wallet: Codable {
     public let name: String?
     public let wallet: Zesame.Wallet

@@ -2,11 +2,13 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import QuartzCore
 
 struct Dependency {
     enum Category {
         case essential
         case navigation
+        case view
         case `convenience`
     }
     let category: Category
@@ -24,7 +26,7 @@ private let dependencies: [Dependency] = [
         category: .essential,
         package: .package(url: "https://github.com/OpenZesame/zesame.git", branch: "structured_concurrency"),
         product: .product(name: "Zesame", package: "zesame"),
-        rationale: "Zilliqa toolset"
+        rationale: "Zilliqa Swift SDK, containing all account logic."
     ),
     
     .init(
@@ -39,6 +41,13 @@ private let dependencies: [Dependency] = [
         package: .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7"),
         product: .product(name: "Stinsen", package: "stinsen"),
         rationale: "Coordinator pattern"
+    ),
+    
+    .init(
+        category: .view,
+        package: .package(url: "https://github.com/Sajjon/FloatingLabelTextFieldSwiftUI.git", branch: "main"),
+        product: "FloatingLabelTextFieldSwiftUI",
+        rationale: "Saves me lots of work implementing floating label with validation and error messages."
     )
     
 //    .init(

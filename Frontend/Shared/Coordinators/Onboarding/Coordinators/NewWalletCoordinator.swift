@@ -13,15 +13,27 @@ protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
     func myScreenMightBeWatched()
 }
 
-protocol NewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator {}
+protocol NewWalletCoordinator: AnyObject {
+    func encryptionPasswordIsSet()
+}
 
-final class DefaultNewWalletCoordinator: NewWalletCoordinator, NavigationCoordinatable {
+final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, NewWalletCoordinator, NavigationCoordinatable {
     let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
-    @Route(.push) var new = makeNew
+    @Route(.push) var newEncryptionPassword = makeNewEncryptionPassword
+    @Route(.push) var nameWallet = makeNameWallet
+    @Route(.push) var backupWallet = makeBackupWallet
     
-    init() {}
+    
+    private let useCaseProvider: UseCaseProvider
+    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
+
+    
+    init(useCaseProvider: UseCaseProvider) {
+        self.useCaseProvider = useCaseProvider
+    }
+    
     deinit {
         print("deinit DefaultNewWalletCoordinator")
     }
@@ -37,16 +49,40 @@ extension DefaultNewWalletCoordinator {
     }
     
     @ViewBuilder
-    func makeNew() -> some View {
-        NewWalletScreen()
+    func makeNewEncryptionPassword() -> some View {
+        
+        let viewModel = DefaultNewEncryptionPasswordViewModel(
+            coordinator: self,
+            useCase: walletUseCase
+        )
+        
+        NewEncryptionPasswordScreen(viewModel: viewModel)
+    }
+    
+    @ViewBuilder
+    func makeNameWallet() -> some View {
+        NameWalletScreen()
+    }
+    
+    @ViewBuilder
+    func makeBackupWallet() -> some View {
+        BackupWalletScreen()
     }
     
     func privacyIsEnsured() {
-        toNewWallet()
+        toNewEncryptionPassword()
     }
     
-    func toNewWallet() {
-        route(to: \.new)
+    func encryptionPasswordIsSet() {
+        toBackupWallet()
+    }
+    
+    func toBackupWallet() {
+        route(to: \.backupWallet)
+    }
+    
+    func toNewEncryptionPassword() {
+        route(to: \.newEncryptionPassword)
     }
     
     func myScreenMightBeWatched() {
