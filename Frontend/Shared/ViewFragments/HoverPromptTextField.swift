@@ -7,38 +7,38 @@
 
 import SwiftUI
 
-//private enum InputState {
-//    case valid
-//    case empty
-//    case invalid
-//}
-
 public struct HoverPromptTextField: View {
     
     /// The text the user has inputted.
     @Binding private var text: String
     
     /// Config of appearance and behaviour.
-    let config: Config
+    public fileprivate(set) var config: Config
 
     /// A prompt of what is being asked for, that will move up above the
     /// textfield when inputted text is non empty.
     let prompt: String
     
+    /// If the `text` equals the empty string.
     var isEmpty: Bool {
         text.isEmpty
     }
+
+    /// The error messages produces by running the validation rules against
+    /// the `text`. The value `nil` means that `text` is **valid**.
+    @State private var errorMessages = [String]?.none
     
-//    private var inputState: InputState {
-//        if isEmpty {
-//            return .empty
-//        } else {
-//            return isValid ? .valid : .invalid
-//        }
+    /// If the `text` validates against the validation rules. Will always be
+    /// true, i.e. valid, if the valdiation rule set provided was empty.
+    private var isValid: Bool {
+        errorMessages == nil
+    }
+    
+//    public func addValidation(rule: Config.Behaviour.Validation.Rule?) -> Self {
+//        guard let rule = rule else { return self }
+//        config.behaviour.validation.rules.append(rule)
+//        return self
 //    }
-    
-    /// If the `text` is valid according to validation rules.
-    @State private var isValid = true
     
     init(
         prompt: String,
@@ -88,12 +88,37 @@ public struct HoverPromptTextField: View {
         .onChange(of: isFocused) {
             assert($0 == isFocused)
             print("isFocused=\(isFocused)")
+            
+            switch config.behaviour.validationTriggering {
+            case .eagerErrorEagerOK:
+                validate()
+            case .lazyErrorEagerOK:
+                if isFocused {
+                    onlyIfOKChangeValidationStateToOK()
+                } else {
+                    validate()
+                }
+            }
+        }.onChange(of: text) {
+            assert($0 == text)
+            print("Text: \(text)")
+            switch config.behaviour.validationTriggering {
+            case .lazyErrorEagerOK:
+                onlyIfOKChangeValidationStateToOK()
+            case .eagerErrorEagerOK:
+                 validate()
+            }
         }
     }
     
     @FocusState private var isFocused: Bool
+
+}
+
+private extension HoverPromptTextField {
     
-    private func textColor<TextColors: FieldTextColor>(
+    /// Returns the text color of field or prompt given current state.
+    func textColor<TextColors: FieldTextColor>(
         of keyPath: KeyPath<Config.Appearance.Colors.TextColors, TextColors>
     ) -> Color {
         let colors = config.appearance.colors.textColors[keyPath: keyPath]
@@ -105,6 +130,35 @@ public struct HoverPromptTextField: View {
         }
     }
     
+    /// The value `nil` means that `text` **is valid**. Else it contains a list
+    /// of error messages
+    func validationResult() -> [String]? {
+        let errorMessages: [String] = config.behaviour.validation.rules.compactMap { rule in
+            rule.validate(text)
+        }
+        guard !errorMessages.isEmpty else {
+            // text is valid
+            return nil
+        }
+        
+        // text is invalid, and here are all the errors.
+        return errorMessages
+    }
+    
+    /// Updates validation state by performing validation
+    func validate() {
+        errorMessages = validationResult()
+    }
+    
+    func onlyIfOKChangeValidationStateToOK() {
+        let errors = validationResult()
+        guard errors == nil else {
+            // Invalid, but don't change state to error.
+            return
+        }
+        // Validation passes, all OK => change state to OK
+        errorMessages = nil
+    }
 }
 
 public struct PlaceholderStyle: ViewModifier {
@@ -132,10 +186,10 @@ public struct PlaceholderStyle: ViewModifier {
 
 public extension HoverPromptTextField {
     
-    struct Config: Equatable {
+    struct Config {
         public let isSecure: Bool
         public let appearance: Appearance
-        public let behaviour: Behaviour
+        public fileprivate(set) var behaviour: Behaviour
     }
 }
 
@@ -210,39 +264,133 @@ public extension HoverPromptTextField.Config.Appearance.Colors.TextColors {
 }
 
 public extension HoverPromptTextField.Config {
-    struct Behaviour: Equatable {
-        public let validation: Validation
+    struct Behaviour {
+        public let validationTriggering: ValidationTriggering
+        public fileprivate(set) var validation: Validation
     }
 }
 
 public extension HoverPromptTextField.Config.Behaviour {
-    enum Validation: Equatable {
-        static var `default`: Self { .lazily }
+    
+    struct Validation {
+        
+        public fileprivate(set) var rules: [Rule]
+        public init(rules: [Rule]) {
+            self.rules = rules
+        }
+    }
+    
+    enum ValidationTriggering: Equatable {
+        static var `default`: Self { .lazyErrorEagerOK }
         
         /// Validates as late as possible, i.e. when a field loses focus as opposed
         /// to directly when text is being typed.
-        case lazily
+        case lazyErrorEagerOK
         
         /// Validates as eagerly as possible, i.e. as soon as a user focuses a field
         /// the text gets validated, which results in validation errors being displayed
         /// directly
-        case eagerly
+        case eagerErrorEagerOK
     }
-    static var `default`: Self { .init(validation: .default) }
+    static var `default`: Self { .init(validationTriggering: .default, validation: .init(rules: [])) }
 }
 
-//internal struct DynamicColor: ViewModifier {
-//    private let colors: HoverPromptTextField.Config.Appearance.Colors
-//
-//    internal init(
-//        colors: HoverPromptTextField.Config.Appearance.Colors,
-//        logic: () -> Color
-//    ) {
-//        self.colors = colors
-//    }
-//
-//    public func body(content: Content) -> some View {
-//        content
-//            .foregroundColor(Color.white)
-//    }
-//}
+public extension HoverPromptTextField.Config.Behaviour.Validation {
+    struct Rule {
+        public typealias CurrentText = String
+        public typealias ErrorMessage = String
+        
+        /// A validation function: valdiates current text and returns an error
+        /// message if the text is invalid. Returning `nil` indicates that the
+        /// input **is valid**.
+        public typealias Validate = (_ currentText: CurrentText) -> ErrorMessage?
+        
+        public let validate: Validate
+        public init(validate: @escaping Validate) {
+            self.validate = validate
+        }
+    }
+}
+
+public extension HoverPromptTextField.Config.Behaviour.Validation.Rule {
+    struct TooShortViolation: Equatable {
+        public let minimumLength: Int
+        public let actualLength: Int
+        
+        /// The number of too few characters the text have.
+        public var dearthCharacterCount: Int {
+            minimumLength - actualLength
+        }
+        
+        internal init(minimumLength: Int, actualLength: Int) {
+            precondition(actualLength < minimumLength)
+            self.minimumLength = minimumLength
+            self.actualLength = actualLength
+        }
+    }
+    struct TooLongViolation: Equatable {
+        public let maximumLength: Int
+        public let actualLength: Int
+        
+        /// The number of too many characters the text have.
+        public var excessCharacterCount: Int {
+            actualLength - maximumLength
+        }
+        public init(maximumLength: Int, actualLength: Int) {
+            precondition(actualLength > maximumLength)
+            self.maximumLength = maximumLength
+            self.actualLength = actualLength
+        }
+    }
+    
+    static func minimumLength(
+        of minimumLength: Int,
+        _ errorMessage: @escaping (TooShortViolation) -> String
+    ) -> Self {
+        Self { text in
+            guard text.count >= minimumLength else {
+                return errorMessage(
+                    TooShortViolation(
+                        minimumLength: minimumLength,
+                        actualLength: text.count
+                    )
+                )
+            }
+            return nil // valid
+        }
+    }
+    
+    static func minimumLength(
+        of minimumLength: Int
+    ) -> Self {
+        Self.minimumLength(of: minimumLength) { tooShortViolation in
+            "\(tooShortViolation.dearthCharacterCount) too few."
+        }
+    }
+    
+    static func maximumLength(
+        of maximumLength: Int,
+        _ errorMessage: @escaping (TooLongViolation) -> String
+    ) -> Self {
+        Self { text in
+            guard text.count <= maximumLength else {
+                return errorMessage(
+                    TooLongViolation(
+                        maximumLength: maximumLength,
+                        actualLength: text.count
+                    )
+                )
+            }
+            return nil // valid
+        }
+    }
+    
+    static func maximumLength(
+        of maximumLength: Int
+    ) -> Self {
+        Self.maximumLength(of: maximumLength) { tooLongViolation in
+            "\(tooLongViolation.excessCharacterCount) too long."
+        }
+    }
+    
+}

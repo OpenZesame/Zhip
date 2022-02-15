@@ -68,7 +68,31 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                 VStack {
                     HoverPromptTextField(
                         prompt: "Encryption password (min 8 chars)",
-                        text: $viewModel.password
+                        text: $viewModel.password,
+                        config: .init(
+                            isSecure: false,
+                            appearance: .default,
+                            behaviour: .init(
+                                validationTriggering: .eagerErrorEagerOK,
+                                validation: .init(
+                                    rules: [.minimumLength(of: 8)]
+                                )
+                            )
+                        )
+                    )
+                    HoverPromptTextField(
+                        prompt: "Confirm password (max 6 chars)",
+                        text: $DELETEME,
+                        config: .init(
+                            isSecure: true,
+                            appearance: .default,
+                            behaviour: .init(
+                                validationTriggering: .lazyErrorEagerOK,
+                                validation: .init(
+                                    rules: [.maximumLength(of: 6)]
+                                )
+                            )
+                        )
                     )
                 }
                 
