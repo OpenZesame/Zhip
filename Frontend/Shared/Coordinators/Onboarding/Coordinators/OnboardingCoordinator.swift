@@ -26,7 +26,7 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     
-    @Root var welcome = makeWelcome
+    @Root var welcome = makeEncr
     @Route(.push) var termsOfService = makeTermsOfService
     
     // Replace navigation stack
@@ -101,6 +101,16 @@ private extension DefaultOnboardingCoordinator {
     
     func makeSetupPINCode(wallet: Wallet) -> DefaultSetupPINCodeCoordinator {
         DefaultSetupPINCodeCoordinator()
+    }
+    
+    @ViewBuilder
+    func makeEncr() -> some View {
+        let viewModel = DefaultNewEncryptionPasswordViewModel(
+            coordinator: DefaultNewWalletCoordinator(useCaseProvider: useCaseProvider),
+            useCase: walletUseCase
+        )
+        
+        NewEncryptionPasswordScreen(viewModel: viewModel)
     }
     
     @ViewBuilder

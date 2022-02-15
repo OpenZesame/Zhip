@@ -53,24 +53,9 @@ final class DefaultNewEncryptionPasswordViewModel: NewEncryptionPasswordViewMode
     
 }
 
-import FloatingLabelTextFieldSwiftUI
 struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: View {
     @ObservedObject var viewModel: ViewModel
-    
-    private func validation(
-        of inputKeyPath: KeyPath<ViewModel, String>,
-        by validatorKeyPath: KeyPath<ViewModel, TextFieldValidation>
-    ) -> FloatingLabelTextFieldSwiftUI.TextFieldValidator {
-
-        let input = viewModel[keyPath: inputKeyPath]
-        let validation = viewModel[keyPath: validatorKeyPath]
-
-        return FloatingLabelTextFieldSwiftUI.TextFieldValidator(
-            condition: validation.validIf(input),
-            errorMessage: validation.errorMessage(input)
-        )
-    }
-    
+    @State var DELETEME = ""
     var body: some View {
         ForceFullScreen {
             VStack {
@@ -81,19 +66,9 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                 )
                 
                 VStack {
-                    AdvancedTextField(
-                        "Encryption password (min 8 chars)",
-                        text: $viewModel.password,
-                        isValid: $viewModel.isPasswordValid,
-                        validation: validation(of: \.password, by: \.passwordValidation)
-                    )
-                    
-                    AdvancedTextField(
-                        "Confirm encryption password",
-                        text: $viewModel.passwordConfirmation,
-                        isValid: $viewModel.isConfirmPasswordValid,
-                        type: .secure,
-                        validation: validation(of: \.passwordConfirmation, by: \.confirmPasswordValidation)
+                    HoverPromptTextField(
+                        prompt: "Encryption password (min 8 chars)",
+                        text: $viewModel.password
                     )
                 }
                 

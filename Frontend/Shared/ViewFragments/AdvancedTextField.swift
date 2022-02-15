@@ -76,7 +76,7 @@ struct AdvancedTextField: View {
             .addValidation(validation)
             .leftView {
                 Circle()
-                    .fill(text.isEmpty ? Color.clear : ($isValid.wrappedValue ? validColor : errorColor))
+                    .fill($text.wrappedValue.isEmpty ? Color.clear : ($isValid.wrappedValue ? validColor : errorColor))
                     .frame(width: circleSize, height: circleSize)
             }
             .rightView {
