@@ -173,11 +173,11 @@ private extension HoverPromptTextField {
     }
     
     @ViewBuilder func maybeHoveringPrompt() -> some View {
-        if !isEmpty {
-            Text(prompt)
+        // TODO: Ugly "hack" to make the wrappedField always have the same Y pos.
+        Text(isEmpty ? " " : prompt)
+            .textSelection(isEmpty ? .disabled : .disabled)
                 .foregroundColor(textColor(of: \.hoveringPrompt))
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
     }
     
     @ViewBuilder func wrappedField() -> some View {
