@@ -67,7 +67,7 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                 
                 VStack {
                     HoverPromptTextField(
-                        prompt: "Encryption password (min 8 chars)",
+                        prompt: "Encryption password",
                         text: $viewModel.password,
                         config: .init(
                             isSecure: false,
@@ -81,7 +81,7 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                         )
                     )
                     HoverPromptTextField(
-                        prompt: "Confirm password (max 6 chars)",
+                        prompt: "Confirm password",
                         text: $DELETEME,
                         config: .init(
                             isSecure: true,

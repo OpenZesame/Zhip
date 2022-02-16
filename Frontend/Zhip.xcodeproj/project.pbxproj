@@ -31,10 +31,18 @@
 		4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */; };
 		4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
 		4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
-		48526A5427BBC98000C25518 /* AdvancedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5327BBC98000C25518 /* AdvancedTextField.swift */; };
-		48526A5527BBC98000C25518 /* AdvancedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5327BBC98000C25518 /* AdvancedTextField.swift */; };
 		48526A5727BBC9A000C25518 /* HoverPromptTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */; };
 		48526A5827BBC9A000C25518 /* HoverPromptTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */; };
+		48526A5F27BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5E27BC2CA200C25518 /* HoverPromptTextField+Config.swift */; };
+		48526A6027BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5E27BC2CA200C25518 /* HoverPromptTextField+Config.swift */; };
+		48526A6227BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6127BC2CC800C25518 /* HoverPromptTextField+Appearance.swift */; };
+		48526A6327BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6127BC2CC800C25518 /* HoverPromptTextField+Appearance.swift */; };
+		48526A6527BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6427BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift */; };
+		48526A6627BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6427BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift */; };
+		48526A6927BC2D2400C25518 /* TooShortViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6827BC2D2400C25518 /* TooShortViolation.swift */; };
+		48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6827BC2D2400C25518 /* TooShortViolation.swift */; };
+		48526A6C27BC2D4C00C25518 /* TooLongViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6B27BC2D4C00C25518 /* TooLongViolation.swift */; };
+		48526A6D27BC2D4C00C25518 /* TooLongViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A6B27BC2D4C00C25518 /* TooLongViolation.swift */; };
 		485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */; };
 		485FF72827B835EA0030266A /* TermsOfServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */; };
 		485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72927B836030030266A /* EnsurePrivacyScreen.swift */; };
@@ -107,8 +115,12 @@
 		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
 		4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
-		48526A5327BBC98000C25518 /* AdvancedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedTextField.swift; sourceTree = "<group>"; };
 		48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverPromptTextField.swift; sourceTree = "<group>"; };
+		48526A5E27BC2CA200C25518 /* HoverPromptTextField+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoverPromptTextField+Config.swift"; sourceTree = "<group>"; };
+		48526A6127BC2CC800C25518 /* HoverPromptTextField+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoverPromptTextField+Appearance.swift"; sourceTree = "<group>"; };
+		48526A6427BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoverPromptTextField+Behaviour.swift"; sourceTree = "<group>"; };
+		48526A6827BC2D2400C25518 /* TooShortViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooShortViolation.swift; sourceTree = "<group>"; };
+		48526A6B27BC2D4C00C25518 /* TooLongViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooLongViolation.swift; sourceTree = "<group>"; };
 		485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceScreen.swift; sourceTree = "<group>"; };
 		485FF72927B836030030266A /* EnsurePrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsurePrivacyScreen.swift; sourceTree = "<group>"; };
 		485FF72C27B8360F0030266A /* RestoreWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletScreen.swift; sourceTree = "<group>"; };
@@ -166,13 +178,12 @@
 		481EDEB227B98B1100D39DCB /* ViewFragments */ = {
 			isa = PBXGroup;
 			children = (
+				48526A5927BC2C5800C25518 /* HoverPromptTextField */,
 				481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */,
 				481EDEB627B98B3200D39DCB /* Labels.swift */,
 				481EDEB927B9943200D39DCB /* ParallaxImage.swift */,
 				481EDEBC27B9946700D39DCB /* Screen.swift */,
 				481EDEC227B994F700D39DCB /* CallToAction.swift */,
-				48526A5327BBC98000C25518 /* AdvancedTextField.swift */,
-				48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */,
 			);
 			path = ViewFragments;
 			sourceTree = "<group>";
@@ -234,6 +245,35 @@
 				481EDECE27BA884400D39DCB /* BackupWalletScreen.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		48526A5927BC2C5800C25518 /* HoverPromptTextField */ = {
+			isa = PBXGroup;
+			children = (
+				48526A5D27BC2C9500C25518 /* Config */,
+				48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */,
+			);
+			path = HoverPromptTextField;
+			sourceTree = "<group>";
+		};
+		48526A5D27BC2C9500C25518 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				48526A6727BC2D0E00C25518 /* ValidationRules */,
+				48526A5E27BC2CA200C25518 /* HoverPromptTextField+Config.swift */,
+				48526A6427BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift */,
+				48526A6127BC2CC800C25518 /* HoverPromptTextField+Appearance.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		48526A6727BC2D0E00C25518 /* ValidationRules */ = {
+			isa = PBXGroup;
+			children = (
+				48526A6827BC2D2400C25518 /* TooShortViolation.swift */,
+				48526A6B27BC2D4C00C25518 /* TooLongViolation.swift */,
+			);
+			path = ValidationRules;
 			sourceTree = "<group>";
 		};
 		485FF73227B836250030266A /* Coordinators */ = {
@@ -521,19 +561,21 @@
 				485FF73727B836420030266A /* RestoreWalletCoordinator.swift in Sources */,
 				4872FA4327B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
+				48526A6227BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
 				485FF74627B838F60030266A /* UseCaseProvider.swift in Sources */,
 				484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */,
 				485FF74027B836770030266A /* SetupPINCodeCoordinator.swift in Sources */,
 				4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				48526A5727BBC9A000C25518 /* HoverPromptTextField.swift in Sources */,
 				487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */,
-				48526A5427BBC98000C25518 /* AdvancedTextField.swift in Sources */,
 				4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				485FF74327B838DE0030266A /* OnboardingUseCase.swift in Sources */,
 				485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				485FF73027B8361A0030266A /* SetupWalletScreen.swift in Sources */,
+				48526A5F27BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */,
 				485FF73A27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
 				4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
+				48526A6C27BC2D4C00C25518 /* TooLongViolation.swift in Sources */,
 				481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
@@ -545,6 +587,7 @@
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
 				48761A8227B6DBBF002E4375 /* NameWalletScreen.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
+				48526A6927BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				481EDEBA27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				485FF72D27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
@@ -552,6 +595,7 @@
 				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
+				48526A6527BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
 				481EDEB727B98B3200D39DCB /* Labels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,13 +604,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48526A5527BBC98000C25518 /* AdvancedTextField.swift in Sources */,
 				485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */,
 				485FF72B27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
+				48526A6627BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
 				481EDECD27BA85E500D39DCB /* NewEncryptionPasswordScreen.swift in Sources */,
 				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
+				48526A6327BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
 				481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				485FF73527B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
@@ -583,8 +628,10 @@
 				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */,
 				4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
+				48526A6027BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */,
 				485FF73127B8361A0030266A /* SetupWalletScreen.swift in Sources */,
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
+				48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				487CE3EB27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
 				4872FA5627B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
@@ -593,6 +640,7 @@
 				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
 				485FF72E27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				48526A5827BBC9A000C25518 /* HoverPromptTextField.swift in Sources */,
+				48526A6D27BC2D4C00C25518 /* TooLongViolation.swift in Sources */,
 				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,

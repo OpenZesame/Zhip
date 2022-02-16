@@ -29,15 +29,6 @@
         }
       },
       {
-        "package": "FloatingLabelTextFieldSwiftUI",
-        "repositoryURL": "https://github.com/Sajjon/FloatingLabelTextFieldSwiftUI.git",
-        "state": {
-          "branch": "main",
-          "revision": "d3bb5649016dac960e1ccf4ee75c31add1f79d7a",
-          "version": null
-        }
-      },
-      {
         "package": "KeychainAccess",
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
         "state": {

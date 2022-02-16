@@ -43,13 +43,6 @@ private let dependencies: [Dependency] = [
         rationale: "Coordinator pattern"
     ),
     
-    .init(
-        category: .view,
-        package: .package(url: "https://github.com/Sajjon/FloatingLabelTextFieldSwiftUI.git", branch: "main"),
-        product: "FloatingLabelTextFieldSwiftUI",
-        rationale: "Saves me lots of work implementing floating label with validation and error messages."
-    )
-    
 //    .init(
 //        category: .navigation,
 //        package: .package(url: "https://github.com/matteopuc/swiftui-navigation-stack", from: "1.0.4"),
