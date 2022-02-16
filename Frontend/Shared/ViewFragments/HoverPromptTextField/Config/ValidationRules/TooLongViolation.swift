@@ -74,7 +74,7 @@ public extension ValidationRule where Self == ValidateInputRequirement {
             inputRequirement: .length(requiredLength),
             formatRequirement: formatRequirement,
             formatError: { req, _ in
-                formatRequirement(req)
+                "Error: " + formatRequirement(req)
             }
         )
     }

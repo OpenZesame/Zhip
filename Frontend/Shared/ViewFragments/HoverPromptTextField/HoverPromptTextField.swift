@@ -85,7 +85,7 @@ public extension HoverPromptTextField {
 public extension HoverPromptTextField {
     var body: some View {
         VStack(alignment: .leading) {
-            maybeHoveringPrompt()
+            maybeHoveringPromptAndRequirements()
             
             ZStack(alignment: .leading) {
                 if isEmpty {
@@ -94,9 +94,8 @@ public extension HoverPromptTextField {
                 wrappedField()
             }
             
-            maybeErrorOrRequirment()
+            maybeError()
         }
-//        .frame(height: 64, alignment: .leading)
     }
 }
 
@@ -161,12 +160,25 @@ private extension HoverPromptTextField {
 // MARK: -
 private extension HoverPromptTextField {
     
-    @ViewBuilder func maybeErrorOrRequirment() -> some View {
+    @ViewBuilder func maybeError() -> some View {
         // TODO Animate between them..?
         if let error = errorMessages.first {
             Text(error)
                 .foregroundColor(textColor(of: \.errorLabel))
-        } else if let firstRequirment = inputRequirments.first {
+        }
+    }
+    
+    @ViewBuilder func maybeHoveringPromptAndRequirements() -> some View {
+        HStack {
+            maybeHoveringPrompt()//.layoutPriority(3)
+//            Spacer()
+            maybeRequirements()//.layoutPriority(1)
+        }
+     
+    }
+    
+    @ViewBuilder func maybeRequirements() -> some View {
+        if isFocused, !isEmpty, !isValid, let firstRequirment = inputRequirments.first {
             Text(firstRequirment.requirement)
                 .foregroundColor(textColor(of: \.requirmentLabel))
         }
