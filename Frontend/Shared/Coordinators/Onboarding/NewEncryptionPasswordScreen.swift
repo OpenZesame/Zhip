@@ -76,13 +76,14 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                                 )
                             )
                         ),
-                        leftView: makeLeftView
+                        leftView: makeLeftView,
+                        rightView: makeRevealSecureButton
                     )
                     HoverPromptTextField(
                         prompt: "Confirm password",
                         text: $viewModel.passwordConfirmation,
                         config: .init(
-                            isSecure: true,
+                            isSecure: false,
                             behaviour: .init(
                                 validation: .init(
                                     rules: [
@@ -96,7 +97,8 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                                 )
                             )
                         ),
-                        leftView: makeLeftView
+                        leftView: makeLeftView,
+                        rightView: makeRevealSecureButton
                     )
                 }
                 
@@ -123,6 +125,22 @@ private extension NewEncryptionPasswordScreen {
         Circle()
             .fill(params.isEmpty ? params.colors.neutral : (params.isValid ? params.colors.valid : params.colors.invalid))
             .frame(width: 16, height: 16)
+    }
+    
+    @ViewBuilder
+    func makeRevealSecureButton(
+        params: HoverPromptTextFieldExtraViewsParams
+    ) -> some View {
+        if params.isSecureTextField && !params.isEmpty {
+            Button(action: {
+                withAnimation {
+                    params.isRevealingSecrets.wrappedValue.toggle()
+                }
+            }) {
+                
+                Image(systemName: params.isRevealingSecrets.wrappedValue ? "eye.slash" : "eye").foregroundColor(params.isRevealingSecrets.wrappedValue ? Color.mellowYellow : Color.white)
+            }
+        }
     }
     
 }

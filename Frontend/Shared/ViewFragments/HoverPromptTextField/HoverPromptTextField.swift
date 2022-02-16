@@ -7,7 +7,14 @@
 
 import SwiftUI
 
-public typealias HoverPromptTextFieldExtraViewsParams = (isFocused: Bool, isValid: Bool, isEmpty: Bool, colors: DefaultColors)
+public typealias HoverPromptTextFieldExtraViewsParams = (
+    isFocused: Bool,
+    isValid: Bool,
+    isEmpty: Bool,
+    isSecureTextField: Bool,
+    colors: DefaultColors,
+    isRevealingSecrets: Binding<Bool>
+)
 
 public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     public typealias Config = HoverPromptTextFieldConfig
@@ -29,6 +36,8 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     /// the `text`. An empty array means `text` is **valid**.
     @State private var errorMessages = [String]()
     
+    @State private var isRevealingSecrets: Bool = false
+    
     public typealias MakeLeftView = (HoverPromptTextFieldExtraViewsParams) -> LeftView
     public typealias MakeRightView = (HoverPromptTextFieldExtraViewsParams) -> RightView
     private let makeLeftView: MakeLeftView
@@ -49,6 +58,8 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     }
 }
 
+// MARK: - Convenience init
+// MARK: -
 public extension HoverPromptTextField where RightView == EmptyView, LeftView == EmptyView {
     
      init(
@@ -103,23 +114,6 @@ public extension HoverPromptTextField where LeftView == EmptyView {
 }
 
 
-// MARK: - Public
-// MARK: -
-public extension HoverPromptTextField {
-    /// If the `text` equals the empty string.
-    var isEmpty: Bool {
-        text.isEmpty
-    }
-    
-    /// If the `text` validates against the validation rules. Will always be
-    /// true, i.e. valid, if the valdiation rule set provided was empty.
-    var isValid: Bool {
-        isValid(given: errorMessages)
-    }
-}
-
-// MARK: - Convenience init
-// MARK: -
 public extension HoverPromptTextField where RightView == EmptyView, LeftView == EmptyView {
     init(
         prompt: String,
@@ -150,6 +144,20 @@ public extension HoverPromptTextField where RightView == EmptyView, LeftView == 
     }
 }
 
+// MARK: - Public
+// MARK: -
+public extension HoverPromptTextField {
+    /// If the `text` equals the empty string.
+    var isEmpty: Bool {
+        text.isEmpty
+    }
+    
+    /// If the `text` validates against the validation rules. Will always be
+    /// true, i.e. valid, if the valdiation rule set provided was empty.
+    var isValid: Bool {
+        isValid(given: errorMessages)
+    }
+}
 
 
 // MARK: - View (Body)
@@ -189,7 +197,14 @@ public extension HoverPromptTextField {
 private extension HoverPromptTextField {
     
     private var makeViewParams: MakeViewParams {
-        (isFocused, isValid, isEmpty, colors: config.appearance.colors.defaultColors)
+        (
+            isFocused,
+            isValid,
+            isEmpty,
+            isSecureTextField: config.isSecure,
+            colors: config.appearance.colors.defaultColors,
+            isRevealingSecrets: $isRevealingSecrets
+        )
     }
     
     func shouldDisplay(_ subview: Config.Display) -> Bool {
@@ -317,7 +332,7 @@ private extension HoverPromptTextField {
     
     @ViewBuilder func wrappedField() -> some View {
         Group {
-            if config.isSecure {
+            if config.isSecure && !isRevealingSecrets {
                 SecureField(text: $text) {
                     EmptyView() // No `title` view
                 }
