@@ -7,7 +7,7 @@
 
 import Foundation
 
-//public extension HoverPromptTextField.Config.Behaviour.Validation.Rule {
+//public extension HoverPromptTextFieldConfig.Behaviour.Validation.Rule {
 //
 //    struct TooLongViolation: Equatable {
 //        public let maximumLength: Int
@@ -25,7 +25,7 @@ import Foundation
 //    }
 //}
 //
-//public extension HoverPromptTextField.Config.Behaviour.Validation.Rule {
+//public extension HoverPromptTextFieldConfig.Behaviour.Validation.Rule {
 //    static func maximumLength(
 //        of maximumLength: Int,
 //        _ errorMessage: @escaping (TooLongViolation) -> String

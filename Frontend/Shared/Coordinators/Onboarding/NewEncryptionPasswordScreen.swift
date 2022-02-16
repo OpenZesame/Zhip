@@ -71,12 +71,13 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                         text: $viewModel.password,
                         config: .init(
                             behaviour: .init(
-                                validationTriggering: .eagerErrorEagerOK,
+                                validationTriggering: .lazyErrorEagerOK,
                                 validation: .init(
                                     rules: [.minimumLength(of: 8)]
                                 )
                             )
-                        )
+                        ),
+                        leftView: makeLeftView
                     )
                     HoverPromptTextField(
                         prompt: "Confirm password",
@@ -89,7 +90,8 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                                     rules: [.maximumLength(of: 6)]
                                 )
                             )
-                        )
+                        ),
+                        leftView: makeLeftView
                     )
                 }
                 
@@ -103,6 +105,19 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                 .disabled(!viewModel.isFinished)
             }
         }
+    }
+    
+}
+
+private extension NewEncryptionPasswordScreen {
+    
+    @ViewBuilder
+    func makeLeftView(
+        params: HoverPromptTextFieldExtraViewsParams
+    ) -> some View {
+        Circle()
+            .fill(params.isEmpty ? params.colors.neutral : (params.isValid ? params.colors.valid : params.colors.invalid))
+            .frame(width: 16, height: 16)
     }
     
 }

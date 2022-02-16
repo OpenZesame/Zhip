@@ -7,7 +7,7 @@
 
 import Foundation
 
-//public extension HoverPromptTextField.Config.Behaviour.Validation.Rule {
+//public extension HoverPromptTextFieldConfig.Behaviour.Validation.Rule {
 //    struct TooShortViolation: Equatable {
 //        public let minimumLength: Int
 //        public let actualLength: Int
@@ -25,7 +25,7 @@ import Foundation
 //    }
 //}
 //
-//public extension HoverPromptTextField.Config.Behaviour.Validation.Rule {
+//public extension HoverPromptTextFieldConfig.Behaviour.Validation.Rule {
 //    static func minimumLength(
 //        of minimumLength: Int,
 //        _ errorMessage: @escaping (TooShortViolation) -> String

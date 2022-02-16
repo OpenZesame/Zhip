@@ -37,7 +37,7 @@ public struct DefaultColors: Equatable {
 }
 
 
-public extension HoverPromptTextField.Config {
+public extension HoverPromptTextFieldConfig {
     
     /// Contains all configurations relating to the appearance of this view.
     struct Appearance: Equatable {
@@ -58,7 +58,7 @@ public extension HoverPromptTextField.Config {
     }
 }
 
-public extension HoverPromptTextField.Config.Appearance {
+public extension HoverPromptTextFieldConfig.Appearance {
     
     static var `default`: Self { .init(lineHeight: .default, colors: .default) }
 
@@ -120,7 +120,7 @@ public extension HoverPromptTextField.Config.Appearance {
     }
     
 }
-public extension HoverPromptTextField.Config.Appearance.Colors {
+public extension HoverPromptTextFieldConfig.Appearance.Colors {
     static let `default`: Self = .init(
         defaultColors: .default,
         textColors: .default,
@@ -179,18 +179,18 @@ public extension HoverPromptTextField.Config.Appearance.Colors {
 }
 
 public protocol FieldTextColor {
-    var focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState { get }
-    var notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState { get }
+    var focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState { get }
+    var notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState { get }
 }
 
-public extension HoverPromptTextField.Config.Appearance.Colors.TextColors.Customized.HoveringPrompt {
+public extension HoverPromptTextFieldConfig.Appearance.Colors.TextColors.Customized.HoveringPrompt {
     /// The hovering prompt is only visible when field is focused.
-    var focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState { dependingOnValidationState }
+    var focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState { dependingOnValidationState }
     /// The hovering prompt is only visible when field is focused.
-    var notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState { focused }
+    var notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState { focused }
 }
 
-public extension HoverPromptTextField.Config.Appearance.Colors.TextColors.Customized {
+public extension HoverPromptTextFieldConfig.Appearance.Colors.TextColors.Customized {
     
     static let `default`: Self = .init(
         field: .default,
@@ -202,32 +202,32 @@ public extension HoverPromptTextField.Config.Appearance.Colors.TextColors.Custom
     
     struct Field: Equatable, FieldTextColor {
         public static let `default`: Self = .init(focused: .default, notFocused: .default)
-        public let focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
-        public let notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
+        public let focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
+        public let notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
     }
     
     struct HoveringPrompt: Equatable, FieldTextColor {
         public static let `default`: Self = .init(dependingOnValidationState: .default)
-        public let dependingOnValidationState: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
+        public let dependingOnValidationState: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
     }
     
     struct PromptWhenEmpty: Equatable, FieldTextColor {
         public static let `default`: Self = .init(focused: .default, notFocused: .default)
-        public let focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
-        public let notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
+        public let focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
+        public let notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
     }
     
     /// Not always used. Only shown if you pass in any `ValidateInputRequirement` as rules.
     struct RequirmentLabel: Equatable, FieldTextColor {
         public static let `default`: Self = .init(focused: .default, notFocused: .default)
-        public let focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
-        public let notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
+        public let focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
+        public let notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
     }
     
     /// Not always used, if no validation rules are passed to field initializer an error is never shown.
     struct ErrorLabel: Equatable, FieldTextColor {
         public static let `default`: Self = .init(focused: .default, notFocused: .default)
-        public let focused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
-        public let notFocused: HoverPromptTextField.Config.Appearance.Colors.DependingOnValidationState
+        public let focused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
+        public let notFocused: HoverPromptTextFieldConfig.Appearance.Colors.DependingOnValidationState
     }
 }

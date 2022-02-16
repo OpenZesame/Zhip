@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension HoverPromptTextField.Config {
+public extension HoverPromptTextFieldConfig {
     struct Behaviour {
         public let validationTriggering: ValidationTriggering
         public fileprivate(set) var validation: Validation
@@ -15,7 +15,7 @@ public extension HoverPromptTextField.Config {
 }
 
 
-public extension HoverPromptTextField.Config.Behaviour {
+public extension HoverPromptTextFieldConfig.Behaviour {
     
     struct Validation {
         
@@ -145,7 +145,7 @@ public enum InputRequirement: BasicValidation, Equatable {
     }
 }
 
-//public extension HoverPromptTextField.Config.Behaviour.Validation {
+//public extension HoverPromptTextFieldConfig.Behaviour.Validation {
 //    struct Rule: ValidationRule {
 //        public typealias CurrentText = String
 //        

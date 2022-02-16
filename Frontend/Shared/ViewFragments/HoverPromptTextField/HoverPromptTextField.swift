@@ -7,13 +7,17 @@
 
 import SwiftUI
 
-public struct HoverPromptTextField: View {
+public typealias HoverPromptTextFieldExtraViewsParams = (isFocused: Bool, isValid: Bool, isEmpty: Bool, colors: DefaultColors)
+
+public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
+    public typealias Config = HoverPromptTextFieldConfig
+    public typealias MakeViewParams = HoverPromptTextFieldExtraViewsParams
     
     /// The text the user has inputted.
     @Binding private var text: String
     
     /// Config of appearance and behaviour.
-    public let config: Config
+    public let config: HoverPromptTextFieldConfig
 
     /// A prompt of what is being asked for, that will move up above the
     /// textfield when inputted text is non empty.
@@ -24,17 +28,80 @@ public struct HoverPromptTextField: View {
     /// The error messages produces by running the validation rules against
     /// the `text`. An empty array means `text` is **valid**.
     @State private var errorMessages = [String]()
+    
+    public typealias MakeLeftView = (HoverPromptTextFieldExtraViewsParams) -> LeftView
+    public typealias MakeRightView = (HoverPromptTextFieldExtraViewsParams) -> RightView
+    private let makeLeftView: MakeLeftView
+    private let makeRightView: MakeRightView
    
     init(
         prompt: String,
         text: Binding<String>,
-        config: Config = .default
+        config: Config = .default,
+        leftView makeLeftView: @escaping MakeLeftView,
+        rightView makeRightView: @escaping MakeRightView
     ) {
         self.prompt = prompt
         self._text = text
         self.config = config
+        self.makeLeftView = makeLeftView
+        self.makeRightView = makeRightView
     }
 }
+
+public extension HoverPromptTextField where RightView == EmptyView, LeftView == EmptyView {
+    
+     init(
+         prompt: String,
+         text: Binding<String>,
+         config: Config = .default
+     ) {
+         self.init(
+            prompt: prompt,
+            text: text,
+            config: config,
+            leftView: { _ in EmptyView() },
+            rightView: { _ in EmptyView() }
+         )
+     }
+}
+
+public extension HoverPromptTextField where RightView == EmptyView {
+    
+     init(
+         prompt: String,
+         text: Binding<String>,
+         config: Config = .default,
+         leftView makeLeftView: @escaping MakeLeftView
+     ) {
+         self.init(
+            prompt: prompt,
+            text: text,
+            config: config,
+            leftView: makeLeftView,
+            rightView: { _ in EmptyView() }
+         )
+     }
+}
+
+public extension HoverPromptTextField where LeftView == EmptyView {
+    
+     init(
+         prompt: String,
+         text: Binding<String>,
+         config: Config = .default,
+         rightView makeRightView: @escaping MakeRightView
+     ) {
+         self.init(
+            prompt: prompt,
+            text: text,
+            config: config,
+            leftView: { _ in EmptyView() },
+            rightView: makeRightView
+         )
+     }
+}
+
 
 // MARK: - Public
 // MARK: -
@@ -53,7 +120,7 @@ public extension HoverPromptTextField {
 
 // MARK: - Convenience init
 // MARK: -
-public extension HoverPromptTextField {
+public extension HoverPromptTextField where RightView == EmptyView, LeftView == EmptyView {
     init(
         prompt: String,
         text: Binding<String>,
@@ -92,12 +159,21 @@ public extension HoverPromptTextField {
         VStack(alignment: .leading, spacing: 5) {
             maybeHoveringPromptAndRequirements()
             
-            ZStack(alignment: .leading) {
-                if isEmpty {
-                    Text(prompt).foregroundColor(textColor(of: \.promptWhenEmpty))
+            HStack {
+                
+                makeLeftView(makeViewParams)
+                
+                ZStack(alignment: .leading) {
+                    if isEmpty {
+                        Text(prompt).foregroundColor(textColor(of: \.promptWhenEmpty))
+                    }
+                    wrappedField()
                 }
-                wrappedField()
+                
+                makeRightView(makeViewParams)
             }
+            
+         
             
             line()
             
@@ -111,6 +187,10 @@ public extension HoverPromptTextField {
 // MARK: - Private
 // MARK: -
 private extension HoverPromptTextField {
+    
+    private var makeViewParams: MakeViewParams {
+        (isFocused, isValid, isEmpty, colors: config.appearance.colors.defaultColors)
+    }
     
     func shouldDisplay(_ subview: Config.Display) -> Bool {
         config.display.contains(subview)
