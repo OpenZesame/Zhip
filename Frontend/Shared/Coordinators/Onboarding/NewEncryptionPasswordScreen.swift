@@ -51,7 +51,7 @@ final class DefaultNewEncryptionPasswordViewModel: NewEncryptionPasswordViewMode
     
     private var arePasswordsEqualPublisher: AnyPublisher<Bool, Never> {
         Publishers.CombineLatest($password, $passwordConfirmation)
-//            .debounce(for: 0.2, scheduler: RunLoop.main)
+            .debounce(for: 0.2, scheduler: RunLoop.main)
             .map { password, passwordConfirmation in
                 return password == passwordConfirmation
             }
@@ -143,7 +143,7 @@ struct InputField: View {
                             invalid: .bloodRed
                         )
                     ),
-                    fonts: .init(field: Font.body)
+                    fonts: .init(field: Font.zhip.title, prompt: Font.zhip.hint)
                 )
             ),
             leftView: { params in

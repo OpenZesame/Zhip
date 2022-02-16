@@ -81,6 +81,8 @@
 		48526AA627BD884500C25518 /* Barlow-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8127BD884500C25518 /* Barlow-SemiBold.ttf */; };
 		48526AA727BD884500C25518 /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8227BD884500C25518 /* Barlow-Black.ttf */; };
 		48526AA827BD884500C25518 /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8227BD884500C25518 /* Barlow-Black.ttf */; };
+		48526AAA27BDAD2000C25518 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AA927BDAD2000C25518 /* Fonts.swift */; };
+		48526AAB27BDAD2000C25518 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AA927BDAD2000C25518 /* Fonts.swift */; };
 		485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */; };
 		485FF72827B835EA0030266A /* TermsOfServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */; };
 		485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF72927B836030030266A /* EnsurePrivacyScreen.swift */; };
@@ -178,6 +180,7 @@
 		48526A8027BD884500C25518 /* Barlow-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-BlackItalic.ttf"; sourceTree = "<group>"; };
 		48526A8127BD884500C25518 /* Barlow-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-SemiBold.ttf"; sourceTree = "<group>"; };
 		48526A8227BD884500C25518 /* Barlow-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Black.ttf"; sourceTree = "<group>"; };
+		48526AA927BDAD2000C25518 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceScreen.swift; sourceTree = "<group>"; };
 		485FF72927B836030030266A /* EnsurePrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsurePrivacyScreen.swift; sourceTree = "<group>"; };
 		485FF72C27B8360F0030266A /* RestoreWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletScreen.swift; sourceTree = "<group>"; };
@@ -509,6 +512,7 @@
 			children = (
 				4872FA3B27B509D1008B7BD0 /* Colors.swift */,
 				4872FA3E27B523CC008B7BD0 /* Style */,
+				48526AA927BDAD2000C25518 /* Fonts.swift */,
 			);
 			path = Styling;
 			sourceTree = "<group>";
@@ -699,6 +703,7 @@
 				48526A5727BBC9A000C25518 /* HoverPromptTextField.swift in Sources */,
 				487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */,
 				4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
+				48526AAA27BDAD2000C25518 /* Fonts.swift in Sources */,
 				485FF74327B838DE0030266A /* OnboardingUseCase.swift in Sources */,
 				485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				485FF73027B8361A0030266A /* SetupWalletScreen.swift in Sources */,
@@ -742,6 +747,7 @@
 				481EDECD27BA85E500D39DCB /* NewEncryptionPasswordScreen.swift in Sources */,
 				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				48526A6327BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
+				48526AAB27BDAD2000C25518 /* Fonts.swift in Sources */,
 				481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				485FF73527B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
