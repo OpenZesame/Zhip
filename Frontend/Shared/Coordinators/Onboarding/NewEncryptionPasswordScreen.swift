@@ -55,7 +55,6 @@ final class DefaultNewEncryptionPasswordViewModel: NewEncryptionPasswordViewMode
 
 struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: View {
     @ObservedObject var viewModel: ViewModel
-    @State var DELETEME = ""
     var body: some View {
         ForceFullScreen {
             VStack(spacing: 40) {
@@ -70,8 +69,8 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                         prompt: "Encryption password",
                         text: $viewModel.password,
                         config: .init(
+                            isSecure: true,
                             behaviour: .init(
-                                validationTriggering: .lazyErrorEagerOK,
                                 validation: .init(
                                     rules: [.minimumLength(of: 8)]
                                 )
@@ -81,13 +80,19 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                     )
                     HoverPromptTextField(
                         prompt: "Confirm password",
-                        text: $DELETEME,
+                        text: $viewModel.passwordConfirmation,
                         config: .init(
                             isSecure: true,
                             behaviour: .init(
-                                validationTriggering: .lazyErrorEagerOK,
                                 validation: .init(
-                                    rules: [.maximumLength(of: 6)]
+                                    rules: [
+                                        Validation { confirmText in
+                                            if confirmText != viewModel.password {
+                                                return "Passwords does not match."
+                                            }
+                                            return nil // Valid
+                                        }
+                                    ]
                                 )
                             )
                         ),

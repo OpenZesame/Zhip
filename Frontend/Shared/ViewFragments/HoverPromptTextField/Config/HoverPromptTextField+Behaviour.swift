@@ -11,6 +11,13 @@ public extension HoverPromptTextFieldConfig {
     struct Behaviour {
         public let validationTriggering: ValidationTriggering
         public fileprivate(set) var validation: Validation
+        public init(
+            validationTriggering: ValidationTriggering = .default,
+            validation: Validation = .default
+        ) {
+            self.validationTriggering = validationTriggering
+            self.validation = validation
+        }
     }
 }
 
@@ -20,13 +27,17 @@ public extension HoverPromptTextFieldConfig.Behaviour {
     struct Validation {
         
         public fileprivate(set) var rules: [ValidationRule]
-        public init(rules: [ValidationRule]) {
+        public init(rules: [ValidationRule] = []) {
             self.rules = rules
         }
+        
+        
+        public static let noRules = Self(rules: [])
+        public static let `default` = Self.noRules
     }
     
     enum ValidationTriggering: Equatable {
-        static var `default`: Self { .lazyErrorEagerOK }
+        public static let `default` = Self.lazyErrorEagerOK
         
         /// Validates as late as possible, i.e. when a field loses focus as opposed
         /// to directly when text is being typed.
@@ -62,6 +73,30 @@ public extension ValidationRule {
     }
 }
 
+public struct Validation: ValidationRule {
+
+    private let _validate: Validate
+    
+    public init(validate: @escaping Validate) {
+        self._validate = validate
+    }
+    
+}
+
+public extension Validation {
+    typealias CurrentText = String
+    
+    /// A validation function: valdiates current text and returns an error
+    /// message if the text is invalid. Returning `nil` indicates that the
+    /// input **is valid**.
+    typealias Validate = (_ currentText: CurrentText) -> ErrorMessage?
+    
+    
+    func validate(text: String) -> ErrorMessage? {
+        _validate(text)
+    }
+}
+    
 public struct ValidateInputRequirement: ValidationRule, DisplayableInputRequirement {
     public let inputRequirement: InputRequirement
     
@@ -144,23 +179,3 @@ public enum InputRequirement: BasicValidation, Equatable {
         }
     }
 }
-
-//public extension HoverPromptTextFieldConfig.Behaviour.Validation {
-//    struct Rule: ValidationRule {
-//        public typealias CurrentText = String
-//        
-//        /// A validation function: valdiates current text and returns an error
-//        /// message if the text is invalid. Returning `nil` indicates that the
-//        /// input **is valid**.
-//        public typealias Validate = (_ currentText: CurrentText) -> ErrorMessage?
-//        
-//        private let _validate: Validate
-//        public init(validate: @escaping Validate) {
-//            self._validate = validate
-//        }
-//        
-//        public func validate(text: String) -> ErrorMessage? {
-//            _validate(text)
-//        }
-//    }
-//}
