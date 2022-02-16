@@ -58,20 +58,18 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
     @State var DELETEME = ""
     var body: some View {
         ForceFullScreen {
-            VStack {
+            VStack(spacing: 40) {
                 
                 Labels(
                     title: "Set an encryption password",
                     subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
                 )
                 
-                VStack {
+                VStack(spacing: 20) {
                     HoverPromptTextField(
                         prompt: "Encryption password",
                         text: $viewModel.password,
                         config: .init(
-                            isSecure: false,
-                            appearance: .default,
                             behaviour: .init(
                                 validationTriggering: .eagerErrorEagerOK,
                                 validation: .init(
@@ -85,7 +83,6 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
                         text: $DELETEME,
                         config: .init(
                             isSecure: true,
-                            appearance: .default,
                             behaviour: .init(
                                 validationTriggering: .lazyErrorEagerOK,
                                 validation: .init(

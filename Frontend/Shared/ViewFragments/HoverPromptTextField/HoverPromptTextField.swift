@@ -44,7 +44,6 @@ public extension HoverPromptTextField {
         text.isEmpty
     }
     
-    
     /// If the `text` validates against the validation rules. Will always be
     /// true, i.e. valid, if the valdiation rule set provided was empty.
     var isValid: Bool {
@@ -59,32 +58,38 @@ public extension HoverPromptTextField {
         prompt: String,
         text: Binding<String>,
         defaultColors: DefaultColors,
-        isSecure: Bool = false
+        isSecure: Bool = false,
+        display: Config.Display = .default
     ) {
         self.init(
             prompt: prompt,
             text: text,
             config: .init(
                 isSecure: isSecure,
+                display: display,
+                behaviour: .default,
                 appearance: .init(
                     colors: .init(
+                        defaultColors: defaultColors,
                         textColors: .init(
                             defaultColors: defaultColors,
-                            customizedColors: .default
-                        )
+                            customized: .default
+                        ),
+                        lineColors: .init(defaultColors)
                     )
-                ),
-                behaviour: .default
+                )
             )
         )
     }
 }
 
-// MARK: - View
+
+
+// MARK: - View (Body)
 // MARK: -
 public extension HoverPromptTextField {
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 5) {
             maybeHoveringPromptAndRequirements()
             
             ZStack(alignment: .leading) {
@@ -94,7 +99,11 @@ public extension HoverPromptTextField {
                 wrappedField()
             }
             
-            maybeError()
+            line()
+            
+            if shouldDisplay(.errorMessage) {
+                maybeError()
+            }
         }
     }
 }
@@ -102,6 +111,10 @@ public extension HoverPromptTextField {
 // MARK: - Private
 // MARK: -
 private extension HoverPromptTextField {
+    
+    func shouldDisplay(_ subview: Config.Display) -> Bool {
+        config.display.contains(subview)
+    }
     
     func isValid(given errors: [String]) -> Bool {
         errors.isEmpty
@@ -117,16 +130,15 @@ private extension HoverPromptTextField {
         of keyPath: KeyPath<Config.Appearance.Colors.TextColors.Customized, TextColors>
     ) -> Color {
         let textColors = config.appearance.colors.textColors
-        let colors = textColors.customizedColors[keyPath: keyPath]
+        let colors = textColors.customized[keyPath: keyPath]
         let customized = isFocused ? colors.focused : colors.notFocused
         if isEmpty {
             return customized.neutral ?? textColors.defaultColors.neutral
+        } else if isValid {
+            return customized.valid ?? textColors.defaultColors.valid
         } else {
-            if isValid {
-                return customized.valid ?? textColors.defaultColors.valid
-            } else {
-                return customized.invalid  ?? textColors.defaultColors.invalid
-            }
+            assert(!isValid && !isEmpty)
+            return customized.invalid  ?? textColors.defaultColors.invalid
         }
     }
     
@@ -160,6 +172,36 @@ private extension HoverPromptTextField {
 // MARK: -
 private extension HoverPromptTextField {
     
+    func lineColor() -> Color {
+        let lineColors = config.appearance.colors.lineColors
+        let defaultColors = config.appearance.colors.defaultColors
+        if isEmpty {
+            return lineColors.neutral ?? defaultColors.neutral
+        } else if isValid {
+            return lineColors.valid ?? defaultColors.valid
+        } else {
+            assert(!isValid && !isEmpty)
+            return lineColors.invalid ?? defaultColors.invalid
+        }
+    }
+    
+    func lineHeight() -> CGFloat {
+        let heights = isFocused ? config.appearance.lineHeight.focused : config.appearance.lineHeight.notFocused
+        if isEmpty {
+            return heights.neutral
+        } else if isValid {
+            return heights.valid
+        } else {
+            assert(!isValid && !isEmpty)
+            return heights.invalid
+        }
+    }
+    
+    @ViewBuilder func line() -> some View {
+        lineColor()
+            .frame(maxWidth: .infinity, idealHeight: lineHeight()).fixedSize(horizontal: false, vertical: true)
+    }
+    
     @ViewBuilder func maybeError() -> some View {
         // TODO Animate between them..?
         if let error = errorMessages.first {
@@ -169,10 +211,11 @@ private extension HoverPromptTextField {
     }
     
     @ViewBuilder func maybeHoveringPromptAndRequirements() -> some View {
-        HStack {
-            maybeHoveringPrompt()//.layoutPriority(3)
-//            Spacer()
-            maybeRequirements()//.layoutPriority(1)
+        HStack(alignment: .bottom) {
+            maybeHoveringPrompt()
+            if shouldDisplay(.inputRequirements) {
+                maybeRequirements()
+            }
         }
      
     }
