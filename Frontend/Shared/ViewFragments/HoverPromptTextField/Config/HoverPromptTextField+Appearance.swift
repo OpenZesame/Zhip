@@ -48,12 +48,35 @@ public extension HoverPromptTextFieldConfig {
         /// Colors for all subviews of this view.
         public let colors: Colors
         
+        public struct Fonts: Equatable {
+            public let field: Font
+            public let prompt: Font
+            public let error: Font
+            public let requirements: Font
+            public init(
+                field: Font = .body,
+                prompt: Font = .subheadline,
+                error: Font = .caption,
+                requirements: Font = .caption2
+            ) {
+                self.field = field
+                self.prompt = prompt
+                self.error = error
+                self.requirements = requirements
+            }
+            public static let `default`: Self = .init()
+        }
+        
+        public let fonts: Fonts
+        
         public init(
             lineHeight: LineHeight = .default,
-            colors: Colors
+            colors: Colors,
+            fonts: Fonts = .default
         ) {
             self.lineHeight = lineHeight
             self.colors = colors
+            self.fonts = fonts
         }
     }
 }
@@ -117,6 +140,16 @@ public extension HoverPromptTextFieldConfig.Appearance {
         
         /// The color of the line under the input field.
         public let lineColors: DependingOnValidationState
+        
+        public init(
+            defaultColors: DefaultColors = .default,
+            textColors: TextColors = .default,
+            lineColors: DependingOnValidationState = .default
+        ) {
+            self.defaultColors = defaultColors
+            self.textColors = textColors
+            self.lineColors = lineColors
+        }
     }
     
 }

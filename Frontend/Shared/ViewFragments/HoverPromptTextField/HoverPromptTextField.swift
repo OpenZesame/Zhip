@@ -173,14 +173,14 @@ public extension HoverPromptTextField {
                 
                 ZStack(alignment: .leading) {
                     if isEmpty {
-                        Text(prompt).foregroundColor(textColor(of: \.promptWhenEmpty))
+                        Text(prompt)
+                            .foregroundColor(textColor(of: \.promptWhenEmpty))
                     }
                     wrappedField()
-                }
+                }.font(font(of: \.field))
                 
                 makeRightView(makeViewParams)
             }
-            
          
             
             line()
@@ -218,6 +218,11 @@ private extension HoverPromptTextField {
     /// An empty array means no requirements
     var inputRequirments: [ValidateInputRequirement] {
         config.behaviour.validation.rules.compactMap { $0 as? ValidateInputRequirement }
+    }
+    
+    func font(of keyPath: KeyPath<Config.Appearance.Fonts, Font>) -> Font {
+        // TODO add support for fonts depending on state here...
+        return config.appearance.fonts[keyPath: keyPath]
     }
     
     /// Returns the text color of field or prompt given current state.
@@ -301,6 +306,7 @@ private extension HoverPromptTextField {
         // TODO Animate between them..?
         if let error = errorMessages.first {
             Text(error)
+                .font(font(of: \.error))
                 .foregroundColor(textColor(of: \.errorLabel))
         }
     }
@@ -318,6 +324,7 @@ private extension HoverPromptTextField {
     @ViewBuilder func maybeRequirements() -> some View {
         if isFocused, !isEmpty, !isValid, let firstRequirment = inputRequirments.first {
             Text(firstRequirment.requirement)
+                .font(font(of: \.requirements))
                 .foregroundColor(textColor(of: \.requirmentLabel))
         }
     }
@@ -325,6 +332,7 @@ private extension HoverPromptTextField {
     @ViewBuilder func maybeHoveringPrompt() -> some View {
         // TODO: Ugly "hack" to make the wrappedField always have the same Y pos.
         Text(isEmpty ? " " : prompt)
+            .font(font(of: \.prompt))
             .textSelection(isEmpty ? .disabled : .disabled)
                 .foregroundColor(textColor(of: \.hoveringPrompt))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -351,8 +359,12 @@ private extension HoverPromptTextField {
             case .lazyErrorEagerOK:
                 if isFocused {
                     onlyIfOKChangeValidationStateToOK()
-                } else {
-                    validate()
+                } else  {
+                    if isEmpty {
+                        onlyIfOKChangeValidationStateToOK()
+                    } else {
+                        validate()
+                    }
                 }
             }
         }.onChange(of: text) { _ in
