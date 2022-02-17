@@ -181,6 +181,8 @@
 		48526A8127BD884500C25518 /* Barlow-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-SemiBold.ttf"; sourceTree = "<group>"; };
 		48526A8227BD884500C25518 /* Barlow-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Black.ttf"; sourceTree = "<group>"; };
 		48526AA927BDAD2000C25518 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		48526AB127BE3F8600C25518 /* macOS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		48526AB327BE407400C25518 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
 		485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceScreen.swift; sourceTree = "<group>"; };
 		485FF72927B836030030266A /* EnsurePrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnsurePrivacyScreen.swift; sourceTree = "<group>"; };
 		485FF72C27B8360F0030266A /* RestoreWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletScreen.swift; sourceTree = "<group>"; };
@@ -197,7 +199,6 @@
 		4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4872FA2C27B4F8F5008B7BD0 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		4872FA3B27B509D1008B7BD0 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		4872FA4227B53A6F008B7BD0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -369,6 +370,21 @@
 			path = Barlow;
 			sourceTree = "<group>";
 		};
+		48526AAC27BE3F7000C25518 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		48526AAF27BE3F8600C25518 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				48526AB127BE3F8600C25518 /* macOS.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		485FF73227B836250030266A /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,7 +442,7 @@
 		4872FA2B27B4F8F5008B7BD0 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA2C27B4F8F5008B7BD0 /* macOS.entitlements */,
+				48526AAF27BE3F8600C25518 /* Resources */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -460,6 +476,7 @@
 		4872FA4D27B5573F008B7BD0 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				48526AAC27BE3F7000C25518 /* Resources */,
 				4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */,
 			);
 			path = iOS;
@@ -520,6 +537,7 @@
 		4888991D27B6621E00FCBE5A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				48526AB327BE407400C25518 /* Zhip-Info.plist */,
 				48526A6F27BD884500C25518 /* Fonts */,
 				48526A6E27BD884500C25518 /* freesound_mattix_radar.wav */,
 				481EDEC827BA7A3700D39DCB /* TermsOfService.md */,
@@ -840,6 +858,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Shared/Resources/Zhip-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -894,6 +913,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Shared/Resources/Zhip-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -910,7 +930,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -938,7 +958,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -964,13 +984,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/Support/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "OpenZesame 2018-2022";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -989,13 +1009,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/Support/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "OpenZesame 2018-2022";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

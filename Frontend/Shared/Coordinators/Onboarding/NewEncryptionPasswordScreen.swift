@@ -72,7 +72,7 @@ struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: V
     var body: some View {
         ForceFullScreen {
             VStack(spacing: 40) {
-                
+           
                 Labels(
                     title: "Set an encryption password",
                     subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
