@@ -303,12 +303,16 @@ private extension HoverPromptTextField {
     }
     
     @ViewBuilder func maybeError() -> some View {
-        // TODO Animate between them..?
-        if let error = errorMessages.first {
-            Text(error)
-                .font(font(of: \.error))
-                .foregroundColor(textColor(of: \.errorLabel))
-        }
+        // TODO: Animate between them..?
+        // TODO: Remove this ugly "hack" to make the wrappedField always have the same Y pos.
+        Group {
+            if let error = errorMessages.first {
+                Text(error)
+            } else {
+                Text(" ")
+            }
+        }.font(font(of: \.error))
+        .foregroundColor(textColor(of: \.errorLabel))
     }
     
     @ViewBuilder func maybeHoveringPromptAndRequirements() -> some View {
@@ -330,7 +334,7 @@ private extension HoverPromptTextField {
     }
     
     @ViewBuilder func maybeHoveringPrompt() -> some View {
-        // TODO: Ugly "hack" to make the wrappedField always have the same Y pos.
+        // TODO: Remove this ugly "hack" to make the wrappedField always have the same Y pos.
         Text(isEmpty ? " " : prompt)
             .font(font(of: \.prompt))
             .textSelection(isEmpty ? .disabled : .disabled)

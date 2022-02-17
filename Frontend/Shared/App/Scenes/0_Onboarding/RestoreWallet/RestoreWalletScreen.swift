@@ -7,16 +7,13 @@
 
 import SwiftUI
 
-protocol RestoreWalletViewModel: ObservableObject {}
-final class DefaultRestoreWalletViewModel: RestoreWalletViewModel {
-    private unowned let coordinator: RestoreWalletCoordinator
-    init(coordinator: RestoreWalletCoordinator) {
-        self.coordinator = coordinator
-    }
-}
-
 struct RestoreWalletScreen<ViewModel: RestoreWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
+}
+
+// MARK: - View
+// MARK: - 
+extension RestoreWalletScreen {
     var body: some View {
         Text("Restore Wallet")
     }

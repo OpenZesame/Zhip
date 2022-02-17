@@ -9,7 +9,6 @@ import Foundation
 import Zesame
 import ZhipEngine
 
-
 protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase

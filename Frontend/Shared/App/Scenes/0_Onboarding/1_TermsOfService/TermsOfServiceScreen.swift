@@ -8,50 +8,23 @@
 import SwiftUI
 import Stinsen
 
-protocol TermsOfServiceViewModel: ObservableObject {
-    var finishedReading: Bool { get set }
-    func didAcceptTermsOfService()
-}
-
-final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
-    private unowned let coordinator: OnboardingCoordinator
-    private let useCase: OnboardingUseCase
-    @Published var finishedReading: Bool = false
-    
-    init(coordinator: OnboardingCoordinator, useCase: OnboardingUseCase) {
-        self.coordinator = coordinator
-        self.useCase = useCase
-    }
-}
-
-extension DefaultTermsOfServiceViewModel {
-    func didAcceptTermsOfService() {
-        useCase.didAcceptTermsOfService()
-        coordinator.didAcceptTermsOfService()
-    }
-}
-
+// MARK: - TermsOfServiceScreen
+// MARK: -
 struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
     @ObservedObject var viewModel: ViewModel
-    
+}
+
+// MARK: - View
+// MARK: -
+extension TermsOfServiceScreen {
     var body: some View {
         Screen {
             VStack {
                 Image("Icons/Large/TermsOfService")
                 
                 Text("Terms of service").font(.largeTitle)
-                ScrollView(.vertical) {
-                    // We must use `LazyVStack` instead of `VStack` here
-                    // because we don't want the `Color.clear` "view" to
-                    // get displayed eagerly, which it otherwise does.
-                    LazyVStack {
-                        termsOfService
-                            .frame(maxHeight: .infinity)
-                        
-                        detectIfBottomOfScrollViewProxy
-                        
-                    }
-                }
+                
+                termsOfServiceScrollView
                 
                 Button("Accept") {
                     viewModel.didAcceptTermsOfService()
@@ -63,20 +36,46 @@ struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
         }
     }
     
-    @ViewBuilder var termsOfService: some View {
+}
+
+// MARK: - Subviews
+// MARK: -
+private extension TermsOfServiceScreen {
+    
+    @ViewBuilder
+    var termsOfServiceScrollView: some View {
+        ScrollView(.vertical) {
+            // We must use `LazyVStack` instead of `VStack` here
+            // because we don't want the `Color.clear` "view" to
+            // get displayed eagerly, which it otherwise does.
+            LazyVStack {
+                termsOfService
+                    .frame(maxHeight: .infinity)
+                
+                detectIfBottomOfScrollViewProxy
+                
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var termsOfService: some View {
         Text(markdownAsAttributedString(markdownFileName: "TermsOfService"))
     }
     
     /// Must be wrapped in a `LazyVStack` and not `VStack`
-    @ViewBuilder var detectIfBottomOfScrollViewProxy: some View {
+    @ViewBuilder
+    var detectIfBottomOfScrollViewProxy: some View {
         Color.clear
-            .frame(width: 0, height: 0, alignment: .bottom)
+            .frame(size: 0, alignment: .bottom)
             .onAppear {
                 viewModel.finishedReading = true
             }
     }
 }
 
+// MARK: - Markdown
+// MARK: -
 func markdownAsAttributedString(
     markdownFileName: String,
     textColor: Color = .white,

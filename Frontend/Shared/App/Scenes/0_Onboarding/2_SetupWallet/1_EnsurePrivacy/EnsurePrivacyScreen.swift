@@ -7,30 +7,13 @@
 
 import SwiftUI
 
-protocol EnsurePrivacyViewModel: ObservableObject {
-    func privacyIsEnsured()
-    func myScreenMightBeWatched()
-}
-
-final class DefaultEnsurePrivacyViewModel<Coordinator: RestoreOrGenerateNewWalletCoordinator>: EnsurePrivacyViewModel {
-    private unowned let coordinator: Coordinator
-    init(coordinator: Coordinator) {
-        self.coordinator = coordinator
-    }
-}
-extension DefaultEnsurePrivacyViewModel {
-    func privacyIsEnsured() {
-        coordinator.privacyIsEnsured()
-    }
-    
-    func myScreenMightBeWatched() {
-        coordinator.myScreenMightBeWatched()
-    }
-}
-
 struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
     @ObservedObject var viewModel: ViewModel
-    
+}
+
+// MARK: - View
+// MARK: -
+extension EnsurePrivacyScreen {
     var body: some View {
         ForceFullScreen {
             VStack {

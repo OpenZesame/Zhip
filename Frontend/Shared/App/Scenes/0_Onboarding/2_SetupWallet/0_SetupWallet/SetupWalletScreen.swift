@@ -7,32 +7,13 @@
 
 import SwiftUI
 
-protocol SetupWalletViewModel: ObservableObject {
-    func generateNewWallet()
-    func restoreExistingWallet()
-}
-
-final class DefaultSetupWalletViewModel: SetupWalletViewModel {
-    private unowned let coordinator: SetupWalletCoordinator
-    
-    init(
-        coordinator: SetupWalletCoordinator
-    ) {
-        self.coordinator = coordinator
-    }
-    
-    func generateNewWallet() {
-        coordinator.generateNewWallet()
-    }
-    
-    func restoreExistingWallet() {
-        coordinator.restoreExistingWallet()
-    }
-}
-
 struct SetupWalletScreen<ViewModel: SetupWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
-    
+}
+
+// MARK: - View
+// MARK: -
+extension SetupWalletScreen {
     var body: some View {
         Screen {
             foregroundView.background {
@@ -43,7 +24,7 @@ struct SetupWalletScreen<ViewModel: SetupWalletViewModel>: View {
     }
 }
 
-extension SetupWalletScreen {
+private extension SetupWalletScreen {
     
     var foregroundView: some View {
         VStack {
