@@ -26,7 +26,7 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     
-    @Root var welcome = makeEncr
+    @Root var welcome = makeWelcome
     @Route(.push) var termsOfService = makeTermsOfService
     
     // Replace navigation stack
@@ -104,17 +104,10 @@ private extension DefaultOnboardingCoordinator {
     }
     
     @ViewBuilder
-    func makeEncr() -> some View {
-        let viewModel = DefaultNewEncryptionPasswordViewModel(
-            coordinator: DefaultNewWalletCoordinator(useCaseProvider: useCaseProvider),
-            useCase: walletUseCase
-        )
-        
-        NewEncryptionPasswordScreen(viewModel: viewModel)
-    }
-    
-    @ViewBuilder
     func makeWelcome() -> some View {
-        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
+//        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
+        let backupCoordinator = DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider)
+        let backupWalletViewModel = DefaultBackupWalletViewModel.init(coordinator: backupCoordinator)
+        BackupWalletScreen(viewModel: backupWalletViewModel)
     }
 }

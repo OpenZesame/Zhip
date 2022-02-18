@@ -40,6 +40,7 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
         .init(DefaultRestoreWalletCoordinator())
     }
     
+
     func generateNewWallet() {
         toGenerateNewWallet()
     }
@@ -47,6 +48,7 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     func restoreExistingWallet() {
         toRestoreExistingWallet()
     }
+ 
 }
 
 extension DefaultSetupWalletCoordinator {
@@ -58,4 +60,5 @@ extension DefaultSetupWalletCoordinator {
     func toRestoreExistingWallet() {
         route(to: \.restoreWallet)
     }
+    
 }

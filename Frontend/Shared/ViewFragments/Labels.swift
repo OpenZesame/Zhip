@@ -20,9 +20,9 @@ struct Labels: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            title.font(.largeTitle)
-            subtitle
+        VStack(alignment: .leading, spacing: 16) {
+            title.font(.zhip.header)
+            subtitle.font(.body)
         }
     }
 }

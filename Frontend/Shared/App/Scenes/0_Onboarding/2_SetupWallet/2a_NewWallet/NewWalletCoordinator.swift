@@ -22,9 +22,8 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var newEncryptionPassword = makeNewEncryptionPassword
+    @Route(.push) var backupWallet = makeBackupWalletCoordinator
     @Route(.push) var nameWallet = makeNameWallet
-    @Route(.push) var backupWallet = makeBackupWallet
-    
     
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
@@ -63,12 +62,7 @@ extension DefaultNewWalletCoordinator {
     func makeNameWallet() -> some View {
         NameWalletScreen()
     }
-    
-    @ViewBuilder
-    func makeBackupWallet() -> some View {
-        BackupWalletScreen()
-    }
-    
+  
     func privacyIsEnsured() {
         toNewEncryptionPassword()
     }
@@ -77,6 +71,10 @@ extension DefaultNewWalletCoordinator {
         toBackupWallet()
     }
     
+    func makeBackupWalletCoordinator() -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
+        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider))
+    }
+   
     func toBackupWallet() {
         route(to: \.backupWallet)
     }

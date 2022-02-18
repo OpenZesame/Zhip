@@ -37,8 +37,20 @@ public extension Font {
 
 public extension Font.Zhip {
     
-    var hint: Font {
-        .barlow(.𝟙𝟞, .medium)
+    var bigBang: Font {
+        .barlow(.𝟠𝟞, .semibold)
+    }
+    
+    var impression: Font {
+        .barlow(.𝟜𝟠, .bold)
+    }
+    
+    var header: Font {
+        .barlow(.𝟛𝟜, .bold)
+    }
+    
+    var callToAction: Font {
+        .barlow(.𝟚𝟘, .semibold)
     }
     
     var body: Font {
@@ -48,4 +60,10 @@ public extension Font.Zhip {
     var title: Font {
         .barlow(.𝟙𝟠, .semibold)
     }
+   
+    
+    var hint: Font {
+        .barlow(.𝟙𝟞, .medium)
+    }
+
 }
