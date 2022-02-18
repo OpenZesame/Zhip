@@ -57,9 +57,9 @@ extension WalletUseCase {
     func verify(password: String, forKeystore keystore: Keystore) async throws -> Bool {
         try await verify(password: password, forKeystore: keystore)
     }
-
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) async throws -> KeyPair {
-        try await extractKeyPairFrom(keystore: keystore, encryptedBy: password)
+    
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) async throws -> KeyPair {
+        try await extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }
 
@@ -85,9 +85,9 @@ extension DefaultWalletUseCase {
     func verify(password: String, forWallet wallet: Wallet) async throws -> Bool {
         try await zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: wallet.keystore)
     }
-
-    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) async throws -> KeyPair {
-        try await zilliqaService.extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
+    
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) async throws -> KeyPair {
+       try await zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
     }
     
     func createNewWallet(name: String?, encryptionPassword: String) async throws -> Wallet {

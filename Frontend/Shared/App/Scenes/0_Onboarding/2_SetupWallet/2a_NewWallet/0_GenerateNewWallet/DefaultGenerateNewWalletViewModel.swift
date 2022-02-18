@@ -41,13 +41,18 @@ final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>
     
     func `continue`() async {
         precondition(password == passwordConfirmation)
+       
         isGeneratingWallet = true
+        
         do {
-            let wallet = try await walletUseCase.createNewWallet(name: "New Wallet", encryptionPassword: password)
-            print("\(self) will call `coordinator.didGenerateNew`")
+            
+            let wallet = try await walletUseCase.createNewWallet(
+                name: "New Wallet",
+                encryptionPassword: password
+            )
+            
             coordinator.didGenerateNew(wallet: wallet)
         } catch {
-            print("❌ failed to generate wallet?")
             coordinator.failedToGenerateNewWallet(error: error)
         }
     }

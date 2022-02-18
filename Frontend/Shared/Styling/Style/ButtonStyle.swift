@@ -17,7 +17,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         isLoading: Binding<Bool>? = nil,
         cornerRadius: CGFloat = Self.defaultCornerRadius
     ) {
-        self._isLoading = (isLoading ?? Binding(get: { false }, set: { _ in  }))
+        self._isLoading = isLoading ?? .constant(false)
         self.cornerRadius = cornerRadius
     }
     

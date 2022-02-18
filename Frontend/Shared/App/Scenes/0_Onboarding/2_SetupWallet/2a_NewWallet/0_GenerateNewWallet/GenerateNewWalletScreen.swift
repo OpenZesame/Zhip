@@ -46,6 +46,16 @@ extension GenerateNewWalletScreen {
     
 }
 
+extension Array where Element == ValidateInputRequirement {
+    static var encryptionPassword: [ValidateInputRequirement] {
+        let rules: [ValidateInputRequirement] = [
+            ValidateInputRequirement.minimumLength(of: 8) as! ValidateInputRequirement
+        ]
+        
+        return rules
+    }
+}
+
 private extension GenerateNewWalletScreen {
     var passwordInputFields: some View {
         VStack(spacing: 20) {
@@ -53,7 +63,7 @@ private extension GenerateNewWalletScreen {
                 prompt: "Encryption password",
                 text: $viewModel.password,
                 isSecure: true,
-                validationRules: [.minimumLength(of: 8)]
+                validationRules: .encryptionPassword
             )
             
             InputField(

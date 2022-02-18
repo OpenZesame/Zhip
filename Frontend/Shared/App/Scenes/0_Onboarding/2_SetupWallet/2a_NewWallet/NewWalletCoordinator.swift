@@ -74,7 +74,7 @@ extension DefaultNewWalletCoordinator {
     }
     
     func failedToGenerateNewWallet(error: Swift.Error) {
-        print("Failed to generate error: \(error)")
+        print("Failed to generate new wallet, error: \(error)")
         
         dismissCoordinator {
             print("dismissing \(self)")

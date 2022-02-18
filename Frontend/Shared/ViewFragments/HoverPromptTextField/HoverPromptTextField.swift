@@ -22,6 +22,9 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     
     /// The text the user has inputted.
     @Binding private var text: String
+
+    /// If the input is valid or not. If no validation rule was provided, it is always valid.
+    @Binding private var isValid: Bool
     
     /// Config of appearance and behaviour.
     public let config: HoverPromptTextFieldConfig
@@ -46,12 +49,14 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     init(
         prompt: String,
         text: Binding<String>,
+        isValid: Binding<Bool>? = nil,
         config: Config = .default,
         leftView makeLeftView: @escaping MakeLeftView,
         rightView makeRightView: @escaping MakeRightView
     ) {
         self.prompt = prompt
         self._text = text
+        self._isValid = isValid ?? .constant(true)
         self.config = config
         self.makeLeftView = makeLeftView
         self.makeRightView = makeRightView
@@ -65,11 +70,13 @@ public extension HoverPromptTextField where RightView == EmptyView, LeftView == 
      init(
          prompt: String,
          text: Binding<String>,
+         isValid: Binding<Bool>? = nil,
          config: Config = .default
      ) {
          self.init(
             prompt: prompt,
             text: text,
+            isValid: isValid,
             config: config,
             leftView: { _ in EmptyView() },
             rightView: { _ in EmptyView() }
@@ -82,12 +89,14 @@ public extension HoverPromptTextField where RightView == EmptyView {
      init(
          prompt: String,
          text: Binding<String>,
+         isValid: Binding<Bool>? = nil,
          config: Config = .default,
          leftView makeLeftView: @escaping MakeLeftView
      ) {
          self.init(
             prompt: prompt,
             text: text,
+            isValid: isValid,
             config: config,
             leftView: makeLeftView,
             rightView: { _ in EmptyView() }
@@ -100,12 +109,14 @@ public extension HoverPromptTextField where LeftView == EmptyView {
      init(
          prompt: String,
          text: Binding<String>,
+         isValid: Binding<Bool>? = nil,
          config: Config = .default,
          rightView makeRightView: @escaping MakeRightView
      ) {
          self.init(
             prompt: prompt,
             text: text,
+            isValid: isValid,
             config: config,
             leftView: { _ in EmptyView() },
             rightView: makeRightView
@@ -118,6 +129,7 @@ public extension HoverPromptTextField where RightView == EmptyView, LeftView == 
     init(
         prompt: String,
         text: Binding<String>,
+        isValid: Binding<Bool>? = nil,
         defaultColors: DefaultColors,
         isSecure: Bool = false,
         display: Config.Display = .default
@@ -125,6 +137,7 @@ public extension HoverPromptTextField where RightView == EmptyView, LeftView == 
         self.init(
             prompt: prompt,
             text: text,
+            isValid: isValid,
             config: .init(
                 isSecure: isSecure,
                 display: display,
@@ -152,11 +165,6 @@ public extension HoverPromptTextField {
         text.isEmpty
     }
     
-    /// If the `text` validates against the validation rules. Will always be
-    /// true, i.e. valid, if the valdiation rule set provided was empty.
-    var isValid: Bool {
-        isValid(given: errorMessages)
-    }
 }
 
 
@@ -255,6 +263,7 @@ private extension HoverPromptTextField {
     /// Updates validation state by performing validation
     func validate() {
         errorMessages = validationResult()
+        isValid = isValid(given: errorMessages)
     }
     
     func onlyIfOKChangeValidationStateToOK() {

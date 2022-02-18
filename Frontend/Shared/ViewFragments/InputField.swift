@@ -9,18 +9,37 @@ import SwiftUI
 
 struct InputField: View {
     
-    var prompt: String = ""
-    @Binding var text: String
-    var isSecure: Bool = false
-    var validationRules: [ValidationRule] = []
+    @Binding private var text: String
+    @Binding private var isValid: Bool
     
-    private let validColor: Color = .teal
-    private let invalidColor: Color = .bloodRed
+    private let prompt: String
+    private let isSecure: Bool
+    private let validationRules: [ValidationRule]
     
+    init(
+        prompt: String = "",
+        text: Binding<String>,
+        isValid: Binding<Bool>? = nil,
+        isSecure: Bool = false,
+        validationRules: [ValidationRule] = []
+    ) {
+        self.prompt = prompt
+        self._text = text
+        self._isValid = isValid ?? .constant(true)
+        self.isSecure = isSecure
+        self.validationRules = validationRules
+    }
+}
+
+private let validColor: Color = .teal
+private let invalidColor: Color = .bloodRed
+    
+extension InputField {
     var body: some View {
         HoverPromptTextField(
             prompt: prompt,
             text: $text,
+            isValid: $isValid,
             config: .init(
                 isSecure: isSecure,
                 behaviour: .init(
