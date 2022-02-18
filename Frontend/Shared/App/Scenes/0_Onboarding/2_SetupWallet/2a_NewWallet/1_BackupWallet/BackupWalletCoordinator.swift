@@ -10,6 +10,7 @@ import Stinsen
 
 protocol BackupWalletCoordinator: AnyObject {
     
+    func doneBackingUpWallet()
     func revealKeystore()
     func revealPrivateKey()
     func doneBackingUpKeystore()
@@ -62,6 +63,12 @@ extension DefaultBackupWalletCoordinator {
     }
     func revealPrivateKey() {
         toRevealPrivateKey()
+    }
+    
+    func doneBackingUpWallet() {
+        self.dismissCoordinator {
+            print("Dismiss BackupWalletCoordinator")
+        }
     }
     
     func doneBackingUpKeystore() {

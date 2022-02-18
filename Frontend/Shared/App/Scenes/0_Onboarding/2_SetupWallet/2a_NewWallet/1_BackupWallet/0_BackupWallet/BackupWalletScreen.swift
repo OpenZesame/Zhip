@@ -14,21 +14,39 @@ protocol BackupWalletViewModel: ObservableObject {
     func copyKeystoreToPasteboard()
     func revealKeystore()
     func revealPrivateKey()
-    var isPresentingDidCopyKeystoreSheet: Bool { get set }
+    var isPresentingDidCopyKeystoreAlert: Bool { get set }
 }
 
+import Combine
 final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: BackupWalletViewModel {
     @Published var userHasConfirmedBackingUpWallet = false
     @Published var isFinished = false
-    @Published var isPresentingDidCopyKeystoreSheet = false
+    @Published var isPresentingDidCopyKeystoreAlert = false
     private unowned let coordinator: Coordinator
+    
+    private var cancellables = Set<AnyCancellable>()
     
     init(coordinator: Coordinator) {
         self.coordinator = coordinator
+        
+        // `userHasConfirmedBackingUpWallet` => `isFinished`
+        $userHasConfirmedBackingUpWallet
+            .assign(to: \.isFinished, on: self)
+            .store(in: &cancellables)
+        
+        // Autoclose `Did Copy Keystore` Alert after delay
+        $isPresentingDidCopyKeystoreAlert
+        .filter { isPresenting in
+            isPresenting
+        }
+        .delay(for: 2, scheduler: RunLoop.main) // dismiss after delay
+        .map { _ in false } // `isPresentingDidCopyKeystoreAlert = false`
+        .assign(to: \.isPresentingDidCopyKeystoreAlert, on: self)
+        .store(in: &cancellables)
     }
     
     func `continue`() {
-        fatalError()
+        coordinator.doneBackingUpWallet()
     }
     
     func copyKeystoreToPasteboard() {
@@ -46,7 +64,7 @@ final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: 
     }
     
     func revealPrivateKey() {
-        fatalError()
+        coordinator.revealPrivateKey()
     }
 }
 
@@ -82,10 +100,14 @@ extension BackupWalletScreen {
                 .buttonStyle(.primary)
                 .disabled(!viewModel.isFinished)
             }
-        }.sheet(isPresented: $viewModel.isPresentingDidCopyKeystoreSheet, onDismiss: {
-            print("dismissed did copy keystore sheet")
-        }) {
-            Text("Copied keystore.")
+        }
+     
+        
+        .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
+            Alert(
+                title: Text("Copied keystore to pasteboard."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -112,7 +134,7 @@ private extension BackupWalletScreen {
                     .buttonStyle(.hollow)
                    
                     Button("Copy") {
-                        viewModel.isPresentingDidCopyKeystoreSheet = true
+                        viewModel.isPresentingDidCopyKeystoreAlert = true
                         viewModel.copyKeystoreToPasteboard()
                     }.frame(width: buttonWidth).buttonStyle(.hollow)
                 }
