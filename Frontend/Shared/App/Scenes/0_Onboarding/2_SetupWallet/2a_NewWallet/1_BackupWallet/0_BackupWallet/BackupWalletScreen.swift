@@ -11,7 +11,7 @@ protocol BackupWalletViewModel: ObservableObject {
     var userHasConfirmedBackingUpWallet: Bool { get set }
     var isFinished: Bool { get set }
     func `continue`()
-    func copyKeystoreToPasteboard() -> Bool
+    func copyKeystoreToPasteboard()
     func revealKeystore()
     func revealPrivateKey()
     var isPresentingDidCopyKeystoreAlert: Bool { get set }
@@ -51,19 +51,10 @@ final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: 
         coordinator.doneBackingUpWallet()
     }
     
-    func copyKeystoreToPasteboard() -> Bool {
-        let keystoreString = wallet.keystoreAsJSON
-        #if os(iOS)
-        UIPasteboard.general.string = keystoreString
-        return true
-        #elseif os(macOS)
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(keystoreString, forType: .string)
-        return true
-        #else
-        print("Unsupported platform, cannot copy keystore.")
-        return false
-        #endif
+    func copyKeystoreToPasteboard() {
+        guard copyToPasteboard(contents: wallet.keystoreAsJSON) else { return }
+        
+        isPresentingDidCopyKeystoreAlert = true
     }
     
     func revealKeystore() {
@@ -108,8 +99,6 @@ extension BackupWalletScreen {
                 .disabled(!viewModel.isFinished)
             }
         }
-     
-        
         .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
             Alert(
                 title: Text("Copied keystore to pasteboard."),
@@ -141,9 +130,7 @@ private extension BackupWalletScreen {
                     .buttonStyle(.hollow)
                    
                     Button("Copy") {
-                        if viewModel.copyKeystoreToPasteboard() {
-                            viewModel.isPresentingDidCopyKeystoreAlert = true
-                        }
+                            viewModel.copyKeystoreToPasteboard()
                     }.frame(width: buttonWidth).buttonStyle(.hollow)
                 }
             }
@@ -170,4 +157,18 @@ extension Keystore {
         }
         return jsonString
     }
+}
+
+func copyToPasteboard(contents: String) -> Bool {
+    #if os(iOS)
+    UIPasteboard.general.string = contents
+    return true
+    #elseif os(macOS)
+    NSPasteboard.general.clearContents()
+    NSPasteboard.general.setString(contents, forType: .string)
+    return true
+    #else
+    print("Unsupported platform, cannot copy to pasteboard.")
+    return false
+    #endif
 }
