@@ -12,17 +12,33 @@ struct PrimaryButtonStyle: ButtonStyle {
         
     static let defaultCornerRadius: CGFloat = 8
     private let cornerRadius: CGFloat
-    init(cornerRadius: CGFloat = Self.defaultCornerRadius) {
+    @Binding private var isLoading: Bool
+    init(
+        isLoading: Binding<Bool>? = nil,
+        cornerRadius: CGFloat = Self.defaultCornerRadius
+    ) {
+        self._isLoading = (isLoading ?? Binding(get: { false }, set: { _ in  }))
         self.cornerRadius = cornerRadius
     }
     
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.zhip.callToAction)
-            .frame(maxWidth: .infinity, idealHeight: 50)
+        Group {
+            if isLoading {
+//                ProgressView()
+//                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                ActivityIndicator()
+//                    .frame(size: CGSize(width: 200, height: 200))
+                    .frame(maxHeight: 30)
+                    .foregroundColor(.white)
+            } else {
+                configuration.label
+                    .font(.zhip.callToAction)
+                    .foregroundColor(isEnabled ? Color.white : .silverGrey)
+                
+            }
+        }.frame(maxWidth: .infinity, idealHeight: 50)
             .padding()
             .background(isEnabled ? Color.teal : .asphaltGrey)
-            .foregroundColor(isEnabled ? Color.white : .silverGrey)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
@@ -63,8 +79,11 @@ extension ButtonStyle where Self == PrimaryButtonStyle {
     ///
     /// To apply this style to a button, or to a view that contains buttons, use
     /// the ``View.buttonStyle(_:)`` modifier.
-    static func primary(cornerRadius: CGFloat) -> PrimaryButtonStyle {
-        .init(cornerRadius: cornerRadius)
+    static func primary(
+        isLoading: Binding<Bool>? = nil,
+        cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius
+    ) -> PrimaryButtonStyle {
+        .init(isLoading: isLoading, cornerRadius: cornerRadius)
     }
 }
 
@@ -89,7 +108,6 @@ extension ButtonStyle where Self == SecondaryButtonStyle {
     }
     
 }
-
 
 struct HallowButtonStyle: ButtonStyle {
         

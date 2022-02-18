@@ -11,7 +11,7 @@ protocol BackupWalletViewModel: ObservableObject {
     var userHasConfirmedBackingUpWallet: Bool { get set }
     var isFinished: Bool { get set }
     func `continue`()
-    func copyKeystoreToPasteboard()
+    func copyKeystoreToPasteboard() -> Bool
     func revealKeystore()
     func revealPrivateKey()
     var isPresentingDidCopyKeystoreAlert: Bool { get set }
@@ -23,11 +23,13 @@ final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: 
     @Published var isFinished = false
     @Published var isPresentingDidCopyKeystoreAlert = false
     private unowned let coordinator: Coordinator
+    private let wallet: Wallet
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(coordinator: Coordinator) {
+    init(coordinator: Coordinator, wallet: Wallet) {
         self.coordinator = coordinator
+        self.wallet = wallet
         
         // `userHasConfirmedBackingUpWallet` => `isFinished`
         $userHasConfirmedBackingUpWallet
@@ -49,13 +51,18 @@ final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: 
         coordinator.doneBackingUpWallet()
     }
     
-    func copyKeystoreToPasteboard() {
-        let keystoreString = "This is a keystore string"
-        #if iOS
+    func copyKeystoreToPasteboard() -> Bool {
+        let keystoreString = wallet.keystoreAsJSON
+        #if os(iOS)
         UIPasteboard.general.string = keystoreString
-        #elseif macOS
+        return true
+        #elseif os(macOS)
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(keystoreString, forType: .string)
+        return true
+        #else
+        print("Unsupported platform, cannot copy keystore.")
+        return false
         #endif
     }
     
@@ -134,12 +141,33 @@ private extension BackupWalletScreen {
                     .buttonStyle(.hollow)
                    
                     Button("Copy") {
-                        viewModel.isPresentingDidCopyKeystoreAlert = true
-                        viewModel.copyKeystoreToPasteboard()
+                        if viewModel.copyKeystoreToPasteboard() {
+                            viewModel.isPresentingDidCopyKeystoreAlert = true
+                        }
                     }.frame(width: buttonWidth).buttonStyle(.hollow)
                 }
             }
         }
     }
     
+}
+
+import struct Zesame.Keystore
+import ZhipEngine
+extension Wallet {
+    var keystoreAsJSON: String {
+        return keystore.asPrettyPrintedJSONString
+    }
+}
+
+extension Keystore {
+    var asPrettyPrintedJSONString: String {
+        guard let keystoreJSON = try? JSONEncoder(outputFormatting: .prettyPrinted).encode(self) else {
+            incorrectImplementation("should be able to JSON encode a keystore")
+        }
+        guard let jsonString = String(data: keystoreJSON, encoding: .utf8) else {
+            incorrectImplementation("Should be able to create JSON string from Data")
+        }
+        return jsonString
+    }
 }

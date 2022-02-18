@@ -103,11 +103,7 @@ private extension DefaultOnboardingCoordinator {
         DefaultSetupPINCodeCoordinator()
     }
     
-    @ViewBuilder
     func makeWelcome() -> some View {
-//        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
-        let backupCoordinator = DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider)
-        let backupWalletViewModel = DefaultBackupWalletViewModel.init(coordinator: backupCoordinator)
-        BackupWalletScreen(viewModel: backupWalletViewModel)
+        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
     }
 }

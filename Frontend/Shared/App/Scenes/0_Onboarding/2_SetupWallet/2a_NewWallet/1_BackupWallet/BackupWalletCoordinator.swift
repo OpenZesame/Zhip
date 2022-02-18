@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZhipEngine
 import Stinsen
 
 protocol BackupWalletCoordinator: AnyObject {
@@ -26,10 +27,12 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     @Route(.modal) var revealPrivateKeyRoute = makeRevealPrivateKey
     
     private let useCaseProvider: UseCaseProvider
+    private let wallet: Wallet
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     
-    init(useCaseProvider: UseCaseProvider) {
+    init(useCaseProvider: UseCaseProvider, wallet: Wallet) {
         self.useCaseProvider = useCaseProvider
+        self.wallet = wallet
     }
     
     deinit {
@@ -42,7 +45,7 @@ extension DefaultBackupWalletCoordinator {
     
     @ViewBuilder
     func makeBackupWallet() -> some View {
-        let viewModel = DefaultBackupWalletViewModel(coordinator: self)
+        let viewModel = DefaultBackupWalletViewModel(coordinator: self, wallet: wallet)
         BackupWalletScreen(viewModel: viewModel)
     }
     

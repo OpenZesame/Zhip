@@ -1,5 +1,5 @@
 //
-//  NewEncryptionPasswordScreen.swift
+//  GenerateNewWalletScreen.swift
 //  Zhip
 //
 //  Created by Alexander Cyon on 2022-02-14.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct NewEncryptionPasswordScreen<ViewModel: NewEncryptionPasswordViewModel>: View {
+struct GenerateNewWalletScreen<ViewModel: GenerateNewWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
 }
 
 // MARK: - View
 // MARK: -
-extension NewEncryptionPasswordScreen {
+extension GenerateNewWalletScreen {
     
     var body: some View {
         ForceFullScreen {
@@ -34,9 +34,11 @@ extension NewEncryptionPasswordScreen {
                 )
                 
                 Button("Continue") {
-                    viewModel.continue()
+                    Task { @MainActor in
+                        await viewModel.continue()
+                    }
                 }
-                .buttonStyle(.primary)
+                .buttonStyle(.primary(isLoading: $viewModel.isGeneratingWallet))
                 .disabled(!viewModel.isFinished)
             }
         }
@@ -44,7 +46,7 @@ extension NewEncryptionPasswordScreen {
     
 }
 
-private extension NewEncryptionPasswordScreen {
+private extension GenerateNewWalletScreen {
     var passwordInputFields: some View {
         VStack(spacing: 20) {
             InputField(

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Stinsen
+import ZhipEngine
 
 protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
     func privacyIsEnsured()
@@ -14,15 +15,16 @@ protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
 }
 
 protocol NewWalletCoordinator: AnyObject {
-    func encryptionPasswordIsSet()
+    func didGenerateNew(wallet: Wallet)
+    func failedToGenerateNewWallet(error: Swift.Error)
 }
 
 final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, NewWalletCoordinator, NavigationCoordinatable {
     let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
-    @Route(.push) var newEncryptionPassword = makeNewEncryptionPassword
-    @Route(.push) var backupWallet = makeBackupWalletCoordinator
+    @Route(.push) var newEncryptionPassword = makeGenerateNewWallet
+    @Route(.push) var backupWallet = makeBackupWalletCoordinator(wallet:)
     @Route(.push) var nameWallet = makeNameWallet
     
     private let useCaseProvider: UseCaseProvider
@@ -48,14 +50,14 @@ extension DefaultNewWalletCoordinator {
     }
     
     @ViewBuilder
-    func makeNewEncryptionPassword() -> some View {
+    func makeGenerateNewWallet() -> some View {
         
-        let viewModel = DefaultNewEncryptionPasswordViewModel(
+        let viewModel = DefaultGenerateNewWalletViewModel(
             coordinator: self,
             useCase: walletUseCase
         )
         
-        NewEncryptionPasswordScreen(viewModel: viewModel)
+        GenerateNewWalletScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
@@ -64,22 +66,30 @@ extension DefaultNewWalletCoordinator {
     }
   
     func privacyIsEnsured() {
-        toNewEncryptionPassword()
+        toGenerateNewWallet()
     }
     
-    func encryptionPasswordIsSet() {
-        toBackupWallet()
+    func didGenerateNew(wallet: Wallet) {
+        toBackupWallet(wallet: wallet)
     }
     
-    func makeBackupWalletCoordinator() -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
-        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider))
+    func failedToGenerateNewWallet(error: Swift.Error) {
+        print("Failed to generate error: \(error)")
+        
+        dismissCoordinator {
+            print("dismissing \(self)")
+        }
+    }
+    
+    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
+        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider, wallet: wallet))
     }
    
-    func toBackupWallet() {
-        route(to: \.backupWallet)
+    func toBackupWallet(wallet: Wallet) {
+        route(to: \.backupWallet, wallet)
     }
     
-    func toNewEncryptionPassword() {
+    func toGenerateNewWallet() {
         route(to: \.newEncryptionPassword)
     }
     
