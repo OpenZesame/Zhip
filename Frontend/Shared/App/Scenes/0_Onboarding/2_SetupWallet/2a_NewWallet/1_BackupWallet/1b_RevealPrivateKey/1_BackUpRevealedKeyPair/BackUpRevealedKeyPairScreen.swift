@@ -75,13 +75,14 @@ struct BackUpRevealedKeyPairScreen<ViewModel: BackUpRevealedKeyPairViewModel>: V
 extension BackUpRevealedKeyPairScreen {
     var body: some View {
         ForceFullScreen {
-            VStack {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("Private key")
                     .font(.zhip.title)
                     .foregroundColor(.white)
                 
                 Text("\(viewModel.displayablePrivateKey)")
                     .font(.zhip.body)
+                    .textSelection(.enabled)
                     .foregroundColor(.white)
                 
                 Button("Copy") {
@@ -95,12 +96,15 @@ extension BackUpRevealedKeyPairScreen {
                 
                 Text("\(viewModel.displayablePublicKey)")
                     .font(.zhip.body)
+                    .textSelection(.enabled)
                     .foregroundColor(.white)
                 
                 Button("Copy") {
                     viewModel.copyPublicKeyToPasteboard()
                 }
                 .buttonStyle(.hollow)
+                
+                Spacer()
             }
             .alert(isPresented: $viewModel.isPresentingDidCopyToPasteboardAlert) {
                 Alert(

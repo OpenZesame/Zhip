@@ -126,7 +126,7 @@ struct HallowButtonStyle: ButtonStyle {
             .font(.zhip.callToAction)
             .padding([.leading, .horizontal])
             .padding([.bottom, .top], 8)
-            .frame(maxWidth: .infinity, idealHeight: 44)
+            .frame(idealWidth: 136, idealHeight: 44)
             .background(Color.clear)
             .foregroundColor(.teal)
             .overlay(
