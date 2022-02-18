@@ -37,7 +37,11 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
 
     /// The error messages produces by running the validation rules against
     /// the `text`. An empty array means `text` is **valid**.
-    @State private var errorMessages = [String]()
+    @State private var errorMessages = [String]() {
+        didSet {
+            isValid = isValid(given: errorMessages)
+        }
+    }
     
     @State private var isRevealingSecrets: Bool = false
     
@@ -263,7 +267,6 @@ private extension HoverPromptTextField {
     /// Updates validation state by performing validation
     func validate() {
         errorMessages = validationResult()
-        isValid = isValid(given: errorMessages)
     }
     
     func onlyIfOKChangeValidationStateToOK() {
