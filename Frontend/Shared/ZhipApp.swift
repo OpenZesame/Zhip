@@ -15,6 +15,14 @@ struct ZhipApp: App {
     
     @StateObject private var model = Model()
     
+    init() {
+        // For NavigationBarTitle with Large Font
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        // For NavigationBarTitle with `displayMode = .inline`
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+    }
+    
     var body: some Scene {
         WindowGroup {
             AppCoordinator(

@@ -14,6 +14,7 @@ import struct Zesame.KeyPair
 protocol BackUpKeyPairCoordinator: AnyObject {
     func didDecryptWallet(keyPair: KeyPair)
     func failedToDecryptWallet(error: Swift.Error)
+    func doneBackingUpKeys()
 }
 
 final class DefaultBackUpKeyPairCoordinator: BackUpKeyPairCoordinator, NavigationCoordinatable {
@@ -42,6 +43,12 @@ extension DefaultBackUpKeyPairCoordinator {
     func failedToDecryptWallet(error: Swift.Error) {
         print("Failed to decrypt wallet, error: \(error)")
         
+        dismissCoordinator {
+            print("dismissing \(self)")
+        }
+    }
+    
+    func doneBackingUpKeys() {
         dismissCoordinator {
             print("dismissing \(self)")
         }

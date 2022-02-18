@@ -98,6 +98,7 @@ extension DecryptKeystoreToRevealKeyPairScreen {
                 .disabled(!viewModel.canDecrypt)
                 .buttonStyle(.primary(isLoading: $viewModel.isDecrypting))
             }
+            .navigationTitle("Decrypt keystore")
         }
     }
 }

@@ -21,7 +21,7 @@ struct Labels: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            title.font(.zhip.header).lineLimit(2)
+            title.font(.zhip.header).lineLimit(2).fixedSize(horizontal: false, vertical: false)
             subtitle.font(.body)
         }
     }

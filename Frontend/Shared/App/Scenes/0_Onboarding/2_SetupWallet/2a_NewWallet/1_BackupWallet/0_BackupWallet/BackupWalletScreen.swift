@@ -109,16 +109,18 @@ extension BackupWalletScreen {
     
 }
 
-private let buttonWidth: CGFloat = 136
 private extension BackupWalletScreen {
     @ViewBuilder
     var backupViews: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 Text("Private key").font(.zhip.title)
-                Button("Reveal") {
-                    viewModel.revealPrivateKey()
-                }.frame(width: buttonWidth, height: 44).buttonStyle(.hollow)
+                HStack {
+                    Button("Reveal") {
+                        viewModel.revealPrivateKey()
+                    }.buttonStyle(.hollow)
+                    Spacer()
+                }
             }
             VStack(alignment: .leading) {
                 Text("Keystore").font(.zhip.title)
@@ -126,12 +128,13 @@ private extension BackupWalletScreen {
                     Button("Reveal") {
                         viewModel.revealKeystore()
                     }
-                    .frame(width: buttonWidth)
                     .buttonStyle(.hollow)
-                   
+                    
                     Button("Copy") {
-                            viewModel.copyKeystoreToPasteboard()
-                    }.frame(width: buttonWidth).buttonStyle(.hollow)
+                        viewModel.copyKeystoreToPasteboard()
+                    }.buttonStyle(.hollow)
+                    
+                    Spacer()
                 }
             }
         }

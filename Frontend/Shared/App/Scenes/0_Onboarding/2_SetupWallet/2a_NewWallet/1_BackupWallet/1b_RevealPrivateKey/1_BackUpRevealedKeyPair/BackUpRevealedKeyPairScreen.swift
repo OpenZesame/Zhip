@@ -15,6 +15,7 @@ protocol BackUpRevealedKeyPairViewModel: ObservableObject {
     func copyPrivateKeyToPasteboard()
     func copyPublicKeyToPasteboard()
     var isPresentingDidCopyToPasteboardAlert: Bool { get set }
+    func doneBackingUpKeys()
 }
 
 final class DefaultBackUpRevealedKeyPairViewModel<Coordinator: BackUpKeyPairCoordinator>: BackUpRevealedKeyPairViewModel {
@@ -62,6 +63,10 @@ extension DefaultBackUpRevealedKeyPairViewModel {
             return
         }
         isPresentingDidCopyToPasteboardAlert = true
+    }
+    
+    func doneBackingUpKeys() {
+        coordinator.doneBackingUpKeys()
     }
 }
 
@@ -112,7 +117,12 @@ extension BackUpRevealedKeyPairScreen {
                     dismissButton: .default(Text("OK"))
                 )
             }
-            
+        }
+        .navigationTitle("Back up keys")
+        .toolbar {
+            Button("Done") {
+                viewModel.doneBackingUpKeys()
+            }
         }
     }
 }
