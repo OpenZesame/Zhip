@@ -14,6 +14,7 @@ protocol DecryptKeystoreToRevealKeyPairViewModel: ObservableObject {
     var isDecrypting: Bool { get set }
     var isPasswordOnValidFormat: Bool { get set }
     func decrypt() async
+    var canDecrypt: Bool { get }
 }
 
 final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKeyPairCoordinator>: DecryptKeystoreToRevealKeyPairViewModel {
@@ -21,6 +22,7 @@ final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKe
     @Published var password = ""
     @Published var isDecrypting = false
     @Published var isPasswordOnValidFormat = false
+    @Published var canDecrypt = false
     
     private unowned let coordinator: Coordinator
     private let wallet: Wallet
@@ -33,22 +35,32 @@ final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKe
         self.useCase = useCase
         self.wallet = wallet
         
+        Publishers.CombineLatest(
+            $isPasswordOnValidFormat,
+            $isDecrypting.map { !$0 }
+        ).map { (isPasswordValid, isNotDecrypting) in
+            isPasswordValid && isNotDecrypting
+        }.eraseToAnyPublisher()
+        .receive(on: RunLoop.main)
+        .assign(to: \.canDecrypt, on: self)
+        .store(in: &cancellables)
     }
 
     func decrypt() async {
         precondition(isPasswordOnValidFormat)
         isDecrypting = true
-        print("decrypting...")
-        defer { isDecrypting = false }
+        defer {
+            Task { @MainActor in
+                isDecrypting = false
+            }
+        }
         do {
             let keyPair = try await useCase.extractKeyPairFrom(
                 keystore: wallet.keystore,
                 encryptedBy: password
             )
-            print("successfully decrypted")
             coordinator.didDecryptWallet(keyPair: keyPair)
         } catch {
-            print("failed to decrypt")
             coordinator.failedToDecryptWallet(error: error)
         }
     }
@@ -83,7 +95,7 @@ extension DecryptKeystoreToRevealKeyPairScreen {
                         await viewModel.decrypt()
                     }
                 }
-                .disabled(!viewModel.isPasswordOnValidFormat || viewModel.isDecrypting)
+                .disabled(!viewModel.canDecrypt)
                 .buttonStyle(.primary(isLoading: $viewModel.isDecrypting))
             }
         }
