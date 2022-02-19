@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - GenerateNewWalletScreen
+// MARK: -
 struct GenerateNewWalletScreen<ViewModel: GenerateNewWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
 }
@@ -56,6 +58,8 @@ extension Array where Element == ValidateInputRequirement {
     }
 }
 
+// MARK: - Subviews
+// MARK: -
 private extension GenerateNewWalletScreen {
     var passwordInputFields: some View {
         VStack(spacing: 20) {

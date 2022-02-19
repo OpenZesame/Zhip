@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - EnsurePrivacyScreen
+// MARK: -
 struct EnsurePrivacyScreen<ViewModel: EnsurePrivacyViewModel>: View {
     @ObservedObject var viewModel: ViewModel
 }

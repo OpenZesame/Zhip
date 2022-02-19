@@ -111,8 +111,8 @@
 		48526AF127BE890100C25518 /* RestoreWalletUsingKeystoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AEF27BE890100C25518 /* RestoreWalletUsingKeystoreScreen.swift */; };
 		48526AF327BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF227BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift */; };
 		48526AF427BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF227BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift */; };
-		48526AF927BEC09C00C25518 /* RevealKeystoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF827BEC09C00C25518 /* RevealKeystoreScreen.swift */; };
-		48526AFA27BEC09C00C25518 /* RevealKeystoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF827BEC09C00C25518 /* RevealKeystoreScreen.swift */; };
+		48526AF927BEC09C00C25518 /* BackUpKeystoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF827BEC09C00C25518 /* BackUpKeystoreScreen.swift */; };
+		48526AFA27BEC09C00C25518 /* BackUpKeystoreScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AF827BEC09C00C25518 /* BackUpKeystoreScreen.swift */; };
 		48526AFC27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AFB27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift */; };
 		48526AFD27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AFB27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift */; };
 		48526AFF27BECB1C00C25518 /* BackupWalletCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526AFE27BECB1C00C25518 /* BackupWalletCoordinator.swift */; };
@@ -153,8 +153,6 @@
 		4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4227B53A6F008B7BD0 /* HomeView.swift */; };
 		4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4627B53ADD008B7BD0 /* Model.swift */; };
 		4872FA4827B53ADD008B7BD0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4627B53ADD008B7BD0 /* Model.swift */; };
-		4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */; };
-		4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */; };
 		4872FA4F27B55756008B7BD0 /* AppTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */; };
 		4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */; };
 		4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */; };
@@ -182,6 +180,22 @@
 		48ECB24C27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24A27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift */; };
 		48ECB24E27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24D27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift */; };
 		48ECB24F27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24D27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift */; };
+		48ECB25127C0DFA5000F7C41 /* BackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25027C0DFA5000F7C41 /* BackupWalletViewModel.swift */; };
+		48ECB25227C0DFA5000F7C41 /* BackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25027C0DFA5000F7C41 /* BackupWalletViewModel.swift */; };
+		48ECB25427C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25327C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift */; };
+		48ECB25527C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25327C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift */; };
+		48ECB25727C0E069000F7C41 /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25627C0E069000F7C41 /* BackUpKeystoreViewModel.swift */; };
+		48ECB25827C0E069000F7C41 /* BackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25627C0E069000F7C41 /* BackUpKeystoreViewModel.swift */; };
+		48ECB25A27C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25927C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift */; };
+		48ECB25B27C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25927C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift */; };
+		48ECB25D27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25C27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift */; };
+		48ECB25E27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25C27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift */; };
+		48ECB26027C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25F27C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift */; };
+		48ECB26127C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB25F27C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift */; };
+		48ECB26327C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB26227C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift */; };
+		48ECB26427C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB26227C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift */; };
+		48ECB26627C0E118000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB26527C0E117000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift */; };
+		48ECB26727C0E118000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB26527C0E117000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -239,7 +253,7 @@
 		48526ADE27BE848200C25518 /* DefaultEnsurePrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEnsurePrivacyViewModel.swift; sourceTree = "<group>"; };
 		48526AEF27BE890100C25518 /* RestoreWalletUsingKeystoreScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RestoreWalletUsingKeystoreScreen.swift; path = Shared/App/Scenes/0_Onboarding/RestoreWallet/RestoreWalletUsingKeystore/RestoreWalletUsingKeystoreScreen.swift; sourceTree = SOURCE_ROOT; };
 		48526AF227BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingPrivateKeyScreen.swift; sourceTree = "<group>"; };
-		48526AF827BEC09C00C25518 /* RevealKeystoreScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevealKeystoreScreen.swift; sourceTree = "<group>"; };
+		48526AF827BEC09C00C25518 /* BackUpKeystoreScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystoreScreen.swift; sourceTree = "<group>"; };
 		48526AFB27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpRevealedKeyPairScreen.swift; sourceTree = "<group>"; };
 		48526AFE27BECB1C00C25518 /* BackupWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletCoordinator.swift; sourceTree = "<group>"; };
 		485FF72627B835EA0030266A /* TermsOfServiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceScreen.swift; sourceTree = "<group>"; };
@@ -262,7 +276,6 @@
 		4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		4872FA4227B53A6F008B7BD0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4872FA4627B53ADD008B7BD0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSidebarNavigation.swift; sourceTree = "<group>"; };
 		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
 		4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesScreen.swift; sourceTree = "<group>"; };
 		4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
@@ -277,6 +290,14 @@
 		48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		48ECB24A27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeyPairCoordinator.swift; sourceTree = "<group>"; };
 		48ECB24D27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPairScreen.swift; sourceTree = "<group>"; };
+		48ECB25027C0DFA5000F7C41 /* BackupWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletViewModel.swift; sourceTree = "<group>"; };
+		48ECB25327C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackupWalletViewModel.swift; sourceTree = "<group>"; };
+		48ECB25627C0E069000F7C41 /* BackUpKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeystoreViewModel.swift; sourceTree = "<group>"; };
+		48ECB25927C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackUpKeystoreViewModel.swift; sourceTree = "<group>"; };
+		48ECB25C27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPairViewModel.swift; sourceTree = "<group>"; };
+		48ECB25F27C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDecryptKeystoreToRevealKeyPairViewModel.swift; sourceTree = "<group>"; };
+		48ECB26227C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpRevealedKeyPairViewModel.swift; sourceTree = "<group>"; };
+		48ECB26527C0E117000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackUpRevealedKeyPairViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,8 +567,8 @@
 			isa = PBXGroup;
 			children = (
 				48526AF527BEC06C00C25518 /* 0_BackupWallet */,
-				48526AF627BEC07900C25518 /* 1a_RevealKeystore */,
-				48526AF727BEC08400C25518 /* 1b_RevealPrivateKey */,
+				48526AF627BEC07900C25518 /* 1a_BackUpKeystore */,
+				48526AF727BEC08400C25518 /* 1b_BackUpRevealedKeyPair */,
 				48526AFE27BECB1C00C25518 /* BackupWalletCoordinator.swift */,
 			);
 			path = 1_BackupWallet;
@@ -573,26 +594,30 @@
 			isa = PBXGroup;
 			children = (
 				481EDECE27BA884400D39DCB /* BackupWalletScreen.swift */,
+				48ECB25027C0DFA5000F7C41 /* BackupWalletViewModel.swift */,
+				48ECB25327C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift */,
 			);
 			path = 0_BackupWallet;
 			sourceTree = "<group>";
 		};
-		48526AF627BEC07900C25518 /* 1a_RevealKeystore */ = {
+		48526AF627BEC07900C25518 /* 1a_BackUpKeystore */ = {
 			isa = PBXGroup;
 			children = (
-				48526AF827BEC09C00C25518 /* RevealKeystoreScreen.swift */,
+				48526AF827BEC09C00C25518 /* BackUpKeystoreScreen.swift */,
+				48ECB25627C0E069000F7C41 /* BackUpKeystoreViewModel.swift */,
+				48ECB25927C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift */,
 			);
-			path = 1a_RevealKeystore;
+			path = 1a_BackUpKeystore;
 			sourceTree = "<group>";
 		};
-		48526AF727BEC08400C25518 /* 1b_RevealPrivateKey */ = {
+		48526AF727BEC08400C25518 /* 1b_BackUpRevealedKeyPair */ = {
 			isa = PBXGroup;
 			children = (
 				48ECB24827BFC39F000F7C41 /* 0_DecryptKeystoreToRevealKeyPair */,
 				48ECB24927BFC3B2000F7C41 /* 1_BackUpRevealedKeyPair */,
 				48ECB24A27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift */,
 			);
-			path = 1b_RevealPrivateKey;
+			path = 1b_BackUpRevealedKeyPair;
 			sourceTree = "<group>";
 		};
 		4872FA1727B4F8F3008B7BD0 = {
@@ -657,7 +682,6 @@
 			isa = PBXGroup;
 			children = (
 				4872FA4227B53A6F008B7BD0 /* HomeView.swift */,
-				4872FA4A27B53B3D008B7BD0 /* AppSidebarNavigation.swift */,
 				487CE3E927B642D5003BD07A /* TopLevelNavigationItem.swift */,
 			);
 			path = Navigation;
@@ -761,6 +785,8 @@
 			isa = PBXGroup;
 			children = (
 				48ECB24D27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift */,
+				48ECB25C27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift */,
+				48ECB25F27C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift */,
 			);
 			path = 0_DecryptKeystoreToRevealKeyPair;
 			sourceTree = "<group>";
@@ -769,6 +795,8 @@
 			isa = PBXGroup;
 			children = (
 				48526AFB27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift */,
+				48ECB26227C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift */,
+				48ECB26527C0E117000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift */,
 			);
 			path = 1_BackUpRevealedKeyPair;
 			sourceTree = "<group>";
@@ -929,6 +957,7 @@
 				485FF73727B836420030266A /* RestoreWalletCoordinator.swift in Sources */,
 				48526AFC27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift in Sources */,
 				4872FA4327B53A6F008B7BD0 /* HomeView.swift in Sources */,
+				48ECB26027C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				487CE3EA27B642D5003BD07A /* TopLevelNavigationItem.swift in Sources */,
 				48526AD127BE82FD00C25518 /* RestoreWalletViewModel.swift in Sources */,
 				48526A6227BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
@@ -951,19 +980,24 @@
 				485FF73A27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
 				4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				48526A6C27BC2D4C00C25518 /* TooLongViolation.swift in Sources */,
+				48ECB25427C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift in Sources */,
 				481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
-				48526AF927BEC09C00C25518 /* RevealKeystoreScreen.swift in Sources */,
+				48526AF927BEC09C00C25518 /* BackUpKeystoreScreen.swift in Sources */,
+				48ECB26327C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				48526AF327BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */,
 				48526AF027BE890100C25518 /* RestoreWalletUsingKeystoreScreen.swift in Sources */,
+				48ECB25A27C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift in Sources */,
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
+				48ECB25127C0DFA5000F7C41 /* BackupWalletViewModel.swift in Sources */,
 				48526AD827BE834600C25518 /* DefaultTermsOfServiceViewModel.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				481EDECF27BA884400D39DCB /* BackupWalletScreen.swift in Sources */,
 				48526AB727BE818400C25518 /* Checkbox.swift in Sources */,
 				481EDECC27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */,
 				481EDEC327B994F700D39DCB /* CallToAction.swift in Sources */,
+				48ECB26627C0E118000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift in Sources */,
 				4872FA4727B53ADD008B7BD0 /* Model.swift in Sources */,
 				48761A8227B6DBBF002E4375 /* NameWalletScreen.swift in Sources */,
 				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
@@ -975,9 +1009,10 @@
 				48526AC327BE81FB00C25518 /* DefaultGenerateNewWalletViewModel.swift in Sources */,
 				485FF72D27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,
 				485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */,
+				48ECB25727C0E069000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
 				48526ADF27BE848200C25518 /* DefaultEnsurePrivacyViewModel.swift in Sources */,
-				4872FA4B27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				48ECB24B27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
+				48ECB25D27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				48526AD527BE833B00C25518 /* TermsOfServiceViewModel.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
@@ -990,7 +1025,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48526AFA27BEC09C00C25518 /* RevealKeystoreScreen.swift in Sources */,
+				48526AFA27BEC09C00C25518 /* BackUpKeystoreScreen.swift in Sources */,
 				485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */,
 				485FF72B27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
@@ -1001,6 +1036,7 @@
 				4872FA4427B53A6F008B7BD0 /* HomeView.swift in Sources */,
 				48526ACE27BE82A800C25518 /* SetupWalletViewModel.swift in Sources */,
 				48526A6327BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
+				48ECB26427C0E10C000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				48526AAB27BDAD2000C25518 /* Fonts.swift in Sources */,
 				481EDEBB27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				485FF73527B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
@@ -1017,19 +1053,23 @@
 				48526ABB27BE819800C25518 /* InputField.swift in Sources */,
 				48ECB24727BFC038000F7C41 /* ActivityIndicator.swift in Sources */,
 				48526AD927BE834600C25518 /* DefaultTermsOfServiceViewModel.swift in Sources */,
+				48ECB25227C0DFA5000F7C41 /* BackupWalletViewModel.swift in Sources */,
 				487CE3DD27B63862003BD07A /* ContactCommands.swift in Sources */,
 				48526AF427BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */,
+				48ECB25E27C0E0C0000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				485FF73827B836420030266A /* RestoreWalletCoordinator.swift in Sources */,
 				48761A8327B6DBBF002E4375 /* NameWalletScreen.swift in Sources */,
 				485FF74427B838DE0030266A /* OnboardingUseCase.swift in Sources */,
 				485FF74727B838F60030266A /* UseCaseProvider.swift in Sources */,
 				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */,
-				4872FA4C27B53B3D008B7BD0 /* AppSidebarNavigation.swift in Sources */,
 				48526A6027BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */,
 				485FF73127B8361A0030266A /* SetupWalletScreen.swift in Sources */,
 				48526AD627BE833B00C25518 /* TermsOfServiceViewModel.swift in Sources */,
+				48ECB26127C0E0CD000F7C41 /* DefaultDecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
+				48ECB26727C0E118000F7C41 /* DefaultBackUpRevealedKeyPairViewModel.swift in Sources */,
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
+				48ECB25B27C0E075000F7C41 /* DefaultBackUpKeystoreViewModel.swift in Sources */,
 				48ECB24C27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
 				48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				48ECB24F27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */,
@@ -1051,9 +1091,11 @@
 				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				48526B0027BECB1C00C25518 /* BackupWalletCoordinator.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
+				48ECB25527C0DFB2000F7C41 /* DefaultBackupWalletViewModel.swift in Sources */,
 				481EDED027BA884400D39DCB /* BackupWalletScreen.swift in Sources */,
 				481EDEC427B994F700D39DCB /* CallToAction.swift in Sources */,
 				485FF73B27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
+				48ECB25827C0E069000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
 				48526AC427BE81FB00C25518 /* DefaultGenerateNewWalletViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

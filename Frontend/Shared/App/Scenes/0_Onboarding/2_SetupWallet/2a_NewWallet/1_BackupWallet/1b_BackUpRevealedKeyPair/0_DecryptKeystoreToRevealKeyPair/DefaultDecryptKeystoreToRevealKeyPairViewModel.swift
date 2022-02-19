@@ -1,22 +1,16 @@
 //
-//  DecryptKeystoreToRevealKeyPairScreen.swift
+//  DefaultDecryptKeystoreToRevealKeyPairViewModel.swift
 //  Zhip
 //
-//  Created by Alexander Cyon on 2022-02-18.
+//  Created by Alexander Cyon on 2022-02-19.
 //
 
-import SwiftUI
-import ZhipEngine
+import Foundation
 import Combine
+import ZhipEngine
 
-protocol DecryptKeystoreToRevealKeyPairViewModel: ObservableObject {
-    var password: String { get set }
-    var isDecrypting: Bool { get set }
-    var isPasswordOnValidFormat: Bool { get set }
-    func decrypt() async
-    var canDecrypt: Bool { get }
-}
-
+// MARK: - DefaultDecryptKeystoreToRevealKeyPairViewModel
+// MARK: -
 final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKeyPairCoordinator>: DecryptKeystoreToRevealKeyPairViewModel {
     
     @Published var password = ""
@@ -45,7 +39,11 @@ final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKe
         .assign(to: \.canDecrypt, on: self)
         .store(in: &cancellables)
     }
+}
 
+// MARK: - DecryptKeystoreToRevealKeyPairViewModel
+// MARK: -
+extension DefaultDecryptKeystoreToRevealKeyPairViewModel {
     func decrypt() async {
         precondition(isPasswordOnValidFormat)
         isDecrypting = true
@@ -62,43 +60,6 @@ final class DefaultDecryptKeystoreToRevealKeyPairViewModel<Coordinator: BackUpKe
             coordinator.didDecryptWallet(keyPair: keyPair)
         } catch {
             coordinator.failedToDecryptWallet(error: error)
-        }
-    }
-}
-
-
-struct DecryptKeystoreToRevealKeyPairScreen<ViewModel: DecryptKeystoreToRevealKeyPairViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
-}
-
-// MARK: - View
-// MARK: -
-extension DecryptKeystoreToRevealKeyPairScreen {
-    var body: some View {
-        ForceFullScreen {
-            VStack {
-                
-                Text("Enter your encryption password to reveal your private and public key.")
-                
-                InputField(
-                    prompt: "Encryption password",
-                    text: $viewModel.password,
-                    isValid: $viewModel.isPasswordOnValidFormat,
-                    isSecure: true,
-                    validationRules: .encryptionPassword
-                )
-                
-                Spacer()
-                
-                Button("Reveal") {
-                    Task { @MainActor in
-                        await viewModel.decrypt()
-                    }
-                }
-                .disabled(!viewModel.canDecrypt)
-                .buttonStyle(.primary(isLoading: $viewModel.isDecrypting))
-            }
-            .navigationTitle("Decrypt keystore")
         }
     }
 }

@@ -23,8 +23,8 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     let stack = NavigationStack<DefaultBackupWalletCoordinator>(initial: \.backupWallet)
     
     @Root var backupWallet = makeBackupWallet
-    @Route(.modal) var revealKeystoreRoute = makeRevealKeystore
-    @Route(.modal) var revealPrivateKeyRoute = makeBackUpRevealedKeyPair
+    @Route(.push) var revealKeystoreRoute = makeRevealKeystore
+    @Route(.push) var revealPrivateKeyRoute = makeBackUpRevealedKeyPair
     
     private let useCaseProvider: UseCaseProvider
     private let wallet: Wallet
@@ -51,8 +51,8 @@ extension DefaultBackupWalletCoordinator {
     
     @ViewBuilder
     func makeRevealKeystore() -> some View {
-        let viewModel = DefaultRevealKeystoreViewModel(coordinator: self)
-        RevealKeystoreScreen(viewModel: viewModel)
+        let viewModel = DefaultBackUpKeystoreViewModel(coordinator: self, wallet: wallet)
+        BackUpKeystoreScreen(viewModel: viewModel)
     }
     
     func makeBackUpRevealedKeyPair() -> NavigationViewCoordinator<DefaultBackUpKeyPairCoordinator> {

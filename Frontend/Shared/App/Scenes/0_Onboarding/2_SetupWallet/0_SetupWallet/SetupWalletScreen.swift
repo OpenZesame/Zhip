@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - SetupWalletScreen
+// MARK: -
 struct SetupWalletScreen<ViewModel: SetupWalletViewModel>: View {
     @ObservedObject var viewModel: ViewModel
 }
@@ -20,10 +22,11 @@ extension SetupWalletScreen {
                 backgroundView
             }
         }
-        
     }
 }
 
+// MARK: - Subviews
+// MARK: -
 private extension SetupWalletScreen {
     
     var foregroundView: some View {
