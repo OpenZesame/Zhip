@@ -37,18 +37,19 @@ private extension SetupWalletScreen {
                 title: "Wallet", font: .zhip.impression,
                 subtitle: "It is time to set up the wallet. Do you want to start fresh, or restore an existing"
             )
-           
-            VStack {
-                Button("Generate new") {
-                    viewModel.generateNewWallet()
+            
+            CallToAction(
+                primary: {
+                    Button("Generate new") {
+                        viewModel.generateNewWallet()
+                    }
+                },
+                secondary: {
+                    Button("Restore existing") {
+                        viewModel.restoreExistingWallet()
+                    }
                 }
-                .buttonStyle(.primary)
-                
-                Button("Restore existing") {
-                    viewModel.restoreExistingWallet()
-                }
-                .buttonStyle(.secondary)
-            }
+            )
         }
         .padding()
     }
