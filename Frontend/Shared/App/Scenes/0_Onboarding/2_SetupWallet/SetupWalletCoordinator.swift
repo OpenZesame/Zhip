@@ -8,12 +8,17 @@
 import SwiftUI
 import Stinsen
 
+// MARK: - SetupWalletCoordinator
+// MARK: -
 protocol SetupWalletCoordinator: AnyObject {
     func generateNewWallet()
     func restoreExistingWallet()
 }
 
+// MARK: - DefaultSetupWalletCoordinator
+// MARK: -
 final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletCoordinator {
+    
     let stack = NavigationStack<DefaultSetupWalletCoordinator>(initial: \.setupWallet)
 
     @Root var setupWallet = makeSetupWallet
@@ -25,7 +30,37 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     init(useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
     }
+}
+
+// MARK: - SetupWalletC. Conformance
+// MARK: -
+extension DefaultSetupWalletCoordinator {
+    func generateNewWallet() {
+        toGenerateNewWallet()
+    }
     
+    func restoreExistingWallet() {
+        toRestoreExistingWallet()
+    }
+ 
+}
+
+// MARK: - Routing
+// MARK: -
+extension DefaultSetupWalletCoordinator {
+    func toGenerateNewWallet() {
+        route(to: \.newWallet)
+        
+    }
+    
+    func toRestoreExistingWallet() {
+        route(to: \.restoreWallet)
+    }
+}
+
+// MARK: - Factory
+// MARK: -
+extension DefaultSetupWalletCoordinator {
     @ViewBuilder
     func makeSetupWallet() -> some View {
         let viewModel = DefaultSetupWalletViewModel(coordinator: self)
@@ -39,26 +74,4 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {
         .init(DefaultRestoreWalletCoordinator())
     }
-    
-
-    func generateNewWallet() {
-        toGenerateNewWallet()
-    }
-    
-    func restoreExistingWallet() {
-        toRestoreExistingWallet()
-    }
- 
-}
-
-extension DefaultSetupWalletCoordinator {
-    func toGenerateNewWallet() {
-        route(to: \.newWallet)
-        
-    }
-    
-    func toRestoreExistingWallet() {
-        route(to: \.restoreWallet)
-    }
-    
 }

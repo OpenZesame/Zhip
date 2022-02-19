@@ -31,7 +31,6 @@ protocol WalletUseCase {
     var hasConfiguredWallet: Bool { get }
 }
 
-
 extension WalletUseCase where Self: SecurePersisting {
 
     func deleteWallet() {
