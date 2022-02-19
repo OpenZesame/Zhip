@@ -23,19 +23,28 @@ protocol NewWalletCoordinator: AnyObject {
     func failedToGenerateNewWallet(error: Swift.Error)
 }
 
+private final class BackUpWalletState: ObservableObject {
+    @Published var hasBackedUpWallet = false
+}
+
+
 // MARK: - DefaultNewWalletCoordinator
 // MARK: -
 final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, NewWalletCoordinator, NavigationCoordinatable {
-    let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
+    let stack: NavigationStack<DefaultNewWalletCoordinator> = .init(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var newEncryptionPassword = makeGenerateNewWallet
     @Route(.push) var backupWallet = makeBackupWalletCoordinator(wallet:)
-    @Route(.push) var nameWallet = makeNameWallet
+
+    // Root, because we replace navigation stack
+    @Root var nameWallet = makeNameWallet
     
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
+    //    @StateObject
+    @ObservedObject private var backUpWalletState = BackUpWalletState()
     
     init(useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
@@ -45,6 +54,23 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
         print("deinit DefaultNewWalletCoordinator")
     }
 
+}
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension DefaultNewWalletCoordinator {
+    
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+        view
+            .onReceive(backUpWalletState.$hasBackedUpWallet, perform: { hasBackedUpWallet in
+                if hasBackedUpWallet {
+                    self.root(\.nameWallet)
+                } else {
+                    self.root(\.ensurePrivacy)
+                }
+            })
+            
+    }
 }
 
 // MARK: - Factory
@@ -75,10 +101,21 @@ extension DefaultNewWalletCoordinator {
     }
     
     func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
-        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider, wallet: wallet))
+       
+        let backupWalletCoordinator = DefaultBackupWalletCoordinator(
+            useCaseProvider: useCaseProvider,
+            wallet: wallet
+        ) { [unowned backUpWalletState] in
+            print("backUpWalletState.hasBackedUpWallet = true")
+            backUpWalletState.hasBackedUpWallet = true
+        }
+        
+        return NavigationViewCoordinator(backupWalletCoordinator)
     }
     
 }
+
+
 
 // MARK: - NewWalletC. Conformance
 // MARK: -
@@ -123,4 +160,6 @@ extension DefaultNewWalletCoordinator {
     func toGenerateNewWallet() {
         route(to: \.newEncryptionPassword)
     }
+    
+
 }
