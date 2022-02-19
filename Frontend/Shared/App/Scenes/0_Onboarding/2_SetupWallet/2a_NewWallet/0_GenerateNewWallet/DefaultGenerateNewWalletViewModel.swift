@@ -43,7 +43,11 @@ final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>
         precondition(password == passwordConfirmation)
        
         isGeneratingWallet = true
-        
+        defer {
+            Task { @MainActor in
+                isGeneratingWallet = false
+            }
+        }
         do {
             
             let wallet = try await walletUseCase.createNewWallet(

@@ -61,6 +61,7 @@ extension DefaultSetupWalletCoordinator {
 // MARK: - Factory
 // MARK: -
 extension DefaultSetupWalletCoordinator {
+    
     @ViewBuilder
     func makeSetupWallet() -> some View {
         let viewModel = DefaultSetupWalletViewModel(coordinator: self)
@@ -74,4 +75,6 @@ extension DefaultSetupWalletCoordinator {
     func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {
         .init(DefaultRestoreWalletCoordinator())
     }
+    
 }
+
