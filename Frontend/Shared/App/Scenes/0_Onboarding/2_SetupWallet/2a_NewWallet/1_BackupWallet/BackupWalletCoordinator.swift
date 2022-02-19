@@ -9,6 +9,8 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
+// MARK: - BackupWalletCoordinator
+// MARK: -
 protocol BackupWalletCoordinator: AnyObject {
     
     func doneBackingUpWallet()
@@ -18,6 +20,8 @@ protocol BackupWalletCoordinator: AnyObject {
     func doneBackingUpPrivateKey()
 }
 
+// MARK: - DefaultBackupWalletCoordinator
+// MARK: -
 final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationCoordinatable {
     
     let stack = NavigationStack<DefaultBackupWalletCoordinator>(initial: \.backupWallet)
@@ -36,11 +40,13 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     }
     
     deinit {
-        print("deinit DefaultBackupWalletCoordinator")
+        print("\(self) deinit")
     }
     
 }
 
+// MARK: - Factory
+// MARK: -
 extension DefaultBackupWalletCoordinator {
     
     @ViewBuilder
@@ -63,7 +69,11 @@ extension DefaultBackupWalletCoordinator {
             )
         )
     }
-    
+}
+
+// MARK: - BackupWalletC. Conf.
+// MARK: -
+extension DefaultBackupWalletCoordinator {
     func revealKeystore() {
         toRevealKeystore()
     }
@@ -88,8 +98,11 @@ extension DefaultBackupWalletCoordinator {
             print("Pop private key")
         }
     }
-    
-    
+}
+   
+// MARK: - Routing
+// MARK: -
+extension DefaultBackupWalletCoordinator {
     func toRevealKeystore() {
         route(to: \.revealKeystoreRoute)
     }
