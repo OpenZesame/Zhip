@@ -10,17 +10,23 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
+// MARK: - OnboardingCoordinator
+// MARK: -
 protocol OnboardingCoordinator: AnyObject {
     func didStart()
     func didAcceptTermsOfService()
 }
 
+// MARK: - DefaultOnboardingCoordinator
+// MARK: -
 final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoordinatable {
 
-    // MARK: Injected properties
+    // MARK: - Injected properties
+    // MARK: -
     private let useCaseProvider: UseCaseProvider
     
-    // MARK: Self-init properties
+    // MARK: - Self-init properties
+    // MARK: -
     let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.welcome)
     
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()

@@ -9,16 +9,22 @@ import SwiftUI
 import Stinsen
 import ZhipEngine
 
+// MARK: - RestoreOrGenerateNewWalletCoordinator
+// MARK: -
 protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
     func privacyIsEnsured()
     func myScreenMightBeWatched()
 }
 
+// MARK: - NewWalletCoordinator
+// MARK: -
 protocol NewWalletCoordinator: AnyObject {
     func didGenerateNew(wallet: Wallet)
     func failedToGenerateNewWallet(error: Swift.Error)
 }
 
+// MARK: - DefaultNewWalletCoordinator
+// MARK: -
 final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, NewWalletCoordinator, NavigationCoordinatable {
     let stack = NavigationStack<DefaultNewWalletCoordinator>(initial: \.ensurePrivacy)
     
@@ -41,6 +47,8 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
 
 }
 
+// MARK: - Factory
+// MARK: -
 extension DefaultNewWalletCoordinator {
     
     @ViewBuilder
@@ -62,13 +70,20 @@ extension DefaultNewWalletCoordinator {
     
     @ViewBuilder
     func makeNameWallet() -> some View {
-        NameWalletScreen()
-    }
-  
-    func privacyIsEnsured() {
-        toGenerateNewWallet()
+        let viewModel = DefaultNameWalletViewModel()
+        NameWalletScreen(viewModel: viewModel)
     }
     
+    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
+        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider, wallet: wallet))
+    }
+    
+}
+
+// MARK: - NewWalletC. Conformance
+// MARK: -
+extension DefaultNewWalletCoordinator {
+
     func didGenerateNew(wallet: Wallet) {
         toBackupWallet(wallet: wallet)
     }
@@ -80,22 +95,32 @@ extension DefaultNewWalletCoordinator {
             print("dismissing \(self)")
         }
     }
-    
-    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
-        .init(DefaultBackupWalletCoordinator(useCaseProvider: useCaseProvider, wallet: wallet))
-    }
-   
-    func toBackupWallet(wallet: Wallet) {
-        route(to: \.backupWallet, wallet)
-    }
-    
-    func toGenerateNewWallet() {
-        route(to: \.newEncryptionPassword)
+}
+
+// MARK: - RestoreOrGenerateC. Conformance
+// MARK: -
+extension DefaultNewWalletCoordinator {
+
+    func privacyIsEnsured() {
+        toGenerateNewWallet()
     }
     
     func myScreenMightBeWatched() {
         dismissCoordinator {
             print("dismissing \(self)")
         }
+    }
+}
+
+// MARK: - Routing
+// MARK: -
+extension DefaultNewWalletCoordinator {
+
+    func toBackupWallet(wallet: Wallet) {
+        route(to: \.backupWallet, wallet)
+    }
+    
+    func toGenerateNewWallet() {
+        route(to: \.newEncryptionPassword)
     }
 }

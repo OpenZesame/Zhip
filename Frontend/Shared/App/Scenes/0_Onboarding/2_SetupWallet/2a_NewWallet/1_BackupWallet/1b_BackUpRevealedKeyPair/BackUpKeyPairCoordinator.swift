@@ -11,12 +11,16 @@ import SwiftUI
 import ZhipEngine
 import struct Zesame.KeyPair
 
+// MARK: - BackUpKeyPairCoordinator
+// MARK: -
 protocol BackUpKeyPairCoordinator: AnyObject {
     func didDecryptWallet(keyPair: KeyPair)
     func failedToDecryptWallet(error: Swift.Error)
     func doneBackingUpKeys()
 }
 
+// MARK: - DefaultBackUpKeyPairCoordinator
+// MARK: -
 final class DefaultBackUpKeyPairCoordinator: BackUpKeyPairCoordinator, NavigationCoordinatable {
     
     let stack = NavigationStack<DefaultBackUpKeyPairCoordinator>(initial: \.decryptKeystore)

@@ -11,16 +11,18 @@ import ZhipEngine
 
 final class AppCoordinator: NavigationCoordinatable {
     
-    @EnvironmentObject private var model: Model
-    
     var stack: NavigationStack<AppCoordinator>
 
     @Root var onboarding = makeOnboarding
     @Root var main = makeMain
     
+    private let model: Model // TODO: SHOULD? MUST? Be: `@ObservedObject var model: Model`?
     private let useCaseProvider: UseCaseProvider
     
-    init(model: Model, useCaseProvider: UseCaseProvider) {
+    init(
+        model: Model, // TODO: SHOULD? MUST? Be: `ObservedObject<Model>` ?
+        useCaseProvider: UseCaseProvider) {
+        self.model = model
         self.useCaseProvider = useCaseProvider
         switch model.wallet {
         case .some(let wallet):

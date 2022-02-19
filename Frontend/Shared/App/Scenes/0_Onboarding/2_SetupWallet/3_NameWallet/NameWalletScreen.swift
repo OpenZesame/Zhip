@@ -7,27 +7,36 @@
 
 import SwiftUI
 
-struct NameWalletScreen: View {
+protocol NameWalletViewModel: ObservableObject {
+    var walletName: String { get set }
+    var isNameValid: Bool { get set }
+}
 
-    @EnvironmentObject private var model: Model
-    @State private var walletName: String = ""
+final class DefaultNameWalletViewModel: NameWalletViewModel {
+    @Published var walletName = ""
+    @Published var isNameValid = false
+}
+
+struct NameWalletScreen<ViewModel: NameWalletViewModel>: View {
+
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         VStack {
             Text("Name wallet")
             
             TextField(
-                walletName,
-                text: $walletName,
+                viewModel.walletName,
+                text: $viewModel.walletName,
                 prompt: Text("Name of wallet")
             )
                 .textFieldStyle(.roundedBorder)
             
             Button("Create new wallet") {
-//                model.wallet = .init(name: walletName)
+                //                model.wallet = .init(name: walletName)
                 fatalError("create new wallet here using UseCase but hmm in ViewModel")
             }
-            .disabled(walletName.isEmpty)
+            .disabled(viewModel.isNameValid)
         }
         .padding()
     }
