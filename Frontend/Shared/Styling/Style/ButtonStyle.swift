@@ -24,11 +24,8 @@ struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         Group {
             if isLoading {
-//                ProgressView()
-//                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
                 ActivityIndicator()
-//                    .frame(size: CGSize(width: 200, height: 200))
-                    .frame(maxHeight: 30)
+                    .frame(maxWidth: 30, maxHeight: 30)
                     .foregroundColor(.white)
             } else {
                 configuration.label

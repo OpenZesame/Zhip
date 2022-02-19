@@ -32,10 +32,11 @@ private extension SetupWalletScreen {
     var foregroundView: some View {
         VStack {
             Spacer()
-            VStack(alignment: .leading) {
-                Text("Wallet").font(.largeTitle)
-                Text("It is time to set up the wallet. Do you want to start fresh, or restore an existing")
-            }
+            
+            Labels(
+                title: "Wallet", font: .zhip.impression,
+                subtitle: "It is time to set up the wallet. Do you want to start fresh, or restore an existing"
+            )
            
             VStack {
                 Button("Generate new") {

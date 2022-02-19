@@ -42,7 +42,7 @@ extension WelcomeScreen {
             Spacer()
             
             Labels(
-                title: "Welcome",
+                title: "Welcome", font: .zhip.impression,
                 subtitle: "Welcome to Zhip - the worlds first iOS wallet for Zilliqa."
             )
             
