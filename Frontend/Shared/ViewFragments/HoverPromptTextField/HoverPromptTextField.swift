@@ -367,6 +367,21 @@ private extension HoverPromptTextField {
         }
         .foregroundColor(textColor(of: \.field))
         .focused($isFocused)
+        .onAppear(perform: {
+            // If specified: focus the textfield however, we must to it with a
+            // delay it seams, or at least that is what I concluded running on
+            // an iOS 15 simulator, but we do not wanna sleep on main thread, so
+            // we sleep in a background task, and then perform the actual
+            // focusing on the main thread after waking up.
+            if config.behaviour.becomeFirstResponseOnAppear {
+                Task(priority: .background) {
+                    try! await Task.sleep(nanoseconds: 200_000_000) // 0.2 sec
+                    Task { @MainActor in
+                        isFocused = true
+                    }
+                }
+            }
+        })
         .onChange(of: isFocused) { _ in
             switch config.behaviour.validationTriggering {
             case .eagerErrorEagerOK:

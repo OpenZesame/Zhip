@@ -17,14 +17,18 @@ public extension HoverPromptTextFieldConfig {
         /// characters.
         public let characterRestriction: CharacterRestriction?
         
+        public let becomeFirstResponseOnAppear: Bool
+        
         public init(
             validationTriggering: ValidationTriggering = .default,
             validation: Validation = .default,
-            characterRestriction: CharacterRestriction? = nil
+            characterRestriction: CharacterRestriction? = nil,
+            becomeFirstResponseOnAppear: Bool = false
         ) {
             self.validationTriggering = validationTriggering
             self.validation = validation
             self.characterRestriction = characterRestriction
+            self.becomeFirstResponseOnAppear = becomeFirstResponseOnAppear
         }
     }
 }
@@ -46,8 +50,6 @@ public enum CharacterRestriction: BasicValidation, Equatable {
 }
 
 public extension HoverPromptTextFieldConfig.Behaviour {
-    
- 
     
     struct Validation {
         

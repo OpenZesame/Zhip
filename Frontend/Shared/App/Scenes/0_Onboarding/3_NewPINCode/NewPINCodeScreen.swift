@@ -22,19 +22,8 @@ extension NewPINCodeScreen {
             VStack {
                 PINField(pinCode: $viewModel.pinCode)
                 
-                // ======= DELETE ME =======
-                Group {
-                    if let pin = viewModel.pinCode {
-                        Text("PIN: '\(pin.digits.map({ String(describing: $0) }).joined(separator: ""))'")
-                    } else {
-                        Text("No pin set")
-                    }
-                }.font(.zhip.impression)
-                Spacer()
-                // ======= DELETE ME =======
-                
                 Text("The app PIN is an extra safety measure used only to unlock the app. It is not used to encrypt your private key. Before setting a PIN, back up the wallet, otherwise you might get locked out of your wallet if you forget the PIN.")
-                
+
                 Button("Done") {
                     viewModel.doneSettingPIN()
                 }
