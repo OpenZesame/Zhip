@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine // Just
 
 public typealias HoverPromptTextFieldExtraViewsParams = (
     isFocused: Bool,
@@ -37,11 +38,7 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
 
     /// The error messages produces by running the validation rules against
     /// the `text`. An empty array means `text` is **valid**.
-    @State private var errorMessages = [String]() {
-        didSet {
-            isValid = isValid(given: errorMessages)
-        }
-    }
+    @State private var errorMessages = [String]()
     
     @State private var isRevealingSecrets: Bool = false
     
@@ -267,6 +264,7 @@ private extension HoverPromptTextField {
     /// Updates validation state by performing validation
     func validate() {
         errorMessages = validationResult()
+        isValid = isValid(given: errorMessages)
     }
     
     func onlyIfOKChangeValidationStateToOK() {
@@ -277,6 +275,7 @@ private extension HoverPromptTextField {
         }
         // Validation passes, all OK => change state to OK
         errorMessages = []
+        isValid = true
     }
 }
 
@@ -389,6 +388,18 @@ private extension HoverPromptTextField {
                 onlyIfOKChangeValidationStateToOK()
             case .eagerErrorEagerOK:
                  validate()
+            }
+        }.onReceive(Just(text)) { text in
+            // This both prevents UI of (wrapped) TextField to contain invalid
+            // characters but also in `text` (Binding<String>) to contain invalid
+            // chars. HOWEVER, it does NOT prevent invalid characters to be emitted
+            // to `text`, they are emitted and then corrected. Thus we need to
+            // modify the `Binding` in init of this view.
+            if let characterRestriction = config.behaviour.characterRestriction, !characterRestriction.isValid(given: text) {
+                let newValue = text.filter { characterRestriction.isValid(given: String($0)) }
+                if newValue != self.text {
+                    self.text = newValue
+                }
             }
         }
     }

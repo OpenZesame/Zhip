@@ -7,6 +7,12 @@
 
 import SwiftUI
 import Stinsen
+import ZhipEngine
+import Combine
+
+enum SetupWalletNavigationStep {
+    case finishSettingUpWallet(wallet: Wallet)
+}
 
 // MARK: - SetupWalletCoordinator
 // MARK: -
@@ -25,10 +31,38 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
     @Route(.modal) var newWallet = makeNewWallet
     @Route(.modal) var restoreWallet = makeRestoreWallet
     
-    private let useCaseProvider: UseCaseProvider
+    private let newWalletNavigator: DefaultNewWalletCoordinator.Navigator = .init()
     
-    init(useCaseProvider: UseCaseProvider) {
+    private let useCaseProvider: UseCaseProvider
+    typealias Navigator = PassthroughSubject<SetupWalletNavigationStep, Never>
+    private unowned let navigator: Navigator
+    
+    init(useCaseProvider: UseCaseProvider, navigator: Navigator) {
         self.useCaseProvider = useCaseProvider
+        self.navigator = navigator
+    }
+}
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension DefaultSetupWalletCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+        view
+            .onReceive(newWalletNavigator.eraseToAnyPublisher(), perform: { userDid in
+                switch userDid {
+                case .create(let wallet):
+                    self.navigator.send(.finishSettingUpWallet(wallet: wallet))
+                    self.dismissCoordinator {
+                        print("dismiss: \(self)")
+                    }
+                case .cancel:
+                    print("user cancelled setting up wallet.")
+                    self.dismissCoordinator {
+                        print("dismiss: \(self)")
+                    }
+                }
+            })
+        
     }
 }
 
@@ -48,9 +82,9 @@ extension DefaultSetupWalletCoordinator {
 // MARK: - Routing
 // MARK: -
 extension DefaultSetupWalletCoordinator {
+    
     func toGenerateNewWallet() {
         route(to: \.newWallet)
-        
     }
     
     func toRestoreExistingWallet() {
@@ -69,7 +103,14 @@ extension DefaultSetupWalletCoordinator {
     }
     
     func makeNewWallet() -> NavigationViewCoordinator<DefaultNewWalletCoordinator> {
-        .init(DefaultNewWalletCoordinator(useCaseProvider: useCaseProvider))
+        let newWalletCoordinator = DefaultNewWalletCoordinator(
+            useCaseProvider: useCaseProvider,
+            navigator: newWalletNavigator
+        )
+        
+        return NavigationViewCoordinator(
+            newWalletCoordinator
+        )
     }
     
     func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {

@@ -19,3 +19,10 @@ public extension View {
 
 }
 
+
+extension View {
+    @inlinable public func enabled(if enabledCondition: Bool) -> some View {
+        disabled(!enabledCondition)
+    }
+}
+

@@ -8,7 +8,14 @@
 import Foundation
 import Zesame
 
-public struct Wallet: Codable {
+extension Zesame.Wallet: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.address == rhs.address
+    }
+}
+
+
+public struct Wallet: Codable, Equatable {
     public let name: String?
     public let wallet: Zesame.Wallet
     public let origin: Origin
@@ -22,7 +29,7 @@ public struct Wallet: Codable {
 
 public extension Wallet {
     // MARK: Origin
-    enum Origin: Int, Codable {
+    enum Origin: Int, Codable, Equatable {
         case generatedByThisApp
         case importedPrivateKey
         case importedKeystore

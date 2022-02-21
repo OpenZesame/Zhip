@@ -24,6 +24,7 @@ final class DefaultSetupPINCodeCoordinator: SetupPINCodeCoordinator, NavigationC
 extension DefaultSetupPINCodeCoordinator {
     @ViewBuilder
     func makeNewPIN() -> some View {
-        NewPINCodeScreen()
+        let viewModel = DefaultNewPINCodeViewModel()
+        NewPINCodeScreen(viewModel: viewModel)
     }
 }

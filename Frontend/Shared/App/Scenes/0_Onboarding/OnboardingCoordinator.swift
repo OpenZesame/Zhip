@@ -27,7 +27,7 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     
     // MARK: - Self-init properties
     // MARK: -
-    let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.welcome)
+    let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.setupPINCode)
     
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
@@ -41,12 +41,30 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     // Replace navigation stack
     @Root var setupPINCode = makeSetupPINCode
     
+    private let setupWalletNavigator = DefaultSetupWalletCoordinator.Navigator()
+    
     init(useCaseProvider: UseCaseProvider) {
         self.useCaseProvider = useCaseProvider
     }
     
     deinit {
         print("Deinit OnboardingCoordinator")
+    }
+}
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension DefaultOnboardingCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+
+        view.onReceive(setupWalletNavigator.eraseToAnyPublisher(), perform: { [unowned self] userDid in
+            switch userDid {
+            case .finishSettingUpWallet(let wallet):
+                self.walletUseCase.save(wallet: wallet)
+                self.root(\.setupPINCode)
+            }
+        })
+        
     }
 }
 
@@ -91,6 +109,11 @@ private extension DefaultOnboardingCoordinator {
 private extension DefaultOnboardingCoordinator {
     
     @ViewBuilder
+    func makeWelcome() -> some View {
+        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
+    }
+    
+    @ViewBuilder
     func makeTermsOfService() -> some View {
         
         let viewModel = DefaultTermsOfServiceViewModel(
@@ -102,14 +125,16 @@ private extension DefaultOnboardingCoordinator {
     }
     
     func makeSetupWallet() -> NavigationViewCoordinator<DefaultSetupWalletCoordinator> {
-        NavigationViewCoordinator(DefaultSetupWalletCoordinator(useCaseProvider: useCaseProvider))
+        let setupWalletCoordinator = DefaultSetupWalletCoordinator(
+            useCaseProvider: useCaseProvider,
+            navigator: setupWalletNavigator
+        )
+        
+        return NavigationViewCoordinator(setupWalletCoordinator)
     }
     
-    func makeSetupPINCode(wallet: Wallet) -> DefaultSetupPINCodeCoordinator {
-        DefaultSetupPINCodeCoordinator()
+    func makeSetupPINCode() -> NavigationViewCoordinator<DefaultSetupPINCodeCoordinator> {
+        .init(DefaultSetupPINCodeCoordinator())
     }
-    
-    func makeWelcome() -> some View {
-        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
-    }
+ 
 }

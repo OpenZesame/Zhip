@@ -23,8 +23,11 @@ protocol NewWalletCoordinator: AnyObject {
     func failedToGenerateNewWallet(error: Swift.Error)
 }
 
-private final class BackUpWalletState: ObservableObject {
-    @Published var hasBackedUpWallet = false
+import Combine
+
+
+enum NewWalletCoordinatorNavigationStep {
+    case create(wallet: Wallet), cancel
 }
 
 
@@ -36,18 +39,19 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var newEncryptionPassword = makeGenerateNewWallet
     @Route(.push) var backupWallet = makeBackupWalletCoordinator(wallet:)
-
-    // Root, because we replace navigation stack
-    @Root var nameWallet = makeNameWallet
     
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    //    @StateObject
-    @ObservedObject private var backUpWalletState = BackUpWalletState()
+    typealias Navigator = PassthroughSubject<NewWalletCoordinatorNavigationStep, Never>
+    private unowned let navigator: Navigator
     
-    init(useCaseProvider: UseCaseProvider) {
+    init(
+        useCaseProvider: UseCaseProvider,
+        navigator: Navigator
+    ) {
         self.useCaseProvider = useCaseProvider
+        self.navigator = navigator
     }
     
     deinit {
@@ -56,23 +60,7 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
 
 }
 
-// MARK: - NavigationCoordinatable
-// MARK: -
-extension DefaultNewWalletCoordinator {
-    
-    @ViewBuilder func customize(_ view: AnyView) -> some View {
-        view
-            .onReceive(backUpWalletState.$hasBackedUpWallet, perform: { hasBackedUpWallet in
-                if hasBackedUpWallet {
-                    self.root(\.nameWallet)
-                } else {
-                    self.root(\.ensurePrivacy)
-                }
-            })
-            
-    }
-}
-
+ 
 // MARK: - Factory
 // MARK: -
 extension DefaultNewWalletCoordinator {
@@ -94,20 +82,13 @@ extension DefaultNewWalletCoordinator {
         GenerateNewWalletScreen(viewModel: viewModel)
     }
     
-    @ViewBuilder
-    func makeNameWallet() -> some View {
-        let viewModel = DefaultNameWalletViewModel()
-        NameWalletScreen(viewModel: viewModel)
-    }
-    
     func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
        
         let backupWalletCoordinator = DefaultBackupWalletCoordinator(
             useCaseProvider: useCaseProvider,
             wallet: wallet
-        ) { [unowned backUpWalletState] in
-            print("backUpWalletState.hasBackedUpWallet = true")
-            backUpWalletState.hasBackedUpWallet = true
+        ) { [unowned navigator] backedUpWallet in
+            navigator.send(.create(wallet: backedUpWallet))
         }
         
         return NavigationViewCoordinator(backupWalletCoordinator)

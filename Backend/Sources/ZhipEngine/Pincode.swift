@@ -11,15 +11,16 @@ public struct Pincode: Equatable, Codable {
     public let digits: [Digit]
 
     public init(digits: [Digit]) throws {
-        if digits.count > Pincode.length { throw Error.pincodeTooLong }
-        if digits.count < Pincode.length { throw Error.pincodeTooShort }
+        if digits.count < Pincode.minLength { throw Error.pincodeTooShort }
+        if digits.count > Pincode.maxLength { throw Error.pincodeTooLong }
         self.digits = digits
     }
 }
 
 // MARK: Minimum length
 public extension Pincode {
-    static let length: Int = 4
+    static let minLength: Int = 4
+    static let maxLength: Int = 8
 }
 
 // MARK: - Error

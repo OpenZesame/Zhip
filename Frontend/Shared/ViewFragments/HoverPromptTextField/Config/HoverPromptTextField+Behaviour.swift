@@ -11,18 +11,43 @@ public extension HoverPromptTextFieldConfig {
     struct Behaviour {
         public let validationTriggering: ValidationTriggering
         public fileprivate(set) var validation: Validation
+        
+        /// Possible restriction on the type of characters you can input, either
+        /// only some whitelisted characters, or preventing certain blacklistend
+        /// characters.
+        public let characterRestriction: CharacterRestriction?
+        
         public init(
             validationTriggering: ValidationTriggering = .default,
-            validation: Validation = .default
+            validation: Validation = .default,
+            characterRestriction: CharacterRestriction? = nil
         ) {
             self.validationTriggering = validationTriggering
             self.validation = validation
+            self.characterRestriction = characterRestriction
         }
     }
 }
 
 
+public enum CharacterRestriction: BasicValidation, Equatable {
+    case doesNotContain(blacklisted: CharacterSet)
+    case onlyContains(whitelisted: CharacterSet)
+    
+    public func isValid(given text: String) -> Bool {
+        let characterSet = CharacterSet(charactersIn: text)
+        switch self {
+        case .doesNotContain(let blacklistedCharacters):
+            return characterSet.intersection(blacklistedCharacters).isEmpty
+        case .onlyContains(let whitelistedCharacters):
+            return whitelistedCharacters.isSuperset(of: characterSet)
+        }
+    }
+}
+
 public extension HoverPromptTextFieldConfig.Behaviour {
+    
+ 
     
     struct Validation {
         
@@ -154,26 +179,9 @@ public enum InputRequirement: BasicValidation, Equatable {
         }
     }
     case length(Length)
-    public enum Characters: BasicValidation, Equatable {
-        case doesNotContain(blacklisted: CharacterSet)
-        case onlyContains(whitelisted: CharacterSet)
-        
-        public func isValid(given text: String) -> Bool {
-            let characterSet = CharacterSet(charactersIn: text)
-            switch self {
-            case .doesNotContain(let blacklistedCharacters):
-                return characterSet.intersection(blacklistedCharacters).isEmpty
-            case .onlyContains(let whitelistedCharacters):
-                return whitelistedCharacters.symmetricDifference(characterSet).isEmpty
-            }
-        }
-    }
-    case characters(Characters)
 
     public func isValid(given text: String) -> Bool {
         switch self {
-        case .characters(let charactersRequirement):
-            return charactersRequirement.isValid(given: text)
         case .length(let lengthRequirement):
             return lengthRequirement.isValid(given: text)
         }

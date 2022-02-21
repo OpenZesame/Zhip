@@ -15,12 +15,14 @@ struct InputField: View {
     private let prompt: String
     private let isSecure: Bool
     private let validationRules: [ValidationRule]
+    private let characterRestriction: CharacterRestriction?
     
     init(
         prompt: String = "",
         text: Binding<String>,
         isValid: Binding<Bool>? = nil,
         isSecure: Bool = false,
+        characterRestriction: CharacterRestriction? = nil,
         validationRules: [ValidationRule] = []
     ) {
         self.prompt = prompt
@@ -28,6 +30,7 @@ struct InputField: View {
         self._isValid = isValid ?? .constant(true)
         self.isSecure = isSecure
         self.validationRules = validationRules
+        self.characterRestriction = characterRestriction
     }
 }
 
@@ -45,7 +48,8 @@ extension InputField {
                 behaviour: .init(
                     validation: .init(
                         rules: validationRules
-                    )
+                    ),
+                    characterRestriction: characterRestriction
                 ),
                 appearance: .init(
                     colors: .init(

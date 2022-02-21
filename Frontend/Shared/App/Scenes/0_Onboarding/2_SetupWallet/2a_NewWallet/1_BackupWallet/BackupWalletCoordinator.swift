@@ -34,9 +34,10 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     private let wallet: Wallet
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
    
-    private let didBackUpWallet: () -> Void
     
-    init(useCaseProvider: UseCaseProvider, wallet: Wallet, didBackUpWallet: @escaping () -> Void) {
+    private let didBackUpWallet: (Wallet) -> Void
+    
+    init(useCaseProvider: UseCaseProvider, wallet: Wallet, didBackUpWallet: @escaping (Wallet) -> Void) {
         self.useCaseProvider = useCaseProvider
         self.wallet = wallet
         self.didBackUpWallet = didBackUpWallet
@@ -85,7 +86,7 @@ extension DefaultBackupWalletCoordinator {
     }
     
     func doneBackingUpWallet() {
-        didBackUpWallet()
+        didBackUpWallet(wallet)
     }
     
     func doneBackingUpKeystore() {
