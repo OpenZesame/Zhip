@@ -23,6 +23,7 @@ extension NewPINCodeScreen {
                 PINField(pinCode: $viewModel.pinCode)
                 
                 Text("The app PIN is an extra safety measure used only to unlock the app. It is not used to encrypt your private key. Before setting a PIN, back up the wallet, otherwise you might get locked out of your wallet if you forget the PIN.")
+                    .font(.zhip.body).foregroundColor(.silverGrey)
 
                 Button("Done") {
                     viewModel.doneSettingPIN()

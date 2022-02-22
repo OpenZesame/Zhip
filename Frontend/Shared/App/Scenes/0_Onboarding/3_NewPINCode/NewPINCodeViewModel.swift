@@ -29,5 +29,6 @@ extension DefaultNewPINCodeViewModel {
     
     func doneSettingPIN() {
         precondition(pinCode != nil)
+        fatalError("proceed")
     }
 }

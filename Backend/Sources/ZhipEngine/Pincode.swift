@@ -7,13 +7,21 @@
 
 import Foundation
 
-public struct Pincode: Equatable, Codable {
+public struct Pincode: Equatable, Codable, CustomDebugStringConvertible {
     public let digits: [Digit]
 
     public init(digits: [Digit]) throws {
         if digits.count < Pincode.minLength { throw Error.pincodeTooShort }
         if digits.count > Pincode.maxLength { throw Error.pincodeTooLong }
         self.digits = digits
+    }
+}
+
+public extension Pincode {
+    var debugDescription: String {
+        digits.map {
+            String(describing: $0)
+        }.joined(separator: "")
     }
 }
 

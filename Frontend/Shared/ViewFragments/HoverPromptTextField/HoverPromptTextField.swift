@@ -405,11 +405,20 @@ private extension HoverPromptTextField {
                  validate()
             }
         }.onReceive(Just(text)) { text in
+            
+            if let maxLength = config.behaviour.maxLength {
+                let newValue = String(text.prefix(maxLength))
+                if newValue != self.text {
+                    self.text = newValue
+                }
+            }
+            
             // This both prevents UI of (wrapped) TextField to contain invalid
             // characters but also in `text` (Binding<String>) to contain invalid
             // chars. HOWEVER, it does NOT prevent invalid characters to be emitted
-            // to `text`, they are emitted and then corrected. Thus we need to
-            // modify the `Binding` in init of this view.
+            // to `text`, they are emitted and then corrected. No solution to this
+            // have yet been found.
+            // TODO: prevent emission of invalid character
             if let characterRestriction = config.behaviour.characterRestriction, !characterRestriction.isValid(given: text) {
                 let newValue = text.filter { characterRestriction.isValid(given: String($0)) }
                 if newValue != self.text {

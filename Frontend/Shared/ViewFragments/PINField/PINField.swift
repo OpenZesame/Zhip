@@ -14,15 +14,23 @@ import Combine
 struct PINField: View {
     @State private var text = ""
     @Binding private var pinCode: Pincode?
+    private let digitCount: Int
+    private let isSecure: Bool
     
-    init(pinCode: Binding<Pincode?>) {
+    init(pinCode: Binding<Pincode?>, digitCount: Int = 4, isSecure: Bool = true) {
+        precondition(digitCount <= Pincode.maxLength)
+        precondition(digitCount >= Pincode.minLength)
+        self.digitCount = digitCount
         self._pinCode = pinCode
+        self.isSecure = isSecure
     }
 }
 
 extension Pincode {
     init?(text: String) {
-        try? self.init(digits: text.compactMap { Digit(string: String($0)) })
+        try? self.init(
+            digits: text.compactMap { Digit(string: String($0)) }
+        )
     }
 }
 
@@ -30,28 +38,29 @@ extension Pincode {
 // MARK: -
 extension PINField {
     var body: some View {
-        VStack {
-            invisibleField.background(Color.red)
-            digitsView
-        }
+        digitsView.background(invisibleField).padding()
     }
 }
 
 private extension PINField {
-    enum Field {
-        case invisibleField
+    
+    /// These view models are ephemeral and should be regarded as such, stateless
+    /// just used to provid uniqueness to each member. The data lies in the Digit
+    /// passed in, and the actual state lies in this PINField's `text`.
+    var digitViewModels: [DigitViewModel] {
+             let digits = text
+                     .map({ String($0) })
+                     .map({ Digit(string: $0)! })
+                     .appending(nil, toCount: digitCount)
+        return digits.map { DigitViewModel(digit: $0) }
     }
     
     var digitsView: some View {
-        // ======= DELETE ME =======
-        Group {
-            if let pin = pinCode {
-                Text("PIN: '\(pin.digits.map({ String(describing: $0) }).joined(separator: ""))'")
-            } else {
-                Text("No pin set")
+        HStack {
+            ForEach(digitViewModels) { viewModel in
+                DigitView(viewModel: viewModel, isSecure: isSecure)
             }
-        }.font(.zhip.impression)
-        // ======= DELETE ME =======
+        }
     }
     
     var invisibleField: some View {
@@ -63,10 +72,10 @@ private extension PINField {
                 behaviour: .init(
                     validation: .init(
                         rules: [
-                            ValidateInputRequirement.minimumLength(of: Pincode.minLength),
-                            ValidateInputRequirement.maximumLength(of: Pincode.maxLength)
+                            ValidateInputRequirement.minimumLength(of: digitCount),
                         ]
                     ),
+                    maxLength: digitCount,
                     characterRestriction: .onlyContains(whitelisted: .decimalDigits),
                     becomeFirstResponseOnAppear: true
                 ),
@@ -95,13 +104,14 @@ private extension PINField {
         .frame(minWidth: 100, maxWidth: .infinity, minHeight: 50, alignment: .center)
         .accentColor(Color.clear)
         .onChange(of: text, perform: {
-            pinCode = Pincode(text: $0)
+            let newPin = Pincode(text: String($0.prefix(digitCount)))
+            if pinCode != newPin {
+                pinCode = newPin
+                if let pin = pinCode {
+                    print("✨ pin: \(String(describing: pin))")
+                }
+            }
+         
         })
-//        .onAppear(perform: {
-//#if DEBUG
-//            let hardcodedText = "1234"
-//            self.text = hardcodedText
-//#endif
-//        })
     }
 }
