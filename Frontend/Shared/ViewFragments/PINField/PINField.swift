@@ -12,17 +12,32 @@ import Combine
 // MARK: - PINField
 // MARK: -
 struct PINField: View {
-    @State private var text = ""
+    @Binding private var text: String
     @Binding private var pinCode: Pincode?
+    @Binding private var errorMessage: String?
     private let digitCount: Int
     private let isSecure: Bool
+    private let validColor: Color
+    private let invalidColor: Color
     
-    init(pinCode: Binding<Pincode?>, digitCount: Int = 4, isSecure: Bool = true) {
+    init(
+        text: Binding<String>,
+        pinCode: Binding<Pincode?>,
+        errorMessage: Binding<String?>? = nil,
+        digitCount: Int = 4,
+        isSecure: Bool = true,
+        validColor: Color = .teal,
+        invalidColor: Color = .bloodRed
+    ) {
         precondition(digitCount <= Pincode.maxLength)
         precondition(digitCount >= Pincode.minLength)
+        self._text = text
         self.digitCount = digitCount
         self._pinCode = pinCode
         self.isSecure = isSecure
+        self.invalidColor = invalidColor
+        self.validColor = validColor
+        self._errorMessage = errorMessage ?? .constant(nil)
     }
 }
 
@@ -34,33 +49,52 @@ extension Pincode {
     }
 }
 
+
 // MARK: - View
 // MARK: -
 extension PINField {
     var body: some View {
-        digitsView.background(invisibleField).padding()
+        VStack(spacing: 0) {
+            digitsView
+            errorMessageView
+        }
+        .background(invisibleField)
+        .padding()
     }
 }
 
+struct DigitAtIndex: Hashable {
+    let digit: Digit?
+    let index: Int
+}
+
 private extension PINField {
-    
-    /// These view models are ephemeral and should be regarded as such, stateless
-    /// just used to provid uniqueness to each member. The data lies in the Digit
-    /// passed in, and the actual state lies in this PINField's `text`.
-    var digitViewModels: [DigitViewModel] {
-             let digits = text
-                     .map({ String($0) })
-                     .map({ Digit(string: $0)! })
-                     .appending(nil, toCount: digitCount)
-        return digits.map { DigitViewModel(digit: $0) }
-    }
-    
+
+    @ViewBuilder
     var digitsView: some View {
+        let digitsAtIndex: [DigitAtIndex] = text
+                             .map({ String($0) })
+                             .map({ Digit(string: $0)! })
+                             .appending(nil, toCount: digitCount)
+                             .enumerated().map {
+                                 .init(digit: $0.element, index: $0.offset)
+                             }
         HStack {
-            ForEach(digitViewModels) { viewModel in
-                DigitView(viewModel: viewModel, isSecure: isSecure)
+            ForEach(digitsAtIndex, id: \.self) { digitAtIndex in
+                DigitView(
+                    digitAtIndex: digitAtIndex,
+                    isSecure: isSecure,
+                    lineColor: $errorMessage.ifPresent { $0 ? invalidColor : validColor }
+                )
             }
         }
+    }
+    
+    @ViewBuilder
+    var errorMessageView: some View {
+        Text(errorMessage ?? " ")
+            .font(.zhip.body)
+            .foregroundColor(invalidColor)
     }
     
     var invisibleField: some View {
@@ -85,17 +119,6 @@ private extension PINField {
                             neutral: .clear,
                             valid: .clear,
                             invalid: .clear
-                        ),
-                        textColors: .init(
-                            defaultColors: .init(
-                                neutral: .clear,
-                                valid: .clear,
-                                invalid: .clear
-                            ),
-                            customized: .init(
-                                field: .focusedAndNonFocused(.all(.clear)),
-                                promptWhenEmpty: .focusedAndNonFocused(neutral: .clear)
-                            )
                         )
                     )
                 )
@@ -111,7 +134,7 @@ private extension PINField {
                     print("✨ pin: \(String(describing: pin))")
                 }
             }
-         
         })
+        
     }
 }

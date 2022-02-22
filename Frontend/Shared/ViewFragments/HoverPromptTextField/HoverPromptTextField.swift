@@ -375,7 +375,11 @@ private extension HoverPromptTextField {
             // focusing on the main thread after waking up.
             if config.behaviour.becomeFirstResponseOnAppear {
                 Task(priority: .background) {
-                    try! await Task.sleep(nanoseconds: 200_000_000) // 0.2 sec
+                    
+                    // 0.6 sec. If using a low value as 0.2 sec then the PUSH view
+                    // transition takes longer time than this delay, and focusing
+                    // will fail
+                    try! await Task.sleep(nanoseconds: 600_000_000)
                     Task { @MainActor in
                         isFocused = true
                     }

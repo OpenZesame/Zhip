@@ -9,12 +9,20 @@ import SwiftUI
 import ZhipEngine
 
 struct DigitView: View {
-    @ObservedObject var viewModel: DigitViewModel
+//    @ObservedObject var viewModel: DigitViewModel
+    let digitAtIndex: DigitAtIndex
     let isSecure: Bool
+    @Binding var lineColor: Color
     
-    init(viewModel: DigitViewModel, isSecure: Bool = true) {
-        self.viewModel = viewModel
+    init(
+        digitAtIndex: DigitAtIndex,
+        isSecure: Bool = true,
+        lineColor: Binding<Color> = .constant(Color.teal)
+    ) {
+//        self.viewModel = viewModel
+        self.digitAtIndex = digitAtIndex
         self.isSecure = isSecure
+        self._lineColor = lineColor
     }
     
     var body: some View {
@@ -28,7 +36,7 @@ struct DigitView: View {
 private extension DigitView {
     
     var digitString: String {
-        if let digit = viewModel.digit {
+        if let digit = digitAtIndex.digit {
             return isSecure ? "•" : String(describing: digit.rawValue)
         } else {
             // N.B. a single space, not the empty string. An UGLY hack to
@@ -41,12 +49,11 @@ private extension DigitView {
     var maybeDigit: some View {
         Text(digitString)
             .font(isSecure ? .zhip.bigBang : .zhip.impression)
-//            .frame(height: )
     }
     
     var underline: some View {
         Rectangle()
-            .fill(Color.teal)
+            .fill(lineColor)
             .frame(
                 minWidth: 10, maxWidth: .infinity,
                 minHeight: lineHeight, maxHeight: lineHeight,
