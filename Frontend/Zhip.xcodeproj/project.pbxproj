@@ -568,10 +568,10 @@
 		48526AE427BE854000C25518 /* 1_Main */ = {
 			isa = PBXGroup;
 			children = (
-				487CE3E127B641BB003BD07A /* Transfer */,
-				487CE3DA27B6384C003BD07A /* Contacts */,
-				487CE3D927B63707003BD07A /* Settings */,
-				4872FA5027B558D0008B7BD0 /* Balances */,
+				4872FA5027B558D0008B7BD0 /* 0_Balances */,
+				487CE3E127B641BB003BD07A /* 1_Transfer */,
+				487CE3DA27B6384C003BD07A /* 2_Contacts */,
+				487CE3D927B63707003BD07A /* 3_Settings */,
 				484428FE27B7D93700BAC575 /* MainCoordinator.swift */,
 			);
 			path = 1_Main;
@@ -781,41 +781,41 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		4872FA5027B558D0008B7BD0 /* Balances */ = {
+		4872FA5027B558D0008B7BD0 /* 0_Balances */ = {
 			isa = PBXGroup;
 			children = (
 				48260BDD27C67AAC0069CA1C /* 0_Balances */,
 				48260BDE27C67ABE0069CA1C /* BalancesCoordinator.swift */,
 			);
-			path = Balances;
+			path = 0_Balances;
 			sourceTree = "<group>";
 		};
-		487CE3D927B63707003BD07A /* Settings */ = {
+		487CE3D927B63707003BD07A /* 3_Settings */ = {
 			isa = PBXGroup;
 			children = (
 				48260BD127C67A340069CA1C /* Settings */,
 				48260BD227C67A4C0069CA1C /* SettingsCoordinator.swift */,
 			);
-			path = Settings;
+			path = 3_Settings;
 			sourceTree = "<group>";
 		};
-		487CE3DA27B6384C003BD07A /* Contacts */ = {
+		487CE3DA27B6384C003BD07A /* 2_Contacts */ = {
 			isa = PBXGroup;
 			children = (
 				48260BD527C67A570069CA1C /* Contacts */,
 				487CE3DB27B63862003BD07A /* ContactCommands.swift */,
 				48260BD627C67A650069CA1C /* ContactsCoordinator.swift */,
 			);
-			path = Contacts;
+			path = 2_Contacts;
 			sourceTree = "<group>";
 		};
-		487CE3E127B641BB003BD07A /* Transfer */ = {
+		487CE3E127B641BB003BD07A /* 1_Transfer */ = {
 			isa = PBXGroup;
 			children = (
 				48260BD927C67A730069CA1C /* Transfer */,
 				48260BDA27C67A7C0069CA1C /* TransferCoordinator.swift */,
 			);
-			path = Transfer;
+			path = 1_Transfer;
 			sourceTree = "<group>";
 		};
 		487CE3EC27B64604003BD07A /* 0_Onboarding */ = {
