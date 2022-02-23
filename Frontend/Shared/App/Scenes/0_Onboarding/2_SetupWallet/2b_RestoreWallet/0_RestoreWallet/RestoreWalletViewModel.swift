@@ -8,23 +8,24 @@
 import Foundation
 import ZhipEngine
 
+enum RestorationMethod {
+    case importKeystore
+    case importPrivateKey
+}
+
 enum RestoreWalletNavigationStep {
     case restoreWallet(Wallet)
 }
 
-protocol RestoreWalletViewModel: ObservableObject {}
+protocol RestoreWalletViewModel: ObservableObject {
+    var restorationMethod: RestorationMethod { get set }
+    
+    var restoreWalletUsingKeystoreViewModel: DefaultRestoreWalletUsingKeystoreViewModel { get }
+    var restoreWalletUsingPrivateKeyViewModel: DefaultRestoreWalletUsingPrivateKeyViewModel { get }
+}
+
 extension RestoreWalletViewModel {
     typealias Navigator = NavigationStepper<RestoreWalletNavigationStep>
 }
 
-final class DefaultRestoreWalletViewModel: RestoreWalletViewModel {
-    private unowned let navigator: Navigator
-    
-    init(navigator: Navigator) {
-        self.navigator = navigator
-    }
-    
-    deinit {
-        print("☑️ DefaultRestoreWalletViewModel deinit")
-    }
-}
+

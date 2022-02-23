@@ -33,6 +33,7 @@ struct ZhipApp: App {
                 .view()
                 .background(Color.appBackground)
                 .foregroundColor(.white)
+                .navigationBarTitleDisplayMode(.large)
         }
         .commands {
             SidebarCommands()

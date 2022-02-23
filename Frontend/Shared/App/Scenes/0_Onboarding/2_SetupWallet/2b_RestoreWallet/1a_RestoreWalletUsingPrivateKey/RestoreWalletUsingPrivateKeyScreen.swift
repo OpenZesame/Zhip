@@ -8,7 +8,12 @@
 import SwiftUI
 
 protocol RestoreWalletUsingPrivateKeyViewModel: ObservableObject {}
-final class DefaultRestoreWalletUsingPrivateKeyViewModel: RestoreWalletUsingPrivateKeyViewModel {}
+
+final class DefaultRestoreWalletUsingPrivateKeyViewModel: RestoreWalletUsingPrivateKeyViewModel {
+    deinit {
+        print("☑️ DefaultRestoreWalletUsingPrivateKeyViewModel deinit")
+    }
+}
 
 struct RestoreWalletUsingPrivateKeyScreen<ViewModel: RestoreWalletUsingPrivateKeyViewModel>: View {
     @ObservedObject var viewModel: ViewModel
@@ -18,6 +23,8 @@ struct RestoreWalletUsingPrivateKeyScreen<ViewModel: RestoreWalletUsingPrivateKe
 // MARK: -
 extension RestoreWalletUsingPrivateKeyScreen {
     var body: some View {
-        Text("Restore using privatekey")
+        ForceFullScreen {
+            Text("Restore using privatekey")
+        }
     }
 }
