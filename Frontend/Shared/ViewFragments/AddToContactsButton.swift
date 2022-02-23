@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-
 struct AddToContactsButton: View {
-    @EnvironmentObject private var model: Model
     
     var isContact: Bool {
-        guard let currentRecipientAddress = model.currentRecipientAddress else { return false }
-        return model.isContact(address: currentRecipientAddress)
+//        guard let currentRecipientAddress = model.currentRecipientAddress else { return false }
+//        return model.isContact(address: currentRecipientAddress)
+        false
     }
     
     var body: some View {
@@ -33,12 +32,13 @@ struct AddToContactsButton: View {
 
             }
         }
-        .disabled(model.currentRecipientAddress == nil)
+//        .disabled(model.currentRecipientAddress == nil)
     }
     
     func toggleContact() {
-        guard let currentRecipientAddress = model.currentRecipientAddress else { return }
-        model.toggleContact(address: currentRecipientAddress)
+//        guard let currentRecipientAddress = model.currentRecipientAddress else { return }
+//        model.toggleContact(address: currentRecipientAddress)
+        fatalError()
     }
 }
 
@@ -47,6 +47,6 @@ struct AddToContactsButton_Previews: PreviewProvider {
         AddToContactsButton()
             .padding()
             .previewLayout(.sizeThatFits)
-            .environmentObject(Model())
+//            .environmentObject(Model())
     }
 }

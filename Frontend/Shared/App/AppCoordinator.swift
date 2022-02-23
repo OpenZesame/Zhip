@@ -16,24 +16,20 @@ final class AppCoordinator: NavigationCoordinatable {
     @Root var onboarding = makeOnboarding
     @Root var main = makeMain
     
-    private let model: Model
     private let useCaseProvider: UseCaseProvider
     
-    private let onboardingNavigator = OnboardingCoordinator.Navigator()
-    private let mainNavigator = MainCoordinator.Navigator()
+    private let onboardingCoordinatorNavigator = OnboardingCoordinator.Navigator()
+    private let mainCoordinatorNavigator = MainCoordinator.Navigator()
     
     init(
-        model: Model,
         useCaseProvider: UseCaseProvider
     ) {
         
-        self.model = model
         self.useCaseProvider = useCaseProvider
             
-        switch model.wallet {
-        case .some(let wallet):
+        if let wallet = useCaseProvider.makeWalletUseCase().loadWallet() {
             stack = NavigationStack(initial: \.main, wallet)
-        case .none:
+        } else {
             stack = NavigationStack(initial: \.onboarding)
         }
     }
@@ -48,15 +44,16 @@ final class AppCoordinator: NavigationCoordinatable {
 extension AppCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
-            .onReceive(onboardingNavigator) { [unowned self] userDid in
+            .onReceive(onboardingCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .finishOnboarding(let wallet):
                     self.root(\.main, wallet)
                 }
             }
-            .onReceive(mainNavigator) { [unowned self] userDid in
+            .onReceive(mainCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .userDeletedWallet:
+                    print("🎬 AppCoordinator: userDeletedWallet")
                     self.root(\.onboarding)
                 }
             }
@@ -70,7 +67,7 @@ extension AppCoordinator {
     func makeOnboarding() -> NavigationViewCoordinator<OnboardingCoordinator> {
         NavigationViewCoordinator(
             OnboardingCoordinator(
-                navigator: onboardingNavigator,
+                navigator: onboardingCoordinatorNavigator,
                 useCaseProvider: useCaseProvider
             )
         )
@@ -78,7 +75,8 @@ extension AppCoordinator {
     
     func makeMain(wallet: Wallet) -> MainCoordinator {
         MainCoordinator(
-            navigator: mainNavigator,
+            navigator: mainCoordinatorNavigator,
+            useCaseProvider: useCaseProvider,
             wallet: wallet
         )
     }

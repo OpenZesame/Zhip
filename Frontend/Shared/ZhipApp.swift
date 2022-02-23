@@ -13,30 +13,30 @@ import Stinsen
 @main
 struct ZhipApp: App {
     
-    @StateObject private var model = Model()
+//    @StateObject private var model = Model()
     
     init() {
+        #if os(iOS)
         // For NavigationBarTitle with Large Font
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
         // For NavigationBarTitle with `displayMode = .inline`
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+        #endif
     }
     
     var body: some Scene {
         WindowGroup {
             AppCoordinator(
-                model: model,
                 useCaseProvider: DefaultUseCaseProvider.shared
             )
                 .view()
                 .background(Color.appBackground)
                 .foregroundColor(.white)
-                .environmentObject(model)
         }
         .commands {
             SidebarCommands()
-            ContactCommands(model: model)
+//            ContactCommands(model: model)
         }
     }
 }

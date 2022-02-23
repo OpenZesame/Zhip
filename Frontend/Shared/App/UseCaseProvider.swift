@@ -9,6 +9,29 @@ import Foundation
 import Zesame
 import ZhipEngine
 
+protocol ContactsUseCase {
+    func toggleContact(address: Address)
+    func isContact(address: Address) -> Bool
+}
+final class DefaultContactsUseCase {
+    private var contacts = Set<Contact>()
+    init() {}
+}
+
+extension DefaultContactsUseCase {
+    func toggleContact(address: Address) {
+        if let contactIndex = contacts.firstIndex(where: { $0.address == address }) {
+            contacts.remove(at: contactIndex)
+        } else {
+            contacts.insert(.init(address: address))
+        }
+    }
+    
+    func isContact(address: Address) -> Bool {
+        contacts.contains(where: { $0.address == address })
+    }
+}
+
 protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase

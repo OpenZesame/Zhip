@@ -8,13 +8,6 @@
 import Foundation
 import Zesame
 
-extension Zesame.Wallet: Equatable {
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.address == rhs.address
-    }
-}
-
-
 public struct Wallet: Codable, Equatable {
     public let name: String?
     public let wallet: Zesame.Wallet

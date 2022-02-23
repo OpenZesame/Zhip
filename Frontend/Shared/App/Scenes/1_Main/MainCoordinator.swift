@@ -13,53 +13,6 @@ enum MainCoordinatorNavigationStep {
     case userDeletedWallet
 }
 
-final class BalancesCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<BalancesCoordinator>(initial: \.start)
-    @Root var start = makeStart
-    let wallet: Wallet
-    init(wallet: Wallet) {
-        self.wallet = wallet
-    }
-    
-    
-    @ViewBuilder
-    func makeStart() -> some View {
-        BalancesScreen(wallet: wallet)
-    }
-}
-
-final class TransferCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<TransferCoordinator>(initial: \.start)
-    @Root var start = makeStart
-    
-    @ViewBuilder
-    func makeStart() -> some View {
-        TransferScreen()
-    }
-}
-
-final class ContactsCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<ContactsCoordinator>(initial: \.start)
-    @Root var start = makeStart
-    
-    @ViewBuilder
-    func makeStart() -> some View {
-        ContactsScreen()
-    }
-}
-
-final class SettingsCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<SettingsCoordinator>(initial: \.start)
-    @Root var start = makeStart
-    
-    @ViewBuilder
-    func makeStart() -> some View {
-        SettingsScreen()
-    }
-}
-
-
-
 final class MainCoordinator: TabCoordinatable {
     
     typealias Navigator = NavigationStepper<MainCoordinatorNavigationStep>
@@ -81,14 +34,35 @@ final class MainCoordinator: TabCoordinatable {
     )
     
     private unowned let navigator: Navigator
+    private let useCaseProvider: UseCaseProvider
     
-    init(navigator: Navigator, wallet: Wallet) {
+    private lazy var settingsCoordinatorNavigator = SettingsCoordinator.Navigator()
+    
+    init(navigator: Navigator, useCaseProvider: UseCaseProvider, wallet: Wallet) {
         self.navigator = navigator
+        self.useCaseProvider = useCaseProvider
         self.wallet = wallet
     }
     
     deinit {
         print("✅ MainCoordinator DEINIT 💣")
+    }
+}
+
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension MainCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+        view
+            .onReceive(settingsCoordinatorNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .userDeletedWallet:
+                    print("🎬 MainCoordinator userDeletedWallet")
+                    navigator.step(.userDeletedWallet)
+                }
+            }
+       
     }
 }
 
@@ -98,7 +72,6 @@ extension MainCoordinator {
     func makeBalancesTab(isActive: Bool) -> some View {
         TopLevelNavigationItem.balances.label
     }
-    
     
     @ViewBuilder
     func makeTransferTab(isActive: Bool) -> some View {
@@ -128,6 +101,12 @@ extension MainCoordinator {
     }
     
     func makeSettings() -> NavigationViewCoordinator<SettingsCoordinator> {
-        return NavigationViewCoordinator(SettingsCoordinator())
+        
+        let settingsCoordinator = SettingsCoordinator(
+            navigator: settingsCoordinatorNavigator,
+            useCaseProvider: useCaseProvider
+        )
+        
+        return NavigationViewCoordinator(settingsCoordinator)
     }
 }

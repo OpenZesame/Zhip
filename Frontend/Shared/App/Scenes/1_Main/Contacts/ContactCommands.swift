@@ -9,11 +9,10 @@ import SwiftUI
 
 struct ContactCommands: Commands {
 
-    let model: Model
 
     var body: some Commands {
         CommandMenu(Text("Contact", comment: "Menu title for contact-related actions")) {
-            AddToContactsButton().environmentObject(model)
+            AddToContactsButton()//.environmentObject(model)
                 .keyboardShortcut("+", modifiers: [.option, .command])
         }
     }
