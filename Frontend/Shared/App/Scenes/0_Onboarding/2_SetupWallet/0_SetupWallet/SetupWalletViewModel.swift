@@ -7,7 +7,16 @@
 
 import Foundation
 
+enum SetupWalletNavigationStep {
+    case userIntendsToGenerateNewWallet
+    case userIntendsToRestoreExistingWallet
+}
+
 protocol SetupWalletViewModel: ObservableObject {
     func generateNewWallet()
     func restoreExistingWallet()
+}
+
+extension SetupWalletViewModel {
+    typealias Navigator = NavigationStepper<SetupWalletNavigationStep>
 }

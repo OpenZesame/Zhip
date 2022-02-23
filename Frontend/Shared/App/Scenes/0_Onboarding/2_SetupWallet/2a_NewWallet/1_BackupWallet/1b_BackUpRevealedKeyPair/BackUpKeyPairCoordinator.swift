@@ -11,72 +11,68 @@ import SwiftUI
 import ZhipEngine
 import struct Zesame.KeyPair
 
-// MARK: - BackUpKeyPairCoordinator
-// MARK: -
-protocol BackUpKeyPairCoordinator: AnyObject {
-    func didDecryptWallet(keyPair: KeyPair)
-    func failedToDecryptWallet(error: Swift.Error)
-    func doneBackingUpKeys()
+enum BackUpKeyPairCoordinatorNavigationStep {
+    case failedToDecryptWallet(error: Swift.Error)
+    case finishedBackingUpKeys
 }
 
-// MARK: - DefaultBackUpKeyPairCoordinator
+// MARK: - BackUpKeyPairCoordinator
 // MARK: -
-final class DefaultBackUpKeyPairCoordinator: BackUpKeyPairCoordinator, NavigationCoordinatable {
+final class BackUpKeyPairCoordinator: NavigationCoordinatable {
+    typealias Navigator = NavigationStepper<BackUpKeyPairCoordinatorNavigationStep>
     
-    let stack = NavigationStack<DefaultBackUpKeyPairCoordinator>(initial: \.decryptKeystore)
+    let stack = NavigationStack<BackUpKeyPairCoordinator>(initial: \.decryptKeystore)
     
     @Root var decryptKeystore = makeDecryptKeystore
     @Route(.push) var backUpRevealedKeyPair = makeBackUpRevealedKeyPair(keyPair:)
     
+    private unowned let navigator: Navigator
     private let wallet: Wallet
     private let useCase: WalletUseCase
     
-    init(useCase: WalletUseCase, wallet: Wallet) {
+    private lazy var decryptKeystoreToRevealKeyPairNavigator = DecryptKeystoreToRevealKeyPairViewModel.Navigator()
+    private lazy var backUpRevealedKeyPairNavigator = BackUpRevealedKeyPairViewModel.Navigator()
+    
+    init(navigator: Navigator, useCase: WalletUseCase, wallet: Wallet) {
+        self.navigator = navigator
         self.useCase = useCase
         self.wallet = wallet
     }
 }
 
-// MARK: - BackUpKeyPairCoordinator
+
+
+
+// MARK: - Routing
 // MARK: -
-extension DefaultBackUpKeyPairCoordinator {
+extension BackUpKeyPairCoordinator {
+    func toBackupRevealed(keyPair: KeyPair) {
+        print("toBackupRevealed keypair: \(keyPair.publicKey.hex.uncompressed)")
+        self.route(to: \.backUpRevealedKeyPair, keyPair)
+    }
+    
     func didDecryptWallet(keyPair: KeyPair) {
         toBackupRevealed(keyPair: keyPair)
     }
     
     func failedToDecryptWallet(error: Swift.Error) {
-        print("Failed to decrypt wallet, error: \(error)")
-        
-        dismissCoordinator {
-            print("dismissing \(self)")
-        }
+        navigator.step(.failedToDecryptWallet(error: error))
     }
     
     func doneBackingUpKeys() {
-        dismissCoordinator {
-            print("dismissing \(self)")
-        }
-    }
-}
-
-// MARK: - Routing
-// MARK: -
-extension DefaultBackUpKeyPairCoordinator {
-    func toBackupRevealed(keyPair: KeyPair) {
-        print("toBackupRevealed keypair: \(keyPair.publicKey.hex.uncompressed)")
-        self.route(to: \.backUpRevealedKeyPair, keyPair)
+        navigator.step(.finishedBackingUpKeys)
     }
 }
 
 // MARK: - Factory
 // MARK: -
-private extension DefaultBackUpKeyPairCoordinator {
+private extension BackUpKeyPairCoordinator {
 
     @ViewBuilder
     func makeDecryptKeystore() -> some View {
         
         let viewModel = DefaultDecryptKeystoreToRevealKeyPairViewModel(
-            coordinator: self,
+            navigator: decryptKeystoreToRevealKeyPairNavigator,
             useCase: useCase,
             wallet: wallet
         )
@@ -86,7 +82,12 @@ private extension DefaultBackUpKeyPairCoordinator {
     
     @ViewBuilder
     func makeBackUpRevealedKeyPair(keyPair: KeyPair) -> some View {
-        let viewModel = DefaultBackUpRevealedKeyPairViewModel(coordinator: self, keyPair: keyPair)
+        
+        let viewModel = DefaultBackUpRevealedKeyPairViewModel(
+            navigator: backUpRevealedKeyPairNavigator,
+            keyPair: keyPair
+        )
+        
         BackUpRevealedKeyPairScreen(viewModel: viewModel)
     }
 }

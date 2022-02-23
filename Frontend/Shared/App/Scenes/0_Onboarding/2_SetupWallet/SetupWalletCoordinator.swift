@@ -10,31 +10,25 @@ import Stinsen
 import ZhipEngine
 import Combine
 
-enum SetupWalletNavigationStep {
+enum SetupWalletCoordinatorNavigationStep {
     case finishSettingUpWallet(wallet: Wallet)
 }
 
 // MARK: - SetupWalletCoordinator
 // MARK: -
-protocol SetupWalletCoordinator: AnyObject {
-    func generateNewWallet()
-    func restoreExistingWallet()
-}
-
-// MARK: - DefaultSetupWalletCoordinator
-// MARK: -
-final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletCoordinator {
+final class SetupWalletCoordinator: NavigationCoordinatable {
+    typealias Navigator = NavigationStepper<SetupWalletCoordinatorNavigationStep>
     
-    let stack = NavigationStack<DefaultSetupWalletCoordinator>(initial: \.setupWallet)
+    let stack = NavigationStack<SetupWalletCoordinator>(initial: \.setupWallet)
 
     @Root var setupWallet = makeSetupWallet
     @Route(.modal) var newWallet = makeNewWallet
     @Route(.modal) var restoreWallet = makeRestoreWallet
     
-    private let newWalletNavigator: DefaultNewWalletCoordinator.Navigator = .init()
+    private let setupWalletNavigator = SetupWalletViewModel.Navigator()
+    private let newWalletCoordinatorNavigator = NewWalletCoordinator.Navigator()
     
     private let useCaseProvider: UseCaseProvider
-    typealias Navigator = PassthroughSubject<SetupWalletNavigationStep, Never>
     private unowned let navigator: Navigator
     
     init(useCaseProvider: UseCaseProvider, navigator: Navigator) {
@@ -45,43 +39,34 @@ final class DefaultSetupWalletCoordinator: NavigationCoordinatable, SetupWalletC
 
 // MARK: - NavigationCoordinatable
 // MARK: -
-extension DefaultSetupWalletCoordinator {
+extension SetupWalletCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
-            .onReceive(newWalletNavigator.eraseToAnyPublisher(), perform: { userDid in
+            .onReceive(setupWalletNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .userIntendsToRestoreExistingWallet:
+                    toRestoreExistingWallet()
+                case .userIntendsToGenerateNewWallet:
+                    toGenerateNewWallet()
+                }
+            }
+            .onReceive(newWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .create(let wallet):
-                    self.navigator.send(.finishSettingUpWallet(wallet: wallet))
-                    self.dismissCoordinator {
-                        print("dismiss: \(self)")
-                    }
+                    self.navigator.step(.finishSettingUpWallet(wallet: wallet))
                 case .cancel:
-                    print("user cancelled setting up wallet.")
-                    self.dismissCoordinator {
-                        print("dismiss: \(self)")
-                    }
+//                    self.dismissCoordinator {
+//                        print("dismiss: \(self)")
+//                    }
+                    fatalError("We should probably propagate the `cancel` event up to this coordinators parent coordinator.")
                 }
-            })
-        
+            }
     }
-}
-
-// MARK: - SetupWalletC. Conformance
-// MARK: -
-extension DefaultSetupWalletCoordinator {
-    func generateNewWallet() {
-        toGenerateNewWallet()
-    }
-    
-    func restoreExistingWallet() {
-        toRestoreExistingWallet()
-    }
- 
 }
 
 // MARK: - Routing
 // MARK: -
-extension DefaultSetupWalletCoordinator {
+extension SetupWalletCoordinator {
     
     func toGenerateNewWallet() {
         route(to: \.newWallet)
@@ -90,22 +75,30 @@ extension DefaultSetupWalletCoordinator {
     func toRestoreExistingWallet() {
         route(to: \.restoreWallet)
     }
+    
+    func generateNewWallet() {
+        toGenerateNewWallet()
+    }
+    
+    func restoreExistingWallet() {
+        toRestoreExistingWallet()
+    }
 }
 
 // MARK: - Factory
 // MARK: -
-extension DefaultSetupWalletCoordinator {
+extension SetupWalletCoordinator {
     
     @ViewBuilder
     func makeSetupWallet() -> some View {
-        let viewModel = DefaultSetupWalletViewModel(coordinator: self)
+        let viewModel = DefaultSetupWalletViewModel(navigator: setupWalletNavigator)
         SetupWalletScreen(viewModel: viewModel)
     }
     
-    func makeNewWallet() -> NavigationViewCoordinator<DefaultNewWalletCoordinator> {
-        let newWalletCoordinator = DefaultNewWalletCoordinator(
-            useCaseProvider: useCaseProvider,
-            navigator: newWalletNavigator
+    func makeNewWallet() -> NavigationViewCoordinator<NewWalletCoordinator> {
+        let newWalletCoordinator = NewWalletCoordinator(
+            navigator: newWalletCoordinatorNavigator,
+            useCaseProvider: useCaseProvider
         )
         
         return NavigationViewCoordinator(
@@ -113,8 +106,8 @@ extension DefaultSetupWalletCoordinator {
         )
     }
     
-    func makeRestoreWallet() -> NavigationViewCoordinator<DefaultRestoreWalletCoordinator> {
-        .init(DefaultRestoreWalletCoordinator())
+    func makeRestoreWallet() -> NavigationViewCoordinator<RestoreWalletCoordinator> {
+        .init(RestoreWalletCoordinator())
     }
     
 }

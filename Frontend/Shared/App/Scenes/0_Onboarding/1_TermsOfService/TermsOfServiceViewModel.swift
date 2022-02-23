@@ -7,7 +7,15 @@
 
 import Foundation
 
+enum TermsOfServiceNavigationStep {
+    case userDidAcceptTerms
+}
+
 protocol TermsOfServiceViewModel: ObservableObject {
     var finishedReading: Bool { get set }
     func didAcceptTermsOfService()
+}
+
+extension TermsOfServiceViewModel {
+    typealias Navigator = NavigationStepper<TermsOfServiceNavigationStep>
 }

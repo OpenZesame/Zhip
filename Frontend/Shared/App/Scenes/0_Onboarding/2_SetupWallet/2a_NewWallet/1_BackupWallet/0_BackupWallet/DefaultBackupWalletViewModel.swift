@@ -13,17 +13,17 @@ import ZhipEngine
 
 // MARK: - DefaultBackupWalletViewModel
 // MARK: -
-final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: BackupWalletViewModel {
+final class DefaultBackupWalletViewModel: BackupWalletViewModel {
     @Published var userHasConfirmedBackingUpWallet = false
     @Published var isFinished = false
     @Published var isPresentingDidCopyKeystoreAlert = false
-    private unowned let coordinator: Coordinator
+    private unowned let navigator: Navigator
     private let wallet: Wallet
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(coordinator: Coordinator, wallet: Wallet) {
-        self.coordinator = coordinator
+    init(navigator: Navigator, wallet: Wallet) {
+        self.navigator = navigator
         self.wallet = wallet
         
         // `userHasConfirmedBackingUpWallet` => `isFinished`
@@ -47,7 +47,7 @@ final class DefaultBackupWalletViewModel<Coordinator: BackupWalletCoordinator>: 
 // MARK: -
 extension DefaultBackupWalletViewModel {
     func `continue`() {
-        coordinator.doneBackingUpWallet()
+        navigator.step(.finishedBackingUpWallet)
     }
     
     func copyKeystoreToPasteboard() {
@@ -57,11 +57,11 @@ extension DefaultBackupWalletViewModel {
     }
     
     func revealKeystore() {
-        coordinator.revealKeystore()
+        navigator.step(.revealKeystore)
     }
     
     func revealPrivateKey() {
-        coordinator.revealPrivateKey()
+        navigator.step(.revealPrivateKey)
     }
 }
 

@@ -8,33 +8,20 @@
 import SwiftUI
 import Stinsen
 import ZhipEngine
+import Combine
 
-// MARK: - RestoreOrGenerateNewWalletCoordinator
-// MARK: -
-protocol RestoreOrGenerateNewWalletCoordinator: AnyObject {
-    func privacyIsEnsured()
-    func myScreenMightBeWatched()
+enum NewWalletCoordinatorNavigationStep {
+    case create(wallet: Wallet)
+    case cancel
 }
 
 // MARK: - NewWalletCoordinator
 // MARK: -
-protocol NewWalletCoordinator: AnyObject {
-    func didGenerateNew(wallet: Wallet)
-    func failedToGenerateNewWallet(error: Swift.Error)
-}
-
-import Combine
-
-
-enum NewWalletCoordinatorNavigationStep {
-    case create(wallet: Wallet), cancel
-}
-
-
-// MARK: - DefaultNewWalletCoordinator
-// MARK: -
-final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, NewWalletCoordinator, NavigationCoordinatable {
-    let stack: NavigationStack<DefaultNewWalletCoordinator> = .init(initial: \.ensurePrivacy)
+final class NewWalletCoordinator: NavigationCoordinatable {
+    
+    typealias Navigator = NavigationStepper<NewWalletCoordinatorNavigationStep>
+    
+    let stack: NavigationStack<NewWalletCoordinator> = .init(initial: \.ensurePrivacy)
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var newEncryptionPassword = makeGenerateNewWallet
@@ -43,31 +30,52 @@ final class DefaultNewWalletCoordinator: RestoreOrGenerateNewWalletCoordinator, 
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
-    typealias Navigator = PassthroughSubject<NewWalletCoordinatorNavigationStep, Never>
     private unowned let navigator: Navigator
+    private let backupWalletCoordinatorNavigator = BackupWalletCoordinator.Navigator()
+    private let ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
     
     init(
-        useCaseProvider: UseCaseProvider,
-        navigator: Navigator
+        navigator: Navigator,
+        useCaseProvider: UseCaseProvider
     ) {
-        self.useCaseProvider = useCaseProvider
         self.navigator = navigator
+        self.useCaseProvider = useCaseProvider
     }
     
     deinit {
-        print("deinit DefaultNewWalletCoordinator")
+        print("deinit NewWalletCoordinator")
     }
 
 }
 
- 
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension NewWalletCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+
+        view
+            .onReceive(backupWalletCoordinatorNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .userDidBackUpWallet(let wallet):
+                    self.navigator.step(.create(wallet: wallet))
+                }
+            }
+            .onReceive(ensurePrivacyNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .ensurePrivacy: self.privacyIsEnsured()
+                case .thinkScreenMightBeWatched: self.myScreenMightBeWatched()
+                }
+            }
+    }
+}
+
 // MARK: - Factory
 // MARK: -
-extension DefaultNewWalletCoordinator {
+extension NewWalletCoordinator {
     
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
-        let viewModel = DefaultEnsurePrivacyViewModel<DefaultNewWalletCoordinator>(coordinator: self)
+        let viewModel = DefaultEnsurePrivacyViewModel(navigator: ensurePrivacyNavigator)
         EnsurePrivacyScreen(viewModel: viewModel)
     }
     
@@ -82,26 +90,23 @@ extension DefaultNewWalletCoordinator {
         GenerateNewWalletScreen(viewModel: viewModel)
     }
     
-    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<DefaultBackupWalletCoordinator> {
+    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<BackupWalletCoordinator> {
        
-        let backupWalletCoordinator = DefaultBackupWalletCoordinator(
+        let backupWalletCoordinator = BackupWalletCoordinator(
+            navigator: backupWalletCoordinatorNavigator,
             useCaseProvider: useCaseProvider,
             wallet: wallet
-        ) { [unowned navigator] backedUpWallet in
-            navigator.send(.create(wallet: backedUpWallet))
-        }
-        
+        )
         return NavigationViewCoordinator(backupWalletCoordinator)
     }
     
 }
 
 
-
-// MARK: - NewWalletC. Conformance
+// MARK: - Routing
 // MARK: -
-extension DefaultNewWalletCoordinator {
-
+extension NewWalletCoordinator {
+    
     func didGenerateNew(wallet: Wallet) {
         toBackupWallet(wallet: wallet)
     }
@@ -113,12 +118,7 @@ extension DefaultNewWalletCoordinator {
             print("dismissing \(self)")
         }
     }
-}
-
-// MARK: - RestoreOrGenerateC. Conformance
-// MARK: -
-extension DefaultNewWalletCoordinator {
-
+    
     func privacyIsEnsured() {
         toGenerateNewWallet()
     }
@@ -128,11 +128,6 @@ extension DefaultNewWalletCoordinator {
             print("dismissing \(self)")
         }
     }
-}
-
-// MARK: - Routing
-// MARK: -
-extension DefaultNewWalletCoordinator {
 
     func toBackupWallet(wallet: Wallet) {
         route(to: \.backupWallet, wallet)

@@ -10,16 +10,14 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
-// MARK: - OnboardingCoordinator
-// MARK: -
-protocol OnboardingCoordinator: AnyObject {
-    func didStart()
-    func didAcceptTermsOfService()
+enum OnboardingCoordinatorNavigationStep {
+    case finishOnboarding
 }
 
-// MARK: - DefaultOnboardingCoordinator
+// MARK: - OnboardingCoordinator
 // MARK: -
-final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoordinatable {
+final class OnboardingCoordinator: NavigationCoordinatable {
+    typealias Navigator = NavigationStepper<OnboardingCoordinatorNavigationStep>
 
     // MARK: - Injected properties
     // MARK: -
@@ -27,13 +25,16 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     
     // MARK: - Self-init properties
     // MARK: -
-    let stack = NavigationStack(initial: \DefaultOnboardingCoordinator.setupPINCode)
+    let stack = NavigationStack(initial: \OnboardingCoordinator.welcome)
     
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     
     @Root var welcome = makeWelcome
-    @Route(.push) var termsOfService = makeTermsOfService
+    
+    // Actually we'd prefer `@Route(.push)`, but when replacing TermsOfService
+    // with next screen we got a pop animation, which we don't want.
+    @Root var termsOfService = makeTermsOfService
     
     // Replace navigation stack
     @Root var setupWallet = makeSetupWallet
@@ -41,9 +42,14 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
     // Replace navigation stack
     @Root var setupPINCode = makeSetupPINCode
     
-    private let setupWalletNavigator = DefaultSetupWalletCoordinator.Navigator()
+    private unowned let navigator: Navigator
+    private let welcomeNavigator = WelcomeViewModel.Navigator()
+    private let termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
+    private let setupWalletNavigator = SetupWalletCoordinator.Navigator()
+    private let setupPinNavigator = SetupPINCodeCoordinator.Navigator()
     
-    init(useCaseProvider: UseCaseProvider) {
+    init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
+        self.navigator = navigator
         self.useCaseProvider = useCaseProvider
     }
     
@@ -54,36 +60,42 @@ final class DefaultOnboardingCoordinator: OnboardingCoordinator, NavigationCoord
 
 // MARK: - NavigationCoordinatable
 // MARK: -
-extension DefaultOnboardingCoordinator {
+extension OnboardingCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
 
-        view.onReceive(setupWalletNavigator.eraseToAnyPublisher(), perform: { [unowned self] userDid in
-            switch userDid {
-            case .finishSettingUpWallet(let wallet):
-                self.walletUseCase.save(wallet: wallet)
-                self.root(\.setupPINCode)
+        view
+            .onReceive(welcomeNavigator)  { [unowned self] userDid in
+                switch userDid {
+                case .didStart:
+                    self.toNextStep()
+                }
             }
-        })
+            .onReceive(termsOfServiceNavigator)  { [unowned self] userDid in
+                switch userDid {
+                case .userDidAcceptTerms:
+                    self.toNextStep()
+                }
+            }
+            .onReceive(setupWalletNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .finishSettingUpWallet(let wallet):
+                    self.walletUseCase.save(wallet: wallet)
+                    self.root(\.setupPINCode)
+                }
+            }
+            .onReceive(setupPinNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .finishedPINSetup:
+                    self.navigator.step(.finishOnboarding)
+                }
+            }
         
-    }
-}
-
-// MARK: - OnboardingCoordinator
-// MARK: -
-extension DefaultOnboardingCoordinator {
-    
-    func didStart() {
-        toNextStep()
-    }
-    
-    func didAcceptTermsOfService() {
-        toNextStep()
     }
 }
 
 // MARK: - Private
 // MARK: -
-private extension DefaultOnboardingCoordinator {
+private extension OnboardingCoordinator {
     
     func toNextStep() {
         if !onboardingUseCase.hasAcceptedTermsOfService {
@@ -96,36 +108,36 @@ private extension DefaultOnboardingCoordinator {
     }
     
     func toSetupWallet() {
-        self.root(\.setupWallet)
+        root(\.setupWallet)
    }
     
     func toTermsOfService() {
-        self.route(to: \.termsOfService)
+        root(\.termsOfService)
     }
 }
 
 // MARK: - Factory
 // MARK: -
-private extension DefaultOnboardingCoordinator {
+private extension OnboardingCoordinator {
     
     @ViewBuilder
     func makeWelcome() -> some View {
-        WelcomeScreen(viewModel: DefaultWelcomeViewModel(coordinator: self))
+        WelcomeScreen(viewModel: DefaultWelcomeViewModel(navigator: welcomeNavigator))
     }
     
     @ViewBuilder
     func makeTermsOfService() -> some View {
         
         let viewModel = DefaultTermsOfServiceViewModel(
-            coordinator: self,
+            navigator: termsOfServiceNavigator,
             useCase: onboardingUseCase
         )
         
         TermsOfServiceScreen(viewModel: viewModel)
     }
     
-    func makeSetupWallet() -> NavigationViewCoordinator<DefaultSetupWalletCoordinator> {
-        let setupWalletCoordinator = DefaultSetupWalletCoordinator(
+    func makeSetupWallet() -> NavigationViewCoordinator<SetupWalletCoordinator> {
+        let setupWalletCoordinator = SetupWalletCoordinator(
             useCaseProvider: useCaseProvider,
             navigator: setupWalletNavigator
         )
@@ -133,8 +145,8 @@ private extension DefaultOnboardingCoordinator {
         return NavigationViewCoordinator(setupWalletCoordinator)
     }
     
-    func makeSetupPINCode() -> NavigationViewCoordinator<DefaultSetupPINCodeCoordinator> {
-        .init(DefaultSetupPINCodeCoordinator())
+    func makeSetupPINCode() -> NavigationViewCoordinator<SetupPINCodeCoordinator> {
+        .init(SetupPINCodeCoordinator(navigator: setupPinNavigator))
     }
  
 }

@@ -7,7 +7,16 @@
 
 import Foundation
 
+enum EnsurePrivacyNavigationStep {
+    case thinkScreenMightBeWatched
+    case ensurePrivacy
+}
+
 protocol EnsurePrivacyViewModel: ObservableObject {
     func privacyIsEnsured()
     func myScreenMightBeWatched()
+}
+
+extension EnsurePrivacyViewModel {
+    typealias Navigator = NavigationStepper<EnsurePrivacyNavigationStep>
 }

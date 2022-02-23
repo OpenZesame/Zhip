@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class DefaultEnsurePrivacyViewModel<Coordinator: RestoreOrGenerateNewWalletCoordinator>: EnsurePrivacyViewModel {
+final class DefaultEnsurePrivacyViewModel: EnsurePrivacyViewModel {
     
-    private unowned let coordinator: Coordinator
+    private unowned let navigator: Navigator
     
-    init(coordinator: Coordinator) {
-        self.coordinator = coordinator
+    init(navigator: Navigator) {
+        self.navigator = navigator
     }
 }
 
@@ -20,10 +20,10 @@ final class DefaultEnsurePrivacyViewModel<Coordinator: RestoreOrGenerateNewWalle
 // MARK: -
 extension DefaultEnsurePrivacyViewModel {
     func privacyIsEnsured() {
-        coordinator.privacyIsEnsured()
+        navigator.step(.ensurePrivacy)
     }
     
     func myScreenMightBeWatched() {
-        coordinator.myScreenMightBeWatched()
+        navigator.step(.thinkScreenMightBeWatched)
     }
 }

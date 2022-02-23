@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum BackUpRevealedKeyPairNavigationStep {
+    case finishBackingUpKeys
+}
+
 protocol BackUpRevealedKeyPairViewModel: ObservableObject {
     var displayablePrivateKey: String { get }
     var displayablePublicKey: String { get }
@@ -14,4 +18,8 @@ protocol BackUpRevealedKeyPairViewModel: ObservableObject {
     func copyPublicKeyToPasteboard()
     var isPresentingDidCopyToPasteboardAlert: Bool { get set }
     func doneBackingUpKeys()
+}
+
+extension BackUpRevealedKeyPairViewModel {
+    typealias Navigator = NavigationStepper<BackUpRevealedKeyPairNavigationStep>
 }

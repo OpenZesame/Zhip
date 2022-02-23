@@ -9,6 +9,10 @@ import SwiftUI
 import Stinsen
 import ZhipEngine
 
+enum MainCoordinatorNavigationStep {
+    case userDeletedWallet
+}
+
 final class BalancesCoordinator: NavigationCoordinatable {
     let stack = NavigationStack<BalancesCoordinator>(initial: \.start)
     @Root var start = makeStart
@@ -55,7 +59,10 @@ final class SettingsCoordinator: NavigationCoordinatable {
 }
 
 
+
 final class MainCoordinator: TabCoordinatable {
+    
+    typealias Navigator = NavigationStepper<MainCoordinatorNavigationStep>
     
     let wallet: Wallet
     
@@ -73,7 +80,10 @@ final class MainCoordinator: TabCoordinatable {
         ]
     )
     
-    init(wallet: Wallet) {
+    private unowned let navigator: Navigator
+    
+    init(navigator: Navigator, wallet: Wallet) {
+        self.navigator = navigator
         self.wallet = wallet
     }
     

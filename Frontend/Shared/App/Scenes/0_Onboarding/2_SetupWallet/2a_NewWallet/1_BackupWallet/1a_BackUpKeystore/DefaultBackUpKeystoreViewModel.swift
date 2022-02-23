@@ -11,18 +11,17 @@ import Combine
 
 // MARK: - DefaultBackUpKeystoreViewModel
 // MARK: -
-final class DefaultBackUpKeystoreViewModel<Coordinator: BackupWalletCoordinator>: BackUpKeystoreViewModel {
+final class DefaultBackUpKeystoreViewModel: BackUpKeystoreViewModel {
     
-    private unowned let coordinator: Coordinator
+    private unowned let navigator: Navigator
     private let wallet: Wallet
     
     @Published var isPresentingDidCopyKeystoreAlert = false
     private var cancellables = Set<AnyCancellable>()
     
-    init(coordinator: Coordinator, wallet: Wallet) {
-        self.coordinator = coordinator
+    init(navigator: Navigator, wallet: Wallet) {
+        self.navigator = navigator
         self.wallet = wallet
-        
         
         // Autoclose `Did Copy Keystore` Alert after delay
         $isPresentingDidCopyKeystoreAlert
@@ -40,10 +39,12 @@ final class DefaultBackUpKeystoreViewModel<Coordinator: BackupWalletCoordinator>
 // MARK: -
 extension DefaultBackUpKeystoreViewModel {
     func doneBackingUpKeystore() {
-        coordinator.doneBackingUpKeystore()
+        navigator.step(.finishedBackingUpKeystore)
     }
     
-    var displayableKeystore: String { wallet.keystoreAsJSON }
+    var displayableKeystore: String {
+        wallet.keystoreAsJSON
+    }
     
     func copyKeystoreToPasteboard() {
         guard copyToPasteboard(contents: displayableKeystore) else { return }

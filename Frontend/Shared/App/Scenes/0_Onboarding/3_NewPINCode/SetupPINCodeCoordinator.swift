@@ -9,27 +9,32 @@ import SwiftUI
 import Stinsen
 import ZhipEngine
 
-//enum SetupPINCoordinatorNavigationStep {
-//    case done
-//}
+enum SetupPINCoordinatorNavigationStep {
+    case finishedPINSetup
+}
 
 // MARK: - SetupPINCodeCoordinator
 // MARK: -
-protocol SetupPINCodeCoordinator: AnyObject {}
-
-// MARK: - DefaultSetupPINCodeCoordinator
-// MARK: -
-final class DefaultSetupPINCodeCoordinator: SetupPINCodeCoordinator, NavigationCoordinatable {
-    let stack = NavigationStack<DefaultSetupPINCodeCoordinator>(initial: \.newPIN)
+final class SetupPINCodeCoordinator: NavigationCoordinatable {
+    
+    typealias Navigator = NavigationStepper<SetupPINCoordinatorNavigationStep>
+    
+    let stack = NavigationStack<SetupPINCodeCoordinator>(initial: \.newPIN)
     @Root var newPIN = makeNewPIN
     @Route(.push) var confirmPIN = makeConfirmPIN(expectedPIN:)
     
     private let newPinNavigator = NewPINCodeViewModel.Navigator()
+    private let confirmNewPinNavigator = ConfirmNewPINCodeViewModel.Navigator()
+    private unowned let navigator: Navigator
+    
+    init(navigator: Navigator) {
+        self.navigator = navigator
+    }
 }
 
 // MARK: - NavigationCoordinatable
 // MARK: -
-extension DefaultSetupPINCodeCoordinator {
+extension SetupPINCodeCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
             .onReceive(newPinNavigator) { userDid in
@@ -39,18 +44,17 @@ extension DefaultSetupPINCodeCoordinator {
                 case .skipSettingPin:
                     print("👻 skip setting pin => dismiss")
                     self.dismissCoordinator {
-                        print("dismissing  DefaultSetupPINCodeCoordinator")
+                        print("dismissing  SetupPINCodeCoordinator")
                     }
                 }
             }
         
     }
 }
-
     
 // MARK: - Factory
 // MARK: -
-extension DefaultSetupPINCodeCoordinator {
+extension SetupPINCodeCoordinator {
     @ViewBuilder
     func makeNewPIN() -> some View {
         let viewModel = DefaultNewPINCodeViewModel(navigator: newPinNavigator)
@@ -59,7 +63,10 @@ extension DefaultSetupPINCodeCoordinator {
     
     @ViewBuilder
     func makeConfirmPIN(expectedPIN: Pincode) -> some View {
-        let viewModel = DefaultConfirmNewPINCodeViewModel(expectedPIN: expectedPIN)
+        let viewModel = DefaultConfirmNewPINCodeViewModel(
+            navigator: confirmNewPinNavigator,
+            expectedPIN: expectedPIN
+        )
         ConfirmNewPINCodeScreen(viewModel: viewModel)
     }
 }

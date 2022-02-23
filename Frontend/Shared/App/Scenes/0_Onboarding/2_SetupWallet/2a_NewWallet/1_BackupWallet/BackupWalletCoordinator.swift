@@ -9,22 +9,16 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
-// MARK: - BackupWalletCoordinator
-// MARK: -
-protocol BackupWalletCoordinator: AnyObject {
-    
-    func doneBackingUpWallet()
-    func revealKeystore()
-    func revealPrivateKey()
-    func doneBackingUpKeystore()
-    func doneBackingUpPrivateKey()
+enum BackupWalletCoordinatorNavigationStep {
+    case userDidBackUpWallet(Wallet)
 }
 
-// MARK: - DefaultBackupWalletCoordinator
+// MARK: - BackupWalletCoordinator
 // MARK: -
-final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationCoordinatable {
+final class BackupWalletCoordinator: NavigationCoordinatable {
+    typealias Navigator = NavigationStepper<BackupWalletCoordinatorNavigationStep>
     
-    let stack = NavigationStack<DefaultBackupWalletCoordinator>(initial: \.backupWallet)
+    let stack = NavigationStack<BackupWalletCoordinator>(initial: \.backupWallet)
     
     @Root var backupWallet = makeBackupWallet
     @Route(.push) var revealKeystoreRoute = makeRevealKeystore
@@ -33,14 +27,20 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     private let useCaseProvider: UseCaseProvider
     private let wallet: Wallet
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-   
+    private unowned let navigator: Navigator
     
-    private let didBackUpWallet: (Wallet) -> Void
+    private lazy var backUpKeyPairCoordinatorNavigator = BackUpKeyPairCoordinator.Navigator()
+    private lazy var backupWalletNavigator = BackupWalletViewModel.Navigator()
+    private lazy var backUpKeystoreNavigator = BackUpKeystoreViewModel.Navigator()
     
-    init(useCaseProvider: UseCaseProvider, wallet: Wallet, didBackUpWallet: @escaping (Wallet) -> Void) {
+    init(
+        navigator: Navigator,
+        useCaseProvider: UseCaseProvider,
+        wallet: Wallet
+    ) {
+        self.navigator = navigator
         self.useCaseProvider = useCaseProvider
         self.wallet = wallet
-        self.didBackUpWallet = didBackUpWallet
     }
     
     deinit {
@@ -49,35 +49,100 @@ final class DefaultBackupWalletCoordinator: BackupWalletCoordinator, NavigationC
     
 }
 
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension BackupWalletCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+        view
+            .onReceive(backUpKeyPairCoordinatorNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .failedToDecryptWallet(let error):
+                    failedToDecryptWallet(error: error)
+                case .finishedBackingUpKeys:
+                    finishedBackingUpKeys()
+                }
+            }
+            .onReceive(backupWalletNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .revealKeystore:
+                    toRevealKeystore()
+                case .revealPrivateKey:
+                    toBackUpRevealedKeyPair()
+                case .finishedBackingUpWallet:
+                    doneBackingUpWallet()
+                }
+            }
+            .onReceive(backUpKeystoreNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .finishedBackingUpKeystore:
+                    doneBackingUpKeystore()
+                }
+            }
+    
+    }
+}
+
+
 // MARK: - Factory
 // MARK: -
-extension DefaultBackupWalletCoordinator {
+extension BackupWalletCoordinator {
     
     @ViewBuilder
     func makeBackupWallet() -> some View {
-        let viewModel = DefaultBackupWalletViewModel(coordinator: self, wallet: wallet)
+        
+        let viewModel = DefaultBackupWalletViewModel(
+            navigator: backupWalletNavigator,
+            wallet: wallet
+        )
+        
         BackupWalletScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
     func makeRevealKeystore() -> some View {
-        let viewModel = DefaultBackUpKeystoreViewModel(coordinator: self, wallet: wallet)
+        
+        let viewModel = DefaultBackUpKeystoreViewModel(
+            navigator: backUpKeystoreNavigator,
+            wallet: wallet
+        )
+        
         BackUpKeystoreScreen(viewModel: viewModel)
     }
     
-    func makeBackUpRevealedKeyPair() -> NavigationViewCoordinator<DefaultBackUpKeyPairCoordinator> {
+    func makeBackUpRevealedKeyPair() -> NavigationViewCoordinator<BackUpKeyPairCoordinator> {
         NavigationViewCoordinator(
-            DefaultBackUpKeyPairCoordinator(
+            BackUpKeyPairCoordinator(
+                navigator: backUpKeyPairCoordinatorNavigator,
                 useCase: walletUseCase,
                 wallet: wallet
             )
         )
     }
 }
-
-// MARK: - BackupWalletC. Conf.
+   
+// MARK: - Routing
 // MARK: -
-extension DefaultBackupWalletCoordinator {
+extension BackupWalletCoordinator {
+    
+    func failedToDecryptWallet(error: Swift.Error) {
+        fatalError("what to do? failedToDecryptWallet: \(error)")
+    }
+    
+    func toRevealKeystore() {
+        route(to: \.revealKeystoreRoute)
+    }
+    
+    func toBackUpRevealedKeyPair() {
+        route(to: \.revealPrivateKeyRoute)
+    }
+    
+    func finishedBackingUpKeys() {
+        self.popLast {
+            print("Pop private key")
+        }
+    }
+    
     func revealKeystore() {
         toRevealKeystore()
     }
@@ -86,31 +151,13 @@ extension DefaultBackupWalletCoordinator {
     }
     
     func doneBackingUpWallet() {
-        didBackUpWallet(wallet)
+        navigator.step(.userDidBackUpWallet(wallet))
     }
     
     func doneBackingUpKeystore() {
         self.popLast {
             print("Pop keystore")
         }
-    }
-    
-    func doneBackingUpPrivateKey() {
-        self.popLast {
-            print("Pop private key")
-        }
-    }
-}
-   
-// MARK: - Routing
-// MARK: -
-extension DefaultBackupWalletCoordinator {
-    func toRevealKeystore() {
-        route(to: \.revealKeystoreRoute)
-    }
-    
-    func toBackUpRevealedKeyPair() {
-        route(to: \.revealPrivateKeyRoute)
     }
     
 }

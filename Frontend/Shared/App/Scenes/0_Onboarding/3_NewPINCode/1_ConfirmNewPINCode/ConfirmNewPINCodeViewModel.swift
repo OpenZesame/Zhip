@@ -29,5 +29,5 @@ protocol ConfirmNewPINCodeViewModel: ObservableObject {
 }
 
 extension ConfirmNewPINCodeViewModel {
-    typealias Navigator = PassthroughSubject<ConfirmNewPINCodeNavigationStep, Never>
+    typealias Navigator = NavigationStepper<ConfirmNewPINCodeNavigationStep>
 }

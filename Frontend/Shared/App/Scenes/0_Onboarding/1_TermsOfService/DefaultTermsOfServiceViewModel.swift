@@ -8,12 +8,12 @@
 import Foundation
 
 final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
-    private unowned let coordinator: OnboardingCoordinator
+    private unowned let navigator: Navigator
     private let useCase: OnboardingUseCase
     @Published var finishedReading: Bool = false
     
-    init(coordinator: OnboardingCoordinator, useCase: OnboardingUseCase) {
-        self.coordinator = coordinator
+    init(navigator: Navigator, useCase: OnboardingUseCase) {
+        self.navigator = navigator
         self.useCase = useCase
     }
 }
@@ -21,6 +21,6 @@ final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
 extension DefaultTermsOfServiceViewModel {
     func didAcceptTermsOfService() {
         useCase.didAcceptTermsOfService()
-        coordinator.didAcceptTermsOfService()
+        navigator.step(.userDidAcceptTerms)
     }
 }

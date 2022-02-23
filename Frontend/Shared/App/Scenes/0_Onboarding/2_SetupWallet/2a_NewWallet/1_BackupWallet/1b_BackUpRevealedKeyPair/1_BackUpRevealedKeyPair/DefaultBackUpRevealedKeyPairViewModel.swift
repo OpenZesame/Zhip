@@ -11,16 +11,16 @@ import Zesame
 
 // MARK: - DefaultBackUpRevealedKeyPairViewModel
 // MARK: -
-final class DefaultBackUpRevealedKeyPairViewModel<Coordinator: BackUpKeyPairCoordinator>: BackUpRevealedKeyPairViewModel {
+final class DefaultBackUpRevealedKeyPairViewModel: BackUpRevealedKeyPairViewModel {
     
     @Published var isPresentingDidCopyToPasteboardAlert = false
-    private unowned let coordinator: Coordinator
+    private unowned let navigator: Navigator
     private let keyPair: KeyPair
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(coordinator: Coordinator, keyPair: KeyPair) {
-        self.coordinator = coordinator
+    init(navigator: Navigator, keyPair: KeyPair) {
+        self.navigator = navigator
         self.keyPair = keyPair
         
         // Autoclose `Did Copy Keystore` Alert after delay
@@ -61,6 +61,6 @@ extension DefaultBackUpRevealedKeyPairViewModel {
     }
     
     func doneBackingUpKeys() {
-        coordinator.doneBackingUpKeys()
+        navigator.step(.finishBackingUpKeys)
     }
 }

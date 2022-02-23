@@ -8,19 +8,19 @@
 import Foundation
 
 final class DefaultSetupWalletViewModel: SetupWalletViewModel {
-    private unowned let coordinator: SetupWalletCoordinator
+    private unowned let navigator: Navigator
     
     init(
-        coordinator: SetupWalletCoordinator
+        navigator: Navigator
     ) {
-        self.coordinator = coordinator
+        self.navigator = navigator
     }
     
     func generateNewWallet() {
-        coordinator.generateNewWallet()
+        navigator.step(.userIntendsToGenerateNewWallet)
     }
     
     func restoreExistingWallet() {
-        coordinator.restoreExistingWallet()
+        navigator.step(.userIntendsToRestoreExistingWallet)
     }
 }

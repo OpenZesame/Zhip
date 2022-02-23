@@ -19,42 +19,65 @@ final class AppCoordinator: NavigationCoordinatable {
     private let model: Model // TODO: SHOULD? MUST? Be: `@ObservedObject var model: Model`?
     private let useCaseProvider: UseCaseProvider
     
+    private let onboardingNavigator = OnboardingCoordinator.Navigator()
+    private let mainNavigator = MainCoordinator.Navigator()
+    
     init(
         model: Model, // TODO: SHOULD? MUST? Be: `ObservedObject<Model>` ?
-        useCaseProvider: UseCaseProvider) {
+        useCaseProvider: UseCaseProvider
+    ) {
+        
         self.model = model
         self.useCaseProvider = useCaseProvider
+            
         switch model.wallet {
         case .some(let wallet):
-            stack = NavigationStack(initial: \AppCoordinator.main, wallet)
+            stack = NavigationStack(initial: \.main, wallet)
         case .none:
-            stack = NavigationStack(initial: \AppCoordinator.onboarding)
+            stack = NavigationStack(initial: \.onboarding)
         }
     }
-    
-    @ViewBuilder func sharedView(_ view: AnyView) -> some View {
+}
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension AppCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
-            .onReceive(model.$wallet, perform: { [self] wallet in
-                switch wallet {
-                case .some(let wallet):
-                    self.stack = NavigationStack(initial: \AppCoordinator.main, wallet)
-                case .none:
-                    self.stack = NavigationStack(initial: \AppCoordinator.onboarding)
+            .onReceive(onboardingNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .finishOnboarding:
+                    self.root(\.main)
                 }
-            })
+            }
+            .onReceive(mainNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .userDeletedWallet:
+                    self.root(\.onboarding)
+                }
+            }
         
     }
 }
 
 
-
+// MARK: - Factory
+// MARK: -
 extension AppCoordinator {
-    func makeOnboarding() -> NavigationViewCoordinator<DefaultOnboardingCoordinator> {
-        NavigationViewCoordinator(DefaultOnboardingCoordinator(useCaseProvider: useCaseProvider))
+    func makeOnboarding() -> NavigationViewCoordinator<OnboardingCoordinator> {
+        NavigationViewCoordinator(
+            OnboardingCoordinator(
+                navigator: onboardingNavigator,
+                useCaseProvider: useCaseProvider
+            )
+        )
     }
     
     func makeMain(wallet: Wallet) -> MainCoordinator {
-        MainCoordinator(wallet: wallet)
+        MainCoordinator(
+            navigator: mainNavigator,
+            wallet: wallet
+        )
     }
 }
 

@@ -22,13 +22,16 @@ final class DefaultConfirmNewPINCodeViewModel: ConfirmNewPINCodeViewModel {
     /// If user can proceed
     @Published var isFinished: Bool = false
     
+    private unowned let navigator: Navigator
     private var cancellables = Set<AnyCancellable>()
     
     let errorDurationInSeconds = 2
     
     init(
+        navigator: Navigator,
         expectedPIN: Pincode
     ) {
+        self.navigator = navigator
         self.expectedPIN = expectedPIN
         
         errorMessagePublisher
@@ -58,11 +61,11 @@ final class DefaultConfirmNewPINCodeViewModel: ConfirmNewPINCodeViewModel {
 
 extension DefaultConfirmNewPINCodeViewModel {
     func `continue`() {
-        fatalError("impl me")
+        navigator.step(.confirmed)
     }
     
     func skipSettingAnyPIN() {
-        fatalError("impl me")
+        navigator.step(.skipSettingPin)
     }
 }
 

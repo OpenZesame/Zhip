@@ -6,6 +6,12 @@
 //
 
 import Foundation
+import struct Zesame.KeyPair
+
+enum DecryptKeystoreToRevealKeyPairNavigationStep {
+    case didDecryptWallet(keyPair: KeyPair)
+    case failedToDecryptWallet(error: Swift.Error)
+}
 
 protocol DecryptKeystoreToRevealKeyPairViewModel: ObservableObject {
     var password: String { get set }
@@ -13,4 +19,8 @@ protocol DecryptKeystoreToRevealKeyPairViewModel: ObservableObject {
     var isPasswordOnValidFormat: Bool { get set }
     func decrypt() async
     var canDecrypt: Bool { get }
+}
+
+extension DecryptKeystoreToRevealKeyPairViewModel {
+    typealias Navigator = NavigationStepper<DecryptKeystoreToRevealKeyPairNavigationStep>
 }

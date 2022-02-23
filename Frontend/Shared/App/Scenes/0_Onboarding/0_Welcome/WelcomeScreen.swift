@@ -8,17 +8,24 @@
 import SwiftUI
 import Stinsen
 
+enum WelcomeNavigationStep {
+    case didStart
+}
+
 protocol WelcomeViewModel: ObservableObject {
     func startApp()
 }
+extension WelcomeViewModel {
+    typealias Navigator = NavigationStepper<WelcomeNavigationStep>
+}
 
 final class DefaultWelcomeViewModel: WelcomeViewModel {
-    private unowned let coordinator: OnboardingCoordinator
-    init(coordinator: OnboardingCoordinator) {
-        self.coordinator = coordinator
+    private unowned let navigator: Navigator
+    init(navigator: Navigator) {
+        self.navigator = navigator
     }
     func startApp() {
-        coordinator.didStart()
+        navigator.step(.didStart)
     }
 }
 
