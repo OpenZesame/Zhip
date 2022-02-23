@@ -16,6 +16,13 @@ final class DefaultSetupWalletViewModel: SetupWalletViewModel {
         self.navigator = navigator
     }
     
+    deinit {
+        print("☑️ DefaultSetupWalletViewModel deinit")
+    }
+}
+
+extension DefaultSetupWalletViewModel {
+    
     func generateNewWallet() {
         navigator.step(.userIntendsToGenerateNewWallet)
     }

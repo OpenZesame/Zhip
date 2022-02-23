@@ -8,23 +8,24 @@
 import Foundation
 import Combine
 
-final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>: GenerateNewWalletViewModel {
+final class DefaultGenerateNewWalletViewModel: GenerateNewWalletViewModel {
     
-    private unowned let coordinator: Coordinator
-    private let walletUseCase: WalletUseCase
+    
     @Published var userHasConfirmedBackingUpPassword = false
     @Published var password = ""
     @Published var passwordConfirmation = ""
     @Published var isFinished = false
     @Published var isGeneratingWallet = false
-        
+
+    private unowned let navigator: Navigator
+    private let walletUseCase: WalletUseCase
     private var cancellables = Set<AnyCancellable>()
     
     init(
-        coordinator: Coordinator,
+        navigator: Navigator,
         useCase walletUseCase: WalletUseCase
     ) {
-        self.coordinator = coordinator
+        self.navigator = navigator
         self.walletUseCase = walletUseCase
         
         canProceedPublisher
@@ -39,15 +40,18 @@ final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>
         #endif
     }
     
+    deinit {
+        print("☑️ DefaultGenerateNewWalletViewModel deinit")
+    }
+}
+
+// MARK: - GenerateNewWalletViewModel
+// MARK: -
+extension DefaultGenerateNewWalletViewModel {
     func `continue`() async {
         precondition(password == passwordConfirmation)
-       
         isGeneratingWallet = true
-        defer {
-            Task { @MainActor in
-                isGeneratingWallet = false
-            }
-        }
+        print("🔮 is generating wallet...")
         do {
             
             let wallet = try await walletUseCase.createNewWallet(
@@ -55,13 +59,27 @@ final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>
                 encryptionPassword: password
             )
             
-            coordinator.didGenerateNew(wallet: wallet)
+            Task { @MainActor [unowned self] in
+                print("✨ successfully created wallet")
+                isGeneratingWallet = false
+                navigator.step(.didGenerateNew(wallet: wallet))
+            }
+            
         } catch {
-            coordinator.failedToGenerateNewWallet(error: error)
+            Task { @MainActor [unowned self] in
+                print("⚠️ failed to create wallet, error: \(error)")
+                isGeneratingWallet = false
+                navigator.step(.failedToGenerateNewWallet(error: error))
+            }
+            
         }
     }
-    
-    private var arePasswordsEqualPublisher: AnyPublisher<Bool, Never> {
+}
+
+// MARK: - Private
+// MARK: -
+private extension DefaultGenerateNewWalletViewModel {
+     var arePasswordsEqualPublisher: AnyPublisher<Bool, Never> {
         Publishers.CombineLatest($password, $passwordConfirmation)
             .debounce(for: 0.2, scheduler: RunLoop.main)
             .map { password, passwordConfirmation in
@@ -70,7 +88,7 @@ final class DefaultGenerateNewWalletViewModel<Coordinator: NewWalletCoordinator>
             .eraseToAnyPublisher()
     }
     
-    private var canProceedPublisher: AnyPublisher<Bool, Never> {
+    var canProceedPublisher: AnyPublisher<Bool, Never> {
         Publishers.CombineLatest(arePasswordsEqualPublisher, $userHasConfirmedBackingUpPassword)
             .map { validPassword, userHasConfirmedBackingUpPassword in
                 return validPassword && userHasConfirmedBackingUpPassword

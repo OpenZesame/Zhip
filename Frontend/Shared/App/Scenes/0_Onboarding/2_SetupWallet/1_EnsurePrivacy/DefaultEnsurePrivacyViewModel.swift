@@ -14,6 +14,10 @@ final class DefaultEnsurePrivacyViewModel: EnsurePrivacyViewModel {
     init(navigator: Navigator) {
         self.navigator = navigator
     }
+    
+    deinit {
+        print("☑️ DefaultEnsurePrivacyViewModel deinit")
+    }
 }
 
 // MARK: - EnsurePrivacyViewModel

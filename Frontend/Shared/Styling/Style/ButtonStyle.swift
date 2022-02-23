@@ -25,7 +25,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         Group {
             if isLoading {
                 ActivityIndicator()
-                    .frame(maxWidth: 30, maxHeight: 30)
+                    .frame(size: 30)
                     .foregroundColor(.white)
             } else {
                 configuration.label

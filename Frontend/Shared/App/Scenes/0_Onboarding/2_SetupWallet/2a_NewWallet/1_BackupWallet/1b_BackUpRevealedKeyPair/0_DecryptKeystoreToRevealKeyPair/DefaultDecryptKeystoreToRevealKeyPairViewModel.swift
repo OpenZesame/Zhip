@@ -47,19 +47,23 @@ extension DefaultDecryptKeystoreToRevealKeyPairViewModel {
     func decrypt() async {
         precondition(isPasswordOnValidFormat)
         isDecrypting = true
-        defer {
-            Task { @MainActor in
-                isDecrypting = false
-            }
-        }
+        
         do {
             let keyPair = try await useCase.extractKeyPairFrom(
                 keystore: wallet.keystore,
                 encryptedBy: password
             )
-            navigator.step(.didDecryptWallet(keyPair: keyPair))
+            Task { @MainActor [unowned self] in
+                print("✅ decrypted keypair")
+                isDecrypting = false
+                navigator.step(.didDecryptWallet(keyPair: keyPair))
+            }
         } catch {
-            navigator.step(.failedToDecryptWallet(error: error))
+            Task { @MainActor [unowned self] in
+                print("⚠️ failed to decrypt wallet, wrong password? Error: \(error)")
+                isDecrypting = false
+                navigator.step(.failedToDecryptWallet(error: error))
+            }
         }
     }
 }

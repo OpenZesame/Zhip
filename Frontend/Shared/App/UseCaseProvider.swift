@@ -12,6 +12,7 @@ import ZhipEngine
 protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase
+    func makePINCodeUseCase() -> PINCodeUseCase
     
 }
 
@@ -29,6 +30,13 @@ final class DefaultUseCaseProvider: UseCaseProvider {
         self.preferences = preferences
         self.securePersistence = securePersistence
         self.zilliqaService = zilliqaService
+
+        #if DEBUG
+        print("⚠️⚠️⚠️ WARNING! ALWAYS DELETING WALLET! ⚠️⚠️⚠️")
+        securePersistence.deleteWallet()
+        try? preferences.deleteValue(for: .hasAcceptedTermsOfService)
+        #endif
+        
     }
 }
 
@@ -48,6 +56,13 @@ extension DefaultUseCaseProvider {
         DefaultWalletUseCase(
             securePersistence: securePersistence,
             zilliqaService: zilliqaService
+        )
+    }
+    
+    func makePINCodeUseCase() -> PINCodeUseCase {
+        DefaultPINCodeUseCase(
+            preferences: preferences,
+            securePersistence: securePersistence
         )
     }
 }

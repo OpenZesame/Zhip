@@ -20,13 +20,6 @@ protocol OnboardingUseCase: AnyObject {
 final class DefaultOnboardingUseCase {
     private let preferences: Preferences
     let securePersistence: SecurePersistence
-//    private let zilliqaService: ZilliqaServiceReactive
-
-//    init(zilliqaService: ZilliqaServiceReactive, preferences: Preferences, securePersistence: SecurePersistence) {
-//        self.zilliqaService = zilliqaService
-//        self.preferences = preferences
-//        self.securePersistence = securePersistence
-//    }
     init(preferences: Preferences, securePersistence: SecurePersistence) {
         self.preferences = preferences
         self.securePersistence = securePersistence

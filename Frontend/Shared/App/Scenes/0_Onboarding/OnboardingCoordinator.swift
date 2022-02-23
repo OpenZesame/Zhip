@@ -43,18 +43,18 @@ final class OnboardingCoordinator: NavigationCoordinatable {
     @Root var setupPINCode = makeSetupPINCode
     
     private unowned let navigator: Navigator
-    private let welcomeNavigator = WelcomeViewModel.Navigator()
-    private let termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
-    private let setupWalletNavigator = SetupWalletCoordinator.Navigator()
-    private let setupPinNavigator = SetupPINCodeCoordinator.Navigator()
-    
+    private lazy var welcomeNavigator = WelcomeViewModel.Navigator()
+    private lazy var termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
+    private lazy var setupWalletCoordinatorNavigator = SetupWalletCoordinator.Navigator()
+    private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
+
     init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
         self.navigator = navigator
         self.useCaseProvider = useCaseProvider
     }
     
     deinit {
-        print("Deinit OnboardingCoordinator")
+        print("✅ OnboardingCoordinator DEINIT 💣")
     }
 }
 
@@ -76,17 +76,18 @@ extension OnboardingCoordinator {
                     self.toNextStep()
                 }
             }
-            .onReceive(setupWalletNavigator) { [unowned self] userDid in
+            .onReceive(setupWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .finishSettingUpWallet(let wallet):
-                    self.walletUseCase.save(wallet: wallet)
-                    self.root(\.setupPINCode)
+                    print("🔮💶 OnboardingCoordinator:userFinishedSettingUpNewWallet")
+                    walletUseCase.save(wallet: wallet)
+                    toNextStep()
                 }
             }
-            .onReceive(setupPinNavigator) { [unowned self] userDid in
+            .onReceive(setupPinCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .finishedPINSetup:
-                    self.navigator.step(.finishOnboarding)
+                    finishedOnboarding()
                 }
             }
         
@@ -105,14 +106,28 @@ private extension OnboardingCoordinator {
         if !walletUseCase.hasConfiguredWallet {
             return toSetupWallet()
         }
+        
+        if onboardingUseCase.shouldPromptUserToChosePincode {
+            return toSetupPIN()
+        }
+        
+        finishedOnboarding()
+    }
+    
+    func toTermsOfService() {
+        root(\.termsOfService)
     }
     
     func toSetupWallet() {
         root(\.setupWallet)
    }
     
-    func toTermsOfService() {
-        root(\.termsOfService)
+    func toSetupPIN() {
+        root(\.setupPINCode)
+    }
+    
+    func finishedOnboarding() {
+        navigator.step(.finishOnboarding)
     }
 }
 
@@ -122,7 +137,8 @@ private extension OnboardingCoordinator {
     
     @ViewBuilder
     func makeWelcome() -> some View {
-        WelcomeScreen(viewModel: DefaultWelcomeViewModel(navigator: welcomeNavigator))
+        let viewModel = DefaultWelcomeViewModel(navigator: welcomeNavigator)
+        WelcomeScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
@@ -137,16 +153,23 @@ private extension OnboardingCoordinator {
     }
     
     func makeSetupWallet() -> NavigationViewCoordinator<SetupWalletCoordinator> {
+        
         let setupWalletCoordinator = SetupWalletCoordinator(
-            useCaseProvider: useCaseProvider,
-            navigator: setupWalletNavigator
+            navigator: setupWalletCoordinatorNavigator,
+            useCaseProvider: useCaseProvider
         )
         
         return NavigationViewCoordinator(setupWalletCoordinator)
     }
     
     func makeSetupPINCode() -> NavigationViewCoordinator<SetupPINCodeCoordinator> {
-        .init(SetupPINCodeCoordinator(navigator: setupPinNavigator))
+        
+        let setupPINCodeCoordinator = SetupPINCodeCoordinator(
+            navigator: setupPinCoordinatorNavigator,
+            useCase: useCaseProvider.makePINCodeUseCase()
+        )
+        
+        return NavigationViewCoordinator(setupPINCodeCoordinator)
     }
  
 }

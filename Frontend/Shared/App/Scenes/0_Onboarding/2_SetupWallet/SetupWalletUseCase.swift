@@ -12,6 +12,8 @@ import enum Zesame.KeyRestoration
 import struct Zesame.Keystore
 import struct Zesame.KeyPair
 import enum Zesame.KeyDerivationFunction
+import struct Zesame.KDFParams
+
 import protocol Zesame.ZilliqaService
 
 protocol SecurePersisting: AnyObject {
@@ -90,9 +92,19 @@ extension DefaultWalletUseCase {
     }
     
     func createNewWallet(name: String?, encryptionPassword: String) async throws -> Wallet {
+        let kdfParams: KDFParams
+        let kdf: KeyDerivationFunction
+        #if DEBUG
+        kdf = .pbkdf2
+        kdfParams = KDFParams.unsafeFast
+        #else
+        kdf = .default
+        kdfParams = KDFParams.default
+        #endif
         let zesameWallet = try await zilliqaService.createNewWallet(
             encryptionPassword: encryptionPassword,
-            kdf: KeyDerivationFunction.default
+            kdf: kdf,
+            kdfParams: kdfParams
         )
         return Wallet(name: name, wallet: zesameWallet, origin: .generatedByThisApp)
     }
@@ -107,3 +119,19 @@ extension DefaultWalletUseCase {
         return Wallet(name: name, wallet: restored, origin: origin)
     }
 }
+
+#if DEBUG
+public extension KDFParams {
+    
+    static var unsafeFast: Self {
+        do {
+            return try Self(
+                costParameterN: 1,
+                costParameterC: 1
+            )
+        } catch {
+            fatalError("Incorrect implementation, should always be able to create default KDF params, unexpected error: \(error)")
+        }
+    }
+}
+#endif

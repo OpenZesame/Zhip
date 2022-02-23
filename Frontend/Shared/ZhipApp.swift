@@ -21,8 +21,6 @@ struct ZhipApp: App {
         
         // For NavigationBarTitle with `displayMode = .inline`
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        try? UserDefaults.standard.deleteValue(for: PreferencesKey.hasAcceptedTermsOfService)
     }
     
     var body: some Scene {

@@ -9,17 +9,23 @@ import Foundation
 import ZhipEngine
 
 final class DefaultNewPINCodeViewModel: NewPINCodeViewModel {
+
     @Published var pinCode: Pincode?
-    private unowned let navigator: Navigator
     @Published var pinFieldText: String = ""
-    init(navigator: Navigator) {
+
+    private let useCase: PINCodeUseCase
+    private unowned let navigator: Navigator
+    
+    init(
+        navigator: Navigator,
+        useCase: PINCodeUseCase
+    ) {
+        self.useCase = useCase
         self.navigator = navigator
-        print("DefaultNewPINCodeViewModel init")
     }
     
-    
     deinit {
-        print("DefaultNewPINCodeViewModel deinit")
+        print("☑️ DefaultNewPINCodeViewModel deinit")
     }
 }
 
@@ -27,6 +33,7 @@ extension DefaultNewPINCodeViewModel {
     var canProceed: Bool { pinCode != nil }
 
     func skip() {
+        useCase.skipSettingUpPincode()
         navigator.step(.skipSettingPin)
     }
     

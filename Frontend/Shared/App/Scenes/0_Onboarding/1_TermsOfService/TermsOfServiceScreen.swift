@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Stinsen
 
 // MARK: - TermsOfServiceScreen
 // MARK: -

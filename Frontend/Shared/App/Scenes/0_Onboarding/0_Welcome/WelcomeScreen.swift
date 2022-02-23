@@ -6,33 +6,16 @@
 //
 
 import SwiftUI
-import Stinsen
 
-enum WelcomeNavigationStep {
-    case didStart
-}
-
-protocol WelcomeViewModel: ObservableObject {
-    func startApp()
-}
-extension WelcomeViewModel {
-    typealias Navigator = NavigationStepper<WelcomeNavigationStep>
-}
-
-final class DefaultWelcomeViewModel: WelcomeViewModel {
-    private unowned let navigator: Navigator
-    init(navigator: Navigator) {
-        self.navigator = navigator
-    }
-    func startApp() {
-        navigator.step(.didStart)
-    }
-}
-
+// MARK: - WelcomeScreen
+// MARK: -
 struct WelcomeScreen<ViewModel: WelcomeViewModel>: View {
-    
     @ObservedObject var viewModel: ViewModel
-    
+}
+
+// MARK: - View
+// MARK: -
+extension WelcomeScreen {
     var body: some View {
         Screen {
             foregroundView.background {
@@ -42,7 +25,9 @@ struct WelcomeScreen<ViewModel: WelcomeViewModel>: View {
     }
 }
 
-extension WelcomeScreen {
+// MARK: - Subviews
+// MARK: -
+private extension WelcomeScreen {
     
     var foregroundView: some View {
         VStack {

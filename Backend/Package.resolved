@@ -59,8 +59,8 @@
         "package": "Zesame",
         "repositoryURL": "https://github.com/OpenZesame/zesame.git",
         "state": {
-          "branch": "structured_concurrency",
-          "revision": "114ff9ac2e36b50ac4228fdb3fcca18f52da5bff",
+          "branch": null,
+          "revision": "711d7d4d0f9a2dcb24635ac28353dd1a43cbabc2",
           "version": null
         }
       }

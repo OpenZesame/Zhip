@@ -31,8 +31,9 @@ final class NewWalletCoordinator: NavigationCoordinatable {
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
     private unowned let navigator: Navigator
-    private let backupWalletCoordinatorNavigator = BackupWalletCoordinator.Navigator()
-    private let ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
+    private lazy var generateNewWalletNavigator = GenerateNewWalletViewModel.Navigator()
+    private lazy var backupWalletCoordinatorNavigator = BackupWalletCoordinator.Navigator()
+    private lazy var ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
     
     init(
         navigator: Navigator,
@@ -43,9 +44,8 @@ final class NewWalletCoordinator: NavigationCoordinatable {
     }
     
     deinit {
-        print("deinit NewWalletCoordinator")
+        print("✅ NewWalletCoordinator DEINIT 💣")
     }
-
 }
 
 // MARK: - NavigationCoordinatable
@@ -57,13 +57,21 @@ extension NewWalletCoordinator {
             .onReceive(backupWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .userDidBackUpWallet(let wallet):
-                    self.navigator.step(.create(wallet: wallet))
+                   userFinishedBackingUpNewlyCreatedWallet(wallet)
                 }
             }
             .onReceive(ensurePrivacyNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .ensurePrivacy: self.privacyIsEnsured()
                 case .thinkScreenMightBeWatched: self.myScreenMightBeWatched()
+                }
+            }
+            .onReceive(generateNewWalletNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .failedToGenerateNewWallet(let error):
+                    failedToGenerateNewWallet(error: error)
+                case .didGenerateNew(let wallet):
+                    didGenerateNew(wallet: wallet)
                 }
             }
     }
@@ -83,7 +91,7 @@ extension NewWalletCoordinator {
     func makeGenerateNewWallet() -> some View {
         
         let viewModel = DefaultGenerateNewWalletViewModel(
-            coordinator: self,
+            navigator: generateNewWalletNavigator,
             useCase: walletUseCase
         )
         
@@ -106,6 +114,11 @@ extension NewWalletCoordinator {
 // MARK: - Routing
 // MARK: -
 extension NewWalletCoordinator {
+    
+    func userFinishedBackingUpNewlyCreatedWallet(_ wallet: Wallet) {
+        print("🔮💶 NewWalletCoordinator:userFinishedBackingUpNewlyCreatedWallet")
+        self.navigator.step(.create(wallet: wallet))
+    }
     
     func didGenerateNew(wallet: Wallet) {
         toBackupWallet(wallet: wallet)

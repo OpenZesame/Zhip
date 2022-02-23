@@ -6,6 +6,12 @@
 //
 
 import Foundation
+import ZhipEngine
+
+enum GenerateNewWalletNavigationStep {
+    case didGenerateNew(wallet: Wallet)
+    case failedToGenerateNewWallet(error: Swift.Error)
+}
 
 protocol GenerateNewWalletViewModel: ObservableObject {
     func `continue`() async
@@ -14,4 +20,8 @@ protocol GenerateNewWalletViewModel: ObservableObject {
     var password: String { get set }
     var passwordConfirmation: String { get set }
     var isGeneratingWallet: Bool { get set }
+}
+
+extension GenerateNewWalletViewModel {
+    typealias Navigator = NavigationStepper<GenerateNewWalletNavigationStep>
 }

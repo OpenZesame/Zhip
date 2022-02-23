@@ -15,11 +15,13 @@ final class RestoreWalletCoordinator: NavigationCoordinatable {
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var restore = makeRestore
     
-    private let ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
+    private lazy var restoreWalletNavigator = RestoreWalletViewModel.Navigator()
+    private lazy var ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
     
     init() {}
+  
     deinit {
-        print("deinit RestoreWalletCoordinator")
+        print("✅ RestoreWalletCoordinator DEINIT 💣")
     }
 }
 
@@ -35,6 +37,13 @@ extension RestoreWalletCoordinator {
                 case .ensurePrivacy: self.privacyIsEnsured()
                 case .thinkScreenMightBeWatched: self.myScreenMightBeWatched()
                 }
+            }
+            .onReceive(restoreWalletNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .restoreWallet(let wallet):
+                    fatalError("impl me")
+                }
+                
             }
     }
 }
@@ -63,14 +72,22 @@ extension RestoreWalletCoordinator {
     
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
-        let viewModel = DefaultEnsurePrivacyViewModel(navigator: ensurePrivacyNavigator)
+        
+        let viewModel = DefaultEnsurePrivacyViewModel(
+            navigator: ensurePrivacyNavigator
+        )
+        
         EnsurePrivacyScreen(viewModel: viewModel)
     }
     
     
     @ViewBuilder
     func makeRestore() -> some View {
-        let viewModel = DefaultRestoreWalletViewModel(coordinator: self)
+        
+        let viewModel = DefaultRestoreWalletViewModel(
+            navigator: restoreWalletNavigator
+        )
+        
         RestoreWalletScreen(viewModel: viewModel)
     }
 }

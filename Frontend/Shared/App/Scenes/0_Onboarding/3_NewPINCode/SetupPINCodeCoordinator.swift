@@ -23,12 +23,18 @@ final class SetupPINCodeCoordinator: NavigationCoordinatable {
     @Root var newPIN = makeNewPIN
     @Route(.push) var confirmPIN = makeConfirmPIN(expectedPIN:)
     
-    private let newPinNavigator = NewPINCodeViewModel.Navigator()
-    private let confirmNewPinNavigator = ConfirmNewPINCodeViewModel.Navigator()
+    private lazy var newPinNavigator = NewPINCodeViewModel.Navigator()
+    private lazy var confirmNewPinNavigator = ConfirmNewPINCodeViewModel.Navigator()
     private unowned let navigator: Navigator
+    private let useCase: PINCodeUseCase
     
-    init(navigator: Navigator) {
+    init(navigator: Navigator, useCase: PINCodeUseCase) {
         self.navigator = navigator
+        self.useCase = useCase
+    }
+    
+    deinit {
+        print("✅ SetupPINCodeCoordinator DEINIT 💣")
     }
 }
 
@@ -37,36 +43,64 @@ final class SetupPINCodeCoordinator: NavigationCoordinatable {
 extension SetupPINCodeCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
-            .onReceive(newPinNavigator) { userDid in
+            .onReceive(newPinNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .setPIN(let newPin):
                     self.route(to: \.confirmPIN, newPin)
                 case .skipSettingPin:
-                    print("👻 skip setting pin => dismiss")
-                    self.dismissCoordinator {
-                        print("dismissing  SetupPINCodeCoordinator")
-                    }
+                    skipSettingPin()
+                }
+            }
+            .onReceive(confirmNewPinNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .skipSettingPin:
+                    skipSettingPin()
+                case .confirmed:
+                    finished()
                 }
             }
         
     }
 }
+
+// MARK: - Routing
+// MARK: -
+extension SetupPINCodeCoordinator {
+    
+    func skipSettingPin() {
+        finished()
+    }
+    
+    func finished() {
+        navigator.step(.finishedPINSetup)
+    }
+}
+
     
 // MARK: - Factory
 // MARK: -
 extension SetupPINCodeCoordinator {
+  
     @ViewBuilder
     func makeNewPIN() -> some View {
-        let viewModel = DefaultNewPINCodeViewModel(navigator: newPinNavigator)
+        
+        let viewModel = DefaultNewPINCodeViewModel(
+            navigator: newPinNavigator,
+            useCase: useCase
+        )
+        
         NewPINCodeScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
     func makeConfirmPIN(expectedPIN: Pincode) -> some View {
+        
         let viewModel = DefaultConfirmNewPINCodeViewModel(
             navigator: confirmNewPinNavigator,
-            expectedPIN: expectedPIN
+            expectedPIN: expectedPIN,
+            useCase: useCase
         )
+        
         ConfirmNewPINCodeScreen(viewModel: viewModel)
     }
 }

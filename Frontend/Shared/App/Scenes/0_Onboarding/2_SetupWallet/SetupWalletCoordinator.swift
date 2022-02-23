@@ -28,12 +28,16 @@ final class SetupWalletCoordinator: NavigationCoordinatable {
     private let setupWalletNavigator = SetupWalletViewModel.Navigator()
     private let newWalletCoordinatorNavigator = NewWalletCoordinator.Navigator()
     
-    private let useCaseProvider: UseCaseProvider
     private unowned let navigator: Navigator
+    private let useCaseProvider: UseCaseProvider
     
-    init(useCaseProvider: UseCaseProvider, navigator: Navigator) {
-        self.useCaseProvider = useCaseProvider
+    init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
         self.navigator = navigator
+        self.useCaseProvider = useCaseProvider
+    }
+    
+    deinit {
+        print("✅ SetupWalletCoordinator DEINIT 💣")
     }
 }
 
@@ -53,11 +57,8 @@ extension SetupWalletCoordinator {
             .onReceive(newWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .create(let wallet):
-                    self.navigator.step(.finishSettingUpWallet(wallet: wallet))
+                   userFinishedSettingUpNewWallet(wallet)
                 case .cancel:
-//                    self.dismissCoordinator {
-//                        print("dismiss: \(self)")
-//                    }
                     fatalError("We should probably propagate the `cancel` event up to this coordinators parent coordinator.")
                 }
             }
@@ -67,6 +68,16 @@ extension SetupWalletCoordinator {
 // MARK: - Routing
 // MARK: -
 extension SetupWalletCoordinator {
+
+    func userFinishedSettingUpNewWallet(_ wallet: Wallet) {
+        print("🔮💶 SetupWalletCoordinator:userFinishedSettingUpNewWallet")
+        
+        // Hmm not happy about this...
+        // TODO: find out why we cannot simply dismiss the whole coordinator
+        _ = popToRoot { [unowned self] in
+            navigator.step(.finishSettingUpWallet(wallet: wallet))
+        }
+    }
     
     func toGenerateNewWallet() {
         route(to: \.newWallet)

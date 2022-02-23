@@ -47,6 +47,7 @@ final class DefaultBackupWalletViewModel: BackupWalletViewModel {
 // MARK: -
 extension DefaultBackupWalletViewModel {
     func `continue`() {
+        print("🔮💶 DefaultBackupWalletViewModel:continue")
         navigator.step(.finishedBackingUpWallet)
     }
     

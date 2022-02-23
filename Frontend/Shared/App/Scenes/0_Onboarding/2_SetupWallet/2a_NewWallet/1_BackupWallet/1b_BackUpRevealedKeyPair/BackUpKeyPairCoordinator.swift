@@ -38,10 +38,36 @@ final class BackUpKeyPairCoordinator: NavigationCoordinatable {
         self.useCase = useCase
         self.wallet = wallet
     }
+    
+    deinit {
+        print("✅ BackUpKeyPairCoordinator DEINIT 💣")
+    }
 }
 
 
-
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension BackUpKeyPairCoordinator {
+    @ViewBuilder func customize(_ view: AnyView) -> some View {
+        view
+            .onReceive(decryptKeystoreToRevealKeyPairNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .failedToDecryptWallet(let error):
+                    failedToDecryptWallet(error: error)
+                case .didDecryptWallet(let keyPair):
+                    didDecryptWallet(keyPair: keyPair)
+                }
+            }
+            .onReceive(backUpRevealedKeyPairNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .finishBackingUpKeys:
+                    doneBackingUpKeys()
+                }
+            }
+            
+    
+    }
+}
 
 // MARK: - Routing
 // MARK: -

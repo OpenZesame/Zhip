@@ -16,6 +16,10 @@ final class DefaultTermsOfServiceViewModel: TermsOfServiceViewModel {
         self.navigator = navigator
         self.useCase = useCase
     }
+    
+    deinit {
+        print("☑️ DefaultTermsOfServiceViewModel deinit")
+    }
 }
 
 extension DefaultTermsOfServiceViewModel {

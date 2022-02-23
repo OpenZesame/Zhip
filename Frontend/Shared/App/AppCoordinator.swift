@@ -37,6 +37,10 @@ final class AppCoordinator: NavigationCoordinatable {
             stack = NavigationStack(initial: \.onboarding)
         }
     }
+    
+    deinit {
+        print("✅ AppCoordinator DEINIT 💣")
+    }
 }
 
 // MARK: - NavigationCoordinatable

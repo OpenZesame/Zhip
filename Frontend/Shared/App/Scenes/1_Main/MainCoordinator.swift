@@ -88,7 +88,7 @@ final class MainCoordinator: TabCoordinatable {
     }
     
     deinit {
-        print("Deinit MainCoordinator")
+        print("✅ MainCoordinator DEINIT 💣")
     }
 }
 

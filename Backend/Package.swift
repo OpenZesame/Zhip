@@ -24,7 +24,7 @@ extension Array where Element == Dependency {
 private let dependencies: [Dependency] = [
     .init(
         category: .essential,
-        package: .package(url: "https://github.com/OpenZesame/zesame.git", branch: "structured_concurrency"),
+        package: .package(url: "https://github.com/OpenZesame/zesame.git", revision: "711d7d4d0f9a2dcb24635ac28353dd1a43cbabc2"), // branch: structured_concurrency
         product: .product(name: "Zesame", package: "zesame"),
         rationale: "Zilliqa Swift SDK, containing all account logic."
     ),

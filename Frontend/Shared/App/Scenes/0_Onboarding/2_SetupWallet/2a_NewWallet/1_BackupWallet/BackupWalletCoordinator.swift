@@ -44,11 +44,10 @@ final class BackupWalletCoordinator: NavigationCoordinatable {
     }
     
     deinit {
-        print("\(self) deinit")
+        print("✅ BackupWalletCoordinator DEINIT 💣")
     }
     
 }
-
 
 // MARK: - NavigationCoordinatable
 // MARK: -
@@ -82,7 +81,6 @@ extension BackupWalletCoordinator {
     
     }
 }
-
 
 // MARK: - Factory
 // MARK: -
@@ -151,6 +149,7 @@ extension BackupWalletCoordinator {
     }
     
     func doneBackingUpWallet() {
+        print("🔮💶 BackupWalletCoordinator:doneBackingUpWallet")
         navigator.step(.userDidBackUpWallet(wallet))
     }
     

@@ -23,16 +23,47 @@ final class DefaultConfirmNewPINCodeViewModel: ConfirmNewPINCodeViewModel {
     @Published var isFinished: Bool = false
     
     private unowned let navigator: Navigator
+    private let useCase: PINCodeUseCase
     private var cancellables = Set<AnyCancellable>()
     
     let errorDurationInSeconds = 2
     
     init(
         navigator: Navigator,
-        expectedPIN: Pincode
+        expectedPIN: Pincode,
+        useCase: PINCodeUseCase
     ) {
+        self.useCase = useCase
         self.navigator = navigator
         self.expectedPIN = expectedPIN
+            
+        subscribeToPublishers()
+    }
+    
+    deinit {
+        print("☑️ DefaultConfirmNewPINCodeViewModel deinit")
+    }
+    
+}
+
+extension DefaultConfirmNewPINCodeViewModel {
+    func `continue`() {
+        precondition(pinCode != nil)
+        precondition(pinCode! == expectedPIN)
+        
+        useCase.userChoose(pincode: expectedPIN)
+        navigator.step(.confirmed)
+    }
+    
+    func skipSettingAnyPIN() {
+        useCase.skipSettingUpPincode()
+        navigator.step(.skipSettingPin)
+    }
+}
+
+private extension DefaultConfirmNewPINCodeViewModel {
+    
+    func subscribeToPublishers() {
         
         errorMessagePublisher
             .receive(on: RunLoop.main)
@@ -54,25 +85,9 @@ final class DefaultConfirmNewPINCodeViewModel: ConfirmNewPINCodeViewModel {
               .receive(on: RunLoop.main)
               .assign(to: \.isFinished, on: self)
               .store(in: &cancellables)
-        
     }
     
-}
-
-extension DefaultConfirmNewPINCodeViewModel {
-    func `continue`() {
-        navigator.step(.confirmed)
-    }
-    
-    func skipSettingAnyPIN() {
-        navigator.step(.skipSettingPin)
-    }
-}
-
-private extension DefaultConfirmNewPINCodeViewModel {
-    
-    
-    private var arePINCodesEqualPublisher: AnyPublisher<Bool, Never> {
+    var arePINCodesEqualPublisher: AnyPublisher<Bool, Never> {
         Publishers.CombineLatest(Just(expectedPIN), $pinCode)
             .debounce(for: 0.2, scheduler: RunLoop.main)
             .map { expectedPIN, pinConfirmation in
@@ -81,7 +96,7 @@ private extension DefaultConfirmNewPINCodeViewModel {
             .eraseToAnyPublisher()
     }
     
-    private var errorMessagePublisher: AnyPublisher<String?, Never> {
+    var errorMessagePublisher: AnyPublisher<String?, Never> {
         Publishers.CombineLatest(Just(expectedPIN), $pinCode.compactMap { $0 })
             .debounce(for: 0.2, scheduler: RunLoop.main)
             .map { expectedPIN, pinConfirmation in
