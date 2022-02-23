@@ -16,14 +16,14 @@ final class AppCoordinator: NavigationCoordinatable {
     @Root var onboarding = makeOnboarding
     @Root var main = makeMain
     
-    private let model: Model // TODO: SHOULD? MUST? Be: `@ObservedObject var model: Model`?
+    private let model: Model
     private let useCaseProvider: UseCaseProvider
     
     private let onboardingNavigator = OnboardingCoordinator.Navigator()
     private let mainNavigator = MainCoordinator.Navigator()
     
     init(
-        model: Model, // TODO: SHOULD? MUST? Be: `ObservedObject<Model>` ?
+        model: Model,
         useCaseProvider: UseCaseProvider
     ) {
         
@@ -50,8 +50,8 @@ extension AppCoordinator {
         view
             .onReceive(onboardingNavigator) { [unowned self] userDid in
                 switch userDid {
-                case .finishOnboarding:
-                    self.root(\.main)
+                case .finishOnboarding(let wallet):
+                    self.root(\.main, wallet)
                 }
             }
             .onReceive(mainNavigator) { [unowned self] userDid in
@@ -60,7 +60,6 @@ extension AppCoordinator {
                     self.root(\.onboarding)
                 }
             }
-        
     }
 }
 

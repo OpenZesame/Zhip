@@ -30,13 +30,6 @@ final class DefaultUseCaseProvider: UseCaseProvider {
         self.preferences = preferences
         self.securePersistence = securePersistence
         self.zilliqaService = zilliqaService
-
-        #if DEBUG
-        print("⚠️⚠️⚠️ WARNING! ALWAYS DELETING WALLET! ⚠️⚠️⚠️")
-        securePersistence.deleteWallet()
-        try? preferences.deleteValue(for: .hasAcceptedTermsOfService)
-        #endif
-        
     }
 }
 

@@ -11,7 +11,7 @@ import ZhipEngine
 import Stinsen
 
 enum OnboardingCoordinatorNavigationStep {
-    case finishOnboarding
+    case finishOnboarding(wallet: Wallet)
 }
 
 // MARK: - OnboardingCoordinator
@@ -127,7 +127,10 @@ private extension OnboardingCoordinator {
     }
     
     func finishedOnboarding() {
-        navigator.step(.finishOnboarding)
+        guard let wallet = walletUseCase.loadWallet() else {
+            fatalError("Expected to have setup a wallet by now, but we have none.")
+        }
+        navigator.step(.finishOnboarding(wallet: wallet))
     }
 }
 

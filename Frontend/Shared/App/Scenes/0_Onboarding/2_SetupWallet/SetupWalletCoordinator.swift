@@ -30,6 +30,7 @@ final class SetupWalletCoordinator: NavigationCoordinatable {
     
     private unowned let navigator: Navigator
     private let useCaseProvider: UseCaseProvider
+    private lazy var useCase: WalletUseCase = useCaseProvider.makeWalletUseCase()
     
     init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
         self.navigator = navigator
@@ -70,6 +71,7 @@ extension SetupWalletCoordinator {
 extension SetupWalletCoordinator {
 
     func userFinishedSettingUpNewWallet(_ wallet: Wallet) {
+        useCase.save(wallet: wallet)
         print("🔮💶 SetupWalletCoordinator:userFinishedSettingUpNewWallet")
         
         // Hmm not happy about this...
