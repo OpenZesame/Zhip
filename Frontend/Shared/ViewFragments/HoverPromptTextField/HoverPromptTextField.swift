@@ -265,6 +265,7 @@ private extension HoverPromptTextField {
     func validate() {
         errorMessages = validationResult()
         isValid = isValid(given: errorMessages)
+        print("🔮 Hover:validate: isValid: '\(isValid)', #rules:\(config.behaviour.validation.rules.count)\nerrorMessages: '\(errorMessages)'\n")
     }
     
     func onlyIfOKChangeValidationStateToOK() {
@@ -393,12 +394,8 @@ private extension HoverPromptTextField {
             case .lazyErrorEagerOK:
                 if isFocused {
                     onlyIfOKChangeValidationStateToOK()
-                } else  {
-                    if isEmpty {
-                        onlyIfOKChangeValidationStateToOK()
-                    } else {
-                        validate()
-                    }
+                } else {
+                    validate()
                 }
             }
         }.onChange(of: text) { _ in

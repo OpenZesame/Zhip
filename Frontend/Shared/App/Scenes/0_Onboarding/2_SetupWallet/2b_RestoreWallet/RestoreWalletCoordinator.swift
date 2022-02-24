@@ -55,7 +55,7 @@ extension RestoreWalletCoordinator {
             .onReceive(restoreWalletNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .restoreWallet(let wallet):
-                    fatalError("impl me")
+                    navigator.step(.didRestoreWallet(wallet))
                 case .failedToRestoreWallet(let error):
                     fatalError("fauled to restore wallet, error: \(error)")
                 }

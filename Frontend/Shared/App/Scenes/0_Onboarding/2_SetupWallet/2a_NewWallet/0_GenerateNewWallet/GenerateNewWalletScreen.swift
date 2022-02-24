@@ -28,7 +28,9 @@ extension GenerateNewWalletScreen {
                 
                 PasswordInputFields(
                     password: $viewModel.password,
-                    passwordConfirmation: $viewModel.passwordConfirmation
+                    isPasswordValid: $viewModel.isPasswordValid,
+                    passwordConfirmation: $viewModel.passwordConfirmation,
+                    isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
                 )
                 
                 Spacer()
@@ -44,34 +46,48 @@ extension GenerateNewWalletScreen {
                     }
                 }
                 .buttonStyle(.primary(isLoading: $viewModel.isGeneratingWallet))
-                .disabled(!viewModel.isFinished)
+                .enabled(if: viewModel.canProceed)
             }
+            #if DEBUG
+            .onAppear {
+                    viewModel.password = unsafeDebugPassword
+                    viewModel.passwordConfirmation = unsafeDebugPassword
+                    viewModel.userHasConfirmedBackingUpPassword = true
+            }
+            #endif
         }
     }
-    
 }
+
+#if DEBUG
+let unsafeDebugPassword = "apabanan"
+#endif
 
 extension Array where Element == ValidateInputRequirement {
     static var encryptionPassword: [ValidateInputRequirement] {
-        let rules: [ValidateInputRequirement] = [
-            ValidateInputRequirement.minimumLength(of: 8) as! ValidateInputRequirement
-        ]
-        
-        return rules
+       [
+        ValidateInputRequirement.encryptionPassword
+       ]
     }
 }
 
+extension ValidateInputRequirement {
+    static let encryptionPassword: ValidateInputRequirement = { ValidateInputRequirement.minimumLength(of: 8) as! ValidateInputRequirement }()
+}
 
 struct PasswordInputFields: View {
     
     @Binding var password: String
+    @Binding var isPasswordValid: Bool
     @Binding var passwordConfirmation: String
+    @Binding var isPasswordConfirmationValid: Bool
     
     var body: some View {
         VStack(spacing: 20) {
             InputField(
                 prompt: "Encryption password",
                 text: $password,
+                isValid: $isPasswordValid,
                 isSecure: true,
                 validationRules: .encryptionPassword
             )
@@ -79,6 +95,7 @@ struct PasswordInputFields: View {
             InputField(
                 prompt: "Confirm encryption password",
                 text: $passwordConfirmation,
+                isValid: $isPasswordConfirmationValid,
                 isSecure: true,
                 validationRules: [
                     Validation { confirmText in
@@ -86,7 +103,9 @@ struct PasswordInputFields: View {
                             return "Passwords does not match."
                         }
                         return nil // Valid
-                    }
+                    },
+                    
+                    ValidateInputRequirement.encryptionPassword
                 ]
             )
         }

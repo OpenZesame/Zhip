@@ -7,6 +7,7 @@
 
 import Foundation
 import ZhipEngine
+import Combine
 import enum Zesame.KeyRestoration
 import enum Zesame.KDF
 import struct Zesame.KDFParams
@@ -24,19 +25,19 @@ public protocol BaseRestoreWalletViewModel: ObservableObject {
 public extension BaseRestoreWalletViewModel {
     
     var kdfParams: KDFParams {
-        #if DEBUG
+#if DEBUG
         return .unsafeFast
-        #else
+#else
         return .default
-        #endif
+#endif
     }
     
     var kdf: KDF {
-        #if DEBUG
+#if DEBUG
         return .pbkdf2
-        #else
+#else
         return .scrypt
-        #endif
+#endif
     }
 }
 
@@ -49,20 +50,26 @@ public enum RestoreWalletUsingPrivateKeyNavigationStep {
 
 // MARK: - RestoreWalletUsingPrivateKeyViewModel
 // MARK: -
-public final class RestoreWalletUsingPrivateKeyViewModel: BaseRestoreWalletViewModel {
+public final class RestoreWalletUsingPrivateKeyViewModel: EncryptionPasswordSetting, BaseRestoreWalletViewModel {
     
-    @Published public var privateKey: String = ""
-    @Published public var password: String = ""
-    @Published public var passwordConfirmation: String = ""
+    @Published var privateKeyHex: String = ""
+    @Published var isPrivateKeyValid: Bool = false
     @Published public var canProceed: Bool = false
     @Published public var isRestoringWallet: Bool = false
     
     private unowned let navigator: Navigator
     private let useCase: WalletUseCase
+    private var cancellables = Set<AnyCancellable>()
     
-    public init(navigator: Navigator, useCase: WalletUseCase) {
+    public init(
+        navigator: Navigator,
+        useCase: WalletUseCase
+    ) {
         self.navigator = navigator
         self.useCase = useCase
+        super.init()
+        
+        subscribeToPublishers()
     }
     
     deinit {
@@ -77,10 +84,10 @@ public extension RestoreWalletUsingPrivateKeyViewModel {
     typealias Navigator = RestoreWalletViewModel.Navigator
     
     var keyRestoration: KeyRestoration? {
-        guard let privateKey = PrivateKey(hex: self.privateKey) else {
+        guard let privateKey = PrivateKey(hex: privateKeyHex) else {
             return nil
         }
-
+        
         return KeyRestoration.privateKey(
             privateKey,
             encryptBy: password,
@@ -95,7 +102,11 @@ public extension RestoreWalletUsingPrivateKeyViewModel {
             print("⚠️ No key restoration, invalid private key hex?")
             return
         }
-        isRestoringWallet = true
+       
+        Task { @MainActor [unowned self] in
+            isRestoringWallet = true
+        }
+        
         do {
             let wallet = try await useCase.restoreWallet(name: "Wallet", from: keyRestoration)
             Task { @MainActor [unowned self] in
@@ -108,5 +119,28 @@ public extension RestoreWalletUsingPrivateKeyViewModel {
                 navigator.step(.failedToRestoreWallet(error: error))
             }
         }
+    }
+}
+
+// MARK: - Private
+// MARK: -
+private extension RestoreWalletUsingPrivateKeyViewModel {
+    
+    var canProceedPublisher: AnyPublisher<Bool, Never> {
+        Publishers.CombineLatest(
+            arePasswordsValidAndEqualPublisher,
+            $isPrivateKeyValid
+        )
+            .map { arePasswordsValidAndEqual, isPrivateKeyValid in
+                return arePasswordsValidAndEqual && isPrivateKeyValid
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func subscribeToPublishers() {
+        canProceedPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: \.canProceed, on: self)
+            .store(in: &cancellables)
     }
 }

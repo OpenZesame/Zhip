@@ -9,6 +9,40 @@ import Foundation
 import Combine
 import ZhipEngine
 
+public class EncryptionPasswordSetting: ObservableObject {
+    @Published var password = ""
+    @Published var isPasswordValid = false
+    @Published var passwordConfirmation = ""
+    @Published var isPasswordConfirmationValid = false
+}
+
+internal extension EncryptionPasswordSetting {
+    var _arePasswordsEqualPublisher: AnyPublisher<Bool, Never> {
+       Publishers.CombineLatest($password, $passwordConfirmation)
+           .debounce(for: 0.2, scheduler: RunLoop.main)
+           .map { password, passwordConfirmation in
+               return password == passwordConfirmation
+           }
+           .eraseToAnyPublisher()
+   }
+   
+   var _arePasswordsValidPublisher: AnyPublisher<Bool, Never> {
+      Publishers.CombineLatest($isPasswordValid, $isPasswordConfirmationValid)
+          .map { passwordValid, passwordConfirmationValid in
+              return passwordValid && passwordConfirmationValid
+          }
+          .eraseToAnyPublisher()
+  }
+   
+   var arePasswordsValidAndEqualPublisher: AnyPublisher<Bool, Never> {
+       Publishers.CombineLatest(_arePasswordsEqualPublisher,_arePasswordsValidPublisher)
+           .map { arePasswordsEqual, arePasswordsValid in
+               return arePasswordsEqual && arePasswordsValid
+           }
+           .eraseToAnyPublisher()
+   }
+}
+
 // MARK: - GenerateNewWalletNavigationStep
 // MARK: -
 public enum GenerateNewWalletNavigationStep {
@@ -18,12 +52,10 @@ public enum GenerateNewWalletNavigationStep {
 
 // MARK: - GenerateNewWalletNavigationStep
 // MARK: -
-public final class GenerateNewWalletViewModel: ObservableObject {
+public final class GenerateNewWalletViewModel: EncryptionPasswordSetting {
     
     @Published var userHasConfirmedBackingUpPassword = false
-    @Published var password = ""
-    @Published var passwordConfirmation = ""
-    @Published var isFinished = false
+    @Published var canProceed = false
     @Published var isGeneratingWallet = false
 
     private unowned let navigator: Navigator
@@ -36,17 +68,18 @@ public final class GenerateNewWalletViewModel: ObservableObject {
     ) {
         self.navigator = navigator
         self.walletUseCase = walletUseCase
+        super.init()
         
-        canProceedPublisher
-              .receive(on: RunLoop.main)
-              .assign(to: \.isFinished, on: self)
-              .store(in: &cancellables)
+        subscribeToPublishers()
         
-        #if DEBUG
-        password = "apabanan"
-        passwordConfirmation = password
-        userHasConfirmedBackingUpPassword = true
-        #endif
+        $isPasswordConfirmationValid.sink(receiveValue: {
+            print("isPasswordConfirmationValid: \($0)")
+        }).store(in: &cancellables)
+        
+        $isPasswordValid.sink(receiveValue: {
+            print("isPasswordValid: \($0)")
+        }).store(in: &cancellables)
+ 
     }
     
     deinit {
@@ -91,19 +124,18 @@ public extension GenerateNewWalletViewModel {
 // MARK: - Private
 // MARK: -
 private extension GenerateNewWalletViewModel {
-     var arePasswordsEqualPublisher: AnyPublisher<Bool, Never> {
-        Publishers.CombineLatest($password, $passwordConfirmation)
-            .debounce(for: 0.2, scheduler: RunLoop.main)
-            .map { password, passwordConfirmation in
-                return password == passwordConfirmation
-            }
-            .eraseToAnyPublisher()
+    
+    func subscribeToPublishers() {
+        canProceedPublisher
+              .receive(on: RunLoop.main)
+              .assign(to: \.canProceed, on: self)
+              .store(in: &cancellables)
     }
     
     var canProceedPublisher: AnyPublisher<Bool, Never> {
-        Publishers.CombineLatest(arePasswordsEqualPublisher, $userHasConfirmedBackingUpPassword)
-            .map { validPassword, userHasConfirmedBackingUpPassword in
-                return validPassword && userHasConfirmedBackingUpPassword
+        Publishers.CombineLatest(arePasswordsValidAndEqualPublisher, $userHasConfirmedBackingUpPassword)
+            .map { arePasswordsValidAndEqual, userHasConfirmedBackingUpPassword in
+                return arePasswordsValidAndEqual && userHasConfirmedBackingUpPassword
             }
             .eraseToAnyPublisher()
     }
