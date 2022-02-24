@@ -10,8 +10,8 @@ import ZhipEngine
 
 // MARK: - ConfirmNewPINCodeScreen
 // MARK: -
-struct ConfirmNewPINCodeScreen<ViewModel: ConfirmNewPINCodeViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct ConfirmNewPINCodeScreen: View {
+    @ObservedObject var viewModel: ConfirmNewPINCodeViewModel
 }
 
 // MARK: - View

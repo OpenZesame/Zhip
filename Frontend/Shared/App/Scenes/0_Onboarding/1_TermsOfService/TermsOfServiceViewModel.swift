@@ -11,11 +11,27 @@ enum TermsOfServiceNavigationStep {
     case userDidAcceptTerms
 }
 
-protocol TermsOfServiceViewModel: ObservableObject {
-    var finishedReading: Bool { get set }
-    func didAcceptTermsOfService()
+final class TermsOfServiceViewModel: ObservableObject {
+    
+    typealias Navigator = NavigationStepper<TermsOfServiceNavigationStep>
+    
+    private unowned let navigator: Navigator
+    private let useCase: OnboardingUseCase
+    @Published var finishedReading: Bool = false
+    
+    init(navigator: Navigator, useCase: OnboardingUseCase) {
+        self.navigator = navigator
+        self.useCase = useCase
+    }
+    
+    deinit {
+        print("☑️ TermsOfServiceViewModel deinit")
+    }
 }
 
 extension TermsOfServiceViewModel {
-    typealias Navigator = NavigationStepper<TermsOfServiceNavigationStep>
+    func didAcceptTermsOfService() {
+        useCase.didAcceptTermsOfService()
+        navigator.step(.userDidAcceptTerms)
+    }
 }

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SettingsScreen<ViewModel: SettingsViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct SettingsScreen: View {
+    @ObservedObject var viewModel: SettingsViewModel
 }
 
 // MARK: - View

@@ -11,8 +11,8 @@ import Combine
 
 // MARK: - DecryptKeystoreToRevealKeyPairScreen
 // MARK: -
-struct DecryptKeystoreToRevealKeyPairScreen<ViewModel: DecryptKeystoreToRevealKeyPairViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct DecryptKeystoreToRevealKeyPairScreen: View {
+    @ObservedObject var viewModel: DecryptKeystoreToRevealKeyPairViewModel
 }
 
 // MARK: - View

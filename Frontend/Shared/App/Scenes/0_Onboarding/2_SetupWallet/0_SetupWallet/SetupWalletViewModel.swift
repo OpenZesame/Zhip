@@ -7,16 +7,41 @@
 
 import Foundation
 
-enum SetupWalletNavigationStep {
+// MARK: - SetupWalletNavigationStep
+// MARK: -
+public enum SetupWalletNavigationStep {
     case userIntendsToGenerateNewWallet
     case userIntendsToRestoreExistingWallet
 }
 
-protocol SetupWalletViewModel: ObservableObject {
-    func generateNewWallet()
-    func restoreExistingWallet()
+// MARK: - SetupWalletViewModel
+// MARK: -
+public final class SetupWalletViewModel: ObservableObject {
+    
+    private unowned let navigator: Navigator
+    
+    public init(
+        navigator: Navigator
+    ) {
+        self.navigator = navigator
+    }
+    
+    deinit {
+        print("☑️ SetupWalletViewModel deinit")
+    }
 }
 
-extension SetupWalletViewModel {
+// MARK: - Public
+// MARK: -
+public extension SetupWalletViewModel {
+    
     typealias Navigator = NavigationStepper<SetupWalletNavigationStep>
+    
+    func generateNewWallet() {
+        navigator.step(.userIntendsToGenerateNewWallet)
+    }
+    
+    func restoreExistingWallet() {
+        navigator.step(.userIntendsToRestoreExistingWallet)
+    }
 }

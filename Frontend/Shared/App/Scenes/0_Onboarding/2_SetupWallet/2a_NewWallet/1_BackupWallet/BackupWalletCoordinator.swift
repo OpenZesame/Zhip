@@ -89,7 +89,7 @@ extension BackupWalletCoordinator {
     @ViewBuilder
     func makeBackupWallet() -> some View {
         
-        let viewModel = DefaultBackupWalletViewModel(
+        let viewModel = BackupWalletViewModel(
             navigator: backupWalletNavigator,
             wallet: wallet
         )
@@ -100,7 +100,7 @@ extension BackupWalletCoordinator {
     @ViewBuilder
     func makeRevealKeystore() -> some View {
         
-        let viewModel = DefaultBackUpKeystoreViewModel(
+        let viewModel = BackUpKeystoreViewModel(
             navigator: backUpKeystoreNavigator,
             wallet: wallet
         )

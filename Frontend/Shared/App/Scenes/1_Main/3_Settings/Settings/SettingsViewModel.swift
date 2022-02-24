@@ -7,16 +7,40 @@
 
 import Foundation
 
-enum SettingsNavigationStep {
+public enum SettingsNavigationStep {
     case deleteWallet
 }
 
-protocol SettingsViewModel: ObservableObject {
-    var isAskingForDeleteWalletConfirmation: Bool { get set }
-    func askForDeleteWalletConfirmation()
-    func confirmWalletDeletion()
+// MARK: - SettingsViewModel
+// MARK: -
+public final class SettingsViewModel: ObservableObject {
+    
+    @Published var isAskingForDeleteWalletConfirmation: Bool = false
+    
+    private unowned let navigator: Navigator
+    private let useCase: WalletUseCase
+    
+    public init(navigator: Navigator, useCase: WalletUseCase) {
+        self.navigator = navigator
+        self.useCase = useCase
+    }
 }
 
-extension SettingsViewModel {
+// MARK: - Public
+// MARK: -
+public extension SettingsViewModel {
+    
     typealias Navigator = NavigationStepper<SettingsNavigationStep>
+    
+    func askForDeleteWalletConfirmation() {
+        isAskingForDeleteWalletConfirmation = true
+    }
+
+    func confirmWalletDeletion() {
+        defer {
+            isAskingForDeleteWalletConfirmation = false
+        }
+        useCase.deleteWallet()
+        navigator.step(.deleteWallet)
+    }
 }

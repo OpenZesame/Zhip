@@ -2,51 +2,61 @@
 //  NewPINCodeViewModel.swift
 //  Zhip
 //
-//  Created by Alexander Cyon on 2022-02-20.
+//  Created by Alexander Cyon on 2022-02-22.
 //
 
 import Foundation
 import ZhipEngine
-import Combine
 
-final class NavigationStepper<Step>: Publisher {
-    private let stepSubject = PassthroughSubject<Output, Failure>()
-    init() {}
-    func step(_ step: Step) {
-        stepSubject.send(step)
-    }
-
-}
-
-// MARK: - Publisher
+// MARK: - NewPINCodeNavigationStep
 // MARK: -
-extension NavigationStepper {
-    typealias Output = Step
-    typealias Failure = Never
-    
-    func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        stepSubject.receive(subscriber: subscriber)
-    }
-    
-    func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        stepSubject.subscribe(subscriber)
-    }
-    
-}
-
-enum NewPINCodeNavigationStep {
+public enum NewPINCodeNavigationStep {
     case skipSettingPin
     case setPIN(Pincode)
 }
 
-protocol NewPINCodeViewModel: ObservableObject {
-    func skip()
-    var pinFieldText: String { get set }
-    var pinCode: Pincode? { get set }
-    var canProceed: Bool { get }
-    func doneSettingPIN()
+// MARK: - NewPINCodeViewModel
+// MARK: -
+public final class NewPINCodeViewModel: ObservableObject {
+   
+    @Published var pinCode: Pincode?
+    @Published var pinFieldText: String = ""
+
+    private let useCase: PINCodeUseCase
+    private unowned let navigator: Navigator
+    
+    public init(
+        navigator: Navigator,
+        useCase: PINCodeUseCase
+    ) {
+        self.useCase = useCase
+        self.navigator = navigator
+    }
+    
+    deinit {
+        print("☑️ NewPINCodeViewModel deinit")
+    }
 }
 
-extension NewPINCodeViewModel {
+// MARK: - Public
+// MARK: -
+public extension NewPINCodeViewModel {
+    
     typealias Navigator = NavigationStepper<NewPINCodeNavigationStep>
+    
+    var canProceed: Bool { pinCode != nil }
+
+    func skip() {
+        useCase.skipSettingUpPincode()
+        navigator.step(.skipSettingPin)
+    }
+    
+    func doneSettingPIN() {
+        guard let pinCode = pinCode else {
+            print("UI bug, pinCode should not be nil according to view model logic, but UI incorrectly allowed calling this function: \(#function)")
+            return
+        }
+        navigator.step(.setPIN(pinCode))
+    }
 }
+

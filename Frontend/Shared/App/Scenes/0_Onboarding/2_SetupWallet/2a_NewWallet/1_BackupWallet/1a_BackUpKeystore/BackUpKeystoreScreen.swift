@@ -11,8 +11,8 @@ import Combine
 
 // MARK: - BackUpKeystoreScreen
 // MARK: -
-struct BackUpKeystoreScreen<ViewModel: BackUpKeystoreViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct BackUpKeystoreScreen: View {
+    @ObservedObject var viewModel: BackUpKeystoreViewModel
 }
 
 // MARK: - View

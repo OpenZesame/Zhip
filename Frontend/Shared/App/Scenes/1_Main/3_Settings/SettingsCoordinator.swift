@@ -52,7 +52,7 @@ extension SettingsCoordinator {
 extension SettingsCoordinator {
     @ViewBuilder
     func makeStart() -> some View {
-        let viewModel = DefaultSettingsViewModel(
+        let viewModel = SettingsViewModel(
             navigator: settingsNavigator,
             useCase: useCaseProvider.makeWalletUseCase()
         )

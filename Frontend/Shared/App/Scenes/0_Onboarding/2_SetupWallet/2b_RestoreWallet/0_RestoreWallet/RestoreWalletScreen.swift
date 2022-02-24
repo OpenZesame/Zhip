@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct RestoreWalletScreen<ViewModel: RestoreWalletViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct RestoreWalletScreen: View {
+    @ObservedObject var viewModel: RestoreWalletViewModel
 }
 
 // MARK: - View

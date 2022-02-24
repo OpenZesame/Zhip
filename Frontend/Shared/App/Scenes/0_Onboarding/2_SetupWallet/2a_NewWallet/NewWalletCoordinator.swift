@@ -84,14 +84,14 @@ extension NewWalletCoordinator {
     
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
-        let viewModel = DefaultEnsurePrivacyViewModel(navigator: ensurePrivacyNavigator)
+        let viewModel = EnsurePrivacyViewModel(navigator: ensurePrivacyNavigator)
         EnsurePrivacyScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
     func makeGenerateNewWallet() -> some View {
         
-        let viewModel = DefaultGenerateNewWalletViewModel(
+        let viewModel = GenerateNewWalletViewModel(
             navigator: generateNewWalletNavigator,
             useCase: walletUseCase
         )

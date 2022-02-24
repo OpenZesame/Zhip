@@ -9,8 +9,8 @@ import SwiftUI
 
 // MARK: - TermsOfServiceScreen
 // MARK: -
-struct TermsOfServiceScreen<ViewModel: TermsOfServiceViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct TermsOfServiceScreen: View {
+    @ObservedObject var viewModel: TermsOfServiceViewModel
 }
 
 // MARK: - View

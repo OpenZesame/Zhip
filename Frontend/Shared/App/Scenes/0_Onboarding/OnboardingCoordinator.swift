@@ -140,14 +140,14 @@ private extension OnboardingCoordinator {
     
     @ViewBuilder
     func makeWelcome() -> some View {
-        let viewModel = DefaultWelcomeViewModel(navigator: welcomeNavigator)
+        let viewModel = WelcomeViewModel(navigator: welcomeNavigator)
         WelcomeScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
     func makeTermsOfService() -> some View {
         
-        let viewModel = DefaultTermsOfServiceViewModel(
+        let viewModel = TermsOfServiceViewModel(
             navigator: termsOfServiceNavigator,
             useCase: onboardingUseCase
         )

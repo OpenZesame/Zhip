@@ -70,22 +70,22 @@ extension MainCoordinator {
     
     @ViewBuilder
     func makeBalancesTab(isActive: Bool) -> some View {
-        TopLevelNavigationItem.balances.label
+        Tab.balances.label
     }
     
     @ViewBuilder
     func makeTransferTab(isActive: Bool) -> some View {
-        TopLevelNavigationItem.transfer.label
+        Tab.transfer.label
     }
     
     @ViewBuilder
     func makeContactsTab(isActive: Bool) -> some View {
-        TopLevelNavigationItem.contacts.label
+        Tab.contacts.label
     }
     
     @ViewBuilder
     func makeSettingsTab(isActive: Bool) -> some View {
-        TopLevelNavigationItem.settings.label
+        Tab.settings.label
     }
     
     func makeBalances() -> NavigationViewCoordinator<BalancesCoordinator> {
@@ -110,3 +110,34 @@ extension MainCoordinator {
         return NavigationViewCoordinator(settingsCoordinator)
     }
 }
+
+
+enum Tab {
+    case balances
+    case transfer
+    case contacts
+    case settings
+}
+
+extension Tab {
+    var name: String {
+        switch self {
+        case .balances: return "Balances"
+        case .transfer: return "Transfer"
+        case .contacts: return "Contacts"
+        case .settings: return "Settings"
+        }
+    }
+    var imageName: String {
+        switch self {
+        case .balances: return "bitcoinsign.circle"
+        case .transfer: return "arrow.up.circle"
+        case .contacts: return "heart"
+        case .settings: return "gear"
+        }
+    }
+    var label: some View {
+        Label(name, systemImage: imageName)
+    }
+}
+

@@ -10,7 +10,7 @@ import ZhipEngine
 
 // MARK: - PINCodeUseCase
 // MARK: -
-protocol PINCodeUseCase: AnyObject {
+public protocol PINCodeUseCase: AnyObject {
     func userChoose(pincode: Pincode)
     func skipSettingUpPincode()
     func deletePincode()
@@ -20,12 +20,12 @@ protocol PINCodeUseCase: AnyObject {
 
 // MARK: - DefaultPINCodeUseCase
 // MARK: -
-final class DefaultPINCodeUseCase: PINCodeUseCase {
+public final class DefaultPINCodeUseCase: PINCodeUseCase {
     private let preferences: Preferences
     
     private let securePersistence: SecurePersistence
     
-    init(preferences: Preferences, securePersistence: SecurePersistence) {
+    public init(preferences: Preferences, securePersistence: SecurePersistence) {
         self.preferences = preferences
         self.securePersistence = securePersistence
     }
@@ -33,7 +33,7 @@ final class DefaultPINCodeUseCase: PINCodeUseCase {
 
 // MARK: - PINCodeUseCase Conf.
 // MARK: -
-extension DefaultPINCodeUseCase {
+public extension DefaultPINCodeUseCase {
 
     func skipSettingUpPincode() {
         try! preferences.save(value: true, for: .skipPincodeSetup)

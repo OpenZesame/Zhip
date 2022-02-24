@@ -11,11 +11,22 @@ enum WelcomeNavigationStep {
     case didStart
 }
 
-protocol WelcomeViewModel: ObservableObject {
-    func startApp()
+final class WelcomeViewModel: ObservableObject {
+    typealias Navigator = NavigationStepper<WelcomeNavigationStep>
+   
+    private unowned let navigator: Navigator
+  
+    init(navigator: Navigator) {
+        self.navigator = navigator
+    }
+
+    deinit {
+        print("☑️ WelcomeViewModel deinit")
+    }
 }
 
 extension WelcomeViewModel {
-    typealias Navigator = NavigationStepper<WelcomeNavigationStep>
+    func startApp() {
+        navigator.step(.didStart)
+    }
 }
-

@@ -9,8 +9,8 @@ import SwiftUI
 
 // MARK: - BackupWalletScreen
 // MARK: -
-struct BackupWalletScreen<ViewModel: BackupWalletViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct BackupWalletScreen: View {
+    @ObservedObject var viewModel: BackupWalletViewModel
 }
 
 // MARK: - View

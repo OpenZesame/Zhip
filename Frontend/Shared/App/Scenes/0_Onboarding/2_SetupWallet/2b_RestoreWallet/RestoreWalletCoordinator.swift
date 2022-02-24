@@ -90,7 +90,7 @@ extension RestoreWalletCoordinator {
     @ViewBuilder
     func makeEnsurePrivacy() -> some View {
         
-        let viewModel = DefaultEnsurePrivacyViewModel(
+        let viewModel = EnsurePrivacyViewModel(
             navigator: ensurePrivacyNavigator
         )
         
@@ -101,7 +101,7 @@ extension RestoreWalletCoordinator {
     @ViewBuilder
     func makeRestore() -> some View {
         
-        let viewModel = DefaultRestoreWalletViewModel(
+        let viewModel = RestoreWalletViewModel(
             navigator: restoreWalletNavigator,
             useCase: useCase
         )

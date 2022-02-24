@@ -9,8 +9,8 @@ import SwiftUI
 
 // MARK: - BackUpRevealedKeyPairScreen
 // MARK: -
-struct BackUpRevealedKeyPairScreen<ViewModel: BackUpRevealedKeyPairViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct BackUpRevealedKeyPairScreen: View {
+    @ObservedObject var viewModel: BackUpRevealedKeyPairViewModel
 }
 
 // MARK: - View

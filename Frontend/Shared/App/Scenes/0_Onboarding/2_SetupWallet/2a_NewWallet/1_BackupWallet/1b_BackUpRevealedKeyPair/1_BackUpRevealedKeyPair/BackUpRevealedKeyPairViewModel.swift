@@ -6,20 +6,70 @@
 //
 
 import Foundation
+import Combine
+import Zesame
 
-enum BackUpRevealedKeyPairNavigationStep {
+// MARK: - BackUpRevealedKeyPairNavigationStep
+// MARK: -
+public enum BackUpRevealedKeyPairNavigationStep {
     case finishBackingUpKeys
 }
 
-protocol BackUpRevealedKeyPairViewModel: ObservableObject {
-    var displayablePrivateKey: String { get }
-    var displayablePublicKey: String { get }
-    func copyPrivateKeyToPasteboard()
-    func copyPublicKeyToPasteboard()
-    var isPresentingDidCopyToPasteboardAlert: Bool { get set }
-    func doneBackingUpKeys()
+// MARK: - BackUpRevealedKeyPairViewModel
+// MARK: -
+public final class BackUpRevealedKeyPairViewModel: ObservableObject {
+    
+    @Published var isPresentingDidCopyToPasteboardAlert = false
+    private unowned let navigator: Navigator
+    private let keyPair: KeyPair
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    public init(navigator: Navigator, keyPair: KeyPair) {
+        self.navigator = navigator
+        self.keyPair = keyPair
+        
+        // Autoclose `Did Copy Keystore` Alert after delay
+        $isPresentingDidCopyToPasteboardAlert
+        .filter { isPresenting in
+            isPresenting
+        }
+        .delay(for: 2, scheduler: RunLoop.main) // dismiss after delay
+        .map { _ in false } // `isPresentingDidCopyKeystoreAlert = false`
+        .assign(to: \.isPresentingDidCopyToPasteboardAlert, on: self)
+        .store(in: &cancellables)
+    }
 }
 
-extension BackUpRevealedKeyPairViewModel {
+// MARK: - Public
+// MARK: -
+public extension BackUpRevealedKeyPairViewModel {
+    
     typealias Navigator = NavigationStepper<BackUpRevealedKeyPairNavigationStep>
+    
+    var displayablePrivateKey: String {
+        keyPair.privateKey.asHex().lowercased()
+    }
+    
+    var displayablePublicKey: String {
+        keyPair.publicKey.hex.uncompressed.lowercased()
+    }
+    
+    func copyPrivateKeyToPasteboard() {
+        guard copyToPasteboard(contents: displayablePrivateKey) else {
+            return
+        }
+        isPresentingDidCopyToPasteboardAlert = true
+    }
+    
+    func copyPublicKeyToPasteboard() {
+        guard copyToPasteboard(contents: displayablePublicKey) else {
+            return
+        }
+        isPresentingDidCopyToPasteboardAlert = true
+    }
+    
+    func doneBackingUpKeys() {
+        navigator.step(.finishBackingUpKeys)
+    }
 }

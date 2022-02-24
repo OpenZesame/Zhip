@@ -97,7 +97,7 @@ private extension BackUpKeyPairCoordinator {
     @ViewBuilder
     func makeDecryptKeystore() -> some View {
         
-        let viewModel = DefaultDecryptKeystoreToRevealKeyPairViewModel(
+        let viewModel = DecryptKeystoreToRevealKeyPairViewModel(
             navigator: decryptKeystoreToRevealKeyPairNavigator,
             useCase: useCase,
             wallet: wallet
@@ -109,7 +109,7 @@ private extension BackUpKeyPairCoordinator {
     @ViewBuilder
     func makeBackUpRevealedKeyPair(keyPair: KeyPair) -> some View {
         
-        let viewModel = DefaultBackUpRevealedKeyPairViewModel(
+        let viewModel = BackUpRevealedKeyPairViewModel(
             navigator: backUpRevealedKeyPairNavigator,
             keyPair: keyPair
         )

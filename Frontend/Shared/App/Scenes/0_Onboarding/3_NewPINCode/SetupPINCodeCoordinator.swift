@@ -84,7 +84,7 @@ extension SetupPINCodeCoordinator {
     @ViewBuilder
     func makeNewPIN() -> some View {
         
-        let viewModel = DefaultNewPINCodeViewModel(
+        let viewModel = NewPINCodeViewModel(
             navigator: newPinNavigator,
             useCase: useCase
         )
@@ -95,7 +95,7 @@ extension SetupPINCodeCoordinator {
     @ViewBuilder
     func makeConfirmPIN(expectedPIN: Pincode) -> some View {
         
-        let viewModel = DefaultConfirmNewPINCodeViewModel(
+        let viewModel = ConfirmNewPINCodeViewModel(
             navigator: confirmNewPinNavigator,
             expectedPIN: expectedPIN,
             useCase: useCase

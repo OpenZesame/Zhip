@@ -7,16 +7,39 @@
 
 import Foundation
 
-enum EnsurePrivacyNavigationStep {
+// MARK: - EnsurePrivacyNavigationStep
+// MARK: -
+public enum EnsurePrivacyNavigationStep {
     case thinkScreenMightBeWatched
     case ensurePrivacy
 }
 
-protocol EnsurePrivacyViewModel: ObservableObject {
-    func privacyIsEnsured()
-    func myScreenMightBeWatched()
+// MARK: - EnsurePrivacyViewModel
+// MARK: -
+public final class EnsurePrivacyViewModel: ObservableObject {
+    
+    private unowned let navigator: Navigator
+    
+    public init(navigator: Navigator) {
+        self.navigator = navigator
+    }
+    
+    deinit {
+        print("☑️ EnsurePrivacyViewModel deinit")
+    }
 }
 
-extension EnsurePrivacyViewModel {
+// MARK: - Public
+// MARK: -
+public extension EnsurePrivacyViewModel {
+
     typealias Navigator = NavigationStepper<EnsurePrivacyNavigationStep>
+    
+    func privacyIsEnsured() {
+        navigator.step(.ensurePrivacy)
+    }
+    
+    func myScreenMightBeWatched() {
+        navigator.step(.thinkScreenMightBeWatched)
+    }
 }

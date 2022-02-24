@@ -6,18 +6,58 @@
 //
 
 import Foundation
+import ZhipEngine
+import Combine
 
-enum BackUpKeystoreNavigationStep {
+// MARK: - BackUpKeystoreNavigationStep
+// MARK: -
+public enum BackUpKeystoreNavigationStep {
     case finishedBackingUpKeystore
 }
 
-protocol BackUpKeystoreViewModel: ObservableObject {
-    func doneBackingUpKeystore()
-    func copyKeystoreToPasteboard()
-    var isPresentingDidCopyKeystoreAlert: Bool { get set }
-    var displayableKeystore: String { get }
+// MARK: - BackUpKeystoreViewModel
+// MARK: -
+public final class BackUpKeystoreViewModel: ObservableObject {
+    
+    private unowned let navigator: Navigator
+    private let wallet: Wallet
+    
+    @Published var isPresentingDidCopyKeystoreAlert = false
+    private var cancellables = Set<AnyCancellable>()
+    
+    public init(navigator: Navigator, wallet: Wallet) {
+        self.navigator = navigator
+        self.wallet = wallet
+        
+        // Autoclose `Did Copy Keystore` Alert after delay
+        $isPresentingDidCopyKeystoreAlert
+            .filter { isPresenting in
+                isPresenting
+            }
+            .delay(for: 2, scheduler: RunLoop.main) // dismiss after delay
+            .map { _ in false } // `isPresentingDidCopyKeystoreAlert = false`
+            .assign(to: \.isPresentingDidCopyKeystoreAlert, on: self)
+            .store(in: &cancellables)
+    }
 }
 
-extension BackUpKeystoreViewModel {
+// MARK: - Public
+// MARK: -
+public extension BackUpKeystoreViewModel {
+    
     typealias Navigator = NavigationStepper<BackUpKeystoreNavigationStep>
+    
+    func doneBackingUpKeystore() {
+        navigator.step(.finishedBackingUpKeystore)
+    }
+    
+    var displayableKeystore: String {
+        wallet.keystoreAsJSON
+    }
+    
+    func copyKeystoreToPasteboard() {
+        guard copyToPasteboard(contents: displayableKeystore) else { return }
+        
+        isPresentingDidCopyKeystoreAlert = true
+    }
 }

@@ -9,8 +9,8 @@ import SwiftUI
 
 // MARK: - GenerateNewWalletScreen
 // MARK: -
-struct GenerateNewWalletScreen<ViewModel: GenerateNewWalletViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct GenerateNewWalletScreen: View {
+    @ObservedObject var viewModel: GenerateNewWalletViewModel
 }
 
 // MARK: - View

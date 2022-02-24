@@ -122,7 +122,7 @@ extension SetupWalletCoordinator {
     
     @ViewBuilder
     func makeSetupWallet() -> some View {
-        let viewModel = DefaultSetupWalletViewModel(navigator: setupWalletNavigator)
+        let viewModel = SetupWalletViewModel(navigator: setupWalletNavigator)
         SetupWalletScreen(viewModel: viewModel)
     }
     

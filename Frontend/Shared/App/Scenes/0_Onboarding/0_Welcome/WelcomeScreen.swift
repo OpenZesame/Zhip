@@ -9,8 +9,8 @@ import SwiftUI
 
 // MARK: - WelcomeScreen
 // MARK: -
-struct WelcomeScreen<ViewModel: WelcomeViewModel>: View {
-    @ObservedObject var viewModel: ViewModel
+struct WelcomeScreen: View {
+    @ObservedObject var viewModel: WelcomeViewModel
 }
 
 // MARK: - View
