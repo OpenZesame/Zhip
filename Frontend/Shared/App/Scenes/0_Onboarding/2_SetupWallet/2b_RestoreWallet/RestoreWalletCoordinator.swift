@@ -7,8 +7,16 @@
 
 import SwiftUI
 import Stinsen
+import ZhipEngine
+
+enum RestoreWalletCoordinatorNavigationStep {
+    case didRestoreWallet(Wallet)
+    case abortBecauseScreenMightBeWatched
+}
 
 final class RestoreWalletCoordinator: NavigationCoordinatable {
+    
+    typealias Navigator = NavigationStepper<RestoreWalletCoordinatorNavigationStep>
     
     let stack = NavigationStack<RestoreWalletCoordinator>(initial: \.ensurePrivacy)
     
@@ -18,7 +26,13 @@ final class RestoreWalletCoordinator: NavigationCoordinatable {
     private lazy var restoreWalletNavigator = RestoreWalletViewModel.Navigator()
     private lazy var ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
     
-    init() {}
+    private unowned let navigator: Navigator
+    private let useCase: WalletUseCase
+    
+    init(navigator: Navigator, useCase: WalletUseCase) {
+        self.navigator = navigator
+        self.useCase = useCase
+    }
   
     deinit {
         print("✅ RestoreWalletCoordinator DEINIT 💣")
@@ -42,6 +56,8 @@ extension RestoreWalletCoordinator {
                 switch userDid {
                 case .restoreWallet(let wallet):
                     fatalError("impl me")
+                case .failedToRestoreWallet(let error):
+                    fatalError("fauled to restore wallet, error: \(error)")
                 }
                 
             }
@@ -60,9 +76,10 @@ extension RestoreWalletCoordinator {
     }
     
     func myScreenMightBeWatched() {
-        dismissCoordinator {
-            print("dismissing \(self)")
-        }
+//        dismissCoordinator {
+//            print("dismissing \(self)")
+//        }
+        navigator.step(.abortBecauseScreenMightBeWatched)
     }
 }
 
@@ -85,7 +102,8 @@ extension RestoreWalletCoordinator {
     func makeRestore() -> some View {
         
         let viewModel = DefaultRestoreWalletViewModel(
-            navigator: restoreWalletNavigator
+            navigator: restoreWalletNavigator,
+            useCase: useCase
         )
         
         RestoreWalletScreen(viewModel: viewModel)

@@ -15,6 +15,7 @@ struct InputField: View {
     private let prompt: String
     private let isSecure: Bool
     private let validationRules: [ValidationRule]
+    private let maxLength: Int?
     private let characterRestriction: CharacterRestriction?
     
     init(
@@ -22,6 +23,7 @@ struct InputField: View {
         text: Binding<String>,
         isValid: Binding<Bool>? = nil,
         isSecure: Bool = false,
+        maxLength: Int? = nil,
         characterRestriction: CharacterRestriction? = nil,
         validationRules: [ValidationRule] = []
     ) {
@@ -30,6 +32,7 @@ struct InputField: View {
         self._isValid = isValid ?? .constant(true)
         self.isSecure = isSecure
         self.validationRules = validationRules
+        self.maxLength = maxLength
         self.characterRestriction = characterRestriction
     }
 }
@@ -49,6 +52,7 @@ extension InputField {
                     validation: .init(
                         rules: validationRules
                     ),
+                    maxLength: maxLength,
                     characterRestriction: characterRestriction
                 ),
                 appearance: .init(

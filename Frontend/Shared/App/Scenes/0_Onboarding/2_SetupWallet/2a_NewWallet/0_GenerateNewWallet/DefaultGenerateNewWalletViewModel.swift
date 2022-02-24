@@ -10,7 +10,6 @@ import Combine
 
 final class DefaultGenerateNewWalletViewModel: GenerateNewWalletViewModel {
     
-    
     @Published var userHasConfirmedBackingUpPassword = false
     @Published var password = ""
     @Published var passwordConfirmation = ""

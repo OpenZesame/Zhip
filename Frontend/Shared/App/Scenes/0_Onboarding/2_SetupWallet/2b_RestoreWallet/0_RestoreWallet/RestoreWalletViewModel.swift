@@ -15,6 +15,7 @@ enum RestorationMethod {
 
 enum RestoreWalletNavigationStep {
     case restoreWallet(Wallet)
+    case failedToRestoreWallet(error: Swift.Error)
 }
 
 protocol RestoreWalletViewModel: ObservableObject {

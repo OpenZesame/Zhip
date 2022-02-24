@@ -15,8 +15,11 @@ final class DefaultRestoreWalletViewModel: RestoreWalletViewModel {
     
     lazy var restoreWalletUsingPrivateKeyViewModel: DefaultRestoreWalletUsingPrivateKeyViewModel = makeRestoreWalletUsingPrivateKeyViewModel()
     
-    init(navigator: Navigator) {
+    private let useCase: WalletUseCase
+    
+    init(navigator: Navigator, useCase: WalletUseCase) {
         self.navigator = navigator
+        self.useCase = useCase
     }
     
     deinit {
@@ -34,10 +37,16 @@ extension DefaultRestoreWalletViewModel {
 // MARK: -
 private extension DefaultRestoreWalletViewModel {
     func makeRestoreWalletUsingKeystoreViewModel() -> DefaultRestoreWalletUsingKeystoreViewModel {
-        .init()
+        .init(
+            navigator: navigator,
+            useCase: useCase
+        )
     }
     
     func makeRestoreWalletUsingPrivateKeyViewModel() -> DefaultRestoreWalletUsingPrivateKeyViewModel {
-        .init()
+        .init(
+            navigator: navigator,
+            useCase: useCase
+        )
     }
 }

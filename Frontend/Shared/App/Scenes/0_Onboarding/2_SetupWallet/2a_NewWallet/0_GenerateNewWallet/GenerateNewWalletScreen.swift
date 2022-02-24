@@ -26,7 +26,10 @@ extension GenerateNewWalletScreen {
                     subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
                 )
                 
-                passwordInputFields
+                PasswordInputFields(
+                    password: $viewModel.password,
+                    passwordConfirmation: $viewModel.passwordConfirmation
+                )
                 
                 Spacer()
                 
@@ -58,25 +61,28 @@ extension Array where Element == ValidateInputRequirement {
     }
 }
 
-// MARK: - Subviews
-// MARK: -
-private extension GenerateNewWalletScreen {
-    var passwordInputFields: some View {
+
+struct PasswordInputFields: View {
+    
+    @Binding var password: String
+    @Binding var passwordConfirmation: String
+    
+    var body: some View {
         VStack(spacing: 20) {
             InputField(
                 prompt: "Encryption password",
-                text: $viewModel.password,
+                text: $password,
                 isSecure: true,
                 validationRules: .encryptionPassword
             )
             
             InputField(
                 prompt: "Confirm encryption password",
-                text: $viewModel.passwordConfirmation,
+                text: $passwordConfirmation,
                 isSecure: true,
                 validationRules: [
                     Validation { confirmText in
-                        if confirmText != viewModel.password {
+                        if confirmText != password {
                             return "Passwords does not match."
                         }
                         return nil // Valid

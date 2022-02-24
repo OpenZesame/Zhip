@@ -67,7 +67,7 @@ public extension ValidationRule where Self == ValidateInputRequirement {
                     return "[\(min)-\(max)]"
                 }
             case .exact(let exact):
-                return "\(exact)"
+                return "Must be #\(exact) chars"
             }
         }
         return ValidateInputRequirement(

@@ -25,8 +25,10 @@ final class SetupWalletCoordinator: NavigationCoordinatable {
     @Route(.modal) var newWallet = makeNewWallet
     @Route(.modal) var restoreWallet = makeRestoreWallet
     
-    private let setupWalletNavigator = SetupWalletViewModel.Navigator()
-    private let newWalletCoordinatorNavigator = NewWalletCoordinator.Navigator()
+    private lazy var setupWalletNavigator = SetupWalletViewModel.Navigator()
+
+    private lazy var newWalletCoordinatorNavigator = NewWalletCoordinator.Navigator()
+    private lazy var restoreWalletCoordinatorNavigator = RestoreWalletCoordinator.Navigator()
     
     private unowned let navigator: Navigator
     private let useCaseProvider: UseCaseProvider
@@ -59,8 +61,18 @@ extension SetupWalletCoordinator {
                 switch userDid {
                 case .create(let wallet):
                    userFinishedSettingUpNewWallet(wallet)
+                case .abortBecauseScreenMightBeWatched:
+                    abortedBecauseScreenMightBeWatched()
                 case .cancel:
                     fatalError("We should probably propagate the `cancel` event up to this coordinators parent coordinator.")
+                }
+            }
+            .onReceive(restoreWalletCoordinatorNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .didRestoreWallet(let wallet):
+                    userFinishedSettingUpNewWallet(wallet)
+                case .abortBecauseScreenMightBeWatched:
+                    abortedBecauseScreenMightBeWatched()
                 }
             }
     }
@@ -78,6 +90,12 @@ extension SetupWalletCoordinator {
         // TODO: find out why we cannot simply dismiss the whole coordinator
         _ = popToRoot { [unowned self] in
             navigator.step(.finishSettingUpWallet(wallet: wallet))
+        }
+    }
+    
+    func abortedBecauseScreenMightBeWatched() {
+        popLast {
+            print("abortedBecauseScreenMightBeWatched: should have popped EnsurePrivacyScreen")
         }
     }
     
@@ -120,7 +138,15 @@ extension SetupWalletCoordinator {
     }
     
     func makeRestoreWallet() -> NavigationViewCoordinator<RestoreWalletCoordinator> {
-        .init(RestoreWalletCoordinator())
+        
+        let restoreWalletCoordinator = RestoreWalletCoordinator(
+            navigator: restoreWalletCoordinatorNavigator,
+            useCase: useCase
+        )
+        
+        return NavigationViewCoordinator(
+            restoreWalletCoordinator
+        )
     }
     
 }

@@ -12,6 +12,7 @@ import Combine
 
 enum NewWalletCoordinatorNavigationStep {
     case create(wallet: Wallet)
+    case abortBecauseScreenMightBeWatched
     case cancel
 }
 
@@ -137,9 +138,10 @@ extension NewWalletCoordinator {
     }
     
     func myScreenMightBeWatched() {
-        dismissCoordinator {
-            print("dismissing \(self)")
-        }
+//        dismissCoordinator {
+//            print("dismissing \(self)")
+//        }
+        navigator.step(.abortBecauseScreenMightBeWatched)
     }
 
     func toBackupWallet(wallet: Wallet) {
