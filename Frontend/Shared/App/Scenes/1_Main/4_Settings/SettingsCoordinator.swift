@@ -41,8 +41,10 @@ extension SettingsCoordinator {
             view
                 .onReceive(settingsNavigator) { userDid in
                     switch userDid {
-                    case .deleteWallet:
+                    case .removeWallet:
                         navigator.step(.userDeletedWallet)
+                    default:
+                        fatalError("unhandled")
                     }
                 }
         }
