@@ -20,6 +20,7 @@ final class MainCoordinator: TabCoordinatable {
     let wallet: Wallet
     
     @Route(tabItem: makeBalancesTab) var balances = makeBalances
+    @Route(tabItem: makeReceiveTab) var receive = makeReceive
     @Route(tabItem: makeTransferTab) var transfer = makeTransfer
     @Route(tabItem: makeContactsTab) var contacts = makeContacts
     @Route(tabItem: makeSettingsTab) var settings = makeSettings
@@ -27,6 +28,7 @@ final class MainCoordinator: TabCoordinatable {
     var child = TabChild(
         startingItems: [
             \MainCoordinator.balances,
+            \MainCoordinator.receive,
             \MainCoordinator.transfer,
             \MainCoordinator.contacts,
             \MainCoordinator.settings
@@ -76,6 +78,11 @@ extension MainCoordinator {
     }
     
     @ViewBuilder
+    func makeReceiveTab(isActive: Bool) -> some View {
+        Tab.receive.label
+    }
+    
+    @ViewBuilder
     func makeTransferTab(isActive: Bool) -> some View {
         Tab.transfer.label
     }
@@ -96,6 +103,12 @@ extension MainCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase()
         )
         return NavigationViewCoordinator(balancesCoordinator)
+    }
+    
+    func makeReceive() -> NavigationViewCoordinator<ReceiveCoordinator> {
+        return NavigationViewCoordinator(ReceiveCoordinator(
+            walletUseCase: useCaseProvider.makeWalletUseCase()
+        ))
     }
     
     func makeTransfer() -> NavigationViewCoordinator<TransferCoordinator> {
@@ -120,6 +133,7 @@ extension MainCoordinator {
 
 enum Tab {
     case balances
+    case receive
     case transfer
     case contacts
     case settings
@@ -129,6 +143,7 @@ extension Tab {
     var name: String {
         switch self {
         case .balances: return "Balances"
+        case .receive: return "Receive"
         case .transfer: return "Transfer"
         case .contacts: return "Contacts"
         case .settings: return "Settings"
@@ -137,6 +152,7 @@ extension Tab {
     var imageName: String {
         switch self {
         case .balances: return "bitcoinsign.circle"
+        case .receive: return "arrow.down.circle"
         case .transfer: return "arrow.up.circle"
         case .contacts: return "heart"
         case .settings: return "gear"
