@@ -11,16 +11,15 @@ import SwiftUI
 public extension Color {
     static let appBackground: Self = .deepBlue
 }
-
-public extension Double {
+ 
+extension Double {
     static let defaultOpacity: Self = 1
 }
 
-public extension Color {
+extension Color {
     enum Hex: UInt32 {
-        case tealHex = 0x00A88D
-
-        case darkTeal = 0x0F675B
+        case turquoise = 0x00A88D
+        case darkTurquoise = 0x0F675B
         case mellowYellow = 0xFFD14C
         case deepBlue = 0x1F292F
         case bloodRed = 0xFF4C4F
@@ -50,8 +49,8 @@ public extension Color {
 }
 
 public extension Color {
-    static let teal = Self(hex: .tealHex)
-    static let darkTeal = Self(hex: .darkTeal)
+    static let turquoise = Self(hex: .turquoise)
+    static let darkTurquoise = Self(hex: .darkTurquoise)
     static let deepBlue = Self(hex: .deepBlue)
     static let mellowYellow = Self(hex: .mellowYellow)
     static let bloodRed = Self(hex: .bloodRed)

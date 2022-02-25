@@ -35,7 +35,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             }
         }.frame(maxWidth: .infinity, idealHeight: 50)
             .padding()
-            .background(isEnabled ? Color.teal : .asphaltGrey)
+            .background(isEnabled ? Color.turquoise : .asphaltGrey)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
@@ -54,8 +54,8 @@ struct SecondaryButtonStyle: ButtonStyle {
             .font(.zhip.callToAction)
             .frame(maxWidth: .infinity, idealHeight: 50)
             .padding()
-            .background(isEnabled ? Color.clear : .teal)
-            .foregroundColor(isEnabled ? Color.teal : .silverGrey)
+            .background(isEnabled ? Color.clear : .turquoise)
+            .foregroundColor(isEnabled ? Color.turquoise : .silverGrey)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
@@ -125,10 +125,10 @@ struct HallowButtonStyle: ButtonStyle {
             .padding([.bottom, .top], 8)
             .frame(idealWidth: 136, idealHeight: 44)
             .background(Color.clear)
-            .foregroundColor(.teal)
+            .foregroundColor(.turquoise)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.teal, lineWidth: borderWidth)
+                    .stroke(Color.turquoise, lineWidth: borderWidth)
             )
 
     }

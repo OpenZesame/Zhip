@@ -92,7 +92,7 @@ private extension QRCoding {
     func generateImage(
         content: String,
         size cgFloatSize: CGFloat,
-        backgroundColor: Color = .teal,
+        backgroundColor: Color = .turquoise,
         foregroundColor: Color = .deepBlue
         //        watermarkImage: Image? = nil
     ) -> Image? {

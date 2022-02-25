@@ -36,7 +36,7 @@ struct CheckboxToggleStyle: ToggleStyle {
             )
             .resizable()
             .frame(size: 22)
-            .foregroundColor(Color.teal)
+            .foregroundColor(Color.turquoise)
             .onTapGesture {
                 withAnimation {
                     configuration.isOn.toggle()

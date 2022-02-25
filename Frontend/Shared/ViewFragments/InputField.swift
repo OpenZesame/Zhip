@@ -37,7 +37,7 @@ struct InputField: View {
     }
 }
 
-private let validColor: Color = .teal
+private let validColor: Color = .turquoise
 private let invalidColor: Color = .bloodRed
     
 extension InputField {
