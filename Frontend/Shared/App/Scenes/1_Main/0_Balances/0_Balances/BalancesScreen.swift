@@ -9,9 +9,29 @@ import SwiftUI
 import ZhipEngine
 
 struct BalancesScreen: View {
-//    @EnvironmentObject private var wallet: Wallet
-    let wallet: Wallet
+    @ObservedObject var viewModel: BalancesViewModel
+}
+
+extension BalancesScreen {
     var body: some View {
-        Text("Balances in wallet: \(wallet.name ?? "Wallet")")
+//        ForceFullScreen {
+            VStack(alignment: .leading, spacing: 40) {
+                Labels(
+                    title: "My address",
+                    subtitle: viewModel.myActiveAddress
+                )
+                
+                Labels(
+                    title: "ZIL balance",
+                    subtitle: viewModel.zilBalance
+                )
+            }
+            .refreshable {
+                await viewModel.fetchBalances()
+            }
+            .onAppear {
+                viewModel.fetchBalanceFireAndForget()
+            }
+//        }
     }
 }

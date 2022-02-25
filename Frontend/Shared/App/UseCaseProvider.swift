@@ -36,6 +36,7 @@ protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase
     func makePINCodeUseCase() -> PINCodeUseCase
+    func makeBalancesUseCase() -> BalancesUseCase
     
 }
 
@@ -79,6 +80,14 @@ extension DefaultUseCaseProvider {
         DefaultPINCodeUseCase(
             preferences: preferences,
             securePersistence: securePersistence
+        )
+    }
+    
+    func makeBalancesUseCase() -> BalancesUseCase {
+        DefaultBalancesUseCase(
+            zilliqaService: zilliqaService,
+            securePersistence: securePersistence,
+            preferences: preferences
         )
     }
 }

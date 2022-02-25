@@ -53,7 +53,9 @@ final class MainCoordinator: TabCoordinatable {
 // MARK: - NavigationCoordinatable
 // MARK: -
 extension MainCoordinator {
-    @ViewBuilder func customize(_ view: AnyView) -> some View {
+    
+    @ViewBuilder
+    func customize(_ view: AnyView) -> some View {
         view
             .onReceive(settingsCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
@@ -89,7 +91,11 @@ extension MainCoordinator {
     }
     
     func makeBalances() -> NavigationViewCoordinator<BalancesCoordinator> {
-        return NavigationViewCoordinator(BalancesCoordinator(wallet: wallet))
+        let balancesCoordinator = BalancesCoordinator(
+            balancesUseCase: useCaseProvider.makeBalancesUseCase(),
+            walletUseCase: useCaseProvider.makeWalletUseCase()
+        )
+        return NavigationViewCoordinator(balancesCoordinator)
     }
     
     func makeTransfer() -> NavigationViewCoordinator<TransferCoordinator> {

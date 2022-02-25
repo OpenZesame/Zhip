@@ -52,6 +52,10 @@ public final class KeychainManager: KeyValueStoring {
 /// Key to senstive values being store in Keychain, e.g. the cryptograpically sensitive keystore file, containing an encryption of your wallets private key.
 public enum KeychainKey: String, KeyConvertible {
     case keystore
+    
+    /// Might be sensitive how much Zillings a person owns.
+    case cachedZillingBalance
+    
     case pincodeProtectingAppThatHasNothingToDoWithCryptography
 }
 
@@ -124,7 +128,9 @@ public extension KeyValueStore where Key == KeychainKey {
             try! Preferences.default.save(value: true, for: .hasRunAppBefore)
             deleteWallet()
             deletePincode()
-            try! Preferences.default.deleteValue(for: .cachedBalance)
+            
+            try! deleteValue(for: .cachedZillingBalance)
+            
             try! Preferences.default.deleteValue(for: .balanceWasUpdatedAt)
             return nil
         }

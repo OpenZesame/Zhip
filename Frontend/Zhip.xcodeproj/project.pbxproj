@@ -47,6 +47,10 @@
 		48260BEF27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BED27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift */; };
 		48260BF127C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF027C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift */; };
 		48260BF227C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF027C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift */; };
+		48260BF427C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */; };
+		48260BF527C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */; };
+		48260BF727C8C96B0069CA1C /* BalancesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */; };
+		48260BF827C8C96B0069CA1C /* BalancesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */; };
 		483CB78427C5003700329DEB /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78327C5003700329DEB /* Binding+Extension.swift */; };
 		483CB78527C5003700329DEB /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78327C5003700329DEB /* Binding+Extension.swift */; };
 		483CB78727C637EF00329DEB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78627C637EF00329DEB /* WelcomeViewModel.swift */; };
@@ -232,6 +236,8 @@
 		48260BEA27C770D10069CA1C /* NavigationStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStepper.swift; sourceTree = "<group>"; };
 		48260BED27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingPrivateKeyViewModel.swift; sourceTree = "<group>"; };
 		48260BF027C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingKeystoreViewModel.swift; sourceTree = "<group>"; };
+		48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesViewModel.swift; sourceTree = "<group>"; };
+		48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesUseCase.swift; sourceTree = "<group>"; };
 		483CB78327C5003700329DEB /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		483CB78627C637EF00329DEB /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
@@ -387,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */,
+				48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */,
 			);
 			path = 0_Balances;
 			sourceTree = "<group>";
@@ -740,6 +747,7 @@
 			children = (
 				48260BDD27C67AAC0069CA1C /* 0_Balances */,
 				48260BDE27C67ABE0069CA1C /* BalancesCoordinator.swift */,
+				48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */,
 			);
 			path = 0_Balances;
 			sourceTree = "<group>";
@@ -1027,6 +1035,7 @@
 				48ECB24E27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */,
 				48ECB24327BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */,
 				48ECB28927C424B9000F7C41 /* Array+Extensions.swift in Sources */,
+				48260BF427C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */,
 				4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				48260BD727C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */,
@@ -1076,6 +1085,7 @@
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
+				48260BF727C8C96B0069CA1C /* BalancesUseCase.swift in Sources */,
 				48526AD827BE834600C25518 /* TermsOfServiceViewModel.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				481EDECF27BA884400D39DCB /* BackupWalletScreen.swift in Sources */,
@@ -1113,6 +1123,7 @@
 				485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */,
 				485FF72B27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
+				48260BF527C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */,
 				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				48260BD827C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				48526A6627BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
@@ -1162,6 +1173,7 @@
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
 				48ECB25B27C0E075000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
 				48ECB24C27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
+				48260BF827C8C96B0069CA1C /* BalancesUseCase.swift in Sources */,
 				48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				48ECB24F27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */,
 				48526AB827BE818400C25518 /* Checkbox.swift in Sources */,

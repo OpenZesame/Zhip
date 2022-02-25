@@ -117,7 +117,6 @@ public enum PreferencesKey: String, KeyConvertible {
 //    case hasAnsweredCrashReportingQuestion
 //    case hasAcceptedCrashReporting
     case skipPincodeSetup
-    case cachedBalance
     case balanceWasUpdatedAt
 }
 

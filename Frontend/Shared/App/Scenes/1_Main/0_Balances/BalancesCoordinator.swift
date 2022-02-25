@@ -16,10 +16,26 @@ final class BalancesCoordinator: NavigationCoordinatable {
     let stack = NavigationStack<BalancesCoordinator>(initial: \.start)
     @Root var start = makeStart
     
-    let wallet: Wallet
+    private let walletUseCase: WalletUseCase
+    private let balancesUseCase: BalancesUseCase
     
-    init(wallet: Wallet) {
-        self.wallet = wallet
+    init(balancesUseCase: BalancesUseCase, walletUseCase: WalletUseCase) {
+        self.balancesUseCase = balancesUseCase
+        self.walletUseCase = walletUseCase
+    }
+
+    deinit {
+        print("✅ BalancesCoordinator DEINIT 💣")
+    }
+}
+
+// MARK: - NavigationCoordinatable
+// MARK: -
+extension BalancesCoordinator {
+    func customize(_ view: AnyView) -> some View {
+        ForceFullScreen {
+            view
+        }
     }
 }
     
@@ -28,7 +44,11 @@ final class BalancesCoordinator: NavigationCoordinatable {
 extension BalancesCoordinator {
     @ViewBuilder
     func makeStart() -> some View {
-        BalancesScreen(wallet: wallet)
+        let viewModel = BalancesViewModel(
+            balancesUseCase: balancesUseCase,
+            walletUseCase: walletUseCase
+        )
+        BalancesScreen(viewModel: viewModel)
     }
 }
 

@@ -34,16 +34,20 @@ final class SettingsCoordinator: NavigationCoordinatable {
 // MARK: - NavigationCoordinatable
 // MARK: -
 extension SettingsCoordinator {
-    @ViewBuilder func customize(_ view: AnyView) -> some View {
-        view
-            .onReceive(settingsNavigator) { [unowned self] userDid in
-                switch userDid {
-                case .deleteWallet:
-                    navigator.step(.userDeletedWallet)
+    
+    @ViewBuilder
+    func customize(_ view: AnyView) -> some View {
+        ForceFullScreen { [unowned self] in
+            view
+                .onReceive(settingsNavigator) { userDid in
+                    switch userDid {
+                    case .deleteWallet:
+                        navigator.step(.userDeletedWallet)
+                    }
                 }
-            }
-        
+        }
     }
+    
 }
 
 

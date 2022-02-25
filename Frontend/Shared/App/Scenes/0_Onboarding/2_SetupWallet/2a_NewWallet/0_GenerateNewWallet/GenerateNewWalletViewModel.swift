@@ -71,15 +71,6 @@ public final class GenerateNewWalletViewModel: EncryptionPasswordSetting {
         super.init()
         
         subscribeToPublishers()
-        
-        $isPasswordConfirmationValid.sink(receiveValue: {
-            print("isPasswordConfirmationValid: \($0)")
-        }).store(in: &cancellables)
-        
-        $isPasswordValid.sink(receiveValue: {
-            print("isPasswordValid: \($0)")
-        }).store(in: &cancellables)
- 
     }
     
     deinit {
