@@ -84,30 +84,42 @@ struct PasswordInputFields: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            InputField(
-                prompt: "Encryption password",
+ 
+            InputField.encryptionPassword(
                 text: $password,
-                isValid: $isPasswordValid,
-                isSecure: true,
-                validationRules: .encryptionPassword
+                isValid: $isPasswordValid
             )
             
-            InputField(
+            InputField.encryptionPassword(
                 prompt: "Confirm encryption password",
                 text: $passwordConfirmation,
                 isValid: $isPasswordConfirmationValid,
-                isSecure: true,
-                validationRules: [
+                additionalValidationRules: [
                     Validation { confirmText in
                         if confirmText != password {
                             return "Passwords does not match."
                         }
                         return nil // Valid
-                    },
-                    
-                    ValidateInputRequirement.encryptionPassword
+                    }
                 ]
             )
         }
+    }
+}
+
+extension InputField {
+    static func encryptionPassword(
+        prompt: String = "Encryption password",
+        text: Binding<String>,
+        isValid: Binding<Bool>? = nil,
+        additionalValidationRules: [Validation] = []
+    ) -> Self {
+        Self(
+            prompt: prompt,
+            text: text,
+            isValid: isValid,
+            isSecure: true,
+            validationRules: [ValidateInputRequirement.encryptionPassword] + additionalValidationRules
+        )
     }
 }

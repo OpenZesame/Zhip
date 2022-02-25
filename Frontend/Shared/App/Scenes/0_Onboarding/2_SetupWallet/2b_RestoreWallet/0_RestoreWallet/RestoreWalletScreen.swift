@@ -32,7 +32,8 @@ private extension RestoreWalletScreen {
             Text("Keystore").tag(RestorationMethod.importKeystore)
         }) {
             EmptyView() // No label
-        }.pickerStyle(.segmented)
+        }
+        .pickerStyle(.segmented)
     }
     
     @ViewBuilder

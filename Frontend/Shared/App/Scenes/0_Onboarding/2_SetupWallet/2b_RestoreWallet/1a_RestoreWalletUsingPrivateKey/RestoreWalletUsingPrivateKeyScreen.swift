@@ -38,8 +38,10 @@ extension RestoreWalletUsingPrivateKeyScreen {
                 .buttonStyle(.primary(isLoading: $viewModel.isRestoringWallet))
                 .enabled(if: viewModel.canProceed)
                 
-            }.disableAutocorrection(true)
+            }
+            .disableAutocorrection(true)
         }
+        .navigationTitle("Restore with private key")
         #if DEBUG
         .onAppear {
             viewModel.password = unsafeDebugPassword

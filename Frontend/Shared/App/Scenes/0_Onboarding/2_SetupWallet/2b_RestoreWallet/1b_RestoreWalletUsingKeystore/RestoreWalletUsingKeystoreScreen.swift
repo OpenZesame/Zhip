@@ -16,7 +16,34 @@ struct RestoreWalletUsingKeystoreScreen: View {
 extension RestoreWalletUsingKeystoreScreen {
     var body: some View {
         ForceFullScreen {
-            Text("Restore using keystore")
+            VStack {
+                TextEditor(text: $viewModel.keystoreString)
+                    .foregroundColor(Color.deepBlue)
+                    .font(.zhip.body)
+                
+                if !viewModel.isKeystoreValid {
+                    Text("Invalid keystore")
+                        .foregroundColor(.bloodRed)
+                }
+                
+                InputField.encryptionPassword(
+                    text: $viewModel.encryptionPassword,
+                    isValid: $viewModel.isEncryptionPasswordValid
+                )
+                
+                Button("Restore") {
+                    Task {
+                        await viewModel.restore()
+                    }
+                }
+                .buttonStyle(.primary(isLoading: $viewModel.isRestoringWallet))
+                .enabled(if: viewModel.canProceed)
+            }
         }
+        .navigationTitle("Restore with keystore")
     }
+}
+
+extension RestoreWalletUsingKeystoreScreen {
+    typealias ViewModel = RestoreWalletUsingKeystoreViewModel
 }
