@@ -171,8 +171,6 @@
 		4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */; };
 		4872FA3127B4F8F5008B7BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */; };
 		4872FA3227B4F8F5008B7BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */; };
-		4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3B27B509D1008B7BD0 /* Colors.swift */; };
-		4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3B27B509D1008B7BD0 /* Colors.swift */; };
 		4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */; };
 		4872FA4127B523D6008B7BD0 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */; };
 		4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */; };
@@ -308,7 +306,6 @@
 		4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4872FA3B27B509D1008B7BD0 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
 		4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesScreen.swift; sourceTree = "<group>"; };
@@ -824,7 +821,6 @@
 		4888991C27B6620A00FCBE5A /* Styling */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA3B27B509D1008B7BD0 /* Colors.swift */,
 				4872FA3E27B523CC008B7BD0 /* Style */,
 				48526AA927BDAD2000C25518 /* Fonts.swift */,
 			);
@@ -1124,7 +1120,6 @@
 				481EDECC27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */,
 				481EDEC327B994F700D39DCB /* CallToAction.swift in Sources */,
 				48ECB26627C0E118000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
-				4872FA3C27B509D1008B7BD0 /* Colors.swift in Sources */,
 				48526A6927BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				481EDEBA27B9943200D39DCB /* ParallaxImage.swift in Sources */,
 				48526ACA27BE829D00C25518 /* SetupWalletViewModel.swift in Sources */,
@@ -1196,7 +1191,6 @@
 				485FF74727B838F60030266A /* UseCaseProvider.swift in Sources */,
 				48260BEF27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
 				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
-				4872FA3D27B509D1008B7BD0 /* Colors.swift in Sources */,
 				48260BCA27C65BE90069CA1C /* Version.swift in Sources */,
 				48260BD027C678A00069CA1C /* SettingsViewModel.swift in Sources */,
 				48526A6027BC2CA200C25518 /* HoverPromptTextField+Config.swift in Sources */,

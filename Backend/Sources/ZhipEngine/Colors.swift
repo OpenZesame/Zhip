@@ -8,17 +8,17 @@
 import Foundation
 import SwiftUI
 
-extension Color {
+public extension Color {
     static let appBackground: Self = .deepBlue
 }
 
-private extension Double {
+public extension Double {
     static let defaultOpacity: Self = 1
 }
 
-extension Color {
+public extension Color {
     enum Hex: UInt32 {
-        case teal = 0x00A88D
+        case tealHex = 0x00A88D
 
         case darkTeal = 0x0F675B
         case mellowYellow = 0xFFD14C
@@ -49,8 +49,8 @@ extension Color {
     }
 }
 
-extension Color {
-    static let teal = Self(hex: .teal)
+public extension Color {
+    static let teal = Self(hex: .tealHex)
     static let darkTeal = Self(hex: .darkTeal)
     static let deepBlue = Self(hex: .deepBlue)
     static let mellowYellow = Self(hex: .mellowYellow)

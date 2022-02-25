@@ -17,7 +17,7 @@ struct DigitView: View {
     init(
         digitAtIndex: DigitAtIndex,
         isSecure: Bool = true,
-        lineColor: Binding<Color> = .constant(Color.teal)
+        lineColor: Binding<Color> = .constant(Color.red)
     ) {
 //        self.viewModel = viewModel
         self.digitAtIndex = digitAtIndex

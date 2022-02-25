@@ -26,7 +26,8 @@ struct PINField: View {
         errorMessage: Binding<String?>? = nil,
         digitCount: Int = 4,
         isSecure: Bool = true,
-        validColor: Color = .teal,
+        // FIXME: Xcode 13.2.1 bug, writing `Color.teal` => "Ambigious use of 'teal'" found 3 candidates. Only here. But not on other files. Workaround is using `hex:` initializer here. Investigate if solved in later version of Xcode
+        validColor: Color = Color.init(hex: .tealHex),
         invalidColor: Color = .bloodRed
     ) {
         precondition(digitCount <= Pincode.maxLength)
@@ -48,7 +49,6 @@ extension Pincode {
         )
     }
 }
-
 
 // MARK: - View
 // MARK: -
@@ -130,9 +130,6 @@ private extension PINField {
             let newPin = Pincode(text: String($0.prefix(digitCount)))
             if pinCode != newPin {
                 pinCode = newPin
-                if let pin = pinCode {
-                    print("✨ pin: \(String(describing: pin))")
-                }
             }
         })
         

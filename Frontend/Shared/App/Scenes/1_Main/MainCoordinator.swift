@@ -9,15 +9,19 @@ import SwiftUI
 import Stinsen
 import ZhipEngine
 
+// MARK: - MainCoordinatorNavigationStep
+// MARK: -
 enum MainCoordinatorNavigationStep {
     case userDeletedWallet
 }
 
+// MARK: - MainCoordinator
+// MARK: -
 final class MainCoordinator: TabCoordinatable {
     
     typealias Navigator = NavigationStepper<MainCoordinatorNavigationStep>
     
-    let wallet: Wallet
+    private let wallet: Wallet
     
     @Route(tabItem: makeBalancesTab) var balances = makeBalances
     @Route(tabItem: makeReceiveTab) var receive = makeReceive
@@ -51,7 +55,6 @@ final class MainCoordinator: TabCoordinatable {
     }
 }
 
-
 // MARK: - NavigationCoordinatable
 // MARK: -
 extension MainCoordinator {
@@ -70,6 +73,8 @@ extension MainCoordinator {
     }
 }
 
+// MARK: - Factory
+// MARK: -
 extension MainCoordinator {
     
     @ViewBuilder
@@ -106,9 +111,11 @@ extension MainCoordinator {
     }
     
     func makeReceive() -> NavigationViewCoordinator<ReceiveCoordinator> {
-        return NavigationViewCoordinator(ReceiveCoordinator(
+        let receiveCoordinator = ReceiveCoordinator(
             walletUseCase: useCaseProvider.makeWalletUseCase()
-        ))
+        )
+        
+        return NavigationViewCoordinator(receiveCoordinator)
     }
     
     func makeTransfer() -> NavigationViewCoordinator<TransferCoordinator> {
@@ -120,17 +127,16 @@ extension MainCoordinator {
     }
     
     func makeSettings() -> NavigationViewCoordinator<SettingsCoordinator> {
-        
         let settingsCoordinator = SettingsCoordinator(
             navigator: settingsCoordinatorNavigator,
             useCaseProvider: useCaseProvider
         )
-        
         return NavigationViewCoordinator(settingsCoordinator)
     }
 }
 
-
+// MARK: - Tab
+// MARK: -
 enum Tab {
     case balances
     case receive
@@ -140,6 +146,7 @@ enum Tab {
 }
 
 extension Tab {
+    
     var name: String {
         switch self {
         case .balances: return "Balances"
@@ -149,6 +156,7 @@ extension Tab {
         case .settings: return "Settings"
         }
     }
+    
     var imageName: String {
         switch self {
         case .balances: return "bitcoinsign.circle"
@@ -158,8 +166,10 @@ extension Tab {
         case .settings: return "gear"
         }
     }
+    
     var label: some View {
         Label(name, systemImage: imageName)
     }
+    
 }
 

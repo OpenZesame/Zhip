@@ -63,7 +63,23 @@ private let dependencies: [Dependency] = [
 //        product: "FlowStacks",
 //        rationale: "Coordinator pattern and routing"
 //    )
+    
+        .init(
+            category: .view,
+            package: .package(url: "https://github.com/EFPrefix/EFQRCode.git", from: "6.2.0"),
+            product: "EFQRCode",
+            rationale: "Convenient QR code generator supporting macOS and iOS."
+        ),
   
+        // Alterarnative QR code scanners:
+        // * https://github.com/mercari/QRScanner (no direct SwiftUI support?)
+        // * https://github.com/yannickl/QRCodeReader.swift (no direct SwiftUI support?)
+        .init(
+            category: .view,
+            package: .package(url: "https://github.com/twostraws/CodeScanner.git", from: "2.1.1"),
+            product: "CodeScanner",
+            rationale: "Convenient QR code scanning view."
+        )
 ]
 
 let package = Package(

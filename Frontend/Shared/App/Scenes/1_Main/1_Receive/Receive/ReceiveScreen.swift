@@ -17,8 +17,10 @@ extension ReceiveScreen {
         VStack(alignment: .leading, spacing: 40) {
             Labels(
                 title: "My address",
-                subtitle: viewModel.myActiveAddress
+                subtitle: viewModel.myActiveAddressFormatted
             )
+            
+            viewModel.qrCodeOfMyActiveAddress
         }
     }
 }
