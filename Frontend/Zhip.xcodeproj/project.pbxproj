@@ -187,6 +187,8 @@
 		487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
 		48A80AD027B67615002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80ACF27B67615002271BB /* ZhipEngine */; };
 		48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80AD127B6761A002271BB /* ZhipEngine */; };
+		48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
+		48A9580E27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48ECB24327BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24427BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24627BFC038000F7C41 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */; };
@@ -314,6 +316,7 @@
 		487CE3DE27B638B0003BD07A /* AddToContactsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToContactsButton.swift; sourceTree = "<group>"; };
 		487CE3E227B641C6003BD07A /* TransferScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferScreen.swift; sourceTree = "<group>"; };
 		487CE3E627B64204003BD07A /* ContactsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsScreen.swift; sourceTree = "<group>"; };
+		48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINScreen.swift; sourceTree = "<group>"; };
 		48B1C3ED27C4D9EF0078515F /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 		48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -571,6 +574,7 @@
 				487CE3DA27B6384C003BD07A /* 3_Contacts */,
 				487CE3D927B63707003BD07A /* 4_Settings */,
 				484428FE27B7D93700BAC575 /* MainCoordinator.swift */,
+				48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */,
 			);
 			path = 1_Main;
 			sourceTree = "<group>";
@@ -1119,6 +1123,7 @@
 				48526AB727BE818400C25518 /* Checkbox.swift in Sources */,
 				481EDECC27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */,
 				481EDEC327B994F700D39DCB /* CallToAction.swift in Sources */,
+				48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */,
 				48ECB26627C0E118000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
 				48526A6927BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				481EDEBA27B9943200D39DCB /* ParallaxImage.swift in Sources */,
@@ -1209,6 +1214,7 @@
 				48ECB28A27C424B9000F7C41 /* Array+Extensions.swift in Sources */,
 				481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */,
 				4872FA5327B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
+				48A9580E27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */,
 				481EDEB827B98B3200D39DCB /* Labels.swift in Sources */,
 				487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */,
 				485FF72E27B8360F0030266A /* RestoreWalletScreen.swift in Sources */,

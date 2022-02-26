@@ -71,8 +71,7 @@ extension SettingsScreen {
                 title: Text("Really delete wallet?"),
                 message: Text("If you have not backed up your private key elsewhere, you will not be able to restore this wallet. All funds will be lost forever."),
                 primaryButton: .destructive(Text("Delete")) {
-//                    viewModel.confirmWalletDeletion()
-                    fatalError("todo")
+                    viewModel.confirmWalletDeletion()
                 },
                 secondaryButton: .cancel()
             )

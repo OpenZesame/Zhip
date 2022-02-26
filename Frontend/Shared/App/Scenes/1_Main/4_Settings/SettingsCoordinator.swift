@@ -18,11 +18,16 @@ final class SettingsCoordinator: NavigationCoordinatable {
     
     let stack = NavigationStack<SettingsCoordinator>(initial: \.start)
     @Root var start = makeStart
+    @Route(.push) var removePIN = makeUnlockAppWithPINToRemoveIt
+    @Route(.push) var setPIN = makeSetupPINCode
     
     private lazy var settingsNavigator = SettingsViewModel.Navigator()
+    private lazy var unlockAppWithPINNavigator = UnlockAppWithPINViewModel.Navigator()
+    private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
     
     private unowned let navigator: Navigator
     private let useCaseProvider: UseCaseProvider
+    
     
     init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
         self.navigator = navigator
@@ -43,8 +48,29 @@ extension SettingsCoordinator {
                     switch userDid {
                     case .removeWallet:
                         navigator.step(.userDeletedWallet)
+                    case .removePincode:
+                        toUnlockAppWithPINToRemoveIt()
+                    case .setPincode:
+                        toSetPIN()
                     default:
                         fatalError("unhandled")
+                    }
+                }
+                .onReceive(setupPinCoordinatorNavigator) { userDid in
+                    switch userDid {
+                    case .finishedPINSetup:
+                        popLast {
+                            print("SettingsCoordinator:popLast: SetupPINCoordinator should deinit")
+                        }
+                    }
+                }
+                .onReceive(unlockAppWithPINNavigator) { userDid in
+                    switch userDid {
+                    case .enteredCorrectPINCode: fallthrough
+                    case .cancel:
+                        popLast {
+                            print("SettingsCoordinator:popLast UnlockAppWithPinViewModel should deinit")
+                        }
                     }
                 }
         }
@@ -52,6 +78,17 @@ extension SettingsCoordinator {
     
 }
 
+// MARK: - Routing
+// MARK: -
+extension SettingsCoordinator {
+    func toUnlockAppWithPINToRemoveIt() {
+        route(to: \.removePIN)
+    }
+    
+    func toSetPIN() {
+        route(to: \.setPIN)
+    }
+}
 
 // MARK: - Factory
 // MARK: -
@@ -60,8 +97,30 @@ extension SettingsCoordinator {
     func makeStart() -> some View {
         let viewModel = SettingsViewModel(
             navigator: settingsNavigator,
-            useCase: useCaseProvider.makeWalletUseCase()
+            walletUseCase: useCaseProvider.makeWalletUseCase(),
+            pincodeUseCase: useCaseProvider.makePINCodeUseCase()
         )
         SettingsScreen(viewModel: viewModel)
     }
+    
+    @ViewBuilder
+    func makeUnlockAppWithPINToRemoveIt() -> some View {
+        let viewModel = UnlockAppWithPINViewModel(
+            mode: .enterToRemovePIN,
+            navigator: unlockAppWithPINNavigator,
+            useCase: useCaseProvider.makePINCodeUseCase()
+        )
+        UnlockAppWithPINScreen(viewModel: viewModel)
+    }
+
+    func makeSetupPINCode() -> NavigationViewCoordinator<SetupPINCodeCoordinator> {
+        
+        let setupPINCodeCoordinator = SetupPINCodeCoordinator(
+            navigator: setupPinCoordinatorNavigator,
+            useCase: useCaseProvider.makePINCodeUseCase()
+        )
+        
+        return NavigationViewCoordinator(setupPINCodeCoordinator)
+    }
+ 
 }

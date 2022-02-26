@@ -46,6 +46,32 @@ final class DefaultUseCaseProvider: UseCaseProvider {
     private let securePersistence: SecurePersistence
     private let zilliqaService: ZilliqaService
     
+    // TODO: Clean up, for now this works. Some of the usecases hold Publishers
+    // that must be shared. Thus we hold a reference to the same instance of
+    // each use case (singleton). This can at least be lifted up to the level of
+    // `Preferences` and `SecurePersistence`...
+    private lazy var onboardingUseCase: OnboardingUseCase = DefaultOnboardingUseCase(
+        preferences: preferences,
+        securePersistence: securePersistence
+    )
+    
+    private lazy var walletUseCase: WalletUseCase = DefaultWalletUseCase(
+        securePersistence: securePersistence,
+        zilliqaService: zilliqaService
+    )
+    
+    private lazy var pinCodeUseCase: PINCodeUseCase = DefaultPINCodeUseCase(
+        preferences: preferences,
+        securePersistence: securePersistence
+    )
+    
+    private lazy var balancesUseCase: BalancesUseCase = DefaultBalancesUseCase(
+        zilliqaService: zilliqaService,
+        securePersistence: securePersistence,
+        preferences: preferences
+    )
+    
+    
     init(
         preferences: Preferences = .default,
         securePersistence: SecurePersistence = .default,
@@ -63,31 +89,18 @@ extension DefaultUseCaseProvider {
 
 extension DefaultUseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase {
-        DefaultOnboardingUseCase(
-            preferences: preferences,
-            securePersistence: securePersistence
-        )
+        onboardingUseCase
     }
     
     func makeWalletUseCase() -> WalletUseCase {
-        DefaultWalletUseCase(
-            securePersistence: securePersistence,
-            zilliqaService: zilliqaService
-        )
+        walletUseCase
     }
     
     func makePINCodeUseCase() -> PINCodeUseCase {
-        DefaultPINCodeUseCase(
-            preferences: preferences,
-            securePersistence: securePersistence
-        )
+        pinCodeUseCase
     }
     
     func makeBalancesUseCase() -> BalancesUseCase {
-        DefaultBalancesUseCase(
-            zilliqaService: zilliqaService,
-            securePersistence: securePersistence,
-            preferences: preferences
-        )
+        balancesUseCase
     }
 }

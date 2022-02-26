@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 // MARK: - SettingsNavigationStep
 // MARK: -
@@ -31,6 +32,8 @@ public enum SettingsNavigationStep: Int, Hashable {
     case removeWallet
 }
 
+
+
 // MARK: - SettingsViewModel
 // MARK: -
 public final class SettingsViewModel: ObservableObject {
@@ -38,11 +41,23 @@ public final class SettingsViewModel: ObservableObject {
     @Published var isAskingForDeleteWalletConfirmation: Bool = false
     
     private unowned let navigator: Navigator
-    private let useCase: WalletUseCase
+    private let walletUseCase: WalletUseCase
+    private let pincodeUseCase: PINCodeUseCase
+    @Published var isPINSet: Bool
     
-    public init(navigator: Navigator, useCase: WalletUseCase) {
+    private var cancellables = Set<AnyCancellable>()
+
+    public init(
+        navigator: Navigator,
+        walletUseCase: WalletUseCase,
+        pincodeUseCase: PINCodeUseCase
+    ) {
         self.navigator = navigator
-        self.useCase = useCase
+        self.walletUseCase = walletUseCase
+        self.pincodeUseCase = pincodeUseCase
+        self.isPINSet = pincodeUseCase.hasConfiguredPincode
+        
+        subscribeToPublishers()
     }
 }
 
@@ -104,18 +119,33 @@ public struct SettingsChoiceSection: Identifiable {
 public extension SettingsViewModel {
     
     func userSelected(_ settingsChoice: SettingsChoice) {
-        print("👻 user selected: \(settingsChoice.title)")
+        if settingsChoice.navigationStep == .removeWallet {
+            isAskingForDeleteWalletConfirmation = true
+        } else {
+            navigator.step(settingsChoice.navigationStep)
+        }
     }
     
     typealias Navigator = NavigationStepper<SettingsNavigationStep>
     
     var settingsChoicesSections: [SettingsChoiceSection] {
+        
+        let removePINChoice = SettingsChoice(
+            .removePincode,
+            title: "Remove pincode",
+            iconSmall: "Delete",
+            isDestructive: true
+        )
+        let setPINChoice = SettingsChoice(
+            .setPincode,
+            title: "Set pincode",
+            iconSmall: "PinCode"
+        )
+        
+        
         let choiceMatrix: [[SettingsChoice]] = [
             [
-                .init(
-                    .removePincode,
-                    title: "Remove pincode",
-                    iconSmall: "Delete")
+                isPINSet ? removePINChoice : setPINChoice
             ],
             [
                 .init(
@@ -138,8 +168,7 @@ public extension SettingsViewModel {
                     title: "Terms of service",
                     iconSmall: "Document"
                 )
-            ]
-            ,
+            ],
             [
                 SettingsChoice(
                     .backupWallet,
@@ -153,7 +182,6 @@ public extension SettingsViewModel {
                     isDestructive: true
                 )
             ]
-            
         ]
         
         return choiceMatrix.enumerated().map {
@@ -161,15 +189,21 @@ public extension SettingsViewModel {
         }
     }
         
-//    func askForDeleteWalletConfirmation() {
-//        isAskingForDeleteWalletConfirmation = true
-//    }
-//
-//    func confirmWalletDeletion() {
-//        defer {
-//            isAskingForDeleteWalletConfirmation = false
-//        }
-//        useCase.deleteWallet()
-//        navigator.step(.deleteWallet)
-//    }
+    func confirmWalletDeletion() {
+        defer {
+            isAskingForDeleteWalletConfirmation = false
+        }
+        walletUseCase.deleteWallet()
+        navigator.step(.removePincode)
+    }
+}
+
+private extension SettingsViewModel {
+    func subscribeToPublishers() {
+        pincodeUseCase.pincodeSubject
+            .map { $0 != nil }
+            .receive(on: RunLoop.main)
+            .assign(to: \.isPINSet, on: self)
+            .store(in: &cancellables)
+    }
 }
