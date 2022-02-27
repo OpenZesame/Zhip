@@ -32,7 +32,8 @@ final class AppCoordinator: NavigationCoordinatable {
         self.appLifeCyclePublisher = appLifeCyclePublisher
             
         if useCaseProvider.hasWalletConfigured {
-            stack = NavigationStack(initial: \.main)
+            let promptUserToUnlockAppIfNeeded = true
+            stack = NavigationStack(initial: \.main, promptUserToUnlockAppIfNeeded)
         } else {
             stack = NavigationStack(initial: \.onboarding)
         }
@@ -52,7 +53,8 @@ extension AppCoordinator {
                 switch userDid {
                 case .finishOnboarding:
                     assert(useCaseProvider.hasWalletConfigured)
-                    self.root(\.main)
+                    let promptUserToUnlockAppIfNeeded = false
+                    self.root(\.main, promptUserToUnlockAppIfNeeded) // Avoid locking app for PIN entry
                 }
             }
             .onReceive(mainCoordinatorNavigator) { [unowned self] userDid in
@@ -78,11 +80,12 @@ extension AppCoordinator {
         )
     }
     
-    func makeMain() -> MainCoordinator {
+    func makeMain(promptUserToUnlockAppIfNeeded: Bool) -> MainCoordinator {
         MainCoordinator(
             appLifeCyclePublisher: appLifeCyclePublisher,
             navigator: mainCoordinatorNavigator,
-            useCaseProvider: useCaseProvider
+            useCaseProvider: useCaseProvider,
+            promptUserToUnlockAppIfNeeded: promptUserToUnlockAppIfNeeded
         )
     }
 }

@@ -97,7 +97,7 @@ private extension MainCoordinator {
             .receive(on: RunLoop.main)
             .sink { [unowned self] newPhase in
                 if newPhase == .background {
-                    lockApp()
+                    lockAppIfNeeded()
                 }
             }.store(in: &cancellables)
     }
@@ -106,7 +106,8 @@ private extension MainCoordinator {
         root(\.tabsCoordinator)
     }
     
-    func lockApp() {
+    func lockAppIfNeeded() {
+        guard useCaseProvider.hasConfiguredPincode else { return }
         root(\.unlockApp)
     }
 }

@@ -87,10 +87,9 @@ public extension UnlockAppWithPINViewModel {
     }
 
     func cancel() {
-        precondition(userIntent == .enterToRemovePIN)
+        precondition(isUserAllowedToCancel)
         navigator.step(.cancel)
     }
-    
     
     func subscribeToPublishers() {
         $pinCode.filter { [unowned self] enteredPin in

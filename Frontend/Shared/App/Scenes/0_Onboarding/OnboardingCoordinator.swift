@@ -104,6 +104,7 @@ private extension OnboardingCoordinator {
         }
         
         if !walletUseCase.hasConfiguredWallet {
+            assert(!useCaseProvider.hasConfiguredPincode)
             return toSetupWallet()
         }
         

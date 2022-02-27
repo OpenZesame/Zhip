@@ -85,6 +85,7 @@ public final class DefaultUseCaseProvider: UseCaseProvider {
         walletUseCase.deleteWallet()
         
         try! securePersistence.deleteValue(for: .cachedZillingBalance)
+        try! securePersistence.deleteValue(for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
         try! preferences.deleteValue(for: .balanceWasUpdatedAt)
         
         if resetHasAppRunBeforeFlag {
