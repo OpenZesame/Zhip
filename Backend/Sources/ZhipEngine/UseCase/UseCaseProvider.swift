@@ -7,18 +7,18 @@
 
 import Foundation
 import Zesame
-import ZhipEngine
 
-protocol ContactsUseCase {
+public protocol ContactsUseCase {
     func toggleContact(address: Address)
     func isContact(address: Address) -> Bool
 }
-final class DefaultContactsUseCase {
+
+public final class DefaultContactsUseCase {
     private var contacts = Set<Contact>()
     init() {}
 }
 
-extension DefaultContactsUseCase {
+public extension DefaultContactsUseCase {
     func toggleContact(address: Address) {
         if let contactIndex = contacts.firstIndex(where: { $0.address == address }) {
             contacts.remove(at: contactIndex)
@@ -32,15 +32,22 @@ extension DefaultContactsUseCase {
     }
 }
 
-protocol UseCaseProvider {
+public protocol UseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase
     func makeWalletUseCase() -> WalletUseCase
     func makePINCodeUseCase() -> PINCodeUseCase
     func makeBalancesUseCase() -> BalancesUseCase
-    
+    var hasWalletConfigured: Bool { get }
+    var hasConfiguredPincode: Bool { get }
+    func nuke(resetHasAppRunBeforeFlag: Bool)
+}
+public extension UseCaseProvider {
+    func nuke() {
+        nuke(resetHasAppRunBeforeFlag: false)
+    }
 }
 
-final class DefaultUseCaseProvider: UseCaseProvider {
+public final class DefaultUseCaseProvider: UseCaseProvider {
    
     private let preferences: Preferences
     private let securePersistence: SecurePersistence
@@ -71,8 +78,21 @@ final class DefaultUseCaseProvider: UseCaseProvider {
         preferences: preferences
     )
     
+    public var hasWalletConfigured: Bool { walletUseCase.hasConfiguredWallet }
+    public var hasConfiguredPincode: Bool { pinCodeUseCase.hasConfiguredPincode }
+  
+    public func nuke(resetHasAppRunBeforeFlag: Bool = false) {
+        walletUseCase.deleteWallet()
+        
+        try! securePersistence.deleteValue(for: .cachedZillingBalance)
+        try! preferences.deleteValue(for: .balanceWasUpdatedAt)
+        
+        if resetHasAppRunBeforeFlag {
+            try! preferences.deleteValue(for: .hasRunAppBefore)
+        }
+    }
     
-    init(
+    public init(
         preferences: Preferences = .default,
         securePersistence: SecurePersistence = .default,
         zilliqaService: ZilliqaService = DefaultZilliqaService.default
@@ -83,11 +103,11 @@ final class DefaultUseCaseProvider: UseCaseProvider {
     }
 }
 
-extension DefaultUseCaseProvider {
+public extension DefaultUseCaseProvider {
     static let shared: UseCaseProvider = DefaultUseCaseProvider()
 }
 
-extension DefaultUseCaseProvider {
+public extension DefaultUseCaseProvider {
     func makeOnboardingUseCase() -> OnboardingUseCase {
         onboardingUseCase
     }

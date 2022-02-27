@@ -23,8 +23,6 @@
 		481EDECD27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDECB27BA85E500D39DCB /* GenerateNewWalletScreen.swift */; };
 		481EDECF27BA884400D39DCB /* BackupWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDECE27BA884400D39DCB /* BackupWalletScreen.swift */; };
 		481EDED027BA884400D39DCB /* BackupWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDECE27BA884400D39DCB /* BackupWalletScreen.swift */; };
-		48260BC627C655200069CA1C /* PINCodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BC527C655200069CA1C /* PINCodeUseCase.swift */; };
-		48260BC727C655200069CA1C /* PINCodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BC527C655200069CA1C /* PINCodeUseCase.swift */; };
 		48260BC927C65BE90069CA1C /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BC827C65BE90069CA1C /* Version.swift */; };
 		48260BCA27C65BE90069CA1C /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BC827C65BE90069CA1C /* Version.swift */; };
 		48260BCF27C678A00069CA1C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BCE27C678A00069CA1C /* SettingsViewModel.swift */; };
@@ -49,8 +47,6 @@
 		48260BF227C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF027C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift */; };
 		48260BF427C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */; };
 		48260BF527C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */; };
-		48260BF727C8C96B0069CA1C /* BalancesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */; };
-		48260BF827C8C96B0069CA1C /* BalancesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */; };
 		48260BFA27C8E5300069CA1C /* ReceiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF927C8E5300069CA1C /* ReceiveCoordinator.swift */; };
 		48260BFB27C8E5300069CA1C /* ReceiveCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BF927C8E5300069CA1C /* ReceiveCoordinator.swift */; };
 		48260BFF27C8E5890069CA1C /* ReceiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48260BFE27C8E5890069CA1C /* ReceiveViewModel.swift */; };
@@ -61,12 +57,10 @@
 		483CB78527C5003700329DEB /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78327C5003700329DEB /* Binding+Extension.swift */; };
 		483CB78727C637EF00329DEB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78627C637EF00329DEB /* WelcomeViewModel.swift */; };
 		483CB78827C637EF00329DEB /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483CB78627C637EF00329DEB /* WelcomeViewModel.swift */; };
-		484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
-		4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* MainCoordinator.swift */; };
+		484428FF27B7D93700BAC575 /* TabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* TabsCoordinator.swift */; };
+		4844290027B7D93900BAC575 /* TabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484428FE27B7D93700BAC575 /* TabsCoordinator.swift */; };
 		4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
 		4844290527B7D96700BAC575 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290327B7D96700BAC575 /* AppCoordinator.swift */; };
-		4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */; };
-		4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */; };
 		4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
 		4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */; };
 		48526A5727BBC9A000C25518 /* HoverPromptTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */; };
@@ -161,10 +155,6 @@
 		485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73C27B836680030266A /* NewPINCodeScreen.swift */; };
 		485FF74027B836770030266A /* SetupPINCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */; };
 		485FF74127B836770030266A /* SetupPINCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */; };
-		485FF74327B838DE0030266A /* OnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF74227B838DE0030266A /* OnboardingUseCase.swift */; };
-		485FF74427B838DE0030266A /* OnboardingUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF74227B838DE0030266A /* OnboardingUseCase.swift */; };
-		485FF74627B838F60030266A /* UseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF74527B838F60030266A /* UseCaseProvider.swift */; };
-		485FF74727B838F60030266A /* UseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF74527B838F60030266A /* UseCaseProvider.swift */; };
 		4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */; };
 		4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */; };
 		4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */; };
@@ -189,6 +179,10 @@
 		48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80AD127B6761A002271BB /* ZhipEngine */; };
 		48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48A9580E27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
+		48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */; };
+		48A9581327CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */; };
+		48A9581527CB7CD9001CAD15 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */; };
+		48A9581627CB7CD9001CAD15 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */; };
 		48ECB24327BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24427BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24627BFC038000F7C41 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */; };
@@ -230,7 +224,6 @@
 		481EDEC827BA7A3700D39DCB /* TermsOfService.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TermsOfService.md; sourceTree = "<group>"; };
 		481EDECB27BA85E500D39DCB /* GenerateNewWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateNewWalletScreen.swift; sourceTree = "<group>"; };
 		481EDECE27BA884400D39DCB /* BackupWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletScreen.swift; sourceTree = "<group>"; };
-		48260BC527C655200069CA1C /* PINCodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINCodeUseCase.swift; sourceTree = "<group>"; };
 		48260BC827C65BE90069CA1C /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		48260BCE27C678A00069CA1C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		48260BD227C67A4C0069CA1C /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
@@ -243,15 +236,13 @@
 		48260BED27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingPrivateKeyViewModel.swift; sourceTree = "<group>"; };
 		48260BF027C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletUsingKeystoreViewModel.swift; sourceTree = "<group>"; };
 		48260BF327C7C1DB0069CA1C /* BalancesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesViewModel.swift; sourceTree = "<group>"; };
-		48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesUseCase.swift; sourceTree = "<group>"; };
 		48260BF927C8E5300069CA1C /* ReceiveCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCoordinator.swift; sourceTree = "<group>"; };
 		48260BFE27C8E5890069CA1C /* ReceiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveViewModel.swift; sourceTree = "<group>"; };
 		48260C0127C8E5C30069CA1C /* ReceiveScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveScreen.swift; sourceTree = "<group>"; };
 		483CB78327C5003700329DEB /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		483CB78627C637EF00329DEB /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
-		484428FE27B7D93700BAC575 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		484428FE27B7D93700BAC575 /* TabsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsCoordinator.swift; sourceTree = "<group>"; };
 		4844290327B7D96700BAC575 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletUseCase.swift; sourceTree = "<group>"; };
 		4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		48526A5627BBC9A000C25518 /* HoverPromptTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverPromptTextField.swift; sourceTree = "<group>"; };
 		48526A5E27BC2CA200C25518 /* HoverPromptTextField+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HoverPromptTextField+Config.swift"; sourceTree = "<group>"; };
@@ -301,8 +292,6 @@
 		485FF73927B836540030266A /* SetupWalletCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWalletCoordinator.swift; sourceTree = "<group>"; };
 		485FF73C27B836680030266A /* NewPINCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINCodeScreen.swift; sourceTree = "<group>"; };
 		485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPINCodeCoordinator.swift; sourceTree = "<group>"; };
-		485FF74227B838DE0030266A /* OnboardingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUseCase.swift; sourceTree = "<group>"; };
-		485FF74527B838F60030266A /* UseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseProvider.swift; sourceTree = "<group>"; };
 		4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhipApp.swift; sourceTree = "<group>"; };
 		4872FA1E27B4F8F4008B7BD0 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
 		4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -317,6 +306,8 @@
 		487CE3E227B641C6003BD07A /* TransferScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferScreen.swift; sourceTree = "<group>"; };
 		487CE3E627B64204003BD07A /* ContactsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsScreen.swift; sourceTree = "<group>"; };
 		48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINScreen.swift; sourceTree = "<group>"; };
+		48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINViewModel.swift; sourceTree = "<group>"; };
+		48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		48B1C3ED27C4D9EF0078515F /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 		48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -539,7 +530,6 @@
 				48526AE927BE874D00C25518 /* 2a_NewWallet */,
 				48526AEA27BE879000C25518 /* 2b_RestoreWallet */,
 				485FF73927B836540030266A /* SetupWalletCoordinator.swift */,
-				4844290727B7DA1C00BAC575 /* SetupWalletUseCase.swift */,
 			);
 			path = 2_SetupWallet;
 			sourceTree = "<group>";
@@ -559,7 +549,6 @@
 				4844290327B7D96700BAC575 /* AppCoordinator.swift */,
 				4872FA4527B53AB9008B7BD0 /* Model */,
 				48526AE527BE864E00C25518 /* Scenes */,
-				485FF74527B838F60030266A /* UseCaseProvider.swift */,
 				48260BEA27C770D10069CA1C /* NavigationStepper.swift */,
 			);
 			path = App;
@@ -568,13 +557,9 @@
 		48526AE427BE854000C25518 /* 1_Main */ = {
 			isa = PBXGroup;
 			children = (
-				4872FA5027B558D0008B7BD0 /* 0_Balances */,
-				48260BFC27C8E5370069CA1C /* 1_Receive */,
-				487CE3E127B641BB003BD07A /* 2_Transfer */,
-				487CE3DA27B6384C003BD07A /* 3_Contacts */,
-				487CE3D927B63707003BD07A /* 4_Settings */,
-				484428FE27B7D93700BAC575 /* MainCoordinator.swift */,
-				48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */,
+				48A9581027CAA49B001CAD15 /* UnlockApp */,
+				48A9580F27CAA491001CAD15 /* Tabs */,
+				48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */,
 			);
 			path = 1_Main;
 			sourceTree = "<group>";
@@ -594,7 +579,6 @@
 				48ECB28E27C4C728000F7C41 /* 0_NewPINCode */,
 				48ECB28F27C4C74A000F7C41 /* 1_ConfirmNewPINCode */,
 				485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */,
-				48260BC527C655200069CA1C /* PINCodeUseCase.swift */,
 			);
 			path = 3_NewPINCode;
 			sourceTree = "<group>";
@@ -776,7 +760,6 @@
 			children = (
 				48260BDD27C67AAC0069CA1C /* 0_Balances */,
 				48260BDE27C67ABE0069CA1C /* BalancesCoordinator.swift */,
-				48260BF627C8C96B0069CA1C /* BalancesUseCase.swift */,
 			);
 			path = 0_Balances;
 			sourceTree = "<group>";
@@ -817,7 +800,6 @@
 				48526AC827BE828500C25518 /* 2_SetupWallet */,
 				48526AE627BE86BB00C25518 /* 3_NewPINCode */,
 				4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */,
-				485FF74227B838DE0030266A /* OnboardingUseCase.swift */,
 			);
 			path = 0_Onboarding;
 			sourceTree = "<group>";
@@ -848,6 +830,28 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		48A9580F27CAA491001CAD15 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				484428FE27B7D93700BAC575 /* TabsCoordinator.swift */,
+				4872FA5027B558D0008B7BD0 /* 0_Balances */,
+				48260BFC27C8E5370069CA1C /* 1_Receive */,
+				487CE3E127B641BB003BD07A /* 2_Transfer */,
+				487CE3DA27B6384C003BD07A /* 3_Contacts */,
+				487CE3D927B63707003BD07A /* 4_Settings */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		48A9581027CAA49B001CAD15 /* UnlockApp */ = {
+			isa = PBXGroup;
+			children = (
+				48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */,
+				48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */,
+			);
+			path = UnlockApp;
 			sourceTree = "<group>";
 		};
 		48B1C3EC27C4D9EF0078515F /* Packages */ = {
@@ -1057,7 +1061,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48260BFF27C8E5890069CA1C /* ReceiveViewModel.swift in Sources */,
-				48260BC627C655200069CA1C /* PINCodeUseCase.swift in Sources */,
 				481EDEBD27B9946700D39DCB /* Screen.swift in Sources */,
 				48260BE527C69B990069CA1C /* RestoreWalletUsingKeystoreScreen.swift in Sources */,
 				483CB78727C637EF00329DEB /* WelcomeViewModel.swift in Sources */,
@@ -1079,8 +1082,7 @@
 				48ECB27127C28A22000F7C41 /* PINField.swift in Sources */,
 				48ECB28C27C424CB000F7C41 /* DigitView.swift in Sources */,
 				48526A6227BC2CC800C25518 /* HoverPromptTextField+Appearance.swift in Sources */,
-				485FF74627B838F60030266A /* UseCaseProvider.swift in Sources */,
-				484428FF27B7D93700BAC575 /* MainCoordinator.swift in Sources */,
+				484428FF27B7D93700BAC575 /* TabsCoordinator.swift in Sources */,
 				485FF74027B836770030266A /* SetupPINCodeCoordinator.swift in Sources */,
 				4872FA4027B523D6008B7BD0 /* ButtonStyle.swift in Sources */,
 				48526ABA27BE819800C25518 /* InputField.swift in Sources */,
@@ -1092,7 +1094,6 @@
 				48526AAA27BDAD2000C25518 /* Fonts.swift in Sources */,
 				48260BDF27C67ABE0069CA1C /* BalancesCoordinator.swift in Sources */,
 				48ECB28527C42493000F7C41 /* DigitViewModel.swift in Sources */,
-				485FF74327B838DE0030266A /* OnboardingUseCase.swift in Sources */,
 				483CB78427C5003700329DEB /* Binding+Extension.swift in Sources */,
 				485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				485FF73027B8361A0030266A /* SetupWalletScreen.swift in Sources */,
@@ -1101,7 +1102,6 @@
 				48ECB24627BFC038000F7C41 /* ActivityIndicator.swift in Sources */,
 				48526ABE27BE81BF00C25518 /* View+Extensions.swift in Sources */,
 				485FF73A27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
-				4844290827B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				48526A6C27BC2D4C00C25518 /* TooLongViolation.swift in Sources */,
 				48260BEE27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
 				48ECB25427C0DFB2000F7C41 /* BackupWalletViewModel.swift in Sources */,
@@ -1112,10 +1112,11 @@
 				48526AF327BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */,
 				48ECB29727C4C7C2000F7C41 /* NewPINCodeViewModel.swift in Sources */,
 				48ECB25A27C0E075000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
+				48A9581527CB7CD9001CAD15 /* MainCoordinator.swift in Sources */,
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
+				48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
-				48260BF727C8C96B0069CA1C /* BalancesUseCase.swift in Sources */,
 				48526AD827BE834600C25518 /* TermsOfServiceViewModel.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				481EDECF27BA884400D39DCB /* BackupWalletScreen.swift in Sources */,
@@ -1148,12 +1149,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				48260C0027C8E5890069CA1C /* ReceiveViewModel.swift in Sources */,
-				48260BC727C655200069CA1C /* PINCodeUseCase.swift in Sources */,
 				48526AFA27BEC09C00C25518 /* BackUpKeystoreScreen.swift in Sources */,
 				48260BE627C69B990069CA1C /* RestoreWalletUsingKeystoreScreen.swift in Sources */,
 				483CB78827C637EF00329DEB /* WelcomeViewModel.swift in Sources */,
 				485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */,
-				4844290027B7D93900BAC575 /* MainCoordinator.swift in Sources */,
+				4844290027B7D93900BAC575 /* TabsCoordinator.swift in Sources */,
 				485FF72B27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				48260BF527C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */,
 				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
@@ -1192,8 +1192,6 @@
 				48526AF427BE894700C25518 /* RestoreWalletUsingPrivateKeyScreen.swift in Sources */,
 				48ECB28D27C424CB000F7C41 /* DigitView.swift in Sources */,
 				485FF73827B836420030266A /* RestoreWalletCoordinator.swift in Sources */,
-				485FF74427B838DE0030266A /* OnboardingUseCase.swift in Sources */,
-				485FF74727B838F60030266A /* UseCaseProvider.swift in Sources */,
 				48260BEF27C7756C0069CA1C /* RestoreWalletUsingPrivateKeyViewModel.swift in Sources */,
 				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				48260BCA27C65BE90069CA1C /* Version.swift in Sources */,
@@ -1202,10 +1200,11 @@
 				485FF73127B8361A0030266A /* SetupWalletScreen.swift in Sources */,
 				48ECB26127C0E0CD000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift in Sources */,
 				48ECB26727C0E118000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */,
+				48A9581627CB7CD9001CAD15 /* MainCoordinator.swift in Sources */,
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
 				48ECB25B27C0E075000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
+				48A9581327CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */,
 				48ECB24C27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
-				48260BF827C8C96B0069CA1C /* BalancesUseCase.swift in Sources */,
 				48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				48ECB24F27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */,
 				48526AB827BE818400C25518 /* Checkbox.swift in Sources */,
@@ -1221,7 +1220,6 @@
 				48526A5827BBC9A000C25518 /* HoverPromptTextField.swift in Sources */,
 				48ECB27227C28A22000F7C41 /* PINField.swift in Sources */,
 				48526A6D27BC2D4C00C25518 /* TooLongViolation.swift in Sources */,
-				4844290927B7DA1C00BAC575 /* SetupWalletUseCase.swift in Sources */,
 				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				48526B0027BECB1C00C25518 /* BackupWalletCoordinator.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,

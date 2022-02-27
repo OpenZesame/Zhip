@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ZhipEngine
 import Combine
 
 // MARK: - PINCodeUseCase

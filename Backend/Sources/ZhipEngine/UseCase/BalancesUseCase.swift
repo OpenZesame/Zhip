@@ -7,7 +7,6 @@
 
 import Foundation
 import Zesame
-import ZhipEngine
 
 public enum Asset {
     case zillings

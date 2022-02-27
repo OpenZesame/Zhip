@@ -149,7 +149,6 @@ extension BackupWalletCoordinator {
     }
     
     func doneBackingUpWallet() {
-        print("🔮💶 BackupWalletCoordinator:doneBackingUpWallet")
         navigator.step(.userDidBackUpWallet(wallet))
     }
     

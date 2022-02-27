@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import Zesame
+import ZhipEngine
 
 // MARK: - RestoreWalletUsingKeystoreViewModel
 // MARK: -

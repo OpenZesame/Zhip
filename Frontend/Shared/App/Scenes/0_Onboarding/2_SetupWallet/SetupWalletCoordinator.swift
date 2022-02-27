@@ -11,7 +11,7 @@ import ZhipEngine
 import Combine
 
 enum SetupWalletCoordinatorNavigationStep {
-    case finishSettingUpWallet(wallet: Wallet)
+    case finishSettingUpWallet
 }
 
 // MARK: - SetupWalletCoordinator
@@ -84,12 +84,11 @@ extension SetupWalletCoordinator {
 
     func userFinishedSettingUpNewWallet(_ wallet: Wallet) {
         useCase.save(wallet: wallet)
-        print("🔮💶 SetupWalletCoordinator:userFinishedSettingUpNewWallet")
         
         // Hmm not happy about this...
         // TODO: find out why we cannot simply dismiss the whole coordinator
         _ = popToRoot { [unowned self] in
-            navigator.step(.finishSettingUpWallet(wallet: wallet))
+            navigator.step(.finishSettingUpWallet)
         }
     }
     

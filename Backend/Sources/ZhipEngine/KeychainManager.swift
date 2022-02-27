@@ -1,9 +1,7 @@
-//import KeychainSwift
 import KeychainAccess
 import Foundation
-//
+
 public final class KeychainManager: KeyValueStoring {
-//    private let wrapped: KeychainSwift
     private let wrapped: Keychain
 
     private let encoder = JSONEncoder()
@@ -16,37 +14,6 @@ public final class KeychainManager: KeyValueStoring {
             .accessibility(.whenPasscodeSetThisDeviceOnly)
     }
 }
-//
-//public extension KeychainManager {
-//    func saveCodable<C: Codable>(_ model: C, for key: Key) throws {
-//        let jsonData = try encoder.encode(model)
-//        try save(data: jsonData, key: key)
-//    }
-//
-//    func loadCodable<C: Codable>(for key: Key) throws -> C? {
-//        try loadCodable(C.self, for: key)
-//    }
-//
-//    func loadCodable<C: Codable>(_ modelType: C.Type, for key: Key) throws -> C? {
-//        guard let jsonData = try loadData(key: key) else { return nil }
-//        return try decoder.decode(C.self, from: jsonData)
-//    }
-//
-//    func deleteValue(for key: Key) throws {
-//        try wrapped.remove(key.id, ignoringAttributeSynchronizable: false)
-//    }
-//}
-//
-//private extension KeychainManager {
-//
-//    func loadData(key: Key) throws -> Data? {
-//        try wrapped.getData(key.id, ignoringAttributeSynchronizable: false)
-//    }
-//
-//    func save(data: Data, key: Key) throws {
-//        try wrapped.set(data, key: key.id, ignoringAttributeSynchronizable: false)
-//    }
-//}
 
 
 /// Key to senstive values being store in Keychain, e.g. the cryptograpically sensitive keystore file, containing an encryption of your wallets private key.
@@ -89,14 +56,6 @@ public extension KeychainManager {
     /// will be lost, read more:
     /// https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly
     func save(value: Any, for key: String) throws {
-//        let access: KeychainSwiftAccessOptions = .accessibleWhenPasscodeSetThisDeviceOnly
-//        if let data = value as? Data {
-//            set(data, forKey: key, withAccess: access)
-//        } else if let bool = value as? Bool {
-//            set(bool, forKey: key, withAccess: access)
-//        } else if let string = value as? String {
-//            set(string, forKey: key, withAccess: access)
-//        }
         if let bool = value as? Bool {
             if bool {
                 try wrapped.set("true", key: key)
@@ -126,12 +85,7 @@ public extension KeyValueStore where Key == KeychainKey {
         // thus we should not have any wallet configured. Delete previous one if needed and always return nil
         guard Preferences.default.isTrue(.hasRunAppBefore) else {
             try! Preferences.default.save(value: true, for: .hasRunAppBefore)
-            deleteWallet()
-            deletePincode()
-            
-            try! deleteValue(for: .cachedZillingBalance)
-            
-            try! Preferences.default.deleteValue(for: .balanceWasUpdatedAt)
+            DefaultUseCaseProvider.shared.nuke()
             return nil
         }
         return try! loadCodable(Wallet.self, for: .keystore)

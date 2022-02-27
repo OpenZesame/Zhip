@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Stinsen
+import Combine
 import ZhipEngine
 
 final class AppCoordinator: NavigationCoordinatable {
@@ -20,15 +21,18 @@ final class AppCoordinator: NavigationCoordinatable {
     
     private let onboardingCoordinatorNavigator = OnboardingCoordinator.Navigator()
     private let mainCoordinatorNavigator = MainCoordinator.Navigator()
+    private let appLifeCyclePublisher: AnyPublisher<ScenePhase, Never>
     
     init(
-        useCaseProvider: UseCaseProvider
+        useCaseProvider: UseCaseProvider,
+        appLifeCyclePublisher: AnyPublisher<ScenePhase, Never>
     ) {
         
         self.useCaseProvider = useCaseProvider
+        self.appLifeCyclePublisher = appLifeCyclePublisher
             
-        if let wallet = useCaseProvider.makeWalletUseCase().loadWallet() {
-            stack = NavigationStack(initial: \.main, wallet)
+        if useCaseProvider.hasWalletConfigured {
+            stack = NavigationStack(initial: \.main)
         } else {
             stack = NavigationStack(initial: \.onboarding)
         }
@@ -46,8 +50,9 @@ extension AppCoordinator {
         view
             .onReceive(onboardingCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
-                case .finishOnboarding(let wallet):
-                    self.root(\.main, wallet)
+                case .finishOnboarding:
+                    assert(useCaseProvider.hasWalletConfigured)
+                    self.root(\.main)
                 }
             }
             .onReceive(mainCoordinatorNavigator) { [unowned self] userDid in
@@ -73,11 +78,11 @@ extension AppCoordinator {
         )
     }
     
-    func makeMain(wallet: Wallet) -> MainCoordinator {
+    func makeMain() -> MainCoordinator {
         MainCoordinator(
+            appLifeCyclePublisher: appLifeCyclePublisher,
             navigator: mainCoordinatorNavigator,
-            useCaseProvider: useCaseProvider,
-            wallet: wallet
+            useCaseProvider: useCaseProvider
         )
     }
 }

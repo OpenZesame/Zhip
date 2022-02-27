@@ -7,14 +7,14 @@
 
 import Foundation
 import ZhipEngine
+import Combine
 
 public final class BalancesViewModel: ObservableObject {
     
-    @Published var myActiveAddress: String
     @Published var zilBalance: String
-    
-    
-    private let wallet: Wallet
+    @Published var isFetchingBalance: Bool = false
+
+    private unowned let walletSubject: CurrentValueSubject<Wallet?, Never>
 
     private let walletUseCase: WalletUseCase
     private let balancesUseCase: BalancesUseCase
@@ -29,18 +29,20 @@ public final class BalancesViewModel: ObservableObject {
         self.walletUseCase = walletUseCase
         self.amountFormatter = amountFormatter
         
-        guard let wallet = walletUseCase.loadWallet() else {
-            fatalError("TODO implement better handling of wallet, got none.")
-        }
-        self.wallet = wallet
-        self.myActiveAddress = wallet.bech32Address.asString
-        self.zilBalance = "Fetching..."
+        self.walletSubject = walletUseCase.walletSubject
         
-        subscribeToPublishers()
+        self.zilBalance = ""
     }
 }
 
 public extension BalancesViewModel {
+    
+    var myActiveAddress: String {
+        guard let wallet = wallet else {
+            return "No wallet configued"
+        }
+        return wallet.bech32Address.asString
+    }
     
     func fetchBalanceFireAndForget() {
         Task {
@@ -49,6 +51,13 @@ public extension BalancesViewModel {
     }
     
     func fetchBalances() async {
+        guard let wallet = wallet else {
+            return
+        }
+        
+        Task { @MainActor [unowned self] in
+            isFetchingBalance = true
+        }
         
         let zillingsBalance = await balancesUseCase.fetchBalance(
             of: .zillings,
@@ -56,6 +65,7 @@ public extension BalancesViewModel {
         )
         
         Task { @MainActor [unowned self] in
+            isFetchingBalance = false
             zilBalance = amountFormatter.format(
                 amount: zillingsBalance,
                 in: .zil,
@@ -67,7 +77,9 @@ public extension BalancesViewModel {
 }
 
 private extension BalancesViewModel {
-    func subscribeToPublishers() {
-        
+    
+    var wallet: Wallet? {
+        walletSubject.value
     }
+    
 }

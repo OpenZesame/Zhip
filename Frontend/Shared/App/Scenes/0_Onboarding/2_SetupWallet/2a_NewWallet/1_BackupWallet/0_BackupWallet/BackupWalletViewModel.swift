@@ -61,7 +61,6 @@ public extension BackupWalletViewModel {
     typealias Navigator = NavigationStepper<BackupWalletNavigationStep>
     
     func `continue`() {
-        print("🔮💶 BackupWalletViewModel:continue")
         navigator.step(.finishedBackingUpWallet)
     }
     

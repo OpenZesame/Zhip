@@ -117,7 +117,6 @@ extension NewWalletCoordinator {
 extension NewWalletCoordinator {
     
     func userFinishedBackingUpNewlyCreatedWallet(_ wallet: Wallet) {
-        print("🔮💶 NewWalletCoordinator:userFinishedBackingUpNewlyCreatedWallet")
         self.navigator.step(.create(wallet: wallet))
     }
     
@@ -138,9 +137,6 @@ extension NewWalletCoordinator {
     }
     
     func myScreenMightBeWatched() {
-//        dismissCoordinator {
-//            print("dismissing \(self)")
-//        }
         navigator.step(.abortBecauseScreenMightBeWatched)
     }
 

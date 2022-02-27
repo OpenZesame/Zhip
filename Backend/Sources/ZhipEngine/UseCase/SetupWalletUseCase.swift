@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ZhipEngine
 import Combine
 import enum Zesame.KeyRestoration
 import struct Zesame.Keystore
@@ -29,7 +28,9 @@ public protocol WalletUseCase {
     /// Checks if the passed `password` was used to encypt the Keystore
     func verify(password: String, forKeystore keystore: Keystore) async throws -> Bool
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) async throws -> KeyPair
-    func loadWallet() -> Wallet?
+   
+    var walletSubject: CurrentValueSubject<Wallet?, Never> { get }
+    
     var hasConfiguredWallet: Bool { get }
 }
 
@@ -37,18 +38,18 @@ public extension WalletUseCase where Self: SecurePersisting {
 
     func deleteWallet() {
         securePersistence.deleteWallet()
-    }
-
-    func loadWallet() -> Wallet? {
-        return securePersistence.wallet
+        walletSubject.send(nil)
     }
 
     func save(wallet: Wallet) {
         securePersistence.save(wallet: wallet)
+        walletSubject.send(wallet)
     }
 
     var hasConfiguredWallet: Bool {
-        return securePersistence.hasConfiguredWallet
+        let hasConfiguredWallet = walletSubject.value != nil
+        assert(hasConfiguredWallet == securePersistence.hasConfiguredWallet)
+        return hasConfiguredWallet
     }
 }
 
@@ -69,6 +70,7 @@ public final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 
     private let zilliqaService: ZilliqaService
     public let securePersistence: SecurePersistence
+    public let walletSubject: CurrentValueSubject<Wallet?, Never>
     
     public init(
         securePersistence: SecurePersistence,
@@ -76,6 +78,7 @@ public final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
     ) {
         self.securePersistence = securePersistence
         self.zilliqaService = zilliqaService
+        self.walletSubject = CurrentValueSubject(securePersistence.wallet)
     }
 }
 

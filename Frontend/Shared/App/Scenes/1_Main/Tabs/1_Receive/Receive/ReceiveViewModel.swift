@@ -14,11 +14,12 @@ import struct Zesame.Bech32Address
 public final class ReceiveViewModel: ObservableObject {
     
     @Published var myActiveAddressFormatted: String = "loading address"
-    @Published private var myActiveAddress: Bech32Address
-    @Published var qrCodeOfMyActiveAddress: Image = Image(systemName: "arrow.down")
-    
-    private let wallet: Wallet
+    private var myActiveAddress: Bech32Address? {
+        wallet?.bech32Address
+    }
+    @Published var qrCodeOfMyActiveAddress: Image? = nil
 
+    private unowned let walletSubject: CurrentValueSubject<Wallet?, Never>
     private let walletUseCase: WalletUseCase
     
     // TODO: move to separate `ReceiveUseCase`
@@ -32,12 +33,8 @@ public final class ReceiveViewModel: ObservableObject {
     ) {
         self.qrCoding = qrCoding
         self.walletUseCase = walletUseCase
-        
-        guard let wallet = walletUseCase.loadWallet() else {
-            fatalError("TODO implement better handling of wallet, got none.")
-        }
-        self.wallet = wallet
-        self.myActiveAddress = wallet.bech32Address
+ 
+        self.walletSubject = walletUseCase.walletSubject
         
         subscribeToPublishers()
     }
@@ -46,22 +43,39 @@ public final class ReceiveViewModel: ObservableObject {
 private extension ReceiveViewModel {
     func subscribeToPublishers() {
         
-        $myActiveAddress
+        walletSubject
             .receive(on: RunLoop.main)
-            .map { $0.asString }
+            .map { maybeWallet in
+                if let wallet = maybeWallet {
+                    return wallet.bech32Address.asString
+                } else {
+                    print("⚠️ WARNING no wallet configured?")
+                    return "No wallet configured"
+                }
+            }
             .assign(to: \.myActiveAddressFormatted, on: self)
             .store(in: &cancellables)
         
         
-        $myActiveAddress
+        walletSubject
             .receive(on: RunLoop.main)
-            .compactMap { [unowned self] in
-                qrCoding.encode(
-                    bech32Address: $0
-//                    , size: 600
+            .map { [unowned self] maybeWallet in
+                guard let wallet = maybeWallet else {
+                    return nil
+                }
+                return qrCoding.encode(
+                    bech32Address: wallet.bech32Address
+                    //                    , size: 600
                 )
+
             }
             .assign(to: \.qrCodeOfMyActiveAddress, on: self)
             .store(in: &cancellables)
     }
+    
+    
+    var wallet: Wallet? {
+        walletSubject.value
+    }
+    
 }

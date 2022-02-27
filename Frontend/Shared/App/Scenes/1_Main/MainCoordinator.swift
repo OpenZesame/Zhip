@@ -1,53 +1,56 @@
 //
 //  MainCoordinator.swift
-//  Shared
+//  Zhip
 //
-//  Created by Alexander Cyon on 2022-02-12.
+//  Created by Alexander Cyon on 2022-02-27.
 //
 
 import SwiftUI
-import Stinsen
 import ZhipEngine
+import Stinsen
+import Combine
 
 // MARK: - MainCoordinatorNavigationStep
 // MARK: -
-enum MainCoordinatorNavigationStep {
+public enum MainCoordinatorNavigationStep {
     case userDeletedWallet
 }
 
 // MARK: - MainCoordinator
 // MARK: -
-final class MainCoordinator: TabCoordinatable {
+public final class MainCoordinator: NavigationCoordinatable {
+
+    public let stack: NavigationStack<MainCoordinator>
     
-    typealias Navigator = NavigationStepper<MainCoordinatorNavigationStep>
+    @Root var tabsCoordinator = makeTabsCoordinator
+    @Root var unlockApp = makeUnlockApp
     
-    private let wallet: Wallet
-    
-    @Route(tabItem: makeBalancesTab) var balances = makeBalances
-    @Route(tabItem: makeReceiveTab) var receive = makeReceive
-    @Route(tabItem: makeTransferTab) var transfer = makeTransfer
-    @Route(tabItem: makeContactsTab) var contacts = makeContacts
-    @Route(tabItem: makeSettingsTab) var settings = makeSettings
-    
-    var child = TabChild(
-        startingItems: [
-            \MainCoordinator.balances,
-            \MainCoordinator.receive,
-            \MainCoordinator.transfer,
-            \MainCoordinator.contacts,
-            \MainCoordinator.settings
-        ]
-    )
-    
+    private let appLifeCyclePublisher: AnyPublisher<ScenePhase, Never>
     private unowned let navigator: Navigator
+
     private let useCaseProvider: UseCaseProvider
+    private lazy var unlockAppWithPINNavigator = UnlockAppWithPINViewModel.Navigator()
+    private lazy var tabsCoordinatorNavigator = TabsCoordinator.Navigator()
     
-    private lazy var settingsCoordinatorNavigator = SettingsCoordinator.Navigator()
+    private var cancellables = Set<AnyCancellable>()
     
-    init(navigator: Navigator, useCaseProvider: UseCaseProvider, wallet: Wallet) {
+    public init(
+        appLifeCyclePublisher: AnyPublisher<ScenePhase, Never>,
+        navigator: Navigator,
+        useCaseProvider: UseCaseProvider,
+        promptUserToUnlockAppIfNeeded: Bool = true
+    ) {
+        self.appLifeCyclePublisher = appLifeCyclePublisher
         self.navigator = navigator
         self.useCaseProvider = useCaseProvider
-        self.wallet = wallet
+       
+        if promptUserToUnlockAppIfNeeded, useCaseProvider.hasConfiguredPincode {
+            self.stack = NavigationStack(initial: \.unlockApp)
+        } else {
+            self.stack = NavigationStack(initial: \.tabsCoordinator)
+        }
+       
+        subscribeToPublishers()
     }
     
     deinit {
@@ -55,121 +58,79 @@ final class MainCoordinator: TabCoordinatable {
     }
 }
 
+// MARK: - Public
+// MARK: -
+public extension MainCoordinator {
+    typealias Navigator = NavigationStepper<MainCoordinatorNavigationStep>
+}
+
 // MARK: - NavigationCoordinatable
 // MARK: -
-extension MainCoordinator {
+public extension MainCoordinator {
     
     @ViewBuilder
     func customize(_ view: AnyView) -> some View {
         view
-            .onReceive(settingsCoordinatorNavigator) { [unowned self] userDid in
+            .onReceive(unlockAppWithPINNavigator) { [unowned self] userDid in
+                switch userDid {
+                case .cancel: fatalError("Should not be able to cancel unlock.")
+                case .enteredCorrectPINCode(let userIntent):
+                    precondition(userIntent == .enterToUnlockApp)
+                    unlockedApp()
+                }
+            }
+            .onReceive(tabsCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .userDeletedWallet:
-                    print("🎬 MainCoordinator userDeletedWallet")
                     navigator.step(.userDeletedWallet)
                 }
             }
-       
+    }
+}
+
+// MARK: - Private
+// MARK: -
+private extension MainCoordinator {
+    
+    func subscribeToPublishers() {
+        appLifeCyclePublisher
+            .receive(on: RunLoop.main)
+            .sink { [unowned self] newPhase in
+                if newPhase == .background {
+                    lockApp()
+                }
+            }.store(in: &cancellables)
+    }
+    
+    func unlockedApp() {
+        root(\.tabsCoordinator)
+    }
+    
+    func lockApp() {
+        root(\.unlockApp)
     }
 }
 
 // MARK: - Factory
 // MARK: -
-extension MainCoordinator {
+private extension MainCoordinator {
     
     @ViewBuilder
-    func makeBalancesTab(isActive: Bool) -> some View {
-        Tab.balances.label
-    }
-    
-    @ViewBuilder
-    func makeReceiveTab(isActive: Bool) -> some View {
-        Tab.receive.label
-    }
-    
-    @ViewBuilder
-    func makeTransferTab(isActive: Bool) -> some View {
-        Tab.transfer.label
-    }
-    
-    @ViewBuilder
-    func makeContactsTab(isActive: Bool) -> some View {
-        Tab.contacts.label
-    }
-    
-    @ViewBuilder
-    func makeSettingsTab(isActive: Bool) -> some View {
-        Tab.settings.label
-    }
-    
-    func makeBalances() -> NavigationViewCoordinator<BalancesCoordinator> {
-        let balancesCoordinator = BalancesCoordinator(
-            balancesUseCase: useCaseProvider.makeBalancesUseCase(),
-            walletUseCase: useCaseProvider.makeWalletUseCase()
-        )
-        return NavigationViewCoordinator(balancesCoordinator)
-    }
-    
-    func makeReceive() -> NavigationViewCoordinator<ReceiveCoordinator> {
-        let receiveCoordinator = ReceiveCoordinator(
-            walletUseCase: useCaseProvider.makeWalletUseCase()
+    func makeUnlockApp() -> some View {
+        
+        let viewModel = UnlockAppWithPINViewModel(
+            userIntent: .enterToUnlockApp,
+            navigator: unlockAppWithPINNavigator,
+            useCase: useCaseProvider.makePINCodeUseCase()
         )
         
-        return NavigationViewCoordinator(receiveCoordinator)
+        UnlockAppWithPINScreen(viewModel: viewModel)
     }
     
-    func makeTransfer() -> NavigationViewCoordinator<TransferCoordinator> {
-        return NavigationViewCoordinator(TransferCoordinator())
-    }
-    
-    func makeContacts() -> NavigationViewCoordinator<ContactsCoordinator> {
-        return NavigationViewCoordinator(ContactsCoordinator())
-    }
-    
-    func makeSettings() -> NavigationViewCoordinator<SettingsCoordinator> {
-        let settingsCoordinator = SettingsCoordinator(
-            navigator: settingsCoordinatorNavigator,
+    func makeTabsCoordinator() -> TabsCoordinator {
+        TabsCoordinator(
+            navigator: tabsCoordinatorNavigator,
             useCaseProvider: useCaseProvider
         )
-        return NavigationViewCoordinator(settingsCoordinator)
     }
 }
-
-// MARK: - Tab
-// MARK: -
-enum Tab {
-    case balances
-    case receive
-    case transfer
-    case contacts
-    case settings
-}
-
-extension Tab {
-    
-    var name: String {
-        switch self {
-        case .balances: return "Balances"
-        case .receive: return "Receive"
-        case .transfer: return "Transfer"
-        case .contacts: return "Contacts"
-        case .settings: return "Settings"
-        }
-    }
-    
-    var imageName: String {
-        switch self {
-        case .balances: return "bitcoinsign.circle"
-        case .receive: return "arrow.down.circle"
-        case .transfer: return "arrow.up.circle"
-        case .contacts: return "heart"
-        case .settings: return "gear"
-        }
-    }
-    
-    var label: some View {
-        Label(name, systemImage: imageName)
-    }
-    
-}
-

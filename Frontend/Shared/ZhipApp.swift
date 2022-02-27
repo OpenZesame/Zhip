@@ -9,11 +9,14 @@ import SwiftUI
 
 import ZhipEngine
 import Stinsen
+import Combine
 
 @main
 struct ZhipApp: App {
     
-//    @StateObject private var model = Model()
+    @Environment(\.scenePhase) var scenePhase
+    private let appLifeCycleSubject = PassthroughSubject<ScenePhase, Never>()
+    private let appCoordinator: AppCoordinator
     
     init() {
         #if os(iOS)
@@ -23,17 +26,23 @@ struct ZhipApp: App {
         // For NavigationBarTitle with `displayMode = .inline`
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
         #endif
+        
+        appCoordinator = .init(
+            useCaseProvider: DefaultUseCaseProvider.shared,
+            appLifeCyclePublisher: appLifeCycleSubject.eraseToAnyPublisher()
+        )
     }
     
     var body: some Scene {
         WindowGroup {
-            AppCoordinator(
-                useCaseProvider: DefaultUseCaseProvider.shared
-            )
+           appCoordinator
                 .view()
                 .background(Color.appBackground)
                 .foregroundColor(.white)
                 .navigationBarTitleDisplayMode(.large)
+        }
+        .onChange(of: scenePhase) { newPhase in
+            appLifeCycleSubject.send(newPhase)
         }
         .commands {
             SidebarCommands()

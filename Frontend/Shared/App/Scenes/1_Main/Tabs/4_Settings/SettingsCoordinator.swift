@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZhipEngine
 import Stinsen
 
 enum SettingsCoordinatorNavigationStep {
@@ -18,7 +19,7 @@ final class SettingsCoordinator: NavigationCoordinatable {
     
     let stack = NavigationStack<SettingsCoordinator>(initial: \.start)
     @Root var start = makeStart
-    @Route(.push) var removePIN = makeUnlockAppWithPINToRemoveIt
+    @Route(.push) var unlockApp = makeUnlockApp
     @Route(.push) var setPIN = makeSetupPINCode
     
     private lazy var settingsNavigator = SettingsViewModel.Navigator()
@@ -47,7 +48,7 @@ extension SettingsCoordinator {
                 .onReceive(settingsNavigator) { userDid in
                     switch userDid {
                     case .removeWallet:
-                        navigator.step(.userDeletedWallet)
+                        toRemoveWallet()
                     case .removePincode:
                         toUnlockAppWithPINToRemoveIt()
                     case .setPincode:
@@ -66,7 +67,11 @@ extension SettingsCoordinator {
                 }
                 .onReceive(unlockAppWithPINNavigator) { userDid in
                     switch userDid {
-                    case .enteredCorrectPINCode: fallthrough
+                    case .enteredCorrectPINCode(let intent):
+                        popLast {
+                            print("SettingsCoordinator:popLast UnlockAppWithPinViewModel should deinit")
+                            userAuthenticated(to: intent)
+                        }
                     case .cancel:
                         popLast {
                             print("SettingsCoordinator:popLast UnlockAppWithPinViewModel should deinit")
@@ -82,11 +87,36 @@ extension SettingsCoordinator {
 // MARK: -
 extension SettingsCoordinator {
     func toUnlockAppWithPINToRemoveIt() {
-        route(to: \.removePIN)
+        route(to: \.unlockApp, UnlockAppWithPINViewModel.UserIntent.enterToRemovePIN)
+    }
+    
+    func toUnlockAppWithPINToRemoveWallet() {
+        route(to: \.unlockApp, UnlockAppWithPINViewModel.UserIntent.enterToRemoveWallet)
     }
     
     func toSetPIN() {
         route(to: \.setPIN)
+    }
+    
+    func toRemoveWallet() {
+        if useCaseProvider.makePINCodeUseCase().hasConfiguredPincode {
+            toUnlockAppWithPINToRemoveWallet()
+        } else {
+            useCaseProvider.makeWalletUseCase().deleteWallet()
+            navigator.step(.userDeletedWallet)
+        }
+    }
+    
+    func userAuthenticated(to intent: UnlockAppWithPINViewModel.UserIntent) {
+        switch intent {
+        case .enterToUnlockApp:
+            break
+        case .enterToRemoveWallet:
+            useCaseProvider.nuke()
+            navigator.step(.userDeletedWallet)
+        case .enterToRemovePIN:
+            useCaseProvider.makePINCodeUseCase().deletePincode()
+        }
     }
 }
 
@@ -104,9 +134,9 @@ extension SettingsCoordinator {
     }
     
     @ViewBuilder
-    func makeUnlockAppWithPINToRemoveIt() -> some View {
+    func makeUnlockApp(intent: UnlockAppWithPINViewModel.UserIntent) -> some View {
         let viewModel = UnlockAppWithPINViewModel(
-            mode: .enterToRemovePIN,
+            userIntent: intent,
             navigator: unlockAppWithPINNavigator,
             useCase: useCaseProvider.makePINCodeUseCase()
         )

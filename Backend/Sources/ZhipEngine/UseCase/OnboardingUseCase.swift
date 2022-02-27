@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import ZhipEngine
 
-protocol OnboardingUseCase: AnyObject {
+public protocol OnboardingUseCase: AnyObject {
 
     var hasAcceptedTermsOfService: Bool { get }
     func didAcceptTermsOfService()
@@ -17,16 +16,16 @@ protocol OnboardingUseCase: AnyObject {
 }
 
 
-final class DefaultOnboardingUseCase {
+public final class DefaultOnboardingUseCase: OnboardingUseCase {
     private let preferences: Preferences
     let securePersistence: SecurePersistence
-    init(preferences: Preferences, securePersistence: SecurePersistence) {
+    public init(preferences: Preferences, securePersistence: SecurePersistence) {
         self.preferences = preferences
         self.securePersistence = securePersistence
     }
 }
 
-extension DefaultOnboardingUseCase: OnboardingUseCase {
+public extension DefaultOnboardingUseCase {
     var hasAcceptedTermsOfService: Bool {
         preferences.isTrue(.hasAcceptedTermsOfService)
     }

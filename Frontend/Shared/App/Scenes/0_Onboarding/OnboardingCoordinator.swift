@@ -11,7 +11,9 @@ import ZhipEngine
 import Stinsen
 
 enum OnboardingCoordinatorNavigationStep {
-    case finishOnboarding(wallet: Wallet)
+    // The SecurePeristence and thus WalletUseCase should hold the newly setup
+    // wallet by now.
+    case finishOnboarding
 }
 
 // MARK: - OnboardingCoordinator
@@ -78,9 +80,7 @@ extension OnboardingCoordinator {
             }
             .onReceive(setupWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
-                case .finishSettingUpWallet(let wallet):
-                    print("🔮💶 OnboardingCoordinator:userFinishedSettingUpNewWallet")
-                    walletUseCase.save(wallet: wallet)
+                case .finishSettingUpWallet:
                     toNextStep()
                 }
             }
@@ -127,10 +127,8 @@ private extension OnboardingCoordinator {
     }
     
     func finishedOnboarding() {
-        guard let wallet = walletUseCase.loadWallet() else {
-            fatalError("Expected to have setup a wallet by now, but we have none.")
-        }
-        navigator.step(.finishOnboarding(wallet: wallet))
+        precondition(walletUseCase.hasConfiguredWallet)
+        navigator.step(.finishOnboarding)
     }
 }
 

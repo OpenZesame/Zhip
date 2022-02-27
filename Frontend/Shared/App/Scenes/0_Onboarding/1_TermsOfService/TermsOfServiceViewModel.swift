@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZhipEngine
 
 enum TermsOfServiceNavigationStep {
     case userDidAcceptTerms

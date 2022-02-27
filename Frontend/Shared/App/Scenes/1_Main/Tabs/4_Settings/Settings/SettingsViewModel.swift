@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZhipEngine
 import Combine
 
 // MARK: - SettingsNavigationStep
@@ -31,7 +32,6 @@ public enum SettingsNavigationStep: Int, Hashable {
     case backupWallet
     case removeWallet
 }
-
 
 
 // MARK: - SettingsViewModel
@@ -170,12 +170,12 @@ public extension SettingsViewModel {
                 )
             ],
             [
-                SettingsChoice(
+                .init(
                     .backupWallet,
                     title: "Backup wallet",
                     iconSmall: "BackUp"
                 ),
-                SettingsChoice(
+                .init(
                     .removeWallet,
                     title: "Remove wallet",
                     iconSmall: "Delete",
@@ -193,8 +193,7 @@ public extension SettingsViewModel {
         defer {
             isAskingForDeleteWalletConfirmation = false
         }
-        walletUseCase.deleteWallet()
-        navigator.step(.removePincode)
+        navigator.step(.removeWallet)
     }
 }
 
