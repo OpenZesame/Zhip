@@ -73,11 +73,27 @@ public final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
     public let walletSubject: CurrentValueSubject<Wallet?, Never>
     
     public init(
+        preferences: Preferences,
         securePersistence: SecurePersistence,
         zilliqaService: ZilliqaService
     ) {
         self.securePersistence = securePersistence
         self.zilliqaService = zilliqaService
+        
+        // Delete PIN upon reinstall if needed. This makes sure that after a reinstall of the app, the flag
+        // `hasRunAppBefore`, which recides in UserDefaults - which gets reset after uninstalls, will be false
+        // thus we should not have any PIN configured.
+        // In earlier versions of Zhip (<= 1.0.2) we also removed
+        // the wallet (keystore saved in keychain), but it feels too risky.
+        // Better allow using to back up keystore if needed and delete it
+        // themselves, which they should be able to do since they are not
+        // locked out of the app by a PIN they might have forgot.
+        if !preferences.isTrue(.hasRunAppBefore) {
+            try! preferences.save(value: true, for: .hasRunAppBefore)
+            securePersistence.deletePincode()
+            assert(preferences.isTrue(.hasRunAppBefore))
+        }
+        
         self.walletSubject = CurrentValueSubject(securePersistence.wallet)
     }
 }

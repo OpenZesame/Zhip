@@ -930,6 +930,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				48A9581827CB9076001CAD15 /* PBXTargetDependency */,
 			);
 			name = "Zhip (iOS)";
 			packageProductDependencies = (
@@ -950,6 +951,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				48A9581A27CB9131001CAD15 /* PBXTargetDependency */,
 			);
 			name = "Zhip (macOS)";
 			packageProductDependencies = (
@@ -1234,6 +1236,17 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		48A9581827CB9076001CAD15 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 48A9581727CB9076001CAD15 /* ZhipEngine */;
+		};
+		48A9581A27CB9131001CAD15 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 48A9581927CB9131001CAD15 /* ZhipEngine */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		4872FA3327B4F8F5008B7BD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1495,6 +1508,14 @@
 			productName = ZhipEngine;
 		};
 		48A80AD127B6761A002271BB /* ZhipEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZhipEngine;
+		};
+		48A9581727CB9076001CAD15 /* ZhipEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ZhipEngine;
+		};
+		48A9581927CB9131001CAD15 /* ZhipEngine */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ZhipEngine;
 		};

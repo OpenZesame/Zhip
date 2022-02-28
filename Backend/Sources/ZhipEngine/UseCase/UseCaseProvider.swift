@@ -39,11 +39,11 @@ public protocol UseCaseProvider {
     func makeBalancesUseCase() -> BalancesUseCase
     var hasWalletConfigured: Bool { get }
     var hasConfiguredPincode: Bool { get }
-    func nuke(resetHasAppRunBeforeFlag: Bool)
+    func nuke(resetHasAppRunBeforeFlag: Bool, resetHasAcceptedTermsOfService: Bool)
 }
 public extension UseCaseProvider {
     func nuke() {
-        nuke(resetHasAppRunBeforeFlag: false)
+        nuke(resetHasAppRunBeforeFlag: false, resetHasAcceptedTermsOfService: false)
     }
 }
 
@@ -63,6 +63,7 @@ public final class DefaultUseCaseProvider: UseCaseProvider {
     )
     
     private lazy var walletUseCase: WalletUseCase = DefaultWalletUseCase(
+        preferences: preferences,
         securePersistence: securePersistence,
         zilliqaService: zilliqaService
     )
@@ -81,16 +82,22 @@ public final class DefaultUseCaseProvider: UseCaseProvider {
     public var hasWalletConfigured: Bool { walletUseCase.hasConfiguredWallet }
     public var hasConfiguredPincode: Bool { pinCodeUseCase.hasConfiguredPincode }
   
-    public func nuke(resetHasAppRunBeforeFlag: Bool = false) {
-        walletUseCase.deleteWallet()
-        
-        try! securePersistence.deleteValue(for: .cachedZillingBalance)
-        try! securePersistence.deleteValue(for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
-        try! preferences.deleteValue(for: .balanceWasUpdatedAt)
-        
-        if resetHasAppRunBeforeFlag {
-            try! preferences.deleteValue(for: .hasRunAppBefore)
+    public func nuke(
+        resetHasAppRunBeforeFlag: Bool = false,
+        resetHasAcceptedTermsOfService: Bool = false
+    ) {
+        try! securePersistence.deleteAll()
+        var excludedFlags: [PreferencesKey] = []
+        if !resetHasAppRunBeforeFlag {
+            excludedFlags.append(.hasRunAppBefore)
         }
+        if !resetHasAcceptedTermsOfService {
+            excludedFlags.append(.hasAcceptedTermsOfService)
+        }
+        try! preferences.deleteAll(but: excludedFlags)
+        
+        walletUseCase.deleteWallet() // Technical debt: sync `Subject`s
+        pinCodeUseCase.deletePincode() // Technical debt: sync `Subject`s
     }
     
     public init(

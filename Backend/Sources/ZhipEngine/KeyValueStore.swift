@@ -63,6 +63,42 @@ public protocol KeyValueStoring: AnyKeyValueStoring {
     func deleteValue(for key: Key) throws
 }
 
+
+public extension KeyValueStoring where Key: CaseIterable, Key.AllCases == [Key], Key: Equatable {
+    func deleteAll(but exclusion: [Key] = []) throws {
+        let toRemove = Key.allCases.all(but: exclusion)
+        print("deleting values for keys: \(toRemove)")
+        for key in toRemove {
+            try deleteValue(for: key)
+        }
+    }
+}
+
+
+public extension Array where Element: Equatable {
+    func all<S>(but exclusion: S) -> [Element] where S: Sequence, S.Element == Self.Element {
+        filter({ element in !exclusion.contains(where: { $0 == element }) })
+    }
+    
+    func all<S, Member>(
+        but exclusion: S,
+        map: (Element) -> Member
+    ) -> [Element] where S: Sequence, S.Element == Member, Member: Equatable {
+        filter({ element in
+            let member = map(element)
+            return !exclusion.contains(where: { $0 == member })
+        })
+    }
+    
+    func all<S, Member>(
+        member keyPath: KeyPath<Element, Member>,
+        but exclusion: S
+    ) -> [Element] where S: Sequence, S.Element == Member, Member: Equatable {
+        all(but: exclusion) { $0[keyPath: keyPath] }
+    }
+}
+
+
 // MARK: Default Implementation making use of `AnyKeyValueStoring` protocol
 public extension KeyValueStoring {
 
@@ -100,17 +136,17 @@ public extension KeyValueStoring {
 public extension KeyValueStoring {
     func isTrue(_ key: Key) -> Bool {
         guard let bool: Bool = try? loadValue(for: key) else { return false }
-        return bool == true
+        return bool
     }
 
     func isFalse(_ key: Key) -> Bool {
-        return !isTrue(key)
+        !isTrue(key)
     }
 }
 
 
 /// Insensitive values to be stored into e.g. `UserDefaults`, such as `hasAcceptedTermsOfService`
-public enum PreferencesKey: String, KeyConvertible {
+public enum PreferencesKey: String, KeyConvertible, Equatable, CaseIterable {
     case hasRunAppBefore
     case hasAcceptedTermsOfService
 //    case hasAcceptedCustomECCWarning

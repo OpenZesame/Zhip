@@ -69,13 +69,13 @@ extension OnboardingCoordinator {
             .onReceive(welcomeNavigator)  { [unowned self] userDid in
                 switch userDid {
                 case .didStart:
-                    self.toNextStep()
+                        toNextStep()
                 }
             }
             .onReceive(termsOfServiceNavigator)  { [unowned self] userDid in
                 switch userDid {
                 case .userDidAcceptTerms:
-                    self.toNextStep()
+                    toNextStep()
                 }
             }
             .onReceive(setupWalletCoordinatorNavigator) { [unowned self] userDid in

@@ -102,7 +102,7 @@ extension SettingsCoordinator {
         if useCaseProvider.makePINCodeUseCase().hasConfiguredPincode {
             toUnlockAppWithPINToRemoveWallet()
         } else {
-            useCaseProvider.makeWalletUseCase().deleteWallet()
+            useCaseProvider.nuke()
             navigator.step(.userDeletedWallet)
         }
     }

@@ -17,7 +17,7 @@ public final class KeychainManager: KeyValueStoring {
 
 
 /// Key to senstive values being store in Keychain, e.g. the cryptograpically sensitive keystore file, containing an encryption of your wallets private key.
-public enum KeychainKey: String, KeyConvertible {
+public enum KeychainKey: String, KeyConvertible, Equatable, CaseIterable {
     case keystore
     
     /// Might be sensitive how much Zillings a person owns.
@@ -80,14 +80,6 @@ public extension KeychainManager {
 // MARK: - Wallet
 public extension KeyValueStore where Key == KeychainKey {
     var wallet: Wallet? {
-        // Delete wallet upon reinstall if needed. This makes sure that after a reinstall of the app, the flag
-        // `hasRunAppBefore`, which recides in UserDefaults - which gets reset after uninstalls, will be false
-        // thus we should not have any wallet configured. Delete previous one if needed and always return nil
-        guard Preferences.default.isTrue(.hasRunAppBefore) else {
-            try! Preferences.default.save(value: true, for: .hasRunAppBefore)
-            DefaultUseCaseProvider.shared.nuke()
-            return nil
-        }
         return try! loadCodable(Wallet.self, for: .keystore)
     }
 
@@ -133,7 +125,8 @@ public extension KeyValueStore where Key == PreferencesKey {
 
 // MARK: - KeyValueStoring
 extension UserDefaults: KeyValueStoring {}
-    public extension UserDefaults {
+
+public extension UserDefaults {
 
     func deleteValue(for key: String) throws {
         removeObject(forKey: key)
@@ -142,7 +135,17 @@ extension UserDefaults: KeyValueStoring {}
     typealias Key = PreferencesKey
 
     func save(value: Any, for key: String) throws {
-        self.setValue(value, forKey: key)
+        if let bool = value as? Bool {
+            self.set(bool, forKey: key)
+        } else if let float = value as? Float {
+            self.set(float, forKey: key)
+        } else if let double = value as? Double {
+            self.set(double, forKey: key)
+        } else if let int = value as? Int {
+            self.set(int, forKey: key)
+        } else {
+            self.setValue(value, forKey: key)
+        }
     }
 
     func loadValue(for key: String) throws -> Any? {
