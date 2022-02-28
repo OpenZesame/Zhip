@@ -42,6 +42,9 @@ public final class TabsCoordinator: TabCoordinatable {
     private lazy var settingsCoordinatorNavigator = SettingsCoordinator.Navigator()
     
     public init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
+        #if os(iOS)
+        customizeTabBarItemAppearance()
+        #endif
         self.navigator = navigator
         self.useCaseProvider = useCaseProvider
     }
@@ -76,27 +79,27 @@ private extension TabsCoordinator {
     
     @ViewBuilder
     func makeBalancesTab(isActive: Bool) -> some View {
-        Tab.balances.label
+        Tab.balances.label(isActive: isActive)
     }
     
     @ViewBuilder
     func makeReceiveTab(isActive: Bool) -> some View {
-        Tab.receive.label
+        Tab.receive.label(isActive: isActive)
     }
     
     @ViewBuilder
     func makeTransferTab(isActive: Bool) -> some View {
-        Tab.transfer.label
+        Tab.transfer.label(isActive: isActive)
     }
     
     @ViewBuilder
     func makeContactsTab(isActive: Bool) -> some View {
-        Tab.contacts.label
+        Tab.contacts.label(isActive: isActive)
     }
     
     @ViewBuilder
     func makeSettingsTab(isActive: Bool) -> some View {
-        Tab.settings.label
+        Tab.settings.label(isActive: isActive)
     }
     
     func makeBalances() -> NavigationViewCoordinator<BalancesCoordinator> {
@@ -165,9 +168,53 @@ extension Tab {
         }
     }
     
-    var label: some View {
+    @ViewBuilder
+    func label(isActive: Bool) -> some View {
         Label(name, systemImage: imageName)
     }
     
 }
 
+
+
+#if os(iOS)
+func customizeTabBarItemAppearance() {
+    
+    let normalFont = Font.Zhip.iOS.tabNormal
+    let selectedFont = Font.Zhip.iOS.tabSelected
+    
+    let backgroundColor: Color = .dusk
+    let normalColor: Color = .silverGrey
+    let selectedColor: Color = .turquoise
+    
+    let itemAppearance = UITabBarItemAppearance()
+    
+    let backgroundUIColor = UIColor(backgroundColor)
+    let normalUIColor = UIColor(normalColor)
+    let selectedUIColor = UIColor(selectedColor)
+
+    let titleTextAttributesNormal: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: normalUIColor,
+        NSAttributedString.Key.font: normalFont
+    ]
+    let titleTextAttributesSelected: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: selectedUIColor,
+        NSAttributedString.Key.font: selectedFont
+    ]
+    itemAppearance.normal.iconColor = normalUIColor
+    itemAppearance.normal.titleTextAttributes = titleTextAttributesNormal
+    
+    itemAppearance.selected.iconColor = selectedUIColor
+    itemAppearance.selected.titleTextAttributes = titleTextAttributesSelected
+    
+    let appeareance = UITabBarAppearance()
+    
+    appeareance.backgroundColor = backgroundUIColor
+    appeareance.stackedLayoutAppearance = itemAppearance
+    appeareance.inlineLayoutAppearance = itemAppearance
+    appeareance.compactInlineLayoutAppearance = itemAppearance
+    
+    UITabBar.appearance().standardAppearance = appeareance
+    UITabBar.appearance().scrollEdgeAppearance = appeareance
+}
+#endif

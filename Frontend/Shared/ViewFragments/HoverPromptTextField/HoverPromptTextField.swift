@@ -265,7 +265,6 @@ private extension HoverPromptTextField {
     func validate() {
         errorMessages = validationResult()
         isValid = isValid(given: errorMessages)
-        print("🔮 Hover:validate: isValid: '\(isValid)', #rules:\(config.behaviour.validation.rules.count)\nerrorMessages: '\(errorMessages)'\n")
     }
     
     func onlyIfOKChangeValidationStateToOK() {
