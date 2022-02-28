@@ -147,6 +147,7 @@ private extension OnboardingCoordinator {
     func makeTermsOfService() -> some View {
         
         let viewModel = TermsOfServiceViewModel(
+            mode: .mandatoryToAcceptTermsAsPartOfOnboarding,
             navigator: termsOfServiceNavigator,
             useCase: onboardingUseCase
         )

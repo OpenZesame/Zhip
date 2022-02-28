@@ -183,6 +183,8 @@
 		48A9581327CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */; };
 		48A9581527CB7CD9001CAD15 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */; };
 		48A9581627CB7CD9001CAD15 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */; };
+		48A9581C27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */; };
+		48A9581D27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */; };
 		48ECB24327BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24427BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24627BFC038000F7C41 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */; };
@@ -308,6 +310,7 @@
 		48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINScreen.swift; sourceTree = "<group>"; };
 		48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINViewModel.swift; sourceTree = "<group>"; };
 		48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChoiceView.swift; sourceTree = "<group>"; };
 		48B1C3ED27C4D9EF0078515F /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 		48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -368,6 +371,7 @@
 			isa = PBXGroup;
 			children = (
 				4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */,
+				48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */,
 				48260BCE27C678A00069CA1C /* SettingsViewModel.swift */,
 			);
 			path = Settings;
@@ -1118,6 +1122,7 @@
 				485FF73427B8362E0030266A /* NewWalletCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */,
+				48A9581C27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */,
 				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				48526AD827BE834600C25518 /* TermsOfServiceViewModel.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
@@ -1206,6 +1211,7 @@
 				487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */,
 				48ECB25B27C0E075000F7C41 /* BackUpKeystoreViewModel.swift in Sources */,
 				48A9581327CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */,
+				48A9581D27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */,
 				48ECB24C27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
 				48526A6A27BC2D2400C25518 /* TooShortViolation.swift in Sources */,
 				48ECB24F27BFC4D8000F7C41 /* DecryptKeystoreToRevealKeyPairScreen.swift in Sources */,

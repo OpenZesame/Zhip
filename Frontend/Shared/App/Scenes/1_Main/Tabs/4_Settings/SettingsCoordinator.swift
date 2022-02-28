@@ -22,16 +22,16 @@ final class SettingsCoordinator: NavigationCoordinatable {
     @Route(.push) var unlockApp = makeUnlockApp
     @Route(.push) var setPIN = makeSetupPINCode
     @Route(.push) var backUpWallet = makeBackUpWallet
+    @Route(.push) var termsOfService = makeTermsOfService
     
     private lazy var settingsNavigator = SettingsViewModel.Navigator()
     private lazy var unlockAppWithPINNavigator = UnlockAppWithPINViewModel.Navigator()
     private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
     private lazy var backUpWalletCoordinatorNavigator = BackUpWalletCoordinator.Navigator()
-    
+    private lazy var termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
     
     private unowned let navigator: Navigator
     private let useCaseProvider: UseCaseProvider
-    
     
     init(navigator: Navigator, useCaseProvider: UseCaseProvider) {
         self.navigator = navigator
@@ -58,6 +58,12 @@ extension SettingsCoordinator {
                         toSetPIN()
                     case .backupWallet:
                         toBackUpWallet()
+                    case .readTermsOfService:
+                        toTermsOfService()
+                        #if DEBUG
+                    case .debugOnlyNukeApp:
+                        debugOnlyNukeWholeApp()
+                        #endif // DEBUG
                     default:
                         fatalError("unhandled")
                     }
@@ -91,6 +97,14 @@ extension SettingsCoordinator {
                         }
                     }
                 }
+                .onReceive(termsOfServiceNavigator) { userDid in
+                    switch userDid {
+                    case .userDidAcceptTerms:
+                        popLast {
+                            print("SettingsCoordinator:popLast - userDidBackUpWallet - BackUpWalletCoordinator should deinit")
+                        }
+                    }
+                }
         }
     }
     
@@ -115,6 +129,10 @@ extension SettingsCoordinator {
         route(to: \.backUpWallet)
     }
     
+    func toTermsOfService() {
+        route(to: \.termsOfService)
+    }
+    
     func toRemoveWallet() {
         if useCaseProvider.makePINCodeUseCase().hasConfiguredPincode {
             toUnlockAppWithPINToRemoveWallet()
@@ -123,6 +141,12 @@ extension SettingsCoordinator {
             navigator.step(.userDeletedWallet)
         }
     }
+    #if DEBUG
+    func debugOnlyNukeWholeApp() {
+        useCaseProvider.nuke(resetHasAppRunBeforeFlag: true, resetHasAcceptedTermsOfService: true)
+        navigator.step(.userDeletedWallet)
+    }
+    #endif // DEBUG
     
     func userAuthenticated(to intent: UnlockAppWithPINViewModel.UserIntent) {
         switch intent {
@@ -159,6 +183,18 @@ extension SettingsCoordinator {
         )
         UnlockAppWithPINScreen(viewModel: viewModel)
     }
+    
+    @ViewBuilder
+    func makeTermsOfService() -> some View {
+        let viewModel = TermsOfServiceViewModel(
+            mode: .userInitiatedFromSettings,
+            navigator: termsOfServiceNavigator,
+            useCase: useCaseProvider.makeOnboardingUseCase() // TODO: clean up, should not need to pass this in.
+        )
+        
+        TermsOfServiceScreen(viewModel: viewModel)
+    }
+    
 
     func makeSetupPINCode() -> NavigationViewCoordinator<SetupPINCodeCoordinator> {
         

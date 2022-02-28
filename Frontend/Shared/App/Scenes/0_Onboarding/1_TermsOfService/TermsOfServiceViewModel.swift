@@ -8,21 +8,24 @@
 import Foundation
 import ZhipEngine
 
-enum TermsOfServiceNavigationStep {
+public enum TermsOfServiceNavigationStep {
     case userDidAcceptTerms
 }
 
-final class TermsOfServiceViewModel: ObservableObject {
+public final class TermsOfServiceViewModel: ObservableObject {
     
-    typealias Navigator = NavigationStepper<TermsOfServiceNavigationStep>
     
     private unowned let navigator: Navigator
     private let useCase: OnboardingUseCase
-    @Published var finishedReading: Bool = false
+    @Published var finishedReading: Bool
     
-    init(navigator: Navigator, useCase: OnboardingUseCase) {
+    public let mode: Mode
+    
+    init(mode: Mode, navigator: Navigator, useCase: OnboardingUseCase) {
+        self.mode = mode
         self.navigator = navigator
         self.useCase = useCase
+        self.finishedReading = mode == .userInitiatedFromSettings
     }
     
     deinit {
@@ -30,7 +33,17 @@ final class TermsOfServiceViewModel: ObservableObject {
     }
 }
 
-extension TermsOfServiceViewModel {
+
+public extension TermsOfServiceViewModel {
+    
+    enum Mode {
+        case mandatoryToAcceptTermsAsPartOfOnboarding
+        case userInitiatedFromSettings
+    }
+    
+    typealias Navigator = NavigationStepper<TermsOfServiceNavigationStep>
+   
+    
     func didAcceptTermsOfService() {
         useCase.didAcceptTermsOfService()
         navigator.step(.userDidAcceptTerms)

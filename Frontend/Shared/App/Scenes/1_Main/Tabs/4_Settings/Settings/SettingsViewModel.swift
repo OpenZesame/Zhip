@@ -31,6 +31,11 @@ public enum SettingsNavigationStep: Int, Hashable {
     // Section 3
     case backupWallet
     case removeWallet
+    
+    #if DEBUG
+    // Section 4
+    case debugOnlyNukeApp
+    #endif // DEBUG
 }
 
 
@@ -118,6 +123,11 @@ public struct SettingsChoiceSection: Identifiable {
 // MARK: -
 public extension SettingsViewModel {
     
+    var version: String {
+        let version = Version.fromBundle()
+        return "App version: \(version.version) (build: \(version.build))"
+    }
+    
     func userSelected(_ settingsChoice: SettingsChoice) {
         if settingsChoice.navigationStep == .removeWallet {
             isAskingForDeleteWalletConfirmation = true
@@ -142,8 +152,7 @@ public extension SettingsViewModel {
             iconSmall: "PinCode"
         )
         
-        
-        let choiceMatrix: [[SettingsChoice]] = [
+        var choiceMatrix: [[SettingsChoice]] = [
             [
                 isPINSet ? removePINChoice : setPINChoice
             ],
@@ -183,6 +192,20 @@ public extension SettingsViewModel {
                 )
             ]
         ]
+        
+        
+        #if DEBUG
+        choiceMatrix.append(
+            [
+                SettingsChoice(
+                    .debugOnlyNukeApp,
+                    title: "Nuke app ☣️",
+                    icon: Image(systemName: "exclamationmark.3"),
+                    isDestructive: true
+                )
+            ]
+        )
+        #endif // DEBUG
         
         return choiceMatrix.enumerated().map {
             .init(index: $0.offset, choices: $0.element)

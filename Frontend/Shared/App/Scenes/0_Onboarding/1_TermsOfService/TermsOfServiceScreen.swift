@@ -25,11 +25,16 @@ extension TermsOfServiceScreen {
                 
                 termsOfServiceScrollView
                 
-                Button("Accept") {
-                    viewModel.didAcceptTermsOfService()
+                switch viewModel.mode {
+                case .userInitiatedFromSettings:
+                    EmptyView()
+                case .mandatoryToAcceptTermsAsPartOfOnboarding:
+                    Button("Accept") {
+                        viewModel.didAcceptTermsOfService()
+                    }
+                    .buttonStyle(.primary)
+                    .disabled(!viewModel.finishedReading)
                 }
-                .buttonStyle(.primary)
-                .disabled(!viewModel.finishedReading)
             }
             .padding()
         }
