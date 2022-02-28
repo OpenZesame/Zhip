@@ -20,7 +20,11 @@ extension UnlockAppWithPINScreen {
     var body: some View {
         ForceFullScreen {
             VStack {
-                PINField(text: $viewModel.pinFieldText, pinCode: $viewModel.pinCode)
+                PINField(
+                    text: $viewModel.pinFieldText,
+                    pinCode: $viewModel.pinCode,
+                    errorMessage: $viewModel.showError.getOnly(mapped: { $0 ? "Invalid pin" : nil })
+                )
                 
                 Text("Unlock app with PIN or FaceId/TouchId")
                     .font(.zhip.body).foregroundColor(.silverGrey)

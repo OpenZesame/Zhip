@@ -27,6 +27,7 @@ public final class UnlockAppWithPINViewModel: ObservableObject {
    
     @Published var pinCode: Pincode?
     @Published var pinFieldText: String = ""
+    @Published var showError: Bool = false
 
     private let useCase: PINCodeUseCase
     private unowned let navigator: Navigator
@@ -95,9 +96,35 @@ public extension UnlockAppWithPINViewModel {
         $pinCode.filter { [unowned self] enteredPin in
             enteredPin == expectedPINCode
         }.mapToVoid()
+            .receive(on: RunLoop.main)
         .sink(receiveValue: { [unowned self] in
             navigator.step(.enteredCorrectPINCode(intent: userIntent))
-        }).store(in: &cancellables)
+        })
+        .store(in: &cancellables)
+        
+        let incorrectPINPublisher = $pinCode
+            .filter { $0 != nil }
+        .map { [unowned self] enteredPin in
+            enteredPin != expectedPINCode
+        }
+        .receive(on: RunLoop.main)
+        
+        incorrectPINPublisher
+        .assign(to: \.showError, on: self)
+        .store(in: &cancellables)
+        
+        // Revert error after delay
+        incorrectPINPublisher
+            .filter { showError in
+                showError
+            }
+            .mapToVoid()
+            .delay(for: 1, scheduler: RunLoop.main) // revert error msg after delay
+            .sink { [unowned self] in
+                showError = false
+                pinFieldText = "" // this should also set `pinCode = nil`
+            }
+            .store(in: &cancellables)
     }
 }
 
