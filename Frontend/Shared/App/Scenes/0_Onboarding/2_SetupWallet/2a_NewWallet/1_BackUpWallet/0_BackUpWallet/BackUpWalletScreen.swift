@@ -1,5 +1,5 @@
 //
-//  BackupWalletScreen.swift
+//  BackUpWalletScreen.swift
 //  Zhip
 //
 //  Created by Alexander Cyon on 2022-02-14.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-// MARK: - BackupWalletScreen
+// MARK: - BackUpWalletScreen
 // MARK: -
-struct BackupWalletScreen: View {
-    @ObservedObject var viewModel: BackupWalletViewModel
+struct BackUpWalletScreen: View {
+    @ObservedObject var viewModel: BackUpWalletViewModel
 }
 
 // MARK: - View
 // MARK: -
-extension BackupWalletScreen {
+extension BackUpWalletScreen {
     
     var body: some View {
         ForceFullScreen {
@@ -30,16 +30,22 @@ extension BackupWalletScreen {
                 
                 Spacer()
                 
-                Checkbox(
-                    "I have securely backed up my private key.",
-                    isOn: $viewModel.userHasConfirmedBackingUpWallet
-                )
-                
-                Button("Continue") {
-                    viewModel.continue()
+                switch viewModel.mode {
+                case .mandatoryBackUpPartOfOnboarding:
+                    Checkbox(
+                        "I have securely backed up my private key.",
+                        isOn: $viewModel.userHasConfirmedBackingUpWallet
+                    )
+                    
+                    Button("Continue") {
+                        viewModel.continue()
+                    }
+                    .buttonStyle(.primary)
+                    .disabled(!viewModel.isFinished)
+                case .userInitiatedFromSettings:
+                    EmptyView()
                 }
-                .buttonStyle(.primary)
-                .disabled(!viewModel.isFinished)
+       
             }
         }
         .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
@@ -54,7 +60,7 @@ extension BackupWalletScreen {
 
 // MARK: - Subviews
 // MARK: -
-private extension BackupWalletScreen {
+private extension BackUpWalletScreen {
     @ViewBuilder
     var backupViews: some View {
         VStack(alignment: .leading) {

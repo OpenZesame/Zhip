@@ -48,11 +48,4 @@ extension String {
         return string
     }
 
-//    func sizeUsingFont(_ font: UIFont) -> CGSize {
-//        return self.size(withAttributes: [.font: font])
-//    }
-//
-//    func widthUsingFont(_ font: UIFont) -> CGFloat {
-//        return sizeUsingFont(font).width
-//    }
 }

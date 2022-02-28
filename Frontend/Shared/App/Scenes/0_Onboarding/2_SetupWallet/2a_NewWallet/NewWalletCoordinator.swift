@@ -26,14 +26,14 @@ final class NewWalletCoordinator: NavigationCoordinatable {
     
     @Root var ensurePrivacy = makeEnsurePrivacy
     @Route(.push) var newEncryptionPassword = makeGenerateNewWallet
-    @Route(.push) var backupWallet = makeBackupWalletCoordinator(wallet:)
+    @Route(.push) var backupWallet = makeBackUpWalletCoordinator(wallet:)
     
     private let useCaseProvider: UseCaseProvider
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
 
     private unowned let navigator: Navigator
     private lazy var generateNewWalletNavigator = GenerateNewWalletViewModel.Navigator()
-    private lazy var backupWalletCoordinatorNavigator = BackupWalletCoordinator.Navigator()
+    private lazy var backupWalletCoordinatorNavigator = BackUpWalletCoordinator.Navigator()
     private lazy var ensurePrivacyNavigator = EnsurePrivacyViewModel.Navigator()
     
     init(
@@ -99,9 +99,10 @@ extension NewWalletCoordinator {
         GenerateNewWalletScreen(viewModel: viewModel)
     }
     
-    func makeBackupWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<BackupWalletCoordinator> {
+    func makeBackUpWalletCoordinator(wallet: Wallet) -> NavigationViewCoordinator<BackUpWalletCoordinator> {
        
-        let backupWalletCoordinator = BackupWalletCoordinator(
+        let backupWalletCoordinator = BackUpWalletCoordinator(
+            mode: .mandatoryBackUpPartOfOnboarding,
             navigator: backupWalletCoordinatorNavigator,
             useCaseProvider: useCaseProvider,
             wallet: wallet
@@ -121,7 +122,7 @@ extension NewWalletCoordinator {
     }
     
     func didGenerateNew(wallet: Wallet) {
-        toBackupWallet(wallet: wallet)
+        toBackUpWallet(wallet: wallet)
     }
     
     func failedToGenerateNewWallet(error: Swift.Error) {
@@ -140,7 +141,7 @@ extension NewWalletCoordinator {
         navigator.step(.abortBecauseScreenMightBeWatched)
     }
 
-    func toBackupWallet(wallet: Wallet) {
+    func toBackUpWallet(wallet: Wallet) {
         route(to: \.backupWallet, wallet)
     }
     

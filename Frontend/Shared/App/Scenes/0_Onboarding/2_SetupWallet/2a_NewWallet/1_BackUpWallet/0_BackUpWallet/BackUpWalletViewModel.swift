@@ -1,5 +1,5 @@
 //
-//  BackupWalletViewModel.swift
+//  BackUpWalletViewModel.swift
 //  Zhip
 //
 //  Created by Alexander Cyon on 2022-02-19.
@@ -11,55 +11,50 @@ import Combine
 import struct Zesame.Keystore
 import ZhipEngine
 
-// MARK: - BackupWalletNavigationStep
+// MARK: - BackUpWalletNavigationStep
 // MARK: -
-public enum BackupWalletNavigationStep {
+public enum BackUpWalletNavigationStep {
     case finishedBackingUpWallet
     case revealKeystore
     case revealPrivateKey
 }
 
 
-// MARK: - BackupWalletViewModel
+// MARK: - BackUpWalletViewModel
 // MARK: -
-public final class BackupWalletViewModel: ObservableObject {
+public final class BackUpWalletViewModel: ObservableObject {
     
     
-    @Published var userHasConfirmedBackingUpWallet = false
+    @Published var userHasConfirmedBackingUpWallet: Bool
     @Published var isFinished = false
     @Published var isPresentingDidCopyKeystoreAlert = false
     private unowned let navigator: Navigator
     private let wallet: Wallet
     
     private var cancellables = Set<AnyCancellable>()
+    public let mode: BackUpWalletCoordinator.Mode
     
-    public init(navigator: Navigator, wallet: Wallet) {
+    public init(
+        mode: BackUpWalletCoordinator.Mode,
+        navigator: Navigator,
+        wallet: Wallet
+    ) {
+        self.mode = mode
+        self.userHasConfirmedBackingUpWallet = mode == .userInitiatedFromSettings
         self.navigator = navigator
         self.wallet = wallet
         
-        // `userHasConfirmedBackingUpWallet` => `isFinished`
-        $userHasConfirmedBackingUpWallet
-            .assign(to: \.isFinished, on: self)
-            .store(in: &cancellables)
-        
-        // Autoclose `Did Copy Keystore` Alert after delay
-        $isPresentingDidCopyKeystoreAlert
-        .filter { isPresenting in
-            isPresenting
-        }
-        .delay(for: 2, scheduler: RunLoop.main) // dismiss after delay
-        .map { _ in false } // `isPresentingDidCopyKeystoreAlert = false`
-        .assign(to: \.isPresentingDidCopyKeystoreAlert, on: self)
-        .store(in: &cancellables)
+        subscribeToPublishers()
     }
 }
 
 // MARK: - Public
 // MARK: -
-public extension BackupWalletViewModel {
+public extension BackUpWalletViewModel {
     
-    typealias Navigator = NavigationStepper<BackupWalletNavigationStep>
+    typealias Navigator = NavigationStepper<BackUpWalletNavigationStep>
     
+
     func `continue`() {
         navigator.step(.finishedBackingUpWallet)
     }
@@ -76,6 +71,27 @@ public extension BackupWalletViewModel {
     
     func revealPrivateKey() {
         navigator.step(.revealPrivateKey)
+    }
+}
+
+// MARK: - Private
+// MARK: -
+private extension BackUpWalletViewModel {
+    func subscribeToPublishers() {
+        // `userHasConfirmedBackingUpWallet` => `isFinished`
+        $userHasConfirmedBackingUpWallet
+            .assign(to: \.isFinished, on: self)
+            .store(in: &cancellables)
+        
+        // Autoclose `Did Copy Keystore` Alert after delay
+        $isPresentingDidCopyKeystoreAlert
+        .filter { isPresenting in
+            isPresenting
+        }
+        .delay(for: 2, scheduler: RunLoop.main) // dismiss after delay
+        .map { _ in false } // `isPresentingDidCopyKeystoreAlert = false`
+        .assign(to: \.isPresentingDidCopyKeystoreAlert, on: self)
+        .store(in: &cancellables)
     }
 }
 

@@ -21,10 +21,13 @@ final class SettingsCoordinator: NavigationCoordinatable {
     @Root var start = makeStart
     @Route(.push) var unlockApp = makeUnlockApp
     @Route(.push) var setPIN = makeSetupPINCode
+    @Route(.push) var backUpWallet = makeBackUpWallet
     
     private lazy var settingsNavigator = SettingsViewModel.Navigator()
     private lazy var unlockAppWithPINNavigator = UnlockAppWithPINViewModel.Navigator()
     private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
+    private lazy var backUpWalletCoordinatorNavigator = BackUpWalletCoordinator.Navigator()
+    
     
     private unowned let navigator: Navigator
     private let useCaseProvider: UseCaseProvider
@@ -53,6 +56,8 @@ extension SettingsCoordinator {
                         toUnlockAppWithPINToRemoveIt()
                     case .setPincode:
                         toSetPIN()
+                    case .backupWallet:
+                        toBackUpWallet()
                     default:
                         fatalError("unhandled")
                     }
@@ -78,6 +83,14 @@ extension SettingsCoordinator {
                         }
                     }
                 }
+                .onReceive(backUpWalletCoordinatorNavigator) { userDid in
+                    switch userDid {
+                    case .userDidBackUpWallet:
+                        popLast {
+                            print("SettingsCoordinator:popLast - userDidBackUpWallet - BackUpWalletCoordinator should deinit")
+                        }
+                    }
+                }
         }
     }
     
@@ -96,6 +109,10 @@ extension SettingsCoordinator {
     
     func toSetPIN() {
         route(to: \.setPIN)
+    }
+    
+    func toBackUpWallet() {
+        route(to: \.backUpWallet)
     }
     
     func toRemoveWallet() {
@@ -152,5 +169,20 @@ extension SettingsCoordinator {
         
         return NavigationViewCoordinator(setupPINCodeCoordinator)
     }
+    
+    func makeBackUpWallet() -> NavigationViewCoordinator<BackUpWalletCoordinator> {
+        guard let wallet = useCaseProvider.makeWalletUseCase().walletSubject.value else {
+            fatalError("No wallet?")
+        }
+        let backUpWalletCoordinator = BackUpWalletCoordinator(
+            mode: .userInitiatedFromSettings,
+            navigator: backUpWalletCoordinatorNavigator,
+            useCaseProvider: useCaseProvider,
+            wallet: wallet
+        )
+        
+        return NavigationViewCoordinator(backUpWalletCoordinator)
+    }
+    
  
 }

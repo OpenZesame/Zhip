@@ -1,5 +1,5 @@
 //
-//  BackupWalletCoordinator.swift
+//  BackUpWalletCoordinator.swift
 //  Zhip
 //
 //  Created by Alexander Cyon on 2022-02-17.
@@ -9,18 +9,23 @@ import SwiftUI
 import ZhipEngine
 import Stinsen
 
-enum BackupWalletCoordinatorNavigationStep {
+public enum BackUpWalletCoordinatorNavigationStep {
     case userDidBackUpWallet(Wallet)
 }
 
-// MARK: - BackupWalletCoordinator
+// MARK: - BackUpWalletCoordinator
 // MARK: -
-final class BackupWalletCoordinator: NavigationCoordinatable {
-    typealias Navigator = NavigationStepper<BackupWalletCoordinatorNavigationStep>
+public final class BackUpWalletCoordinator: NavigationCoordinatable {
     
-    let stack = NavigationStack<BackupWalletCoordinator>(initial: \.backupWallet)
+    public enum Mode {
+        case mandatoryBackUpPartOfOnboarding
+        case userInitiatedFromSettings
+    }
     
-    @Root var backupWallet = makeBackupWallet
+  
+    public let stack = NavigationStack<BackUpWalletCoordinator>(initial: \.backupWallet)
+    
+    @Root var backupWallet = makeBackUpWallet
     @Route(.push) var revealKeystoreRoute = makeRevealKeystore
     @Route(.push) var revealPrivateKeyRoute = makeBackUpRevealedKeyPair
     
@@ -30,28 +35,32 @@ final class BackupWalletCoordinator: NavigationCoordinatable {
     private unowned let navigator: Navigator
     
     private lazy var backUpKeyPairCoordinatorNavigator = BackUpKeyPairCoordinator.Navigator()
-    private lazy var backupWalletNavigator = BackupWalletViewModel.Navigator()
+    private lazy var backupWalletNavigator = BackUpWalletViewModel.Navigator()
     private lazy var backUpKeystoreNavigator = BackUpKeystoreViewModel.Navigator()
     
-    init(
+    private let mode: Mode
+    
+    public init(
+        mode: Mode,
         navigator: Navigator,
         useCaseProvider: UseCaseProvider,
         wallet: Wallet
     ) {
+        self.mode = mode
         self.navigator = navigator
         self.useCaseProvider = useCaseProvider
         self.wallet = wallet
     }
     
     deinit {
-        print("✅ BackupWalletCoordinator DEINIT 💣")
+        print("✅ BackUpWalletCoordinator DEINIT 💣")
     }
     
 }
 
 // MARK: - NavigationCoordinatable
 // MARK: -
-extension BackupWalletCoordinator {
+public extension BackUpWalletCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
         view
             .onReceive(backUpKeyPairCoordinatorNavigator) { [unowned self] userDid in
@@ -82,19 +91,58 @@ extension BackupWalletCoordinator {
     }
 }
 
+// MARK: - Public
+// MARK: -
+public extension BackUpWalletCoordinator {
+    typealias Navigator = NavigationStepper<BackUpWalletCoordinatorNavigationStep>
+    
+}
+
+// MARK: - Private
+// MARK: -
+private extension BackUpWalletCoordinator {
+    func failedToDecryptWallet(error: Swift.Error) {
+        fatalError("what to do? failedToDecryptWallet: \(error)")
+    }
+    
+    func finishedBackingUpKeys() {
+        self.popLast {
+            print("Pop private key")
+        }
+    }
+    
+    func revealKeystore() {
+        toRevealKeystore()
+    }
+    func revealPrivateKey() {
+        toBackUpRevealedKeyPair()
+    }
+    
+    func doneBackingUpWallet() {
+        navigator.step(.userDidBackUpWallet(wallet))
+    }
+    
+    func doneBackingUpKeystore() {
+        self.popLast {
+            print("Pop keystore")
+        }
+    }
+}
+
 // MARK: - Factory
 // MARK: -
-extension BackupWalletCoordinator {
+private extension BackUpWalletCoordinator {
     
     @ViewBuilder
-    func makeBackupWallet() -> some View {
+    func makeBackUpWallet() -> some View {
         
-        let viewModel = BackupWalletViewModel(
+        let viewModel = BackUpWalletViewModel(
+            mode: mode,
             navigator: backupWalletNavigator,
             wallet: wallet
         )
         
-        BackupWalletScreen(viewModel: viewModel)
+        BackUpWalletScreen(viewModel: viewModel)
     }
     
     @ViewBuilder
@@ -121,11 +169,7 @@ extension BackupWalletCoordinator {
    
 // MARK: - Routing
 // MARK: -
-extension BackupWalletCoordinator {
-    
-    func failedToDecryptWallet(error: Swift.Error) {
-        fatalError("what to do? failedToDecryptWallet: \(error)")
-    }
+private extension BackUpWalletCoordinator {
     
     func toRevealKeystore() {
         route(to: \.revealKeystoreRoute)
@@ -134,28 +178,4 @@ extension BackupWalletCoordinator {
     func toBackUpRevealedKeyPair() {
         route(to: \.revealPrivateKeyRoute)
     }
-    
-    func finishedBackingUpKeys() {
-        self.popLast {
-            print("Pop private key")
-        }
-    }
-    
-    func revealKeystore() {
-        toRevealKeystore()
-    }
-    func revealPrivateKey() {
-        toBackUpRevealedKeyPair()
-    }
-    
-    func doneBackingUpWallet() {
-        navigator.step(.userDidBackUpWallet(wallet))
-    }
-    
-    func doneBackingUpKeystore() {
-        self.popLast {
-            print("Pop keystore")
-        }
-    }
-    
 }
