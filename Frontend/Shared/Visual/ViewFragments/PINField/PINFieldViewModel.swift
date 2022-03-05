@@ -16,13 +16,6 @@ public final class PINFieldViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        print("✨ PINFieldViewModel init")
-    }
-    deinit {
-        print("PINFieldViewModel deinit ☑️")
-    }
-    
 }
 
 // MARK: - Public
