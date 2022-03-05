@@ -7,19 +7,10 @@
 
 import SwiftUI
 import ZhipEngine
-import Combine
-
-public protocol ViewFragment: View {
-    associatedtype ViewModel: ObservableObject
-    
-    /// Ugly hack **just** used to enforce the usage of `@StateObject`
-    /// rather than `@ObservedObject` for `viewModel: ViewModel`.
-    var __viewModelWitness: StateObject<ViewModel> { get }
-}
 
 // MARK: - PINField
 // MARK: -
-public struct PINField: ViewFragment {
+public struct PINField: StatefulViewFragment {
     
     @StateObject var viewModel: ViewModel = .init()
     
@@ -56,7 +47,7 @@ public struct PINField: ViewFragment {
     }
 }
 
-// MARK: - ViewFragment
+// MARK: - StatefulViewFragment
 // MARK: -
 public extension PINField {
     typealias ViewModel = PINFieldViewModel

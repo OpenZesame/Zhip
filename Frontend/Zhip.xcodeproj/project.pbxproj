@@ -11,6 +11,8 @@
 		48142BDE27D350FD00B8B410 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDC27D350FB00B8B410 /* ShakeEffect.swift */; };
 		48142BE027D3526400B8B410 /* PINFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */; };
 		48142BE127D3526700B8B410 /* PINFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */; };
+		48142BE327D39D5900B8B410 /* StatefulViewFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BE227D39D5900B8B410 /* StatefulViewFragment.swift */; };
+		48142BE427D39D5900B8B410 /* StatefulViewFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BE227D39D5900B8B410 /* StatefulViewFragment.swift */; };
 		481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
 		481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
 		481EDEB727B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
@@ -222,6 +224,7 @@
 /* Begin PBXFileReference section */
 		48142BDC27D350FB00B8B410 /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINFieldViewModel.swift; sourceTree = "<group>"; };
+		48142BE227D39D5900B8B410 /* StatefulViewFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulViewFragment.swift; sourceTree = "<group>"; };
 		481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFullScreen.swift; sourceTree = "<group>"; };
 		481EDEB627B98B3200D39DCB /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		481EDEB927B9943200D39DCB /* ParallaxImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxImage.swift; sourceTree = "<group>"; };
@@ -384,6 +387,7 @@
 				48526AB627BE818400C25518 /* Checkbox.swift */,
 				48526AB927BE819800C25518 /* InputField.swift */,
 				48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */,
+				48142BE227D39D5900B8B410 /* StatefulViewFragment.swift */,
 			);
 			path = ViewFragments;
 			sourceTree = "<group>";
@@ -1162,6 +1166,7 @@
 				485FF72727B835EA0030266A /* TermsOfServiceScreen.swift in Sources */,
 				48526ADF27BE848200C25518 /* EnsurePrivacyViewModel.swift in Sources */,
 				48ECB24B27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift in Sources */,
+				48142BE327D39D5900B8B410 /* StatefulViewFragment.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
 				48ECB29A27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */,
@@ -1252,6 +1257,7 @@
 				481EDEBE27B9946700D39DCB /* Screen.swift in Sources */,
 				48526B0027BECB1C00C25518 /* BackUpWalletCoordinator.swift in Sources */,
 				4872FA2E27B4F8F5008B7BD0 /* ZhipApp.swift in Sources */,
+				48142BE427D39D5900B8B410 /* StatefulViewFragment.swift in Sources */,
 				48ECB25527C0DFB2000F7C41 /* BackUpWalletViewModel.swift in Sources */,
 				481EDED027BA884400D39DCB /* BackUpWalletScreen.swift in Sources */,
 				481EDEC427B994F700D39DCB /* CallToAction.swift in Sources */,
