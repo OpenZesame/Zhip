@@ -90,7 +90,7 @@ private extension PINField {
                 DigitView(
                     digitAtIndex: digitAtIndex,
                     isSecure: isSecure,
-                    lineColor: $errorMessage.ifPresent { $0 ? invalidColor : validColor }
+                    lineColor: errorMessage != nil ? invalidColor : validColor
                 )
             }
         }

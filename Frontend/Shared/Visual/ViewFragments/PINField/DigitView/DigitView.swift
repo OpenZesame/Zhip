@@ -8,31 +8,28 @@
 import SwiftUI
 import ZhipEngine
 
+// MARK: - DigitView
+// MARK: -
 struct DigitView: View {
-//    @ObservedObject var viewModel: DigitViewModel
     let digitAtIndex: DigitAtIndex
     let isSecure: Bool
-    @Binding var lineColor: Color
-    
-    init(
-        digitAtIndex: DigitAtIndex,
-        isSecure: Bool = true,
-        lineColor: Binding<Color> = .constant(Color.red)
-    ) {
-//        self.viewModel = viewModel
-        self.digitAtIndex = digitAtIndex
-        self.isSecure = isSecure
-        self._lineColor = lineColor
-    }
-    
+    let lineColor: Color
+}
+
+// MARK: - View
+// MARK: -
+extension DigitView {
     var body: some View {
         VStack(spacing: 0) {
             maybeDigit
             underline
         }.padding()
     }
-
+    
 }
+
+// MARK: - Private
+// MARK: -
 private extension DigitView {
     
     var digitString: String {

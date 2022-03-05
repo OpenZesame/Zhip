@@ -207,8 +207,6 @@
 		48ECB26727C0E118000F7C41 /* BackUpRevealedKeyPairViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB26527C0E117000F7C41 /* BackUpRevealedKeyPairViewModel.swift */; };
 		48ECB27127C28A22000F7C41 /* PINField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB27027C28A22000F7C41 /* PINField.swift */; };
 		48ECB27227C28A22000F7C41 /* PINField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB27027C28A22000F7C41 /* PINField.swift */; };
-		48ECB28527C42493000F7C41 /* DigitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB28427C42493000F7C41 /* DigitViewModel.swift */; };
-		48ECB28627C42493000F7C41 /* DigitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB28427C42493000F7C41 /* DigitViewModel.swift */; };
 		48ECB28927C424B9000F7C41 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB28827C424B9000F7C41 /* Array+Extensions.swift */; };
 		48ECB28A27C424B9000F7C41 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB28827C424B9000F7C41 /* Array+Extensions.swift */; };
 		48ECB28C27C424CB000F7C41 /* DigitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB28B27C424CB000F7C41 /* DigitView.swift */; };
@@ -327,7 +325,6 @@
 		48ECB25F27C0E0CD000F7C41 /* DecryptKeystoreToRevealKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreToRevealKeyPairViewModel.swift; sourceTree = "<group>"; };
 		48ECB26527C0E117000F7C41 /* BackUpRevealedKeyPairViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpRevealedKeyPairViewModel.swift; sourceTree = "<group>"; };
 		48ECB27027C28A22000F7C41 /* PINField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINField.swift; sourceTree = "<group>"; };
-		48ECB28427C42493000F7C41 /* DigitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitViewModel.swift; sourceTree = "<group>"; };
 		48ECB28827C424B9000F7C41 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		48ECB28B27C424CB000F7C41 /* DigitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitView.swift; sourceTree = "<group>"; };
 		48ECB29027C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmNewPINCodeScreen.swift; sourceTree = "<group>"; };
@@ -920,7 +917,6 @@
 		48ECB28727C42495000F7C41 /* DigitView */ = {
 			isa = PBXGroup;
 			children = (
-				48ECB28427C42493000F7C41 /* DigitViewModel.swift */,
 				48ECB28B27C424CB000F7C41 /* DigitView.swift */,
 			);
 			path = DigitView;
@@ -1124,7 +1120,6 @@
 				48ECB29127C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift in Sources */,
 				48526AAA27BDAD2000C25518 /* Fonts.swift in Sources */,
 				48260BDF27C67ABE0069CA1C /* BalancesCoordinator.swift in Sources */,
-				48ECB28527C42493000F7C41 /* DigitViewModel.swift in Sources */,
 				483CB78427C5003700329DEB /* Binding+Extension.swift in Sources */,
 				485FF72A27B836030030266A /* EnsurePrivacyScreen.swift in Sources */,
 				485FF73027B8361A0030266A /* SetupWalletScreen.swift in Sources */,
@@ -1193,7 +1188,6 @@
 				48260BD827C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				48526A6627BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
 				48142BDE27D350FD00B8B410 /* ShakeEffect.swift in Sources */,
-				48ECB28627C42493000F7C41 /* DigitViewModel.swift in Sources */,
 				48526AFD27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift in Sources */,
 				481EDECD27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */,
 				48260BF227C775B10069CA1C /* RestoreWalletUsingKeystoreViewModel.swift in Sources */,
