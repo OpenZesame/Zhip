@@ -9,15 +9,24 @@ import SwiftUI
 import ZhipEngine
 import Combine
 
+public protocol ViewFragment: View {
+    associatedtype ViewModel: ObservableObject
+    
+    /// Ugly hack **just** used to enforce the usage of `@StateObject`
+    /// rather than `@ObservedObject` for `viewModel: ViewModel`.
+    var __viewModelWitness: StateObject<ViewModel> { get }
+}
+
 // MARK: - PINField
 // MARK: -
-public struct PINField: View {
+public struct PINField: ViewFragment {
     
-    @StateObject private var viewModel: ViewModel = .init()
+    @StateObject var viewModel: ViewModel = .init()
     
     @Binding private var text: String
     @Binding private var pinCode: Pincode?
-    @Binding private var errorMessage: String?
+
+    private let errorMessage: String?
     
     private let digitCount: Int
     private let isSecure: Bool
@@ -27,7 +36,7 @@ public struct PINField: View {
     public init(
         text: Binding<String>,
         pinCode: Binding<Pincode?>,
-        errorMessage: Binding<String?>? = nil,
+        errorMessage: String? = nil,
         digitCount: Int = 4,
         isSecure: Bool = true,
         validColor: Color = .turquoise,
@@ -35,20 +44,24 @@ public struct PINField: View {
     ) {
         precondition(digitCount <= Pincode.maxLength)
         precondition(digitCount >= Pincode.minLength)
+
         self._text = text
-        self.digitCount = digitCount
         self._pinCode = pinCode
+
+        self.digitCount = digitCount
         self.isSecure = isSecure
         self.invalidColor = invalidColor
         self.validColor = validColor
-        self._errorMessage = errorMessage ?? .constant(nil)
+        self.errorMessage = errorMessage
     }
 }
 
-// MARK: - Public
+// MARK: - ViewFragment
 // MARK: -
 public extension PINField {
     typealias ViewModel = PINFieldViewModel
+    var __viewModelWitness: StateObject<ViewModel> { self._viewModel }
+    
 }
 
 // MARK: - View

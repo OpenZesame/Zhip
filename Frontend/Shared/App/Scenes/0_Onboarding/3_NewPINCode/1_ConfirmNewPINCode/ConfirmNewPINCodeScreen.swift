@@ -46,6 +46,6 @@ extension ConfirmNewPINCodeScreen {
 
 private extension ConfirmNewPINCodeScreen {
     var pinField: some View {
-        PINField(text: $viewModel.pinFieldText, pinCode: $viewModel.pinCode, errorMessage: $viewModel.pinsDoNotMatchErrorMessage)
+        PINField(text: $viewModel.pinFieldText, pinCode: $viewModel.pinCode, errorMessage: viewModel.pinsDoNotMatchErrorMessage)
     }
 }

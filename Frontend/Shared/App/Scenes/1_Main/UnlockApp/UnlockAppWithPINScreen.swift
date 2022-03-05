@@ -24,7 +24,7 @@ extension UnlockAppWithPINScreen {
                 PINField(
                     text: $viewModel.pinFieldText,
                     pinCode: $viewModel.pinCode,
-                    errorMessage: $viewModel.showError.getOnly(mapped: { $0 ? "Invalid PIN" : nil })
+                    errorMessage: viewModel.showError ? "Invalid PIN" : nil
                 )
                 
                 Text("Unlock app with PIN or FaceId/TouchId")
