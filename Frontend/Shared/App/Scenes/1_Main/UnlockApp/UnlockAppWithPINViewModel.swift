@@ -119,7 +119,7 @@ public extension UnlockAppWithPINViewModel {
                 showError
             }
             .mapToVoid()
-            .delay(for: 1, scheduler: RunLoop.main) // revert error msg after delay
+            .delay(for: .seconds(PINField.ViewModel.errorAnimationDuration), scheduler: RunLoop.main) // revert error msg after delay
             .sink { [unowned self] in
                 showError = false
                 pinFieldText = "" // this should also set `pinCode = nil`

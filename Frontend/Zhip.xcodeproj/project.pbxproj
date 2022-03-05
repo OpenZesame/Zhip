@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48142BDD27D350FB00B8B410 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDC27D350FB00B8B410 /* ShakeEffect.swift */; };
+		48142BDE27D350FD00B8B410 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDC27D350FB00B8B410 /* ShakeEffect.swift */; };
+		48142BE027D3526400B8B410 /* PINFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */; };
+		48142BE127D3526700B8B410 /* PINFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */; };
 		481EDEB427B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
 		481EDEB527B98B2100D39DCB /* ForceFullScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */; };
 		481EDEB727B98B3200D39DCB /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDEB627B98B3200D39DCB /* Labels.swift */; };
@@ -218,6 +222,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		48142BDC27D350FB00B8B410 /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
+		48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINFieldViewModel.swift; sourceTree = "<group>"; };
 		481EDEB327B98B2100D39DCB /* ForceFullScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFullScreen.swift; sourceTree = "<group>"; };
 		481EDEB627B98B3200D39DCB /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		481EDEB927B9943200D39DCB /* ParallaxImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxImage.swift; sourceTree = "<group>"; };
@@ -349,6 +355,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48142BDA27D350B000B8B410 /* Visual */ = {
+			isa = PBXGroup;
+			children = (
+				48142BDB27D350C400B8B410 /* Effects */,
+				481EDEB227B98B1100D39DCB /* ViewFragments */,
+				4888991C27B6620A00FCBE5A /* Styling */,
+			);
+			path = Visual;
+			sourceTree = "<group>";
+		};
+		48142BDB27D350C400B8B410 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				48142BDC27D350FB00B8B410 /* ShakeEffect.swift */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
 		481EDEB227B98B1100D39DCB /* ViewFragments */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,11 +731,10 @@
 		4872FA1C27B4F8F4008B7BD0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				48142BDA27D350B000B8B410 /* Visual */,
 				48526AE327BE850800C25518 /* App */,
 				48526ABC27BE81AF00C25518 /* Extensions */,
-				481EDEB227B98B1100D39DCB /* ViewFragments */,
 				4888991D27B6621E00FCBE5A /* Resources */,
-				4888991C27B6620A00FCBE5A /* Styling */,
 				4872FA1D27B4F8F4008B7BD0 /* ZhipApp.swift */,
 			);
 			path = Shared;
@@ -889,6 +912,7 @@
 			children = (
 				48ECB28727C42495000F7C41 /* DigitView */,
 				48ECB27027C28A22000F7C41 /* PINField.swift */,
+				48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */,
 			);
 			path = PINField;
 			sourceTree = "<group>";
@@ -1077,6 +1101,7 @@
 				4872FA2F27B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				48260BD727C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				487CE3DC27B63862003BD07A /* ContactCommands.swift in Sources */,
+				48142BDD27D350FB00B8B410 /* ShakeEffect.swift in Sources */,
 				48526AFF27BECB1C00C25518 /* BackUpWalletCoordinator.swift in Sources */,
 				487CE3DF27B638B0003BD07A /* AddToContactsButton.swift in Sources */,
 				48260BD327C67A4C0069CA1C /* SettingsCoordinator.swift in Sources */,
@@ -1146,6 +1171,7 @@
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
 				48ECB29A27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */,
 				48260BE227C699880069CA1C /* RestoreWalletViewModel.swift in Sources */,
+				48142BE027D3526400B8B410 /* PINFieldViewModel.swift in Sources */,
 				48526A6527BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
 				481EDEB727B98B3200D39DCB /* Labels.swift in Sources */,
 			);
@@ -1166,6 +1192,7 @@
 				4872FA3027B4F8F5008B7BD0 /* WelcomeScreen.swift in Sources */,
 				48260BD827C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				48526A6627BC2CF500C25518 /* HoverPromptTextField+Behaviour.swift in Sources */,
+				48142BDE27D350FD00B8B410 /* ShakeEffect.swift in Sources */,
 				48ECB28627C42493000F7C41 /* DigitViewModel.swift in Sources */,
 				48526AFD27BEC86100C25518 /* BackUpRevealedKeyPairScreen.swift in Sources */,
 				481EDECD27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */,
@@ -1235,6 +1262,7 @@
 				481EDED027BA884400D39DCB /* BackUpWalletScreen.swift in Sources */,
 				481EDEC427B994F700D39DCB /* CallToAction.swift in Sources */,
 				485FF73B27B836540030266A /* SetupWalletCoordinator.swift in Sources */,
+				48142BE127D3526700B8B410 /* PINFieldViewModel.swift in Sources */,
 				48260BE327C699880069CA1C /* RestoreWalletViewModel.swift in Sources */,
 				48526AC427BE81FB00C25518 /* GenerateNewWalletViewModel.swift in Sources */,
 			);

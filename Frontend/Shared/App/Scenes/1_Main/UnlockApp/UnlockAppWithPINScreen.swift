@@ -17,13 +17,14 @@ struct UnlockAppWithPINScreen: View {
 // MARK: - View
 // MARK: -
 extension UnlockAppWithPINScreen {
+    
     var body: some View {
         ForceFullScreen {
             VStack {
                 PINField(
                     text: $viewModel.pinFieldText,
                     pinCode: $viewModel.pinCode,
-                    errorMessage: $viewModel.showError.getOnly(mapped: { $0 ? "Invalid pin" : nil })
+                    errorMessage: $viewModel.showError.getOnly(mapped: { $0 ? "Invalid PIN" : nil })
                 )
                 
                 Text("Unlock app with PIN or FaceId/TouchId")

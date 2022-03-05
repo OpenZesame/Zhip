@@ -11,16 +11,20 @@ import Combine
 
 // MARK: - PINField
 // MARK: -
-struct PINField: View {
+public struct PINField: View {
+    
+    @StateObject private var viewModel: ViewModel = .init()
+    
     @Binding private var text: String
     @Binding private var pinCode: Pincode?
     @Binding private var errorMessage: String?
+    
     private let digitCount: Int
     private let isSecure: Bool
     private let validColor: Color
     private let invalidColor: Color
     
-    init(
+    public init(
         text: Binding<String>,
         pinCode: Binding<Pincode?>,
         errorMessage: Binding<String?>? = nil,
@@ -41,20 +45,26 @@ struct PINField: View {
     }
 }
 
-extension Pincode {
-    init?(text: String) {
-        try? self.init(
-            digits: text.compactMap { Digit(string: String($0)) }
-        )
-    }
+// MARK: - Public
+// MARK: -
+public extension PINField {
+    typealias ViewModel = PINFieldViewModel
 }
 
 // MARK: - View
 // MARK: -
-extension PINField {
+public extension PINField {
+    @ViewBuilder
     var body: some View {
         VStack(spacing: 0) {
             digitsView
+                .modifier(ShakeEffect(x: viewModel.shakesLeft > 0 ? -15 : 0))
+                .animation(
+                    Animation
+                        .easeInOut(duration: ViewModel.durationPerShake)
+                        .repeatCount(ViewModel.shakeRepeatCount),
+                    value: viewModel.shakesLeft // decreased by timer
+                )
             errorMessageView
         }
         .background(invisibleField)
@@ -62,11 +72,8 @@ extension PINField {
     }
 }
 
-struct DigitAtIndex: Hashable {
-    let digit: Digit?
-    let index: Int
-}
-
+// MARK: - Private
+// MARK: -
 private extension PINField {
 
     @ViewBuilder
@@ -125,12 +132,37 @@ private extension PINField {
         )
         .frame(minWidth: 100, maxWidth: .infinity, minHeight: 50, alignment: .center)
         .accentColor(Color.clear)
+        // Criteria for when to set PIN code (when `text` of TextField changes)
         .onChange(of: text, perform: {
             let newPin = Pincode(text: String($0.prefix(digitCount)))
             if pinCode != newPin {
                 pinCode = newPin
             }
         })
+        // Criteria for when to trigger shake (when `self.errorMessage` is present)
+        .onChange(of: errorMessage) { maybeErrorMsg in
+            if maybeErrorMsg != nil {
+                viewModel.shake()
+            }
+        }
         
+    }
+}
+
+// MARK: - DigitAtIndex
+// MARK: -
+internal struct DigitAtIndex: Hashable {
+    let digit: Digit?
+    let index: Int
+}
+
+
+// MARK: - Pincode init
+// MARK: -
+extension Pincode {
+    init?(text: String) {
+        try? self.init(
+            digits: text.compactMap { Digit(string: String($0)) }
+        )
     }
 }
