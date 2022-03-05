@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Combine // Just
+import struct Combine.Just
 
 public typealias HoverPromptTextFieldExtraViewsParams = (
     isFocused: Bool,
