@@ -48,6 +48,13 @@ extension Array where Element == Dependency {
 	var targetDependencies: [PackageDescription.Target.Dependency] { map { $0.product } }
 }
 
+private let tca: Dependency = .init(
+	category: .architecture,
+	   package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
+	   product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+	   rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
+   )
+
 private let dependencies: [Dependency] = [
 	.init(
 		category: .essential,
@@ -57,12 +64,7 @@ private let dependencies: [Dependency] = [
 		rationale: "Zilliqa Swift SDK, containing all account logic."
 	),
 	
-	.init(
-		category: .architecture,
-		package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
-		product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-		rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
-	),
+	tca,
 
 	.init(
 		category: .convenience,
@@ -103,24 +105,33 @@ private let dependencies: [Dependency] = [
 ]
 
 let package = Package(
-	name: "ZhipEngine",
+	name: "Zhip",
 	platforms: [.macOS(.v12), .iOS(.v15)],
 	products: [
-		// Products define the executables and libraries a package produces, and make them visible to other packages.
+		.library(name: "AppFeature", targets: ["AppFeature"]),
 		.library(
 			name: "ZhipEngine",
 			targets: ["ZhipEngine"]),
 	],
 	dependencies: dependencies.packageDependencies,
 	targets: [
-		// Targets are the basic building blocks of a package. A target can define a module or a test suite.
-		// Targets can depend on other targets in this package, and on products in packages this package depends on.
+		
 		.target(
 			name: "ZhipEngine",
 			dependencies: dependencies.targetDependencies
 		),
 		.testTarget(
 			name: "ZhipEngineTests",
-			dependencies: ["ZhipEngine"]),
+			dependencies: ["ZhipEngine"]
+		),
+		
+		.target(
+			name: "AppFeature",
+			dependencies: [tca.product]
+		),
+		.testTarget(
+			name: "AppFeatureTests",
+			dependencies: ["AppFeature"]
+		),
 	]
 )

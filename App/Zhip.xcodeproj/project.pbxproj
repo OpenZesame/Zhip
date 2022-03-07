@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4813FFC427D699B000C851A5 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4813FFC327D699B000C851A5 /* AppFeature */; };
+		4813FFC627D699B100C851A5 /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 4813FFC527D699B100C851A5 /* ZhipEngine */; };
 		48142BDD27D350FB00B8B410 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDC27D350FB00B8B410 /* ShakeEffect.swift */; };
 		48142BDE27D350FD00B8B410 /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDC27D350FB00B8B410 /* ShakeEffect.swift */; };
 		48142BE027D3526400B8B410 /* PINFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */; };
@@ -181,8 +183,6 @@
 		487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* TransferScreen.swift */; };
 		487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
 		487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
-		48A80AD027B67615002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80ACF27B67615002271BB /* ZhipEngine */; };
-		48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A80AD127B6761A002271BB /* ZhipEngine */; };
 		48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48A9580E27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */; };
@@ -222,6 +222,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4813FFC227D6979200C851A5 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		48142BDC27D350FB00B8B410 /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		48142BDF27D3526400B8B410 /* PINFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINFieldViewModel.swift; sourceTree = "<group>"; };
 		48142BE227D39D5900B8B410 /* StatefulViewFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulViewFragment.swift; sourceTree = "<group>"; };
@@ -307,7 +308,6 @@
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA3F27B523D6008B7BD0 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
-		4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabNavigation.swift; sourceTree = "<group>"; };
 		4872FA5127B558DD008B7BD0 /* BalancesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesScreen.swift; sourceTree = "<group>"; };
 		4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		487CE3DB27B63862003BD07A /* ContactCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCommands.swift; sourceTree = "<group>"; };
@@ -318,7 +318,6 @@
 		48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINViewModel.swift; sourceTree = "<group>"; };
 		48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChoiceView.swift; sourceTree = "<group>"; };
-		48B1C3ED27C4D9EF0078515F /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Backend; path = ../Backend; sourceTree = "<group>"; };
 		48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
 		48ECB24527BFC038000F7C41 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		48ECB24A27BFC425000F7C41 /* BackUpKeyPairCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpKeyPairCoordinator.swift; sourceTree = "<group>"; };
@@ -340,7 +339,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48A80AD027B67615002271BB /* ZhipEngine in Frameworks */,
+				4813FFC427D699B000C851A5 /* AppFeature in Frameworks */,
+				4813FFC627D699B100C851A5 /* ZhipEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,13 +348,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48A80AD227B6761A002271BB /* ZhipEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4813FFC127D6979200C851A5 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				4813FFC227D6979200C851A5 /* Zhip_SwiftUI */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		48142BDA27D350B000B8B410 /* Visual */ = {
 			isa = PBXGroup;
 			children = (
@@ -720,7 +727,7 @@
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
-				48B1C3EC27C4D9EF0078515F /* Packages */,
+				4813FFC127D6979200C851A5 /* Packages */,
 				48A80AC927B675B6002271BB /* Frameworks */,
 				4872FA4D27B5573F008B7BD0 /* iOS */,
 				4872FA2B27B4F8F5008B7BD0 /* macOS */,
@@ -778,7 +785,6 @@
 			isa = PBXGroup;
 			children = (
 				48526AAC27BE3F7000C25518 /* Resources */,
-				4872FA4E27B55756008B7BD0 /* AppTabNavigation.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -882,14 +888,6 @@
 			path = UnlockApp;
 			sourceTree = "<group>";
 		};
-		48B1C3EC27C4D9EF0078515F /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				48B1C3ED27C4D9EF0078515F /* Backend */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		48ECB24827BFC39F000F7C41 /* 0_DecryptKeystoreToRevealKeyPair */ = {
 			isa = PBXGroup;
 			children = (
@@ -958,11 +956,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				48A9581827CB9076001CAD15 /* PBXTargetDependency */,
 			);
 			name = "Zhip (iOS)";
 			packageProductDependencies = (
-				48A80ACF27B67615002271BB /* ZhipEngine */,
+				4813FFC327D699B000C851A5 /* AppFeature */,
+				4813FFC527D699B100C851A5 /* ZhipEngine */,
 			);
 			productName = "Zhip (iOS)";
 			productReference = 4872FA2427B4F8F5008B7BD0 /* Zhip.app */;
@@ -979,11 +977,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				48A9581A27CB9131001CAD15 /* PBXTargetDependency */,
 			);
 			name = "Zhip (macOS)";
 			packageProductDependencies = (
-				48A80AD127B6761A002271BB /* ZhipEngine */,
 			);
 			productName = "Zhip (macOS)";
 			productReference = 4872FA2A27B4F8F5008B7BD0 /* Zhip.app */;
@@ -1270,17 +1266,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		48A9581827CB9076001CAD15 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 48A9581727CB9076001CAD15 /* ZhipEngine */;
-		};
-		48A9581A27CB9131001CAD15 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 48A9581927CB9131001CAD15 /* ZhipEngine */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		4872FA3327B4F8F5008B7BD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1537,19 +1522,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		48A80ACF27B67615002271BB /* ZhipEngine */ = {
+		4813FFC327D699B000C851A5 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = ZhipEngine;
+			productName = AppFeature;
 		};
-		48A80AD127B6761A002271BB /* ZhipEngine */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ZhipEngine;
-		};
-		48A9581727CB9076001CAD15 /* ZhipEngine */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ZhipEngine;
-		};
-		48A9581927CB9131001CAD15 /* ZhipEngine */ = {
+		4813FFC527D699B100C851A5 /* ZhipEngine */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ZhipEngine;
 		};
