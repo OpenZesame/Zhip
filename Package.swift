@@ -109,6 +109,8 @@ let package = Package(
 	platforms: [.macOS(.v12), .iOS(.v15)],
 	products: [
 		.library(name: "AppFeature", targets: ["AppFeature"]),
+		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
+		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
 		.library(
 			name: "ZhipEngine",
 			targets: ["ZhipEngine"]),
@@ -126,12 +128,33 @@ let package = Package(
 		),
 		
 		.target(
+			name: "OnboardingFeature",
+			dependencies: [
+				tca.product,
+				"UserDefaultsClient"
+			]
+		),
+//		.testTarget(
+//			name: "OnboardingFeatureTests",
+//			dependencies: ["OnboardingFeature"]
+//		),
+		
+		.target(
 			name: "AppFeature",
-			dependencies: [tca.product]
+			dependencies: [
+				tca.product,
+				"OnboardingFeature",
+				"UserDefaultsClient"
+			]
 		),
 		.testTarget(
 			name: "AppFeatureTests",
 			dependencies: ["AppFeature"]
+		),
+		
+		.target(
+			name: "UserDefaultsClient",
+			dependencies: [tca.product]
 		),
 	]
 )

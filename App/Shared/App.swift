@@ -11,12 +11,14 @@ import ZhipEngine
 import Stinsen
 import Combine
 
+import ComposableArchitecture
+
 @main
 struct ZhipApp: App {
     
-    @Environment(\.scenePhase) var scenePhase
-    private let appLifeCycleSubject = PassthroughSubject<ScenePhase, Never>()
-    private let appCoordinator: AppCoordinator
+//    let store = Store<AppState, AppAction>(
+//		initialState: .init()
+//	)
     
     init() {
         #if os(iOS)
@@ -27,26 +29,25 @@ struct ZhipApp: App {
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
         #endif
         
-        appCoordinator = .init(
-            useCaseProvider: DefaultUseCaseProvider.shared,
-            appLifeCyclePublisher: appLifeCycleSubject.eraseToAnyPublisher()
-        )
+//        appCoordinator = .init(
+//            useCaseProvider: DefaultUseCaseProvider.shared,
+//            appLifeCyclePublisher: appLifeCycleSubject.eraseToAnyPublisher()
+//        )
     }
     
     var body: some Scene {
-        WindowGroup {
-           appCoordinator
-                .view()
-                .background(Color.appBackground)
-                .foregroundColor(.white)
-                .navigationBarTitleDisplayMode(.large)
-        }
-        .onChange(of: scenePhase) { newPhase in
-            appLifeCycleSubject.send(newPhase)
-        }
-        .commands {
-            SidebarCommands()
-//            ContactCommands(model: model)
-        }
+//        WindowGroup {
+//           appCoordinator
+//                .view()
+//                .background(Color.appBackground)
+//                .foregroundColor(.white)
+//                .navigationBarTitleDisplayMode(.large)
+//        }
+//        .onChange(of: scenePhase) { newPhase in
+//            appLifeCycleSubject.send(newPhase)
+//        }
+		WindowGroup {
+			Text("Hej")
+		}
     }
 }
