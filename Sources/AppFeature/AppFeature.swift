@@ -11,6 +11,12 @@ import UserDefaultsClient
 
 public struct AppState: Equatable {
 	public var onboarding: OnboardingState?
+	
+	public init(
+		onboarding: OnboardingState = .init()
+	) {
+		self.onboarding = onboarding
+	}
 }
 
 public enum AppAction: Equatable {
