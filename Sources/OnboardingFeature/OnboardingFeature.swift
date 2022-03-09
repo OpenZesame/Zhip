@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import UserDefaultsClient
+import SwiftUI
 
 public struct OnboardingState: Equatable {
 	public var step: Step
@@ -19,8 +20,10 @@ public struct OnboardingState: Equatable {
 
 public extension OnboardingState {
 	enum Step: Int, CaseIterable, Comparable, Equatable {
-		case step1_Welcome
-		case step2_TermsOfService
+		case step0_Welcome
+		case step1_TermsOfService
+		case step2_SetupWallet
+		case step3_NewPIN
 	}
 }
 
@@ -49,4 +52,33 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 //
 //	}
 	return .none
+}
+
+public struct OnboardingView: View {
+	let store: Store<OnboardingState, OnboardingAction>
+	@ObservedObject var viewStore: ViewStore<ViewState, OnboardingAction>
+	
+	public init(store: Store<OnboardingState, OnboardingAction>) {
+		self.store = store
+		self.viewStore = ViewStore(store.scope(state: ViewState.init(state:)))
+	}
+}
+
+public extension OnboardingView {
+	var body: some View {
+		Text("Onboarding view")
+	}
+}
+
+public extension OnboardingView {
+	struct ViewState: Equatable {
+		let isSkipButtonVisible: Bool
+		let step: OnboardingState.Step
+		
+		init(state: OnboardingState) {
+			let step = state.step
+			self.isSkipButtonVisible = step == .step3_NewPIN
+			self.step = step
+		}
+	}
 }

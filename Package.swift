@@ -111,6 +111,7 @@ let package = Package(
 		.library(name: "AppFeature", targets: ["AppFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(
 			name: "ZhipEngine",
 			targets: ["ZhipEngine"]),
@@ -125,6 +126,13 @@ let package = Package(
 		.testTarget(
 			name: "ZhipEngineTests",
 			dependencies: ["ZhipEngine"]
+		),
+		
+		.target(
+			name: "Styleguide",
+			dependencies: [
+				tca.product
+			]
 		),
 		
 		.target(
@@ -144,7 +152,8 @@ let package = Package(
 			dependencies: [
 				tca.product,
 				"OnboardingFeature",
-				"UserDefaultsClient"
+				"UserDefaultsClient",
+				"Styleguide"
 			]
 		),
 		.testTarget(
