@@ -110,6 +110,7 @@ let package = Package(
 	products: [
 		.library(name: "AppFeature", targets: ["AppFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
+		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(
@@ -136,9 +137,21 @@ let package = Package(
 		),
 		
 		.target(
+			name: "WelcomeFeature",
+			dependencies: [
+				tca.product,
+				"Styleguide"
+			]
+		),
+	//		.testTarget(
+	//			name: "WelcomeFeatureTests",
+	//			dependencies: ["WelcomeFeature"]
+	//		),
+		.target(
 			name: "OnboardingFeature",
 			dependencies: [
 				tca.product,
+				"WelcomeFeature",
 				"UserDefaultsClient"
 			]
 		),

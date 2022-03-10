@@ -11,12 +11,12 @@
 
 import SwiftUI
 
-struct ActivityIndicator: View {
+public struct ActivityIndicator: View {
     @State private var isAnimating: Bool = false
-    init() {}
+    public init() {}
 }
 
-extension ActivityIndicator {
+public extension ActivityIndicator {
     var body: some View {
         GeometryReader { geometry in
             ForEach(0..<5) { index in

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ZhipEngine
+import Styleguide
 
 // MARK: - ConfirmNewPINCodeScreen
 // MARK: -

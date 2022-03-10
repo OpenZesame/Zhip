@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InputField: View {
+public struct InputField: View {
     
     @Binding private var text: String
     @Binding private var isValid: Bool
@@ -18,7 +18,7 @@ struct InputField: View {
     private let maxLength: Int?
     private let characterRestriction: CharacterRestriction?
     
-    init(
+    public init(
         prompt: String = "",
         text: Binding<String>,
         isValid: Binding<Bool>? = nil,
@@ -40,7 +40,7 @@ struct InputField: View {
 private let validColor: Color = .turquoise
 private let invalidColor: Color = .bloodRed
     
-extension InputField {
+public extension InputField {
     var body: some View {
         HoverPromptTextField(
             prompt: prompt,

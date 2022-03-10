@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Stinsen
+import Styleguide
 
 final class ContactsCoordinator: NavigationCoordinatable {
     let stack = NavigationStack<ContactsCoordinator>(initial: \.start)

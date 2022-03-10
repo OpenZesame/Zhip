@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Styleguide
 
 // MARK: - BackUpWalletScreen
 // MARK: -

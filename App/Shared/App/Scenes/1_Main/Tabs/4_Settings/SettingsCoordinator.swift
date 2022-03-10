@@ -8,6 +8,7 @@
 import SwiftUI
 import ZhipEngine
 import Stinsen
+import Styleguide
 
 enum SettingsCoordinatorNavigationStep {
     case userDeletedWallet

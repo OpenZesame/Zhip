@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Styleguide
 
 struct RestoreWalletUsingKeystoreScreen: View {
     @ObservedObject var viewModel: RestoreWalletUsingKeystoreViewModel

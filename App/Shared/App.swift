@@ -80,6 +80,9 @@ struct ZhipApp: App {
     var body: some Scene {
 		WindowGroup {
 			AppView(store: store)
+				.background(Color.appBackground)
+				.foregroundColor(.white)
+				.navigationBarTitleDisplayMode(.large)
 		}
 		.onChange(of: scenePhase) {
 			viewStore.send(.didChangeScenePhase($0))

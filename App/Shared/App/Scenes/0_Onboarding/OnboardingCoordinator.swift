@@ -45,7 +45,7 @@ final class OnboardingCoordinator: NavigationCoordinatable {
     @Root var setupPINCode = makeSetupPINCode
     
     private unowned let navigator: Navigator
-    private lazy var welcomeNavigator = WelcomeViewModel.Navigator()
+//    private lazy var welcomeNavigator = WelcomeViewModel.Navigator()
     private lazy var termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
     private lazy var setupWalletCoordinatorNavigator = SetupWalletCoordinator.Navigator()
     private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
@@ -66,12 +66,12 @@ extension OnboardingCoordinator {
     @ViewBuilder func customize(_ view: AnyView) -> some View {
 
         view
-            .onReceive(welcomeNavigator)  { [unowned self] userDid in
-                switch userDid {
-                case .didStart:
-                        toNextStep()
-                }
-            }
+//            .onReceive(welcomeNavigator)  { [unowned self] userDid in
+//                switch userDid {
+//                case .didStart:
+//                        toNextStep()
+//                }
+//            }
             .onReceive(termsOfServiceNavigator)  { [unowned self] userDid in
                 switch userDid {
                 case .userDidAcceptTerms:
@@ -139,8 +139,9 @@ private extension OnboardingCoordinator {
     
     @ViewBuilder
     func makeWelcome() -> some View {
-        let viewModel = WelcomeViewModel(navigator: welcomeNavigator)
-        WelcomeScreen(viewModel: viewModel)
+//        let viewModel = WelcomeViewModel(navigator: welcomeNavigator)
+//        WelcomeScreen(viewModel: viewModel)
+		Text("No welcome")
     }
     
     @ViewBuilder

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ZhipEngine
+import Styleguide
 
 struct BalancesScreen: View {
     @ObservedObject var viewModel: BalancesViewModel

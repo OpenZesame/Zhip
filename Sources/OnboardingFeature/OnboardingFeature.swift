@@ -8,13 +8,17 @@
 import ComposableArchitecture
 import UserDefaultsClient
 import SwiftUI
+import WelcomeFeature
 
 public struct OnboardingState: Equatable {
 	public var step: Step
+	public var welcome: WelcomeState
 	public init(
-		step: Step = Step.allCases.first!
+		step: Step = Step.allCases.first!,
+		welcome: WelcomeState = .init()
 	) {
 		self.step = step
+		self.welcome = welcome
 	}
 }
 
@@ -33,7 +37,9 @@ public extension OnboardingState.Step {
 	}
 }
 
-public enum OnboardingAction: Equatable {}
+public enum OnboardingAction: Equatable {
+	case welcomeAction(WelcomeAction)
+}
 
 public struct OnboardingEnvironment {
 	public var userDefaults: UserDefaultsClient
@@ -48,9 +54,12 @@ public struct OnboardingEnvironment {
 public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, OnboardingEnvironment> {
 	state, action, environment in
 	
-//	switch action {
-//
-//	}
+	switch action {
+	case .welcomeAction(.startButtonTapped):
+		state = .init(step: .step1_TermsOfService)
+		return .none
+	default: return .none
+	}
 	return .none
 }
 
@@ -66,7 +75,20 @@ public struct OnboardingView: View {
 
 public extension OnboardingView {
 	var body: some View {
-		Text("Onboarding view")
+		Group {
+			switch viewStore.step {
+			case .step0_Welcome:
+				WelcomeScreen(
+					store: store.scope(
+						state: \.welcome,
+						action: OnboardingAction.welcomeAction
+					)
+				)
+			default:
+				Text("TODO impl view for step: \(String(describing: viewStore.step))")
+			}
+		}
+		
 	}
 }
 

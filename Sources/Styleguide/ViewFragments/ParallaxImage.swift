@@ -7,13 +7,23 @@
 
 import SwiftUI
 
-struct ParallaxImage: View {
+public struct ParallaxImage: View {
     
-    let back: String
-    let middle: String
-    let front: String
+    private let back: String
+    private let middle: String
+    private let front: String
+	
+	public init(
+		back: String,
+		middle: String,
+		front: String
+	) {
+		self.back = back
+		self.middle = middle
+		self.front = front
+	}
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             image(\.back)
             image(\.middle)

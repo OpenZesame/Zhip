@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-struct PrimaryButtonStyle: ButtonStyle {
+public struct PrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
         
-    static let defaultCornerRadius: CGFloat = 8
+    public static let defaultCornerRadius: CGFloat = 8
     private let cornerRadius: CGFloat
     @Binding private var isLoading: Bool
-    init(
+
+	public init(
         isLoading: Binding<Bool>? = nil,
         cornerRadius: CGFloat = Self.defaultCornerRadius
     ) {
@@ -21,7 +22,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         Group {
             if isLoading {
                 ActivityIndicator()
@@ -41,15 +42,16 @@ struct PrimaryButtonStyle: ButtonStyle {
 }
 
 
-struct SecondaryButtonStyle: ButtonStyle {
+public struct SecondaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
         
     private let cornerRadius: CGFloat
-    init(cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius) {
+    
+	public init(cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius) {
         self.cornerRadius = cornerRadius
     }
     
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.zhip.callToAction)
             .frame(maxWidth: .infinity, idealHeight: 50)
@@ -60,7 +62,7 @@ struct SecondaryButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == PrimaryButtonStyle {
+public extension ButtonStyle where Self == PrimaryButtonStyle {
 
     /// A button style that applies the call to the **primary** action of the
     /// current screen, rounded with the default corner radious.
@@ -84,7 +86,7 @@ extension ButtonStyle where Self == PrimaryButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == SecondaryButtonStyle {
+public extension ButtonStyle where Self == SecondaryButtonStyle {
     
     /// A button style that applies the call to the **secondary** action of the
     /// current screen, rounded with the default corner radious.
@@ -106,11 +108,12 @@ extension ButtonStyle where Self == SecondaryButtonStyle {
     
 }
 
-struct HallowButtonStyle: ButtonStyle {
+public struct HallowButtonStyle: ButtonStyle {
         
     private let cornerRadius: CGFloat
     private let borderWidth: CGFloat
-    init(
+    
+	public init(
         borderWidth: CGFloat = 1,
         cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius
     ) {
@@ -118,7 +121,7 @@ struct HallowButtonStyle: ButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.zhip.callToAction)
             .padding([.leading, .horizontal])
@@ -134,7 +137,7 @@ struct HallowButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == HallowButtonStyle {
+public extension ButtonStyle where Self == HallowButtonStyle {
 
     static var hollow: Self {
         .hollow(cornerRadius: PrimaryButtonStyle.defaultCornerRadius)

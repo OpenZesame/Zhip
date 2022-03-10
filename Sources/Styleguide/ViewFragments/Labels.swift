@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct Labels: View {
+public struct Labels: View {
     
     let title: Text
     let subtitle: Text
     
-    init(
+    public init(
         title: () -> Text,
         subtitle: () -> Text
     ) {
@@ -20,7 +20,7 @@ struct Labels: View {
         self.subtitle = subtitle()
     }
     
-    init(
+    public init(
         title: String,
         font titleFont: Font = Font.zhip.header,
         subtitle: String,
@@ -32,7 +32,7 @@ struct Labels: View {
         )
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             
             title

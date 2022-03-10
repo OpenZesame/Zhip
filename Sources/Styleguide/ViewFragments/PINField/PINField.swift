@@ -170,3 +170,13 @@ extension Pincode {
         )
     }
 }
+
+public extension Array {
+	func appending(_ element: Element, toCount targetCount: Int) -> Self {
+		if count >= targetCount {
+			return self
+		}
+		let suffix = [Element](repeating: element, count: targetCount - count)
+		return self + suffix
+	}
+}

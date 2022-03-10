@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct Checkbox: View {
+public struct Checkbox: View {
     
     private let label: String
     @Binding private var isOn: Bool
     
-    init(_ label: String, isOn: Binding<Bool>) {
+    public init(_ label: String, isOn: Binding<Bool>) {
         self.label = label
         self._isOn = isOn
     }
     
-    var body: some View {
+    public var body: some View {
         Toggle(isOn: $isOn) {
             Text(label)
                 .font(.zhip.title)
@@ -28,8 +28,8 @@ struct Checkbox: View {
 }
 
     
-struct CheckboxToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
+public struct CheckboxToggleStyle: ToggleStyle {
+    public func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .center, spacing: 16) {
             Image(
                 systemName: configuration.isOn ? "checkmark.square" : "square"

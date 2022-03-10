@@ -7,10 +7,16 @@
 
 import SwiftUI
 
-struct ForceFullScreen<Content>: View where Content: View {
+public struct ForceFullScreen<Content>: View where Content: View {
     @ViewBuilder let content: () -> Content
 
-    var body: some View {
+	
+	public init(content: @escaping () -> Content) {
+		self.content = content
+	}
+
+	
+    public var body: some View {
         ZStack {
             Color.appBackground.edgesIgnoringSafeArea(.all)
             content().padding()

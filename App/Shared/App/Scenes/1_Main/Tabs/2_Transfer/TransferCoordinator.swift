@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Stinsen
+import Styleguide
 
 final class TransferCoordinator: NavigationCoordinatable {
     let stack = NavigationStack<TransferCoordinator>(initial: \.start)

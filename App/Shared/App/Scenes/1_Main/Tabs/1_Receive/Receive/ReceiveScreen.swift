@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Styleguide
 
 struct ReceiveScreen: View {
     @ObservedObject var viewModel: ReceiveViewModel
