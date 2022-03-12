@@ -9,8 +9,9 @@ import XCTest
 @testable import PINCode
 
 final class PINCodeTests: XCTestCase {
-	func testPINCode() throws {
-		let pin = try Pincode(digits: [Digit.four])
-		XCTAssertNotNil(pin)
+	func testPINCodeCannotBeShort() throws {
+		XCTAssertThrowsError(try Pincode(digits: [Digit.four])) { error in
+			XCTAssertEqual(error as? Pincode.Error, Pincode.Error.pincodeTooShort)
+		}
 	}
 }
