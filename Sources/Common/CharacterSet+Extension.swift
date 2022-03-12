@@ -23,7 +23,7 @@ public extension CharacterSet {
         
         return CharacterSet(charactersIn: lowercase)
             .union(CharacterSet(charactersIn: uppercase))
-            .union(CharacterSet(charactersIn: network.bech32Prefix))
+			.union(CharacterSet(charactersIn: Network.mainnet.bech32Prefix))
     }
     
     static var bech32OrHexIncludingPrefix: CharacterSet {

@@ -7,6 +7,8 @@
 
 import Foundation
 import Zesame
+import Common
+import ZilliqaAPIEndpoint
 
 public struct Wallet: Codable, Equatable {
     public let name: String?

@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SecurePersistence
+import Preferences
 
 public protocol OnboardingUseCase: AnyObject {
 

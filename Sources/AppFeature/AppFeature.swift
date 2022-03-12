@@ -105,7 +105,8 @@ public extension AppView {
 				Text("MAIN VIEW").font(.largeTitle)
 					.zIndex(0)
 			}
-		}.modifier(DeviceStateModifier())
+		}
+		// .modifier(DeviceStateModifier())
 	}
 }
 

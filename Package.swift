@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -108,10 +108,26 @@ let package = Package(
 	name: "Zhip",
 	platforms: [.macOS(.v12), .iOS(.v15)],
 	products: [
+		.library(name: "Common", targets: ["Common"]),
+		.library(name: "KeychainManager", targets: ["KeychainManager"]),
+		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
+		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
+		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
 		.library(name: "AppFeature", targets: ["AppFeature"]),
+		.library(name: "Wallet", targets: ["Wallet"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
 		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+		.library(name: "PINCode", targets: ["PINCode"]),
+		.library(name: "PINField", targets: ["PINField"]),
+		.library(name: "Screen", targets: ["Screen"]),
+		.library(name: "QRCoding", targets: ["QRCoding"]),
+		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
+		.library(name: "Checkbox", targets: ["Checkbox"]),
+		.library(name: "InputField", targets: ["InputField"]),
+		.library(name: "Preferences", targets: ["Preferences"]),
+		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
+		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(
 			name: "ZhipEngine",
@@ -122,11 +138,130 @@ let package = Package(
 		
 		.target(
 			name: "ZhipEngine",
-			dependencies: dependencies.targetDependencies
+			dependencies: dependencies.targetDependencies + [
+				"PINCode",
+				"Wallet",
+				"SecurePersistence",
+				"Preferences",
+			]
 		),
 		.testTarget(
 			name: "ZhipEngineTests",
 			dependencies: ["ZhipEngine"]
+		),
+		
+		.target(
+			name: "PINField",
+			dependencies: [
+				"PINCode",
+				"Styleguide",
+				"HoverPromptTextField"
+			]
+		),
+		
+			.target(
+				name: "InputField",
+				dependencies: [
+					"Styleguide",
+					"HoverPromptTextField"
+				]
+			),
+		
+			.target(
+				name: "Common",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame"),
+				]
+			),
+		
+			.target(
+				name: "KeyValueStore",
+				dependencies: [
+				]
+			),
+		
+			.target(
+				name: "KeychainManager",
+				dependencies: [
+					"Wallet",
+					"KeyValueStore"
+				]
+			),
+		
+			.target(
+				name: "SecurePersistence",
+				dependencies: [
+					"KeychainManager",
+				]
+			),
+		
+			.target(
+				name: "Preferences",
+				dependencies: [
+					"KeyValueStore",
+				]
+			),
+		
+			.target(
+				name: "Screen",
+				dependencies: [
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "PINCode",
+				dependencies: []
+			),
+		.testTarget(
+			name: "PINCodeTests",
+			dependencies: ["PINCode"]
+		),
+		
+			.target(
+				name: "TransactionIntent",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame")
+				]
+			),
+		
+			.target(
+				name: "QRCoding",
+				dependencies: [
+					"TransactionIntent",
+					"Styleguide",
+				]
+			),
+		
+		
+			.target(
+				name: "ZilliqaAPIEndpoint",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame"),
+				]
+			),
+		
+			.target(
+				name: "Checkbox",
+				dependencies: [
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "Wallet",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame"),
+					"Common",
+					"ZilliqaAPIEndpoint",
+				]
+			),
+		
+		.target(
+			name: "HoverPromptTextField",
+			dependencies: [
+				"Styleguide"
+			]
 		),
 		
 		.target(
@@ -136,11 +271,22 @@ let package = Package(
 			]
 		),
 		
+
+			.target(
+				name: "AmountFormatter",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame"),
+					"Common",
+				]
+			),
+
+		
 		.target(
 			name: "WelcomeFeature",
 			dependencies: [
 				tca.product,
-				"Styleguide"
+				"Styleguide",
+				"Screen"
 			]
 		),
 	//		.testTarget(

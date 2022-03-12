@@ -1,5 +1,8 @@
 import KeychainAccess
 import Foundation
+import PINCode
+import KeyValueStore
+import Wallet
 
 public final class KeychainManager: KeyValueStoring {
     private let wrapped: Keychain
@@ -24,12 +27,6 @@ public enum KeychainKey: String, KeyConvertible, Equatable, CaseIterable {
     case cachedZillingBalance
     
     case pincodeProtectingAppThatHasNothingToDoWithCryptography
-}
-
-/// Abstraction of Keychain
-public typealias SecurePersistence = KeyValueStore<KeychainKey>
-public extension SecurePersistence {
-    static let `default` = Self(KeychainManager.default)
 }
 
 public extension KeychainManager {
@@ -115,41 +112,4 @@ public extension KeyValueStore where Key == KeychainKey {
     }
 }
 
-
-public extension KeyValueStore where Key == PreferencesKey {
-    static var `default`: Preferences {
-        KeyValueStore(UserDefaults.standard)
-    }
-}
-
-
-// MARK: - KeyValueStoring
-extension UserDefaults: KeyValueStoring {}
-
-public extension UserDefaults {
-
-    func deleteValue(for key: String) throws {
-        removeObject(forKey: key)
-    }
-
-    typealias Key = PreferencesKey
-
-    func save(value: Any, for key: String) throws {
-        if let bool = value as? Bool {
-            self.set(bool, forKey: key)
-        } else if let float = value as? Float {
-            self.set(float, forKey: key)
-        } else if let double = value as? Double {
-            self.set(double, forKey: key)
-        } else if let int = value as? Int {
-            self.set(int, forKey: key)
-        } else {
-            self.setValue(value, forKey: key)
-        }
-    }
-
-    func loadValue(for key: String) throws -> Any? {
-        return value(forKey: key)
-    }
-}
 

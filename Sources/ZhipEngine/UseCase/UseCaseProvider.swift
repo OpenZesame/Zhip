@@ -7,6 +7,8 @@
 
 import Foundation
 import Zesame
+import Preferences
+import SecurePersistence
 
 public protocol ContactsUseCase {
     func toggleContact(address: Address)

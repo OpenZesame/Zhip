@@ -7,6 +7,8 @@
 
 import Foundation
 import Zesame
+import SecurePersistence
+import Preferences
 
 public enum Asset {
     case zillings

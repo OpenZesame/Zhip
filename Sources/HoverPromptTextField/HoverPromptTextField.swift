@@ -47,7 +47,7 @@ public struct HoverPromptTextField<LeftView: View, RightView: View>: View {
     private let makeLeftView: MakeLeftView
     private let makeRightView: MakeRightView
    
-    init(
+    public init(
         prompt: String,
         text: Binding<String>,
         isValid: Binding<Bool>? = nil,

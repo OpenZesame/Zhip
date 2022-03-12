@@ -8,7 +8,14 @@
 import Foundation
 import EFQRCode
 import SwiftUI
-import Zesame
+//import Zesame
+import TransactionIntent
+import Styleguide
+import Wallet
+import enum Zesame.Address
+import struct Zesame.Bech32Address
+import struct Zesame.LegacyAddress
+
 
 public protocol QRCoding: AnyObject {
     func encode(address: Address, size: CGFloat) -> Image?

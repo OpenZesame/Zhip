@@ -14,6 +14,9 @@ import enum Zesame.KeyDerivationFunction
 import struct Zesame.KDFParams
 
 import protocol Zesame.ZilliqaService
+import Wallet
+import SecurePersistence
+import Preferences
 
 public protocol SecurePersisting: AnyObject {
     var securePersistence: SecurePersistence { get }

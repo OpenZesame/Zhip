@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
 
     enum CharacterInsertionPlace {
         case end

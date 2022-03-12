@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-import ZhipEngine
+import Styleguide
+import PINCode
+import HoverPromptTextField
 
 // MARK: - PINField
 // MARK: -
-public struct PINField: StatefulViewFragment {
+public struct PINField: View {
     
-    @StateObject var viewModel: ViewModel = .init()
+    @StateObject var viewModel: PINFieldViewModel = .init()
     
     @Binding private var text: String
     @Binding private var pinCode: Pincode?
@@ -47,14 +49,6 @@ public struct PINField: StatefulViewFragment {
     }
 }
 
-// MARK: - StatefulViewFragment
-// MARK: -
-public extension PINField {
-    typealias ViewModel = PINFieldViewModel
-    var __viewModelWitness: StateObject<ViewModel> { self._viewModel }
-    
-}
-
 // MARK: - View
 // MARK: -
 public extension PINField {
@@ -65,8 +59,8 @@ public extension PINField {
                 .modifier(ShakeEffect(x: viewModel.shakesLeft > 0 ? -15 : 0))
                 .animation(
                     Animation
-                        .easeInOut(duration: ViewModel.durationPerShake)
-                        .repeatCount(ViewModel.shakeRepeatCount),
+                        .easeInOut(duration: PINFieldViewModel.durationPerShake)
+                        .repeatCount(PINFieldViewModel.shakeRepeatCount),
                     value: viewModel.shakesLeft // decreased by timer
                 )
             errorMessageView

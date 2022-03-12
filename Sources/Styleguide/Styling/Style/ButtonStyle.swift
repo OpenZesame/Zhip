@@ -23,21 +23,22 @@ public struct PrimaryButtonStyle: ButtonStyle {
     }
     
     public func makeBody(configuration: Configuration) -> some View {
-        Group {
-            if isLoading {
-                ActivityIndicator()
-                    .frame(size: 30)
-                    .foregroundColor(.white)
-            } else {
-                configuration.label
-                    .font(.zhip.callToAction)
-                    .foregroundColor(isEnabled ? Color.white : .silverGrey)
-                
-            }
-        }.frame(maxWidth: .infinity, idealHeight: 50)
-            .padding()
-            .background(isEnabled ? Color.turquoise : .asphaltGrey)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+//        Group {
+//            if isLoading {
+//                ActivityIndicator()
+//                    .frame(size: 30)
+//                    .foregroundColor(.white)
+//            } else {
+//                configuration.label
+//                    .font(.zhip.callToAction)
+//                    .foregroundColor(isEnabled ? Color.white : .silverGrey)
+//
+//            }
+//        }.frame(maxWidth: .infinity, idealHeight: 50)
+//            .padding()
+//            .background(isEnabled ? Color.turquoise : .asphaltGrey)
+//            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+		Text("CODE COMMENTED OUT!")
     }
 }
 

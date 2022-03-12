@@ -143,18 +143,3 @@ public extension KeyValueStoring {
         !isTrue(key)
     }
 }
-
-
-/// Insensitive values to be stored into e.g. `UserDefaults`, such as `hasAcceptedTermsOfService`
-public enum PreferencesKey: String, KeyConvertible, Equatable, CaseIterable {
-    case hasRunAppBefore
-    case hasAcceptedTermsOfService
-//    case hasAcceptedCustomECCWarning
-//    case hasAnsweredCrashReportingQuestion
-//    case hasAcceptedCrashReporting
-    case skipPincodeSetup
-    case balanceWasUpdatedAt
-}
-
-/// Abstraction of UserDefaults
-public typealias Preferences = KeyValueStore<PreferencesKey>
