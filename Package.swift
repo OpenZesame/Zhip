@@ -115,18 +115,23 @@ let package = Package(
 		// Sort alphabetically
 		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
 		.library(name: "AppFeature", targets: ["AppFeature"]),
+		.library(name: "BackUpWalletFeature", targets: ["BackUpWalletFeature"]),
 		.library(name: "Checkbox", targets: ["Checkbox"]),
 		.library(name: "Common", targets: ["Common"]),
 		.library(name: "EnsurePrivacyFeature", targets: ["EnsurePrivacyFeature"]),
+		.library(name: "GenerateNewWalletFeature", targets: ["GenerateNewWalletFeature"]),
 		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
 		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "KeychainManager", targets: ["KeychainManager"]),
 		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
+		.library(name: "NewPINFeature", targets: ["NewPINFeature"]),
+		.library(name: "NewWalletFeature", targets: ["NewWalletFeature"]),
 		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
 		.library(name: "Preferences", targets: ["Preferences"]),
+		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
 		.library(name: "QRCoding", targets: ["QRCoding"]),
 		.library(name: "Screen", targets: ["Screen"]),
 		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
@@ -165,6 +170,18 @@ let package = Package(
 			dependencies: ["AppFeature"]
 		),
 		
+		
+			.target(
+				name: "BackUpWalletFeature",
+				dependencies: [
+					"Checkbox",
+					composableArchitecture,
+					"InputField",
+					"Screen",
+					"Styleguide",
+				]
+			),
+		
 			.target(
 				name: "Checkbox",
 				dependencies: [
@@ -183,6 +200,20 @@ let package = Package(
 				name: "EnsurePrivacyFeature",
 				dependencies: [
 					composableArchitecture,
+					"Screen",
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "GenerateNewWalletFeature",
+				dependencies: [
+					"Checkbox",
+					composableArchitecture,
+					"HoverPromptTextField",
+					"InputField",
+					"Screen",
+					"Styleguide",
 				]
 			),
 		
@@ -214,11 +245,34 @@ let package = Package(
 				dependencies: [
 				]
 			),
+
+			.target(
+				name: "NewPINFeature",
+				dependencies: [
+					composableArchitecture,
+					"PINField",
+					"Styleguide",
+					"Screen",
+				]
+			),
+		
+			.target(
+				name: "NewWalletFeature",
+				dependencies: [
+					composableArchitecture,
+					"EnsurePrivacyFeature",
+					"GenerateNewWalletFeature",
+					"BackUpWalletFeature",
+				]
+			),
+			
 		
 			.target(
 				name: "NewWalletOrRestoreFeature",
 				dependencies: [
 					composableArchitecture,
+					"Styleguide",
+					"Screen",
 				]
 			),
 		
@@ -259,6 +313,18 @@ let package = Package(
 			),
 		
 			.target(
+				name: "RestoreWalletFeature",
+				dependencies: [
+					composableArchitecture,
+					"EnsurePrivacyFeature",
+					"InputField",
+					"Screen",
+					"Styleguide",
+					zesame,
+				]
+			),
+		
+			.target(
 				name: "QRCoding",
 				dependencies: [
 					"Styleguide",
@@ -285,8 +351,10 @@ let package = Package(
 				name: "SetupWalletFeature",
 				dependencies: [
 					composableArchitecture,
-					"EnsurePrivacyFeature",
+					"NewPINFeature",
 					"NewWalletOrRestoreFeature",
+					"NewWalletFeature",
+					"RestoreWalletFeature",
 					"Screen",
 					"Styleguide",
 					"Wallet",
@@ -311,6 +379,7 @@ let package = Package(
 				name: "TermsOfServiceFeature",
 				dependencies: [
 					composableArchitecture,
+					"Screen",
 					"UserDefaultsClient",
 					zesame,
 				]

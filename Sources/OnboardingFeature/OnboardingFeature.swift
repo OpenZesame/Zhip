@@ -81,11 +81,13 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		case .termsOfServiceAction(.delegate(.didAcceptTermsOfService)):
 			assert(environment.userDefaults.hasAcceptedTermsOfService)
 			state = .init(step: .step2_SetupWallet)
+			return .none
 			
 		case .setupWalletAction(.delegate(.finishedSettingUpWallet)):
 			fatalError()
 			
-		default: return .none
+		default:
+			return .none
 		}
 	}
 )

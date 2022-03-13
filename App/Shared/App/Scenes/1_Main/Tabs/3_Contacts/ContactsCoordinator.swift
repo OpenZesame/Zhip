@@ -1,35 +1,35 @@
+////
+////  ContactsCoordinator.swift
+////  Zhip
+////
+////  Created by Alexander Cyon on 2022-02-23.
+////
 //
-//  ContactsCoordinator.swift
-//  Zhip
+//import SwiftUI
+//import Stinsen
+//import Styleguide
+//import Screen
 //
-//  Created by Alexander Cyon on 2022-02-23.
+//final class ContactsCoordinator: NavigationCoordinatable {
+//    let stack = NavigationStack<ContactsCoordinator>(initial: \.start)
+//    @Root var start = makeStart
+//}
 //
-
-import SwiftUI
-import Stinsen
-import Styleguide
-import Screen
-
-final class ContactsCoordinator: NavigationCoordinatable {
-    let stack = NavigationStack<ContactsCoordinator>(initial: \.start)
-    @Root var start = makeStart
-}
-
-// MARK: - NavigationCoordinatable
-// MARK: -
-extension ContactsCoordinator {
-    func customize(_ view: AnyView) -> some View {
-        ForceFullScreen {
-            view
-        }
-    }
-}
-
-// MARK: - Factory
-// MARK: -
-extension ContactsCoordinator {
-    @ViewBuilder
-    func makeStart() -> some View {
-        ContactsScreen()
-    }
-}
+//// MARK: - NavigationCoordinatable
+//// MARK: -
+//extension ContactsCoordinator {
+//    func customize(_ view: AnyView) -> some View {
+//        ForceFullScreen {
+//            view
+//        }
+//    }
+//}
+//
+//// MARK: - Factory
+//// MARK: -
+//extension ContactsCoordinator {
+//    @ViewBuilder
+//    func makeStart() -> some View {
+//        ContactsScreen()
+//    }
+//}

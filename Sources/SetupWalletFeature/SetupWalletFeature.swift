@@ -7,18 +7,31 @@
 
 import ComposableArchitecture
 import EnsurePrivacyFeature
+import NewPINFeature
+import NewWalletFeature
 import NewWalletOrRestoreFeature
+import RestoreWalletFeature
 import SwiftUI
 
 public struct SetupWalletState: Equatable {
+
 	public var newWalletOrRestore: NewWalletOrRestoreState
-	public var ensurePrivacy: EnsurePrivacyState
+
+	public var newWallet: NewWalletState
+	public var restoreWallet: RestoreWalletState
+	
+	public var newPIN: NewPINState
+	
 	public init(
 		newWalletOrRestore: NewWalletOrRestoreState = .init(),
-		ensurePrivacy: EnsurePrivacyState = .init()
+		newWallet: NewWalletState = .init(),
+		restoreWallet: RestoreWalletState = .init(),
+		newPIN: NewPINState = .init()
 	) {
 		self.newWalletOrRestore = newWalletOrRestore
-		self.ensurePrivacy = ensurePrivacy
+		self.newWallet = newWallet
+		self.restoreWallet = restoreWallet
+		self.newPIN = newPIN
 	}
 }
 
@@ -26,7 +39,11 @@ public enum SetupWalletAction: Equatable {
 	case delegate(DelegateAction)
 	
 	case newWalletOrRestore(NewWalletOrRestoreAction)
-	case ensurePrivacy(EnsurePrivacyAction)
+	
+	case newWallet(NewWalletAction)
+	case restoreWallet(RestoreWalletAction)
+	
+	case newPIN(NewPINAction)
 }
 public extension SetupWalletAction {
 	enum DelegateAction {
@@ -39,6 +56,7 @@ public struct SetupWalletEnvironment {
 }
 
 public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, SetupWalletEnvironment>.combine(
+	
 	newWalletOrRestoreReducer.pullback(
 		state: \.newWalletOrRestore,
 		action: /SetupWalletAction.newWalletOrRestore,
@@ -46,11 +64,23 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 			NewWalletOrRestoreEnvironment()
 		}
 	),
+		
+	newWalletReducer.pullback(
+		state: \.newWallet,
+		action: /SetupWalletAction.newWallet,
+		environment: { _ in NewWalletEnvironment() }
+	),
 	
-	ensurePrivacyReducer.pullback(
-		state: \.ensurePrivacy,
-		action: /SetupWalletAction.ensurePrivacy,
-		environment: { _ in EnsurePrivacyEnvironment() }
+	restoreWalletReducer.pullback(
+		state: \.restoreWallet,
+		action: /SetupWalletAction.restoreWallet,
+		environment: { _ in RestoreWalletEnvironment() }
+	),
+	
+	newPINReducer.pullback(
+		state: \.newPIN,
+		action: /SetupWalletAction.newPIN,
+		environment: { _ in NewPINEnvironment() }
 	),
 	
 	Reducer<SetupWalletState, SetupWalletAction, SetupWalletEnvironment> { state, action, environment in
@@ -58,10 +88,6 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		case .newWalletOrRestore(.delegate(.generateNewWallet)):
 			return .none
 		case .newWalletOrRestore(.delegate(.restoreWallet)):
-			return .none
-		case .ensurePrivacy(.delegate(.abort)):
-			return .none
-		case .ensurePrivacy(.delegate(.proceed)):
 			return .none
 		default:
 			return .none

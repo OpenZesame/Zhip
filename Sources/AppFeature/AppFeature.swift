@@ -7,9 +7,9 @@
 
 import ComposableArchitecture
 import OnboardingFeature
-import UserDefaultsClient
 import Styleguide
 import SwiftUI
+import UserDefaultsClient
 
 public struct AppState: Equatable {
 	public var onboarding: OnboardingState?
@@ -96,7 +96,7 @@ public extension AppView {
 						.zIndex(0)
 				}
 			}
-			.modifier(DeviceStateModifier())
+			// .modifier(DeviceStateModifier())
 		}
 	}
 }

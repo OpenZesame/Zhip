@@ -77,10 +77,6 @@
 		48526AA627BD884500C25518 /* Barlow-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8127BD884500C25518 /* Barlow-SemiBold.ttf */; };
 		48526AA727BD884500C25518 /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8227BD884500C25518 /* Barlow-Black.ttf */; };
 		48526AA827BD884500C25518 /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48526A8227BD884500C25518 /* Barlow-Black.ttf */; };
-		485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73C27B836680030266A /* NewPINCodeScreen.swift */; };
-		485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73C27B836680030266A /* NewPINCodeScreen.swift */; };
-		485FF74027B836770030266A /* SetupPINCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */; };
-		485FF74127B836770030266A /* SetupPINCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */; };
 		4872FA2D27B4F8F5008B7BD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* App.swift */; };
 		4872FA2E27B4F8F5008B7BD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* App.swift */; };
 		4872FA3127B4F8F5008B7BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */; };
@@ -105,12 +101,6 @@
 		48A9581D27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */; };
 		48ECB24327BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
 		48ECB24427BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */; };
-		48ECB29127C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29027C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift */; };
-		48ECB29227C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29027C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift */; };
-		48ECB29727C4C7C2000F7C41 /* NewPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29627C4C7C2000F7C41 /* NewPINCodeViewModel.swift */; };
-		48ECB29827C4C7C2000F7C41 /* NewPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29627C4C7C2000F7C41 /* NewPINCodeViewModel.swift */; };
-		48ECB29A27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29927C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift */; };
-		48ECB29B27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECB29927C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,8 +141,6 @@
 		48526A8227BD884500C25518 /* Barlow-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Black.ttf"; sourceTree = "<group>"; };
 		48526AB127BE3F8600C25518 /* macOS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		48526AB327BE407400C25518 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
-		485FF73C27B836680030266A /* NewPINCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINCodeScreen.swift; sourceTree = "<group>"; };
-		485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupPINCodeCoordinator.swift; sourceTree = "<group>"; };
 		4872FA1D27B4F8F4008B7BD0 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4872FA1F27B4F8F5008B7BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,9 +155,6 @@
 		48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		48A9581B27CCC76D001CAD15 /* SettingsChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChoiceView.swift; sourceTree = "<group>"; };
 		48ECB24227BFB79B000F7C41 /* JSONEncoder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Extensions.swift"; sourceTree = "<group>"; };
-		48ECB29027C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmNewPINCodeScreen.swift; sourceTree = "<group>"; };
-		48ECB29627C4C7C2000F7C41 /* NewPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINCodeViewModel.swift; sourceTree = "<group>"; };
-		48ECB29927C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmNewPINCodeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,16 +317,6 @@
 			path = Scenes;
 			sourceTree = "<group>";
 		};
-		48526AE627BE86BB00C25518 /* 3_NewPINCode */ = {
-			isa = PBXGroup;
-			children = (
-				48ECB28E27C4C728000F7C41 /* 0_NewPINCode */,
-				48ECB28F27C4C74A000F7C41 /* 1_ConfirmNewPINCode */,
-				485FF73F27B836770030266A /* SetupPINCodeCoordinator.swift */,
-			);
-			path = 3_NewPINCode;
-			sourceTree = "<group>";
-		};
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
@@ -437,7 +412,6 @@
 		487CE3EC27B64604003BD07A /* 0_Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				48526AE627BE86BB00C25518 /* 3_NewPINCode */,
 				4844290B27B7DA4A00BAC575 /* OnboardingCoordinator.swift */,
 			);
 			path = 0_Onboarding;
@@ -490,24 +464,6 @@
 				48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */,
 			);
 			path = UnlockApp;
-			sourceTree = "<group>";
-		};
-		48ECB28E27C4C728000F7C41 /* 0_NewPINCode */ = {
-			isa = PBXGroup;
-			children = (
-				485FF73C27B836680030266A /* NewPINCodeScreen.swift */,
-				48ECB29627C4C7C2000F7C41 /* NewPINCodeViewModel.swift */,
-			);
-			path = 0_NewPINCode;
-			sourceTree = "<group>";
-		};
-		48ECB28F27C4C74A000F7C41 /* 1_ConfirmNewPINCode */ = {
-			isa = PBXGroup;
-			children = (
-				48ECB29027C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift */,
-				48ECB29927C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift */,
-			);
-			path = 1_ConfirmNewPINCode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -661,29 +617,24 @@
 				48260BD327C67A4C0069CA1C /* SettingsCoordinator.swift in Sources */,
 				48260C0227C8E5C30069CA1C /* ReceiveScreen.swift in Sources */,
 				484428FF27B7D93700BAC575 /* TabsCoordinator.swift in Sources */,
-				485FF74027B836770030266A /* SetupPINCodeCoordinator.swift in Sources */,
 				48260BDB27C67A7C0069CA1C /* TransferCoordinator.swift in Sources */,
 				487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */,
 				4844290C27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
-				48ECB29127C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift in Sources */,
 				48260BDF27C67ABE0069CA1C /* BalancesCoordinator.swift in Sources */,
 				483CB78427C5003700329DEB /* Binding+Extension.swift in Sources */,
 				48260BEB27C770D10069CA1C /* NavigationStepper.swift in Sources */,
 				48260BCF27C678A00069CA1C /* SettingsViewModel.swift in Sources */,
 				48260BC927C65BE90069CA1C /* Version.swift in Sources */,
-				48ECB29727C4C7C2000F7C41 /* NewPINCodeViewModel.swift in Sources */,
 				48A9581527CB7CD9001CAD15 /* MainCoordinator.swift in Sources */,
 				4872FA5527B558EC008B7BD0 /* SettingsScreen.swift in Sources */,
 				48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */,
 				48A9581C27CCC76D001CAD15 /* SettingsChoiceView.swift in Sources */,
-				485FF73D27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4872FA5227B558DD008B7BD0 /* BalancesScreen.swift in Sources */,
 				48260BFA27C8E5300069CA1C /* ReceiveCoordinator.swift in Sources */,
 				48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */,
 				4844290427B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				4872FA2D27B4F8F5008B7BD0 /* App.swift in Sources */,
 				487CE3E327B641C6003BD07A /* TransferScreen.swift in Sources */,
-				48ECB29A27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,21 +643,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				48260C0027C8E5890069CA1C /* ReceiveViewModel.swift in Sources */,
-				485FF73E27B836680030266A /* NewPINCodeScreen.swift in Sources */,
 				4844290027B7D93900BAC575 /* TabsCoordinator.swift in Sources */,
 				48260BF527C7C1DB0069CA1C /* BalancesViewModel.swift in Sources */,
 				48260BD827C67A650069CA1C /* ContactsCoordinator.swift in Sources */,
 				48260BD427C67A4C0069CA1C /* SettingsCoordinator.swift in Sources */,
 				48260C0327C8E5C30069CA1C /* ReceiveScreen.swift in Sources */,
-				48ECB29B27C4C7D8000F7C41 /* ConfirmNewPINCodeViewModel.swift in Sources */,
-				48ECB29827C4C7C2000F7C41 /* NewPINCodeViewModel.swift in Sources */,
-				485FF74127B836770030266A /* SetupPINCodeCoordinator.swift in Sources */,
 				48ECB24427BFB79B000F7C41 /* JSONEncoder+Extensions.swift in Sources */,
 				48260BDC27C67A7C0069CA1C /* TransferCoordinator.swift in Sources */,
 				4844290527B7D96700BAC575 /* AppCoordinator.swift in Sources */,
 				48260BE027C67ABE0069CA1C /* BalancesCoordinator.swift in Sources */,
 				483CB78527C5003700329DEB /* Binding+Extension.swift in Sources */,
-				48ECB29227C4C77C000F7C41 /* ConfirmNewPINCodeScreen.swift in Sources */,
 				48260BEC27C770D10069CA1C /* NavigationStepper.swift in Sources */,
 				4844290D27B7DA4A00BAC575 /* OnboardingCoordinator.swift in Sources */,
 				48260BCA27C65BE90069CA1C /* Version.swift in Sources */,
