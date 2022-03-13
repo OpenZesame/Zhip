@@ -8,6 +8,8 @@
 import SwiftUI
 import Styleguide
 import struct Zesame.PrivateKey
+import InputField
+import Screen
 
 
 // MARK: - RestoreWalletUsingPrivateKeyScreen

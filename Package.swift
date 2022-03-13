@@ -143,6 +143,12 @@ let package = Package(
 				"Wallet",
 				"SecurePersistence",
 				"Preferences",
+				"AmountFormatter",
+				"QRCoding",
+				"InputField",
+				"PINField",
+				"Screen",
+				"Checkbox"
 			]
 		),
 		.testTarget(

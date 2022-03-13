@@ -9,6 +9,7 @@ import SwiftUI
 import Stinsen
 import ZhipEngine
 import Combine
+import Wallet
 
 enum NewWalletCoordinatorNavigationStep {
     case create(wallet: Wallet)

@@ -8,6 +8,7 @@
 import Foundation
 import ZhipEngine
 import Combine
+import PINCode
 
 public enum ConfirmNewPINCodeNavigationStep {
     case skipSettingPin

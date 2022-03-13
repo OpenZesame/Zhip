@@ -10,6 +10,8 @@ import ZhipEngine
 import Combine
 import SwiftUI
 import struct Zesame.Bech32Address
+import QRCoding
+import Wallet
 
 public final class ReceiveViewModel: ObservableObject {
     

@@ -9,6 +9,7 @@ import SwiftUI
 import ZhipEngine
 import Combine
 import Styleguide
+import PINField
 
 // MARK: - NewPINCodeNavigationStep
 // MARK: -
@@ -120,7 +121,7 @@ public extension UnlockAppWithPINViewModel {
                 showError
             }
             .mapToVoid()
-            .delay(for: .seconds(PINField.ViewModel.errorAnimationDuration), scheduler: RunLoop.main) // revert error msg after delay
+            .delay(for: .seconds(PINFieldViewModel.errorAnimationDuration), scheduler: RunLoop.main) // revert error msg after delay
             .sink { [unowned self] in
                 showError = false
                 pinFieldText = "" // this should also set `pinCode = nil`

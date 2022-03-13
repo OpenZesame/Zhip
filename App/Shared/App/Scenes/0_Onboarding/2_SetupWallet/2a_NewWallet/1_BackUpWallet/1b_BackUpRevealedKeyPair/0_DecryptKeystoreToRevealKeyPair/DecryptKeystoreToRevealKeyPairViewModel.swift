@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import ZhipEngine
 import struct Zesame.KeyPair
+import Wallet
 
 // MARK: - DecryptKeystoreToRevealKeyPairNavigationStep
 // MARK: -

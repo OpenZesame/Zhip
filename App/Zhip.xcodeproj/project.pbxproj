@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4813FFC427D699B000C851A5 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4813FFC327D699B000C851A5 /* AppFeature */; };
-		4813FFC627D699B100C851A5 /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 4813FFC527D699B100C851A5 /* ZhipEngine */; };
 		481EDEC927BA7A3700D39DCB /* TermsOfService.md in Resources */ = {isa = PBXBuildFile; fileRef = 481EDEC827BA7A3700D39DCB /* TermsOfService.md */; };
 		481EDECA27BA7A3700D39DCB /* TermsOfService.md in Resources */ = {isa = PBXBuildFile; fileRef = 481EDEC827BA7A3700D39DCB /* TermsOfService.md */; };
 		481EDECC27BA85E500D39DCB /* GenerateNewWalletScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481EDECB27BA85E500D39DCB /* GenerateNewWalletScreen.swift */; };
@@ -137,6 +135,8 @@
 		487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* TransferScreen.swift */; };
 		487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
 		487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
+		48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6D27DDBB83006E7938 /* AppFeature */; };
+		48A79E7027DDBB9F006E7938 /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6F27DDBB9F006E7938 /* ZhipEngine */; };
 		48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48A9580E27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
 		48A9581227CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */; };
@@ -168,7 +168,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4813FFC227D6979200C851A5 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		481EDEC827BA7A3700D39DCB /* TermsOfService.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TermsOfService.md; sourceTree = "<group>"; };
 		481EDECB27BA85E500D39DCB /* GenerateNewWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateNewWalletScreen.swift; sourceTree = "<group>"; };
 		481EDECE27BA884400D39DCB /* BackUpWalletScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackUpWalletScreen.swift; sourceTree = "<group>"; };
@@ -237,6 +236,7 @@
 		4872FA5427B558EC008B7BD0 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		487CE3E227B641C6003BD07A /* TransferScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferScreen.swift; sourceTree = "<group>"; };
 		487CE3E627B64204003BD07A /* ContactsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsScreen.swift; sourceTree = "<group>"; };
+		48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINScreen.swift; sourceTree = "<group>"; };
 		48A9581127CAA4C7001CAD15 /* UnlockAppWithPINViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPINViewModel.swift; sourceTree = "<group>"; };
 		48A9581427CB7CD9001CAD15 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
@@ -258,8 +258,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4813FFC427D699B000C851A5 /* AppFeature in Frameworks */,
-				4813FFC627D699B100C851A5 /* ZhipEngine in Frameworks */,
+				48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */,
+				48A79E7027DDBB9F006E7938 /* ZhipEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,14 +273,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4813FFC127D6979200C851A5 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				4813FFC227D6979200C851A5 /* Zhip_SwiftUI */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		48260BD127C67A340069CA1C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -569,7 +561,7 @@
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
-				4813FFC127D6979200C851A5 /* Packages */,
+				48A79E6B27DDBB23006E7938 /* Packages */,
 				48A80AC927B675B6002271BB /* Frameworks */,
 				4872FA4D27B5573F008B7BD0 /* iOS */,
 				4872FA2B27B4F8F5008B7BD0 /* macOS */,
@@ -681,6 +673,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		48A79E6B27DDBB23006E7938 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		48A80AC927B675B6002271BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -763,8 +763,8 @@
 			);
 			name = "Zhip (iOS)";
 			packageProductDependencies = (
-				4813FFC327D699B000C851A5 /* AppFeature */,
-				4813FFC527D699B100C851A5 /* ZhipEngine */,
+				48A79E6D27DDBB83006E7938 /* AppFeature */,
+				48A79E6F27DDBB9F006E7938 /* ZhipEngine */,
 			);
 			productName = "Zhip (iOS)";
 			productReference = 4872FA2427B4F8F5008B7BD0 /* Zhip.app */;
@@ -1272,11 +1272,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4813FFC327D699B000C851A5 /* AppFeature */ = {
+		48A79E6D27DDBB83006E7938 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
 		};
-		4813FFC527D699B100C851A5 /* ZhipEngine */ = {
+		48A79E6F27DDBB9F006E7938 /* ZhipEngine */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ZhipEngine;
 		};

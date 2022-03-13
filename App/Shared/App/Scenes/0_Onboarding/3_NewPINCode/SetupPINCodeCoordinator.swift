@@ -8,6 +8,7 @@
 import SwiftUI
 import Stinsen
 import ZhipEngine
+import PINCode
 
 enum SetupPINCoordinatorNavigationStep {
     case finishedPINSetup

@@ -7,6 +7,7 @@
 
 import Foundation
 import ZhipEngine
+import PINCode
 
 // MARK: - NewPINCodeNavigationStep
 // MARK: -

@@ -10,6 +10,8 @@ import Foundation
 import Combine
 import struct Zesame.Keystore
 import ZhipEngine
+import Wallet
+import Common
 
 // MARK: - BackUpWalletNavigationStep
 // MARK: -

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Styleguide
-import HoverPromptTextField
+@_exported import HoverPromptTextField
 
 public struct InputField: View {
     

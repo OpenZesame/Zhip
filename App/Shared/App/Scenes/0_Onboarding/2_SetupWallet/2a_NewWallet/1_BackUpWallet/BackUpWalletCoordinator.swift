@@ -8,6 +8,7 @@
 import SwiftUI
 import ZhipEngine
 import Stinsen
+import Wallet
 
 public enum BackUpWalletCoordinatorNavigationStep {
     case userDidBackUpWallet(Wallet)

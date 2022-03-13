@@ -7,6 +7,8 @@
 
 import SwiftUI
 import Styleguide
+import Screen
+import Checkbox
 
 // MARK: - BackUpWalletScreen
 // MARK: -

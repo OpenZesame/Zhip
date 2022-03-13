@@ -7,6 +7,9 @@
 
 import SwiftUI
 import Styleguide
+import Screen
+import InputField
+import Checkbox
 
 // MARK: - GenerateNewWalletScreen
 // MARK: -

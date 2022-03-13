@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Styleguide
-import PINCode
+@_exported import PINCode
 import HoverPromptTextField
 
 // MARK: - PINField

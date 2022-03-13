@@ -8,6 +8,7 @@
 import SwiftUI
 import Stinsen
 import ZhipEngine
+import Wallet
 
 enum RestoreWalletCoordinatorNavigationStep {
     case didRestoreWallet(Wallet)

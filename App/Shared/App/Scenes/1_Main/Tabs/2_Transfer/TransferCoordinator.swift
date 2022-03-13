@@ -8,6 +8,7 @@
 import SwiftUI
 import Stinsen
 import Styleguide
+import Screen
 
 final class TransferCoordinator: NavigationCoordinatable {
     let stack = NavigationStack<TransferCoordinator>(initial: \.start)

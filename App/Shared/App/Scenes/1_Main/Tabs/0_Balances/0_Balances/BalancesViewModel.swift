@@ -8,6 +8,8 @@
 import Foundation
 import ZhipEngine
 import Combine
+import Wallet
+import AmountFormatter
 
 public final class BalancesViewModel: ObservableObject {
     

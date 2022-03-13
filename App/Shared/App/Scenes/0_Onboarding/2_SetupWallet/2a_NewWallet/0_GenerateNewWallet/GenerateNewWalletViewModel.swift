@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import ZhipEngine
+import Wallet
 
 public class EncryptionPasswordSetting: ObservableObject {
     @Published var password = ""

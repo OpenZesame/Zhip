@@ -7,6 +7,7 @@
 
 import Foundation
 import ZhipEngine
+import Wallet
 
 // MARK: - RestorationMethod
 // MARK: -

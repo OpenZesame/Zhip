@@ -8,6 +8,7 @@
 import Foundation
 import ZhipEngine
 import Combine
+import Wallet
 
 // MARK: - BackUpKeystoreNavigationStep
 // MARK: -

@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import ZhipEngine
 import struct Zesame.KeyPair
+import Wallet
 
 enum BackUpKeyPairCoordinatorNavigationStep {
     case failedToDecryptWallet(error: Swift.Error)

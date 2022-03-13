@@ -12,6 +12,7 @@ import enum Zesame.KeyRestoration
 import enum Zesame.KDF
 import struct Zesame.KDFParams
 import struct Zesame.PrivateKey
+import Wallet
 
 // MARK: - BaseRestoreWalletViewModel
 // MARK: -

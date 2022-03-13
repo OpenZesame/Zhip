@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Styleguide
+import Screen
 
 struct RestoreWalletScreen: View {
     @ObservedObject var viewModel: RestoreWalletViewModel

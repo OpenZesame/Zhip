@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Styleguide
+import Screen
 
 // MARK: - EnsurePrivacyScreen
 // MARK: -
