@@ -22,6 +22,15 @@ public extension UserDefaultsClient {
 	func setHasShownFirstLaunchOnboarding(_ bool: Bool) -> Effect<Never, Never> {
 		setBool(bool, hasShownFirstLaunchOnboardingKey)
 	}
+	
+	var hasAcceptedTermsOfService: Bool {
+		boolForKey(hasAcceptedTermsOfServiceKey)
+	}
+
+	func setHasAcceptedTermsOfService(_ bool: Bool) -> Effect<Never, Never> {
+		setBool(bool, hasAcceptedTermsOfServiceKey)
+	}
 }
 
 private let hasShownFirstLaunchOnboardingKey = "hasShownFirstLaunchOnboardingKey"
+private let hasAcceptedTermsOfServiceKey = "hasAcceptedTermsOfServiceKey"

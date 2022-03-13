@@ -9,16 +9,20 @@ import ComposableArchitecture
 import UserDefaultsClient
 import SwiftUI
 import WelcomeFeature
+import TermsOfServiceFeature
 
 public struct OnboardingState: Equatable {
 	public var step: Step
 	public var welcome: WelcomeState
+	public var termsOfService: TermsOfServiceState
 	public init(
 		step: Step = Step.allCases.first!,
-		welcome: WelcomeState = .init()
+		welcome: WelcomeState = .init(),
+		termsOfService: TermsOfServiceState = .init()
 	) {
 		self.step = step
 		self.welcome = welcome
+		self.termsOfService = termsOfService
 	}
 }
 
@@ -39,6 +43,7 @@ public extension OnboardingState.Step {
 
 public enum OnboardingAction: Equatable {
 	case welcomeAction(WelcomeAction)
+	case termsOfServiceAction(TermsOfServiceAction)
 }
 
 public struct OnboardingEnvironment {
@@ -51,17 +56,31 @@ public struct OnboardingEnvironment {
 	}
 }
 
-public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, OnboardingEnvironment> {
-	state, action, environment in
+public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, OnboardingEnvironment>.combine(
 	
-	switch action {
-	case .welcomeAction(.startButtonTapped):
-		state = .init(step: .step1_TermsOfService)
+	termsOfServiceReducer.pullback(
+		state: \.termsOfService,
+		action: /OnboardingAction.termsOfServiceAction,
+		environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
+	),
+	
+	Reducer { state, action, environment in
+		switch action {
+		case .welcomeAction(.startButtonTapped):
+			if environment.userDefaults.hasAcceptedTermsOfService {
+				state = .init(step: .step2_SetupWallet)
+			} else {
+				state = .init(step: .step1_TermsOfService)
+			}
+			return .none
+		case .termsOfServiceAction(.acceptButtonTapped):
+			assert(environment.userDefaults.hasAcceptedTermsOfService)
+			state = .init(step: .step2_SetupWallet)
+		default: return .none
+		}
 		return .none
-	default: return .none
 	}
-	return .none
-}
+)
 
 public struct OnboardingView: View {
 	let store: Store<OnboardingState, OnboardingAction>
@@ -82,6 +101,13 @@ public extension OnboardingView {
 					store: store.scope(
 						state: \.welcome,
 						action: OnboardingAction.welcomeAction
+					)
+				)
+			case .step1_TermsOfService:
+				TermsOfServiceScreen(
+					store: store.scope(
+						state: \.termsOfService,
+						action: OnboardingAction.termsOfServiceAction
 					)
 				)
 			default:

@@ -50,10 +50,10 @@ extension Array where Element == Dependency {
 
 private let tca: Dependency = .init(
 	category: .architecture,
-	   package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
-	   product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-	   rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
-   )
+	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
+	product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
+)
 
 private let dependencies: [Dependency] = [
 	.init(
@@ -65,111 +65,103 @@ private let dependencies: [Dependency] = [
 	),
 	
 	tca,
-
-	.init(
-		category: .convenience,
-		package: .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
-		product: "KeychainAccess",
-		rationale: "Keychain is very low level"
-	),
-
-	.init(
-		category: .navigation,
-		package: .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7"),
-		product: .product(name: "Stinsen", package: "stinsen"),
-		rationale: "Coordinator pattern",
-		alternatives: [
-			.init(url: "https://github.com/matteopuc/swiftui-navigation-stack", abstract: "Manual control over navigation stack"),
-			.init(url: "https://github.com/pointfreeco/swiftui-navigation", abstract: "Routing and IfLet Switch, CaseLet convenience"),
-			.init(url: "https://github.com/johnpatrickmorgan/FlowStacks", abstract: "Coordinator pattern and routing")
-		]
-	),
-
-	.init(
-		category: .view,
-		package: .package(url: "https://github.com/EFPrefix/EFQRCode.git", from: "6.2.0"),
-		product: "EFQRCode",
-		rationale: "Convenient QR code generator supporting macOS and iOS."
-	),
-
-	.init(
-		category: .view,
-		package: .package(url: "https://github.com/twostraws/CodeScanner.git", from: "2.1.1"),
-		product: .product(name: "CodeScanner", package: "CodeScanner", condition: .when(platforms: [.iOS])),
-		rationale: "Convenient QR code scanning view.",
-		alternatives: [
-			.init(url: "https://github.com/mercari/QRScanner", abstract: "Lacks SwiftUI support?"),
-			.init(url: "https://github.com/yannickl/QRCodeReader.swift", abstract: "Lacks SwiftUI support?")
-		]
-	)
+	
+		.init(
+			category: .convenience,
+			package: .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
+			product: "KeychainAccess",
+			rationale: "Keychain is very low level"
+		),
+	
+		.init(
+			category: .navigation,
+			package: .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7"),
+			product: .product(name: "Stinsen", package: "stinsen"),
+			rationale: "Coordinator pattern",
+			alternatives: [
+				.init(url: "https://github.com/matteopuc/swiftui-navigation-stack", abstract: "Manual control over navigation stack"),
+				.init(url: "https://github.com/pointfreeco/swiftui-navigation", abstract: "Routing and IfLet Switch, CaseLet convenience"),
+				.init(url: "https://github.com/johnpatrickmorgan/FlowStacks", abstract: "Coordinator pattern and routing")
+			]
+		),
+	
+		.init(
+			category: .view,
+			package: .package(url: "https://github.com/EFPrefix/EFQRCode.git", from: "6.2.0"),
+			product: "EFQRCode",
+			rationale: "Convenient QR code generator supporting macOS and iOS."
+		),
+	
+		.init(
+			category: .view,
+			package: .package(url: "https://github.com/twostraws/CodeScanner.git", from: "2.1.1"),
+			product: .product(name: "CodeScanner", package: "CodeScanner", condition: .when(platforms: [.iOS])),
+			rationale: "Convenient QR code scanning view.",
+			alternatives: [
+				.init(url: "https://github.com/mercari/QRScanner", abstract: "Lacks SwiftUI support?"),
+				.init(url: "https://github.com/yannickl/QRCodeReader.swift", abstract: "Lacks SwiftUI support?")
+			]
+		)
 ]
 
 let package = Package(
 	name: "Zhip",
 	platforms: [.macOS(.v12), .iOS(.v15)],
 	products: [
+		// Sort alphabetically
+		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
+		.library(name: "AppFeature", targets: ["AppFeature"]),
+		.library(name: "Checkbox", targets: ["Checkbox"]),
 		.library(name: "Common", targets: ["Common"]),
+		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
+		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "KeychainManager", targets: ["KeychainManager"]),
 		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
-		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
-		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
-		.library(name: "AppFeature", targets: ["AppFeature"]),
-		.library(name: "Wallet", targets: ["Wallet"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
-		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
-		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
-		.library(name: "Screen", targets: ["Screen"]),
-		.library(name: "QRCoding", targets: ["QRCoding"]),
-		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
-		.library(name: "Checkbox", targets: ["Checkbox"]),
-		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "Preferences", targets: ["Preferences"]),
-		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
-		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
+		.library(name: "QRCoding", targets: ["QRCoding"]),
+		.library(name: "Screen", targets: ["Screen"]),
+		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
-		.library(
-			name: "ZhipEngine",
-			targets: ["ZhipEngine"]),
+		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
+		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
+		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+		.library(name: "Wallet", targets: ["Wallet"]),
+		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
+		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
+		.library(name: "ZhipEngine", targets: ["ZhipEngine"]),
 	],
 	dependencies: dependencies.packageDependencies,
 	targets: [
-		
+		// Sort alphabetically
 		.target(
-			name: "ZhipEngine",
-			dependencies: dependencies.targetDependencies + [
-				"PINCode",
-				"Wallet",
-				"SecurePersistence",
-				"Preferences",
-				"AmountFormatter",
-				"QRCoding",
-				"InputField",
-				"PINField",
-				"Screen",
-				"Checkbox"
-			]
-		),
-		.testTarget(
-			name: "ZhipEngineTests",
-			dependencies: ["ZhipEngine"]
-		),
-		
-		.target(
-			name: "PINField",
+			name: "AmountFormatter",
 			dependencies: [
-				"PINCode",
-				"Styleguide",
-				"HoverPromptTextField"
+				"Common",
+				.product(name: "Zesame", package: "zesame"),
 			]
 		),
 		
 			.target(
-				name: "InputField",
+				name: "AppFeature",
+				dependencies: [
+					tca.product,
+					"OnboardingFeature",
+					"Styleguide",
+					"UserDefaultsClient",
+				]
+			),
+		.testTarget(
+			name: "AppFeatureTests",
+			dependencies: ["AppFeature"]
+		),
+		
+			.target(
+				name: "Checkbox",
 				dependencies: [
 					"Styleguide",
-					"HoverPromptTextField"
 				]
 			),
 		
@@ -181,8 +173,17 @@ let package = Package(
 			),
 		
 			.target(
-				name: "KeyValueStore",
+				name: "HoverPromptTextField",
 				dependencies: [
+					"Styleguide"
+				]
+			),
+		
+			.target(
+				name: "InputField",
+				dependencies: [
+					"Styleguide",
+					"HoverPromptTextField"
 				]
 			),
 		
@@ -195,23 +196,18 @@ let package = Package(
 			),
 		
 			.target(
-				name: "SecurePersistence",
+				name: "KeyValueStore",
 				dependencies: [
-					"KeychainManager",
 				]
 			),
 		
 			.target(
-				name: "Preferences",
+				name: "OnboardingFeature",
 				dependencies: [
-					"KeyValueStore",
-				]
-			),
-		
-			.target(
-				name: "Screen",
-				dependencies: [
-					"Styleguide",
+					tca.product,
+					"TermsOfServiceFeature",
+					"UserDefaultsClient",
+					"WelcomeFeature",
 				]
 			),
 		
@@ -225,6 +221,51 @@ let package = Package(
 		),
 		
 			.target(
+				name: "PINField",
+				dependencies: [
+					"HoverPromptTextField",
+					"PINCode",
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "Preferences",
+				dependencies: [
+					"KeyValueStore",
+				]
+			),
+		
+			.target(
+				name: "QRCoding",
+				dependencies: [
+					"Styleguide",
+					"TransactionIntent",
+				]
+			),
+		
+			.target(
+				name: "Screen",
+				dependencies: [
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "SecurePersistence",
+				dependencies: [
+					"KeychainManager",
+				]
+			),
+		
+			.target(
+				name: "Styleguide",
+				dependencies: [
+					tca.product
+				]
+			),
+		
+			.target(
 				name: "TransactionIntent",
 				dependencies: [
 					.product(name: "Zesame", package: "zesame")
@@ -232,26 +273,17 @@ let package = Package(
 			),
 		
 			.target(
-				name: "QRCoding",
+				name: "TermsOfServiceFeature",
 				dependencies: [
-					"TransactionIntent",
-					"Styleguide",
-				]
-			),
-		
-		
-			.target(
-				name: "ZilliqaAPIEndpoint",
-				dependencies: [
-					.product(name: "Zesame", package: "zesame"),
+					tca.product,
+					"UserDefaultsClient",
+					.product(name: "Zesame", package: "zesame")
 				]
 			),
 		
 			.target(
-				name: "Checkbox",
-				dependencies: [
-					"Styleguide",
-				]
+				name: "UserDefaultsClient",
+				dependencies: [tca.product]
 			),
 		
 			.target(
@@ -263,72 +295,41 @@ let package = Package(
 				]
 			),
 		
-		.target(
-			name: "HoverPromptTextField",
-			dependencies: [
-				"Styleguide"
-			]
-		),
-		
-		.target(
-			name: "Styleguide",
-			dependencies: [
-				tca.product
-			]
-		),
-		
-
 			.target(
-				name: "AmountFormatter",
+				name: "WelcomeFeature",
 				dependencies: [
-					.product(name: "Zesame", package: "zesame"),
-					"Common",
+					tca.product,
+					"Screen",
+					"Styleguide",
 				]
 			),
-
 		
-		.target(
-			name: "WelcomeFeature",
-			dependencies: [
-				tca.product,
-				"Styleguide",
-				"Screen"
-			]
-		),
-	//		.testTarget(
-	//			name: "WelcomeFeatureTests",
-	//			dependencies: ["WelcomeFeature"]
-	//		),
-		.target(
-			name: "OnboardingFeature",
-			dependencies: [
-				tca.product,
-				"WelcomeFeature",
-				"UserDefaultsClient"
-			]
-		),
-//		.testTarget(
-//			name: "OnboardingFeatureTests",
-//			dependencies: ["OnboardingFeature"]
-//		),
-		
-		.target(
-			name: "AppFeature",
-			dependencies: [
-				tca.product,
-				"OnboardingFeature",
-				"UserDefaultsClient",
-				"Styleguide"
-			]
-		),
+			.target(
+				name: "ZhipEngine",
+				dependencies: dependencies.targetDependencies + [
+					"AmountFormatter",
+					"Checkbox",
+					"InputField",
+					"PINCode",
+					"PINField",
+					"Preferences",
+					"QRCoding",
+					"Screen",
+					"SecurePersistence",
+					"Wallet",
+				]
+			),
 		.testTarget(
-			name: "AppFeatureTests",
-			dependencies: ["AppFeature"]
+			name: "ZhipEngineTests",
+			dependencies: ["ZhipEngine"]
 		),
 		
-		.target(
-			name: "UserDefaultsClient",
-			dependencies: [tca.product]
-		),
+			.target(
+				name: "ZilliqaAPIEndpoint",
+				dependencies: [
+					.product(name: "Zesame", package: "zesame"),
+				]
+			),
+		
 	]
 )

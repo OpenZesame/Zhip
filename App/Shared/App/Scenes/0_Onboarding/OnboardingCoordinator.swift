@@ -36,7 +36,7 @@ final class OnboardingCoordinator: NavigationCoordinatable {
     
     // Actually we'd prefer `@Route(.push)`, but when replacing TermsOfService
     // with next screen we got a pop animation, which we don't want.
-    @Root var termsOfService = makeTermsOfService
+//    @Root var termsOfService = makeTermsOfService
     
     // Replace navigation stack
     @Root var setupWallet = makeSetupWallet
@@ -46,7 +46,7 @@ final class OnboardingCoordinator: NavigationCoordinatable {
     
     private unowned let navigator: Navigator
 //    private lazy var welcomeNavigator = WelcomeViewModel.Navigator()
-    private lazy var termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
+//    private lazy var termsOfServiceNavigator = TermsOfServiceViewModel.Navigator()
     private lazy var setupWalletCoordinatorNavigator = SetupWalletCoordinator.Navigator()
     private lazy var setupPinCoordinatorNavigator = SetupPINCodeCoordinator.Navigator()
 
@@ -72,12 +72,12 @@ extension OnboardingCoordinator {
 //                        toNextStep()
 //                }
 //            }
-            .onReceive(termsOfServiceNavigator)  { [unowned self] userDid in
-                switch userDid {
-                case .userDidAcceptTerms:
-                    toNextStep()
-                }
-            }
+//            .onReceive(termsOfServiceNavigator)  { [unowned self] userDid in
+//                switch userDid {
+//                case .userDidAcceptTerms:
+//                    toNextStep()
+//                }
+//            }
             .onReceive(setupWalletCoordinatorNavigator) { [unowned self] userDid in
                 switch userDid {
                 case .finishSettingUpWallet:
@@ -99,9 +99,9 @@ extension OnboardingCoordinator {
 private extension OnboardingCoordinator {
     
     func toNextStep() {
-        if !onboardingUseCase.hasAcceptedTermsOfService {
-            return toTermsOfService()
-        }
+//        if !onboardingUseCase.hasAcceptedTermsOfService {
+//            return toTermsOfService()
+//        }
         
         if !walletUseCase.hasConfiguredWallet {
             assert(!useCaseProvider.hasConfiguredPincode)
@@ -115,9 +115,9 @@ private extension OnboardingCoordinator {
         finishedOnboarding()
     }
     
-    func toTermsOfService() {
-        root(\.termsOfService)
-    }
+//    func toTermsOfService() {
+//        root(\.termsOfService)
+//    }
     
     func toSetupWallet() {
         root(\.setupWallet)
@@ -144,17 +144,17 @@ private extension OnboardingCoordinator {
 		Text("No welcome")
     }
     
-    @ViewBuilder
-    func makeTermsOfService() -> some View {
-        
-        let viewModel = TermsOfServiceViewModel(
-            mode: .mandatoryToAcceptTermsAsPartOfOnboarding,
-            navigator: termsOfServiceNavigator,
-            useCase: onboardingUseCase
-        )
-        
-        TermsOfServiceScreen(viewModel: viewModel)
-    }
+//    @ViewBuilder
+//    func makeTermsOfService() -> some View {
+//
+//        let viewModel = TermsOfServiceViewModel(
+//            mode: .mandatoryToAcceptTermsAsPartOfOnboarding,
+//            navigator: termsOfServiceNavigator,
+//            useCase: onboardingUseCase
+//        )
+//
+//        TermsOfServiceScreen(viewModel: viewModel)
+//    }
     
     func makeSetupWallet() -> NavigationViewCoordinator<SetupWalletCoordinator> {
         

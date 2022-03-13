@@ -55,17 +55,11 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 	
 	appReducerCore
 )
+.debug()
 
 
 let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
 	switch action {
-//	case let .onboarding(.delegate(action)):
-//	  switch action {
-//	  case .getStarted:
-//		state.onboarding = nil
-//		return .none
-//	  }
-//
 	case let .appDelegate(appDelegateAction):
 		return .none
 	case .onboarding:
