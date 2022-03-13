@@ -78,35 +78,32 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 public struct AppView: View {
 	let store: Store<AppState, AppAction>
 	
-	@ObservedObject var viewStore: ViewStore<ViewState, AppAction>
-	
 	#if os(iOS)
 	@Environment(\.deviceState) var deviceState
 	#endif
 	
 	public init(store: Store<AppState, AppAction>) {
 		self.store = store
-		self.viewStore = ViewStore(
-			self.store.scope(state: ViewState.init)
-		)
 	}
 
 }
 
 public extension AppView {
 	var body: some View {
-		Group {
-			if viewStore.isOnboardingPresented {
-				IfLetStore(
-					store.scope(state: \.onboarding, action: AppAction.onboarding),
-					then: OnboardingView.init(store:)
-				).zIndex(1)
-			} else {
-				Text("MAIN VIEW").font(.largeTitle)
-					.zIndex(0)
+		WithViewStore(store.scope(state: ViewState.init)) { viewStore in
+			Group {
+				if viewStore.isOnboardingPresented {
+					IfLetStore(
+						store.scope(state: \.onboarding, action: AppAction.onboarding),
+						then: OnboardingView.init(store:)
+					).zIndex(1)
+				} else {
+					Text("MAIN VIEW").font(.largeTitle)
+						.zIndex(0)
+				}
 			}
+			.modifier(DeviceStateModifier())
 		}
-		// .modifier(DeviceStateModifier())
 	}
 }
 

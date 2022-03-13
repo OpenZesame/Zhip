@@ -15,27 +15,19 @@ public struct WelcomeState: Equatable {
 }
 
 public enum WelcomeAction: Equatable {
-//	case delegate(DelegateAction)
 	case startButtonTapped
 }
-//public extension WelcomeAction {
-//	enum DelegateAction {
-//		case getStarted
-//	}
-//}
 
 
 // MARK: - WelcomeScreen
 // MARK: -
 public struct WelcomeScreen: View {
 	let store: Store<WelcomeState, WelcomeAction>
-//	@ObservedObject var viewStore: ViewStore<Void, WelcomeAction>
 	
 	public init(
 		store: Store<WelcomeState, WelcomeAction>
 	) {
 		self.store = store
-//		self.viewStore = .init(store)
 	}
 }
 
