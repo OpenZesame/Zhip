@@ -6,23 +6,27 @@
 //
 
 import ComposableArchitecture
-import UserDefaultsClient
+import SetupWalletFeature
 import SwiftUI
-import WelcomeFeature
 import TermsOfServiceFeature
+import UserDefaultsClient
+import WelcomeFeature
 
 public struct OnboardingState: Equatable {
 	public var step: Step
 	public var welcome: WelcomeState
 	public var termsOfService: TermsOfServiceState
+	public var setupWallet: SetupWalletState
 	public init(
 		step: Step = Step.allCases.first!,
 		welcome: WelcomeState = .init(),
-		termsOfService: TermsOfServiceState = .init()
+		termsOfService: TermsOfServiceState = .init(),
+		setupWallet: SetupWalletState = .init()
 	) {
 		self.step = step
 		self.welcome = welcome
 		self.termsOfService = termsOfService
+		self.setupWallet = setupWallet
 	}
 }
 
@@ -44,6 +48,7 @@ public extension OnboardingState.Step {
 public enum OnboardingAction: Equatable {
 	case welcomeAction(WelcomeAction)
 	case termsOfServiceAction(TermsOfServiceAction)
+	case setupWalletAction(SetupWalletAction)
 }
 
 public struct OnboardingEnvironment {
@@ -66,19 +71,22 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 	
 	Reducer { state, action, environment in
 		switch action {
-		case .welcomeAction(.startButtonTapped):
+		case .welcomeAction(.delegate(.getStarted)):
 			if environment.userDefaults.hasAcceptedTermsOfService {
 				state = .init(step: .step2_SetupWallet)
 			} else {
 				state = .init(step: .step1_TermsOfService)
 			}
 			return .none
-		case .termsOfServiceAction(.acceptButtonTapped):
+		case .termsOfServiceAction(.delegate(.didAcceptTermsOfService)):
 			assert(environment.userDefaults.hasAcceptedTermsOfService)
 			state = .init(step: .step2_SetupWallet)
+			
+		case .setupWalletAction(.delegate(.finishedSettingUpWallet)):
+			fatalError()
+			
 		default: return .none
 		}
-		return .none
 	}
 )
 

@@ -48,23 +48,27 @@ extension Array where Element == Dependency {
 	var targetDependencies: [PackageDescription.Target.Dependency] { map { $0.product } }
 }
 
-private let tca: Dependency = .init(
-	category: .architecture,
-	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
-	product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
-)
-
-private let dependencies: [Dependency] = [
-	.init(
+private let zesameDependency: Dependency = .init(
 		category: .essential,
 		// branch: structured_concurrency
 		package: .package(url: "https://github.com/OpenZesame/zesame.git", revision: "8918ddb06807724383ad2965461fffeea91f89af"),
 		product: .product(name: "Zesame", package: "zesame"),
 		rationale: "Zilliqa Swift SDK, containing all account logic."
-	),
-	
-	tca,
+)
+private let zesame = zesameDependency.product
+
+private let composableArchitectureDependency: Dependency = .init(
+	category: .architecture,
+	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
+	product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
+)
+private let composableArchitecture = composableArchitectureDependency.product
+
+private let dependencies: [Dependency] = [
+
+		zesameDependency,
+		composableArchitectureDependency,
 	
 		.init(
 			category: .convenience,
@@ -113,10 +117,12 @@ let package = Package(
 		.library(name: "AppFeature", targets: ["AppFeature"]),
 		.library(name: "Checkbox", targets: ["Checkbox"]),
 		.library(name: "Common", targets: ["Common"]),
+		.library(name: "EnsurePrivacyFeature", targets: ["EnsurePrivacyFeature"]),
 		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
 		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "KeychainManager", targets: ["KeychainManager"]),
 		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
+		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
@@ -124,6 +130,7 @@ let package = Package(
 		.library(name: "QRCoding", targets: ["QRCoding"]),
 		.library(name: "Screen", targets: ["Screen"]),
 		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
+		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
 		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
@@ -140,14 +147,14 @@ let package = Package(
 			name: "AmountFormatter",
 			dependencies: [
 				"Common",
-				.product(name: "Zesame", package: "zesame"),
+				zesame,
 			]
 		),
 		
 			.target(
 				name: "AppFeature",
 				dependencies: [
-					tca.product,
+					composableArchitecture,
 					"OnboardingFeature",
 					"Styleguide",
 					"UserDefaultsClient",
@@ -168,7 +175,14 @@ let package = Package(
 			.target(
 				name: "Common",
 				dependencies: [
-					.product(name: "Zesame", package: "zesame"),
+					zesame,
+				]
+			),
+		
+			.target(
+				name: "EnsurePrivacyFeature",
+				dependencies: [
+					composableArchitecture,
 				]
 			),
 		
@@ -202,9 +216,17 @@ let package = Package(
 			),
 		
 			.target(
+				name: "NewWalletOrRestoreFeature",
+				dependencies: [
+					composableArchitecture,
+				]
+			),
+		
+			.target(
 				name: "OnboardingFeature",
 				dependencies: [
-					tca.product,
+					composableArchitecture,
+					"SetupWalletFeature",
 					"TermsOfServiceFeature",
 					"UserDefaultsClient",
 					"WelcomeFeature",
@@ -258,39 +280,52 @@ let package = Package(
 				]
 			),
 		
+		
+			.target(
+				name: "SetupWalletFeature",
+				dependencies: [
+					composableArchitecture,
+					"EnsurePrivacyFeature",
+					"NewWalletOrRestoreFeature",
+					"Screen",
+					"Styleguide",
+					"Wallet",
+				]
+			),
+		
 			.target(
 				name: "Styleguide",
 				dependencies: [
-					tca.product
+					composableArchitecture
 				]
 			),
 		
 			.target(
 				name: "TransactionIntent",
 				dependencies: [
-					.product(name: "Zesame", package: "zesame")
+					zesame
 				]
 			),
 		
 			.target(
 				name: "TermsOfServiceFeature",
 				dependencies: [
-					tca.product,
+					composableArchitecture,
 					"UserDefaultsClient",
-					.product(name: "Zesame", package: "zesame")
+					zesame,
 				]
 			),
 		
 			.target(
 				name: "UserDefaultsClient",
-				dependencies: [tca.product]
+				dependencies: [composableArchitecture]
 			),
 		
 			.target(
 				name: "Wallet",
 				dependencies: [
-					.product(name: "Zesame", package: "zesame"),
 					"Common",
+					zesame,
 					"ZilliqaAPIEndpoint",
 				]
 			),
@@ -298,7 +333,7 @@ let package = Package(
 			.target(
 				name: "WelcomeFeature",
 				dependencies: [
-					tca.product,
+					composableArchitecture,
 					"Screen",
 					"Styleguide",
 				]
@@ -327,7 +362,7 @@ let package = Package(
 			.target(
 				name: "ZilliqaAPIEndpoint",
 				dependencies: [
-					.product(name: "Zesame", package: "zesame"),
+					zesame,
 				]
 			),
 		

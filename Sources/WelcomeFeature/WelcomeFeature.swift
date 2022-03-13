@@ -15,9 +15,13 @@ public struct WelcomeState: Equatable {
 }
 
 public enum WelcomeAction: Equatable {
-	case startButtonTapped
+	case delegate(DelegateAction)
 }
-
+public extension WelcomeAction {
+	enum DelegateAction: Equatable {
+		case getStarted
+	}
+}
 
 // MARK: - WelcomeScreen
 // MARK: -
@@ -47,7 +51,7 @@ public extension WelcomeScreen {
 					)
 					
 					Button("Start") {
-						viewStore.send(.startButtonTapped)
+						viewStore.send(.delegate(.getStarted))
 					}
 					.buttonStyle(.primary)
 				}

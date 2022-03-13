@@ -33,7 +33,13 @@ public extension TermsOfServiceState {
 public enum TermsOfServiceAction: Equatable {
 	case didFinishReading
 	case acceptButtonTapped
-	case didAcceptTermsOfService
+	
+	case delegate(DelegateAction)
+}
+public extension TermsOfServiceAction {
+	enum DelegateAction: Equatable {
+		case didAcceptTermsOfService
+	}
 }
 
 public struct TermsOfServiceEnvironment {
@@ -53,13 +59,17 @@ public let termsOfServiceReducer = Reducer<TermsOfServiceState, TermsOfServiceAc
 		state.isAcceptButtonEnabled = true
 		return .none
 		
-	case .didAcceptTermsOfService:
+	case .delegate(_):
 		return .none
 		
 	case .acceptButtonTapped:
-		return environment.userDefaults
-			.setHasAcceptedTermsOfService(true)
-			.fireAndForget()
+		return .concatenate(
+			environment.userDefaults
+				.setHasAcceptedTermsOfService(true)
+				.fireAndForget(),
+			
+			Effect(value: .delegate(.didAcceptTermsOfService))
+		)
 	}
 	
 }
