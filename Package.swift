@@ -115,9 +115,14 @@ let package = Package(
 		// Sort alphabetically
 		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
 		.library(name: "AppFeature", targets: ["AppFeature"]),
+		.library(name: "BackUpKeystoreFeature", targets: ["BackUpKeystoreFeature"]),
+		.library(name: "BackUpPrivateKeyFeature", targets: ["BackUpPrivateKeyFeature"]),
+		.library(name: "BackUpPrivateKeyAndKeystoreFeature", targets: ["BackUpPrivateKeyAndKeystoreFeature"]),
+		.library(name: "BackUpRevealedKeyPairFeature", targets: ["BackUpRevealedKeyPairFeature"]),
 		.library(name: "BackUpWalletFeature", targets: ["BackUpWalletFeature"]),
 		.library(name: "Checkbox", targets: ["Checkbox"]),
 		.library(name: "Common", targets: ["Common"]),
+		.library(name: "DecryptKeystoreFeature", targets: ["DecryptKeystoreFeature"]),
 		.library(name: "EnsurePrivacyFeature", targets: ["EnsurePrivacyFeature"]),
 		.library(name: "GenerateNewWalletFeature", targets: ["GenerateNewWalletFeature"]),
 		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
@@ -172,6 +177,46 @@ let package = Package(
 		
 		
 			.target(
+				name: "BackUpKeystoreFeature",
+				dependencies: [
+					composableArchitecture,
+					"Screen",
+					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "BackUpPrivateKeyFeature",
+				dependencies: [
+					composableArchitecture,
+					"DecryptKeystoreFeature",
+					"BackUpRevealedKeyPairFeature",
+				]
+			),
+		
+		
+		.target(
+			name: "BackUpPrivateKeyAndKeystoreFeature",
+			dependencies: [
+				"BackUpKeystoreFeature",
+				"BackUpPrivateKeyFeature",
+				"Checkbox",
+				composableArchitecture,
+				"Screen",
+				"Styleguide",
+			]
+		),
+		
+			.target(
+				name: "BackUpRevealedKeyPairFeature",
+				dependencies: [
+					composableArchitecture,
+					"Screen",
+					"Styleguide",
+				]
+			),
+		
+			.target(
 				name: "BackUpWalletFeature",
 				dependencies: [
 					"Checkbox",
@@ -179,6 +224,7 @@ let package = Package(
 					"InputField",
 					"Screen",
 					"Styleguide",
+					"BackUpPrivateKeyAndKeystoreFeature",
 				]
 			),
 		
@@ -193,6 +239,16 @@ let package = Package(
 				name: "Common",
 				dependencies: [
 					zesame,
+				]
+			),
+		
+			.target(
+				name: "DecryptKeystoreFeature",
+				dependencies: [
+					composableArchitecture,
+					"InputField",
+					"Screen",
+					"Styleguide",
 				]
 			),
 		
@@ -329,6 +385,7 @@ let package = Package(
 				dependencies: [
 					"Styleguide",
 					"TransactionIntent",
+					"Wallet",
 				]
 			),
 		

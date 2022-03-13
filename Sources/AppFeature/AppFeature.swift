@@ -89,7 +89,7 @@ public extension AppView {
 				if viewStore.isOnboardingPresented {
 					IfLetStore(
 						store.scope(state: \.onboarding, action: AppAction.onboarding),
-						then: OnboardingView.init(store:)
+						then: OnboardingCoordinatorView.init(store:)
 					).zIndex(1)
 				} else {
 					Text("MAIN VIEW").font(.largeTitle)

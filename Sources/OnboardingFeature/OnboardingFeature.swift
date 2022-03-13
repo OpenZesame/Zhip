@@ -69,6 +69,12 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
 	),
 	
+	setupWalletReducer.pullback(
+		state: \.setupWallet,
+		action: /OnboardingAction.setupWalletAction,
+		environment: { _ in SetupWalletEnvironment() }
+	),
+	
 	Reducer { state, action, environment in
 		switch action {
 		case .welcomeAction(.delegate(.getStarted)):
@@ -92,43 +98,51 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 	}
 )
 
-public struct OnboardingView: View {
+public struct OnboardingCoordinatorView: View {
 	let store: Store<OnboardingState, OnboardingAction>
-	@ObservedObject var viewStore: ViewStore<ViewState, OnboardingAction>
 	
 	public init(store: Store<OnboardingState, OnboardingAction>) {
 		self.store = store
-		self.viewStore = ViewStore(store.scope(state: ViewState.init(state:)))
 	}
 }
 
-public extension OnboardingView {
+public extension OnboardingCoordinatorView {
 	var body: some View {
-		Group {
-			switch viewStore.step {
-			case .step0_Welcome:
-				WelcomeScreen(
-					store: store.scope(
-						state: \.welcome,
-						action: OnboardingAction.welcomeAction
+		WithViewStore(
+			store.scope(state: ViewState.init)
+		) { viewStore in
+			Group {
+				switch viewStore.step {
+				case .step0_Welcome:
+					WelcomeScreen(
+						store: store.scope(
+							state: \.welcome,
+							action: OnboardingAction.welcomeAction
+						)
 					)
-				)
-			case .step1_TermsOfService:
-				TermsOfServiceScreen(
-					store: store.scope(
-						state: \.termsOfService,
-						action: OnboardingAction.termsOfServiceAction
+				case .step1_TermsOfService:
+					TermsOfServiceScreen(
+						store: store.scope(
+							state: \.termsOfService,
+							action: OnboardingAction.termsOfServiceAction
+						)
 					)
-				)
-			default:
-				Text("TODO impl view for step: \(String(describing: viewStore.step))")
+				case .step2_SetupWallet:
+					SetupWalletCoordinatorView(
+						store: store.scope(
+							state: \.setupWallet,
+							action: OnboardingAction.setupWalletAction
+						)
+					)
+				default:
+					Text("TODO impl view for step: \(String(describing: viewStore.step))")
+				}
 			}
 		}
-		
 	}
 }
 
-public extension OnboardingView {
+private extension OnboardingCoordinatorView {
 	struct ViewState: Equatable {
 		let isSkipButtonVisible: Bool
 		let step: OnboardingState.Step

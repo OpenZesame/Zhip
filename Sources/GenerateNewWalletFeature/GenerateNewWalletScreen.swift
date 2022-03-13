@@ -16,7 +16,14 @@ import SwiftUI
 public struct GenerateNewWalletState: Equatable {
 	public init() {}
 }
-public enum GenerateNewWalletAction: Equatable {}
+public enum GenerateNewWalletAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension GenerateNewWalletAction {
+	enum DelegateAction: Equatable {
+		case finishedGeneratingNewWallet
+	}
+}
 
 public struct GenerateNewWalletEnvironment {
 	public init() {}

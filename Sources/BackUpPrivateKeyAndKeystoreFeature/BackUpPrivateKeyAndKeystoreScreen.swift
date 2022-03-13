@@ -5,23 +5,67 @@
 //  Created by Alexander Cyon on 2022-02-14.
 //
 
-import SwiftUI
-import Styleguide
-import Screen
-import Checkbox
 
-// MARK: - BackUpWalletScreen
+import BackUpKeystoreFeature
+import BackUpPrivateKeyFeature
+import Checkbox
+import ComposableArchitecture
+import Screen
+import Styleguide
+import SwiftUI
+
+public struct BackUpPrivateKeyAndKeystoreState: Equatable {
+	
+	public var backUpPrivateKey: BackUpPrivateKeyState
+	public var backUpKeystore: BackUpKeystoreState
+	public init(
+		backUpPrivateKey: BackUpPrivateKeyState = .init(),
+		backUpKeystore: BackUpKeystoreState = .init()
+	) {
+		self.backUpPrivateKey = backUpPrivateKey
+		self.backUpKeystore = backUpKeystore
+	}
+}
+
+public enum BackUpPrivateKeyAndKeystoreAction: Equatable {
+}
+
+public struct BackUpPrivateKeyAndKeystoreEnvironment {
+	public init() {}
+}
+
+public let backUpPrivateKeyAndKeystoreReducer = Reducer<
+	BackUpPrivateKeyAndKeystoreState,
+	BackUpPrivateKeyAndKeystoreAction,
+	BackUpPrivateKeyAndKeystoreEnvironment
+> { state, action, environment in
+	
+	
+	return .none
+	
+}
+
+
+// MARK: - BackUpPrivateKeyAndKeystoreScreen
 // MARK: -
-struct BackUpWalletScreen: View {
+public struct BackUpPrivateKeyAndKeystoreScreen: View {
 //    @ObservedObject var viewModel: BackUpWalletViewModel
-//	let store: Store<>
+	let store: Store<BackUpPrivateKeyAndKeystoreState, BackUpPrivateKeyAndKeystoreAction>
+	public init(
+		store: Store<BackUpPrivateKeyAndKeystoreState, BackUpPrivateKeyAndKeystoreAction>
+	) {
+		self.store = store
+	}
 }
 
 // MARK: - View
 // MARK: -
-extension BackUpWalletScreen {
+public extension BackUpPrivateKeyAndKeystoreScreen {
     
     var body: some View {
+		WithViewStore(
+			store.scope(state: ViewState.init)
+		) { viewStore in
         ForceFullScreen {
             VStack(spacing: 16) {
            
@@ -58,13 +102,14 @@ extension BackUpWalletScreen {
 //                dismissButton: .default(Text("OK"))
 //            )
 //        }
-    }
+		}
+	}
     
 }
 
 // MARK: - Subviews
 // MARK: -
-private extension BackUpWalletScreen {
+private extension BackUpPrivateKeyAndKeystoreScreen {
     @ViewBuilder
     var backupViews: some View {
 //        VStack(alignment: .leading) {
@@ -96,4 +141,15 @@ private extension BackUpWalletScreen {
 		Text("CODE COMMENTED OUT")
     }
     
+}
+
+
+// MARK: - Subviews
+// MARK: -
+private extension BackUpPrivateKeyAndKeystoreScreen {
+	struct ViewState: Equatable {
+		init(state: BackUpPrivateKeyAndKeystoreState) {
+			
+		}
+	}
 }

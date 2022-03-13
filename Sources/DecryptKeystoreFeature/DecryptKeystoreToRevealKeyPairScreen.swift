@@ -5,22 +5,50 @@
 //  Created by Alexander Cyon on 2022-02-18.
 //
 
-import SwiftUI
 import Combine
-import Styleguide
-import Screen
+import ComposableArchitecture
 import InputField
+import Screen
+import Styleguide
+import SwiftUI
+
+
+public struct DecryptKeystoreState: Equatable {
+	public init() {
+		
+	}
+}
+
+public enum DecryptKeystoreAction: Equatable {
+	
+}
+
+public struct DecryptKeystoreEnvironment {
+	public init() {}
+}
+
+public let decryptKeystoreReducer = Reducer<DecryptKeystoreState, DecryptKeystoreAction, DecryptKeystoreEnvironment> { state, action, environment in
+	return .none
+}
+
 
 // MARK: - DecryptKeystoreToRevealKeyPairScreen
 // MARK: -
 public struct DecryptKeystoreToRevealKeyPairScreen: View {
 //    @ObservedObject var viewModel: DecryptKeystoreToRevealKeyPairViewModel
+	let store: Store<DecryptKeystoreState, DecryptKeystoreAction>
+	public init(store: Store<DecryptKeystoreState, DecryptKeystoreAction>) {
+		self.store = store
+	}
 }
 
 // MARK: - View
 // MARK: -
 public extension DecryptKeystoreToRevealKeyPairScreen {
     var body: some View {
+//		WithViewStore(
+//			state.scope()
+//		)
         ForceFullScreen {
 //            VStack {
 //
