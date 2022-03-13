@@ -53,18 +53,18 @@ extension SettingsCoordinator {
                 .onReceive(settingsNavigator) { userDid in
                     switch userDid {
                     case .removeWallet:
-                        toRemoveWallet()
+						self.toRemoveWallet()
                     case .removePincode:
-                        toUnlockAppWithPINToRemoveIt()
+						self.toUnlockAppWithPINToRemoveIt()
                     case .setPincode:
-                        toSetPIN()
+						self.toSetPIN()
                     case .backupWallet:
-                        toBackUpWallet()
+						self.toBackUpWallet()
                     case .readTermsOfService:
-                        toTermsOfService()
+						self.toTermsOfService()
                         #if DEBUG
                     case .debugOnlyNukeApp:
-                        debugOnlyNukeWholeApp()
+						self.debugOnlyNukeWholeApp()
                         #endif // DEBUG
                     default:
                         fatalError("unhandled")
@@ -73,7 +73,7 @@ extension SettingsCoordinator {
                 .onReceive(setupPinCoordinatorNavigator) { userDid in
                     switch userDid {
                     case .finishedPINSetup:
-                        popLast {
+						self.popLast {
                             print("SettingsCoordinator:popLast: SetupPINCoordinator should deinit")
                         }
                     }
@@ -81,12 +81,12 @@ extension SettingsCoordinator {
                 .onReceive(unlockAppWithPINNavigator) { userDid in
                     switch userDid {
                     case .enteredCorrectPINCode(let intent):
-                        popLast {
+						self.popLast {
                             print("SettingsCoordinator:popLast UnlockAppWithPinViewModel should deinit")
-                            userAuthenticated(to: intent)
+							self.userAuthenticated(to: intent)
                         }
                     case .cancel:
-                        popLast {
+						self.popLast {
                             print("SettingsCoordinator:popLast UnlockAppWithPinViewModel should deinit")
                         }
                     }
@@ -94,7 +94,7 @@ extension SettingsCoordinator {
                 .onReceive(backUpWalletCoordinatorNavigator) { userDid in
                     switch userDid {
                     case .userDidBackUpWallet:
-                        popLast {
+						self.popLast {
                             print("SettingsCoordinator:popLast - userDidBackUpWallet - BackUpWalletCoordinator should deinit")
                         }
                     }
@@ -102,7 +102,7 @@ extension SettingsCoordinator {
                 .onReceive(termsOfServiceNavigator) { userDid in
                     switch userDid {
                     case .userDidAcceptTerms:
-                        popLast {
+						self.popLast {
                             print("SettingsCoordinator:popLast - userDidBackUpWallet - BackUpWalletCoordinator should deinit")
                         }
                     }
