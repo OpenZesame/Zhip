@@ -89,6 +89,7 @@
 		487CE3E427B641C6003BD07A /* TransferScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E227B641C6003BD07A /* TransferScreen.swift */; };
 		487CE3E727B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
 		487CE3E827B64204003BD07A /* ContactsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487CE3E627B64204003BD07A /* ContactsScreen.swift */; };
+		4896035827E11D3A0096BE21 /* WalletGeneratorUnsafeFast in Frameworks */ = {isa = PBXBuildFile; productRef = 4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */; };
 		48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6D27DDBB83006E7938 /* AppFeature */; };
 		48A79E7027DDBB9F006E7938 /* ZhipEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6F27DDBB9F006E7938 /* ZhipEngine */; };
 		48A9580D27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A9580C27CA01FC001CAD15 /* UnlockAppWithPINScreen.swift */; };
@@ -162,6 +163,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4896035827E11D3A0096BE21 /* WalletGeneratorUnsafeFast in Frameworks */,
 				48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */,
 				48A79E7027DDBB9F006E7938 /* ZhipEngine in Frameworks */,
 			);
@@ -485,6 +487,7 @@
 			packageProductDependencies = (
 				48A79E6D27DDBB83006E7938 /* AppFeature */,
 				48A79E6F27DDBB9F006E7938 /* ZhipEngine */,
+				4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */,
 			);
 			productName = "Zhip (iOS)";
 			productReference = 4872FA2427B4F8F5008B7BD0 /* Zhip.app */;
@@ -928,6 +931,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WalletGeneratorUnsafeFast;
+		};
 		48A79E6D27DDBB83006E7938 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;

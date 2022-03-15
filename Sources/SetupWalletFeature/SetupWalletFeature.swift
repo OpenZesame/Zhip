@@ -12,6 +12,7 @@ import NewWalletFeature
 import NewWalletOrRestoreFeature
 import RestoreWalletFeature
 import SwiftUI
+import WalletGenerator
 
 public struct SetupWalletState: Equatable {
 	public enum Step: Equatable {
@@ -64,7 +65,16 @@ public extension SetupWalletAction {
 }
 
 public struct SetupWalletEnvironment {
-	public init() {}
+	public let walletGenerator: WalletGenerator
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	
+	public init(
+		walletGenerator: WalletGenerator,
+		mainQueue: AnySchedulerOf<DispatchQueue>
+	) {
+		self.walletGenerator = walletGenerator
+		self.mainQueue = mainQueue
+	}
 }
 
 public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, SetupWalletEnvironment>.combine(
@@ -80,7 +90,12 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 	newWalletReducer.pullback(
 		state: \.newWallet,
 		action: /SetupWalletAction.newWallet,
-		environment: { _ in NewWalletEnvironment() }
+		environment: {
+			NewWalletEnvironment(
+				walletGenerator: $0.walletGenerator,
+				mainQueue: $0.mainQueue
+			)
+		}
 	),
 	
 	restoreWalletReducer.pullback(

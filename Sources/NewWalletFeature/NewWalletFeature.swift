@@ -10,6 +10,7 @@ import ComposableArchitecture
 import EnsurePrivacyFeature
 import GenerateNewWalletFeature
 import SwiftUI
+import WalletGenerator
 
 public struct NewWalletState: Equatable {
 	
@@ -52,7 +53,16 @@ public extension NewWalletAction {
 }
 
 public struct NewWalletEnvironment {
-	public init() {}
+	public let walletGenerator: WalletGenerator
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	
+	public init(
+		walletGenerator: WalletGenerator,
+		mainQueue: AnySchedulerOf<DispatchQueue>
+	) {
+		self.walletGenerator = walletGenerator
+		self.mainQueue = mainQueue
+	}
 }
 
 public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWalletEnvironment>.combine(
@@ -61,6 +71,17 @@ public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWallet
 		state: \.ensurePrivacy,
 		action: /NewWalletAction.ensurePrivacy,
 		environment: { _ in EnsurePrivacyEnvironment() }
+	),
+	
+	generateNewWalletReducer.pullback(
+		state: \.generateNewWallet,
+		action: /NewWalletAction.generateNewWallet,
+		environment: {
+			GenerateNewWalletEnvironment(
+				walletGenerator: $0.walletGenerator,
+				mainQueue: $0.mainQueue
+			)
+		}
 	),
 	
 	Reducer { state, action, environment in

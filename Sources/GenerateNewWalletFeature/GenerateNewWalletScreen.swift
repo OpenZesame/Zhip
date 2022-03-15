@@ -9,14 +9,58 @@ import Checkbox
 import ComposableArchitecture
 import HoverPromptTextField
 import InputField
+import PasswordInputFields
 import Screen
 import Styleguide
 import SwiftUI
+import WalletGenerator
 
 public struct GenerateNewWalletState: Equatable {
-	public init() {}
+	
+	@BindableState public var password: String
+	@BindableState public var passwordConfirmation: String
+	@BindableState public var isPasswordValid: Bool
+	@BindableState public var isPasswordConfirmationValid: Bool
+	@BindableState public var userHasConfirmedBackingUpPassword: Bool
+	
+	public var isContinueButtonEnabled: Bool
+	public var isGeneratingWallet: Bool
+	
+	public init(
+		password: String = "",
+		passwordConfirmation: String = "",
+		isPasswordValid: Bool = false,
+		isPasswordConfirmationValid: Bool = false,
+		userHasConfirmedBackingUpPassword: Bool = false,
+		isProceedButtonEnabled: Bool = false,
+		isContinueButtonEnabled: Bool = false,
+		isGeneratingWallet: Bool = false
+	) {
+		self.password = password
+		self.passwordConfirmation = passwordConfirmation
+		self.isPasswordValid = isPasswordValid
+		self.isPasswordConfirmationValid = isPasswordConfirmationValid
+		self.userHasConfirmedBackingUpPassword = userHasConfirmedBackingUpPassword
+		self.isContinueButtonEnabled = isContinueButtonEnabled
+		self.isGeneratingWallet = isGeneratingWallet
+	}
 }
-public enum GenerateNewWalletAction: Equatable {
+
+internal extension GenerateNewWalletState {
+	var arePasswordsValidAndEqual: Bool {
+		guard isPasswordValid && isPasswordConfirmationValid else { return false }
+		assert(password.count >= 8)
+		assert(passwordConfirmation.count >= 8)
+		return password == passwordConfirmation
+	}
+}
+
+public enum GenerateNewWalletAction: Equatable, BindableAction {
+	
+	case onAppear
+	case continueButtonTapped
+	
+	case binding(BindingAction<GenerateNewWalletState>)
 	case delegate(DelegateAction)
 }
 public extension GenerateNewWalletAction {
@@ -25,13 +69,50 @@ public extension GenerateNewWalletAction {
 	}
 }
 
+
+
 public struct GenerateNewWalletEnvironment {
-	public init() {}
+	public let walletGenerator: WalletGenerator
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	
+	public init(
+		walletGenerator: WalletGenerator,
+		mainQueue: AnySchedulerOf<DispatchQueue>
+	) {
+		self.walletGenerator = walletGenerator
+		self.mainQueue = mainQueue
+	}
 }
 
 public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNewWalletAction, GenerateNewWalletEnvironment> { state, action, environment in
-	return .none
-}
+	
+	switch action {
+	case .onAppear:
+		#if DEBUG
+		state.password = unsafeDebugPassword
+		state.passwordConfirmation = unsafeDebugPassword
+		state.userHasConfirmedBackingUpPassword = true
+		#endif
+		return .none
+		
+	case .binding:
+		state.isContinueButtonEnabled = state.arePasswordsValidAndEqual && state.userHasConfirmedBackingUpPassword
+		return .none
+		
+	case .continueButtonTapped:
+		assert(state.isContinueButtonEnabled)
+		state.isGeneratingWallet = true
+//		return environment
+		fatalError()
+		
+//	case .binding(\.$userHasConfirmedBackingUpPassword):
+//		return .none
+//	case .binding(\.$password):
+//		return .none
+	default:
+		return .none
+	}
+}.binding()
 
 // MARK: - GenerateNewWalletScreen
 // MARK: -
@@ -47,9 +128,7 @@ public struct GenerateNewWalletScreen: View {
 public extension GenerateNewWalletScreen {
 	
 	var body: some View {
-		WithViewStore(
-			store.scope(state: ViewState.init)
-		) { viewStore in
+		WithViewStore(store) { viewStore in
 			ForceFullScreen {
 				VStack(spacing: 40) {
 					
@@ -58,37 +137,29 @@ public extension GenerateNewWalletScreen {
 						subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
 					)
 					
-//					PasswordInputFields(
-//						password: $viewModel.password,
-//						isPasswordValid: $viewModel.isPasswordValid,
-//						passwordConfirmation: $viewModel.passwordConfirmation,
-//						isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
-//					)
-					Text("PASSWORD INPUT FIELDS COMMENTED OUT")
+					PasswordInputFields(
+						password: viewStore.binding(\.$password),
+						isPasswordValid: viewStore.binding(\.$isPasswordValid),
+						passwordConfirmation: viewStore.binding(\.$passwordConfirmation),
+						isPasswordConfirmationValid: viewStore.binding(\.$isPasswordConfirmationValid)
+					)
 					
 					Spacer()
 					
-//					Checkbox(
-//						"I have securely backed up my encryption password",
-//						isOn: $viewModel.userHasConfirmedBackingUpPassword
-//					)
-					Text("Checkbox commented out")
+					Checkbox(
+						"I have securely backed up my encryption password",
+						isOn: viewStore.binding(\.$userHasConfirmedBackingUpPassword)
+					)
 					
-//					Button("Continue") {
-//						Task { @MainActor in
-//							await viewModel.continue()
-//						}
-//					}
-//					.buttonStyle(.primary(isLoading: $viewModel.isGeneratingWallet))
-//					.enabled(if: viewModel.canProceed)
-					Text("Contine button commented out")
-				}
+					Button("Continue") {
+						viewStore.send(.continueButtonTapped)
+					}
+					.buttonStyle(.primary(isLoading: viewStore.isGeneratingWallet))
+					.enabled(if: viewStore.isContinueButtonEnabled)
+				}.padding()
 #if DEBUG
 				.onAppear {
-//					viewModel.password = unsafeDebugPassword
-//					viewModel.passwordConfirmation = unsafeDebugPassword
-//					viewModel.userHasConfirmedBackingUpPassword = true
-					print("onAppear logic commted out!")
+					viewStore.send(.onAppear)
 				}
 #endif
 			}
@@ -99,72 +170,3 @@ public extension GenerateNewWalletScreen {
 #if DEBUG
 let unsafeDebugPassword = "apabanan"
 #endif
-
-private extension GenerateNewWalletScreen {
-	struct ViewState: Equatable {
-		init(state: GenerateNewWalletState) {
-			
-		}
-	}
-}
-
-extension Array where Element == ValidateInputRequirement {
-    static var encryptionPassword: [ValidateInputRequirement] {
-       [
-        ValidateInputRequirement.encryptionPassword
-       ]
-    }
-}
-
-extension ValidateInputRequirement {
-    static let encryptionPassword: ValidateInputRequirement = { ValidateInputRequirement.minimumLength(of: 8) as! ValidateInputRequirement }()
-}
-
-struct PasswordInputFields: View {
-    
-    @Binding var password: String
-    @Binding var isPasswordValid: Bool
-    @Binding var passwordConfirmation: String
-    @Binding var isPasswordConfirmationValid: Bool
-    
-    var body: some View {
-        VStack(spacing: 20) {
- 
-            InputField.encryptionPassword(
-                text: $password,
-                isValid: $isPasswordValid
-            )
-            
-            InputField.encryptionPassword(
-                prompt: "Confirm encryption password",
-                text: $passwordConfirmation,
-                isValid: $isPasswordConfirmationValid,
-                additionalValidationRules: [
-                    Validation { confirmText in
-                        if confirmText != password {
-                            return "Passwords does not match."
-                        }
-                        return nil // Valid
-                    }
-                ]
-            )
-        }
-    }
-}
-
-extension InputField {
-    static func encryptionPassword(
-        prompt: String = "Encryption password",
-        text: Binding<String>,
-        isValid: Binding<Bool>? = nil,
-        additionalValidationRules: [Validation] = []
-    ) -> Self {
-        Self(
-            prompt: prompt,
-            text: text,
-            isValid: isValid,
-            isSecure: true,
-            validationRules: [ValidateInputRequirement.encryptionPassword] + additionalValidationRules
-        )
-    }
-}

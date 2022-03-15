@@ -50,3 +50,20 @@ public extension Wallet {
         wallet.address
     }
 }
+
+
+#if DEBUG
+public extension KDFParams {
+	
+	static var unsafeFast: Self {
+		do {
+			return try Self(
+				costParameterN: 1,
+				costParameterC: 1
+			)
+		} catch {
+			fatalError("Incorrect implementation, should always be able to create default KDF params, unexpected error: \(error)")
+		}
+	}
+}
+#endif

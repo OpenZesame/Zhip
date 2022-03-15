@@ -12,13 +12,13 @@ public struct PrimaryButtonStyle: ButtonStyle {
         
     public static let defaultCornerRadius: CGFloat = 8
     private let cornerRadius: CGFloat
-    @Binding private var isLoading: Bool
+    private var isLoading: Bool
 
 	public init(
-        isLoading: Binding<Bool>? = nil,
+        isLoading: Bool = false,
         cornerRadius: CGFloat = Self.defaultCornerRadius
     ) {
-        self._isLoading = isLoading ?? .constant(false)
+        self.isLoading = isLoading
         self.cornerRadius = cornerRadius
     }
     
@@ -79,7 +79,7 @@ public extension ButtonStyle where Self == PrimaryButtonStyle {
     /// To apply this style to a button, or to a view that contains buttons, use
     /// the ``View.buttonStyle(_:)`` modifier.
     static func primary(
-        isLoading: Binding<Bool>? = nil,
+        isLoading: Bool = false,
         cornerRadius: CGFloat = PrimaryButtonStyle.defaultCornerRadius
     ) -> PrimaryButtonStyle {
         .init(isLoading: isLoading, cornerRadius: cornerRadius)

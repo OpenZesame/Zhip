@@ -10,6 +10,7 @@ import OnboardingFeature
 import Styleguide
 import SwiftUI
 import UserDefaultsClient
+import WalletGenerator
 
 public struct AppState: Equatable {
 	public var onboarding: OnboardingState?
@@ -32,11 +33,17 @@ public enum AppAction: Equatable {
 
 public struct AppEnvironment {
 	public var userDefaults: UserDefaultsClient
+	public var walletGenerator: WalletGenerator
+	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	
 	public init(
-		userDefaults: UserDefaultsClient
+		userDefaults: UserDefaultsClient,
+		walletGenerator: WalletGenerator,
+		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.userDefaults = userDefaults
+		self.walletGenerator = walletGenerator
+		self.mainQueue = mainQueue
 	}
 }
 
@@ -48,7 +55,9 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			action: /AppAction.onboarding,
 			environment: {
 				OnboardingEnvironment(
-					userDefaults: $0.userDefaults
+					userDefaults: $0.userDefaults,
+					walletGenerator: $0.walletGenerator,
+					mainQueue: $0.mainQueue
 				)
 			}
 		),

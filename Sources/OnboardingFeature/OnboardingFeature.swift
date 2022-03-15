@@ -11,6 +11,7 @@ import SwiftUI
 import TermsOfServiceFeature
 import UserDefaultsClient
 import WelcomeFeature
+import WalletGenerator
 
 public struct OnboardingState: Equatable {
 	public var step: Step
@@ -53,11 +54,17 @@ public enum OnboardingAction: Equatable {
 
 public struct OnboardingEnvironment {
 	public var userDefaults: UserDefaultsClient
+	public var walletGenerator: WalletGenerator
+	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	
 	public init(
-		userDefaults: UserDefaultsClient
+		userDefaults: UserDefaultsClient,
+		walletGenerator: WalletGenerator,
+		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.userDefaults = userDefaults
+		self.walletGenerator = walletGenerator
+		self.mainQueue = mainQueue
 	}
 }
 
@@ -72,7 +79,12 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 	setupWalletReducer.pullback(
 		state: \.setupWallet,
 		action: /OnboardingAction.setupWalletAction,
-		environment: { _ in SetupWalletEnvironment() }
+		environment: {
+			SetupWalletEnvironment(
+				walletGenerator: $0.walletGenerator,
+				mainQueue: $0.mainQueue
+			)
+		}
 	),
 	
 	Reducer { state, action, environment in

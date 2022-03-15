@@ -30,6 +30,7 @@ public struct Checkbox: View {
 
     
 public struct CheckboxToggleStyle: ToggleStyle {
+	public init() {}
     public func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .center, spacing: 16) {
             Image(

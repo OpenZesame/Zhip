@@ -59,7 +59,7 @@ private let zesame = zesameDependency.product
 
 private let composableArchitectureDependency: Dependency = .init(
 	category: .architecture,
-	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.33.1"),
+	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", revision: "d924b9ad27d2a2ccb0ada2639f5255084ff63382"), // later than 0.33.1, fixes WithViewStore bugs, see: https://github.com/pointfreeco/swift-composable-architecture/issues/1022 and PR https://github.com/pointfreeco/swift-composable-architecture/pull/1015
 	product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
 	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
 )
@@ -133,6 +133,7 @@ let package = Package(
 		.library(name: "NewWalletFeature", targets: ["NewWalletFeature"]),
 		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
+		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
 		.library(name: "Preferences", targets: ["Preferences"]),
@@ -146,6 +147,9 @@ let package = Package(
 		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
 		.library(name: "Wallet", targets: ["Wallet"]),
+		.library(name: "WalletGenerator", targets: ["WalletGenerator"]),
+		.library(name: "WalletGeneratorLive", targets: ["WalletGeneratorLive"]),
+		.library(name: "WalletGeneratorUnsafeFast", targets: ["WalletGeneratorUnsafeFast"]),
 		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
 		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
 		.library(name: "ZhipEngine", targets: ["ZhipEngine"]),
@@ -168,6 +172,7 @@ let package = Package(
 					"OnboardingFeature",
 					"Styleguide",
 					"UserDefaultsClient",
+					"WalletGeneratorLive",
 				]
 			),
 		.testTarget(
@@ -268,15 +273,18 @@ let package = Package(
 					composableArchitecture,
 					"HoverPromptTextField",
 					"InputField",
+					"PasswordInputFields",
 					"Screen",
 					"Styleguide",
+					"Wallet",
+					"WalletGenerator",
 				]
 			),
 		
 			.target(
 				name: "HoverPromptTextField",
 				dependencies: [
-					"Styleguide"
+					"Styleguide",
 				]
 			),
 		
@@ -284,7 +292,7 @@ let package = Package(
 				name: "InputField",
 				dependencies: [
 					"Styleguide",
-					"HoverPromptTextField"
+					"HoverPromptTextField",
 				]
 			),
 		
@@ -292,7 +300,7 @@ let package = Package(
 				name: "KeychainManager",
 				dependencies: [
 					"Wallet",
-					"KeyValueStore"
+					"KeyValueStore",
 				]
 			),
 		
@@ -315,10 +323,11 @@ let package = Package(
 			.target(
 				name: "NewWalletFeature",
 				dependencies: [
+					"BackUpWalletFeature",
 					composableArchitecture,
 					"EnsurePrivacyFeature",
 					"GenerateNewWalletFeature",
-					"BackUpWalletFeature",
+					"WalletGenerator",
 				]
 			),
 			
@@ -340,6 +349,16 @@ let package = Package(
 					"TermsOfServiceFeature",
 					"UserDefaultsClient",
 					"WelcomeFeature",
+					"WalletGenerator",
+				]
+			),
+		
+		
+			.target(
+				name: "PasswordInputFields",
+				dependencies: [
+					"InputField",
+					"HoverPromptTextField",
 				]
 			),
 		
@@ -415,6 +434,7 @@ let package = Package(
 					"Screen",
 					"Styleguide",
 					"Wallet",
+					"WalletGenerator"
 				]
 			),
 		
@@ -453,6 +473,31 @@ let package = Package(
 					"Common",
 					zesame,
 					"ZilliqaAPIEndpoint",
+				]
+			),
+		
+			.target(
+				name: "WalletGenerator",
+				dependencies: [
+					"Common",
+					composableArchitecture,
+					"Wallet",
+				]
+			),
+		
+			.target(
+				name: "WalletGeneratorLive",
+				dependencies: [
+					"WalletGenerator",
+					zesame,
+				]
+			),
+		
+			.target(
+				name: "WalletGeneratorUnsafeFast",
+				dependencies: [
+					"WalletGenerator",
+					zesame
 				]
 			),
 		

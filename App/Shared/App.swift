@@ -9,6 +9,11 @@ import AppFeature
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
+import WalletGenerator
+import WalletGeneratorLive
+#if DEBUG
+import WalletGeneratorUnsafeFast
+#endif // DEBUG
 
 private func makeAppStore() -> Store<AppState, AppAction> {
 	.init(
@@ -111,6 +116,18 @@ extension ZhipApp {
 
 extension AppEnvironment {
 	static var live: Self {
-		.init(userDefaults: .live())
+		.init(
+			userDefaults: .live(),
+			walletGenerator: walletGenerator(),
+			mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+		)
+	}
+	
+	static func walletGenerator() -> WalletGenerator {
+#if DEBUG
+		return WalletGenerator.unsafeFast
+#else
+		return WalletGenerator.live()
+#endif
 	}
 }
