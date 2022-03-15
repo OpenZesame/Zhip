@@ -25,7 +25,7 @@ public struct PasswordInputFields: View {
 		self._password = password
 		self._isPasswordValid = isPasswordValid
 		self._passwordConfirmation = passwordConfirmation
-		self._isPasswordConfirmationValid = isPasswordValid
+		self._isPasswordConfirmationValid = isPasswordConfirmationValid
 	}
 
 	public var body: some View {

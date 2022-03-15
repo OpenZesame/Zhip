@@ -19,10 +19,12 @@ public extension HoverPromptTextFieldConfig {
         
         public let becomeFirstResponseOnAppear: Bool
         public let maxLength: Int?
+        public let minLength: Int?
         
         public init(
             validationTriggering: ValidationTriggering = .default,
             validation: Validation = .default,
+			minLength: Int? = 1,
             maxLength: Int? = nil,
             characterRestriction: CharacterRestriction? = nil,
             becomeFirstResponseOnAppear: Bool = false
@@ -30,6 +32,7 @@ public extension HoverPromptTextFieldConfig {
             self.validationTriggering = validationTriggering
             self.validation = validation
             self.maxLength = maxLength
+			self.minLength = minLength
             self.characterRestriction = characterRestriction
             self.becomeFirstResponseOnAppear = becomeFirstResponseOnAppear
         }

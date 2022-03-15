@@ -9,15 +9,15 @@ import Foundation
 import ComposableArchitecture
 import Wallet
 
-public enum WalletGeneratorError: LocalizedError {
+public enum WalletGeneratorError: LocalizedError, Equatable {
 	case invalidEncryptionPassword
-	case internalError(Swift.Error)
+	case internalError(error: String)
 	public var errorDescription: String? {
 		switch self {
 		case .invalidEncryptionPassword:
 			return "Encryption password does not meet minimum safety requirements. Try a longer and safer password."
 		case let .internalError(underlyingError):
-			return "Internal error, reason: \(String(describing: underlyingError))"
+			return "Internal error, reason: \(underlyingError)"
 		}
 	}
 }

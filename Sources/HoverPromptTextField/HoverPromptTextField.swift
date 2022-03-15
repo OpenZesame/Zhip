@@ -260,17 +260,35 @@ private extension HoverPromptTextField {
       
         return errorMessages
     }
+	
+	func invalidateIfEmptyIfNeeded() {
+		guard
+			isEmpty,
+			let minLength = config.behaviour.minLength,
+			minLength > 0
+		else {
+			return
+		}
+		errorMessages = ["Cannot be empty"]
+		isValid = false
+	}
     
     /// Updates validation state by performing validation
     func validate() {
+		defer {
+			invalidateIfEmptyIfNeeded()
+		}
         errorMessages = validationResult()
         isValid = isValid(given: errorMessages)
     }
     
-    func onlyIfOKChangeValidationStateToOK() {
-        let errors = validationResult()
-        guard isValid(given: errors) else {
-            // Invalid, but don't change state to error.
+	func onlyIfOKChangeValidationStateToOK() {
+		defer {
+			invalidateIfEmptyIfNeeded()
+		}
+		let errors = validationResult()
+		guard isValid(given: errors) else {
+			// Invalid, but don't change state to error.
             return
         }
         // Validation passes, all OK => change state to OK

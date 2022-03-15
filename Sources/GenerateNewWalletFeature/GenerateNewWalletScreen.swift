@@ -13,6 +13,7 @@ import PasswordInputFields
 import Screen
 import Styleguide
 import SwiftUI
+import Wallet
 import WalletGenerator
 
 public struct GenerateNewWalletState: Equatable {
@@ -32,7 +33,6 @@ public struct GenerateNewWalletState: Equatable {
 		isPasswordValid: Bool = false,
 		isPasswordConfirmationValid: Bool = false,
 		userHasConfirmedBackingUpPassword: Bool = false,
-		isProceedButtonEnabled: Bool = false,
 		isContinueButtonEnabled: Bool = false,
 		isGeneratingWallet: Bool = false
 	) {
@@ -49,8 +49,12 @@ public struct GenerateNewWalletState: Equatable {
 internal extension GenerateNewWalletState {
 	var arePasswordsValidAndEqual: Bool {
 		guard isPasswordValid && isPasswordConfirmationValid else { return false }
-		assert(password.count >= 8)
-		assert(passwordConfirmation.count >= 8)
+		guard
+			password.count >= minimumEncryptionPasswordLength,
+			passwordConfirmation.count >= minimumEncryptionPasswordLength
+		else {
+			return false
+		}
 		return password == passwordConfirmation
 	}
 }
@@ -62,14 +66,15 @@ public enum GenerateNewWalletAction: Equatable, BindableAction {
 	
 	case binding(BindingAction<GenerateNewWalletState>)
 	case delegate(DelegateAction)
+	
+	case walletGenerationResult(Result<Wallet, WalletGeneratorError>)
 }
+
 public extension GenerateNewWalletAction {
 	enum DelegateAction: Equatable {
 		case finishedGeneratingNewWallet
 	}
 }
-
-
 
 public struct GenerateNewWalletEnvironment {
 	public let walletGenerator: WalletGenerator
@@ -100,15 +105,23 @@ public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNe
 		return .none
 		
 	case .continueButtonTapped:
-		assert(state.isContinueButtonEnabled)
+		assert(state.arePasswordsValidAndEqual)
 		state.isGeneratingWallet = true
-//		return environment
-		fatalError()
 		
-//	case .binding(\.$userHasConfirmedBackingUpPassword):
-//		return .none
-//	case .binding(\.$password):
-//		return .none
+		let request = GenerateWalletRequest(encryptionPassword: state.password, name: nil)
+		
+		return environment.walletGenerator
+			.generate(request)
+			.receive(on: environment.mainQueue)
+			.catchToEffect(GenerateNewWalletAction.walletGenerationResult)
+		
+	case .walletGenerationResult(.success(let wallet)):
+		print("🎉 Successfully generated wallet")
+		return .none
+	case .walletGenerationResult(.failure(let walletGenerationError)):
+		print("❌ Failed to generate wallet, error: \(walletGenerationError)")
+		return .none
+		
 	default:
 		return .none
 	}

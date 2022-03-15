@@ -60,7 +60,7 @@ private extension WalletGeneratorError {
 		{
 			self = .invalidEncryptionPassword
 		} else {
-			self = .internalError(anyError)
+			self = .internalError(error: String(describing: anyError))
 		}
 		
 	}
