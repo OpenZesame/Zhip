@@ -11,10 +11,13 @@ import Wallet
 
 public enum WalletGeneratorError: LocalizedError {
 	case invalidEncryptionPassword
+	case internalError(Swift.Error)
 	public var errorDescription: String? {
 		switch self {
 		case .invalidEncryptionPassword:
 			return "Encryption password does not meet minimum safety requirements. Try a longer and safer password."
+		case let .internalError(underlyingError):
+			return "Internal error, reason: \(String(describing: underlyingError))"
 		}
 	}
 }

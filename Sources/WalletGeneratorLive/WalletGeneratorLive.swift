@@ -28,7 +28,7 @@ public extension WalletGenerator {
 				}
 				.mapError(WalletGeneratorError.init)
 				.map {
-					Wallet.init(
+					Wallet(
 						name: generateWalletRequest.name,
 						wallet: $0,
 						origin: .generatedByThisApp
@@ -41,30 +41,15 @@ public extension WalletGenerator {
 }
 
 private extension WalletGeneratorError {
-	init(_ error: Swift.Error) {
-		fatalError()
+	init(_ anyError: Swift.Error) {
+		if
+			let zesameError = anyError as? Zesame.Error,
+			case .keystorePasswordTooShort = zesameError
+		{
+			self = .invalidEncryptionPassword
+		} else {
+			self = .internalError(anyError)
+		}
+		
 	}
 }
-
-//extension AuthenticationClient {
-//  public static let live = AuthenticationClient(
-//	login: { request in
-//	  (request.email.contains("@") && request.password == "password"
-//		? Effect(value: .init(token: "deadbeef", twoFactorRequired: request.email.contains("2fa")))
-//		: Effect(error: .invalidUserPassword))
-//		.delay(for: 1, scheduler: queue)
-//		.eraseToEffect()
-//	},
-//	twoFactor: { request in
-//	  (request.token != "deadbeef"
-//		? Effect(error: .invalidIntermediateToken)
-//		: request.code != "1234"
-//		  ? Effect(error: .invalidTwoFactor)
-//		  : Effect(value: .init(token: "deadbeefdeadbeef", twoFactorRequired: false)))
-//		.delay(for: 1, scheduler: queue)
-//		.eraseToEffect()
-//	}
-//  )
-//}
-
-private let queue = DispatchQueue(label: "WalletGenerator")

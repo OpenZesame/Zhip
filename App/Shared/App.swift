@@ -125,7 +125,7 @@ extension AppEnvironment {
 	
 	static func walletGenerator() -> WalletGenerator {
 #if DEBUG
-		return WalletGenerator.unsafeFast
+		return WalletGenerator.unsafeFast()
 #else
 		return WalletGenerator.live()
 #endif

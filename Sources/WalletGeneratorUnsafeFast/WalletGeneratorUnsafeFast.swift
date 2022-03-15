@@ -5,23 +5,38 @@
 //  Created by Alexander Cyon on 2022-03-15.
 //
 
-import Foundation
+import ComposableArchitecture
+import Wallet
 import WalletGenerator
-
-//#if DEBUG
-//		self.kdf = .pbkdf2
-//		self.kdfParams = KDFParams.unsafeFast
-//#else
-//		self.kdf = kdf ?? .default
-//		self.kdfParams = kdfParams ?? KDFParams.default
-//#endif
+import Zesame
 
 #if DEBUG
 public extension WalletGenerator {
-	static let unsafeFast: Self = {
+	static func unsafeFast(
+		zilliqaService: ZilliqaService = DefaultZilliqaService.default
+	) -> Self {
 		
 		let unsafeWalletGenerator = Self(
-			generate: { _ in fatalError() }
+			generate: { generateWalletRequest in
+				generateWalletRequest.encryptionPassword.isEmpty
+				? Effect(error: .invalidEncryptionPassword)
+				: Effect.task {
+					try await zilliqaService.createNewWallet(
+						encryptionPassword: generateWalletRequest.encryptionPassword,
+						kdf: .pbkdf2, // not as safe as `Scrypt`
+						kdfParams: .unsafeFast
+					)
+				}
+				.mapError(WalletGeneratorError.init)
+				.map {
+					Wallet(
+						name: generateWalletRequest.name,
+						wallet: $0,
+						origin: .generatedByThisApp
+					)
+				}
+				.eraseToEffect()
+			}
 		)
 		
 		let warningString = "☣️"
@@ -33,8 +48,24 @@ public extension WalletGenerator {
 		print("\n")
 		
 		return unsafeWalletGenerator
-	}()
+	}
 }
+
+
+private extension WalletGeneratorError {
+	init(_ anyError: Swift.Error) {
+		if
+			let zesameError = anyError as? Zesame.Error,
+			case .keystorePasswordTooShort = zesameError
+		{
+			self = .invalidEncryptionPassword
+		} else {
+			self = .internalError(anyError)
+		}
+		
+	}
+}
+
 #else
 private enum Inhabited {}
 #endif
