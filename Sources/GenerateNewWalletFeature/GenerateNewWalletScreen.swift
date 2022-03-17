@@ -18,49 +18,58 @@ import WalletGenerator
 
 public struct GenerateNewWalletState: Equatable {
 	
+	
 	@BindableState public var password: String
 	@BindableState public var passwordConfirmation: String
-	@BindableState public var isPasswordValid: Bool
-	@BindableState public var isPasswordConfirmationValid: Bool
 	@BindableState public var userHasConfirmedBackingUpPassword: Bool
 	
 	public var isContinueButtonEnabled: Bool
 	public var isGeneratingWallet: Bool
+
+	public var alert: AlertState<GenerateNewWalletAction>?
 	
 	public init(
 		password: String = "",
 		passwordConfirmation: String = "",
-		isPasswordValid: Bool = false,
-		isPasswordConfirmationValid: Bool = false,
 		userHasConfirmedBackingUpPassword: Bool = false,
 		isContinueButtonEnabled: Bool = false,
-		isGeneratingWallet: Bool = false
+		isGeneratingWallet: Bool = false,
+		alert: AlertState<GenerateNewWalletAction>? = nil
 	) {
 		self.password = password
 		self.passwordConfirmation = passwordConfirmation
-		self.isPasswordValid = isPasswordValid
-		self.isPasswordConfirmationValid = isPasswordConfirmationValid
 		self.userHasConfirmedBackingUpPassword = userHasConfirmedBackingUpPassword
 		self.isContinueButtonEnabled = isContinueButtonEnabled
 		self.isGeneratingWallet = isGeneratingWallet
+		self.alert = alert
 	}
 }
 
 internal extension GenerateNewWalletState {
-	var arePasswordsValidAndEqual: Bool {
-		guard isPasswordValid && isPasswordConfirmationValid else { return false }
+	
+	static func validate(password: String) -> Bool {
 		guard
-			password.count >= minimumEncryptionPasswordLength,
-			passwordConfirmation.count >= minimumEncryptionPasswordLength
+			password.count >= minimumEncryptionPasswordLength
 		else {
 			return false
 		}
+		return true
+	}
+	
+	
+	var arePasswordsValid: Bool {
+		guard Self.validate(password: password) && Self.validate(password: passwordConfirmation) else { return false }
+		return true
+	}
+	
+	var arePasswordsValidAndEqual: Bool {
+		guard arePasswordsValid else { return false }
 		return password == passwordConfirmation
 	}
 }
 
 public enum GenerateNewWalletAction: Equatable, BindableAction {
-	
+	case alertDismissed
 	case onAppear
 	case continueButtonTapped
 	
@@ -92,6 +101,9 @@ public struct GenerateNewWalletEnvironment {
 public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNewWalletAction, GenerateNewWalletEnvironment> { state, action, environment in
 	
 	switch action {
+	case .alertDismissed:
+		state.alert = nil
+		return .none
 	case .onAppear:
 		#if DEBUG
 		state.password = unsafeDebugPassword
@@ -109,17 +121,19 @@ public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNe
 		state.isGeneratingWallet = true
 		
 		let request = GenerateWalletRequest(encryptionPassword: state.password, name: nil)
-		
+
 		return environment.walletGenerator
 			.generate(request)
 			.receive(on: environment.mainQueue)
 			.catchToEffect(GenerateNewWalletAction.walletGenerationResult)
 		
 	case .walletGenerationResult(.success(let wallet)):
-		print("🎉 Successfully generated wallet")
-		return .none
+		state.isGeneratingWallet = false
+		return Effect(value: .delegate(.finishedGeneratingNewWallet))
+		
 	case .walletGenerationResult(.failure(let walletGenerationError)):
-		print("❌ Failed to generate wallet, error: \(walletGenerationError)")
+		state.isGeneratingWallet = false
+		state.alert = .init(title: TextState("Failed to generate wallet, reason: \(String(describing: walletGenerationError))"))
 		return .none
 		
 	default:
@@ -147,15 +161,23 @@ public extension GenerateNewWalletScreen {
 					
 					Labels(
 						title: "Set an encryption password",
-						subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
+						subtitle: "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding.\n\nUse a secure and unique password. It must be at least \(minimumEncryptionPasswordLength) characters long."
 					)
-					
-					PasswordInputFields(
-						password: viewStore.binding(\.$password),
-						isPasswordValid: viewStore.binding(\.$isPasswordValid),
-						passwordConfirmation: viewStore.binding(\.$passwordConfirmation),
-						isPasswordConfirmationValid: viewStore.binding(\.$isPasswordConfirmationValid)
-					)
+
+					VStack {
+						VStack(alignment: .leading, spacing: 2) {
+							Text("Password").foregroundColor(.white)
+							SecureField("Password", text: viewStore.binding(\.$password))
+						}
+						
+						VStack(alignment: .leading, spacing: 2) {
+							Text("Confirm password").foregroundColor(.white)
+							SecureField("Confirm password", text: viewStore.binding(\.$passwordConfirmation))
+						}
+					}
+					.textFieldStyle(.roundedBorder)
+					.foregroundColor(Color.appBackground)
+					.font(.zhip.title)
 					
 					Spacer()
 					
@@ -169,7 +191,8 @@ public extension GenerateNewWalletScreen {
 					}
 					.buttonStyle(.primary(isLoading: viewStore.isGeneratingWallet))
 					.enabled(if: viewStore.isContinueButtonEnabled)
-				}.padding()
+				}
+				.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 #if DEBUG
 				.onAppear {
 					viewStore.send(.onAppear)
