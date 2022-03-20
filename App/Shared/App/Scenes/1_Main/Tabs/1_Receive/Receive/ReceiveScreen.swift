@@ -1,27 +1,27 @@
+////
+////  ReceiveScreen.swift
+////  Zhip
+////
+////  Created by Alexander Cyon on 2022-02-25.
+////
 //
-//  ReceiveScreen.swift
-//  Zhip
+//import Foundation
+//import SwiftUI
+//import Styleguide
 //
-//  Created by Alexander Cyon on 2022-02-25.
+//struct ReceiveScreen: View {
+//    @ObservedObject var viewModel: ReceiveViewModel
+//}
 //
-
-import Foundation
-import SwiftUI
-import Styleguide
-
-struct ReceiveScreen: View {
-    @ObservedObject var viewModel: ReceiveViewModel
-}
-
-extension ReceiveScreen {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 40) {
-            Labels(
-                title: "My address",
-                subtitle: viewModel.myActiveAddressFormatted
-            )
-            
-            viewModel.qrCodeOfMyActiveAddress
-        }
-    }
-}
+//extension ReceiveScreen {
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 40) {
+//            Labels(
+//                title: "My address",
+//                subtitle: viewModel.myActiveAddressFormatted
+//            )
+//            
+//            viewModel.qrCodeOfMyActiveAddress
+//        }
+//    }
+//}

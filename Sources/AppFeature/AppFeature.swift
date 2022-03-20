@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import KeychainClient
 import OnboardingFeature
 import Styleguide
 import SwiftUI
@@ -34,15 +35,18 @@ public enum AppAction: Equatable {
 public struct AppEnvironment {
 	public var userDefaults: UserDefaultsClient
 	public var walletGenerator: WalletGenerator
+	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	
 	public init(
 		userDefaults: UserDefaultsClient,
 		walletGenerator: WalletGenerator,
+		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.userDefaults = userDefaults
 		self.walletGenerator = walletGenerator
+		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 	}
 }
@@ -57,6 +61,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 				OnboardingEnvironment(
 					userDefaults: $0.userDefaults,
 					walletGenerator: $0.walletGenerator,
+					keychainClient: $0.keychainClient,
 					mainQueue: $0.mainQueue
 				)
 			}

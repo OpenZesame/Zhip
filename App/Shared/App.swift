@@ -119,6 +119,7 @@ extension AppEnvironment {
 		.init(
 			userDefaults: .live(),
 			walletGenerator: walletGenerator(),
+			keychainClient: .live(),
 			mainQueue: DispatchQueue.main.eraseToAnyScheduler()
 		)
 	}

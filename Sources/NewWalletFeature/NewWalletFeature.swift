@@ -9,32 +9,19 @@ import BackUpWalletFeature
 import ComposableArchitecture
 import EnsurePrivacyFeature
 import GenerateNewWalletFeature
+import KeychainClient
 import SwiftUI
+import Wallet
 import WalletGenerator
 
-public struct NewWalletState: Equatable {
+public enum NewWalletState: Equatable {
 	
-	public enum Step: Equatable {
-		case step1_EnsurePrivacy
-		case step2_GenerateNewWallet
-		case step3_BackUpWallet
-	}
+	case step1_EnsurePrivacy(EnsurePrivacyState)
+	case step2_GenerateNewWallet(GenerateNewWalletState)
+	case step3_BackUpWallet(BackUpWalletState)
 	
-	public var step: Step
-	public var ensurePrivacy: EnsurePrivacyState
-	public var generateNewWallet: GenerateNewWalletState
-	public var backUpWallet: BackUpWalletState
-	
-	public init(
-		step: Step = .step1_EnsurePrivacy,
-		ensurePrivacy: EnsurePrivacyState = .init(),
-		generateNewWallet: GenerateNewWalletState = .init(),
-		backUpWallet: BackUpWalletState = .init()
-	) {
-		self.step = step
-		self.ensurePrivacy = ensurePrivacy
-		self.generateNewWallet = generateNewWallet
-		self.backUpWallet = backUpWallet
+	public init() {
+		self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
 	}
 }
 
@@ -44,6 +31,8 @@ public enum NewWalletAction: Equatable {
 	case ensurePrivacy(EnsurePrivacyAction)
 	case generateNewWallet(GenerateNewWalletAction)
 	case backUpWallet(BackUpWalletAction)
+	
+	case saveNewWalletInKeychain(Wallet)
 }
 public extension NewWalletAction {
 	enum DelegateAction: Equatable {
@@ -54,13 +43,16 @@ public extension NewWalletAction {
 
 public struct NewWalletEnvironment {
 	public let walletGenerator: WalletGenerator
+	public let keychainClient: KeychainClient
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	
 	public init(
 		walletGenerator: WalletGenerator,
+		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.walletGenerator = walletGenerator
+		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 	}
 }
@@ -68,13 +60,13 @@ public struct NewWalletEnvironment {
 public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWalletEnvironment>.combine(
 	
 	ensurePrivacyReducer.pullback(
-		state: \.ensurePrivacy,
+		state: /NewWalletState.step1_EnsurePrivacy,
 		action: /NewWalletAction.ensurePrivacy,
 		environment: { _ in EnsurePrivacyEnvironment() }
 	),
 	
 	generateNewWalletReducer.pullback(
-		state: \.generateNewWallet,
+		state: /NewWalletState.step2_GenerateNewWallet,
 		action: /NewWalletAction.generateNewWallet,
 		environment: {
 			GenerateNewWalletEnvironment(
@@ -89,11 +81,13 @@ public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWallet
 		case .ensurePrivacy(.delegate(.abort)):
 			return Effect(value: .delegate(.abortMightBeWatched))
 		case .ensurePrivacy(.delegate(.proceed)):
-			state.step = .step2_GenerateNewWallet
+			state = .step2_GenerateNewWallet(.init())
 			return .none
-		case .generateNewWallet(.delegate(.finishedGeneratingNewWallet)):
-			state.step = .step3_BackUpWallet
+		case .generateNewWallet(.delegate(.finishedGeneratingNewWallet(let wallet))):
+			state = .step3_BackUpWallet(.init(wallet: wallet))
 			return .none
+		case .backUpWallet(.delegate(.finishedBackingUpWallet(let wallet))):
+			return Effect(value: .saveNewWalletInKeychain(wallet))
 		default: return .none
 		}
 	}
@@ -110,44 +104,26 @@ public struct NewWalletCoordinatorView: View {
 
 public extension NewWalletCoordinatorView {
 	var body: some View {
-		WithViewStore(
-			store.scope(state: ViewState.init)
-		) { viewStore in
-			Group {
-				switch viewStore.step {
-				case .step1_EnsurePrivacy:
-					EnsurePrivacyScreen(
-						store: store.scope(
-							state: \.ensurePrivacy,
-							action: NewWalletAction.ensurePrivacy
-						)
-					)
-				case .step2_GenerateNewWallet:
-					GenerateNewWalletScreen(
-						store: store.scope(
-							state: \.generateNewWallet,
-							action: NewWalletAction.generateNewWallet
-						)
-					)
-				case .step3_BackUpWallet:
-					BackUpWalletCoordinatorView(
-						store: store.scope(
-							state: \.backUpWallet,
-							action: NewWalletAction.backUpWallet
-						)
-					)
-					
-				}
-			}
-		}
-	}
-}
-
-private extension NewWalletCoordinatorView {
-	struct ViewState: Equatable {
-		let step: NewWalletState.Step
-		init(state: NewWalletState) {
-			self.step = state.step
+		
+		SwitchStore(store) {
+			CaseLet(
+				state: /NewWalletState.step1_EnsurePrivacy,
+				action: NewWalletAction.ensurePrivacy,
+				then: EnsurePrivacyScreen.init(store:)
+			)
+			
+			CaseLet(
+				state: /NewWalletState.step2_GenerateNewWallet,
+				action: NewWalletAction.generateNewWallet,
+				then: GenerateNewWalletScreen.init(store:)
+			)
+			
+			CaseLet(
+				state: /NewWalletState.step3_BackUpWallet,
+				action: NewWalletAction.backUpWallet,
+				then: BackUpWalletCoordinatorView.init(store:)
+			)
+			
 		}
 	}
 }

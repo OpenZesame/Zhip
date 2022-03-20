@@ -98,8 +98,8 @@ private let dependencies: [Dependency] = [
 	
 		.init(
 			category: .view,
-			package: .package(url: "https://github.com/twostraws/CodeScanner.git", from: "2.1.1"),
-			product: .product(name: "CodeScanner", package: "CodeScanner", condition: .when(platforms: [.iOS])),
+			package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
+			product: .product(name: "CodeScanner", package: "CodeScanner"),
 			rationale: "Convenient QR code scanning view.",
 			alternatives: [
 				.init(url: "https://github.com/mercari/QRScanner", abstract: "Lacks SwiftUI support?"),
@@ -127,6 +127,7 @@ let package = Package(
 		.library(name: "GenerateNewWalletFeature", targets: ["GenerateNewWalletFeature"]),
 		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
 		.library(name: "InputField", targets: ["InputField"]),
+		.library(name: "KeychainClient", targets: ["KeychainClient"]),
 		.library(name: "KeychainManager", targets: ["KeychainManager"]),
 		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
 		.library(name: "NewPINFeature", targets: ["NewPINFeature"]),
@@ -140,7 +141,6 @@ let package = Package(
 		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
 		.library(name: "QRCoding", targets: ["QRCoding"]),
 		.library(name: "Screen", targets: ["Screen"]),
-		.library(name: "SecurePersistence", targets: ["SecurePersistence"]),
 		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
@@ -169,6 +169,7 @@ let package = Package(
 				name: "AppFeature",
 				dependencies: [
 					composableArchitecture,
+					"KeychainClient",
 					"OnboardingFeature",
 					"Styleguide",
 					"UserDefaultsClient",
@@ -224,12 +225,13 @@ let package = Package(
 			.target(
 				name: "BackUpWalletFeature",
 				dependencies: [
+					"BackUpPrivateKeyAndKeystoreFeature",
 					"Checkbox",
 					composableArchitecture,
 					"InputField",
 					"Screen",
 					"Styleguide",
-					"BackUpPrivateKeyAndKeystoreFeature",
+					"Wallet",
 				]
 			),
 		
@@ -297,6 +299,16 @@ let package = Package(
 			),
 		
 			.target(
+				name: "KeychainClient",
+				dependencies: [
+					"KeychainManager", // Wrapper around Keychain,
+					"PINCode",
+					"Wallet",
+					zesame, // ZilAmount (cached balance)
+				]
+			),
+		
+			.target(
 				name: "KeychainManager",
 				dependencies: [
 					"Wallet",
@@ -327,6 +339,7 @@ let package = Package(
 					composableArchitecture,
 					"EnsurePrivacyFeature",
 					"GenerateNewWalletFeature",
+					"KeychainClient",
 					"WalletGenerator",
 				]
 			),
@@ -345,6 +358,7 @@ let package = Package(
 				name: "OnboardingFeature",
 				dependencies: [
 					composableArchitecture,
+					"KeychainClient",
 					"SetupWalletFeature",
 					"TermsOfServiceFeature",
 					"UserDefaultsClient",
@@ -416,17 +430,10 @@ let package = Package(
 			),
 		
 			.target(
-				name: "SecurePersistence",
-				dependencies: [
-					"KeychainManager",
-				]
-			),
-		
-		
-			.target(
 				name: "SetupWalletFeature",
 				dependencies: [
 					composableArchitecture,
+					"KeychainClient",
 					"NewPINFeature",
 					"NewWalletOrRestoreFeature",
 					"NewWalletFeature",
@@ -521,7 +528,6 @@ let package = Package(
 					"Preferences",
 					"QRCoding",
 					"Screen",
-					"SecurePersistence",
 					"Wallet",
 				]
 			),

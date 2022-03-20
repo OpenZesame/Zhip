@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import EnsurePrivacyFeature
+import KeychainClient
 import NewPINFeature
 import NewWalletFeature
 import NewWalletOrRestoreFeature
@@ -66,13 +67,16 @@ public extension SetupWalletAction {
 
 public struct SetupWalletEnvironment {
 	public let walletGenerator: WalletGenerator
+	public let keychainClient: KeychainClient
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	
 	public init(
 		walletGenerator: WalletGenerator,
+		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.walletGenerator = walletGenerator
+		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 	}
 }
@@ -93,6 +97,7 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		environment: {
 			NewWalletEnvironment(
 				walletGenerator: $0.walletGenerator,
+				keychainClient: $0.keychainClient,
 				mainQueue: $0.mainQueue
 			)
 		}

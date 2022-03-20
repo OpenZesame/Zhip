@@ -15,6 +15,7 @@ import Styleguide
 import SwiftUI
 import Wallet
 import WalletGenerator
+import KeychainClient
 
 public struct GenerateNewWalletState: Equatable {
 	
@@ -81,7 +82,7 @@ public enum GenerateNewWalletAction: Equatable, BindableAction {
 
 public extension GenerateNewWalletAction {
 	enum DelegateAction: Equatable {
-		case finishedGeneratingNewWallet
+		case finishedGeneratingNewWallet(Wallet)
 	}
 }
 
@@ -129,7 +130,7 @@ public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNe
 		
 	case .walletGenerationResult(.success(let wallet)):
 		state.isGeneratingWallet = false
-		return Effect(value: .delegate(.finishedGeneratingNewWallet))
+		return Effect(value: .delegate(.finishedGeneratingNewWallet(wallet)))
 		
 	case .walletGenerationResult(.failure(let walletGenerationError)):
 		state.isGeneratingWallet = false

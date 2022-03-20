@@ -5,9 +5,10 @@
 //  Created by Alexander Cyon on 2022-02-11.
 //
 
+import Common
+import CustomDump
 import Foundation
 import Zesame
-import Common
 import ZilliqaAPIEndpoint
 
 public struct Wallet: Codable, Equatable {
@@ -67,3 +68,25 @@ public extension KDFParams {
 	}
 }
 #endif
+
+extension Wallet: CustomDumpStringConvertible {
+	public var customDumpDescription: String {
+"""
+Wallet(
+ address: \(try! Bech32Address.init(ethStyleAddress: self.wallet.address).asString)
+ origin: \(self.origin)
+ legacyAddress: \(self.wallet.address.asString))
+)
+"""
+	}
+}
+
+extension Wallet.Origin: CustomDumpStringConvertible {
+	public var customDumpDescription: String {
+		switch self {
+		case .generatedByThisApp: return "generatedByThisApp"
+		case .importedKeystore: return "importedKeystore"
+		case .importedPrivateKey: return "importedPrivateKey"
+		}
+	}
+}
