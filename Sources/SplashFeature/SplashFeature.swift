@@ -76,9 +76,7 @@ public struct SplashView: View {
 	}
 	public var body: some View {
 		WithViewStore(store) { viewStore in
-			ForceFullScreen {
-				Text("<SPLASH GOES HERE>")
-			}
+			ZhipAuroraView()
 			.onAppear { viewStore.send(.onAppear) }
 			.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 		}

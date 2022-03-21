@@ -19,15 +19,20 @@ import WalletGenerator
 
 
 public struct AppState: Equatable {
+	
+	public var isObfuscateAppOverlayPresented: Bool
+	
 	public var splash: SplashState?
 	public var onboarding: OnboardingState?
 	public var main: MainState?
 	
 	public init(
+		isObfuscateAppOverlayPresented: Bool = false,
 		splash: SplashState = .init(),
 		onboarding: OnboardingState? = nil,
 		main: MainState? = nil
 	) {
+		self.isObfuscateAppOverlayPresented = isObfuscateAppOverlayPresented
 		self.splash = splash
 		self.onboarding = onboarding
 		self.main = main
@@ -51,6 +56,9 @@ public enum AppAction: Equatable {
 	case startApp(wallet: Wallet, pin: Pincode?)
 	
 	case main(MainAction)
+	
+	case coverAppWithObfuscationOverlay
+	case uncoverAppFromObfuscationOverlay
 }
 
 public struct AppEnvironment {
@@ -114,6 +122,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 
 let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
+	let splashMinShowDuration: DispatchQueue.SchedulerTimeType.Stride = 1
 	switch action {
 	case let .appDelegate(appDelegateAction):
 		return .none
@@ -128,10 +137,13 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		
 	case let .failedToLoadPINStartAppAsIfNoPINSet(wallet):
 		return Effect(value: .startApp(wallet: wallet, pin: nil))
+			.delay(for: splashMinShowDuration, scheduler: environment.mainQueue)
+			.eraseToEffect()
 		
 	case let .pinLoadingResult(wallet, .success(maybePIN)):
 		return Effect(value: .startApp(wallet: wallet, pin: maybePIN))
-		
+			.delay(for: splashMinShowDuration, scheduler: environment.mainQueue)
+			.eraseToEffect()
 		
 	case let .splash(.delegate(.foundWallet(wallet))):
 		return Effect(value: .loadPIN(wallet))
@@ -148,7 +160,22 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		state.onboarding = .init()
 		return .none
 		
-	case .didChangeScenePhase(_):
+	case let .didChangeScenePhase(scenePhase):
+		// Only care about obfuscating app if we have a wallet setup.
+		guard state.main != nil else { return .none }
+		
+		if scenePhase == .inactive || scenePhase == .background && !state.isObfuscateAppOverlayPresented {
+			return Effect(value: .coverAppWithObfuscationOverlay)
+		} else if state.isObfuscateAppOverlayPresented && scenePhase == .active {
+			return Effect(value: .uncoverAppFromObfuscationOverlay)
+		}
+		return .none
+		
+	case .uncoverAppFromObfuscationOverlay:
+		state.isObfuscateAppOverlayPresented = false
+		return .none
+	case .coverAppWithObfuscationOverlay:
+		state.isObfuscateAppOverlayPresented = true
 		return .none
 		
 	case let .startApp(wallet, maybePIN):
@@ -166,9 +193,7 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 public struct AppView: View {
 	let store: Store<AppState, AppAction>
 	
-	#if os(iOS)
-	@Environment(\.deviceState) var deviceState
-	#endif
+	@Environment(\.scenePhase) private var scenePhase
 	
 	public init(store: Store<AppState, AppAction>) {
 		self.store = store
@@ -187,7 +212,8 @@ public extension AppView {
 							action: AppAction.splash
 						),
 						then: SplashView.init(store:)
-					).zIndex(2)
+					)
+					.zIndex(3)
 				} else if viewStore.isOnboardingPresented {
 					IfLetStore(
 						store.scope(
@@ -195,7 +221,11 @@ public extension AppView {
 							action: AppAction.onboarding
 						),
 						then: OnboardingCoordinatorView.init(store:)
-					).zIndex(1)
+					)
+					.zIndex(2)
+				} else if viewStore.isObfuscateAppOverlayPresented {
+					ZhipAuroraView()
+						.zIndex(1)
 				} else {
 					IfLetStore(
 						store.scope(
@@ -203,22 +233,24 @@ public extension AppView {
 							action: AppAction.main
 						),
 						then: MainCoordinatorView.init(store:)
-					).zIndex(0)
+					)
+					.zIndex(0)
 				}
 			}
-			// .modifier(DeviceStateModifier())
 		}
 	}
 }
 
 public extension AppView {
 	struct ViewState: Equatable {
+		let isObfuscateAppOverlayPresented: Bool
 		let isSplashPresented: Bool
 		let isOnboardingPresented: Bool
 
 		init(state: AppState) {
 			self.isSplashPresented = state.splash != nil
 			self.isOnboardingPresented = state.onboarding != nil
+			self.isObfuscateAppOverlayPresented = state.isObfuscateAppOverlayPresented
 		}
 	}
 }

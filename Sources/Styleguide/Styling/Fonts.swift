@@ -103,7 +103,6 @@ public extension Font.Zhip {
     var title: Font {
         .barlow(.𝟙𝟠, .semibold)
     }
-   
     
     var hint: Font {
         .barlow(.𝟙𝟞, .medium)
