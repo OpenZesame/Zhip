@@ -14,37 +14,38 @@ import PINCode
 public struct KeychainClient {
 	public var dataForKey: (String) -> Effect<Data?, Self.Error>
 	public var remove: (String) -> Effect<Void, Self.Error>
-	public var setData: (Data, String) -> Effect<Never, Self.Error>
+	public var setData: (Data, String) -> Effect<Void, Self.Error>
 }
 
 // MARK: - Codable
 // MARK: -
 public extension KeychainClient {
 	
-	enum Error: LocalizedError {
+	enum Error: LocalizedError, Equatable {
 		case keychainRemoveError(reason: String)
 		case keychainReadError(reason: String)
 		case keychainWriteError(reason: String)
-		case encodeModelFailed(reason: EncodingError)
-		case decodeModelFailed(reason: DecodingError)
+		case encodeModelFailed(reason: String)
+		case decodeModelFailed(reason: String)
 	}
 	
 	func save<Model: Codable>(
 		model: Model,
 		forKey key: String,
 		encoder: JSONEncoder = .init()
-	) -> Effect<Never, Self.Error> {
-		
-		Effect<Model, EncodingError>(value: model)
+	) -> Effect<Model, Self.Error> {
+		return Effect<Model, EncodingError>(value: model)
 			.encode(encoder: encoder)
-			.mapError {
+			.mapError { error in
 				Self.Error.encodeModelFailed(
-					reason: $0 as! EncodingError
+					reason: String(describing: error)
 				)
 			}
-			.flatMap { data in
-				setData(data, key)
-					.fireAndForget(failureType: Self.Error)
+			.flatMap { (data: Data) -> Effect<Void, Self.Error> in
+				return setData(data, key)
+			}
+			.map { _ in
+				return model
 			}
 			.eraseToEffect()
 	}
@@ -60,12 +61,10 @@ public extension KeychainClient {
 			}
 			do {
 				return Effect(value: try decoder.decode(Model.self, from: data))
-			} catch let decodingError as DecodingError {
-				return Effect(
-					error: Self.Error.decodeModelFailed(reason: decodingError)
-				)
 			} catch {
-				fatalError()
+				return Effect(
+					error: Self.Error.decodeModelFailed(reason: String(describing: error))
+				)
 			}
 		}.eraseToEffect()
 
@@ -77,7 +76,7 @@ public extension KeychainClient {
 // MARK: - Wallet
 // MARK: -
 public extension KeychainClient {
-	func saveWallet(_ wallet: Wallet) -> Effect<Never, Self.Error> {
+	func saveWallet(_ wallet: Wallet) -> Effect<Wallet, Self.Error> {
 		save(model: wallet, forKey: walletKey)
 	}
 	
@@ -89,7 +88,7 @@ public extension KeychainClient {
 // MARK: - Balance
 // MARK: -
 public extension KeychainClient {
-	func saveBalance(_ amount: ZilAmount) -> Effect<Never, Self.Error> {
+	func saveBalance(_ amount: ZilAmount) -> Effect<ZilAmount, Self.Error> {
 		save(model: amount, forKey: balanceKey)
 	}
 	
@@ -101,7 +100,7 @@ public extension KeychainClient {
 // MARK: - PIN
 // MARK: -
 public extension KeychainClient {
-	func savePIN(_ pin: Pincode) -> Effect<Never, Self.Error> {
+	func savePIN(_ pin: Pincode) -> Effect<Pincode, Self.Error> {
 		save(model: pin, forKey: pinCodeKey)
 	}
 	

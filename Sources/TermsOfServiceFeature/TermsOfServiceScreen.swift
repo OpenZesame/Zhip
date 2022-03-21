@@ -162,7 +162,7 @@ func markdownAsAttributedString(
     textColor: Color = .white,
     font: Font = .body
 ) -> AttributedString {
-    guard let path = Bundle.main.path(forResource: markdownFileName, ofType: "md") else {
+    guard let path = Bundle.module.path(forResource: markdownFileName, ofType: "md") else {
         fatalError("bad path")
     }
     do {

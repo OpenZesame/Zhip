@@ -8,7 +8,6 @@
 import Foundation
 import EFQRCode
 import SwiftUI
-//import Zesame
 import TransactionIntent
 import Styleguide
 import Wallet

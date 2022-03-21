@@ -1,7 +1,6 @@
 import KeychainAccess
 import Foundation
 import PINCode
-import KeyValueStore
 import Wallet
 
 public final class KeychainManager {

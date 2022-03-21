@@ -12,10 +12,10 @@
     {
       "identity" : "codescanner",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/twostraws/CodeScanner.git",
+      "location" : "https://github.com/Sajjon/CodeScanner.git",
       "state" : {
-        "revision" : "c27a66149b7483fe42e2ec6aad61d5c3fffe522d",
-        "version" : "2.1.1"
+        "branch" : "main",
+        "revision" : "e99827ca985d9e1ed35daf38be1b5f774269aeb1"
       }
     },
     {
@@ -61,15 +61,6 @@
       "state" : {
         "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
         "version" : "4.2.2"
-      }
-    },
-    {
-      "identity" : "stinsen",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rundfunk47/stinsen",
-      "state" : {
-        "revision" : "36d97964075dc770046ddef9346a29bfa8982d6d",
-        "version" : "2.0.7"
       }
     },
     {

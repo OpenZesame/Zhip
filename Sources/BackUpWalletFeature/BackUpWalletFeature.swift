@@ -67,6 +67,9 @@ public extension BackUpWalletCoordinatorView {
 		) { viewStore in
 			Group {
 				Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.bech32Address.asString)")
+				Button("I have backed up my wallet") {
+					viewStore.send(.delegate(.finishedBackingUpWallet(viewStore.wallet)))
+				}
 			}
 		}
 	}

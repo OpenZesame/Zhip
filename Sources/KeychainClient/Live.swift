@@ -35,7 +35,7 @@ public extension KeychainClient {
 				Effect.run { subscriber in
 					do {
 						try keychainWrapper.remove(forKey: key)
-						subscriber.send(()) // Correct? Necessary?
+						subscriber.send(())
 						subscriber.send(completion: .finished)
 					} catch {
 						subscriber.send(completion: .failure(Self.Error.keychainRemoveError(reason: String(describing: error))))
@@ -47,6 +47,7 @@ public extension KeychainClient {
 				Effect.run { subscriber in
 					do {
 						try keychainWrapper.setData(data, forKey: key)
+						subscriber.send(())
 						subscriber.send(completion: .finished)
 					}catch {
 						subscriber.send(completion: .failure(Self.Error.keychainWriteError(reason: String(describing: error))))

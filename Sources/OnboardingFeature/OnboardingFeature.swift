@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import KeychainClient
+import NewPINFeature
 import SetupWalletFeature
 import SwiftUI
 import TermsOfServiceFeature
@@ -19,16 +20,19 @@ public struct OnboardingState: Equatable {
 	public var welcome: WelcomeState
 	public var termsOfService: TermsOfServiceState
 	public var setupWallet: SetupWalletState
+	public var newPIN: NewPINState
 	public init(
 		step: Step = Step.allCases.first!,
 		welcome: WelcomeState = .init(),
 		termsOfService: TermsOfServiceState = .init(),
-		setupWallet: SetupWalletState = .init()
+		setupWallet: SetupWalletState = .init(),
+		newPIN: NewPINState = .init()
 	) {
 		self.step = step
 		self.welcome = welcome
 		self.termsOfService = termsOfService
 		self.setupWallet = setupWallet
+		self.newPIN = newPIN
 	}
 }
 
@@ -48,9 +52,17 @@ public extension OnboardingState.Step {
 }
 
 public enum OnboardingAction: Equatable {
-	case welcomeAction(WelcomeAction)
-	case termsOfServiceAction(TermsOfServiceAction)
-	case setupWalletAction(SetupWalletAction)
+	case delegate(DelegateAction)
+	
+	case welcome(WelcomeAction)
+	case termsOfService(TermsOfServiceAction)
+	case setupWallet(SetupWalletAction)
+	case newPIN(NewPINAction)
+}
+public extension OnboardingAction {
+	enum DelegateAction: Equatable {
+		case finishedOnboarding
+	}
 }
 
 public struct OnboardingEnvironment {
@@ -76,13 +88,13 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 	
 	termsOfServiceReducer.pullback(
 		state: \.termsOfService,
-		action: /OnboardingAction.termsOfServiceAction,
+		action: /OnboardingAction.termsOfService,
 		environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
 	),
 	
 	setupWalletReducer.pullback(
 		state: \.setupWallet,
-		action: /OnboardingAction.setupWalletAction,
+		action: /OnboardingAction.setupWallet,
 		environment: {
 			SetupWalletEnvironment(
 				walletGenerator: $0.walletGenerator,
@@ -92,22 +104,38 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		}
 	),
 	
+	newPINReducer.pullback(
+		state: \.newPIN,
+		action: /OnboardingAction.newPIN,
+		environment: {
+			NewPINEnvironment(
+				keychainClient: $0.keychainClient
+			)
+		}
+	),
+	
 	Reducer { state, action, environment in
 		switch action {
-		case .welcomeAction(.delegate(.getStarted)):
+		case .welcome(.delegate(.getStarted)):
 			if environment.userDefaults.hasAcceptedTermsOfService {
 				state = .init(step: .step2_SetupWallet)
 			} else {
 				state = .init(step: .step1_TermsOfService)
 			}
 			return .none
-		case .termsOfServiceAction(.delegate(.didAcceptTermsOfService)):
+		case .termsOfService(.delegate(.didAcceptTermsOfService)):
 			assert(environment.userDefaults.hasAcceptedTermsOfService)
-			state = .init(step: .step2_SetupWallet)
+			state.step = .step2_SetupWallet
 			return .none
 			
-		case .setupWalletAction(.delegate(.finishedSettingUpWallet)):
-			fatalError()
+		case .setupWallet(.delegate(.finishedSettingUpWallet)):
+			state.step = .step3_NewPIN
+			return .none
+			
+		case .newPIN(.delegate(.skippedPIN)):
+			return Effect(value: .delegate(.finishedOnboarding))
+		case .newPIN(.delegate(.finishedSettingUpPIN)):
+			return Effect(value: .delegate(.finishedOnboarding))
 			
 		default:
 			return .none
@@ -134,25 +162,31 @@ public extension OnboardingCoordinatorView {
 					WelcomeScreen(
 						store: store.scope(
 							state: \.welcome,
-							action: OnboardingAction.welcomeAction
+							action: OnboardingAction.welcome
 						)
 					)
 				case .step1_TermsOfService:
 					TermsOfServiceScreen(
 						store: store.scope(
 							state: \.termsOfService,
-							action: OnboardingAction.termsOfServiceAction
+							action: OnboardingAction.termsOfService
 						)
 					)
 				case .step2_SetupWallet:
 					SetupWalletCoordinatorView(
 						store: store.scope(
 							state: \.setupWallet,
-							action: OnboardingAction.setupWalletAction
+							action: OnboardingAction.setupWallet
 						)
 					)
-				default:
-					Text("TODO impl view for step: \(String(describing: viewStore.step))")
+					
+				case .step3_NewPIN:
+					NewPINCoordinatorView(
+						store: store.scope(
+							state: \.newPIN,
+							action: OnboardingAction.newPIN
+						)
+					)
 				}
 			}
 		}

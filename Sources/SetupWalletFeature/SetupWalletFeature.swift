@@ -8,11 +8,11 @@
 import ComposableArchitecture
 import EnsurePrivacyFeature
 import KeychainClient
-import NewPINFeature
 import NewWalletFeature
 import NewWalletOrRestoreFeature
 import RestoreWalletFeature
 import SwiftUI
+import Wallet
 import WalletGenerator
 
 public struct SetupWalletState: Equatable {
@@ -21,8 +21,6 @@ public struct SetupWalletState: Equatable {
 		
 		case step2a_NewWallet
 		case step2b_RestoreWallet
-		
-		case step3_NewPin
 	}
 
 	public var newWalletOrRestore: NewWalletOrRestoreState
@@ -30,8 +28,8 @@ public struct SetupWalletState: Equatable {
 	public var newWallet: NewWalletState
 	public var restoreWallet: RestoreWalletState
 	
-	public var newPIN: NewPINState
 	
+	public var alert: AlertState<SetupWalletAction>?
 	public var step: Step
 	
 	public init(
@@ -39,13 +37,13 @@ public struct SetupWalletState: Equatable {
 		newWalletOrRestore: NewWalletOrRestoreState = .init(),
 		newWallet: NewWalletState = .init(),
 		restoreWallet: RestoreWalletState = .init(),
-		newPIN: NewPINState = .init()
+		alert: AlertState<SetupWalletAction>? = nil
 	) {
 		self.step = step
 		self.newWalletOrRestore = newWalletOrRestore
 		self.newWallet = newWallet
 		self.restoreWallet = restoreWallet
-		self.newPIN = newPIN
+		self.alert = alert
 	}
 }
 
@@ -57,7 +55,11 @@ public enum SetupWalletAction: Equatable {
 	case newWallet(NewWalletAction)
 	case restoreWallet(RestoreWalletAction)
 	
-	case newPIN(NewPINAction)
+	case abortDueToMightBeWatched
+	case saveNewWalletInKeychain(Wallet)
+	case saveNewWalletInKeychainResult(Result<Wallet, KeychainClient.Error>)
+	
+	case alertDismissed
 }
 public extension SetupWalletAction {
 	enum DelegateAction {
@@ -108,13 +110,7 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		action: /SetupWalletAction.restoreWallet,
 		environment: { _ in RestoreWalletEnvironment() }
 	),
-	
-	newPINReducer.pullback(
-		state: \.newPIN,
-		action: /SetupWalletAction.newPIN,
-		environment: { _ in NewPINEnvironment() }
-	),
-	
+		
 	Reducer<SetupWalletState, SetupWalletAction, SetupWalletEnvironment> { state, action, environment in
 		switch action {
 		case .newWalletOrRestore(.delegate(.generateNewWallet)):
@@ -123,6 +119,39 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		case .newWalletOrRestore(.delegate(.restoreWallet)):
 			state.step = .step2b_RestoreWallet
 			return .none
+		
+		case let  .newWallet(.delegate(.finishedSettingUpNewWallet(wallet))):
+			return Effect(value: .saveNewWalletInKeychain(wallet))
+		
+		case .newWallet(.delegate(.abortMightBeWatched)):
+			return Effect(value: .abortDueToMightBeWatched)
+		
+		case let .restoreWallet(.delegate(.finishedRestoringWallet(wallet))):
+			return Effect(value: .saveNewWalletInKeychain(wallet))
+		
+		case .restoreWallet(.delegate(.abortMightBeWatched)):
+			return Effect(value: .abortDueToMightBeWatched)
+			
+		case .abortDueToMightBeWatched:
+			state.step = .step1_NewWalletOrRestore
+			return .none
+			
+		case .alertDismissed:
+			state.alert = nil
+			return .none
+			
+		case let .saveNewWalletInKeychain(wallet):
+			return environment.keychainClient
+				.saveWallet(wallet)
+				.catchToEffect(SetupWalletAction.saveNewWalletInKeychainResult)
+	
+		case let .saveNewWalletInKeychainResult(.failure(error)):
+			state.alert = .init(title: TextState.init("Failed to save wallet in keychain, do you have a passcode setup on your Apple device? It is required to use Zhip. Underlying error: \(String(describing: error))"))
+			return .none
+			
+		case .saveNewWalletInKeychainResult(.success):
+			return Effect(value: .delegate(.finishedSettingUpWallet))
+		
 		default:
 			return .none
 		}
@@ -160,6 +189,7 @@ public extension SetupWalletCoordinatorView {
 					Text("Unhandled SetupWallet step: \(String(describing: viewStore.step))")
 				}
 			}
+			.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 		}
 		
 	}

@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Version {
-    let version: String
-    let build: String
+public struct Version {
+    public let version: String
+    public let build: String
 }
 
-extension Version {
+public extension Version {
     static func fromBundle() -> Self {
         let bundle = Bundle.main
         

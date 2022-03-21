@@ -193,12 +193,12 @@ public extension GenerateNewWalletScreen {
 					.buttonStyle(.primary(isLoading: viewStore.isGeneratingWallet))
 					.enabled(if: viewStore.isContinueButtonEnabled)
 				}
-				.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 #if DEBUG
 				.onAppear {
 					viewStore.send(.onAppear)
 				}
 #endif
+				.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 			}
 		}
 	}

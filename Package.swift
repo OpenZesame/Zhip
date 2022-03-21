@@ -78,33 +78,16 @@ private let dependencies: [Dependency] = [
 		),
 	
 		.init(
-			category: .navigation,
-			package: .package(url: "https://github.com/rundfunk47/stinsen", from: "2.0.7"),
-			product: .product(name: "Stinsen", package: "stinsen"),
-			rationale: "Coordinator pattern",
-			alternatives: [
-				.init(url: "https://github.com/matteopuc/swiftui-navigation-stack", abstract: "Manual control over navigation stack"),
-				.init(url: "https://github.com/pointfreeco/swiftui-navigation", abstract: "Routing and IfLet Switch, CaseLet convenience"),
-				.init(url: "https://github.com/johnpatrickmorgan/FlowStacks", abstract: "Coordinator pattern and routing")
-			]
-		),
-	
-		.init(
 			category: .view,
 			package: .package(url: "https://github.com/EFPrefix/EFQRCode.git", from: "6.2.0"),
 			product: "EFQRCode",
 			rationale: "Convenient QR code generator supporting macOS and iOS."
 		),
-	
 		.init(
 			category: .view,
 			package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
 			product: .product(name: "CodeScanner", package: "CodeScanner"),
-			rationale: "Convenient QR code scanning view.",
-			alternatives: [
-				.init(url: "https://github.com/mercari/QRScanner", abstract: "Lacks SwiftUI support?"),
-				.init(url: "https://github.com/yannickl/QRCodeReader.swift", abstract: "Lacks SwiftUI support?")
-			]
+			rationale: "Convenient QR code scanning view."
 		)
 ]
 
@@ -129,7 +112,7 @@ let package = Package(
 		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "KeychainClient", targets: ["KeychainClient"]),
 		.library(name: "KeychainManager", targets: ["KeychainManager"]),
-		.library(name: "KeyValueStore", targets: ["KeyValueStore"]),
+		.library(name: "MainFeature", targets: ["MainFeature"]),
 		.library(name: "NewPINFeature", targets: ["NewPINFeature"]),
 		.library(name: "NewWalletFeature", targets: ["NewWalletFeature"]),
 		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
@@ -137,22 +120,23 @@ let package = Package(
 		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
-		.library(name: "Preferences", targets: ["Preferences"]),
 		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
 		.library(name: "QRCoding", targets: ["QRCoding"]),
 		.library(name: "Screen", targets: ["Screen"]),
 		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
+		.library(name: "SplashFeature", targets: ["SplashFeature"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
 		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
+		.library(name: "UnlockAppFeature", targets: ["UnlockAppFeature"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
+		.library(name: "VersionFeature", targets: ["VersionFeature"]),
 		.library(name: "Wallet", targets: ["Wallet"]),
 		.library(name: "WalletGenerator", targets: ["WalletGenerator"]),
 		.library(name: "WalletGeneratorLive", targets: ["WalletGeneratorLive"]),
 		.library(name: "WalletGeneratorUnsafeFast", targets: ["WalletGeneratorUnsafeFast"]),
 		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
 		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
-		.library(name: "ZhipEngine", targets: ["ZhipEngine"]),
 	],
 	dependencies: dependencies.packageDependencies,
 	targets: [
@@ -170,8 +154,10 @@ let package = Package(
 				dependencies: [
 					composableArchitecture,
 					"KeychainClient",
+					"MainFeature",
 					"OnboardingFeature",
 					"Styleguide",
+					"SplashFeature",
 					"UserDefaultsClient",
 					"WalletGeneratorLive",
 				]
@@ -311,14 +297,18 @@ let package = Package(
 			.target(
 				name: "KeychainManager",
 				dependencies: [
+					"KeychainAccess",
 					"Wallet",
-					"KeyValueStore",
 				]
 			),
 		
 			.target(
-				name: "KeyValueStore",
+				name: "MainFeature",
 				dependencies: [
+					composableArchitecture,
+					"PINCode",
+					"UnlockAppFeature",
+					"Wallet",
 				]
 			),
 
@@ -326,6 +316,7 @@ let package = Package(
 				name: "NewPINFeature",
 				dependencies: [
 					composableArchitecture,
+					"KeychainClient",
 					"PINField",
 					"Styleguide",
 					"Screen",
@@ -359,6 +350,7 @@ let package = Package(
 				dependencies: [
 					composableArchitecture,
 					"KeychainClient",
+					"NewPINFeature",
 					"SetupWalletFeature",
 					"TermsOfServiceFeature",
 					"UserDefaultsClient",
@@ -395,13 +387,6 @@ let package = Package(
 			),
 		
 			.target(
-				name: "Preferences",
-				dependencies: [
-					"KeyValueStore",
-				]
-			),
-		
-			.target(
 				name: "RestoreWalletFeature",
 				dependencies: [
 					composableArchitecture,
@@ -409,6 +394,7 @@ let package = Package(
 					"InputField",
 					"Screen",
 					"Styleguide",
+					"Wallet",
 					zesame,
 				]
 			),
@@ -416,6 +402,7 @@ let package = Package(
 			.target(
 				name: "QRCoding",
 				dependencies: [
+					"EFQRCode",
 					"Styleguide",
 					"TransactionIntent",
 					"Wallet",
@@ -434,7 +421,6 @@ let package = Package(
 				dependencies: [
 					composableArchitecture,
 					"KeychainClient",
-					"NewPINFeature",
 					"NewWalletOrRestoreFeature",
 					"NewWalletFeature",
 					"RestoreWalletFeature",
@@ -442,6 +428,16 @@ let package = Package(
 					"Styleguide",
 					"Wallet",
 					"WalletGenerator"
+				]
+			),
+		
+			.target(
+				name: "SplashFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Styleguide",
+					"Wallet",
 				]
 			),
 		
@@ -466,12 +462,28 @@ let package = Package(
 					"Screen",
 					"UserDefaultsClient",
 					zesame,
+				],
+				resources: [
+					.process("Resources/")
 				]
+			),
+		
+			.target(
+				name: "UnlockAppFeature",
+				dependencies: [composableArchitecture]
 			),
 		
 			.target(
 				name: "UserDefaultsClient",
 				dependencies: [composableArchitecture]
+			),
+		
+		
+			.target(
+				name: "VersionFeature",
+				dependencies: [
+					composableArchitecture,
+				]
 			),
 		
 			.target(
@@ -516,25 +528,6 @@ let package = Package(
 					"Styleguide",
 				]
 			),
-		
-			.target(
-				name: "ZhipEngine",
-				dependencies: dependencies.targetDependencies + [
-					"AmountFormatter",
-					"Checkbox",
-					"InputField",
-					"PINCode",
-					"PINField",
-					"Preferences",
-					"QRCoding",
-					"Screen",
-					"Wallet",
-				]
-			),
-		.testTarget(
-			name: "ZhipEngineTests",
-			dependencies: ["ZhipEngine"]
-		),
 		
 			.target(
 				name: "ZilliqaAPIEndpoint",

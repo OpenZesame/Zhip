@@ -64,15 +64,6 @@
       }
     },
     {
-      "identity" : "stinsen",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rundfunk47/stinsen",
-      "state" : {
-        "revision" : "36d97964075dc770046ddef9346a29bfa8982d6d",
-        "version" : "2.0.7"
-      }
-    },
-    {
       "identity" : "swift-case-paths",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",

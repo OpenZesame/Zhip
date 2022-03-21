@@ -8,7 +8,7 @@
 This is the open source code code for the [iOS wallet app Zhip (App Store link)](https://apps.apple.com/us/app/zhip/id1455248315). Zhip is the worlds first iOS wallet for Zilliqa. It uses the [Zilliqa Swift SDK "Zesame"](https://github.com/OpenZesame/Zesame).
 
 # Getting started
-- Xcode 12 (Xcode 11 might work as well.)
+- Xcode 13.3 (Xcode 12 might work as well.)
 - Clone this repo
 
 You can thus get started right away:
@@ -45,35 +45,7 @@ In turn, `Zesame` is dependent on the Elliptic Curve Cryptography of [EllipticCu
 
 
 # Privacy
-When starting the app for the first time you will be asked to opt-in or opt-out for crashreporting. 
-
-If you chose to opt in and would like to opt out at a later time - or the other way around - you can do so from Settings at any time. 
-
-If you choose to opt out Crashlytics will not be initialized and no crash reports will be sent from your app. 
-
-If you chose to opt in it will make it easier to fix potential bugs in the apps, especially those crucial ones resulting in crashes. Crashlytics has been added for this sole purpose, make the app more reliable and less likely to crash. 
-
-## Disabled by default
-Open the file [Zhip-Info.plist](Sources/Application/Zhip-Info.plist) and you will see that the value for the key `firebase_crashlytics_collection_enabled` is set to `false`, which is the [documented way of turning of crash reports by default](https://firebase.google.com/docs/crashlytics/customize-crash-reports)
-
-When the app starts it checks if you accepted crash reporting, you can verify this by looking in the file [Bootstrap.swift](Sources/Application/Utils/Bootstrap.swift) 
-```swift
-func setupCrashReportingIfAllowed() {
-    guard Preferences.default.isTrue(.hasAcceptedCrashReporting)
-```
-
-And searching in the code for [`"for .hasAcceptedCrashReporting"`](https://github.com/OpenZesame/Zhip/search?l=Swift&q=%22for%3A+.hasAcceptedCrashReporting%22) shows when and how the boolean flag `hasAcceptedCrashReporting` gets written.
-
-## Analytics not used
-In the function `setupCrashReportingIfAllowed` in `Bootstrap.swift` you will see calls to `Firebase`:
-```swift
-    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
-    FirebaseApp.configure()
-    Fabric.with([Crashlytics.self])
-```
-Firebase analytics is not used, but Crashlytics is setup using Firebase.
-
-You can search for `Analytics.logEvent` or `Analytics.setScreenName` in the code and you will not find any search results.
+This app does not send any of your data **at all**, to any third party. Previous versions of Zhip used analytics to help with us with debugging. Analytics was completely removed in version 2.0.0. Search the code base for analytics and you will not find any.
 
 # Donate
 This **free** wallet and the foundation Zesame its built upon has been developed by the single author Alexander Cyon without paid salary in his free time - approximatly **a thousand hours of work** since May 2018 ([see initial commit in Zesame](https://github.com/OpenZesame/Zesame/commit/d948741f3e3d38a9962cc9a23552622a303e7ff4)). 

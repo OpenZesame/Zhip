@@ -31,12 +31,10 @@ public enum NewWalletAction: Equatable {
 	case ensurePrivacy(EnsurePrivacyAction)
 	case generateNewWallet(GenerateNewWalletAction)
 	case backUpWallet(BackUpWalletAction)
-	
-	case saveNewWalletInKeychain(Wallet)
 }
 public extension NewWalletAction {
 	enum DelegateAction: Equatable {
-		case finishedSettingUpNewWallet
+		case finishedSettingUpNewWallet(Wallet)
 		case abortMightBeWatched
 	}
 }
@@ -87,7 +85,7 @@ public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWallet
 			state = .step3_BackUpWallet(.init(wallet: wallet))
 			return .none
 		case .backUpWallet(.delegate(.finishedBackingUpWallet(let wallet))):
-			return Effect(value: .saveNewWalletInKeychain(wallet))
+			return Effect(value: .delegate(.finishedSettingUpNewWallet(wallet)))
 		default: return .none
 		}
 	}

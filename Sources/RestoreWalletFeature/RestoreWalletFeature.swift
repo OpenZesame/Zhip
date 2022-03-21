@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import Wallet
 
 public struct RestoreWalletState: Equatable {
 	public init() {}
@@ -16,7 +17,8 @@ public enum RestoreWalletAction: Equatable {
 }
 public extension RestoreWalletAction {
 	enum DelegateAction: Equatable {
-		case finishedRestoringWallet
+		case finishedRestoringWallet(Wallet)
+		case abortMightBeWatched
 	}
 }
 
