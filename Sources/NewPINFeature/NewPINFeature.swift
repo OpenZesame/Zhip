@@ -7,6 +7,8 @@
 
 import ComposableArchitecture
 import KeychainClient
+import Screen
+import Styleguide
 import SwiftUI
 
 public struct NewPINState: Equatable {
@@ -47,6 +49,16 @@ public struct NewPINCoordinatorView: View {
 
 public extension NewPINCoordinatorView {
 	var body: some View {
-		Text("NewPINCoordinatorView")
+		WithViewStore(store) { viewStore in
+			ForceFullScreen {
+				VStack {
+					Text("NewPINCoordinatorView")
+					Button("Skip") {
+						viewStore.send(.delegate(.skippedPIN))
+					}
+				}
+			}
+		}
+		
 	}
 }

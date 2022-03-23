@@ -112,8 +112,8 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 		.pullback(
 			state: \.main,
 			action: /AppAction.main,
-			environment: { _ in
-				MainEnvironment()
+			environment: {
+				MainEnvironment(keychainClient: $0.keychainClient)
 			}),
 	
 	appReducerCore
@@ -183,6 +183,11 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		state.main = MainState(wallet: wallet, maybePIN: maybePIN)
 		return .none
 		
+	case .main(.delegate(.userDeletedWallet)):
+		fatalError("user removed wallet")
+		
+	case .main(_):
+		return .none
 	case .onboarding(_):
 		return .none
 	case .splash(_):

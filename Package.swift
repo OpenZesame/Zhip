@@ -126,6 +126,7 @@ let package = Package(
 		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
 		.library(name: "SplashFeature", targets: ["SplashFeature"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
+		.library(name: "TabsFeature", targets: ["TabsFeature"]),
 		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
 		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
 		.library(name: "UnlockAppFeature", targets: ["UnlockAppFeature"]),
@@ -306,7 +307,9 @@ let package = Package(
 				name: "MainFeature",
 				dependencies: [
 					composableArchitecture,
+					"KeychainClient",
 					"PINCode",
+					"TabsFeature",
 					"UnlockAppFeature",
 					"Wallet",
 				]
@@ -449,6 +452,15 @@ let package = Package(
 			),
 		
 			.target(
+				name: "TabsFeature",
+				dependencies: [
+					composableArchitecture,
+					"Styleguide",
+					"Wallet",
+				]
+			),
+		
+			.target(
 				name: "TransactionIntent",
 				dependencies: [
 					zesame
@@ -470,7 +482,14 @@ let package = Package(
 		
 			.target(
 				name: "UnlockAppFeature",
-				dependencies: [composableArchitecture]
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"PINCode",
+					"PINField",
+					"Screen",
+					"Styleguide",
+				]
 			),
 		
 			.target(
