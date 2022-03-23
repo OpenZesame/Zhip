@@ -103,7 +103,9 @@ let package = Package(
 		.library(name: "BackUpPrivateKeyAndKeystoreFeature", targets: ["BackUpPrivateKeyAndKeystoreFeature"]),
 		.library(name: "BackUpRevealedKeyPairFeature", targets: ["BackUpRevealedKeyPairFeature"]),
 		.library(name: "BackUpWalletFeature", targets: ["BackUpWalletFeature"]),
+		.library(name: "BalancesFeature", targets: ["BalancesFeature"]),
 		.library(name: "Checkbox", targets: ["Checkbox"]),
+		.library(name: "ContactsFeature", targets: ["ContactsFeature"]),
 		.library(name: "Common", targets: ["Common"]),
 		.library(name: "DecryptKeystoreFeature", targets: ["DecryptKeystoreFeature"]),
 		.library(name: "EnsurePrivacyFeature", targets: ["EnsurePrivacyFeature"]),
@@ -120,15 +122,18 @@ let package = Package(
 		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
+		.library(name: "ReceiveFeature", targets: ["ReceiveFeature"]),
 		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
 		.library(name: "QRCoding", targets: ["QRCoding"]),
 		.library(name: "Screen", targets: ["Screen"]),
+		.library(name: "SettingsFeature", targets: ["SettingsFeature"]),
 		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
 		.library(name: "SplashFeature", targets: ["SplashFeature"]),
 		.library(name: "Styleguide", targets: ["Styleguide"]),
 		.library(name: "TabsFeature", targets: ["TabsFeature"]),
 		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
 		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
+		.library(name: "TransferFeature", targets: ["TransferFeature"]),
 		.library(name: "UnlockAppFeature", targets: ["UnlockAppFeature"]),
 		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
 		.library(name: "VersionFeature", targets: ["VersionFeature"]),
@@ -223,6 +228,17 @@ let package = Package(
 			),
 		
 			.target(
+				name: "BalancesFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Screen",
+					"Styleguide",
+					"Wallet",
+				]
+			),
+		
+			.target(
 				name: "Checkbox",
 				dependencies: [
 					"Styleguide",
@@ -233,6 +249,17 @@ let package = Package(
 				name: "Common",
 				dependencies: [
 					zesame,
+				]
+			),
+		
+			.target(
+				name: "ContactsFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Screen",
+					"Styleguide",
+					"Wallet",
 				]
 			),
 		
@@ -390,6 +417,17 @@ let package = Package(
 			),
 		
 			.target(
+				name: "ReceiveFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Screen",
+					"Styleguide",
+					"Wallet",
+				]
+			),
+		
+			.target(
 				name: "RestoreWalletFeature",
 				dependencies: [
 					composableArchitecture,
@@ -416,6 +454,17 @@ let package = Package(
 				name: "Screen",
 				dependencies: [
 					"Styleguide",
+				]
+			),
+		
+			.target(
+				name: "SettingsFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Screen",
+					"Styleguide",
+					"Wallet",
 				]
 			),
 		
@@ -454,8 +503,15 @@ let package = Package(
 			.target(
 				name: "TabsFeature",
 				dependencies: [
+					"BalancesFeature",
+					"ContactsFeature",
 					composableArchitecture,
+					"KeychainClient",
+					"ReceiveFeature",
+					"SettingsFeature",
 					"Styleguide",
+					"TransferFeature",
+					"UserDefaultsClient",
 					"Wallet",
 				]
 			),
@@ -464,6 +520,17 @@ let package = Package(
 				name: "TransactionIntent",
 				dependencies: [
 					zesame
+				]
+			),
+		
+			.target(
+				name: "TransferFeature",
+				dependencies: [
+					composableArchitecture,
+					"KeychainClient",
+					"Screen",
+					"Styleguide",
+					"Wallet",
 				]
 			),
 		

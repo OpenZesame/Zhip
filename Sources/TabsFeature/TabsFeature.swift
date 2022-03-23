@@ -5,17 +5,49 @@
 //  Created by Alexander Cyon on 2022-03-22.
 //
 
+import BalancesFeature
 import ComposableArchitecture
+import ContactsFeature
+import KeychainClient
+import ReceiveFeature
+import SettingsFeature
 import SwiftUI
+import Styleguide
+import TransferFeature
+import UserDefaultsClient
 import Wallet
 
 public struct TabsState: Equatable {
-	public var wallet: Wallet
-	public init(wallet: Wallet) {
-		self.wallet = wallet
+	
+	public var selectedTab: Tab
+	
+	public var balances: BalancesState
+	public var contacts: ContactsState
+	public var transfer: TransferState
+	public var receive: ReceiveState
+	public var settings: SettingsState
+	
+	public init(wallet: Wallet, selectedTab: Tab = .balances) {
+		self.selectedTab = selectedTab
+		
+		self.balances = .init(wallet: wallet)
+		self.contacts = .init()
+		self.transfer = .init(wallet: wallet)
+		self.receive = .init(wallet: wallet)
+		self.settings = .init()
 	}
+	
 }
 public enum TabsAction: Equatable {
+	
+	case selectedTab(Tab)
+	
+	case balances(BalancesAction)
+	case contacts(ContactsAction)
+	case transfer(TransferAction)
+	case receive(ReceiveAction)
+	case settings(SettingsAction)
+	
 	case delegate(DelegateAction)
 }
 public extension TabsAction {
@@ -24,18 +56,94 @@ public extension TabsAction {
 	}
 }
 public struct TabsEnvironment {
-	public init() {}
+	public var userDefaults: UserDefaultsClient
+	public var keychainClient: KeychainClient
+	public var mainQueue: AnySchedulerOf<DispatchQueue>
+	
+	public init(
+		userDefaults: UserDefaultsClient,
+		keychainClient: KeychainClient,
+		mainQueue: AnySchedulerOf<DispatchQueue>
+	) {
+		self.userDefaults = userDefaults
+		self.keychainClient = keychainClient
+		self.mainQueue = mainQueue
+	}
 }
 
-public let tabsReducer = Reducer<TabsState, TabsAction, TabsEnvironment> { state, action, environment in
-	return .none
-}
+
+public let tabsReducer = Reducer<TabsState, TabsAction, TabsEnvironment>.combine(
+
+	balancesReducer.pullback(
+		state: \.balances,
+		action: /TabsAction.balances,
+		environment: {
+			BalancesEnvironment(mainQueue: $0.mainQueue)
+		}
+	),
+	
+	contactsReducer.pullback(
+		state: \.contacts,
+		action: /TabsAction.contacts,
+		environment: {
+			ContactsEnvironment(mainQueue: $0.mainQueue)
+		}
+	),
+	
+	receiveReducer.pullback(
+		state: \.receive,
+		action: /TabsAction.receive,
+		environment: {
+			ReceiveEnvironment(mainQueue: $0.mainQueue)
+		}
+	),
+	
+	transferReducer.pullback(
+		state: \.transfer,
+		action: /TabsAction.transfer,
+		environment: {
+			TransferEnvironment(mainQueue: $0.mainQueue)
+		}
+	),
+	
+	settingsReducer.pullback(
+		state: \.settings,
+		action: /TabsAction.settings,
+		environment: {
+			SettingsEnvironment(
+				userDefaults: $0.userDefaults,
+				keychainClient: $0.keychainClient,
+				mainQueue: $0.mainQueue
+			)
+		}
+	),
+	
+	Reducer { state, action, environment in
+		switch action {
+			
+		case let .selectedTab(selectedTab):
+			state.selectedTab = selectedTab
+			return .none
+			
+		case .settings(.delegate(.userDeletedWallet)):
+			return Effect(value: .delegate(.userDeletedWallet))
+		case .settings(_):
+			return .none
+			
+		case .delegate(_):
+			return .none
+		}
+	}
+)
 
 public struct TabsCoordinatorView: View {
 	let store: Store<TabsState, TabsAction>
 	public init(
 		store: Store<TabsState, TabsAction>
 	) {
+#if os(iOS)
+		customizeTabBarItemAppearance()
+#endif
 		self.store = store
 	}
 }
@@ -43,58 +151,126 @@ public struct TabsCoordinatorView: View {
 public extension TabsCoordinatorView {
 	var body: some View {
 		WithViewStore(store) { viewStore in
-			Text("TabsCoordinatorView!")
-			Text("Wallet address: \(viewStore.wallet.bech32Address.asString)")
-		}
+			TabView(selection: viewStore.binding(
+				get: \.selectedTab,
+				send: TabsAction.selectedTab)
+			) {
+				NavigationView {
+					BalancesView(
+						store: store.scope(
+							state: \.balances,
+							action: TabsAction.balances
+						)
+					)
+					
+				}
+				.tabItem {
+					Tab.balances.label { viewStore.selectedTab == $0 }
+				}
+				.tag(Tab.balances)
+				
+				NavigationView {
+					ReceiveView(
+						store: store.scope(
+							state: \.receive,
+							action: TabsAction.receive
+						)
+					)
+				}
+				.tabItem {
+					Tab.receive.label { viewStore.selectedTab == $0 }
+				}
+				.tag(Tab.receive)
+				
+				NavigationView {
+					TransferView(
+						store: store.scope(
+							state: \.transfer,
+							action: TabsAction.transfer
+						)
+					)
+				}
+				.tabItem {
+					Tab.transfer.label { viewStore.selectedTab == $0 }
+				}
+				.tag(Tab.transfer)
+				
+				NavigationView {
+					ContactsView(
+						store: store.scope(
+							state: \.contacts,
+							action: TabsAction.contacts
+						)
+					)
+				}
+				.tabItem {
+					Tab.contacts.label { viewStore.selectedTab == $0 }
+				}
+				.tag(Tab.contacts)
+				
+				NavigationView {
+					SettingsView(
+						store: store.scope(
+							state: \.settings,
+							action: TabsAction.settings
+						)
+					)
+				}
+				.tabItem {
+					Tab.settings.label { viewStore.selectedTab == $0 }
+				}
+				.tag(Tab.settings)
+			}
+		}.navigationViewStyle(.stack)
 	}
 }
 
-//#if os(iOS)
-//func customizeTabBarItemAppearance() {
-//
-//    let normalFont = Font.Zhip.iOS.tabNormal
-//    let selectedFont = Font.Zhip.iOS.tabSelected
-//
-//    let backgroundColor: Color = .dusk
-//    let normalColor: Color = .silverGrey
-//    let selectedColor: Color = .turquoise
-//
-//    let itemAppearance = UITabBarItemAppearance()
-//
-//    let backgroundUIColor = UIColor(backgroundColor)
-//    let normalUIColor = UIColor(normalColor)
-//    let selectedUIColor = UIColor(selectedColor)
-//
-//    let titleTextAttributesNormal: [NSAttributedString.Key: Any] = [
-//        NSAttributedString.Key.foregroundColor: normalUIColor,
-//        NSAttributedString.Key.font: normalFont
-//    ]
-//    let titleTextAttributesSelected: [NSAttributedString.Key: Any] = [
-//        NSAttributedString.Key.foregroundColor: selectedUIColor,
-//        NSAttributedString.Key.font: selectedFont
-//    ]
-//    itemAppearance.normal.iconColor = normalUIColor
-//    itemAppearance.normal.titleTextAttributes = titleTextAttributesNormal
-//
-//    itemAppearance.selected.iconColor = selectedUIColor
-//    itemAppearance.selected.titleTextAttributes = titleTextAttributesSelected
-//
-//    let appeareance = UITabBarAppearance()
-//
-//    appeareance.backgroundColor = backgroundUIColor
-//    appeareance.stackedLayoutAppearance = itemAppearance
-//    appeareance.inlineLayoutAppearance = itemAppearance
-//    appeareance.compactInlineLayoutAppearance = itemAppearance
-//
-//    UITabBar.appearance().standardAppearance = appeareance
-//    UITabBar.appearance().scrollEdgeAppearance = appeareance
-//}
-//#endif
+#if os(iOS)
+func customizeTabBarItemAppearance() {
+
+    let normalFont = Font.Zhip.iOS.tabNormal
+    let selectedFont = Font.Zhip.iOS.tabSelected
+
+    let backgroundColor: Color = .dusk
+    let normalColor: Color = .silverGrey
+    let selectedColor: Color = .turquoise
+
+    let itemAppearance = UITabBarItemAppearance()
+
+    let backgroundUIColor = UIColor(backgroundColor)
+    let normalUIColor = UIColor(normalColor)
+    let selectedUIColor = UIColor(selectedColor)
+
+    let titleTextAttributesNormal: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: normalUIColor,
+        NSAttributedString.Key.font: normalFont
+    ]
+    let titleTextAttributesSelected: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: selectedUIColor,
+        NSAttributedString.Key.font: selectedFont
+    ]
+    itemAppearance.normal.iconColor = normalUIColor
+    itemAppearance.normal.titleTextAttributes = titleTextAttributesNormal
+
+    itemAppearance.selected.iconColor = selectedUIColor
+    itemAppearance.selected.titleTextAttributes = titleTextAttributesSelected
+
+    let appeareance = UITabBarAppearance()
+
+    appeareance.backgroundColor = backgroundUIColor
+    appeareance.stackedLayoutAppearance = itemAppearance
+    appeareance.inlineLayoutAppearance = itemAppearance
+    appeareance.compactInlineLayoutAppearance = itemAppearance
+
+    UITabBar.appearance().standardAppearance = appeareance
+    UITabBar.appearance().scrollEdgeAppearance = appeareance
+}
+#endif
 
 
 // MARK: - Tab
 // MARK: -
-public enum Tab {
+public enum Tab: String, Hashable {
 	case balances
 	case receive
 	case transfer
@@ -125,7 +301,10 @@ public extension Tab {
 	}
 	
 	@ViewBuilder
-	func label(isActive: Bool) -> some View {
+	func label(
+		isActive checkIfActive: (Tab) -> Bool
+	) -> some View {
+		let _ = checkIfActive(self) // can use this to further customize tab if active
 		Label(name, systemImage: imageName)
 	}
 	

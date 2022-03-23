@@ -12,6 +12,7 @@ import PINCode
 import SwiftUI
 import TabsFeature
 import UnlockAppFeature
+import UserDefaultsClient
 import Wallet
 
 public struct MainState: Equatable {
@@ -44,9 +45,18 @@ public extension MainAction {
 }
 
 public struct MainEnvironment {
+	public var userDefaults: UserDefaultsClient
 	public var keychainClient: KeychainClient
-	public init(keychainClient: KeychainClient) {
+	public var mainQueue: AnySchedulerOf<DispatchQueue>
+	
+	public init(
+		userDefaults: UserDefaultsClient,
+		keychainClient: KeychainClient,
+		mainQueue: AnySchedulerOf<DispatchQueue>
+	) {
+		self.userDefaults = userDefaults
 		self.keychainClient = keychainClient
+		self.mainQueue = mainQueue
 	}
 }
 
@@ -64,8 +74,12 @@ public let mainReducer = Reducer<MainState, MainAction, MainEnvironment>.combine
 	tabsReducer.pullback(
 		state: \.tabs,
 		action: /MainAction.tabs,
-		environment: { _ in
-			TabsEnvironment()
+		environment: {
+			TabsEnvironment(
+				userDefaults: $0.userDefaults,
+				keychainClient: $0.keychainClient,
+				mainQueue: $0.mainQueue
+			)
 		}
 	),
 	

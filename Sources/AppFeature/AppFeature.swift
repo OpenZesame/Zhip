@@ -113,12 +113,17 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			state: \.main,
 			action: /AppAction.main,
 			environment: {
-				MainEnvironment(keychainClient: $0.keychainClient)
-			}),
+				MainEnvironment(
+					userDefaults: $0.userDefaults,
+					keychainClient: $0.keychainClient,
+					mainQueue: $0.mainQueue
+				)
+			}
+		),
 	
 	appReducerCore
 )
-.debug()
+	.debug()
 
 
 let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
