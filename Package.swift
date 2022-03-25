@@ -465,6 +465,7 @@ let package = Package(
 					"Screen",
 					"Styleguide",
 					"Wallet",
+					"VersionFeature",
 				]
 			),
 		

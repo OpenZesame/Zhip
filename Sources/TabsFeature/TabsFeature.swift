@@ -27,14 +27,14 @@ public struct TabsState: Equatable {
 	public var receive: ReceiveState
 	public var settings: SettingsState
 	
-	public init(wallet: Wallet, selectedTab: Tab = .balances) {
+	public init(wallet: Wallet, isPINSet: Bool = false, selectedTab: Tab = .balances) {
 		self.selectedTab = selectedTab
 		
 		self.balances = .init(wallet: wallet)
 		self.contacts = .init()
 		self.transfer = .init(wallet: wallet)
 		self.receive = .init(wallet: wallet)
-		self.settings = .init()
+		self.settings = .init(isPINSet: isPINSet)
 	}
 	
 }

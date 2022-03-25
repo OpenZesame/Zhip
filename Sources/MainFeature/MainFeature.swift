@@ -26,7 +26,7 @@ public struct MainState: Equatable {
 		maybePIN pin: Pincode? = nil
 	) {
 		self.unlockApp = pin.map { .init(role: .unlockApp, expectedPIN: $0) }
-		self.tabs = .init(wallet: wallet)
+		self.tabs = .init(wallet: wallet, isPINSet: pin != nil)
 	}
 }
 
