@@ -110,7 +110,9 @@ public let mainReducer = Reducer<MainState, MainAction, MainEnvironment>.combine
 )
 
 public struct MainCoordinatorView: View {
+	
 	let store: Store<MainState, MainAction>
+	
 	public init(
 		store: Store<MainState, MainAction>
 	) {
@@ -118,28 +120,9 @@ public struct MainCoordinatorView: View {
 	}
 	
 	public var body: some View {
-		WithViewStore(store.scope(state: ViewState.init)) { viewStore in
-			
-			/*
-			 if viewStore.isSplashPresented {
-				 IfLetStore(
-					 store.scope(
-						 state: \.splash,
-						 action: AppAction.splash
-					 ),
-					 then: SplashView.init(store:)
-				 )
-				 .zIndex(3)
-			 } else if viewStore.isOnboardingPresented {
-				 IfLetStore(
-					 store.scope(
-						 state: \.onboarding,
-						 action: AppAction.onboarding
-					 ),
-					 then: OnboardingCoordinatorView.init(store:)
-				 )
-				 .zIndex(2)*/
-			
+		WithViewStore(
+			store.scope(state: ViewState.init)
+		) { viewStore in
 			Group {
 				if viewStore.isPresentingUnlockScreen {
 					IfLetStore(

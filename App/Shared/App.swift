@@ -87,7 +87,7 @@ struct ZhipApp: App {
 			AppView(store: store)
 				.background(Color.appBackground)
 				.foregroundColor(.white)
-				.navigationBarTitleDisplayMode(.large)
+				.navigationBarTitleDisplayMode(.inline)
 		}
 		.onChange(of: scenePhase) {
 			viewStore.send(.didChangeScenePhase($0))

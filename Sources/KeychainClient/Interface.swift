@@ -83,6 +83,10 @@ public extension KeychainClient {
 	func loadWallet() -> Effect<Wallet?, Self.Error> {
 		load(type: Wallet.self, forKey: walletKey)
 	}
+	
+	func removeWallet() -> Effect<Void, Self.Error> {
+		remove(walletKey)
+	}
 }
 
 // MARK: - Balance

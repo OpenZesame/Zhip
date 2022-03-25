@@ -128,6 +128,11 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 			state.step = .step2_SetupWallet
 			return .none
 			
+		case .termsOfService(.delegate(.done)):
+			assertionFailure("Done button should not be able to press when TermsOfService is presented from Onboarding.")
+			state.step = .step2_SetupWallet
+			return .none
+			
 		case .setupWallet(.delegate(.finishedSettingUpWallet)):
 			state.step = .step3_NewPIN
 			return .none

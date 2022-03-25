@@ -162,7 +162,7 @@ public extension TabsCoordinatorView {
 							action: TabsAction.balances
 						)
 					)
-					
+					.navigationBarTitleDisplayMode(.inline)
 				}
 				.tabItem {
 					Tab.balances.label { viewStore.selectedTab == $0 }
@@ -176,6 +176,7 @@ public extension TabsCoordinatorView {
 							action: TabsAction.receive
 						)
 					)
+					.navigationBarTitleDisplayMode(.inline)
 				}
 				.tabItem {
 					Tab.receive.label { viewStore.selectedTab == $0 }
@@ -189,6 +190,7 @@ public extension TabsCoordinatorView {
 							action: TabsAction.transfer
 						)
 					)
+					.navigationBarTitleDisplayMode(.inline)
 				}
 				.tabItem {
 					Tab.transfer.label { viewStore.selectedTab == $0 }
@@ -202,6 +204,7 @@ public extension TabsCoordinatorView {
 							action: TabsAction.contacts
 						)
 					)
+					.navigationBarTitleDisplayMode(.inline)
 				}
 				.tabItem {
 					Tab.contacts.label { viewStore.selectedTab == $0 }
@@ -215,13 +218,15 @@ public extension TabsCoordinatorView {
 							action: TabsAction.settings
 						)
 					)
+					.navigationBarTitleDisplayMode(.inline)
 				}
 				.tabItem {
 					Tab.settings.label { viewStore.selectedTab == $0 }
 				}
 				.tag(Tab.settings)
 			}
-		}.navigationViewStyle(.stack)
+		}
+		.navigationViewStyle(.stack)
 	}
 }
 

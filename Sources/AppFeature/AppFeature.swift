@@ -127,7 +127,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 
 
 let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
-	let splashMinShowDuration: DispatchQueue.SchedulerTimeType.Stride = 1
+	let splashMinShowDuration: DispatchQueue.SchedulerTimeType.Stride = 0.7
 	switch action {
 	case let .appDelegate(appDelegateAction):
 		return .none
@@ -189,7 +189,7 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		return .none
 		
 	case .main(.delegate(.userDeletedWallet)):
-		fatalError("user removed wallet")
+		return environment.keychainClient.removeWallet().
 		
 	case .main(_):
 		return .none

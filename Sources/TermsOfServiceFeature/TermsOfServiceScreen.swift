@@ -15,11 +15,10 @@ public struct TermsOfServiceState: Equatable {
 	public var mode: Mode
 	public var isAcceptButtonEnabled: Bool
 	public init(
-		mode: Mode = .mandatoryToAcceptTermsAsPartOfOnboarding,
-		isAcceptButtonEnabled: Bool? = nil // will default to value dependent on mode
+		mode: Mode = .mandatoryToAcceptTermsAsPartOfOnboarding
 	) {
 		self.mode = mode
-		self.isAcceptButtonEnabled = isAcceptButtonEnabled ?? (mode == .mandatoryToAcceptTermsAsPartOfOnboarding ? false : true)
+		self.isAcceptButtonEnabled = mode == .mandatoryToAcceptTermsAsPartOfOnboarding ? false : true
 	}
 }
 
@@ -38,7 +37,7 @@ public enum TermsOfServiceAction: Equatable {
 }
 public extension TermsOfServiceAction {
 	enum DelegateAction: Equatable {
-		case didAcceptTermsOfService
+		case didAcceptTermsOfService, done
 	}
 }
 
@@ -89,9 +88,13 @@ private extension TermsOfServiceScreen {
 	struct ViewState: Equatable {
 		var mode: TermsOfServiceState.Mode
 		var isAcceptButtonEnabled: Bool
+		var isAcceptButtonSupported: Bool
+		var isAcceptDoneSupported: Bool
 		init(state: TermsOfServiceState) {
 			self.mode = state.mode
 			self.isAcceptButtonEnabled = state.isAcceptButtonEnabled
+			self.isAcceptButtonSupported = state.mode == .mandatoryToAcceptTermsAsPartOfOnboarding
+			self.isAcceptDoneSupported = state.mode == .userInitiatedFromSettings
 		}
 	}
 
@@ -127,10 +130,7 @@ public extension TermsOfServiceScreen {
 						}
 					}
 					
-					switch viewStore.state.mode {
-					case .userInitiatedFromSettings:
-						EmptyView()
-					case .mandatoryToAcceptTermsAsPartOfOnboarding:
+					if viewStore.isAcceptButtonSupported {
 						Button("Accept") {
 							viewStore.send(.acceptButtonTapped)
 						}
@@ -138,7 +138,21 @@ public extension TermsOfServiceScreen {
 						.enabled(if: viewStore.isAcceptButtonEnabled)
 					}
 				}
-				.padding()
+				.padding([.leading, .trailing, .bottom])
+			}
+			
+			.toolbar {
+				ToolbarItem(placement: .navigationBarLeading) {
+					if viewStore.isAcceptDoneSupported {
+						Button(action: {
+							viewStore.send(.delegate(.done))
+						}, label: {
+							Text("Done")
+								.font(.zhip.hint)
+								.foregroundColor(.white)
+						})
+					}
+				}
 			}
 		}
 	}
