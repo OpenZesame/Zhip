@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import KeychainClient
 import NewPINFeature
+import PasswordValidator
 import PINCode
 import SetupWalletFeature
 import SwiftUI
@@ -66,21 +67,24 @@ public extension OnboardingAction {
 }
 
 public struct OnboardingEnvironment {
-	public var userDefaults: UserDefaultsClient
-	public var walletGenerator: WalletGenerator
 	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
+	public var passwordValidator: PasswordValidator
+	public var userDefaults: UserDefaultsClient
+	public var walletGenerator: WalletGenerator
 	
 	public init(
-		userDefaults: UserDefaultsClient,
-		walletGenerator: WalletGenerator,
 		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		userDefaults: UserDefaultsClient,
+		walletGenerator: WalletGenerator
 	) {
-		self.userDefaults = userDefaults
-		self.walletGenerator = walletGenerator
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.userDefaults = userDefaults
+		self.walletGenerator = walletGenerator
 	}
 }
 
@@ -101,9 +105,10 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		action: /OnboardingAction.setupWallet,
 		environment: {
 			SetupWalletEnvironment(
-				walletGenerator: $0.walletGenerator,
 				keychainClient: $0.keychainClient,
-				mainQueue: $0.mainQueue
+				mainQueue: $0.mainQueue,
+				passwordValidator: $0.passwordValidator,
+				walletGenerator: $0.walletGenerator
 			)
 		}
 	),

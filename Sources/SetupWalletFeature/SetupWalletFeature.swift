@@ -10,6 +10,7 @@ import EnsurePrivacyFeature
 import KeychainClient
 import NewWalletFeature
 import NewWalletOrRestoreFeature
+import PasswordValidator
 import RestoreWalletFeature
 import SwiftUI
 import Wallet
@@ -68,18 +69,22 @@ public extension SetupWalletAction {
 }
 
 public struct SetupWalletEnvironment {
-	public let walletGenerator: WalletGenerator
+	
 	public let keychainClient: KeychainClient
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	public let passwordValidator: PasswordValidator
+	public let walletGenerator: WalletGenerator
 	
 	public init(
-		walletGenerator: WalletGenerator,
 		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		walletGenerator: WalletGenerator
 	) {
-		self.walletGenerator = walletGenerator
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.walletGenerator = walletGenerator
 	}
 }
 
@@ -98,9 +103,10 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		action: /SetupWalletAction.newWallet,
 		environment: {
 			NewWalletEnvironment(
-				walletGenerator: $0.walletGenerator,
 				keychainClient: $0.keychainClient,
-				mainQueue: $0.mainQueue
+				mainQueue: $0.mainQueue,
+				passwordValidator: $0.passwordValidator,
+				walletGenerator: $0.walletGenerator
 			)
 		}
 	),
@@ -108,7 +114,11 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 	restoreWalletReducer.pullback(
 		state: \.restoreWallet,
 		action: /SetupWalletAction.restoreWallet,
-		environment: { _ in RestoreWalletEnvironment() }
+		environment: {
+			RestoreWalletEnvironment(
+				passwordValidator: $0.passwordValidator
+			)
+		}
 	),
 		
 	Reducer<SetupWalletState, SetupWalletAction, SetupWalletEnvironment> { state, action, environment in

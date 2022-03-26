@@ -10,6 +10,7 @@ import ComposableArchitecture
 import KeychainClient
 import MainFeature
 import OnboardingFeature
+import PasswordValidator
 import PINCode
 import SplashFeature
 import Styleguide
@@ -68,21 +69,25 @@ public enum AppAction: Equatable {
 }
 
 public struct AppEnvironment {
-	public var userDefaults: UserDefaultsClient
-	public var walletGenerator: WalletGenerator
 	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
+	public var passwordValidator: PasswordValidator
+	public var userDefaults: UserDefaultsClient
+	public var walletGenerator: WalletGenerator
+	
 	
 	public init(
-		userDefaults: UserDefaultsClient,
-		walletGenerator: WalletGenerator,
 		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		userDefaults: UserDefaultsClient,
+		walletGenerator: WalletGenerator
 	) {
-		self.userDefaults = userDefaults
-		self.walletGenerator = walletGenerator
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.userDefaults = userDefaults
+		self.walletGenerator = walletGenerator
 	}
 }
 
@@ -108,10 +113,11 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			action: /AppAction.onboarding,
 			environment: {
 				OnboardingEnvironment(
-					userDefaults: $0.userDefaults,
-					walletGenerator: $0.walletGenerator,
 					keychainClient: $0.keychainClient,
-					mainQueue: $0.mainQueue
+					mainQueue: $0.mainQueue,
+					passwordValidator: $0.passwordValidator,
+					userDefaults: $0.userDefaults,
+					walletGenerator: $0.walletGenerator
 				)
 			}
 		),

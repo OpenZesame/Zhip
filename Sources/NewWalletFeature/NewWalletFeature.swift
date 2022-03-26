@@ -10,6 +10,7 @@ import ComposableArchitecture
 import EnsurePrivacyFeature
 import GenerateNewWalletFeature
 import KeychainClient
+import PasswordValidator
 import SwiftUI
 import Wallet
 import WalletGenerator
@@ -40,18 +41,22 @@ public extension NewWalletAction {
 }
 
 public struct NewWalletEnvironment {
-	public let walletGenerator: WalletGenerator
+	
 	public let keychainClient: KeychainClient
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	public let passwordValidator: PasswordValidator
+	public let walletGenerator: WalletGenerator
 	
 	public init(
-		walletGenerator: WalletGenerator,
 		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		walletGenerator: WalletGenerator
 	) {
-		self.walletGenerator = walletGenerator
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.walletGenerator = walletGenerator
 	}
 }
 
@@ -68,8 +73,9 @@ public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWallet
 		action: /NewWalletAction.generateNewWallet,
 		environment: {
 			GenerateNewWalletEnvironment(
-				walletGenerator: $0.walletGenerator,
-				mainQueue: $0.mainQueue
+				mainQueue: $0.mainQueue,
+				passwordValidator: $0.passwordValidator,
+				walletGenerator: $0.walletGenerator
 			)
 		}
 	),

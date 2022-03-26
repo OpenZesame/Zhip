@@ -14,3 +14,8 @@ public func incorrectImplementation(_ message: CustomStringConvertible) -> Never
 public var abstract: Never {
     fatalError("Override me")
 }
+
+
+#if DEBUG
+public let unsafeDebugPassword = "apabanan"
+#endif

@@ -6,9 +6,11 @@
 //
 
 import Checkbox
+import Common
 import ComposableArchitecture
 import HoverPromptTextField
 import InputField
+import PasswordValidator
 import PasswordInputFields
 import Screen
 import Styleguide
@@ -18,7 +20,6 @@ import WalletGenerator
 import KeychainClient
 
 public struct GenerateNewWalletState: Equatable {
-	
 	
 	@BindableState public var password: String
 	@BindableState public var passwordConfirmation: String
@@ -46,29 +47,6 @@ public struct GenerateNewWalletState: Equatable {
 	}
 }
 
-internal extension GenerateNewWalletState {
-	
-	static func validate(password: String) -> Bool {
-		guard
-			password.count >= minimumEncryptionPasswordLength
-		else {
-			return false
-		}
-		return true
-	}
-	
-	
-	var arePasswordsValid: Bool {
-		guard Self.validate(password: password) && Self.validate(password: passwordConfirmation) else { return false }
-		return true
-	}
-	
-	var arePasswordsValidAndEqual: Bool {
-		guard arePasswordsValid else { return false }
-		return password == passwordConfirmation
-	}
-}
-
 public enum GenerateNewWalletAction: Equatable, BindableAction {
 	case alertDismissed
 	case onAppear
@@ -87,15 +65,19 @@ public extension GenerateNewWalletAction {
 }
 
 public struct GenerateNewWalletEnvironment {
-	public let walletGenerator: WalletGenerator
+
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
+	public let passwordValidator: PasswordValidator
+	public let walletGenerator: WalletGenerator
 	
 	public init(
-		walletGenerator: WalletGenerator,
-		mainQueue: AnySchedulerOf<DispatchQueue>
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		walletGenerator: WalletGenerator
 	) {
-		self.walletGenerator = walletGenerator
 		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.walletGenerator = walletGenerator
 	}
 }
 
@@ -114,11 +96,18 @@ public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNe
 		return .none
 		
 	case .binding:
-		state.isContinueButtonEnabled = state.arePasswordsValidAndEqual && state.userHasConfirmedBackingUpPassword
+		state.isContinueButtonEnabled = environment.passwordValidator
+			.validatePasswords(
+				.init(
+					password: state.password,
+					confirmPassword: state.passwordConfirmation
+				)
+			) && state.userHasConfirmedBackingUpPassword
+		
 		return .none
 		
+		
 	case .continueButtonTapped:
-		assert(state.arePasswordsValidAndEqual)
 		state.isGeneratingWallet = true
 		
 		let request = GenerateWalletRequest(encryptionPassword: state.password, name: nil)
@@ -203,7 +192,3 @@ public extension GenerateNewWalletScreen {
 		}
 	}
 }
-
-#if DEBUG
-let unsafeDebugPassword = "apabanan"
-#endif

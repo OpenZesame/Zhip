@@ -5,8 +5,10 @@
 //  Created by Alexander Cyon on 2022-02-17.
 //
 
+import Common
 import ComposableArchitecture
 import InputField
+import PasswordValidator
 import Screen
 import Styleguide
 import SwiftUI
@@ -14,10 +16,43 @@ import Wallet
 import struct Zesame.PrivateKey
 
 public struct RestoreWalletUsingPrivateKeyState: Equatable {
-	public init() {}
+	public var isRestoring: Bool
+	public var canRestore: Bool
+	@BindableState public var privateKeyHex: String
+	@BindableState public var encryptionPassword: String
+	@BindableState public var confirmPassword: String
+	
+	public init(
+		isRestoring: Bool = false,
+		canRestore: Bool = false,
+		privateKeyHex: String = "",
+		encryptionPassword: String = "",
+		confirmPassword: String = ""
+	) {
+		self.isRestoring = isRestoring
+	
+#if DEBUG
+		self.canRestore = true
+
+		// Some uninteresting test account without any balance.
+		self.privateKeyHex = "0xcc7d1263009ebbc8e31f5b7e7d79b625e57cf489cd540e1b0ac4801c8daab9be"
+
+		self.encryptionPassword = unsafeDebugPassword
+		self.confirmPassword = unsafeDebugPassword
+		
+#else
+		self.canRestore = canRestore
+		self.privateKeyHex = privateKeyHex
+		self.encryptionPassword = encryptionPassword
+		self.confirmPassword = confirmPassword
+#endif
+	}
 }
-public enum RestoreWalletUsingPrivateKeyAction: Equatable {
+public enum RestoreWalletUsingPrivateKeyAction: Equatable, BindableAction {
+	case binding(BindingAction<RestoreWalletUsingPrivateKeyState>)
 	case delegate(DelegateAction)
+	
+	case restore
 }
 public extension RestoreWalletUsingPrivateKeyAction {
 	enum DelegateAction: Equatable {
@@ -26,7 +61,10 @@ public extension RestoreWalletUsingPrivateKeyAction {
 }
 
 public struct RestoreWalletUsingPrivateKeyEnvironment {
-	public init() {}
+	public var passwordValidator: PasswordValidator
+	public init(passwordValidator: PasswordValidator) {
+		self.passwordValidator = passwordValidator
+	}
 }
 
 public let restoreWalletUsingPrivateKeyReducer = Reducer<
@@ -34,7 +72,22 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 	RestoreWalletUsingPrivateKeyAction,
 	RestoreWalletUsingPrivateKeyEnvironment
 > { state, action, environment in
-	return .none
+	switch action {
+	case .binding(_):
+		state.canRestore = environment.passwordValidator
+			.validatePasswords(
+				.init(
+					password: state.encryptionPassword,
+					confirmPassword: state.confirmPassword
+				)
+			) && PrivateKey(hex: state.privateKeyHex) != nil
+		return .none
+		
+	case .restore:
+		fatalError()
+	case .delegate(_):
+		return .none
+	}
 }
 
 
@@ -50,48 +103,91 @@ public struct RestoreWalletUsingPrivateKeyScreen: View {
 	}
 }
 
+internal extension RestoreWalletUsingPrivateKeyScreen {
+	struct ViewState: Equatable {
+		var isRestoring: Bool
+		var canRestore: Bool
+		@BindableState var privateKeyHex: String
+		@BindableState var encryptionPassword: String
+		@BindableState var confirmPassword: String
+		
+		init(state: RestoreWalletUsingPrivateKeyState) {
+			self.isRestoring = state.isRestoring
+			self.canRestore = state.canRestore
+			self.privateKeyHex = state.privateKeyHex
+			self.encryptionPassword = state.encryptionPassword
+			self.confirmPassword = state.confirmPassword
+		}
+	}
+	
+	enum ViewAction: Equatable, BindableAction {
+		case binding(BindingAction<ViewState>)
+		case restoreButtonTapped
+	}
+}
+
+extension RestoreWalletUsingPrivateKeyState {
+	fileprivate var view: RestoreWalletUsingPrivateKeyScreen.ViewState {
+		get { .init(state: self) }
+		set {
+			// handle bindable actions only:
+			self.privateKeyHex = newValue.privateKeyHex
+		}
+	}
+}
+
+
+private extension RestoreWalletUsingPrivateKeyAction {
+	init(action: RestoreWalletUsingPrivateKeyScreen.ViewAction) {
+		switch action {
+		case let .binding(bindingAction):
+			self = .binding(bindingAction.pullback(\RestoreWalletUsingPrivateKeyState.view))
+		case .restoreButtonTapped:
+			self = .restore
+		}
+	}
+}
+
 // MARK: - View
 // MARK: -
 public extension RestoreWalletUsingPrivateKeyScreen {
     var body: some View {
-		WithViewStore(store) { viewStore in
+		WithViewStore(
+			store.scope(
+				state: ViewState.init,
+				action: RestoreWalletUsingPrivateKeyAction.init
+			)
+		) { viewStore in
 			ForceFullScreen {
-				Text("Private Key")
-					.font(.zhip.bigBang)
-					.foregroundColor(.turquoise)
+				VStack(spacing: 20) {
+					
+	//					InputField.privateKey(text: viewStore.privateKeyHex, isValid: $viewModel.isPrivateKeyValid)
+					SecureField("Private Key Hex", text: viewStore.binding(\.$privateKeyHex))
+					
+					
+	//					PasswordInputFields(
+	 //						password: $viewModel.password,
+	 //						isPasswordValid: $viewModel.isPasswordValid,
+	 //						passwordConfirmation: $viewModel.passwordConfirmation,
+	 //						isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
+	 //					)
+					SecureField("Encryption password", text: viewStore.binding(\.$encryptionPassword))
+					SecureField("Confirm encryption password", text: viewStore.binding(\.$confirmPassword))
+
+
+					Button("Restore") {
+						viewStore.send(.restoreButtonTapped)
+					}
+					.buttonStyle(.primary(isLoading: viewStore.isRestoring))
+					.enabled(if: viewStore.canRestore)
+
+				}
+				.textFieldStyle(.roundedBorder)
+				.disableAutocorrection(true)
 			}
 			.navigationTitle("Restore with private key")
 		}
-//        ForceFullScreen {
-//            VStack(spacing: 20) {
-//                InputField.privateKey(text: $viewModel.privateKeyHex, isValid: $viewModel.isPrivateKeyValid)
-//
-//                PasswordInputFields(
-//                    password: $viewModel.password,
-//                    isPasswordValid: $viewModel.isPasswordValid,
-//                    passwordConfirmation: $viewModel.passwordConfirmation,
-//                    isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
-//                )
-//
-//                Button("Restore") {
-//                    Task {
-//                        await viewModel.restore()
-//                    }
-//                }
-//                .buttonStyle(.primary(isLoading: $viewModel.isRestoringWallet))
-//                .enabled(if: viewModel.canProceed)
-//
-//            }
-//            .disableAutocorrection(true)
-//        }
-//        #if DEBUG
-//        .onAppear {
-//            viewModel.password = unsafeDebugPassword
-//            viewModel.passwordConfirmation = unsafeDebugPassword
-//            // Some uninteresting test account without any balance.
-//            viewModel.privateKeyHex = "0xcc7d1263009ebbc8e31f5b7e7d79b625e57cf489cd540e1b0ac4801c8daab9be"
-//        }
-//        #endif
+
     }
 }
 

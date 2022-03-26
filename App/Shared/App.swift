@@ -117,10 +117,11 @@ extension ZhipApp {
 extension AppEnvironment {
 	static var live: Self {
 		.init(
-			userDefaults: .live(),
-			walletGenerator: walletGenerator(),
 			keychainClient: .live(),
-			mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+			mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+			passwordValidator: .live,
+			userDefaults: .live(),
+			walletGenerator: walletGenerator()
 		)
 	}
 	

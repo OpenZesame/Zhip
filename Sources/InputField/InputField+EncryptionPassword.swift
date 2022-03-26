@@ -7,10 +7,9 @@
 
 import Foundation
 import HoverPromptTextField
+import PasswordValidator
 import SwiftUI
 
-/// TODO replace with Zesame.minLengthOfPassword
-public let minimumEncryptionPasswordLength = 8
 
 public extension ValidateInputRequirement {
 	static let encryptionPassword: ValidateInputRequirement = { ValidateInputRequirement.minimumLength(of: minimumEncryptionPasswordLength) as! ValidateInputRequirement }()

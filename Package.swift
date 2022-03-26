@@ -120,6 +120,7 @@ let package = Package(
 		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
 		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
 		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
+		.library(name: "PasswordValidator", targets: ["PasswordValidator"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
 		.library(name: "Purger", targets: ["Purger"]),
@@ -164,6 +165,7 @@ let package = Package(
 					"KeychainClient",
 					"MainFeature",
 					"OnboardingFeature",
+					"PasswordValidator",
 					"Styleguide",
 					"SplashFeature",
 					"UserDefaultsClient",
@@ -292,6 +294,7 @@ let package = Package(
 					"HoverPromptTextField",
 					"InputField",
 					"PasswordInputFields",
+					"PasswordValidator",
 					"Screen",
 					"Styleguide",
 					"Wallet",
@@ -309,8 +312,9 @@ let package = Package(
 			.target(
 				name: "InputField",
 				dependencies: [
-					"Styleguide",
 					"HoverPromptTextField",
+					"PasswordValidator",
+					"Styleguide",
 				]
 			),
 		
@@ -364,6 +368,7 @@ let package = Package(
 					"EnsurePrivacyFeature",
 					"GenerateNewWalletFeature",
 					"KeychainClient",
+					"PasswordValidator",
 					"WalletGenerator",
 				]
 			),
@@ -384,6 +389,7 @@ let package = Package(
 					composableArchitecture,
 					"KeychainClient",
 					"NewPINFeature",
+					"PasswordValidator",
 					"SetupWalletFeature",
 					"TermsOfServiceFeature",
 					"UserDefaultsClient",
@@ -400,6 +406,15 @@ let package = Package(
 					"HoverPromptTextField",
 				]
 			),
+		
+		
+			.target(
+				name: "PasswordValidator",
+				dependencies: [
+					"Common",
+				]
+			),
+		
 		
 			.target(
 				name: "PINCode",
@@ -442,9 +457,11 @@ let package = Package(
 			.target(
 				name: "RestoreWalletFeature",
 				dependencies: [
+					"Common",
 					composableArchitecture,
 					"EnsurePrivacyFeature",
 					"InputField",
+					"PasswordValidator",
 					"Screen",
 					"Styleguide",
 					"Wallet",
@@ -489,6 +506,7 @@ let package = Package(
 					"KeychainClient",
 					"NewWalletOrRestoreFeature",
 					"NewWalletFeature",
+					"PasswordValidator",
 					"RestoreWalletFeature",
 					"Screen",
 					"Styleguide",

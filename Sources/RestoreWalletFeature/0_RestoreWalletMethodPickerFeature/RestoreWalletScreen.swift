@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import PasswordValidator
 import SwiftUI
 import Styleguide
 import Screen
@@ -56,7 +57,12 @@ public extension RestoreWalletMethodAction {
 }
 
 public struct RestoreWalletMethodEnvironment {
-	public init() {}
+	public let passwordValidator: PasswordValidator
+	public init(
+		passwordValidator: PasswordValidator
+	) {
+		self.passwordValidator = passwordValidator
+	}
 }
 
 public let restoreWalletMethodReducer = Reducer<
@@ -68,8 +74,10 @@ public let restoreWalletMethodReducer = Reducer<
 	restoreWalletUsingPrivateKeyReducer.pullback(
 		state: \.usingPrivateKey,
 		action: /RestoreWalletMethodAction.usingPrivateKey,
-		environment: { _ in
-			RestoreWalletUsingPrivateKeyEnvironment()
+		environment: {
+			RestoreWalletUsingPrivateKeyEnvironment(
+				passwordValidator: $0.passwordValidator
+			)
 		}
 	),
 	
