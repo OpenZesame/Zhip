@@ -15,12 +15,12 @@ public struct UserDefaultsClient {
 
 public extension UserDefaultsClient {
 	
-	var hasShownFirstLaunchOnboarding: Bool {
-		boolForKey(hasShownFirstLaunchOnboardingKey)
+	var hasRunAppBefore: Bool {
+		boolForKey(hasRunAppBeforeKey)
 	}
 
-	func setHasShownFirstLaunchOnboarding(_ bool: Bool) -> Effect<Never, Never> {
-		setBool(bool, hasShownFirstLaunchOnboardingKey)
+	func setHasRunAppBefore(_ bool: Bool) -> Effect<Never, Never> {
+		setBool(bool, hasRunAppBeforeKey)
 	}
 	
 	var hasAcceptedTermsOfService: Bool {
@@ -30,7 +30,20 @@ public extension UserDefaultsClient {
 	func setHasAcceptedTermsOfService(_ bool: Bool) -> Effect<Never, Never> {
 		setBool(bool, hasAcceptedTermsOfServiceKey)
 	}
+	
+	func removeAll(
+		butKeepHasAppRunBeforeFlag keepHasAppRunBeforeFlag: Bool = true,
+		butKeepHasAcceptedTermsOfService keepHasAcceptedTermsOfService: Bool = true
+	) -> Effect<Never, Never> {
+		let maybeRemoveHasAppRunBefore: Effect<Never, Never> = keepHasAppRunBeforeFlag ? Effect.fireAndForget {} : remove(hasRunAppBeforeKey)
+		let maybeRemoveHasAcceptedToS: Effect<Never, Never> = keepHasAcceptedTermsOfService ? Effect.fireAndForget {} : remove(hasAcceptedTermsOfServiceKey)
+
+		return Effect.concatenate(
+			maybeRemoveHasAppRunBefore,
+			maybeRemoveHasAcceptedToS
+		)
+	}
 }
 
-private let hasShownFirstLaunchOnboardingKey = "hasShownFirstLaunchOnboardingKey"
+private let hasRunAppBeforeKey = "hasRunAppBeforeKey"
 private let hasAcceptedTermsOfServiceKey = "hasAcceptedTermsOfServiceKey"

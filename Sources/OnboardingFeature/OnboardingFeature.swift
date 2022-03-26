@@ -8,28 +8,33 @@
 import ComposableArchitecture
 import KeychainClient
 import NewPINFeature
+import PINCode
 import SetupWalletFeature
 import SwiftUI
 import TermsOfServiceFeature
 import UserDefaultsClient
 import WelcomeFeature
+import Wallet
 import WalletGenerator
+
 
 public struct OnboardingState: Equatable {
 	public var step: Step
-	public var welcome: WelcomeState
-	public var termsOfService: TermsOfServiceState
-	public var setupWallet: SetupWalletState
-	public var newPIN: NewPINState
+	
+	public var welcome: WelcomeState?
+	public var termsOfService: TermsOfServiceState?
+	public var setupWallet: SetupWalletState?
+	public var newPIN: NewPINState?
+	
 	public init(
-		step: Step = Step.allCases.first!,
-		welcome: WelcomeState = .init(),
-		termsOfService: TermsOfServiceState = .init(),
-		setupWallet: SetupWalletState = .init(),
-		newPIN: NewPINState = .init()
+		step: Step = .step0_Welcome,
+		welcome: WelcomeState? = nil,
+		termsOfService: TermsOfServiceState? = nil,
+		setupWallet: SetupWalletState? = nil,
+		newPIN: NewPINState? = nil
 	) {
 		self.step = step
-		self.welcome = welcome
+		self.welcome = .init()
 		self.termsOfService = termsOfService
 		self.setupWallet = setupWallet
 		self.newPIN = newPIN
@@ -37,19 +42,14 @@ public struct OnboardingState: Equatable {
 }
 
 public extension OnboardingState {
-	enum Step: Int, CaseIterable, Comparable, Equatable {
+	enum Step: Equatable {
 		case step0_Welcome
 		case step1_TermsOfService
 		case step2_SetupWallet
-		case step3_NewPIN
+		case step3_NewPIN(wallet: Wallet)
 	}
 }
 
-public extension OnboardingState.Step {
-	static func < (lhs: Self, rhs: Self) -> Bool {
-		lhs.rawValue < rhs.rawValue
-	}
-}
 
 public enum OnboardingAction: Equatable {
 	case delegate(DelegateAction)
@@ -61,7 +61,7 @@ public enum OnboardingAction: Equatable {
 }
 public extension OnboardingAction {
 	enum DelegateAction: Equatable {
-		case finishedOnboarding
+		case finishedOnboarding(wallet: Wallet, pin: Pincode?)
 	}
 }
 
@@ -86,13 +86,17 @@ public struct OnboardingEnvironment {
 
 public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, OnboardingEnvironment>.combine(
 	
-	termsOfServiceReducer.pullback(
+	termsOfServiceReducer
+		.optional()
+		.pullback(
 		state: \.termsOfService,
 		action: /OnboardingAction.termsOfService,
 		environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
 	),
 	
-	setupWalletReducer.pullback(
+	setupWalletReducer
+		.optional()
+		.pullback(
 		state: \.setupWallet,
 		action: /OnboardingAction.setupWallet,
 		environment: {
@@ -104,7 +108,9 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		}
 	),
 	
-	newPINReducer.pullback(
+	newPINReducer
+		.optional()
+		.pullback(
 		state: \.newPIN,
 		action: /OnboardingAction.newPIN,
 		environment: {
@@ -118,29 +124,38 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		switch action {
 		case .welcome(.delegate(.getStarted)):
 			if environment.userDefaults.hasAcceptedTermsOfService {
-				state = .init(step: .step2_SetupWallet)
+				state = .init(
+					step: .step2_SetupWallet,
+					setupWallet: .init()
+				)
 			} else {
-				state = .init(step: .step1_TermsOfService)
+				state = .init(
+					step: .step1_TermsOfService,
+					termsOfService: .init(mode: .mandatoryToAcceptTermsAsPartOfOnboarding)
+				)
 			}
 			return .none
 		case .termsOfService(.delegate(.didAcceptTermsOfService)):
 			assert(environment.userDefaults.hasAcceptedTermsOfService)
+			state.setupWallet = .init()
 			state.step = .step2_SetupWallet
 			return .none
 			
 		case .termsOfService(.delegate(.done)):
 			assertionFailure("Done button should not be able to press when TermsOfService is presented from Onboarding.")
+			state.setupWallet = .init()
 			state.step = .step2_SetupWallet
 			return .none
 			
-		case .setupWallet(.delegate(.finishedSettingUpWallet)):
-			state.step = .step3_NewPIN
+		case let .setupWallet(.delegate(.finishedSettingUpWallet(wallet))):
+			state.newPIN = .init(wallet: wallet)
+			state.step = .step3_NewPIN(wallet: wallet)
 			return .none
 			
-		case .newPIN(.delegate(.skippedPIN)):
-			return Effect(value: .delegate(.finishedOnboarding))
-		case .newPIN(.delegate(.finishedSettingUpPIN)):
-			return Effect(value: .delegate(.finishedOnboarding))
+		case let .newPIN(.delegate(.skippedPIN(wallet))):
+			return Effect(value: .delegate(.finishedOnboarding(wallet: wallet, pin: nil)))
+		case let .newPIN(.delegate(.finishedSettingUpPIN(wallet, pin))):
+			return Effect(value: .delegate(.finishedOnboarding(wallet: wallet, pin: pin)))
 			
 		default:
 			return .none
@@ -164,33 +179,36 @@ public extension OnboardingCoordinatorView {
 			Group {
 				switch viewStore.step {
 				case .step0_Welcome:
-					WelcomeScreen(
-						store: store.scope(
+					IfLetStore(
+						store.scope(
 							state: \.welcome,
 							action: OnboardingAction.welcome
-						)
+						),
+						then: WelcomeScreen.init(store:)
 					)
 				case .step1_TermsOfService:
-					TermsOfServiceScreen(
-						store: store.scope(
+					IfLetStore(
+						store.scope(
 							state: \.termsOfService,
 							action: OnboardingAction.termsOfService
-						)
+						),
+						then: TermsOfServiceScreen.init(store:)
 					)
 				case .step2_SetupWallet:
-					SetupWalletCoordinatorView(
-						store: store.scope(
+					IfLetStore(
+						store.scope(
 							state: \.setupWallet,
 							action: OnboardingAction.setupWallet
-						)
+						),
+						then: SetupWalletCoordinatorView.init(store:)
 					)
-					
 				case .step3_NewPIN:
-					NewPINCoordinatorView(
-						store: store.scope(
+					IfLetStore(
+						store.scope(
 							state: \.newPIN,
 							action: OnboardingAction.newPIN
-						)
+						),
+						then: NewPINCoordinatorView.init(store:)
 					)
 				}
 			}
@@ -205,7 +223,14 @@ private extension OnboardingCoordinatorView {
 		
 		init(state: OnboardingState) {
 			let step = state.step
-			self.isSkipButtonVisible = step == .step3_NewPIN
+			
+			switch step {
+			case .step3_NewPIN:
+				self.isSkipButtonVisible = true
+			default:
+				self.isSkipButtonVisible = false
+			}
+			
 			self.step = step
 		}
 	}

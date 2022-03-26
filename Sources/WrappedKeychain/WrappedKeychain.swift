@@ -3,7 +3,7 @@ import Foundation
 import PINCode
 import Wallet
 
-public final class KeychainManager {
+public final class WrappedKeychain {
     private let wrapped: Keychain
 
 	public init(
@@ -19,7 +19,7 @@ public final class KeychainManager {
 }
 
 
-public extension KeychainManager {
+public extension WrappedKeychain {
 	
 	func data(forKey key: String) throws -> Data? {
 		try wrapped.getData(key)

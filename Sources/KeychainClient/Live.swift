@@ -8,11 +8,11 @@
 import ComposableArchitecture
 import Combine
 import Foundation
-import KeychainManager
+import WrappedKeychain
 
 public extension KeychainClient {
 	static func live(
-		keychain keychainWrapper: KeychainManager = .init(
+		wrappedKeychain: WrappedKeychain = .init(
 			service: "com.openzesame.zhip",
 			label: "Zhip",
 			accessibility: .whenPasscodeSetThisDeviceOnly
@@ -22,7 +22,7 @@ public extension KeychainClient {
 			dataForKey: { key in
 				Effect.run { subscriber in
 					do {
-						let data = try keychainWrapper.data(forKey: key)
+						let data = try wrappedKeychain.data(forKey: key)
 						subscriber.send(data)
 						subscriber.send(completion: .finished)
 					} catch {
@@ -34,7 +34,7 @@ public extension KeychainClient {
 			remove: { key in
 				Effect.run { subscriber in
 					do {
-						try keychainWrapper.remove(forKey: key)
+						try wrappedKeychain.remove(forKey: key)
 						subscriber.send(())
 						subscriber.send(completion: .finished)
 					} catch {
@@ -46,7 +46,7 @@ public extension KeychainClient {
 			setData: { data, key in
 				Effect.run { subscriber in
 					do {
-						try keychainWrapper.setData(data, forKey: key)
+						try wrappedKeychain.setData(data, forKey: key)
 						subscriber.send(())
 						subscriber.send(completion: .finished)
 					}catch {

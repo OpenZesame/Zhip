@@ -5,6 +5,7 @@
 //  Created by Alexander Cyon on 2022-03-07.
 //
 
+import Common
 import ComposableArchitecture
 import KeychainClient
 import MainFeature
@@ -22,6 +23,7 @@ public struct AppState: Equatable {
 	
 	public var isObfuscateAppOverlayPresented: Bool
 	
+	public var alert: AlertState<AppAction>?
 	public var splash: SplashState?
 	public var onboarding: OnboardingState?
 	public var main: MainState?
@@ -44,6 +46,8 @@ public enum AppAction: Equatable {
 	case appDelegate(AppDelegateAction)
 	case didChangeScenePhase(ScenePhase)
 	
+	case alertDismissed
+	
 	case splash(SplashAction)
 	
 	case onboardUser
@@ -59,6 +63,8 @@ public enum AppAction: Equatable {
 	
 	case coverAppWithObfuscationOverlay
 	case uncoverAppFromObfuscationOverlay
+	
+	case deleteWalletResult(Result<VoidEq, KeychainClient.Error>)
 }
 
 public struct AppEnvironment {
@@ -88,7 +94,10 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			state: \.splash,
 			action: /AppAction.splash,
 			environment: {
-				SplashEnvironment(keychainClient: $0.keychainClient)
+				SplashEnvironment(
+					keychainClient: $0.keychainClient,
+					userDefaultsClient: $0.userDefaults
+				)
 			}
 		),
 	
@@ -123,7 +132,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 	
 	appReducerCore
 )
-	.debug()
+.debug()
 
 
 let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
@@ -150,6 +159,8 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 			.delay(for: splashMinShowDuration, scheduler: environment.mainQueue)
 			.eraseToEffect()
 		
+	
+		
 	case let .splash(.delegate(.foundWallet(wallet))):
 		return Effect(value: .loadPIN(wallet))
 		
@@ -157,10 +168,10 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		state.splash = nil
 		return Effect(value: .onboardUser)
 		
-	case .onboarding(.delegate(.finishedOnboarding)):
+	case let .onboarding(.delegate(.finishedOnboarding(wallet, pin))):
 		state.onboarding = nil
-	  return .none
-		
+		return Effect(value: .startApp(wallet: wallet, pin: pin))
+	
 	case .onboardUser:
 		state.onboarding = .init()
 		return .none
@@ -189,7 +200,23 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		return .none
 		
 	case .main(.delegate(.userDeletedWallet)):
-		return environment.keychainClient.removeWallet().
+		return environment.keychainClient
+			.removeWallet()
+			.catchToEffect(AppAction.deleteWalletResult)
+		
+	case .deleteWalletResult(.success):
+		return Effect(value: .onboardUser)
+		
+	case let .deleteWalletResult(.failure(error)):
+		assertionFailure("Failed to delete wallet from keychain.")
+		state.alert = .init(
+			title: TextState("Delete wallet failed."),
+			message: TextState("Failed to delete wallet from keychain. This probably means that there is a bug in Zhip or the keychain wrapper software it uses. ")
+		)
+		return .none
+	case .alertDismissed:
+		state.alert = nil
+		return .none
 		
 	case .main(_):
 		return .none

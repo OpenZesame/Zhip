@@ -62,8 +62,8 @@ public enum SetupWalletAction: Equatable {
 	case alertDismissed
 }
 public extension SetupWalletAction {
-	enum DelegateAction {
-		case finishedSettingUpWallet
+	enum DelegateAction: Equatable {
+		case finishedSettingUpWallet(Wallet)
 	}
 }
 
@@ -149,8 +149,8 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 			state.alert = .init(title: TextState.init("Failed to save wallet in keychain, do you have a passcode setup on your Apple device? It is required to use Zhip. Underlying error: \(String(describing: error))"))
 			return .none
 			
-		case .saveNewWalletInKeychainResult(.success):
-			return Effect(value: .delegate(.finishedSettingUpWallet))
+		case let .saveNewWalletInKeychainResult(.success(wallet)):
+			return Effect(value: .delegate(.finishedSettingUpWallet(wallet)))
 		
 		default:
 			return .none

@@ -10,6 +10,7 @@ import Foundation
 import IdentifiedCollections
 import KeychainClient
 import PINCode
+import Purger
 import SwiftUI
 import Screen
 import Styleguide
@@ -64,18 +65,22 @@ public struct SettingsEnvironment {
 	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	public var version: () -> Version
+	public var purger: Purger
 	
 	public init(
 		userDefaults: UserDefaultsClient,
 		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
+		purger: Purger? = nil,
 		version: @escaping (() -> Version) = Version.fromBundle
 	) {
 		self.userDefaults = userDefaults
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
+		self.purger = purger ?? Purger.init(userDefaultsClient: userDefaults, keychainClient: keychainClient)
 		self.version = version
 	}
+	
 }
 
 public let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvironment>.combine(
@@ -159,9 +164,17 @@ public let settingsReducer = Reducer<SettingsState, SettingsAction, SettingsEnvi
 			
 			
 #if DEBUG
-		case .row(.debugOnlyNukeApp):
-			state.alert = .init(title: .init("debugOnlyNukeApp pressed"))
-			return .none
+		case .row(.debugOnlyPurgeApp):
+			return Effect.merge(
+				environment.purger.purge(
+					.init(
+						keepHasAppRunBeforeFlag: false,
+						keepHasAcceptedTermsOfService: false
+					)
+				).fireAndForget(),
+				Effect(value: .delegate(.userDeletedWallet))
+			)
+			
 #endif // DEBUG
 			
 		case.userConfirmedDeletingWallet:

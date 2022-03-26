@@ -113,7 +113,7 @@ let package = Package(
 		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
 		.library(name: "InputField", targets: ["InputField"]),
 		.library(name: "KeychainClient", targets: ["KeychainClient"]),
-		.library(name: "KeychainManager", targets: ["KeychainManager"]),
+		.library(name: "WrappedKeychain", targets: ["WrappedKeychain"]),
 		.library(name: "MainFeature", targets: ["MainFeature"]),
 		.library(name: "NewPINFeature", targets: ["NewPINFeature"]),
 		.library(name: "NewWalletFeature", targets: ["NewWalletFeature"]),
@@ -122,6 +122,7 @@ let package = Package(
 		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
 		.library(name: "PINCode", targets: ["PINCode"]),
 		.library(name: "PINField", targets: ["PINField"]),
+		.library(name: "Purger", targets: ["Purger"]),
 		.library(name: "ReceiveFeature", targets: ["ReceiveFeature"]),
 		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
 		.library(name: "QRCoding", targets: ["QRCoding"]),
@@ -158,6 +159,7 @@ let package = Package(
 			.target(
 				name: "AppFeature",
 				dependencies: [
+					"Common",
 					composableArchitecture,
 					"KeychainClient",
 					"MainFeature",
@@ -315,7 +317,8 @@ let package = Package(
 			.target(
 				name: "KeychainClient",
 				dependencies: [
-					"KeychainManager", // Wrapper around Keychain,
+					"Common",
+					"WrappedKeychain",
 					"PINCode",
 					"Wallet",
 					zesame, // ZilAmount (cached balance)
@@ -323,7 +326,7 @@ let package = Package(
 			),
 		
 			.target(
-				name: "KeychainManager",
+				name: "WrappedKeychain",
 				dependencies: [
 					"KeychainAccess",
 					"Wallet",
@@ -417,6 +420,15 @@ let package = Package(
 			),
 		
 			.target(
+				name: "Purger",
+				dependencies: [
+					composableArchitecture,
+					"UserDefaultsClient",
+					"KeychainClient",
+				]
+			),
+		
+			.target(
 				name: "ReceiveFeature",
 				dependencies: [
 					composableArchitecture,
@@ -462,6 +474,7 @@ let package = Package(
 				dependencies: [
 					composableArchitecture,
 					"KeychainClient",
+					"Purger",
 					"Screen",
 					"Styleguide",
 					"Wallet",
@@ -489,6 +502,7 @@ let package = Package(
 				dependencies: [
 					composableArchitecture,
 					"KeychainClient",
+					"Purger",
 					"Styleguide",
 					"Wallet",
 				]
@@ -562,7 +576,10 @@ let package = Package(
 		
 			.target(
 				name: "UserDefaultsClient",
-				dependencies: [composableArchitecture]
+				dependencies: [
+					"Common",
+					composableArchitecture
+				]
 			),
 		
 		

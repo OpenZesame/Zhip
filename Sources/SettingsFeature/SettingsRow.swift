@@ -21,8 +21,6 @@ public extension Row {
 		// Section 2
 		case acknowledgments
 		case readTermsOfService
-		//		case readCustomECCWarning
-		//		case changeAnalyticsPermissions
 		
 		// Section 3
 		case backupWallet
@@ -30,7 +28,7 @@ public extension Row {
 		
 #if DEBUG
 		// Section 4
-		case debugOnlyNukeApp
+		case debugOnlyPurgeApp
 #endif // DEBUG
 	}
 }
@@ -148,8 +146,8 @@ func makeSettingsChoicesSections(isPINSet: Bool) -> IdentifiedArrayOf<Section> {
 	rowsMatrix.append(
 		[
 			Row(
-				.debugOnlyNukeApp,
-				title: "Nuke app ☣️",
+				.debugOnlyPurgeApp,
+				title: "Purge app 🧹",
 				icon: Image(systemName: "exclamationmark.3"),
 				isDestructive: true
 			)

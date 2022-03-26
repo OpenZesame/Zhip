@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Common
 import ComposableArchitecture
 import Wallet
 import struct Zesame.ZilAmount
@@ -67,8 +68,6 @@ public extension KeychainClient {
 				)
 			}
 		}.eraseToEffect()
-
-
 	}
 	
 }
@@ -84,8 +83,21 @@ public extension KeychainClient {
 		load(type: Wallet.self, forKey: walletKey)
 	}
 	
-	func removeWallet() -> Effect<Void, Self.Error> {
+	func removeWallet() -> Effect<VoidEq, Self.Error> {
 		remove(walletKey)
+			.map(VoidEq.init)
+			.eraseToEffect()
+	}
+	
+	func removeAll() -> Effect<Never, Never> {
+		Effect.merge(
+			allKeys.map {
+				self.remove($0)
+					.replaceError(with: ())
+					.fireAndForget()
+					.eraseToEffect()
+			}
+		)
 	}
 }
 
@@ -116,3 +128,9 @@ public extension KeychainClient {
 private let walletKey = "walletKey"
 private let balanceKey = "balanceKey"
 private let pinCodeKey = "pinCodeKey"
+
+private let allKeys = [
+	walletKey,
+	balanceKey,
+	pinCodeKey
+]
