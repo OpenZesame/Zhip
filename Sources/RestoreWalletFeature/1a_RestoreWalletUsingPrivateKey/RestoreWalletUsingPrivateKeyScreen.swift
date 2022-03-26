@@ -5,24 +5,63 @@
 //  Created by Alexander Cyon on 2022-02-17.
 //
 
-import SwiftUI
-import Styleguide
-import struct Zesame.PrivateKey
+import ComposableArchitecture
 import InputField
 import Screen
+import Styleguide
+import SwiftUI
+import Wallet
+import struct Zesame.PrivateKey
+
+public struct RestoreWalletUsingPrivateKeyState: Equatable {
+	public init() {}
+}
+public enum RestoreWalletUsingPrivateKeyAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension RestoreWalletUsingPrivateKeyAction {
+	enum DelegateAction: Equatable {
+		case finishedRestoringWalletFromPrivateKey(Wallet)
+	}
+}
+
+public struct RestoreWalletUsingPrivateKeyEnvironment {
+	public init() {}
+}
+
+public let restoreWalletUsingPrivateKeyReducer = Reducer<
+	RestoreWalletUsingPrivateKeyState,
+	RestoreWalletUsingPrivateKeyAction,
+	RestoreWalletUsingPrivateKeyEnvironment
+> { state, action, environment in
+	return .none
+}
 
 
 // MARK: - RestoreWalletUsingPrivateKeyScreen
 // MARK: -
-struct RestoreWalletUsingPrivateKeyScreen: View {
+public struct RestoreWalletUsingPrivateKeyScreen: View {
 //    @ObservedObject var viewModel: RestoreWalletUsingPrivateKeyViewModel
+	let store: Store<RestoreWalletUsingPrivateKeyState, RestoreWalletUsingPrivateKeyAction>
+	public init(
+		store: Store<RestoreWalletUsingPrivateKeyState, RestoreWalletUsingPrivateKeyAction>
+	) {
+		self.store = store
+	}
 }
 
 // MARK: - View
 // MARK: -
-extension RestoreWalletUsingPrivateKeyScreen {
+public extension RestoreWalletUsingPrivateKeyScreen {
     var body: some View {
-		Text("Code commented out")
+		WithViewStore(store) { viewStore in
+			ForceFullScreen {
+				Text("Private Key")
+					.font(.zhip.bigBang)
+					.foregroundColor(.turquoise)
+			}
+			.navigationTitle("Restore with private key")
+		}
 //        ForceFullScreen {
 //            VStack(spacing: 20) {
 //                InputField.privateKey(text: $viewModel.privateKeyHex, isValid: $viewModel.isPrivateKeyValid)
@@ -45,7 +84,6 @@ extension RestoreWalletUsingPrivateKeyScreen {
 //            }
 //            .disableAutocorrection(true)
 //        }
-//        .navigationTitle("Restore with private key")
 //        #if DEBUG
 //        .onAppear {
 //            viewModel.password = unsafeDebugPassword

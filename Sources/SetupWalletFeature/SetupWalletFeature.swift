@@ -185,8 +185,13 @@ public extension SetupWalletCoordinatorView {
 							action: SetupWalletAction.newWallet
 						)
 					)
-				default:
-					Text("Unhandled SetupWallet step: \(String(describing: viewStore.step))")
+				case .step2b_RestoreWallet:
+					RestoreWalletCoordinatorView(
+						store: store.scope(
+							state: \.restoreWallet,
+							action: SetupWalletAction.restoreWallet
+						)
+					)
 				}
 			}
 			.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
