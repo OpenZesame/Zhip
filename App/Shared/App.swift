@@ -16,8 +16,8 @@ import WalletGeneratorLive
 import WalletGeneratorUnsafeFast
 #endif // DEBUG
 
-//import enum Zesame.KDF
-//import struct Zesame.KDFParams
+import enum Zesame.KDF
+import struct Zesame.KDFParams
 
 private func makeAppStore() -> Store<AppState, AppAction> {
 	.init(
@@ -119,27 +119,27 @@ extension ZhipApp {
 	}
 }
 
-//var kdfParams: KDFParams {
-//#if DEBUG
-//	return .unsafeFast
-//#else
-//	return .default
-//#endif
-//}
-//
-//var kdf: KDF {
-//#if DEBUG
-//	return .pbkdf2
-//#else
-//	return .scrypt
-//#endif
-//}
+var kdfParamsConditional: KDFParams {
+#if DEBUG
+	return .unsafeFast
+#else
+	return .default
+#endif
+}
+
+var kdfConditional: KDF {
+#if DEBUG
+	return .pbkdf2
+#else
+	return .scrypt
+#endif
+}
 
 extension AppEnvironment {
 	static var live: Self {
 		.init(
-//			kdf: kdf,
-//			kdfParams: kdfParams,
+			kdf: kdfConditional,
+			kdfParams: kdfParamsConditional,
 			keychainClient: .live(),
 			mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
 			passwordValidator: .live,

@@ -81,22 +81,21 @@ public struct AppEnvironment {
 	
 	
 	public init(
-//		kdf: KDF,
-//		kdfParams: KDFParams,
+		kdf: KDF,
+		kdfParams: KDFParams,
 		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
 		passwordValidator: PasswordValidator,
 		userDefaults: UserDefaultsClient,
 		walletGenerator: WalletGenerator
 	) {
-		fatalError()
-//		self.kdf = kdf
-//		self.kdfParams = kdfParams
-//		self.keychainClient = keychainClient
-//		self.mainQueue = mainQueue
-//		self.passwordValidator = passwordValidator
-//		self.userDefaults = userDefaults
-//		self.walletGenerator = walletGenerator
+		self.kdf = kdf
+		self.kdfParams = kdfParams
+		self.keychainClient = keychainClient
+		self.mainQueue = mainQueue
+		self.passwordValidator = passwordValidator
+		self.userDefaults = userDefaults
+		self.walletGenerator = walletGenerator
 	}
 }
 

@@ -498,9 +498,15 @@ let SettingsFeature = declare(.target(
 		"Purger",
 		"Screen",
 		"Styleguide",
-		"Wallet",
+		"TermsOfServiceFeature",
 		"VersionFeature",
+		"Wallet",
 	]
+))
+// MARK: - TEST SettingsFeature
+let TESTSettingsFeature = declare(.testTarget(
+	name: "SettingsFeatureTests",
+	dependencies: [SettingsFeature].asDependencies
 ))
 
 // MARK: - SetupWalletFeature
