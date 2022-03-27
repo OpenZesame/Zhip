@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "codescanner",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Sajjon/CodeScanner.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "e99827ca985d9e1ed35daf38be1b5f774269aeb1"
-      }
-    },
-    {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
@@ -137,7 +128,7 @@
     {
       "identity" : "zesame",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/OpenZesame/zesame.git",
+      "location" : "https://github.com/OpenZesame/Zesame.git",
       "state" : {
         "revision" : "8918ddb06807724383ad2965461fffeea91f89af"
       }

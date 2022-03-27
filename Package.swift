@@ -77,44 +77,28 @@ private let EFQRCode: ExternalDependency = .init(
 	rationale: "Convenient QR code generator supporting macOS and iOS."
 )
 
-private let CodeScanner: ExternalDependency = .init(
-	category: .view,
-	package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
-	target: .product(name: "CodeScanner", package: "CodeScanner"),
-	rationale: "Convenient QR code scanning view."
-)
+//private let CodeScanner: ExternalDependency = .init(
+//	category: .view,
+//	package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
+//	target: .product(name: "CodeScanner", package: "CodeScanner"),
+//	rationale: "Convenient QR code scanning view."
+//)
 
 private let externalDependencies: [ExternalDependency] = [
 	Zesame,
 	ComposableArchitecture,
 	KeychainAccess,
 	EFQRCode,
-	CodeScanner,
+//	CodeScanner,
 ]
 
 // MARK: - Products (Libraries)
 var products: [Product] = []
 var targets: [Target] = []
 
-//extension Target.Dependency {
-//	var name: String {
-//		switch self {
-//		case .byNameItem(let name, _):
-//			return name
-//		case .productItem(let name, _, _):
-//			return name
-//		case .targetItem(let name, _):
-//			return name
-//		@unknown default:
-//			fatalError()
-//		}
-//	}
-//}
-
 struct InternalDependency {
 	let name: String
 	let isTest: Bool
-//	let targetDependencies: [Target.Dependency]
 	
 	var asTargetDependency: Target.Dependency {
 		// Same as: `.byNameItem(name: name, condition: nil)`
@@ -123,7 +107,6 @@ struct InternalDependency {
 	init(target: Target) {
 		self.name = target.name
 		self.isTest = target.isTest
-//		self.targetDependencies = target.dependencies
 	}
 }
 
@@ -176,12 +159,6 @@ extension Target {
 			Target.Dependency(stringLiteral: $0)
 		}
 		
-//		internalTargetDeclerations.flatMap { (internalDependency: InternalDependency) in
-//			internalDependency.targetDependencies
-//		}
-		
-//		let internalDependencies: [Target.Dependency] = internalTargetDeclerations.asTargetDependencies
-//
 		return .target(
 			name: name,
 			dependencies: externalDependencies + internalDependencies,
@@ -205,7 +182,6 @@ let PINCode = declare(.target(
 	internalDependencies: []
 ))
 
-
 // MARK: - Styleguide
 let Styleguide = declare(.target(
 	name: "Styleguide",
@@ -215,7 +191,6 @@ let Styleguide = declare(.target(
 	internalDependencies: []
 ))
 
-
 // MARK: - Screen
 let Screen = declare(.target(
 	name: "Screen",
@@ -223,7 +198,6 @@ let Screen = declare(.target(
 		Styleguide,
 	]
 ))
-
 
 // MARK: - Common
 let Common = declare(.target(
@@ -243,29 +217,6 @@ let ZilliqaAPIEndpoint = declare(.target(
 	internalDependencies: []
 ))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // MARK: - HoverPromptTextField
 let HoverPromptTextField = declare(.target(
 	name: "HoverPromptTextField",
@@ -273,7 +224,6 @@ let HoverPromptTextField = declare(.target(
 		Styleguide,
 	]
 ))
-
 
 // MARK: - Checkbox
 let Checkbox = declare(.target(
@@ -296,7 +246,6 @@ let Wallet = declare(.target(
 	]
 ))
 
-
 // MARK: - WrappedKeychain
 let WrappedKeychain = declare(.target(
 	name: "WrappedKeychain",
@@ -308,7 +257,6 @@ let WrappedKeychain = declare(.target(
 	]
 ))
 
-
 // MARK: - UserDefaultsClient
 let UserDefaultsClient = declare(.target(
 	name: "UserDefaultsClient",
@@ -319,7 +267,6 @@ let UserDefaultsClient = declare(.target(
 		Common,
 	]
 ))
-
 
 // MARK: - KeychainClient
 let KeychainClient = declare(.target(
@@ -335,7 +282,6 @@ let KeychainClient = declare(.target(
 	]
 ))
 
-
 // MARK: - Purger
 let Purger = declare(.target(
 	name: "Purger",
@@ -348,7 +294,6 @@ let Purger = declare(.target(
 	]
 ))
 
-
 // MARK: - VersionFeature
 let VersionFeature = declare(.target(
 	name: "VersionFeature",
@@ -359,7 +304,6 @@ let VersionFeature = declare(.target(
 		Common,
 	]
 ))
-
 
 // MARK: - PasswordValidator
 let PasswordValidator = declare(.target(
@@ -375,8 +319,6 @@ let TESTPINCode = declare(.testTarget(
 	testing: PINCode
 ))
 
-
-
 // MARK: - AmountFormatter
 let AmountFormatter = declare(.target(
 	name: "AmountFormatter",
@@ -387,7 +329,6 @@ let AmountFormatter = declare(.target(
 		Common
 	]
 ))
-
 
 // MARK: - InputField
 let InputField = declare(.target(
@@ -408,7 +349,6 @@ let PasswordInputFields = declare(.target(
 	]
 ))
 
-
 // MARK: - BackUpKeystoreFeature
 let BackUpKeystoreFeature = declare(.target(
 	name: "BackUpKeystoreFeature",
@@ -420,8 +360,6 @@ let BackUpKeystoreFeature = declare(.target(
 		Styleguide,
 	]
 ))
-
-
 
 // MARK: - EnsurePrivacyFeature
 let EnsurePrivacyFeature = declare(.target(
@@ -447,7 +385,6 @@ let BackUpRevealedKeyPairFeature = declare(.target(
 	]
 ))
 
-
 // MARK: - NewWalletOrRestoreFeature
 let NewWalletOrRestoreFeature = declare(.target(
 	name: "NewWalletOrRestoreFeature",
@@ -459,12 +396,6 @@ let NewWalletOrRestoreFeature = declare(.target(
 		Screen,
 	]
 ))
-
-
-
-
-
-
 
 // MARK: - DecryptKeystoreFeature
 let DecryptKeystoreFeature = declare(.target(
@@ -479,8 +410,6 @@ let DecryptKeystoreFeature = declare(.target(
 	]
 ))
 
-
-
 // MARK: - BackUpPrivateKeyFeature
 let BackUpPrivateKeyFeature = declare(.target(
 	name: "BackUpPrivateKeyFeature",
@@ -492,8 +421,6 @@ let BackUpPrivateKeyFeature = declare(.target(
 		BackUpRevealedKeyPairFeature,
 	]
 ))
-
-
 
 // MARK: - BackUpPrivateKeyAndKeystoreFeature
 let BackUpPrivateKeyAndKeystoreFeature = declare(.target(
@@ -510,8 +437,6 @@ let BackUpPrivateKeyAndKeystoreFeature = declare(.target(
 	]
 ))
 
-
-
 // MARK: - BackUpWalletFeature
 let BackUpWalletFeature = declare(.target(
 	name: "BackUpWalletFeature",
@@ -527,9 +452,6 @@ let BackUpWalletFeature = declare(.target(
 		Wallet,
 	]
 ))
-
-
-
 
 // MARK: - WalletGenerator
 let WalletGenerator = declare(.target(
@@ -565,7 +487,6 @@ let WalletGeneratorUnsafeFast = declare(.target(
 	]
 ))
 
-
 // MARK: - BalancesFeature
 let BalancesFeature = declare(.target(
 	name: "BalancesFeature",
@@ -580,8 +501,6 @@ let BalancesFeature = declare(.target(
 	]
 ))
 
-
-
 // MARK: - ContactsFeature
 let ContactsFeature = declare(.target(
 	name: "ContactsFeature",
@@ -595,8 +514,6 @@ let ContactsFeature = declare(.target(
 		Wallet,
 	]
 ))
-
-
 
 // MARK: - GenerateNewWalletFeature
 let GenerateNewWalletFeature = declare(.target(
@@ -622,11 +539,6 @@ let TESTGenerateNewWalletFeature = declare(.testTarget(
 	name: "GenerateNewWalletFeatureTests",
 	testing: GenerateNewWalletFeature
 ))
-
-
-
-
-
 
 // MARK: - ReceiveFeature
 let ReceiveFeature = declare(.target(
@@ -663,10 +575,6 @@ let TESTTermsOfServiceFeature = declare(.testTarget(
 	testing: TermsOfServiceFeature
 ))
 
-
-
-
-
 // MARK: - SettingsFeature
 let SettingsFeature = declare(.target(
 	name: "SettingsFeature",
@@ -688,10 +596,6 @@ let TESTSettingsFeature = declare(.testTarget(
 	name: "SettingsFeatureTests",
 	testing: SettingsFeature
 ))
-
-
-
-
 
 // MARK: - TransferFeature
 let TransferFeature = declare(.target(
@@ -736,8 +640,6 @@ let PINField = declare(.target(
 	]
 ))
 
-
-
 // MARK: - UnlockAppFeature
 let UnlockAppFeature = declare(.target(
 	name: "UnlockAppFeature",
@@ -767,9 +669,6 @@ let MainFeature = declare(.target(
 		Wallet,
 	]
 ))
-
-
-
 
 // MARK: - NewPINFeature
 let NewPINFeature = declare(.target(
@@ -852,8 +751,6 @@ let WelcomeFeature = declare(.target(
 	]
 ))
 
-
-
 // MARK: - OnboardingFeature
 let OnboardingFeature = declare(.target(
 	name: "OnboardingFeature",
@@ -871,12 +768,6 @@ let OnboardingFeature = declare(.target(
 		WalletGenerator,
 	]
 ))
-
-
-
-
-
-
 
 // MARK: - TransactionIntent
 let TransactionIntent = declare(.target(
@@ -900,7 +791,6 @@ let QRCoding = declare(.target(
 	]
 ))
 
-
 // MARK: - SplashFeature
 let SplashFeature = declare(.target(
 	name: "SplashFeature",
@@ -921,17 +811,6 @@ let TESTSplashFeature	= declare(.testTarget(
 	name: "SplashFeatureTests",
 	testing: SplashFeature
 ))
-
-
-
-
-
-
-
-
-
-
-
 
 // MARK: - AppFeature
 let Appfeature = declare(.target(
@@ -957,8 +836,6 @@ let TESTAppFeatures	= declare(.testTarget(
 	name: "AppFeatureTests",
 	testing: Appfeature
 ))
-
-
 
 let package = Package(
 	name: "Zhip",
