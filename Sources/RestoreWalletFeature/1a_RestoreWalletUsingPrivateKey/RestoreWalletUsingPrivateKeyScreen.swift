@@ -19,32 +19,29 @@ public struct RestoreWalletUsingPrivateKeyState: Equatable {
 	public var isRestoring: Bool
 	public var canRestore: Bool
 	@BindableState public var privateKeyHex: String
-	@BindableState public var encryptionPassword: String
-	@BindableState public var confirmPassword: String
+	@BindableState public var password: String
+	@BindableState public var passwordConfirmation: String
 	
 	public init(
 		isRestoring: Bool = false,
 		canRestore: Bool = false,
 		privateKeyHex: String = "",
-		encryptionPassword: String = "",
-		confirmPassword: String = ""
+		password: String = "",
+		passwordConfirmation: String = ""
 	) {
 		self.isRestoring = isRestoring
+		
+		self.canRestore = canRestore
+		self.privateKeyHex = privateKeyHex
+		self.password = password
+		self.passwordConfirmation = passwordConfirmation
 	
 #if DEBUG
-		self.canRestore = true
-
 		// Some uninteresting test account without any balance.
 		self.privateKeyHex = "0xcc7d1263009ebbc8e31f5b7e7d79b625e57cf489cd540e1b0ac4801c8daab9be"
 
-		self.encryptionPassword = unsafeDebugPassword
-		self.confirmPassword = unsafeDebugPassword
-		
-#else
-		self.canRestore = canRestore
-		self.privateKeyHex = privateKeyHex
-		self.encryptionPassword = encryptionPassword
-		self.confirmPassword = confirmPassword
+//		self.password = unsafeDebugPassword
+//		self.passwordConfirmation = unsafeDebugPassword
 #endif
 	}
 }
@@ -77,8 +74,8 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 		state.canRestore = environment.passwordValidator
 			.validatePasswords(
 				.init(
-					password: state.encryptionPassword,
-					confirmPassword: state.confirmPassword
+					password: state.password,
+					confirmPassword: state.passwordConfirmation
 				)
 			) && PrivateKey(hex: state.privateKeyHex) != nil
 		return .none
@@ -88,13 +85,13 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 	case .delegate(_):
 		return .none
 	}
-}
+}.binding()
 
 
 // MARK: - RestoreWalletUsingPrivateKeyScreen
 // MARK: -
 public struct RestoreWalletUsingPrivateKeyScreen: View {
-//    @ObservedObject var viewModel: RestoreWalletUsingPrivateKeyViewModel
+
 	let store: Store<RestoreWalletUsingPrivateKeyState, RestoreWalletUsingPrivateKeyAction>
 	public init(
 		store: Store<RestoreWalletUsingPrivateKeyState, RestoreWalletUsingPrivateKeyAction>
@@ -108,15 +105,15 @@ internal extension RestoreWalletUsingPrivateKeyScreen {
 		var isRestoring: Bool
 		var canRestore: Bool
 		@BindableState var privateKeyHex: String
-		@BindableState var encryptionPassword: String
-		@BindableState var confirmPassword: String
+		@BindableState var password: String
+		@BindableState var passwordConfirmation: String
 		
 		init(state: RestoreWalletUsingPrivateKeyState) {
 			self.isRestoring = state.isRestoring
 			self.canRestore = state.canRestore
 			self.privateKeyHex = state.privateKeyHex
-			self.encryptionPassword = state.encryptionPassword
-			self.confirmPassword = state.confirmPassword
+			self.password = state.password
+			self.passwordConfirmation = state.passwordConfirmation
 		}
 	}
 	
@@ -132,6 +129,8 @@ extension RestoreWalletUsingPrivateKeyState {
 		set {
 			// handle bindable actions only:
 			self.privateKeyHex = newValue.privateKeyHex
+			self.password = newValue.password
+			self.passwordConfirmation = newValue.passwordConfirmation
 		}
 	}
 }
@@ -171,8 +170,8 @@ public extension RestoreWalletUsingPrivateKeyScreen {
 	 //						passwordConfirmation: $viewModel.passwordConfirmation,
 	 //						isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
 	 //					)
-					SecureField("Encryption password", text: viewStore.binding(\.$encryptionPassword))
-					SecureField("Confirm encryption password", text: viewStore.binding(\.$confirmPassword))
+					SecureField("Encryption password", text: viewStore.binding(\.$password))
+					SecureField("Confirm encryption password", text: viewStore.binding(\.$passwordConfirmation))
 
 
 					Button("Restore") {
@@ -182,6 +181,7 @@ public extension RestoreWalletUsingPrivateKeyScreen {
 					.enabled(if: viewStore.canRestore)
 
 				}
+				.foregroundColor(Color.asphaltGrey)
 				.textFieldStyle(.roundedBorder)
 				.disableAutocorrection(true)
 			}

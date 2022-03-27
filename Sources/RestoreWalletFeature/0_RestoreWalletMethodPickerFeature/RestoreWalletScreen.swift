@@ -108,7 +108,7 @@ public let restoreWalletMethodReducer = Reducer<
 		case .delegate(_):
 			return .none
 		}
-	}.binding()
+	}
 ).binding()
 
 
