@@ -10,6 +10,7 @@ import Common
 import ComposableArchitecture
 import HoverPromptTextField
 import InputField
+import KeychainClient
 import PasswordValidator
 import PasswordInputFields
 import Screen
@@ -17,7 +18,6 @@ import Styleguide
 import SwiftUI
 import Wallet
 import WalletGenerator
-import KeychainClient
 
 public struct GenerateNewWalletState: Equatable {
 	

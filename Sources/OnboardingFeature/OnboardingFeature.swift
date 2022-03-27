@@ -17,6 +17,8 @@ import UserDefaultsClient
 import WelcomeFeature
 import Wallet
 import WalletGenerator
+import enum Zesame.KDF
+import struct Zesame.KDFParams
 
 
 public struct OnboardingState: Equatable {
@@ -67,6 +69,8 @@ public extension OnboardingAction {
 }
 
 public struct OnboardingEnvironment {
+	public var kdf: KDF
+	public var kdfParams: KDFParams
 	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	public var passwordValidator: PasswordValidator
@@ -74,12 +78,16 @@ public struct OnboardingEnvironment {
 	public var walletGenerator: WalletGenerator
 	
 	public init(
+		kdf: KDF,
+		kdfParams: KDFParams,
 		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
 		passwordValidator: PasswordValidator,
 		userDefaults: UserDefaultsClient,
 		walletGenerator: WalletGenerator
 	) {
+		self.kdf = kdf
+		self.kdfParams = kdfParams
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
@@ -105,6 +113,8 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 		action: /OnboardingAction.setupWallet,
 		environment: {
 			SetupWalletEnvironment(
+				kdf: $0.kdf,
+				kdfParams: $0.kdfParams,
 				keychainClient: $0.keychainClient,
 				mainQueue: $0.mainQueue,
 				passwordValidator: $0.passwordValidator,

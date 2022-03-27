@@ -49,13 +49,13 @@ extension Array where Element == Dependency {
 }
 
 private let zesameDependency: Dependency = .init(
-		category: .essential,
-		// branch: structured_concurrency
-		package: .package(url: "https://github.com/OpenZesame/zesame.git", revision: "8918ddb06807724383ad2965461fffeea91f89af"),
-		product: .product(name: "Zesame", package: "zesame"),
-		rationale: "Zilliqa Swift SDK, containing all account logic."
+	category: .essential,
+	// branch: structured_concurrency
+	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "8918ddb06807724383ad2965461fffeea91f89af"),
+	product: .product(name: "Zesame", package: "Zesame"),
+	rationale: "Zilliqa Swift SDK, containing all account logic."
 )
-private let zesame = zesameDependency.product
+private let Zesame_ALREADY_DEPENDENCY_FIX_ME = zesameDependency.product
 
 private let composableArchitectureDependency: Dependency = .init(
 	category: .architecture,
@@ -63,12 +63,12 @@ private let composableArchitectureDependency: Dependency = .init(
 	product: .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
 	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
 )
-private let composableArchitecture = composableArchitectureDependency.product
+private let ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME = composableArchitectureDependency.product
 
 private let dependencies: [Dependency] = [
-
-		zesameDependency,
-		composableArchitectureDependency,
+	
+	zesameDependency,
+	composableArchitectureDependency,
 	
 		.init(
 			category: .convenience,
@@ -83,580 +83,618 @@ private let dependencies: [Dependency] = [
 			product: "EFQRCode",
 			rationale: "Convenient QR code generator supporting macOS and iOS."
 		),
-		.init(
-			category: .view,
-			package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
-			product: .product(name: "CodeScanner", package: "CodeScanner"),
-			rationale: "Convenient QR code scanning view."
-		)
+	.init(
+		category: .view,
+		package: .package(url: "https://github.com/Sajjon/CodeScanner.git", branch: "main"),
+		product: .product(name: "CodeScanner", package: "CodeScanner"),
+		rationale: "Convenient QR code scanning view."
+	)
 ]
+
+// MARK: - Products (Libraries)
+var products: [Product] = []
+var targets: [Target] = []
+
+func declare(_ target: Target) -> Target {
+	targets.append(target)
+	
+	if !target.isTest {
+		products.append(
+			Product.library(name: target.name, targets: [target.name])
+		)
+	}
+	return target
+}
+
+extension Array where Element == Target {
+	var asDependencies: [Target.Dependency] {
+		map { target in
+			Target.Dependency(stringLiteral: target.name)
+		}
+	}
+}
+
+
+// MARK: - AmountFormatter
+let AmountFormatter = declare(.target(
+	name: "AmountFormatter",
+	dependencies: [
+		"Common",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - AppFeature
+let Appfeature = declare(.target(
+	name: "AppFeature",
+	dependencies: [
+		"Common",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"MainFeature",
+		"OnboardingFeature",
+		"PasswordValidator",
+		"Styleguide",
+		"SplashFeature",
+		"UserDefaultsClient",
+		"WalletGeneratorLive",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME
+	]
+))
+
+// MARK: - TEST AppFeature
+let TESTAppFeatures	= declare(.testTarget(
+	name: "AppFeatureTests",
+	dependencies: [Appfeature].asDependencies
+))
+
+// MARK: - BackUpKeystoreFeature
+let BackUpKeystoreFeature = declare(.target(
+	name: "BackUpKeystoreFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - BackUpPrivateKeyFeature
+let BackUpPrivateKeyFeature = declare(.target(
+	name: "BackUpPrivateKeyFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"DecryptKeystoreFeature",
+		"BackUpRevealedKeyPairFeature",
+	]
+))
+
+// MARK: - BackUpPrivateKeyAndKeystoreFeature
+let BackUpPrivateKeyAndKeystoreFeature = declare(.target(
+	name: "BackUpPrivateKeyAndKeystoreFeature",
+	dependencies: [
+		"BackUpKeystoreFeature",
+		"BackUpPrivateKeyFeature",
+		"Checkbox",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - BackUpRevealedKeyPairFeature
+let BackUpRevealedKeyPairFeature = declare(.target(
+	name: "BackUpRevealedKeyPairFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - BackUpWalletFeature
+let BackUpWalletFeature = declare(.target(
+	name: "BackUpWalletFeature",
+	dependencies: [
+		"BackUpPrivateKeyAndKeystoreFeature",
+		"Checkbox",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"InputField",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+	]
+))
+
+// MARK: - BalancesFeature
+let BalancesFeature = declare(.target(
+	name: "BalancesFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+	]
+))
+
+// MARK: - Checkbox
+let Checkbox = declare(.target(
+	name: "Checkbox",
+	dependencies: [
+		"Styleguide",
+	]
+))
+
+// MARK: - Common
+let Common = declare(.target(
+	name: "Common",
+	dependencies: [
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - ContactsFeature
+let ContactsFeature = declare(.target(
+	name: "ContactsFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+	]
+))
+
+// MARK: - DecryptKeystoreFeature
+let DecryptKeystoreFeature = declare(.target(
+	name: "DecryptKeystoreFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"InputField",
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - EnsurePrivacyFeature
+let EnsurePrivacyFeature = declare(.target(
+	name: "EnsurePrivacyFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - GenerateNewWalletFeature
+let GenerateNewWalletFeature = declare(.target(
+	name: "GenerateNewWalletFeature",
+	dependencies: [
+		"Checkbox",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"HoverPromptTextField",
+		"InputField",
+		"KeychainClient",
+		"PasswordInputFields",
+		"PasswordValidator",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+		"WalletGenerator",
+	]
+))
+// MARK: - TEST GenerateNewWalletFeature
+let TESTGenerateNewWalletFeature = declare(.testTarget(
+	name: "GenerateNewWalletFeatureTests",
+	dependencies: [GenerateNewWalletFeature].asDependencies
+))
+
+// MARK: - HoverPromptTextField
+let HoverPromptTextField = declare(.target(
+	name: "HoverPromptTextField",
+	dependencies: [
+		"Styleguide",
+	]
+))
+
+// MARK: - InputField
+let InputField = declare(.target(
+	name: "InputField",
+	dependencies: [
+		"HoverPromptTextField",
+		"PasswordValidator",
+		"Styleguide",
+	]
+))
+
+// MARK: - KeychainClient
+let KeychainClient = declare(.target(
+	name: "KeychainClient",
+	dependencies: [
+		"Common",
+		"WrappedKeychain",
+		"PINCode",
+		"Wallet",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME, // ZilAmount (cached balance)
+	]
+))
+
+// MARK: - WrappedKeychain
+let WrappedKeychain = declare(.target(
+	name: "WrappedKeychain",
+	dependencies: [
+		"KeychainAccess",
+		"Wallet",
+	]
+))
+
+// MARK: - MainFeature
+let MainFeature = declare(.target(
+	name: "MainFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"PINCode",
+		"TabsFeature",
+		"UnlockAppFeature",
+		"Wallet",
+	]
+))
+
+// MARK: - NewPINFeature
+let NewPINFeature = declare(.target(
+	name: "NewPINFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"PINField",
+		"Styleguide",
+		"Screen",
+	]
+))
+
+// MARK: - NewWalletFeature
+let NewWalletFeature = declare(.target(
+	name: "NewWalletFeature",
+	dependencies: [
+		"BackUpWalletFeature",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"EnsurePrivacyFeature",
+		"GenerateNewWalletFeature",
+		"KeychainClient",
+		"PasswordValidator",
+		"WalletGenerator",
+	]
+))
+
+// MARK: - NewWalletOrRestoreFeature
+let NewWalletOrRestoreFeature = declare(.target(
+	name: "NewWalletOrRestoreFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Styleguide",
+		"Screen",
+	]
+))
+
+// MARK: - OnboardingFeature
+let OnboardingFeature = declare(.target(
+	name: "OnboardingFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"NewPINFeature",
+		"PasswordValidator",
+		"SetupWalletFeature",
+		"TermsOfServiceFeature",
+		"UserDefaultsClient",
+		"WelcomeFeature",
+		"WalletGenerator",
+	]
+))
+
+// MARK: - PasswordInputFields
+let PasswordInputFields = declare(.target(
+	name: "PasswordInputFields",
+	dependencies: [
+		"InputField",
+		"HoverPromptTextField",
+	]
+))
+
+// MARK: - PasswordValidator
+let PasswordValidator = declare(.target(
+	name: "PasswordValidator",
+	dependencies: [
+		"Common",
+	]
+))
+
+// MARK: - PINCode
+let PINCode = declare(.target(
+	name: "PINCode",
+	dependencies: []
+))
+
+// MARK: - TEST PINCode
+let TESTPINCode = declare(.testTarget(
+	name: "PINCodeTests",
+	dependencies: [PINCode].asDependencies
+))
+
+// MARK: - PINField
+let PINField = declare(.target(
+	name: "PINField",
+	dependencies: [
+		"HoverPromptTextField",
+		"PINCode",
+		"Styleguide",
+	]
+))
+
+// MARK: - Purger
+let Purger = declare(.target(
+	name: "Purger",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"UserDefaultsClient",
+		"KeychainClient",
+	]
+))
+
+// MARK: - ReceiveFeature
+let ReceiveFeature = declare(.target(
+	name: "ReceiveFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+	]
+))
+
+// MARK: - RestoreWalletFeature
+let RestoreWalletFeature = declare(.target(
+	name: "RestoreWalletFeature",
+	dependencies: [
+		"Common",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"EnsurePrivacyFeature",
+		"InputField",
+		"PasswordValidator",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - QRCoding
+let QRCoding = declare(.target(
+	name: "QRCoding",
+	dependencies: [
+		"EFQRCode",
+		"Styleguide",
+		"TransactionIntent",
+		"Wallet",
+	]
+))
+
+// MARK: - Screen
+let Screen = declare(.target(
+	name: "Screen",
+	dependencies: [
+		"Styleguide",
+	]
+))
+
+// MARK: - SettingsFeature
+let SettingsFeature = declare(.target(
+	name: "SettingsFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Purger",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+		"VersionFeature",
+	]
+))
+
+// MARK: - SetupWalletFeature
+let SetupWalletFeature = declare(.target(
+	name: "SetupWalletFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"NewWalletOrRestoreFeature",
+		"NewWalletFeature",
+		"PasswordValidator",
+		"RestoreWalletFeature",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+		"WalletGenerator",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - SplashFeature
+let SplashFeature = declare(.target(
+	name: "SplashFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Purger",
+		"Screen",
+		"Styleguide",
+		"UserDefaultsClient",
+		"Wallet",
+	]
+))
+// MARK: - TEST SplashFeature
+let TESTSplashFeature	= declare(.testTarget(
+	name: "SplashFeatureTests",
+	dependencies: [SplashFeature].asDependencies
+))
+
+// MARK: - Styleguide
+let Styleguide = declare(.target(
+	name: "Styleguide",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - TabsFeature
+let TabsFeature = declare(.target(
+	name: "TabsFeature",
+	dependencies: [
+		"BalancesFeature",
+		"ContactsFeature",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"ReceiveFeature",
+		"SettingsFeature",
+		"Styleguide",
+		"TransferFeature",
+		"UserDefaultsClient",
+		"Wallet",
+	]
+))
+
+// MARK: - TransactionIntent
+let TransactionIntent = declare(.target(
+	name: "TransactionIntent",
+	dependencies: [
+		Zesame_ALREADY_DEPENDENCY_FIX_ME
+	]
+))
+
+// MARK: - TransferFeature
+let TransferFeature = declare(.target(
+	name: "TransferFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"Screen",
+		"Styleguide",
+		"Wallet",
+	]
+))
+
+// MARK: - TermsOfServiceFeature
+let TermsOfServiceFeature = declare(.target(
+	name: "TermsOfServiceFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"UserDefaultsClient",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	],
+	resources: [
+		.process("Resources/")
+	]
+))
+// MARK: - TEST TermsOfServiceFeature
+let TESTTermsOfServiceFeature = declare(.testTarget(
+	name: "TermsOfServiceFeatureTests",
+	dependencies: [TermsOfServiceFeature].asDependencies
+))
+
+
+// MARK: - UnlockAppFeature
+let UnlockAppFeature = declare(.target(
+	name: "UnlockAppFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"KeychainClient",
+		"PINCode",
+		"PINField",
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - UserDefaultsClient
+let UserDefaultsClient = declare(.target(
+	name: "UserDefaultsClient",
+	dependencies: [
+		"Common",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - VersionFeature
+let VersionFeature = declare(.target(
+	name: "VersionFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - Wallet
+let Wallet = declare(.target(
+	name: "Wallet",
+	dependencies: [
+		"Common",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+		"ZilliqaAPIEndpoint",
+	]
+))
+
+// MARK: - WalletGenerator
+let WalletGenerator = declare(.target(
+	name: "WalletGenerator",
+	dependencies: [
+		"Common",
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Wallet",
+	]
+))
+
+// MARK: - WalletGeneratorLive
+let WalletGeneratorLive = declare(.target(
+	name: "WalletGeneratorLive",
+	dependencies: [
+		"WalletGenerator",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
+
+// MARK: - WalletGeneratorUnsafeFast
+let WalletGeneratorUnsafeFast = declare(.target(
+	name: "WalletGeneratorUnsafeFast",
+	dependencies: [
+		"WalletGenerator",
+		Zesame_ALREADY_DEPENDENCY_FIX_ME
+	]
+))
+
+// MARK: - WelcomeFeature
+let WelcomeFeature = declare(.target(
+	name: "WelcomeFeature",
+	dependencies: [
+		ComposableArchitecture_ALREADY_DEPENDENCY_FIX_ME,
+		"Screen",
+		"Styleguide",
+	]
+))
+
+// MARK: - ZilliqaAPIEndpoint
+let ZilliqaAPIEndpoint = declare(.target(
+	name: "ZilliqaAPIEndpoint",
+	dependencies: [
+		Zesame_ALREADY_DEPENDENCY_FIX_ME,
+	]
+))
 
 let package = Package(
 	name: "Zhip",
 	platforms: [.macOS(.v12), .iOS(.v15)],
-	products: [
-		// Sort alphabetically
-		.library(name: "AmountFormatter", targets: ["AmountFormatter"]),
-		.library(name: "AppFeature", targets: ["AppFeature"]),
-		.library(name: "BackUpKeystoreFeature", targets: ["BackUpKeystoreFeature"]),
-		.library(name: "BackUpPrivateKeyFeature", targets: ["BackUpPrivateKeyFeature"]),
-		.library(name: "BackUpPrivateKeyAndKeystoreFeature", targets: ["BackUpPrivateKeyAndKeystoreFeature"]),
-		.library(name: "BackUpRevealedKeyPairFeature", targets: ["BackUpRevealedKeyPairFeature"]),
-		.library(name: "BackUpWalletFeature", targets: ["BackUpWalletFeature"]),
-		.library(name: "BalancesFeature", targets: ["BalancesFeature"]),
-		.library(name: "Checkbox", targets: ["Checkbox"]),
-		.library(name: "ContactsFeature", targets: ["ContactsFeature"]),
-		.library(name: "Common", targets: ["Common"]),
-		.library(name: "DecryptKeystoreFeature", targets: ["DecryptKeystoreFeature"]),
-		.library(name: "EnsurePrivacyFeature", targets: ["EnsurePrivacyFeature"]),
-		.library(name: "GenerateNewWalletFeature", targets: ["GenerateNewWalletFeature"]),
-		.library(name: "HoverPromptTextField", targets: ["HoverPromptTextField"]),
-		.library(name: "InputField", targets: ["InputField"]),
-		.library(name: "KeychainClient", targets: ["KeychainClient"]),
-		.library(name: "WrappedKeychain", targets: ["WrappedKeychain"]),
-		.library(name: "MainFeature", targets: ["MainFeature"]),
-		.library(name: "NewPINFeature", targets: ["NewPINFeature"]),
-		.library(name: "NewWalletFeature", targets: ["NewWalletFeature"]),
-		.library(name: "NewWalletOrRestoreFeature", targets: ["NewWalletOrRestoreFeature"]),
-		.library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
-		.library(name: "PasswordInputFields", targets: ["PasswordInputFields"]),
-		.library(name: "PasswordValidator", targets: ["PasswordValidator"]),
-		.library(name: "PINCode", targets: ["PINCode"]),
-		.library(name: "PINField", targets: ["PINField"]),
-		.library(name: "Purger", targets: ["Purger"]),
-		.library(name: "ReceiveFeature", targets: ["ReceiveFeature"]),
-		.library(name: "RestoreWalletFeature", targets: ["RestoreWalletFeature"]),
-		.library(name: "QRCoding", targets: ["QRCoding"]),
-		.library(name: "Screen", targets: ["Screen"]),
-		.library(name: "SettingsFeature", targets: ["SettingsFeature"]),
-		.library(name: "SetupWalletFeature", targets: ["SetupWalletFeature"]),
-		.library(name: "SplashFeature", targets: ["SplashFeature"]),
-		.library(name: "Styleguide", targets: ["Styleguide"]),
-		.library(name: "TabsFeature", targets: ["TabsFeature"]),
-		.library(name: "TermsOfServiceFeature", targets: ["TermsOfServiceFeature"]),
-		.library(name: "TransactionIntent", targets: ["TransactionIntent"]),
-		.library(name: "TransferFeature", targets: ["TransferFeature"]),
-		.library(name: "UnlockAppFeature", targets: ["UnlockAppFeature"]),
-		.library(name: "UserDefaultsClient", targets: ["UserDefaultsClient"]),
-		.library(name: "VersionFeature", targets: ["VersionFeature"]),
-		.library(name: "Wallet", targets: ["Wallet"]),
-		.library(name: "WalletGenerator", targets: ["WalletGenerator"]),
-		.library(name: "WalletGeneratorLive", targets: ["WalletGeneratorLive"]),
-		.library(name: "WalletGeneratorUnsafeFast", targets: ["WalletGeneratorUnsafeFast"]),
-		.library(name: "WelcomeFeature", targets: ["WelcomeFeature"]),
-		.library(name: "ZilliqaAPIEndpoint", targets: ["ZilliqaAPIEndpoint"]),
-	],
+	products: products,
 	dependencies: dependencies.packageDependencies,
-	targets: [
-		// Sort alphabetically
-		.target(
-			name: "AmountFormatter",
-			dependencies: [
-				"Common",
-				zesame,
-			]
-		),
-		
-			.target(
-				name: "AppFeature",
-				dependencies: [
-					"Common",
-					composableArchitecture,
-					"KeychainClient",
-					"MainFeature",
-					"OnboardingFeature",
-					"PasswordValidator",
-					"Styleguide",
-					"SplashFeature",
-					"UserDefaultsClient",
-					"WalletGeneratorLive",
-				]
-			),
-		.testTarget(
-			name: "AppFeatureTests",
-			dependencies: ["AppFeature"]
-		),
-		
-		
-			.target(
-				name: "BackUpKeystoreFeature",
-				dependencies: [
-					composableArchitecture,
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "BackUpPrivateKeyFeature",
-				dependencies: [
-					composableArchitecture,
-					"DecryptKeystoreFeature",
-					"BackUpRevealedKeyPairFeature",
-				]
-			),
-		
-		
-		.target(
-			name: "BackUpPrivateKeyAndKeystoreFeature",
-			dependencies: [
-				"BackUpKeystoreFeature",
-				"BackUpPrivateKeyFeature",
-				"Checkbox",
-				composableArchitecture,
-				"Screen",
-				"Styleguide",
-			]
-		),
-		
-			.target(
-				name: "BackUpRevealedKeyPairFeature",
-				dependencies: [
-					composableArchitecture,
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "BackUpWalletFeature",
-				dependencies: [
-					"BackUpPrivateKeyAndKeystoreFeature",
-					"Checkbox",
-					composableArchitecture,
-					"InputField",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "BalancesFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "Checkbox",
-				dependencies: [
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "Common",
-				dependencies: [
-					zesame,
-				]
-			),
-		
-			.target(
-				name: "ContactsFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "DecryptKeystoreFeature",
-				dependencies: [
-					composableArchitecture,
-					"InputField",
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "EnsurePrivacyFeature",
-				dependencies: [
-					composableArchitecture,
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "GenerateNewWalletFeature",
-				dependencies: [
-					"Checkbox",
-					composableArchitecture,
-					"HoverPromptTextField",
-					"InputField",
-					"PasswordInputFields",
-					"PasswordValidator",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-					"WalletGenerator",
-				]
-			),
-		
-			.target(
-				name: "HoverPromptTextField",
-				dependencies: [
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "InputField",
-				dependencies: [
-					"HoverPromptTextField",
-					"PasswordValidator",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "KeychainClient",
-				dependencies: [
-					"Common",
-					"WrappedKeychain",
-					"PINCode",
-					"Wallet",
-					zesame, // ZilAmount (cached balance)
-				]
-			),
-		
-			.target(
-				name: "WrappedKeychain",
-				dependencies: [
-					"KeychainAccess",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "MainFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"PINCode",
-					"TabsFeature",
-					"UnlockAppFeature",
-					"Wallet",
-				]
-			),
-
-			.target(
-				name: "NewPINFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"PINField",
-					"Styleguide",
-					"Screen",
-				]
-			),
-		
-			.target(
-				name: "NewWalletFeature",
-				dependencies: [
-					"BackUpWalletFeature",
-					composableArchitecture,
-					"EnsurePrivacyFeature",
-					"GenerateNewWalletFeature",
-					"KeychainClient",
-					"PasswordValidator",
-					"WalletGenerator",
-				]
-			),
-			
-		
-			.target(
-				name: "NewWalletOrRestoreFeature",
-				dependencies: [
-					composableArchitecture,
-					"Styleguide",
-					"Screen",
-				]
-			),
-		
-			.target(
-				name: "OnboardingFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"NewPINFeature",
-					"PasswordValidator",
-					"SetupWalletFeature",
-					"TermsOfServiceFeature",
-					"UserDefaultsClient",
-					"WelcomeFeature",
-					"WalletGenerator",
-				]
-			),
-		
-		
-			.target(
-				name: "PasswordInputFields",
-				dependencies: [
-					"InputField",
-					"HoverPromptTextField",
-				]
-			),
-		
-		
-			.target(
-				name: "PasswordValidator",
-				dependencies: [
-					"Common",
-				]
-			),
-		
-		
-			.target(
-				name: "PINCode",
-				dependencies: []
-			),
-		.testTarget(
-			name: "PINCodeTests",
-			dependencies: ["PINCode"]
-		),
-		
-			.target(
-				name: "PINField",
-				dependencies: [
-					"HoverPromptTextField",
-					"PINCode",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "Purger",
-				dependencies: [
-					composableArchitecture,
-					"UserDefaultsClient",
-					"KeychainClient",
-				]
-			),
-		
-			.target(
-				name: "ReceiveFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "RestoreWalletFeature",
-				dependencies: [
-					"Common",
-					composableArchitecture,
-					"EnsurePrivacyFeature",
-					"InputField",
-					"PasswordValidator",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-					zesame,
-				]
-			),
-		
-			.target(
-				name: "QRCoding",
-				dependencies: [
-					"EFQRCode",
-					"Styleguide",
-					"TransactionIntent",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "Screen",
-				dependencies: [
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "SettingsFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Purger",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-					"VersionFeature",
-				]
-			),
-		
-			.target(
-				name: "SetupWalletFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"NewWalletOrRestoreFeature",
-					"NewWalletFeature",
-					"PasswordValidator",
-					"RestoreWalletFeature",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-					"WalletGenerator"
-				]
-			),
-		
-			.target(
-				name: "SplashFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Purger",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "Styleguide",
-				dependencies: [
-					composableArchitecture
-				]
-			),
-		
-			.target(
-				name: "TabsFeature",
-				dependencies: [
-					"BalancesFeature",
-					"ContactsFeature",
-					composableArchitecture,
-					"KeychainClient",
-					"ReceiveFeature",
-					"SettingsFeature",
-					"Styleguide",
-					"TransferFeature",
-					"UserDefaultsClient",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "TransactionIntent",
-				dependencies: [
-					zesame
-				]
-			),
-		
-			.target(
-				name: "TransferFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"Screen",
-					"Styleguide",
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "TermsOfServiceFeature",
-				dependencies: [
-					composableArchitecture,
-					"Screen",
-					"UserDefaultsClient",
-					zesame,
-				],
-				resources: [
-					.process("Resources/")
-				]
-			),
-		
-			.target(
-				name: "UnlockAppFeature",
-				dependencies: [
-					composableArchitecture,
-					"KeychainClient",
-					"PINCode",
-					"PINField",
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "UserDefaultsClient",
-				dependencies: [
-					"Common",
-					composableArchitecture
-				]
-			),
-		
-		
-			.target(
-				name: "VersionFeature",
-				dependencies: [
-					composableArchitecture,
-				]
-			),
-		
-			.target(
-				name: "Wallet",
-				dependencies: [
-					"Common",
-					zesame,
-					"ZilliqaAPIEndpoint",
-				]
-			),
-		
-			.target(
-				name: "WalletGenerator",
-				dependencies: [
-					"Common",
-					composableArchitecture,
-					"Wallet",
-				]
-			),
-		
-			.target(
-				name: "WalletGeneratorLive",
-				dependencies: [
-					"WalletGenerator",
-					zesame,
-				]
-			),
-		
-			.target(
-				name: "WalletGeneratorUnsafeFast",
-				dependencies: [
-					"WalletGenerator",
-					zesame
-				]
-			),
-		
-			.target(
-				name: "WelcomeFeature",
-				dependencies: [
-					composableArchitecture,
-					"Screen",
-					"Styleguide",
-				]
-			),
-		
-			.target(
-				name: "ZilliqaAPIEndpoint",
-				dependencies: [
-					zesame,
-				]
-			),
-		
-	]
+	targets: targets
 )

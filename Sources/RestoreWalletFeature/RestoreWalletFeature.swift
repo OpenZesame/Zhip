@@ -10,6 +10,8 @@ import EnsurePrivacyFeature
 import PasswordValidator
 import SwiftUI
 import Wallet
+import enum Zesame.KDF
+import struct Zesame.KDFParams
 
 public enum RestoreWalletState: Equatable {
 	
@@ -37,10 +39,16 @@ public extension RestoreWalletAction {
 }
 
 public struct RestoreWalletEnvironment {
+	public var kdf: KDF
+	public var kdfParams: KDFParams
 	public let passwordValidator: PasswordValidator
 	public init(
+		kdf: KDF,
+		kdfParams: KDFParams,
 		passwordValidator: PasswordValidator
 	) {
+		self.kdf = kdf
+		self.kdfParams = kdfParams
 		self.passwordValidator = passwordValidator
 	}
 }
@@ -60,6 +68,8 @@ public let restoreWalletReducer = Reducer<RestoreWalletState, RestoreWalletActio
 		action: /RestoreWalletAction.restoreUsingMethod,
 		environment: {
 			RestoreWalletMethodEnvironment(
+				kdf: $0.kdf,
+				kdfParams: $0.kdfParams,
 				passwordValidator: $0.passwordValidator
 			)
 		}

@@ -15,6 +15,8 @@ import RestoreWalletFeature
 import SwiftUI
 import Wallet
 import WalletGenerator
+import enum Zesame.KDF
+import struct Zesame.KDFParams
 
 public struct SetupWalletState: Equatable {
 	public enum Step: Equatable {
@@ -70,17 +72,23 @@ public extension SetupWalletAction {
 
 public struct SetupWalletEnvironment {
 	
+	public let kdf: KDF
+	public let kdfParams: KDFParams
 	public let keychainClient: KeychainClient
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public let passwordValidator: PasswordValidator
 	public let walletGenerator: WalletGenerator
 	
 	public init(
+		kdf: KDF,
+		kdfParams: KDFParams,
 		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
 		passwordValidator: PasswordValidator,
 		walletGenerator: WalletGenerator
 	) {
+		self.kdf = kdf
+		self.kdfParams = kdfParams
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
@@ -116,6 +124,8 @@ public let setupWalletReducer = Reducer<SetupWalletState, SetupWalletAction, Set
 		action: /SetupWalletAction.restoreWallet,
 		environment: {
 			RestoreWalletEnvironment(
+				kdf: $0.kdf,
+				kdfParams: $0.kdfParams,
 				passwordValidator: $0.passwordValidator
 			)
 		}

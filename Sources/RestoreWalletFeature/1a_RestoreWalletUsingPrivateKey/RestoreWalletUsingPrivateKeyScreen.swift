@@ -13,6 +13,9 @@ import Screen
 import Styleguide
 import SwiftUI
 import Wallet
+import enum Zesame.KDF
+import struct Zesame.KDFParams
+import enum Zesame.KeyRestoration
 import struct Zesame.PrivateKey
 
 public struct RestoreWalletUsingPrivateKeyState: Equatable {
@@ -58,8 +61,18 @@ public extension RestoreWalletUsingPrivateKeyAction {
 }
 
 public struct RestoreWalletUsingPrivateKeyEnvironment {
+	
+	public var kdf: KDF
+	public var kdfParams: KDFParams
 	public var passwordValidator: PasswordValidator
-	public init(passwordValidator: PasswordValidator) {
+	
+	public init(
+		kdf: KDF,
+		kdfParams: KDFParams,
+		passwordValidator: PasswordValidator
+	) {
+		self.kdf = kdf
+		self.kdfParams = kdfParams
 		self.passwordValidator = passwordValidator
 	}
 }
@@ -81,7 +94,19 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 		return .none
 		
 	case .restore:
+		guard
+			let privateKey = PrivateKey(hex: state.privateKeyHex)
+		else {
+			return .none
+		}
+		let restoration = KeyRestoration.privateKey(
+			privateKey,
+			encryptBy: state.password,
+			kdf: environment.kdf,
+			kdfParams: environment.kdfParams
+		)
 		fatalError()
+
 	case .delegate(_):
 		return .none
 	}

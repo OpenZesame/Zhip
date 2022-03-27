@@ -142,6 +142,7 @@ public extension TermsOfServiceScreen {
 			}
 			
 			.toolbar {
+				#if os(iOS)
 				ToolbarItem(placement: .navigationBarLeading) {
 					if viewStore.isAcceptDoneSupported {
 						Button(action: {
@@ -153,6 +154,7 @@ public extension TermsOfServiceScreen {
 						})
 					}
 				}
+				#endif
 			}
 		}
 	}

@@ -257,7 +257,9 @@ public extension SettingsView {
 			) {
 				NavigationView {
 					TermsOfServiceScreen(store: store.scope(state: \.termsOfService, action: SettingsAction.termsOfService))
+#if os(iOS)
 						.navigationBarTitleDisplayMode(.inline)
+#endif
 				}
 				
 			}

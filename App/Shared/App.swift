@@ -11,9 +11,13 @@ import Styleguide
 import SwiftUI
 import WalletGenerator
 import WalletGeneratorLive
+
 #if DEBUG
 import WalletGeneratorUnsafeFast
 #endif // DEBUG
+
+//import enum Zesame.KDF
+//import struct Zesame.KDFParams
 
 private func makeAppStore() -> Store<AppState, AppAction> {
 	.init(
@@ -87,7 +91,9 @@ struct ZhipApp: App {
 			AppView(store: store)
 				.background(Color.appBackground)
 				.foregroundColor(.white)
+			#if os(iOS)
 				.navigationBarTitleDisplayMode(.inline)
+			#endif
 		}
 		.onChange(of: scenePhase) {
 			viewStore.send(.didChangeScenePhase($0))
@@ -111,12 +117,29 @@ extension ZhipApp {
 		_viewStore
 		#endif
 	}
-	
 }
+
+//var kdfParams: KDFParams {
+//#if DEBUG
+//	return .unsafeFast
+//#else
+//	return .default
+//#endif
+//}
+//
+//var kdf: KDF {
+//#if DEBUG
+//	return .pbkdf2
+//#else
+//	return .scrypt
+//#endif
+//}
 
 extension AppEnvironment {
 	static var live: Self {
 		.init(
+//			kdf: kdf,
+//			kdfParams: kdfParams,
 			keychainClient: .live(),
 			mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
 			passwordValidator: .live,

@@ -11,6 +11,8 @@ import SwiftUI
 import Styleguide
 import Screen
 import Wallet
+import enum Zesame.KDF
+import struct Zesame.KDFParams
 
 
 // MARK: ==================  DELIM  ==================
@@ -57,10 +59,16 @@ public extension RestoreWalletMethodAction {
 }
 
 public struct RestoreWalletMethodEnvironment {
+	public let kdf: KDF
+	public let kdfParams: KDFParams
 	public let passwordValidator: PasswordValidator
 	public init(
+		kdf: KDF,
+		kdfParams: KDFParams,
 		passwordValidator: PasswordValidator
 	) {
+		self.kdf = kdf
+		self.kdfParams = kdfParams
 		self.passwordValidator = passwordValidator
 	}
 }
@@ -76,6 +84,8 @@ public let restoreWalletMethodReducer = Reducer<
 		action: /RestoreWalletMethodAction.usingPrivateKey,
 		environment: {
 			RestoreWalletUsingPrivateKeyEnvironment(
+				kdf: $0.kdf,
+				kdfParams: $0.kdfParams,
 				passwordValidator: $0.passwordValidator
 			)
 		}
