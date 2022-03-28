@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Sajjon/CodeScanner.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e99827ca985d9e1ed35daf38be1b5f774269aeb1"
+      }
+    },
+    {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
