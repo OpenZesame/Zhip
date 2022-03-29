@@ -7,6 +7,8 @@
 
 import ComposableArchitecture
 import PasswordValidator
+import RestoreWalletUsingPrivateKeyFeature
+import RestoreWalletUsingKeystoreFeature
 import SwiftUI
 import Styleguide
 import Screen
@@ -17,7 +19,7 @@ import WalletRestorer
 // MARK: ==================  DELIM  ==================
  
 
-public struct RestoreWalletMethodState: Equatable {
+public struct RestoreWalletMethodChoiceState: Equatable {
 	
 	@BindableState public var method: Method
 	public var usingPrivateKey: RestoreWalletUsingPrivateKeyState
@@ -34,7 +36,7 @@ public struct RestoreWalletMethodState: Equatable {
 	}
 }
 
-public extension RestoreWalletMethodState {
+public extension RestoreWalletMethodChoiceState {
 	enum Method: Equatable {
 		case usingPrivateKey
 		case usingKeystore
@@ -42,22 +44,22 @@ public extension RestoreWalletMethodState {
 }
 	
 
-public enum RestoreWalletMethodAction: Equatable, BindableAction {
+public enum RestoreWalletMethodChoiceAction: Equatable, BindableAction {
 	case delegate(DelegateAction)
 	
-	case binding(BindingAction<RestoreWalletMethodState>)
+	case binding(BindingAction<RestoreWalletMethodChoiceState>)
 	
 	case usingPrivateKey(RestoreWalletUsingPrivateKeyAction)
 	case usingKeystore(RestoreWalletUsingKeystoreAction)
 	
 }
-public extension RestoreWalletMethodAction {
+public extension RestoreWalletMethodChoiceAction {
 	enum DelegateAction: Equatable {
 		case finishedRestoring(Wallet)
 	}
 }
 
-public struct RestoreWalletMethodEnvironment {
+public struct RestoreWalletMethodChoiceEnvironment {
 	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public let passwordValidator: PasswordValidator
@@ -77,14 +79,14 @@ public struct RestoreWalletMethodEnvironment {
 }
 
 public let restoreWalletMethodReducer = Reducer<
-	RestoreWalletMethodState,
-	RestoreWalletMethodAction,
-	RestoreWalletMethodEnvironment
+	RestoreWalletMethodChoiceState,
+	RestoreWalletMethodChoiceAction,
+	RestoreWalletMethodChoiceEnvironment
 >.combine(
 	
 	restoreWalletUsingPrivateKeyReducer.pullback(
 		state: \.usingPrivateKey,
-		action: /RestoreWalletMethodAction.usingPrivateKey,
+		action: /RestoreWalletMethodChoiceAction.usingPrivateKey,
 		environment: {
 			RestoreWalletUsingPrivateKeyEnvironment(
 				backgroundQueue: $0.backgroundQueue,
@@ -97,7 +99,7 @@ public let restoreWalletMethodReducer = Reducer<
 	
 	restoreWalletUsingKeystoreReducer.pullback(
 		state: \.usingKeystore,
-		action: /RestoreWalletMethodAction.usingKeystore,
+		action: /RestoreWalletMethodChoiceAction.usingKeystore,
 		environment: { _ in
 			RestoreWalletUsingKeystoreEnvironment()
 		}
@@ -127,9 +129,9 @@ public let restoreWalletMethodReducer = Reducer<
 
 
 public struct RestoreWalletScreen: View {
-	let store: Store<RestoreWalletMethodState, RestoreWalletMethodAction>
+	let store: Store<RestoreWalletMethodChoiceState, RestoreWalletMethodChoiceAction>
 	public init(
-		store: Store<RestoreWalletMethodState, RestoreWalletMethodAction>
+		store: Store<RestoreWalletMethodChoiceState, RestoreWalletMethodChoiceAction>
 	) {
 		self.store = store
 	}
@@ -143,43 +145,26 @@ public extension RestoreWalletScreen {
 			ForceFullScreen {
 	            VStack {
 					Picker(selection: viewStore.binding(\.$method), content: {
-						Text("Private key").tag(RestoreWalletMethodState.Method.usingPrivateKey)
-						Text("Keystore").tag(RestoreWalletMethodState.Method.usingKeystore)
+						Text("Private key").tag(RestoreWalletMethodChoiceState.Method.usingPrivateKey)
+						Text("Keystore").tag(RestoreWalletMethodChoiceState.Method.usingKeystore)
 					}) {
 						EmptyView() // No label
 					}
 					.pickerStyle(.segmented)
-					
-//					SwitchStore(viewStore.method) {
-//						CaseLet(
-//							state: /RestoreWalletMethodState.Method.usingPrivateKey,
-//							action: RestoreWalletMethodAction.usingPrivateKey,
-//							then: RestoreWalletUsingPrivateKeyScreen.init(store:)
-//						)
-//
-//						CaseLet(
-//							state: /RestoreWalletMethodState.Method.usingKeystore,
-//							action: RestoreWalletMethodAction.usingKeystore,
-//							then: RestoreWalletUsingKeystoreScreen.init(store:)
-//						)
-//
-//					}
-					
-	
-	                
+
 					switch viewStore.method {
 					case .usingKeystore:
 						RestoreWalletUsingKeystoreScreen(
 							store: self.store.scope(
 								state: \.usingKeystore,
-								action: RestoreWalletMethodAction.usingKeystore
+								action: RestoreWalletMethodChoiceAction.usingKeystore
 							)
 						)
 					case .usingPrivateKey:
 						RestoreWalletUsingPrivateKeyScreen(
 							store: self.store.scope(
 								state: \.usingPrivateKey,
-								action: RestoreWalletMethodAction.usingPrivateKey
+								action: RestoreWalletMethodChoiceAction.usingPrivateKey
 							)
 						)
 					}

@@ -743,6 +743,66 @@ func makePackage() -> Package {
 		]
 	)
 	
+	// MARK: - RestoreWalletUsingPrivateKeyFeature
+	let RestoreWalletUsingPrivateKeyFeature = declareTarget(
+		name: "RestoreWalletUsingPrivateKeyFeature",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			PasswordValidator,
+			Screen,
+			Styleguide,
+			Wallet,
+			WalletRestorer,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - RestoreWalletUsingKeystoreFeature
+	let RestoreWalletUsingKeystoreFeature = declareTarget(
+		name: "RestoreWalletUsingKeystoreFeature",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			PasswordValidator,
+			Screen,
+			Styleguide,
+			Wallet,
+			WalletRestorer,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - RestoreWalletMethodChoiceFeature
+	let RestoreWalletMethodChoiceFeature = declareTarget(
+		name: "RestoreWalletMethodChoiceFeature",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			PasswordValidator,
+			RestoreWalletUsingPrivateKeyFeature,
+			RestoreWalletUsingKeystoreFeature,
+			Screen,
+			Styleguide,
+			Wallet,
+			WalletRestorer,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	
 	// MARK: - RestoreWalletFeature
 	let RestoreWalletFeature = declareTarget(
 		name: "RestoreWalletFeature",
@@ -754,8 +814,8 @@ func makePackage() -> Package {
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			Common,
 			EnsurePrivacyFeature,
-			InputField,
 			PasswordValidator,
+			RestoreWalletMethodChoiceFeature,
 			Screen,
 			Styleguide,
 			Wallet,

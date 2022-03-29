@@ -7,7 +7,6 @@
 
 import Common
 import ComposableArchitecture
-import InputField
 import PasswordValidator
 import Screen
 import Styleguide
@@ -42,8 +41,9 @@ public struct RestoreWalletUsingPrivateKeyState: Equatable {
 		// Some uninteresting test account without any balance.
 		self.privateKeyHex = "0xcc7d1263009ebbc8e31f5b7e7d79b625e57cf489cd540e1b0ac4801c8daab9be"
 
-//		self.password = unsafeDebugPassword
-//		self.passwordConfirmation = unsafeDebugPassword
+		self.password = unsafeDebugPassword
+		self.passwordConfirmation = unsafeDebugPassword
+		self.canRestore = true
 #endif
 	}
 }
@@ -203,17 +203,9 @@ public extension RestoreWalletUsingPrivateKeyScreen {
 		) { viewStore in
 			ForceFullScreen {
 				VStack(spacing: 20) {
-					
-	//					InputField.privateKey(text: viewStore.privateKeyHex, isValid: $viewModel.isPrivateKeyValid)
+
 					SecureField("Private Key Hex", text: viewStore.binding(\.$privateKeyHex))
-					
-					
-	//					PasswordInputFields(
-	 //						password: $viewModel.password,
-	 //						isPasswordValid: $viewModel.isPasswordValid,
-	 //						passwordConfirmation: $viewModel.passwordConfirmation,
-	 //						isPasswordConfirmationValid: $viewModel.isPasswordConfirmationValid
-	 //					)
+
 					SecureField("Encryption password", text: viewStore.binding(\.$password))
 					SecureField("Confirm encryption password", text: viewStore.binding(\.$passwordConfirmation))
 
@@ -235,28 +227,3 @@ public extension RestoreWalletUsingPrivateKeyScreen {
 
     }
 }
-
-//extension InputField {
-//    static func privateKey(
-//        prompt: String = "Private Key",
-//        text: Binding<String>,
-//        isValid: Binding<Bool>? = nil
-//    ) -> Self {
-//        Self(
-//            prompt: prompt,
-//            text: text,
-//            isValid: isValid,
-//            isSecure: true,
-//            maxLength: 66, // "0x" + 64 hex private key chars => max length 66.
-//            characterRestriction: .onlyContains(whitelisted: .hexadecimalDigitsIncluding0x),
-//            validationRules: [
-//                Validation { privateKeyHex in
-//                    if PrivateKey(hex: privateKeyHex) == nil {
-//                        return "Invalid private key."
-//                    }
-//                    return nil // Valid
-//                },
-//            ]
-//        )
-//    }
-//}

@@ -12,7 +12,6 @@ import Styleguide
 import Screen
 import Wallet
 
-
 public struct RestoreWalletUsingKeystoreState: Equatable {
 	public init() {}
 }

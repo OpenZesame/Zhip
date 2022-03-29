@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import EnsurePrivacyFeature
 import PasswordValidator
+import RestoreWalletMethodChoiceFeature
 import SwiftUI
 import Wallet
 import WalletRestorer
@@ -15,7 +16,7 @@ import WalletRestorer
 public enum RestoreWalletState: Equatable {
 	
 	case step1_EnsurePrivacy(EnsurePrivacyState)
-	case step2_RestoreWallet(RestoreWalletMethodState)
+	case step2_RestoreWallet(RestoreWalletMethodChoiceState)
 	
 	public init() {
 		self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
@@ -27,7 +28,7 @@ public enum RestoreWalletAction: Equatable {
 	case delegate(DelegateAction)
 	
 	case ensurePrivacy(EnsurePrivacyAction)
-	case restoreUsingMethod(RestoreWalletMethodAction)
+	case restoreUsingMethod(RestoreWalletMethodChoiceAction)
 	
 }
 public extension RestoreWalletAction {
@@ -70,7 +71,7 @@ public let restoreWalletReducer = Reducer<RestoreWalletState, RestoreWalletActio
 		state: /RestoreWalletState.step2_RestoreWallet,
 		action: /RestoreWalletAction.restoreUsingMethod,
 		environment: {
-			RestoreWalletMethodEnvironment(
+			RestoreWalletMethodChoiceEnvironment(
 				backgroundQueue: $0.backgroundQueue,
 				mainQueue: $0.mainQueue,
 				passwordValidator: $0.passwordValidator,
