@@ -11,13 +11,17 @@ import Styleguide
 import SwiftUI
 import WalletGenerator
 import WalletGeneratorLive
+import WalletRestorer
+import WalletRestorerLive
 
 #if DEBUG
 import WalletGeneratorUnsafeFast
 #endif // DEBUG
 
-import enum Zesame.KDF
-import struct Zesame.KDFParams
+#if DEBUG
+import WalletRestorerUnsafeFast
+#endif // DEBUG
+
 
 private func makeAppStore() -> Store<AppState, AppAction> {
 	.init(
@@ -119,32 +123,17 @@ extension ZhipApp {
 	}
 }
 
-var kdfParamsConditional: KDFParams {
-#if DEBUG
-	return .unsafeFast
-#else
-	return .default
-#endif
-}
-
-var kdfConditional: KDF {
-#if DEBUG
-	return .pbkdf2
-#else
-	return .scrypt
-#endif
-}
 
 extension AppEnvironment {
 	static var live: Self {
 		.init(
-			kdf: kdfConditional,
-			kdfParams: kdfParamsConditional,
+			backgroundQueue: DispatchQueue(label: "background-queue").eraseToAnyScheduler(),
 			keychainClient: .live(),
 			mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
 			passwordValidator: .live,
 			userDefaults: .live(),
-			walletGenerator: walletGenerator()
+			walletGenerator: walletGenerator(),
+			walletRestorer: walletRestorer()
 		)
 	}
 	
@@ -153,6 +142,14 @@ extension AppEnvironment {
 		return WalletGenerator.unsafeFast()
 #else
 		return WalletGenerator.live()
+#endif
+	}
+	
+	static func walletRestorer() -> WalletRestorer {
+#if DEBUG
+		return WalletRestorer.unsafeFast()
+#else
+		return WalletRestorer.live()
 #endif
 	}
 }

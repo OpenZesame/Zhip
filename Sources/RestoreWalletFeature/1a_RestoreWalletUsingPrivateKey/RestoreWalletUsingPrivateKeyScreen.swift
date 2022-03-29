@@ -13,12 +13,11 @@ import Screen
 import Styleguide
 import SwiftUI
 import Wallet
-import enum Zesame.KDF
-import struct Zesame.KDFParams
-import enum Zesame.KeyRestoration
+import WalletRestorer
 import struct Zesame.PrivateKey
 
 public struct RestoreWalletUsingPrivateKeyState: Equatable {
+	public var alert: AlertState<RestoreWalletUsingPrivateKeyAction>?
 	public var isRestoring: Bool
 	public var canRestore: Bool
 	@BindableState public var privateKeyHex: String
@@ -49,10 +48,12 @@ public struct RestoreWalletUsingPrivateKeyState: Equatable {
 	}
 }
 public enum RestoreWalletUsingPrivateKeyAction: Equatable, BindableAction {
-	case binding(BindingAction<RestoreWalletUsingPrivateKeyState>)
 	case delegate(DelegateAction)
-	
+
+	case binding(BindingAction<RestoreWalletUsingPrivateKeyState>)
+	case alertDismissed
 	case restore
+	case restoreResult(Result<Wallet, WalletRestorerError>)
 }
 public extension RestoreWalletUsingPrivateKeyAction {
 	enum DelegateAction: Equatable {
@@ -62,18 +63,21 @@ public extension RestoreWalletUsingPrivateKeyAction {
 
 public struct RestoreWalletUsingPrivateKeyEnvironment {
 	
-	public var kdf: KDF
-	public var kdfParams: KDFParams
+	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public var passwordValidator: PasswordValidator
+	public var walletRestorer: WalletRestorer
 	
 	public init(
-		kdf: KDF,
-		kdfParams: KDFParams,
-		passwordValidator: PasswordValidator
+		backgroundQueue: AnySchedulerOf<DispatchQueue>,
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		walletRestorer: WalletRestorer
 	) {
-		self.kdf = kdf
-		self.kdfParams = kdfParams
+		self.backgroundQueue = backgroundQueue
+		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
+		self.walletRestorer = walletRestorer
 	}
 }
 
@@ -99,13 +103,25 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 		else {
 			return .none
 		}
-		let restoration = KeyRestoration.privateKey(
-			privateKey,
-			encryptBy: state.password,
-			kdf: environment.kdf,
-			kdfParams: environment.kdfParams
-		)
-		fatalError()
+
+		
+		state.isRestoring = true
+		let restoreRequest = RestoreWalletRequest(restorationMethod: .privateKey(privateKey), encryptionPassword: state.password, name: nil)
+		return environment.walletRestorer
+			.restore(restoreRequest)
+			.subscribe(on: environment.backgroundQueue)
+			.receive(on: environment.mainQueue)
+			.catchToEffect(RestoreWalletUsingPrivateKeyAction.restoreResult)
+		
+	case let .restoreResult(.success(wallet)):
+		return Effect(value: .delegate(.finishedRestoringWalletFromPrivateKey(wallet)))
+	case let .restoreResult(.failure(error)):
+		state.alert = .init(title: .init("Failed to restore wallet, error: \(error.localizedDescription)"))
+		return .none
+		
+	case .alertDismissed:
+		state.alert = nil
+		return .none
 
 	case .delegate(_):
 		return .none
@@ -145,6 +161,7 @@ internal extension RestoreWalletUsingPrivateKeyScreen {
 	enum ViewAction: Equatable, BindableAction {
 		case binding(BindingAction<ViewState>)
 		case restoreButtonTapped
+		case alertDismissed
 	}
 }
 
@@ -168,6 +185,8 @@ private extension RestoreWalletUsingPrivateKeyAction {
 			self = .binding(bindingAction.pullback(\RestoreWalletUsingPrivateKeyState.view))
 		case .restoreButtonTapped:
 			self = .restore
+		case .alertDismissed:
+			self = .alertDismissed
 		}
 	}
 }
@@ -211,6 +230,7 @@ public extension RestoreWalletUsingPrivateKeyScreen {
 				.disableAutocorrection(true)
 			}
 			.navigationTitle("Restore with private key")
+			.alert(store.scope(state: \.alert), dismiss: .alertDismissed)
 		}
 
     }

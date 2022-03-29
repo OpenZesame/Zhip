@@ -66,15 +66,18 @@ public extension GenerateNewWalletAction {
 
 public struct GenerateNewWalletEnvironment {
 
+	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public let passwordValidator: PasswordValidator
 	public let walletGenerator: WalletGenerator
 	
 	public init(
+		backgroundQueue: AnySchedulerOf<DispatchQueue>,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
 		passwordValidator: PasswordValidator,
 		walletGenerator: WalletGenerator
 	) {
+		self.backgroundQueue = backgroundQueue
 		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
 		self.walletGenerator = walletGenerator
@@ -114,6 +117,7 @@ public let generateNewWalletReducer = Reducer<GenerateNewWalletState, GenerateNe
 
 		return environment.walletGenerator
 			.generate(request)
+			.subscribe(on: environment.backgroundQueue)
 			.receive(on: environment.mainQueue)
 			.catchToEffect(GenerateNewWalletAction.walletGenerationResult)
 		

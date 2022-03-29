@@ -10,8 +10,7 @@ import EnsurePrivacyFeature
 import PasswordValidator
 import SwiftUI
 import Wallet
-import enum Zesame.KDF
-import struct Zesame.KDFParams
+import WalletRestorer
 
 public enum RestoreWalletState: Equatable {
 	
@@ -39,17 +38,21 @@ public extension RestoreWalletAction {
 }
 
 public struct RestoreWalletEnvironment {
-	public var kdf: KDF
-	public var kdfParams: KDFParams
+	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public let passwordValidator: PasswordValidator
+	public let walletRestorer: WalletRestorer
+	
 	public init(
-		kdf: KDF,
-		kdfParams: KDFParams,
-		passwordValidator: PasswordValidator
+		backgroundQueue: AnySchedulerOf<DispatchQueue>,
+		mainQueue: AnySchedulerOf<DispatchQueue>,
+		passwordValidator: PasswordValidator,
+		walletRestorer: WalletRestorer
 	) {
-		self.kdf = kdf
-		self.kdfParams = kdfParams
+		self.backgroundQueue = backgroundQueue
+		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
+		self.walletRestorer = walletRestorer
 	}
 }
 
@@ -68,9 +71,10 @@ public let restoreWalletReducer = Reducer<RestoreWalletState, RestoreWalletActio
 		action: /RestoreWalletAction.restoreUsingMethod,
 		environment: {
 			RestoreWalletMethodEnvironment(
-				kdf: $0.kdf,
-				kdfParams: $0.kdfParams,
-				passwordValidator: $0.passwordValidator
+				backgroundQueue: $0.backgroundQueue,
+				mainQueue: $0.mainQueue,
+				passwordValidator: $0.passwordValidator,
+				walletRestorer: $0.walletRestorer
 			)
 		}
 	),

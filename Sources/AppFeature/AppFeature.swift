@@ -18,8 +18,7 @@ import SwiftUI
 import UserDefaultsClient
 import Wallet
 import WalletGenerator
-import enum Zesame.KDF
-import struct Zesame.KDFParams
+import WalletRestorer
 
 public struct AppState: Equatable {
 	
@@ -71,31 +70,30 @@ public enum AppAction: Equatable {
 
 public struct AppEnvironment {
 	
-	public var kdf: KDF
-	public var kdfParams: KDFParams
+	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 	public var keychainClient: KeychainClient
 	public var mainQueue: AnySchedulerOf<DispatchQueue>
 	public var passwordValidator: PasswordValidator
 	public var userDefaults: UserDefaultsClient
 	public var walletGenerator: WalletGenerator
-	
+	public var walletRestorer: WalletRestorer
 	
 	public init(
-		kdf: KDF,
-		kdfParams: KDFParams,
+		backgroundQueue: AnySchedulerOf<DispatchQueue>,
 		keychainClient: KeychainClient,
 		mainQueue: AnySchedulerOf<DispatchQueue>,
 		passwordValidator: PasswordValidator,
 		userDefaults: UserDefaultsClient,
-		walletGenerator: WalletGenerator
+		walletGenerator: WalletGenerator,
+		walletRestorer: WalletRestorer
 	) {
-		self.kdf = kdf
-		self.kdfParams = kdfParams
+		self.backgroundQueue = backgroundQueue
 		self.keychainClient = keychainClient
 		self.mainQueue = mainQueue
 		self.passwordValidator = passwordValidator
 		self.userDefaults = userDefaults
 		self.walletGenerator = walletGenerator
+		self.walletRestorer = walletRestorer
 	}
 }
 
@@ -121,13 +119,13 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			action: /AppAction.onboarding,
 			environment: {
 				OnboardingEnvironment(
-					kdf: $0.kdf,
-					kdfParams: $0.kdfParams,
+					backgroundQueue: $0.backgroundQueue,
 					keychainClient: $0.keychainClient,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
 					userDefaults: $0.userDefaults,
-					walletGenerator: $0.walletGenerator
+					walletGenerator: $0.walletGenerator,
+					walletRestorer: $0.walletRestorer
 				)
 			}
 		),

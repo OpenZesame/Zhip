@@ -440,6 +440,51 @@ func makePackage() -> Package {
 		]
 	)
 	
+	// MARK: - WalletRestorer
+	let WalletRestorer = declareTarget(
+		name: "WalletRestorer",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame, // KeyRestoration
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Wallet,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - WalletRestorerLive
+	let WalletRestorerLive = declareTarget(
+		name: "WalletRestorerLive",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Wallet,
+			WalletRestorer,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - WalletRestorerUnsafeFast
+	let WalletRestorerUnsafeFast = declareTarget(
+		name: "WalletRestorerUnsafeFast",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Wallet,
+			WalletRestorer,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	
 	// MARK: - BalancesFeature
 	let BalancesFeature = declareTarget(
 		name: "BalancesFeature",
@@ -714,6 +759,7 @@ func makePackage() -> Package {
 			Screen,
 			Styleguide,
 			Wallet,
+			WalletRestorer,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -813,6 +859,8 @@ func makePackage() -> Package {
 			UserDefaultsClient,
 			WalletGeneratorLive,
 			WalletGeneratorUnsafeFast,
+			WalletRestorerLive,
+			WalletRestorerUnsafeFast,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
