@@ -47,9 +47,19 @@ public extension BalancesView {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			ForceFullScreen {
-				Text("Balances")
-					.font(.zhip.bigBang)
-					.foregroundColor(.turquoise)
+				VStack {
+					Text("Balances")
+						.font(.zhip.bigBang)
+						.foregroundColor(.turquoise)
+					Text(viewStore.wallet.bech32Address.asString)
+						.font(.zhip.title)
+						.foregroundColor(.turquoise)
+						.textSelection(.enabled)
+					Text(viewStore.wallet.legacyAddress.asString)
+						.font(.zhip.title)
+						.foregroundColor(.turquoise)
+						.textSelection(.enabled)
+				}
 			}
 			.navigationTitle("Balances")
 		}

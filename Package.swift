@@ -430,6 +430,7 @@ func makePackage() -> Package {
 	// MARK: - WalletGeneratorUnsafeFast
 	let WalletGeneratorUnsafeFast = declareTarget(
 		name: "WalletGeneratorUnsafeFast",
+		test: true,
 		externalDependencies: [
 			Zesame,
 		],

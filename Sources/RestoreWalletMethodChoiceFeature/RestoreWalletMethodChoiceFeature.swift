@@ -100,8 +100,13 @@ public let restoreWalletMethodReducer = Reducer<
 	restoreWalletUsingKeystoreReducer.pullback(
 		state: \.usingKeystore,
 		action: /RestoreWalletMethodChoiceAction.usingKeystore,
-		environment: { _ in
-			RestoreWalletUsingKeystoreEnvironment()
+		environment: { 
+			RestoreWalletUsingKeystoreEnvironment(
+				backgroundQueue: $0.backgroundQueue,
+				mainQueue: $0.mainQueue,
+				passwordValidator: $0.passwordValidator,
+				walletRestorer: $0.walletRestorer
+			)
 		}
 	),
 

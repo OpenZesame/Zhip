@@ -86,6 +86,9 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 	RestoreWalletUsingPrivateKeyAction,
 	RestoreWalletUsingPrivateKeyEnvironment
 > { state, action, environment in
+	
+	struct RestoreCancellationID: Hashable {}
+	
 	switch action {
 	case .binding(_):
 		state.canRestore = environment.passwordValidator
@@ -111,11 +114,15 @@ public let restoreWalletUsingPrivateKeyReducer = Reducer<
 			.restore(restoreRequest)
 			.subscribe(on: environment.backgroundQueue)
 			.receive(on: environment.mainQueue)
+			.eraseToEffect()
+			.cancellable(id: RestoreCancellationID(), cancelInFlight: true)
 			.catchToEffect(RestoreWalletUsingPrivateKeyAction.restoreResult)
 		
 	case let .restoreResult(.success(wallet)):
+		state.isRestoring = false
 		return Effect(value: .delegate(.finishedRestoringWalletFromPrivateKey(wallet)))
 	case let .restoreResult(.failure(error)):
+		state.isRestoring = false
 		state.alert = .init(title: .init("Failed to restore wallet, error: \(error.localizedDescription)"))
 		return .none
 		

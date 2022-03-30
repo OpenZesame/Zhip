@@ -47,9 +47,19 @@ public extension ReceiveView {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			ForceFullScreen {
-				Text("Receive")
-					.font(.zhip.bigBang)
-					.foregroundColor(.turquoise)
+				VStack {
+					Text("Receive")
+						.font(.zhip.bigBang)
+						.foregroundColor(.turquoise)
+					Text(viewStore.wallet.bech32Address.asString)
+						.font(.zhip.title)
+						.foregroundColor(.turquoise)
+						.textSelection(.enabled)
+					Text(viewStore.wallet.legacyAddress.asString)
+						.font(.zhip.title)
+						.foregroundColor(.turquoise)
+						.textSelection(.enabled)
+				}
 			}
 			.navigationTitle("Receive")
 		}

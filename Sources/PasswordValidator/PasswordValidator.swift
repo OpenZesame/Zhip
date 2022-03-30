@@ -21,6 +21,10 @@ public struct ValidatePasswordsRequest: Equatable {
 		self.password = password
 		self.confirmPassword = confirmPassword
 	}
+	
+	public static func single(password: String) -> Self {
+		.init(password: password, confirmPassword: password)
+	}
 }
 
 public struct PasswordValidator {
