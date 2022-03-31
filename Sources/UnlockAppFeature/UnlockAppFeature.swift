@@ -19,9 +19,8 @@ public struct UnlockAppState: Equatable {
 		case removeWallet
 	}
 	public var role: Role
-	@BindableState var pinFieldText = ""
+	/* @BindableState */ public var pinFieldText = ""
 	public let expectedPIN: Pincode
-//	@BindableState public var pinCode: Pincode?
 	public var showError: Bool = false
 	public init(role: Role, expectedPIN: Pincode) {
 		self.role = role
@@ -29,8 +28,9 @@ public struct UnlockAppState: Equatable {
 	}
 }
 
-public enum UnlockAppAction: Equatable, BindableAction {
-	case binding(BindingAction<UnlockAppState>)
+public enum UnlockAppAction: Equatable {//}, BindableAction {
+//	case binding(BindingAction<UnlockAppState>)
+	case pinFieldTextChanged(String)
 	case delegate(DelegateAction)
 	case wrongPIN
 	case resetError
@@ -54,35 +54,32 @@ public struct UnlockAppEnvironment {
 public let unlockAppReducer = Reducer<UnlockAppState, UnlockAppAction, UnlockAppEnvironment> { state, action, environment in
 	
 	switch action {
-	case .binding(\.$pinFieldText):
-		print("✨ state.pinFieldText: \(state.pinFieldText)")
+	case let .pinFieldTextChanged(newPinText):
+		state.pinFieldText = newPinText
 		guard
 			let pin = try? Pincode(string: state.pinFieldText)
 		else {
 			return .none
 		}
-		print("✨ pin: \(pin.debugDescription)")
 		guard
 			pin == state.expectedPIN
 		else {
-			print("✨ pin WRONG expected: \(state.expectedPIN.debugDescription)")
 			return Effect(value: .wrongPIN)
 		}
-		print("✅ correct PIN!")
 		return Effect(value: .delegate(.userUnlockedApp))
 
 	case .wrongPIN:
-		state.pinFieldText = ""
 		state.showError = true
 		return Effect(value: .resetError)
-			.debounce(for: 1, scheduler: environment.mainQueue)
+			.delay(for: 1, scheduler: environment.mainQueue)
 			.eraseToEffect()
 		
 	case .resetError:
+		state.pinFieldText = ""
 		state.showError = false
 		return .none
-	case .binding(_):
-		return .none
+	// case .binding(_):
+		// return .none
 	case .cancel:
 		assert(state.role != .unlockApp)
 		return Effect(value: .delegate(.userCancelled))
@@ -91,7 +88,7 @@ public let unlockAppReducer = Reducer<UnlockAppState, UnlockAppAction, UnlockApp
 
 	}
 }
-.binding()
+//.binding()
 
 // MARK: - UnlockAppWithPINScreen
 // MARK: -
@@ -111,41 +108,37 @@ public extension UnlockAppWithPINScreen {
 	var body: some View {
 		WithViewStore(
 			store.scope(
-				state: ViewState.init,
-				action: UnlockAppAction.init(action:)
+				state: ViewState.init
+//				action: UnlockAppAction.init(action:)
 			)
 		) { viewStore in
 			ForceFullScreen {
 				VStack {
-//					PINField(
-//						text: viewStore.binding(
-//							get: \.pinFieldText,
-//							send: UnlockAppAction.pinFieldTextChanged
-//						),
-//						pinCode: viewStore.binding(
-//							get: \.pinCode,
-//							send: UnlockAppAction.pincodeChanged
-//						),
-//						errorMessage: viewStore.showError ? "Invalid PIN" : nil
-//					)
-					SecureField("PIN", text: viewStore.binding(\.$pinFieldText))
-						.disableAutocorrection(true)
-						.textFieldStyle(.roundedBorder)
-						.foregroundColor(.darkTurquoise)
+					SecureField(
+						"PIN",
+//						text: viewStore.binding(\.$pinFieldText)
+						text: viewStore.binding(
+							get: \.pinFieldText,
+							send: UnlockAppAction.pinFieldTextChanged
+						)
+					)
+					.disableAutocorrection(true)
+					.textFieldStyle(.roundedBorder)
+					.foregroundColor(.darkTurquoise)
 					
 					Text("Unlock app with PIN or FaceId/TouchId")
-						.font(.zhip.body).foregroundColor(.silverGrey)
-				}
-				.background(viewStore.showError ? Color.bloodRed : Color.clear)
-				.navigationTitle(viewStore.navigationTitle)
-				.toolbar {
-					if viewStore.isUserAllowedToCancel {
-						Button("Cancel") {
-							viewStore.send(.cancelButtonTapped)
-						}
-					}
+						.font(.zhip.body)
+						.foregroundColor(viewStore.showError ? Color.bloodRed : Color.white)
 				}
 			}
+			.navigationTitle(viewStore.navigationTitle)
+//				.toolbar {
+//					if viewStore.isUserAllowedToCancel {
+//						Button("Cancel") {
+//							viewStore.send(.cancelButtonTapped)
+//						}
+//					}
+//				}
 		}
 	}
 }
@@ -155,8 +148,7 @@ public extension UnlockAppWithPINScreen {
 private extension UnlockAppWithPINScreen {
 	struct ViewState: Equatable {
 		
-		@BindableState var pinFieldText: String
-//		@BindableState var pinCode: Pincode?
+		 /* @BindableState */ var pinFieldText: String
 		let showError: Bool
 		let isUserAllowedToCancel: Bool
 		let navigationTitle: String
@@ -164,39 +156,38 @@ private extension UnlockAppWithPINScreen {
 		init(state: UnlockAppState) {
 			self.navigationTitle = state.role.navigationTitle
 			self.isUserAllowedToCancel = state.role != .unlockApp
-//			self.pinCode = state.pinCode
 			self.pinFieldText = state.pinFieldText
 			self.showError = state.showError
 		}
 	}
 	
-	enum ViewAction: Equatable, BindableAction {
-		case binding(BindingAction<ViewState>)
-		case cancelButtonTapped
-	}
+//	enum ViewAction: Equatable, BindableAction {
+//		case binding(BindingAction<ViewState>)
+//		case cancelButtonTapped
+//	}
 }
 
 
-extension UnlockAppState {
-	fileprivate var view: UnlockAppWithPINScreen.ViewState {
-		get { .init(state: self) }
-		set {
-			// handle bindable actions only:
-			self.pinFieldText = newValue.pinFieldText
-		}
-	}
-}
-
-extension UnlockAppAction {
-	fileprivate init(action: UnlockAppWithPINScreen.ViewAction) {
-		switch action {
-		case .binding(let bindingAction):
-			self = .binding(bindingAction.pullback(\UnlockAppState.view))
-		case .cancelButtonTapped:
-			self = .cancel
-		}
-	}
-}
+//extension UnlockAppState {
+//	fileprivate var view: UnlockAppWithPINScreen.ViewState {
+//		get { .init(state: self) }
+//		set {
+//			// handle bindable actions only:
+//			self.pinFieldText = newValue.pinFieldText
+//		}
+//	}
+//}
+//
+//extension UnlockAppAction {
+//	fileprivate init(action: UnlockAppWithPINScreen.ViewAction) {
+//		switch action {
+//		case .binding(let bindingAction):
+//			self = .binding(bindingAction.pullback(\UnlockAppState.view))
+//		case .cancelButtonTapped:
+//			self = .cancel
+//		}
+//	}
+//}
 
 private extension UnlockAppState.Role {
 	var navigationTitle: String {
