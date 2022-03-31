@@ -709,6 +709,40 @@ func makePackage() -> Package {
 		]
 	)
 	
+	// MARK: - InputNewPINFeature
+	let InputNewPINFeature = declareTarget(
+		name: "InputNewPINFeature",
+		externalDependencies: [
+			ComposableArchitecture,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Checkbox,
+			KeychainClient,
+			PINField,
+			Styleguide,
+			Screen,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - ConfirmNewPINFeature
+	let ConfirmNewPINFeature = declareTarget(
+		name: "ConfirmNewPINFeature",
+		externalDependencies: [
+			ComposableArchitecture,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Checkbox,
+			KeychainClient,
+			PINField,
+			Styleguide,
+			Screen,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
 	// MARK: - NewPINFeature
 	let NewPINFeature = declareTarget(
 		name: "NewPINFeature",
@@ -718,6 +752,8 @@ func makePackage() -> Package {
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			Checkbox,
+			ConfirmNewPINFeature,
+			InputNewPINFeature,
 			KeychainClient,
 			PINField,
 			Styleguide,

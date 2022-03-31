@@ -18,14 +18,20 @@ import Wallet
 public struct MainState: Equatable {
 	
 
+	public var wallet: Wallet
+	public var pin: Pincode?
+	
 	public var unlockApp: UnlockAppState?
 	public var tabs: TabsState
 	
 	public init(
 		wallet: Wallet,
-		maybePIN pin: Pincode? = nil
+		maybePIN pin: Pincode? = nil,
+		promptUserToUnlockAppIfNeeded: Bool = true
 	) {
-		self.unlockApp = pin.map { .init(role: .unlockApp, expectedPIN: $0) }
+		self.wallet = wallet
+		self.pin = pin
+		self.unlockApp = promptUserToUnlockAppIfNeeded ? pin.map { .init(role: .unlockApp, expectedPIN: $0) } : nil
 		self.tabs = .init(wallet: wallet, isPINSet: pin != nil)
 	}
 }
@@ -67,7 +73,7 @@ public let mainReducer = Reducer<MainState, MainAction, MainEnvironment>.combine
 			state: \.unlockApp,
 			action: /MainAction.unlockApp,
 			environment: {
-				UnlockAppEnvironment(keychainClient: $0.keychainClient)
+				UnlockAppEnvironment(mainQueue: $0.mainQueue)
 			}
 	),
 	

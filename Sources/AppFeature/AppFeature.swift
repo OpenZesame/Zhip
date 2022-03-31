@@ -58,7 +58,7 @@ public enum AppAction: Equatable {
 	case pinLoadingResult(Wallet, Result<Pincode?, KeychainClient.Error>)
 	case failedToLoadPINStartAppAsIfNoPINSet(wallet: Wallet)
 
-	case startApp(wallet: Wallet, pin: Pincode?)
+	case startApp(wallet: Wallet, pin: Pincode?, promptUserToUnlockAppIfNeeded: Bool = true)
 	
 	case main(MainAction)
 	
@@ -184,7 +184,7 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		
 	case let .onboarding(.delegate(.finishedOnboarding(wallet, pin))):
 		state.onboarding = nil
-		return Effect(value: .startApp(wallet: wallet, pin: pin))
+		return Effect(value: .startApp(wallet: wallet, pin: pin, promptUserToUnlockAppIfNeeded: false))
 	
 	case .onboardUser:
 		state.onboarding = .init()
@@ -208,9 +208,9 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		state.isObfuscateAppOverlayPresented = true
 		return .none
 		
-	case let .startApp(wallet, maybePIN):
+	case let .startApp(wallet, maybePIN, promptUserToUnlockAppIfNeeded):
 		state.splash = nil
-		state.main = MainState(wallet: wallet, maybePIN: maybePIN)
+		state.main = MainState(wallet: wallet, maybePIN: maybePIN, promptUserToUnlockAppIfNeeded: promptUserToUnlockAppIfNeeded)
 		return .none
 		
 	case .main(.delegate(.userDeletedWallet)):

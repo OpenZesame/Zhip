@@ -17,6 +17,16 @@ public struct Pincode: Equatable, Codable, CustomDebugStringConvertible {
     }
 }
 
+// MARK: - Pincode init
+// MARK: -
+public extension Pincode {
+	init(string: String) throws {
+		try self.init(
+			digits: string.compactMap { Digit(string: String($0)) }
+		)
+	}
+}
+
 public extension Pincode {
     var debugDescription: String {
         digits.map {

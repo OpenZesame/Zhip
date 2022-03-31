@@ -48,7 +48,7 @@ public extension OnboardingState {
 		case step0_Welcome
 		case step1_TermsOfService
 		case step2_SetupWallet
-		case step3_NewPIN(wallet: Wallet)
+		case step3_NewPIN
 	}
 }
 
@@ -164,7 +164,7 @@ public let onboardingReducer = Reducer<OnboardingState, OnboardingAction, Onboar
 			
 		case let .setupWallet(.delegate(.finishedSettingUpWallet(wallet))):
 			state.newPIN = .init(wallet: wallet)
-			state.step = .step3_NewPIN(wallet: wallet)
+			state.step = .step3_NewPIN
 			return .none
 			
 		case let .newPIN(.delegate(.skippedPIN(wallet))):
