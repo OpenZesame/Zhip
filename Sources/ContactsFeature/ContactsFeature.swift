@@ -15,7 +15,15 @@ import Wallet
 public struct ContactsState: Equatable {
 	public init() {}
 }
-public enum ContactsAction: Equatable {}
+public enum ContactsAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension ContactsAction {
+	enum DelegateAction: Equatable {
+		case noop
+	}
+}
+
 public struct ContactsEnvironment {
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public init(
@@ -27,8 +35,9 @@ public struct ContactsEnvironment {
 
 public let contactsReducer = Reducer<ContactsState, ContactsAction, ContactsEnvironment> { state, action, environment in
 	switch action {
+	case .delegate(_):
+		return .none
 	}
-	return .none
 }
 
 public struct ContactsView: View {

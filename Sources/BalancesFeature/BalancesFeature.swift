@@ -18,7 +18,14 @@ public struct BalancesState: Equatable {
 		self.wallet = wallet
 	}
 }
-public enum BalancesAction: Equatable {}
+public enum BalancesAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension BalancesAction {
+	enum DelegateAction {
+		case noop
+	}
+}
 public struct BalancesEnvironment {
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public init(
@@ -30,8 +37,9 @@ public struct BalancesEnvironment {
 
 public let balancesReducer = Reducer<BalancesState, BalancesAction, BalancesEnvironment> { state, action, environment in
 	switch action {
+	case .delegate(.noop):
+		return .none
 	}
-	return .none
 }
 
 public struct BalancesView: View {

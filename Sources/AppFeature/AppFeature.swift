@@ -26,13 +26,13 @@ public struct AppState: Equatable {
 	
 	public var alert: AlertState<AppAction>?
 	public var splash: SplashState?
-	public var onboarding: OnboardingState?
+	public var onboarding: Onboarding.State?
 	public var main: MainState?
 	
 	public init(
 		isObfuscateAppOverlayPresented: Bool = false,
 		splash: SplashState = .init(),
-		onboarding: OnboardingState? = nil,
+		onboarding: Onboarding.State? = nil,
 		main: MainState? = nil
 	) {
 		self.isObfuscateAppOverlayPresented = isObfuscateAppOverlayPresented
@@ -52,7 +52,7 @@ public enum AppAction: Equatable {
 	case splash(SplashAction)
 	
 	case onboardUser
-	case onboarding(OnboardingAction)
+	case onboarding(Onboarding.Action)
 	
 	case loadPIN(Wallet)
 	case pinLoadingResult(Wallet, Result<Pincode?, KeychainClient.Error>)
@@ -112,13 +112,13 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 			}
 		),
 	
-	onboardingReducer
+	Onboarding.reducer
 		.optional()
 		.pullback(
 			state: \.onboarding,
 			action: /AppAction.onboarding,
 			environment: {
-				OnboardingEnvironment(
+				Onboarding.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					keychainClient: $0.keychainClient,
 					mainQueue: $0.mainQueue,
@@ -182,7 +182,7 @@ let appReducerCore = Reducer<AppState, AppAction, AppEnvironment> { state, actio
 		state.splash = nil
 		return Effect(value: .onboardUser)
 		
-	case let .onboarding(.delegate(.finishedOnboarding(wallet, pin))):
+	case let .onboarding(.delegate(.finished(wallet, pin))):
 		state.onboarding = nil
 		return Effect(value: .startApp(wallet: wallet, pin: pin, promptUserToUnlockAppIfNeeded: false))
 	
@@ -271,7 +271,7 @@ public extension AppView {
 							state: \.onboarding,
 							action: AppAction.onboarding
 						),
-						then: OnboardingCoordinatorView.init(store:)
+						then: Onboarding.CoordinatorScreen.init(store:)
 					)
 					.zIndex(2)
 				} else if viewStore.isObfuscateAppOverlayPresented {

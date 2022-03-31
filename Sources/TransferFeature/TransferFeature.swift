@@ -12,13 +12,24 @@ import Screen
 import Styleguide
 import Wallet
 
+public struct Reciept: Hashable {}
+
 public struct TransferState: Equatable {
 	public let wallet: Wallet
 	public init(wallet: Wallet) {
 		self.wallet = wallet
 	}
 }
-public enum TransferAction: Equatable {}
+public enum TransferAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension TransferAction {
+	enum DelegateAction: Equatable {
+		case transactionFinalized(Reciept)
+		case transactionBroadcastedButSkippedWaitingForFinalization(txID: String)
+	}
+}
+
 public struct TransferEnvironment {
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public init(
@@ -30,8 +41,9 @@ public struct TransferEnvironment {
 
 public let transferReducer = Reducer<TransferState, TransferAction, TransferEnvironment> { state, action, environment in
 	switch action {
+	case .delegate(_):
+		return .none
 	}
-	return .none
 }
 
 public struct TransferView: View {

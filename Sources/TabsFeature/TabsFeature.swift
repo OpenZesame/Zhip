@@ -125,6 +125,17 @@ public let tabsReducer = Reducer<TabsState, TabsAction, TabsEnvironment>.combine
 			state.selectedTab = selectedTab
 			return .none
 			
+		case .balances(.delegate(.noop)):
+			fatalError()
+		case .receive(.delegate(.noop)):
+			fatalError()
+		case let .transfer(.delegate(.transactionFinalized(txReceipt))):
+			fatalError()
+		case let .transfer(.delegate(.transactionBroadcastedButSkippedWaitingForFinalization(txID))):
+			fatalError()
+		case .contacts(.delegate(.noop)):
+			fatalError()
+			
 		case .settings(.delegate(.userDeletedWallet)):
 			return Effect(value: .delegate(.userDeletedWallet))
 		case .settings(_):

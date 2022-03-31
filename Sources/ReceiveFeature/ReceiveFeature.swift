@@ -18,7 +18,14 @@ public struct ReceiveState: Equatable {
 		self.wallet = wallet
 	}
 }
-public enum ReceiveAction: Equatable {}
+public enum ReceiveAction: Equatable {
+	case delegate(DelegateAction)
+}
+public extension ReceiveAction {
+	enum DelegateAction {
+		case noop
+	}
+}
 public struct ReceiveEnvironment {
 	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public init(
@@ -30,8 +37,9 @@ public struct ReceiveEnvironment {
 
 public let receiveReducer = Reducer<ReceiveState, ReceiveAction, ReceiveEnvironment> { state, action, environment in
 	switch action {
+	case .delegate(.noop):
+		return .none
 	}
-	return .none
 }
 
 public struct ReceiveView: View {

@@ -12,14 +12,15 @@ import Styleguide
 import SwiftUI
 
 public struct InputNewPINState: Equatable {
+	
 	@BindableState public var pin: String
-	public var canProceed: Bool
+	public var canProceed = false
+	
 	public init(
-		pin: String = "",
-		canProceed: Bool = false
+		pin: String = ""
 	) {
 		self.pin = pin
-		self.canProceed = canProceed
+		
 		#if DEBUG
 		self.pin = "1234"
 		self.canProceed = true

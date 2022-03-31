@@ -55,10 +55,13 @@ public extension NewPINAction {
 
 public struct NewPINEnvironment {
 	public let keychainClient: KeychainClient
+	public let mainQueue: AnySchedulerOf<DispatchQueue>
 	public init(
-		keychainClient: KeychainClient
+		keychainClient: KeychainClient,
+		mainQueue: AnySchedulerOf<DispatchQueue>
 	) {
 		self.keychainClient = keychainClient
+		self.mainQueue = mainQueue
 	}
 }
 
@@ -79,8 +82,10 @@ public let newPINReducer = Reducer<
 	confirmNewPINReducer.optional().pullback(
 		state: \.confirmNewPIN,
 		action: /NewPINAction.confirmNewPIN,
-		environment: { _ in
-			ConfirmNewPINEnvironment()
+		environment: {
+			ConfirmNewPINEnvironment(
+				mainQueue: $0.mainQueue
+			)
 		}
 	),
 	

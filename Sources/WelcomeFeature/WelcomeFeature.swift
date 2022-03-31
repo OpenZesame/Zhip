@@ -16,11 +16,30 @@ public struct WelcomeState: Equatable {
 
 public enum WelcomeAction: Equatable {
 	case delegate(DelegateAction)
+	case startButtonTapped
 }
 public extension WelcomeAction {
 	enum DelegateAction: Equatable {
 		case getStarted
 	}
+}
+
+public struct WelcomeEnvironment {
+	public init() {}
+}
+
+public let welcomeReducer = Reducer<
+	WelcomeState,
+	WelcomeAction,
+	WelcomeEnvironment
+> { state, action, environment in
+	switch action {
+	case .startButtonTapped:
+		return Effect(value: .delegate(.getStarted))
+	case .delegate(_):
+		return .none
+	}
+	
 }
 
 // MARK: - WelcomeScreen
@@ -51,29 +70,19 @@ public extension WelcomeScreen {
 					)
 					
 					Button("Start") {
-						viewStore.send(.delegate(.getStarted))
+						viewStore.send(.startButtonTapped)
 					}
 					.buttonStyle(.primary)
 				}
 				.padding()
 				.background {
-					backgroundView
+					ParallaxImage(
+						back: "Images/Welcome/BackClouds",
+						middle: "Images/Welcome/MiddleSpaceship",
+						front: "Images/Welcome/FrontBlastOff"
+					)
 				}
 			}
 		}
-	}
-}
-
-// MARK: - Subviews
-// MARK: -
-private extension WelcomeScreen {
-	
-	
-	var backgroundView: some View {
-		ParallaxImage(
-			back: "Images/Welcome/BackClouds",
-			middle: "Images/Welcome/MiddleSpaceship",
-			front: "Images/Welcome/FrontBlastOff"
-		)
 	}
 }

@@ -7,6 +7,7 @@
 
 import BackUpPrivateKeyAndKeystoreFeature
 import ComposableArchitecture
+import Screen
 import SwiftUI
 import Wallet
 
@@ -65,10 +66,12 @@ public extension BackUpWalletCoordinatorView {
 		WithViewStore(
 			store.scope(state: ViewState.init)
 		) { viewStore in
-			Group {
-				Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.bech32Address.asString)")
-				Button("I have backed up my wallet") {
-					viewStore.send(.delegate(.finishedBackingUpWallet(viewStore.wallet)))
+			Screen {
+				VStack {
+					Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.bech32Address.asString)")
+					Button("I have backed up my wallet") {
+						viewStore.send(.delegate(.finishedBackingUpWallet(viewStore.wallet)))
+					}
 				}
 			}
 		}

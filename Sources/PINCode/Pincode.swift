@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Pincode: Equatable, Codable, CustomDebugStringConvertible {
+public struct Pincode: Hashable, Codable, CustomDebugStringConvertible {
     public let digits: [Digit]
 
     public init(digits: [Digit]) throws {
@@ -50,7 +50,7 @@ public extension Pincode {
 }
 
 
-public enum Digit: Int, Codable, Equatable {
+public enum Digit: Int, Codable, Hashable {
     case zero   = 0
     case one
     case two
