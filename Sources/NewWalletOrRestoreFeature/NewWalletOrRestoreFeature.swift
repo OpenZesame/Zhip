@@ -10,61 +10,81 @@ import Screen
 import Styleguide
 import SwiftUI
 
-public struct NewWalletOrRestoreState: Equatable {
-	public init() {}
+// MARK: - NewWalletOrRestore
+// MARK: -
+
+/// Screen for chosing between generating a new wallet or restoring an existing.
+public enum NewWalletOrRestore {}
+
+// MARK: - State
+// MARK: -
+public extension NewWalletOrRestore {
+	struct State: Equatable {
+		public init() {}
+	}
 }
 
-public enum NewWalletOrRestoreAction: Equatable {
-	case newWalletButtonTapped
-	case restoreWalletButtonTapped
-	case delegate(DelegateAction)
+// MARK: - Action
+// MARK: -
+public extension NewWalletOrRestore {
+	enum Action: Equatable {
+		case delegate(Delegate)
+		
+		case newWalletButtonTapped
+		case restoreWalletButtonTapped
+	}
 }
-public extension NewWalletOrRestoreAction {
-	enum DelegateAction: Equatable {
+
+public extension NewWalletOrRestore.Action {
+	enum Delegate: Equatable {
 		case generateNewWallet
 		case restoreWallet
 	}
 }
 
-public struct NewWalletOrRestoreEnvironment {
-	public init() {}
-}
-
-public let newWalletOrRestoreReducer = Reducer<NewWalletOrRestoreState, NewWalletOrRestoreAction, NewWalletOrRestoreEnvironment> { state, action, environment in
-	switch action {
-	case .delegate(_):
-		return .none
-	case .restoreWalletButtonTapped:
-		return Effect(value: .delegate(.restoreWallet))
-	case .newWalletButtonTapped:
-		return Effect(value: .delegate(.generateNewWallet))
-	}
-}
-
-// MARK: - NewWalletOrRestoreScreen
+// MARK: - Environment
 // MARK: -
-public struct NewWalletOrRestoreScreen: View {
-	let store: Store<NewWalletOrRestoreState, NewWalletOrRestoreAction>
-	public init(store: Store<NewWalletOrRestoreState, NewWalletOrRestoreAction>) {
-		self.store = store
+public extension NewWalletOrRestore {
+	struct Environment {
+		public init() {}
 	}
 }
 
-private extension NewWalletOrRestoreScreen {
-	struct ViewState: Equatable {
-		init(state: NewWalletOrRestoreState) {
+
+// MARK: - Reducer
+// MARK: -
+public extension NewWalletOrRestore {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		switch action {
+		case .delegate(_):
+			return .none
+		case .restoreWalletButtonTapped:
+			return Effect(value: .delegate(.restoreWallet))
+		case .newWalletButtonTapped:
+			return Effect(value: .delegate(.generateNewWallet))
 		}
 	}
 }
 
-// MARK: - View
+	// MARK: - Screen
+	// MARK: -
+public extension NewWalletOrRestore {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(store: Store<State, Action>) {
+			self.store = store
+		}
+	}
+}
+
+
+
+// MARK: - View Conf.
 // MARK: -
-public extension NewWalletOrRestoreScreen {
+public extension NewWalletOrRestore.Screen {
 	var body: some View {
 		WithViewStore(
-			store.scope(
-				state: ViewState.init
-			)
+			store
 		) { viewStore in
 			Screen {
 				VStack {
@@ -99,7 +119,7 @@ public extension NewWalletOrRestoreScreen {
 
 // MARK: - Subviews
 // MARK: -
-private extension NewWalletOrRestoreScreen {
+private extension NewWalletOrRestore.Screen {
     
     var backgroundView: some View {
         ParallaxImage(

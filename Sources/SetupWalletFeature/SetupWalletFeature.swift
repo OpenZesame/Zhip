@@ -45,7 +45,7 @@ public extension SetupWallet {
 	/// State of the setup wallet flow
 	struct State: Equatable {
 		
-		public var newWalletOrRestore: NewWalletOrRestoreState
+		public var newWalletOrRestore: NewWalletOrRestore.State
 		
 		public var newWallet: NewWalletState
 		public var restoreWallet: RestoreWalletState
@@ -56,7 +56,7 @@ public extension SetupWallet {
 		
 		public init(
 			step: Step = .step1_NewWalletOrRestore,
-			newWalletOrRestore: NewWalletOrRestoreState = .init(),
+			newWalletOrRestore: NewWalletOrRestore.State = .init(),
 			newWallet: NewWalletState = .init(),
 			restoreWallet: RestoreWalletState = .init(),
 			alert: AlertState<SetupWallet.Action>? = nil
@@ -76,7 +76,7 @@ public extension SetupWallet {
 	enum Action: Equatable {
 		case delegate(Delegate)
 		
-		case newWalletOrRestore(NewWalletOrRestoreAction)
+		case newWalletOrRestore(NewWalletOrRestore.Action)
 		
 		case newWallet(NewWalletAction)
 		case restoreWallet(RestoreWalletAction)
@@ -132,11 +132,11 @@ public extension SetupWallet {
 public extension SetupWallet {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		newWalletOrRestoreReducer.pullback(
+		NewWalletOrRestore.reducer.pullback(
 			state: \.newWalletOrRestore,
 			action: /SetupWallet.Action.newWalletOrRestore,
 			environment: { _ in
-				NewWalletOrRestoreEnvironment()
+				NewWalletOrRestore.Environment()
 			}
 		),
 		
@@ -231,7 +231,7 @@ public extension SetupWallet.CoordinatorScreen {
 			Group {
 				switch viewStore.step {
 				case .step1_NewWalletOrRestore:
-					NewWalletOrRestoreScreen(
+					NewWalletOrRestore.Screen(
 						store: store.scope(
 							state: \.newWalletOrRestore,
 							action: SetupWallet.Action.newWalletOrRestore
