@@ -42,19 +42,21 @@ public extension Onboarding {
 // MARK: - State
 // MARK: -
 public extension Onboarding {
+	
+	/// State of the onboarding flow
 	struct State: Equatable {
 		public var step: Step
 		
 		public var welcome: WelcomeState?
 		public var termsOfService: TermsOfServiceState?
-		public var setupWallet: SetupWalletState?
+		public var setupWallet: SetupWallet.State?
 		public var newPIN: NewPINState?
 		
 		public init(
 			step: Step = .step0_Welcome,
 			welcome: WelcomeState? = nil,
 			termsOfService: TermsOfServiceState? = nil,
-			setupWallet: SetupWalletState? = nil,
+			setupWallet: SetupWallet.State? = nil,
 			newPIN: NewPINState? = nil
 		) {
 			self.step = step
@@ -74,7 +76,7 @@ public extension Onboarding {
 		
 		case welcome(WelcomeAction)
 		case termsOfService(TermsOfServiceAction)
-		case setupWallet(SetupWalletAction)
+		case setupWallet(SetupWallet.Action)
 		case newPIN(NewPINAction)
 	}
 }
@@ -142,13 +144,13 @@ public extension Onboarding {
 				environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
 			),
 		
-		setupWalletReducer
+		SetupWallet.reducer
 			.optional()
 			.pullback(
 				state: \.setupWallet,
 				action: /Action.setupWallet,
 				environment: {
-					SetupWalletEnvironment(
+					SetupWallet.Environment(
 						backgroundQueue: $0.backgroundQueue,
 						keychainClient: $0.keychainClient,
 						mainQueue: $0.mainQueue,
@@ -202,7 +204,7 @@ public extension Onboarding {
 				state.step = .step2_SetupWallet
 				return .none
 				
-			case let .setupWallet(.delegate(.finishedSettingUpWallet(wallet))):
+			case let .setupWallet(.delegate(.finished(wallet))):
 				state.newPIN = .init(wallet: wallet)
 				state.step = .step3_NewPIN
 				return .none
@@ -261,7 +263,7 @@ public extension Onboarding.CoordinatorScreen {
 								state: \.setupWallet,
 								action: Onboarding.Action.setupWallet
 							),
-							then: SetupWalletCoordinatorView.init(store:)
+							then: SetupWallet.CoordinatorScreen.init(store:)
 						)
 					case .step3_NewPIN:
 						IfLetStore(
