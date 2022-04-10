@@ -20,7 +20,7 @@ public extension RestoreWallet {
 	enum Step: Equatable {
 		
 		case step1_EnsurePrivacy(EnsurePrivacy.State)
-		case step2_RestoreWallet(RestoreWalletMethodChoiceState)
+		case step2_RestoreWallet(RestoreWalletMethodChoice.State)
 		
 		public init() {
 			self = .step1_EnsurePrivacy(.init())
@@ -38,7 +38,7 @@ public extension RestoreWallet {
 		case delegate(Delegate)
 		
 		case ensurePrivacy(EnsurePrivacy.Action)
-		case restoreUsingMethod(RestoreWalletMethodChoiceAction)
+		case restoreUsingMethod(RestoreWalletMethodChoice.Action)
 		
 	}
 }
@@ -81,11 +81,11 @@ public extension RestoreWallet {
 			}
 		),
 		
-		restoreWalletMethodReducer.pullback(
+		RestoreWalletMethodChoice.reducer.pullback(
 			state: /State.step2_RestoreWallet,
 			action: /RestoreWallet.Action.restoreUsingMethod,
 			environment: {
-				RestoreWalletMethodChoiceEnvironment(
+				RestoreWalletMethodChoice.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
@@ -137,7 +137,7 @@ public extension RestoreWallet.CoordinatorScreen {
 			CaseLet(
 				state: /RestoreWallet.State.step2_RestoreWallet,
 				action: RestoreWallet.Action.restoreUsingMethod,
-				then: RestoreWalletScreen.init(store:)
+				then: RestoreWalletMethodChoice.Screen.init(store:)
 			)
 			
 			
