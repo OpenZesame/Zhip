@@ -14,6 +14,10 @@ import WalletGeneratorLive
 import WalletRestorer
 import WalletRestorerLive
 
+typealias App = AppFeature.App
+typealias AppProtocol = SwiftUI.App
+
+
 #if DEBUG
 import WalletGeneratorUnsafeFast
 #endif // DEBUG
@@ -23,15 +27,15 @@ import WalletRestorerUnsafeFast
 #endif // DEBUG
 
 
-private func makeAppStore() -> Store<AppState, AppAction> {
+private func makeAppStore() -> Store<App.State, App.Action> {
 	.init(
 		initialState: .init(),
-		reducer: appReducer,
+		reducer: App.reducer,
 		environment: .live
 	)
 }
 
-private func makeViewStore(from store: Store<AppState, AppAction>) -> ViewStore<Void, AppAction> {
+private func makeViewStore(from store: Store<App.State, App.Action>) -> ViewStore<Void, App.Action> {
 	ViewStore(
 		store.scope(state: { _ in () }),
 		removeDuplicates: ==
@@ -72,7 +76,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
 
 @main
-struct ZhipApp: App {
+struct ZhipApp: AppProtocol {
 	#if os(iOS)
 	@UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 	#else
@@ -92,7 +96,7 @@ struct ZhipApp: App {
     
     var body: some Scene {
 		WindowGroup {
-			AppView(store: store)
+			App.View(store: store)
 				.background(Color.appBackground)
 				.foregroundColor(.white)
 			#if os(iOS)
@@ -106,7 +110,7 @@ struct ZhipApp: App {
 }
 
 extension ZhipApp {
-	var store: Store<AppState, AppAction> {
+	var store: Store<App.State, App.Action> {
 		#if os(iOS)
 		appDelegate.store
 		#else
@@ -114,7 +118,7 @@ extension ZhipApp {
 		#endif
 	}
 	
-	var viewStore: ViewStore<Void, AppAction> {
+	var viewStore: ViewStore<Void, App.Action> {
 		#if os(iOS)
 		appDelegate.viewStore
 		#else
@@ -124,7 +128,7 @@ extension ZhipApp {
 }
 
 
-extension AppEnvironment {
+extension App.Environment {
 	static var live: Self {
 		.init(
 			backgroundQueue: DispatchQueue(label: "background-queue").eraseToAnyScheduler(),
