@@ -28,13 +28,13 @@ public extension App {
 		public var isObfuscateAppOverlayPresented: Bool
 		
 		public var alert: AlertState<Action>?
-		public var splash: SplashState?
+		public var splash: Splash.State?
 		public var onboarding: Onboarding.State?
 		public var main: Main.State?
 		
 		public init(
 			isObfuscateAppOverlayPresented: Bool = false,
-			splash: SplashState = .init(),
+			splash: Splash.State = .init(),
 			onboarding: Onboarding.State? = nil,
 			main: Main.State? = nil
 		) {
@@ -54,7 +54,7 @@ public extension App {
 		
 		case alertDismissed
 		
-		case splash(SplashAction)
+		case splash(Splash.Action)
 		
 		case onboardUser
 		case onboarding(Onboarding.Action)
@@ -108,13 +108,13 @@ public extension App {
 public extension App {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		splashReducer
+		Splash.reducer
 			.optional()
 			.pullback(
 				state: \.splash,
 				action: /App.Action.splash,
 				environment: {
-					SplashEnvironment(
+					Splash.Environment(
 						keychainClient: $0.keychainClient,
 						userDefaultsClient: $0.userDefaults
 					)
@@ -278,7 +278,7 @@ public extension App.View {
 							state: \.splash,
 							action: App.Action.splash
 						),
-						then: SplashView.init(store:)
+						then: Splash.Screen.init(store:)
 					)
 					.zIndex(3)
 				} else if viewStore.isOnboardingPresented {

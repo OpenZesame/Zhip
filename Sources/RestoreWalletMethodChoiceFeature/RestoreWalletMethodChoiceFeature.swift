@@ -21,12 +21,12 @@ public extension RestoreWalletMethodChoice {
 	struct State: Equatable {
 		
 		@BindableState public var method: Method
-		public var usingPrivateKey: RestoreWalletUsingPrivateKeyState
+		public var usingPrivateKey: RestoreWalletUsingPrivateKey.State
 		public var usingKeystore: RestoreWalletUsingKeystore.State
 		
 		public init(
 			method: Method = .usingPrivateKey,
-			usingPrivateKey: RestoreWalletUsingPrivateKeyState = .init(),
+			usingPrivateKey: RestoreWalletUsingPrivateKey.State = .init(),
 			usingKeystore: RestoreWalletUsingKeystore.State = .init()
 		) {
 			self.method = method
@@ -51,7 +51,7 @@ public extension RestoreWalletMethodChoice {
 		
 		case binding(BindingAction<State>)
 		
-		case usingPrivateKey(RestoreWalletUsingPrivateKeyAction)
+		case usingPrivateKey(RestoreWalletUsingPrivateKey.Action)
 		case usingKeystore(RestoreWalletUsingKeystore.Action)
 		
 	}
@@ -86,11 +86,11 @@ public extension RestoreWalletMethodChoice {
 public extension RestoreWalletMethodChoice {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		restoreWalletUsingPrivateKeyReducer.pullback(
+		RestoreWalletUsingPrivateKey.reducer.pullback(
 			state: \.usingPrivateKey,
 			action: /RestoreWalletMethodChoice.Action.usingPrivateKey,
 			environment: {
-				RestoreWalletUsingPrivateKeyEnvironment(
+				RestoreWalletUsingPrivateKey.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
@@ -120,7 +120,7 @@ public extension RestoreWalletMethodChoice {
 			case .usingKeystore(_):
 				return .none
 				
-			case let .usingPrivateKey(.delegate(.finishedRestoringWalletFromPrivateKey(wallet))):
+			case let .usingPrivateKey(.delegate(.finished(wallet))):
 				return Effect(value: .delegate(.finishedRestoring(wallet)))
 			case .usingPrivateKey(_):
 				return .none
@@ -171,7 +171,7 @@ public extension RestoreWalletMethodChoice.Screen {
 							)
 						)
 					case .usingPrivateKey:
-						RestoreWalletUsingPrivateKeyScreen(
+						RestoreWalletUsingPrivateKey.Screen(
 							store: self.store.scope(
 								state: \.usingPrivateKey,
 								action: RestoreWalletMethodChoice.Action.usingPrivateKey
