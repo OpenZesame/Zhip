@@ -12,46 +12,61 @@ import Screen
 import Styleguide
 import Wallet
 
-public struct ReceiveState: Equatable {
-	public let wallet: Wallet
-	public init(wallet: Wallet) {
-		self.wallet = wallet
+public enum Receive {}
+
+public extension Receive {
+	struct State: Equatable {
+		public let wallet: Wallet
+		public init(wallet: Wallet) {
+			self.wallet = wallet
+		}
 	}
 }
-public enum ReceiveAction: Equatable {
-	case delegate(DelegateAction)
+
+public extension Receive {
+	enum Action: Equatable {
+		case delegate(Delegate)
+	}
 }
-public extension ReceiveAction {
-	enum DelegateAction {
+
+public extension Receive.Action {
+	enum Delegate {
 		case noop
 	}
 }
-public struct ReceiveEnvironment {
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public init(
-		mainQueue: AnySchedulerOf<DispatchQueue>
-	) {
-		self.mainQueue = mainQueue
+
+public extension Receive {
+	struct Environment {
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public init(
+			mainQueue: AnySchedulerOf<DispatchQueue>
+		) {
+			self.mainQueue = mainQueue
+		}
 	}
 }
 
-public let receiveReducer = Reducer<ReceiveState, ReceiveAction, ReceiveEnvironment> { state, action, environment in
-	switch action {
-	case .delegate(.noop):
-		return .none
+public extension Receive {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		switch action {
+		case .delegate(.noop):
+			return .none
+		}
 	}
 }
 
-public struct ReceiveView: View {
-	let store: Store<ReceiveState, ReceiveAction>
-	public init(
-		store: Store<ReceiveState, ReceiveAction>
-	) {
-		self.store = store
+public extension Receive {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
-public extension ReceiveView {
+public extension Receive.Screen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			ForceFullScreen {

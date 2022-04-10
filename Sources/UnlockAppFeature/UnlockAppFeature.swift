@@ -12,114 +12,126 @@ import Screen
 import Styleguide
 import SwiftUI
 
-public struct UnlockAppState: Equatable {
-	public enum Role {
+public enum UnlockApp {}
+
+
+public extension UnlockApp {
+	enum Role {
 		case unlockApp
 		case removePIN
 		case removeWallet
 	}
-	public var role: Role
-	/* @BindableState */ public var pinFieldText = ""
-	public let expectedPIN: Pincode
-	public var showError: Bool = false
-	public init(role: Role, expectedPIN: Pincode) {
-		self.role = role
-		self.expectedPIN = expectedPIN
+}
+public extension UnlockApp {
+	struct State: Equatable {
+		
+		public var role: Role
+		/* @BindableState */ public var pinFieldText = ""
+		public let expectedPIN: Pincode
+		public var showError: Bool = false
+		public init(role: Role, expectedPIN: Pincode) {
+			self.role = role
+			self.expectedPIN = expectedPIN
+		}
 	}
 }
 
-public enum UnlockAppAction: Equatable {//}, BindableAction {
-//	case binding(BindingAction<UnlockAppState>)
-	case pinFieldTextChanged(String)
-	case delegate(DelegateAction)
-	case wrongPIN
-	case resetError
-	case cancel
+public extension UnlockApp {
+	enum Action: Equatable {
+		case pinFieldTextChanged(String)
+		case delegate(Delegate)
+		case wrongPIN
+		case resetError
+		case cancel
+	}
 }
-public extension UnlockAppAction {
-	enum DelegateAction: Equatable {
+public extension UnlockApp.Action {
+	enum Delegate: Equatable {
 		case userUnlockedApp, userCancelled
 	}
 }
 
-public struct UnlockAppEnvironment {
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public init(
-		mainQueue: AnySchedulerOf<DispatchQueue>
-	) {
-		self.mainQueue = mainQueue
+public extension UnlockApp {
+	struct Environment {
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public init(
+			mainQueue: AnySchedulerOf<DispatchQueue>
+		) {
+			self.mainQueue = mainQueue
+		}
 	}
 }
 
-public let unlockAppReducer = Reducer<UnlockAppState, UnlockAppAction, UnlockAppEnvironment> { state, action, environment in
-	
-	switch action {
-	case let .pinFieldTextChanged(newPinText):
-		state.pinFieldText = newPinText
-		guard
-			let pin = try? Pincode(string: state.pinFieldText)
-		else {
-			return .none
-		}
-		guard
-			pin == state.expectedPIN
-		else {
-			return Effect(value: .wrongPIN)
-		}
-		return Effect(value: .delegate(.userUnlockedApp))
-
-	case .wrongPIN:
-		state.showError = true
-		return Effect(value: .resetError)
-			.delay(for: 1, scheduler: environment.mainQueue)
-			.eraseToEffect()
+public extension UnlockApp {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
 		
-	case .resetError:
-		state.pinFieldText = ""
-		state.showError = false
-		return .none
-	// case .binding(_):
-		// return .none
-	case .cancel:
-		assert(state.role != .unlockApp)
-		return Effect(value: .delegate(.userCancelled))
-	case .delegate(_):
-		return .none
-
+		switch action {
+		case let .pinFieldTextChanged(newPinText):
+			state.pinFieldText = newPinText
+			guard
+				let pin = try? Pincode(string: state.pinFieldText)
+			else {
+				return .none
+			}
+			guard
+				pin == state.expectedPIN
+			else {
+				return Effect(value: .wrongPIN)
+			}
+			return Effect(value: .delegate(.userUnlockedApp))
+			
+		case .wrongPIN:
+			state.showError = true
+			return Effect(value: .resetError)
+				.delay(for: 1, scheduler: environment.mainQueue)
+				.eraseToEffect()
+			
+		case .resetError:
+			state.pinFieldText = ""
+			state.showError = false
+			return .none
+			// case .binding(_):
+			// return .none
+		case .cancel:
+			assert(state.role != .unlockApp)
+			return Effect(value: .delegate(.userCancelled))
+		case .delegate(_):
+			return .none
+			
+		}
 	}
 }
-//.binding()
 
 // MARK: - UnlockAppWithPINScreen
 // MARK: -
-public struct UnlockAppWithPINScreen: View {
-	let store: Store<UnlockAppState, UnlockAppAction>
-	public init(
-		store: Store<UnlockAppState, UnlockAppAction>
-	) {
-		self.store = store
+public extension UnlockApp {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
 // MARK: - View
 // MARK: -
-public extension UnlockAppWithPINScreen {
+public extension UnlockApp.Screen {
 	
 	var body: some View {
 		WithViewStore(
 			store.scope(
 				state: ViewState.init
-//				action: UnlockAppAction.init(action:)
 			)
 		) { viewStore in
 			ForceFullScreen {
 				VStack {
 					SecureField(
 						"PIN",
-//						text: viewStore.binding(\.$pinFieldText)
 						text: viewStore.binding(
 							get: \.pinFieldText,
-							send: UnlockAppAction.pinFieldTextChanged
+							send: UnlockApp.Action.pinFieldTextChanged
 						)
 					)
 					.disableAutocorrection(true)
@@ -132,28 +144,28 @@ public extension UnlockAppWithPINScreen {
 				}
 			}
 			.navigationTitle(viewStore.navigationTitle)
-//				.toolbar {
-//					if viewStore.isUserAllowedToCancel {
-//						Button("Cancel") {
-//							viewStore.send(.cancelButtonTapped)
-//						}
-//					}
-//				}
+			//				.toolbar {
+			//					if viewStore.isUserAllowedToCancel {
+			//						Button("Cancel") {
+			//							viewStore.send(.cancelButtonTapped)
+			//						}
+			//					}
+			//				}
 		}
 	}
 }
 
 // MARK: - View
 // MARK: -
-private extension UnlockAppWithPINScreen {
+private extension UnlockApp.Screen {
 	struct ViewState: Equatable {
 		
-		 /* @BindableState */ var pinFieldText: String
+		/* @BindableState */ var pinFieldText: String
 		let showError: Bool
 		let isUserAllowedToCancel: Bool
 		let navigationTitle: String
 		
-		init(state: UnlockAppState) {
+		init(state: UnlockApp.State) {
 			self.navigationTitle = state.role.navigationTitle
 			self.isUserAllowedToCancel = state.role != .unlockApp
 			self.pinFieldText = state.pinFieldText
@@ -161,10 +173,10 @@ private extension UnlockAppWithPINScreen {
 		}
 	}
 	
-//	enum ViewAction: Equatable, BindableAction {
-//		case binding(BindingAction<ViewState>)
-//		case cancelButtonTapped
-//	}
+	//	enum ViewAction: Equatable, BindableAction {
+	//		case binding(BindingAction<ViewState>)
+	//		case cancelButtonTapped
+	//	}
 }
 
 
@@ -189,15 +201,15 @@ private extension UnlockAppWithPINScreen {
 //	}
 //}
 
-private extension UnlockAppState.Role {
+private extension UnlockApp.Role {
 	var navigationTitle: String {
-        switch self {
-        case .unlockApp:
-            return "Unlock app"
-        case .removePIN:
-            return "Remove PIN"
-        case .removeWallet:
-            return "Remove wallet"
-        }
-    }
+		switch self {
+		case .unlockApp:
+			return "Unlock app"
+		case .removePIN:
+			return "Remove PIN"
+		case .removeWallet:
+			return "Remove wallet"
+		}
+	}
 }

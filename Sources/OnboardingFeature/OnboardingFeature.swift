@@ -48,14 +48,14 @@ public extension Onboarding {
 		public var step: Step
 		
 		public var welcome: WelcomeState?
-		public var termsOfService: TermsOfServiceState?
+		public var termsOfService: TermsOfService.State?
 		public var setupWallet: SetupWallet.State?
 		public var newPIN: NewPINState?
 		
 		public init(
 			step: Step = .step0_Welcome,
 			welcome: WelcomeState? = nil,
-			termsOfService: TermsOfServiceState? = nil,
+			termsOfService: TermsOfService.State? = nil,
 			setupWallet: SetupWallet.State? = nil,
 			newPIN: NewPINState? = nil
 		) {
@@ -75,7 +75,7 @@ public extension Onboarding {
 		case delegate(Delegate)
 		
 		case welcome(WelcomeAction)
-		case termsOfService(TermsOfServiceAction)
+		case termsOfService(TermsOfService.Action)
 		case setupWallet(SetupWallet.Action)
 		case newPIN(NewPINAction)
 	}
@@ -136,12 +136,12 @@ public extension Onboarding {
 				}
 			),
 		
-		termsOfServiceReducer
+		TermsOfService.reducer
 			.optional()
 			.pullback(
 				state: \.termsOfService,
 				action: /Action.termsOfService,
-				environment: { TermsOfServiceEnvironment(userDefaults: $0.userDefaults) }
+				environment: { TermsOfService.Environment(userDefaults: $0.userDefaults) }
 			),
 		
 		SetupWallet.reducer
@@ -255,7 +255,7 @@ public extension Onboarding.CoordinatorScreen {
 								state: \.termsOfService,
 								action: Onboarding.Action.termsOfService
 							),
-							then: TermsOfServiceScreen.init(store:)
+							then: TermsOfService.Screen.init(store:)
 						)
 					case .step2_SetupWallet:
 						IfLetStore(

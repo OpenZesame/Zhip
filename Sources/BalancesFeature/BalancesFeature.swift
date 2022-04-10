@@ -12,46 +12,58 @@ import Screen
 import Styleguide
 import Wallet
 
-public struct BalancesState: Equatable {
-	public let wallet: Wallet
-	public init(wallet: Wallet) {
-		self.wallet = wallet
+public enum Balances {}
+
+public extension Balances {
+	struct State: Equatable {
+		public let wallet: Wallet
+		public init(wallet: Wallet) {
+			self.wallet = wallet
+		}
 	}
 }
-public enum BalancesAction: Equatable {
-	case delegate(DelegateAction)
+
+public extension Balances {
+	enum Action: Equatable {
+		case delegate(Delegate)
+	}
 }
-public extension BalancesAction {
-	enum DelegateAction {
+public extension Balances.Action {
+	enum Delegate {
 		case noop
 	}
 }
-public struct BalancesEnvironment {
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public init(
-		mainQueue: AnySchedulerOf<DispatchQueue>
-	) {
-		self.mainQueue = mainQueue
+public extension Balances {
+	struct Environment {
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public init(
+			mainQueue: AnySchedulerOf<DispatchQueue>
+		) {
+			self.mainQueue = mainQueue
+		}
 	}
 }
 
-public let balancesReducer = Reducer<BalancesState, BalancesAction, BalancesEnvironment> { state, action, environment in
-	switch action {
-	case .delegate(.noop):
-		return .none
+public extension Balances {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		switch action {
+		case .delegate(.noop):
+			return .none
+		}
+	}
+}
+public extension Balances {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
-public struct BalancesView: View {
-	let store: Store<BalancesState, BalancesAction>
-	public init(
-		store: Store<BalancesState, BalancesAction>
-	) {
-		self.store = store
-	}
-}
-
-public extension BalancesView {
+public extension Balances.Screen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			ForceFullScreen {

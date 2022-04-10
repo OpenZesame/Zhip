@@ -14,48 +14,61 @@ import Wallet
 
 public struct Reciept: Hashable {}
 
-public struct TransferState: Equatable {
-	public let wallet: Wallet
-	public init(wallet: Wallet) {
-		self.wallet = wallet
+public enum Transfer {}
+
+public extension Transfer {
+	struct State: Equatable {
+		public let wallet: Wallet
+		public init(wallet: Wallet) {
+			self.wallet = wallet
+		}
 	}
 }
-public enum TransferAction: Equatable {
-	case delegate(DelegateAction)
+public extension Transfer {
+	enum Action: Equatable {
+		case delegate(Delegate)
+	}
 }
-public extension TransferAction {
-	enum DelegateAction: Equatable {
+
+public extension Transfer.Action {
+	enum Delegate: Equatable {
 		case transactionFinalized(Reciept)
 		case transactionBroadcastedButSkippedWaitingForFinalization(txID: String)
 	}
 }
 
-public struct TransferEnvironment {
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public init(
-		mainQueue: AnySchedulerOf<DispatchQueue>
-	) {
-		self.mainQueue = mainQueue
+public extension Transfer {
+	struct Environment {
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public init(
+			mainQueue: AnySchedulerOf<DispatchQueue>
+		) {
+			self.mainQueue = mainQueue
+		}
 	}
 }
 
-public let transferReducer = Reducer<TransferState, TransferAction, TransferEnvironment> { state, action, environment in
-	switch action {
-	case .delegate(_):
-		return .none
+public extension Transfer {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		switch action {
+		case .delegate(_):
+			return .none
+		}
 	}
 }
 
-public struct TransferView: View {
-	let store: Store<TransferState, TransferAction>
-	public init(
-		store: Store<TransferState, TransferAction>
-	) {
-		self.store = store
+public extension Transfer {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
-public extension TransferView {
+public extension Transfer.Screen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			ForceFullScreen {

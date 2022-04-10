@@ -30,13 +30,13 @@ public extension App {
 		public var alert: AlertState<Action>?
 		public var splash: SplashState?
 		public var onboarding: Onboarding.State?
-		public var main: MainState?
+		public var main: Main.State?
 		
 		public init(
 			isObfuscateAppOverlayPresented: Bool = false,
 			splash: SplashState = .init(),
 			onboarding: Onboarding.State? = nil,
-			main: MainState? = nil
+			main: Main.State? = nil
 		) {
 			self.isObfuscateAppOverlayPresented = isObfuscateAppOverlayPresented
 			self.splash = splash
@@ -65,7 +65,7 @@ public extension App {
 		
 		case startApp(wallet: Wallet, pin: Pincode?, promptUserToUnlockAppIfNeeded: Bool = true)
 		
-		case main(MainAction)
+		case main(Main.Action)
 		
 		case coverAppWithObfuscationOverlay
 		case uncoverAppFromObfuscationOverlay
@@ -139,13 +139,13 @@ public extension App {
 				}
 			),
 		
-		mainReducer
+		Main.reducer
 			.optional()
 			.pullback(
 				state: \.main,
 				action: /App.Action.main,
 				environment: {
-					MainEnvironment(
+					Main.Environment(
 						userDefaults: $0.userDefaults,
 						keychainClient: $0.keychainClient,
 						mainQueue: $0.mainQueue
@@ -220,7 +220,12 @@ public extension App {
 			
 		case let .startApp(wallet, maybePIN, promptUserToUnlockAppIfNeeded):
 			state.splash = nil
-			state.main = MainState(wallet: wallet, maybePIN: maybePIN, promptUserToUnlockAppIfNeeded: promptUserToUnlockAppIfNeeded)
+			state.main = Main.State(
+				wallet: wallet,
+				maybePIN: maybePIN,
+				promptUserToUnlockAppIfNeeded: promptUserToUnlockAppIfNeeded
+			)
+			
 			return .none
 			
 		case .main(.delegate(.userDeletedWallet)):
@@ -294,7 +299,7 @@ public extension App.View {
 							state: \.main,
 							action: App.Action.main
 						),
-						then: MainCoordinatorView.init(store:)
+						then: Main.CoordinatorScreen.init(store:)
 					)
 					.zIndex(0)
 				}
