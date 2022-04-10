@@ -11,57 +11,71 @@ import Screen
 import SwiftUI
 import Wallet
 
-public struct BackUpWalletState: Equatable {
-	
-	public enum Step: Equatable {
+public enum BackUpWallet {}
+
+public extension BackUpWallet {
+	enum Step: Equatable {
 		case step1_BackUpPrivateKeyAndKeystore
 		case step2a_BackUpPrivateKeyFlow
 		case step2b_BackUpKeystore
 	}
-	
-	public var wallet: Wallet
-	public var step: Step
-	public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState
-	
-	public init(
-		wallet: Wallet,
-		step: Step = .step1_BackUpPrivateKeyAndKeystore,
-		backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState = .init()
-	) {
-		self.wallet = wallet
-		self.step = step
-		self.backUpPrivateKeyAndKeystore = backUpPrivateKeyAndKeystore
+}
+
+public extension BackUpWallet {
+	struct State: Equatable {
+		
+		public var wallet: Wallet
+		public var step: Step
+		public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState
+		
+		public init(
+			wallet: Wallet,
+			step: Step = .step1_BackUpPrivateKeyAndKeystore,
+			backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState = .init()
+		) {
+			self.wallet = wallet
+			self.step = step
+			self.backUpPrivateKeyAndKeystore = backUpPrivateKeyAndKeystore
+		}
 	}
 }
 
-public enum BackUpWalletAction: Equatable {
-	case delegate(DelegateAction)
+public extension BackUpWallet {
+	enum Action: Equatable {
+		case delegate(Delegate)
+	}
 }
-public extension BackUpWalletAction {
-	enum DelegateAction: Equatable {
-		case finishedBackingUpWallet(Wallet)
+public extension BackUpWallet.Action {
+	enum Delegate: Equatable {
+		case finished(Wallet)
 	}
 }
 
-public struct BackUpWalletEnvironment {
-	public init() {}
-}
-
-public let backUpWalletReducer = Reducer<BackUpWalletState, BackUpWalletAction, BackUpWalletEnvironment> { state, action, environment in
-	return .none
-}
-
-public struct BackUpWalletCoordinatorView: View {
-	let store: Store<BackUpWalletState, BackUpWalletAction>
-	
-	public init(
-		store: Store<BackUpWalletState, BackUpWalletAction>
-	) {
-		self.store = store
+public extension BackUpWallet {
+	struct Environment {
+		public init() {}
 	}
 }
 
-public extension BackUpWalletCoordinatorView {
+public extension BackUpWallet {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		return .none
+	}
+}
+
+public extension BackUpWallet {
+	struct CoordinatorScreen: View {
+		let store: Store<State, Action>
+		
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
+	}
+}
+
+public extension BackUpWallet.CoordinatorScreen {
 	var body: some View {
 		WithViewStore(
 			store.scope(state: ViewState.init)
@@ -70,7 +84,7 @@ public extension BackUpWalletCoordinatorView {
 				VStack {
 					Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.bech32Address.asString)")
 					Button("I have backed up my wallet") {
-						viewStore.send(.delegate(.finishedBackingUpWallet(viewStore.wallet)))
+						viewStore.send(.delegate(.finished(viewStore.wallet)))
 					}
 				}
 			}
@@ -78,10 +92,10 @@ public extension BackUpWalletCoordinatorView {
 	}
 }
 
-private extension BackUpWalletCoordinatorView {
+private extension BackUpWallet.CoordinatorScreen {
 	struct ViewState: Equatable {
 		let wallet: Wallet
-		init(state: BackUpWalletState) {
+		init(state: BackUpWallet.State) {
 			self.wallet = state.wallet
 		}
 	}
