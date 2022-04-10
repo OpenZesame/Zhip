@@ -11,76 +11,87 @@ import Screen
 import Styleguide
 import SwiftUI
 
+public enum BackUpKeystore {}
 
-public struct BackUpKeystoreState: Equatable {
-	public init() {
+public extension BackUpKeystore {
+	struct State: Equatable {
+		public init() {
+			
+		}
+	}
+}
+
+public extension BackUpKeystore {
+	enum Action: Equatable {
 		
 	}
 }
 
-public enum BackUpKeystoreAction: Equatable {
-	
+public extension BackUpKeystore {
+	struct Environment {
+		public init() {}
+	}
 }
 
-public struct BackUpKeystoreEnvironment {
-	public init() {}
-}
-
-public let backUpKeystoreReducer = Reducer<BackUpKeystoreState, BackUpKeystoreAction, BackUpKeystoreEnvironment> { state, action, environment in
-	return .none
+public extension BackUpKeystore {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		return .none
+	}
 }
 
 
 
 // MARK: - BackUpKeystoreScreen
 // MARK: -
-public struct BackUpKeystoreScreen: View {
-//    @ObservedObject var viewModel: BackUpKeystoreViewModel
-	let store: Store<BackUpKeystoreState, BackUpKeystoreAction>
-	public init(store: Store<BackUpKeystoreState, BackUpKeystoreAction>) {
-		self.store = store
+
+public extension BackUpKeystore {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(store: Store<State, Action>) {
+			self.store = store
+		}
 	}
 }
 
 // MARK: - View
 // MARK: -
-public extension BackUpKeystoreScreen {
-    var body: some View {
+public extension BackUpKeystore.Screen {
+	var body: some View {
 		WithViewStore(
 			store.scope(state: ViewState.init)
 		) { viewStore in
 			Text("Code commented out")
-	//        ForceFullScreen {
-	//            VStack {
-	//                ScrollView {
-	//                    Text(viewModel.displayableKeystore)
-	//                        .textSelection(.enabled)
-	//                }
-	//                Button("Copy keystore") {
-	//                    viewModel.copyKeystoreToPasteboard()
-	//                }
-	//                .buttonStyle(.primary)
-	//            }
-	//            .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
-	//                Alert(
-	//                    title: Text("Copied keystore to pasteboard."),
-	//                    dismissButton: .default(Text("OK"))
-	//                )
-	//            }
-	//        }
-	//        .navigationTitle("Back up keystore")
-	//        .toolbar {
-	//            Button("Done") {
-	//                viewModel.doneBackingUpKeystore()
-	//            }
-	//        }
+			//        ForceFullScreen {
+			//            VStack {
+			//                ScrollView {
+			//                    Text(viewModel.displayableKeystore)
+			//                        .textSelection(.enabled)
+			//                }
+			//                Button("Copy keystore") {
+			//                    viewModel.copyKeystoreToPasteboard()
+			//                }
+			//                .buttonStyle(.primary)
+			//            }
+			//            .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
+			//                Alert(
+			//                    title: Text("Copied keystore to pasteboard."),
+			//                    dismissButton: .default(Text("OK"))
+			//                )
+			//            }
+			//        }
+			//        .navigationTitle("Back up keystore")
+			//        .toolbar {
+			//            Button("Done") {
+			//                viewModel.doneBackingUpKeystore()
+			//            }
+			//        }
 		}
-    }
+	}
 }
 
-private extension BackUpKeystoreScreen {
+private extension BackUpKeystore.Screen {
 	struct ViewState: Equatable {
-		init(state: BackUpKeystoreState) {
+		init(state: BackUpKeystore.State) {
 			
 		}
 	}

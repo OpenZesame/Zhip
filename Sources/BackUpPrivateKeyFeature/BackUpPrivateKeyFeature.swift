@@ -7,20 +7,30 @@
 
 import ComposableArchitecture
 
-public struct BackUpPrivateKeyState: Equatable {
+public enum BackUpPrivateKey {}
+
+public extension BackUpPrivateKey {
+ struct State: Equatable {
 	public init() {
 		
 	}
+ }
 }
 
-public enum BackUpPrivateKeyAction: Equatable {
+public extension BackUpPrivateKey {
+ enum Action: Equatable {
 	
+ }
 }
 
-public struct BackUpPrivateKeyEnvironment {
+public extension BackUpPrivateKey {
+ struct Environment {
 	public init() {}
+ }
 }
 
-public let backUpPrivateKeyReducer = Reducer<BackUpPrivateKeyState, BackUpPrivateKeyAction, BackUpPrivateKeyEnvironment> { state, action, environment in
+	public extension BackUpPrivateKey {
+static let reducer = Reducer<State, Action, Environment> { state, action, environment in
 	return .none
 }
+	}

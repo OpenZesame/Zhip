@@ -26,12 +26,12 @@ public extension BackUpWallet {
 		
 		public var wallet: Wallet
 		public var step: Step
-		public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState
+		public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystore.State
 		
 		public init(
 			wallet: Wallet,
 			step: Step = .step1_BackUpPrivateKeyAndKeystore,
-			backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystoreState = .init()
+			backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystore.State = .init()
 		) {
 			self.wallet = wallet
 			self.step = step
