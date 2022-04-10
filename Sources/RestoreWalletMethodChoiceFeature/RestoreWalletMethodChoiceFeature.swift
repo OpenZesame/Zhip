@@ -22,12 +22,12 @@ public extension RestoreWalletMethodChoice {
 		
 		@BindableState public var method: Method
 		public var usingPrivateKey: RestoreWalletUsingPrivateKeyState
-		public var usingKeystore: RestoreWalletUsingKeystoreState
+		public var usingKeystore: RestoreWalletUsingKeystore.State
 		
 		public init(
 			method: Method = .usingPrivateKey,
 			usingPrivateKey: RestoreWalletUsingPrivateKeyState = .init(),
-			usingKeystore: RestoreWalletUsingKeystoreState = .init()
+			usingKeystore: RestoreWalletUsingKeystore.State = .init()
 		) {
 			self.method = method
 			self.usingKeystore = usingKeystore
@@ -52,7 +52,7 @@ public extension RestoreWalletMethodChoice {
 		case binding(BindingAction<State>)
 		
 		case usingPrivateKey(RestoreWalletUsingPrivateKeyAction)
-		case usingKeystore(RestoreWalletUsingKeystoreAction)
+		case usingKeystore(RestoreWalletUsingKeystore.Action)
 		
 	}
 }
@@ -99,11 +99,11 @@ public extension RestoreWalletMethodChoice {
 			}
 		),
 		
-		restoreWalletUsingKeystoreReducer.pullback(
+		RestoreWalletUsingKeystore.reducer.pullback(
 			state: \.usingKeystore,
 			action: /RestoreWalletMethodChoice.Action.usingKeystore,
 			environment: {
-				RestoreWalletUsingKeystoreEnvironment(
+				RestoreWalletUsingKeystore.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
@@ -114,7 +114,7 @@ public extension RestoreWalletMethodChoice {
 		
 		Reducer { state, action, environment in
 			switch action {
-			case let .usingKeystore(.delegate(.finishedRestoringWalletFromKeystore(wallet))):
+			case let .usingKeystore(.delegate(.finished(wallet))):
 				return Effect(value: .delegate(.finishedRestoring(wallet)))
 				
 			case .usingKeystore(_):
@@ -164,7 +164,7 @@ public extension RestoreWalletMethodChoice.Screen {
 					
 					switch viewStore.method {
 					case .usingKeystore:
-						RestoreWalletUsingKeystoreScreen(
+						RestoreWalletUsingKeystore.Screen(
 							store: self.store.scope(
 								state: \.usingKeystore,
 								action: RestoreWalletMethodChoice.Action.usingKeystore
