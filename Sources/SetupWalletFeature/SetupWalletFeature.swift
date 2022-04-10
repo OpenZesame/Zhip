@@ -47,7 +47,7 @@ public extension SetupWallet {
 		
 		public var newWalletOrRestore: NewWalletOrRestore.State
 		
-		public var newWallet: NewWalletState
+		public var newWallet: NewWallet.State
 		public var restoreWallet: RestoreWalletState
 		
 		
@@ -57,7 +57,7 @@ public extension SetupWallet {
 		public init(
 			step: Step = .step1_NewWalletOrRestore,
 			newWalletOrRestore: NewWalletOrRestore.State = .init(),
-			newWallet: NewWalletState = .init(),
+			newWallet: NewWallet.State = .init(),
 			restoreWallet: RestoreWalletState = .init(),
 			alert: AlertState<SetupWallet.Action>? = nil
 		) {
@@ -78,7 +78,7 @@ public extension SetupWallet {
 		
 		case newWalletOrRestore(NewWalletOrRestore.Action)
 		
-		case newWallet(NewWalletAction)
+		case newWallet(NewWallet.Action)
 		case restoreWallet(RestoreWalletAction)
 		
 		case abortDueToMightBeWatched
@@ -140,11 +140,11 @@ public extension SetupWallet {
 			}
 		),
 		
-		newWalletReducer.pullback(
+		NewWallet.reducer.pullback(
 			state: \.newWallet,
 			action: /SetupWallet.Action.newWallet,
 			environment: {
-				NewWalletEnvironment(
+				NewWallet.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					keychainClient: $0.keychainClient,
 					mainQueue: $0.mainQueue,
@@ -238,7 +238,7 @@ public extension SetupWallet.CoordinatorScreen {
 						)
 					)
 				case .step2a_NewWallet:
-					NewWalletCoordinatorView(
+					NewWallet.CoordinatorScreen(
 						store: store.scope(
 							state: \.newWallet,
 							action: SetupWallet.Action.newWallet

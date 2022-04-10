@@ -15,120 +15,138 @@ import SwiftUI
 import Wallet
 import WalletGenerator
 
-public enum NewWalletState: Equatable {
+public enum NewWallet {}
+
+public extension NewWallet {
 	
-	case step1_EnsurePrivacy(EnsurePrivacyState)
-	case step2_GenerateNewWallet(GenerateNewWalletState)
-	case step3_BackUpWallet(BackUpWalletState)
-	
-	public init() {
-		self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
+	enum Step: Equatable {
+		
+		case step1_EnsurePrivacy(EnsurePrivacyState)
+		case step2_GenerateNewWallet(GenerateNewWalletState)
+		case step3_BackUpWallet(BackUpWalletState)
+		
+		public init() {
+			self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
+		}
 	}
 }
 
-public enum NewWalletAction: Equatable {
-	case delegate(DelegateAction)
-	
-	case ensurePrivacy(EnsurePrivacyAction)
-	case generateNewWallet(GenerateNewWalletAction)
-	case backUpWallet(BackUpWalletAction)
+public extension NewWallet {
+	typealias State = Step
 }
-public extension NewWalletAction {
-	enum DelegateAction: Equatable {
+
+public extension NewWallet {
+	enum Action: Equatable {
+		case delegate(Delegate)
+		
+		case ensurePrivacy(EnsurePrivacyAction)
+		case generateNewWallet(GenerateNewWalletAction)
+		case backUpWallet(BackUpWalletAction)
+	}
+}
+public extension NewWallet.Action {
+	enum Delegate: Equatable {
 		case finishedSettingUpNewWallet(Wallet)
 		case abortMightBeWatched
 	}
 }
 
-public struct NewWalletEnvironment {
-	
-	public let keychainClient: KeychainClient
-	public let backgroundQueue: AnySchedulerOf<DispatchQueue>
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public let passwordValidator: PasswordValidator
-	public let walletGenerator: WalletGenerator
-	
-	public init(
-		backgroundQueue: AnySchedulerOf<DispatchQueue>,
-		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>,
-		passwordValidator: PasswordValidator,
-		walletGenerator: WalletGenerator
-	) {
-		self.backgroundQueue = backgroundQueue
-		self.keychainClient = keychainClient
-		self.mainQueue = mainQueue
-		self.passwordValidator = passwordValidator
-		self.walletGenerator = walletGenerator
+public extension NewWallet {
+	struct Environment {
+		
+		public let keychainClient: KeychainClient
+		public let backgroundQueue: AnySchedulerOf<DispatchQueue>
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public let passwordValidator: PasswordValidator
+		public let walletGenerator: WalletGenerator
+		
+		public init(
+			backgroundQueue: AnySchedulerOf<DispatchQueue>,
+			keychainClient: KeychainClient,
+			mainQueue: AnySchedulerOf<DispatchQueue>,
+			passwordValidator: PasswordValidator,
+			walletGenerator: WalletGenerator
+		) {
+			self.backgroundQueue = backgroundQueue
+			self.keychainClient = keychainClient
+			self.mainQueue = mainQueue
+			self.passwordValidator = passwordValidator
+			self.walletGenerator = walletGenerator
+		}
 	}
 }
 
-public let newWalletReducer = Reducer<NewWalletState, NewWalletAction, NewWalletEnvironment>.combine(
-	
-	ensurePrivacyReducer.pullback(
-		state: /NewWalletState.step1_EnsurePrivacy,
-		action: /NewWalletAction.ensurePrivacy,
-		environment: { _ in EnsurePrivacyEnvironment() }
-	),
-	
-	generateNewWalletReducer.pullback(
-		state: /NewWalletState.step2_GenerateNewWallet,
-		action: /NewWalletAction.generateNewWallet,
-		environment: {
-			GenerateNewWalletEnvironment(
-				backgroundQueue: $0.backgroundQueue,
-				mainQueue: $0.mainQueue,
-				passwordValidator: $0.passwordValidator,
-				walletGenerator: $0.walletGenerator
-			)
+public extension NewWallet {
+	static let reducer = Reducer<State, Action, Environment>.combine(
+		
+		ensurePrivacyReducer.pullback(
+			state: /State.step1_EnsurePrivacy,
+			action: /NewWallet.Action.ensurePrivacy,
+			environment: { _ in EnsurePrivacyEnvironment() }
+		),
+		
+		generateNewWalletReducer.pullback(
+			state: /State.step2_GenerateNewWallet,
+			action: /NewWallet.Action.generateNewWallet,
+			environment: {
+				GenerateNewWalletEnvironment(
+					backgroundQueue: $0.backgroundQueue,
+					mainQueue: $0.mainQueue,
+					passwordValidator: $0.passwordValidator,
+					walletGenerator: $0.walletGenerator
+				)
+			}
+		),
+		
+		Reducer { state, action, environment in
+			switch action {
+			case .ensurePrivacy(.delegate(.abort)):
+				return Effect(value: .delegate(.abortMightBeWatched))
+			case .ensurePrivacy(.delegate(.proceed)):
+				state = .step2_GenerateNewWallet(.init())
+				return .none
+			case .generateNewWallet(.delegate(.finishedGeneratingNewWallet(let wallet))):
+				state = .step3_BackUpWallet(.init(wallet: wallet))
+				return .none
+			case .backUpWallet(.delegate(.finishedBackingUpWallet(let wallet))):
+				return Effect(value: .delegate(.finishedSettingUpNewWallet(wallet)))
+			default: return .none
+			}
 		}
-	),
-	
-	Reducer { state, action, environment in
-		switch action {
-		case .ensurePrivacy(.delegate(.abort)):
-			return Effect(value: .delegate(.abortMightBeWatched))
-		case .ensurePrivacy(.delegate(.proceed)):
-			state = .step2_GenerateNewWallet(.init())
-			return .none
-		case .generateNewWallet(.delegate(.finishedGeneratingNewWallet(let wallet))):
-			state = .step3_BackUpWallet(.init(wallet: wallet))
-			return .none
-		case .backUpWallet(.delegate(.finishedBackingUpWallet(let wallet))):
-			return Effect(value: .delegate(.finishedSettingUpNewWallet(wallet)))
-		default: return .none
-		}
-	}
-)
+	)
+}
 
-public struct NewWalletCoordinatorView: View {
-	let store: Store<NewWalletState, NewWalletAction>
-	public init(
-		store: Store<NewWalletState, NewWalletAction>
-	) {
-		self.store = store
+public extension NewWallet {
+	struct CoordinatorScreen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
-public extension NewWalletCoordinatorView {
+
+public extension NewWallet.CoordinatorScreen {
 	var body: some View {
 		
 		SwitchStore(store) {
 			CaseLet(
-				state: /NewWalletState.step1_EnsurePrivacy,
-				action: NewWalletAction.ensurePrivacy,
+				state: /NewWallet.State.step1_EnsurePrivacy,
+				action: NewWallet.Action.ensurePrivacy,
 				then: EnsurePrivacyScreen.init(store:)
 			)
 			
 			CaseLet(
-				state: /NewWalletState.step2_GenerateNewWallet,
-				action: NewWalletAction.generateNewWallet,
+				state: /NewWallet.State.step2_GenerateNewWallet,
+				action: NewWallet.Action.generateNewWallet,
 				then: GenerateNewWalletScreen.init(store:)
 			)
 			
 			CaseLet(
-				state: /NewWalletState.step3_BackUpWallet,
-				action: NewWalletAction.backUpWallet,
+				state: /NewWallet.State.step3_BackUpWallet,
+				action: NewWallet.Action.backUpWallet,
 				then: BackUpWalletCoordinatorView.init(store:)
 			)
 			
