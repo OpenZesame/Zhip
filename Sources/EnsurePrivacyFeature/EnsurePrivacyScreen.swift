@@ -10,52 +10,64 @@ import Screen
 import Styleguide
 import SwiftUI
 
-public struct EnsurePrivacyState: Equatable {
-	public init() {}
+public enum EnsurePrivacy {}
+
+public extension EnsurePrivacy {
+	struct State: Equatable {
+		public init() {}
+	}
 }
 
-public enum EnsurePrivacyAction: Equatable {
-	
-	case delegate(DelegateAction)
-	
-	case privacyIsEnsuredButtonTapped
-	case screenMightBeWatchedButtonTapped
+public extension EnsurePrivacy {
+	enum Action: Equatable {
+		
+		case delegate(Delegate)
+		
+		case privacyIsEnsuredButtonTapped
+		case screenMightBeWatchedButtonTapped
+	}
 }
-public extension EnsurePrivacyAction {
-	enum DelegateAction: Equatable {
+public extension EnsurePrivacy.Action {
+	enum Delegate: Equatable {
 		case abort
 		case proceed
 	}
 }
 
-public struct EnsurePrivacyEnvironment {
-	public init() {}
+public extension EnsurePrivacy {
+	struct Environment {
+		public init() {}
+	}
 }
 
-public let ensurePrivacyReducer = Reducer<EnsurePrivacyState, EnsurePrivacyAction, EnsurePrivacyEnvironment> {
-	state, action, environment in
-	switch action {
-	case .delegate(_):
-		return .none
-	case .privacyIsEnsuredButtonTapped:
-		return Effect(value: .delegate(.proceed))
-	case .screenMightBeWatchedButtonTapped:
-		return Effect(value: .delegate(.abort))
+public extension EnsurePrivacy {
+	static let reducer = Reducer<State, Action, Environment> {
+		state, action, environment in
+		switch action {
+		case .delegate(_):
+			return .none
+		case .privacyIsEnsuredButtonTapped:
+			return Effect(value: .delegate(.proceed))
+		case .screenMightBeWatchedButtonTapped:
+			return Effect(value: .delegate(.abort))
+		}
 	}
 }
 
 // MARK: - EnsurePrivacyScreen
 // MARK: -
-public struct EnsurePrivacyScreen: View {
-	let store: Store<EnsurePrivacyState, EnsurePrivacyAction>
-	public init(store: Store<EnsurePrivacyState, EnsurePrivacyAction>) {
-		self.store = store
+public extension EnsurePrivacy {
+	struct Screen: View {
+		let store: Store<State, Action>
+		public init(store: Store<State, Action>) {
+			self.store = store
+		}
 	}
 }
 
-private extension EnsurePrivacyScreen {
+private extension EnsurePrivacy.Screen {
 	struct ViewState: Equatable {
-		init(state: EnsurePrivacyState) {
+		init(state: EnsurePrivacy.State) {
 			
 		}
 	}
@@ -64,7 +76,7 @@ private extension EnsurePrivacyScreen {
 
 // MARK: - View
 // MARK: -
-public extension EnsurePrivacyScreen {
+public extension EnsurePrivacy.Screen {
 	var body: some View {
 		WithViewStore(
 			store.scope(

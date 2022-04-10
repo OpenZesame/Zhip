@@ -19,11 +19,11 @@ public extension RestoreWallet {
 	
 	enum Step: Equatable {
 		
-		case step1_EnsurePrivacy(EnsurePrivacyState)
+		case step1_EnsurePrivacy(EnsurePrivacy.State)
 		case step2_RestoreWallet(RestoreWalletMethodChoiceState)
 		
 		public init() {
-			self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
+			self = .step1_EnsurePrivacy(.init())
 		}
 	}
 }
@@ -37,7 +37,7 @@ public extension RestoreWallet {
 	enum Action: Equatable {
 		case delegate(Delegate)
 		
-		case ensurePrivacy(EnsurePrivacyAction)
+		case ensurePrivacy(EnsurePrivacy.Action)
 		case restoreUsingMethod(RestoreWalletMethodChoiceAction)
 		
 	}
@@ -73,11 +73,11 @@ public extension RestoreWallet {
 public extension RestoreWallet {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		ensurePrivacyReducer.pullback(
+		EnsurePrivacy.reducer.pullback(
 			state: /State.step1_EnsurePrivacy,
 			action: /RestoreWallet.Action.ensurePrivacy,
 			environment: { _ in
-				EnsurePrivacyEnvironment()
+				EnsurePrivacy.Environment()
 			}
 		),
 		
@@ -131,7 +131,7 @@ public extension RestoreWallet.CoordinatorScreen {
 			CaseLet(
 				state: /RestoreWallet.State.step1_EnsurePrivacy,
 				action: RestoreWallet.Action.ensurePrivacy,
-				then: EnsurePrivacyScreen.init(store:)
+				then: EnsurePrivacy.Screen.init(store:)
 			)
 			
 			CaseLet(

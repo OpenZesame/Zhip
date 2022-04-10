@@ -21,12 +21,12 @@ public extension NewWallet {
 	
 	enum Step: Equatable {
 		
-		case step1_EnsurePrivacy(EnsurePrivacyState)
+		case step1_EnsurePrivacy(EnsurePrivacy.State)
 		case step2_GenerateNewWallet(GenerateNewWallet.State)
 		case step3_BackUpWallet(BackUpWallet.State)
 		
 		public init() {
-			self = .step1_EnsurePrivacy(EnsurePrivacyState.init())
+			self = .step1_EnsurePrivacy(.init())
 		}
 	}
 }
@@ -39,7 +39,7 @@ public extension NewWallet {
 	enum Action: Equatable {
 		case delegate(Delegate)
 		
-		case ensurePrivacy(EnsurePrivacyAction)
+		case ensurePrivacy(EnsurePrivacy.Action)
 		case generateNewWallet(GenerateNewWallet.Action)
 		case backUpWallet(BackUpWallet.Action)
 	}
@@ -79,10 +79,10 @@ public extension NewWallet {
 public extension NewWallet {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		ensurePrivacyReducer.pullback(
+		EnsurePrivacy.reducer.pullback(
 			state: /State.step1_EnsurePrivacy,
 			action: /NewWallet.Action.ensurePrivacy,
-			environment: { _ in EnsurePrivacyEnvironment() }
+			environment: { _ in EnsurePrivacy.Environment() }
 		),
 		
 		GenerateNewWallet.reducer.pullback(
@@ -143,7 +143,7 @@ public extension NewWallet.CoordinatorScreen {
 			CaseLet(
 				state: /NewWallet.State.step1_EnsurePrivacy,
 				action: NewWallet.Action.ensurePrivacy,
-				then: EnsurePrivacyScreen.init(store:)
+				then: EnsurePrivacy.Screen.init(store:)
 			)
 			
 			CaseLet(
