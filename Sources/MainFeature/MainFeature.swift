@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 import KeychainClient
-import PINCode
+import PIN
 import SwiftUI
 import TabsFeature
 import UnlockAppFeature
@@ -22,14 +22,14 @@ public extension Main {
 		
 		
 		public var wallet: Wallet
-		public var pin: Pincode?
+		public var pin: PIN?
 		
 		public var unlockApp: UnlockApp.State?
 		public var tabs: Tabs.State
 		
 		public init(
 			wallet: Wallet,
-			maybePIN pin: Pincode? = nil,
+			maybePIN pin: PIN? = nil,
 			promptUserToUnlockAppIfNeeded: Bool = true
 		) {
 			self.wallet = wallet

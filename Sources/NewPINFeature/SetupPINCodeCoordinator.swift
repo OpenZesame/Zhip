@@ -8,7 +8,7 @@
 //import SwiftUI
 //import Stinsen
 //import ZhipEngine
-//import PINCode
+//import PIN
 //
 //enum SetupPINCoordinatorNavigationStep {
 //    case finishedPINSetup
@@ -94,7 +94,7 @@
 //    }
 //    
 //    @ViewBuilder
-//    func makeConfirmPIN(expectedPIN: Pincode) -> some View {
+//    func makeConfirmPIN(expectedPIN: PIN) -> some View {
 //        
 //        let viewModel = ConfirmNewPINCodeViewModel(
 //            navigator: confirmNewPinNavigator,

@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 import Foundation
-import PINCode
+import PIN
 import Screen
 import Styleguide
 import SwiftUI
@@ -27,9 +27,9 @@ public extension UnlockApp {
 		
 		public var role: Role
 		/* @BindableState */ public var pinFieldText = ""
-		public let expectedPIN: Pincode
+		public let expectedPIN: PIN
 		public var showError: Bool = false
-		public init(role: Role, expectedPIN: Pincode) {
+		public init(role: Role, expectedPIN: PIN) {
 			self.role = role
 			self.expectedPIN = expectedPIN
 		}
@@ -69,7 +69,7 @@ public extension UnlockApp {
 		case let .pinFieldTextChanged(newPinText):
 			state.pinFieldText = newPinText
 			guard
-				let pin = try? Pincode(string: state.pinFieldText)
+				let pin = try? PIN(string: state.pinFieldText)
 			else {
 				return .none
 			}

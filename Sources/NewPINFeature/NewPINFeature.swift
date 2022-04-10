@@ -9,125 +9,133 @@ import ComposableArchitecture
 import ConfirmNewPINFeature
 import InputNewPINFeature
 import KeychainClient
-import PINCode
+import PIN
 import Screen
 import Styleguide
 import SwiftUI
 import Wallet
 
-public struct NewPINState: Equatable {
-	public var wallet: Wallet
-	public var step: Step
-	public var inputNewPIN: InputNewPINState?
-	public var confirmNewPIN: ConfirmNewPINState?
-	public init(
-		wallet: Wallet,
-		step: Step = .step0_InputNewPIN,
-		inputNewPIN: InputNewPINState? = .init(),
-		confirmNewPIN: ConfirmNewPINState? = nil
-	) {
-		self.wallet = wallet
-		self.step = step
-		self.inputNewPIN = inputNewPIN
-		self.confirmNewPIN = confirmNewPIN
+public enum NewPIN {}
+
+public extension NewPIN {
+	struct State: Equatable {
+		public var wallet: Wallet
+		public var step: Step
+		public var inputNewPIN: InputNewPIN.State?
+		public var confirmNewPIN: ConfirmNewPIN.State?
+		public init(
+			wallet: Wallet,
+			step: Step = .step0_InputNewPIN,
+			inputNewPIN: InputNewPIN.State? = .init(),
+			confirmNewPIN: ConfirmNewPIN.State? = nil
+		) {
+			self.wallet = wallet
+			self.step = step
+			self.inputNewPIN = inputNewPIN
+			self.confirmNewPIN = confirmNewPIN
+		}
 	}
 }
-public extension NewPINState {
+public extension NewPIN {
 	enum Step: Equatable {
 		case step0_InputNewPIN
 		case step1_ConfirmNewPIN
 	}
 }
 
-public enum NewPINAction: Equatable {
-	case delegate(DelegateAction)
-	case skip
-	case savePINResult(Result<Pincode, KeychainClient.Error>)
-	case inputNewPIN(InputNewPINAction)
-	case confirmNewPIN(ConfirmNewPINAction)
+public extension NewPIN {
+	enum Action: Equatable {
+		case delegate(Delegate)
+		case skip
+		case savePINResult(Result<PIN, KeychainClient.Error>)
+		case inputNewPIN(InputNewPIN.Action)
+		case confirmNewPIN(ConfirmNewPIN.Action)
+	}
 }
-public extension NewPINAction {
-	enum DelegateAction: Equatable {
-		case finishedSettingUpPIN(wallet: Wallet, pin: Pincode)
+public extension NewPIN.Action {
+	enum Delegate: Equatable {
+		case finishedSettingUpPIN(wallet: Wallet, pin: PIN)
 		case skippedPIN(wallet: Wallet)
 	}
 }
 
-public struct NewPINEnvironment {
-	public let keychainClient: KeychainClient
-	public let mainQueue: AnySchedulerOf<DispatchQueue>
-	public init(
-		keychainClient: KeychainClient,
-		mainQueue: AnySchedulerOf<DispatchQueue>
-	) {
-		self.keychainClient = keychainClient
-		self.mainQueue = mainQueue
+public extension NewPIN {
+	struct Environment {
+		public let keychainClient: KeychainClient
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
+		public init(
+			keychainClient: KeychainClient,
+			mainQueue: AnySchedulerOf<DispatchQueue>
+		) {
+			self.keychainClient = keychainClient
+			self.mainQueue = mainQueue
+		}
 	}
 }
 
-public let newPINReducer = Reducer<
-	NewPINState,
-	NewPINAction,
-	NewPINEnvironment
->.combine(
-	
-	inputNewPINReducer.optional().pullback(
-		state: \.inputNewPIN,
-		action: /NewPINAction.inputNewPIN,
-		environment: { _ in
-			InputNewPINEnvironment()
+public extension NewPIN {
+	static let reducer = Reducer<State, Action, Environment>.combine(
+		
+		InputNewPIN.reducer.optional().pullback(
+			state: \.inputNewPIN,
+			action: /NewPIN.Action.inputNewPIN,
+			environment: { _ in
+				InputNewPIN.Environment()
+			}
+		),
+		
+		ConfirmNewPIN.reducer.optional().pullback(
+			state: \.confirmNewPIN,
+			action: /NewPIN.Action.confirmNewPIN,
+			environment: {
+				ConfirmNewPIN.Environment(
+					mainQueue: $0.mainQueue
+				)
+			}
+		),
+		
+		Reducer { state, action, environment in
+			switch action {
+			case let .inputNewPIN(.delegate(.finishedSettingPIN(pin))):
+				state.confirmNewPIN = .init(expectedPIN: pin)
+				state.step = .step1_ConfirmNewPIN
+				return .none
+			case .inputNewPIN(.delegate(.skip)):
+				return Effect(value: .skip)
+			case .inputNewPIN(_):
+				return .none
+			case let .confirmNewPIN(.delegate(.finishedConfirmingPIN(pin))):
+				return environment
+					.keychainClient
+					.savePIN(pin)
+					.catchToEffect(NewPIN.Action.savePINResult)
+			case .confirmNewPIN(_):
+				return .none
+			case let .savePINResult(.success(pin)):
+				return Effect(value: .delegate(.finishedSettingUpPIN(wallet: state.wallet, pin: pin)))
+			case let .savePINResult(.failure(error)):
+				fatalError("What to do? show error? \(error)")
+			case .skip:
+				return Effect(value: .delegate(.skippedPIN(wallet: state.wallet)))
+			case .delegate(_):
+				return .none
+			}
 		}
-	),
-	
-	confirmNewPINReducer.optional().pullback(
-		state: \.confirmNewPIN,
-		action: /NewPINAction.confirmNewPIN,
-		environment: {
-			ConfirmNewPINEnvironment(
-				mainQueue: $0.mainQueue
-			)
-		}
-	),
-	
-	Reducer { state, action, environment in
-		switch action {
-		case let .inputNewPIN(.delegate(.finishedSettingPIN(pin))):
-			state.confirmNewPIN = .init(expectedPIN: pin)
-			state.step = .step1_ConfirmNewPIN
-			return .none
-		case .inputNewPIN(.delegate(.skip)):
-			return Effect(value: .skip)
-		case .inputNewPIN(_):
-			return .none
-		case let .confirmNewPIN(.delegate(.finishedConfirmingPIN(pin))):
-			return environment
-				.keychainClient
-				.savePIN(pin)
-				.catchToEffect(NewPINAction.savePINResult)
-		case .confirmNewPIN(_):
-			return .none
-		case let .savePINResult(.success(pin)):
-			return Effect(value: .delegate(.finishedSettingUpPIN(wallet: state.wallet, pin: pin)))
-		case let .savePINResult(.failure(error)):
-			fatalError("What to do? show error? \(error)")
-		case .skip:
-			return Effect(value: .delegate(.skippedPIN(wallet: state.wallet)))
-		case .delegate(_):
-			return .none
-		}
-	}
-)
+	)
+}
 
-public struct NewPINCoordinatorView: View {
-	let store: Store<NewPINState, NewPINAction>
-	public init(
-		store: Store<NewPINState, NewPINAction>
-	) {
-		self.store = store
+public extension NewPIN {
+	struct CoordinatorScreen: View {
+		let store: Store<State, Action>
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
-public extension NewPINCoordinatorView {
+public extension NewPIN.CoordinatorScreen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			Group {
@@ -136,17 +144,17 @@ public extension NewPINCoordinatorView {
 					IfLetStore(
 						store.scope(
 							state: \.inputNewPIN,
-							action: NewPINAction.inputNewPIN
+							action: NewPIN.Action.inputNewPIN
 						),
-						then: InputNewPINCodeScreen.init(store:)
+						then: InputNewPIN.Screen.init(store:)
 					)
 				case .step1_ConfirmNewPIN:
 					IfLetStore(
 						store.scope(
 							state: \.confirmNewPIN,
-							action: NewPINAction.confirmNewPIN
+							action: NewPIN.Action.confirmNewPIN
 						),
-						then: ConfirmNewPINScreen.init(store:)
+						then: ConfirmNewPIN.Screen.init(store:)
 					)
 				}
 			}

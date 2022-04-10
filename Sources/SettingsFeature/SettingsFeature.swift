@@ -9,7 +9,7 @@ import ComposableArchitecture
 import Foundation
 import IdentifiedCollections
 import KeychainClient
-import PINCode
+import PIN
 import Purger
 import SwiftUI
 import Screen
@@ -52,7 +52,7 @@ public extension Settings {
 		
 		case onAppear
 		case loadPIN
-		case pinResponse(Result<Pincode?, KeychainClient.Error>)
+		case pinResponse(Result<PIN?, KeychainClient.Error>)
 		
 		case termsOfServiceDismissed
 		case termsOfService(TermsOfService.Action)

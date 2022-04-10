@@ -9,7 +9,7 @@ import ComposableArchitecture
 import KeychainClient
 import NewPINFeature
 import PasswordValidator
-import PINCode
+import PIN
 import SetupWalletFeature
 import SwiftUI
 import TermsOfServiceFeature
@@ -50,14 +50,14 @@ public extension Onboarding {
 		public var welcome: WelcomeState?
 		public var termsOfService: TermsOfService.State?
 		public var setupWallet: SetupWallet.State?
-		public var newPIN: NewPINState?
+		public var newPIN: NewPIN.State?
 		
 		public init(
 			step: Step = .step0_Welcome,
 			welcome: WelcomeState? = nil,
 			termsOfService: TermsOfService.State? = nil,
 			setupWallet: SetupWallet.State? = nil,
-			newPIN: NewPINState? = nil
+			newPIN: NewPIN.State? = nil
 		) {
 			self.step = step
 			self.welcome = .init()
@@ -77,13 +77,13 @@ public extension Onboarding {
 		case welcome(WelcomeAction)
 		case termsOfService(TermsOfService.Action)
 		case setupWallet(SetupWallet.Action)
-		case newPIN(NewPINAction)
+		case newPIN(NewPIN.Action)
 	}
 }
 
 public extension Onboarding.Action {
 	enum Delegate: Equatable {
-		case finished(wallet: Wallet, pin: Pincode?)
+		case finished(wallet: Wallet, pin: PIN?)
 	}
 }
 
@@ -161,13 +161,13 @@ public extension Onboarding {
 				}
 			),
 		
-		newPINReducer
+		NewPIN.reducer
 			.optional()
 			.pullback(
 				state: \.newPIN,
 				action: /Action.newPIN,
 				environment: {
-					NewPINEnvironment(
+					NewPIN.Environment(
 						keychainClient: $0.keychainClient,
 						mainQueue: $0.mainQueue
 					)
@@ -271,7 +271,7 @@ public extension Onboarding.CoordinatorScreen {
 								state: \.newPIN,
 								action: Onboarding.Action.newPIN
 							),
-							then: NewPINCoordinatorView.init(store:)
+							then: NewPIN.CoordinatorScreen.init(store:)
 						)
 					}
 				}

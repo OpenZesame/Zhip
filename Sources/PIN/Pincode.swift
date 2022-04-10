@@ -7,19 +7,19 @@
 
 import Foundation
 
-public struct Pincode: Hashable, Codable, CustomDebugStringConvertible {
+public struct PIN: Hashable, Codable, CustomDebugStringConvertible {
     public let digits: [Digit]
 
     public init(digits: [Digit]) throws {
-        if digits.count < Pincode.minLength { throw Error.pincodeTooShort }
-        if digits.count > Pincode.maxLength { throw Error.pincodeTooLong }
+        if digits.count < PIN.minLength { throw Error.pincodeTooShort }
+        if digits.count > PIN.maxLength { throw Error.pincodeTooLong }
         self.digits = digits
     }
 }
 
-// MARK: - Pincode init
+// MARK: - PIN init
 // MARK: -
-public extension Pincode {
+public extension PIN {
 	init(string: String) throws {
 		try self.init(
 			digits: string.compactMap { Digit(string: String($0)) }
@@ -27,7 +27,7 @@ public extension Pincode {
 	}
 }
 
-public extension Pincode {
+public extension PIN {
     var debugDescription: String {
         digits.map {
             String(describing: $0)
@@ -36,13 +36,13 @@ public extension Pincode {
 }
 
 // MARK: Minimum length
-public extension Pincode {
+public extension PIN {
     static let minLength: Int = 4
     static let maxLength: Int = 8
 }
 
 // MARK: - Error
-public extension Pincode {
+public extension PIN {
     enum Error: Swift.Error {
         case pincodeTooLong
         case pincodeTooShort

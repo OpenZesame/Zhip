@@ -69,9 +69,9 @@ let CodeScanner = externalDependency(
 // MARK: - =====================
 func makePackage() -> Package {
 	
-	// MARK: - PINCode (Tested)
-	let PINCode = declareTarget(
-		name: "PINCode",
+	// MARK: - PIN (Tested)
+	let PIN = declareTarget(
+		name: "PIN",
 		test: true,
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
@@ -200,7 +200,7 @@ func makePackage() -> Package {
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			Common,
 			WrappedKeychain,
-			PINCode,
+			PIN,
 			Wallet,
 			// ^^^ Sort alphabetically ^^^
 		]
@@ -669,7 +669,7 @@ func makePackage() -> Package {
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			HoverPromptTextField,
-			PINCode,
+			PIN,
 			Styleguide,
 			// ^^^ Sort alphabetically ^^^
 		]
@@ -684,7 +684,7 @@ func makePackage() -> Package {
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			KeychainClient,
-			PINCode,
+			PIN,
 			PINField,
 			Screen,
 			Styleguide,
@@ -701,7 +701,7 @@ func makePackage() -> Package {
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			KeychainClient,
-			PINCode,
+			PIN,
 			TabsFeature,
 			UnlockAppFeature,
 			Wallet,

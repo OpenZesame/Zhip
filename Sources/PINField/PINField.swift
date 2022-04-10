@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Styleguide
-@_exported import PINCode
+@_exported import PIN
 import HoverPromptTextField
 
 // MARK: - PINField
@@ -17,7 +17,7 @@ public struct PINField: View {
     @StateObject var viewModel: PINFieldViewModel = .init()
     
     @Binding private var text: String
-    @Binding private var pinCode: Pincode?
+    @Binding private var pin: PIN?
 
     private let errorMessage: String?
     
@@ -28,18 +28,18 @@ public struct PINField: View {
     
     public init(
         text: Binding<String>,
-        pinCode: Binding<Pincode?>,
+        pin: Binding<PIN?>,
         errorMessage: String? = nil,
         digitCount: Int = 4,
         isSecure: Bool = true,
         validColor: Color = .turquoise,
         invalidColor: Color = .bloodRed
     ) {
-        precondition(digitCount <= Pincode.maxLength)
-        precondition(digitCount >= Pincode.minLength)
+        precondition(digitCount <= PIN.maxLength)
+        precondition(digitCount >= PIN.minLength)
 
         self._text = text
-        self._pinCode = pinCode
+        self._pin = pin
 
         self.digitCount = digitCount
         self.isSecure = isSecure
@@ -132,9 +132,9 @@ private extension PINField {
         .accentColor(Color.clear)
         // Criteria for when to set PIN code (when `text` of TextField changes)
         .onChange(of: text, perform: {
-            let newPin = Pincode(text: String($0.prefix(digitCount)))
-            if pinCode != newPin {
-                pinCode = newPin
+            let newPin = PIN(text: String($0.prefix(digitCount)))
+            if pin != newPin {
+                pin = newPin
             }
         })
         // Criteria for when to trigger shake (when `self.errorMessage` is present)
@@ -155,9 +155,9 @@ internal struct DigitAtIndex: Hashable {
 }
 
 
-// MARK: - Pincode init
+// MARK: - PIN init
 // MARK: -
-extension Pincode {
+extension PIN {
     init?(text: String) {
         try? self.init(
             digits: text.compactMap { Digit(string: String($0)) }

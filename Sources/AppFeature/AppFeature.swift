@@ -11,7 +11,7 @@ import KeychainClient
 import MainFeature
 import OnboardingFeature
 import PasswordValidator
-import PINCode
+import PIN
 import SplashFeature
 import Styleguide
 import SwiftUI
@@ -60,10 +60,10 @@ public extension App {
 		case onboarding(Onboarding.Action)
 		
 		case loadPIN(Wallet)
-		case pinLoadingResult(Wallet, Result<Pincode?, KeychainClient.Error>)
+		case pinLoadingResult(Wallet, Result<PIN?, KeychainClient.Error>)
 		case failedToLoadPINStartAppAsIfNoPINSet(wallet: Wallet)
 		
-		case startApp(wallet: Wallet, pin: Pincode?, promptUserToUnlockAppIfNeeded: Bool = true)
+		case startApp(wallet: Wallet, pin: PIN?, promptUserToUnlockAppIfNeeded: Bool = true)
 		
 		case main(Main.Action)
 		

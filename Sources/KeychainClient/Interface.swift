@@ -10,7 +10,7 @@ import Common
 import ComposableArchitecture
 import Wallet
 import struct Zesame.ZilAmount
-import PINCode
+import PIN
 
 public struct KeychainClient {
 	public var dataForKey: (String) -> Effect<Data?, Self.Error>
@@ -116,21 +116,21 @@ public extension KeychainClient {
 // MARK: - PIN
 // MARK: -
 public extension KeychainClient {
-	func savePIN(_ pin: Pincode) -> Effect<Pincode, Self.Error> {
-		save(model: pin, forKey: pinCodeKey)
+	func savePIN(_ pin: PIN) -> Effect<PIN, Self.Error> {
+		save(model: pin, forKey: pinKey)
 	}
 	
-	func loadPIN() -> Effect<Pincode?, Self.Error> {
-		load(type: Pincode.self, forKey: pinCodeKey)
+	func loadPIN() -> Effect<PIN?, Self.Error> {
+		load(type: PIN.self, forKey: pinKey)
 	}
 }
 
 private let walletKey = "walletKey"
 private let balanceKey = "balanceKey"
-private let pinCodeKey = "pinCodeKey"
+private let pinKey = "pinKey"
 
 private let allKeys = [
 	walletKey,
 	balanceKey,
-	pinCodeKey
+	pinKey
 ]

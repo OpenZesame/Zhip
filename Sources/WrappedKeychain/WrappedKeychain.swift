@@ -1,6 +1,6 @@
 import KeychainAccess
 import Foundation
-import PINCode
+import PIN
 import Wallet
 
 public final class WrappedKeychain {
