@@ -22,7 +22,7 @@ public extension NewWallet {
 	enum Step: Equatable {
 		
 		case step1_EnsurePrivacy(EnsurePrivacyState)
-		case step2_GenerateNewWallet(GenerateNewWalletState)
+		case step2_GenerateNewWallet(GenerateNewWallet.State)
 		case step3_BackUpWallet(BackUpWallet.State)
 		
 		public init() {
@@ -40,7 +40,7 @@ public extension NewWallet {
 		case delegate(Delegate)
 		
 		case ensurePrivacy(EnsurePrivacyAction)
-		case generateNewWallet(GenerateNewWalletAction)
+		case generateNewWallet(GenerateNewWallet.Action)
 		case backUpWallet(BackUpWallet.Action)
 	}
 }
@@ -85,11 +85,11 @@ public extension NewWallet {
 			environment: { _ in EnsurePrivacyEnvironment() }
 		),
 		
-		generateNewWalletReducer.pullback(
+		GenerateNewWallet.reducer.pullback(
 			state: /State.step2_GenerateNewWallet,
 			action: /NewWallet.Action.generateNewWallet,
 			environment: {
-				GenerateNewWalletEnvironment(
+				GenerateNewWallet.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
@@ -113,7 +113,7 @@ public extension NewWallet {
 			case .ensurePrivacy(.delegate(.proceed)):
 				state = .step2_GenerateNewWallet(.init())
 				return .none
-			case .generateNewWallet(.delegate(.finishedGeneratingNewWallet(let wallet))):
+			case .generateNewWallet(.delegate(.finished(let wallet))):
 				state = .step3_BackUpWallet(.init(wallet: wallet))
 				return .none
 			case .backUpWallet(.delegate(.finished(let wallet))):
@@ -149,7 +149,7 @@ public extension NewWallet.CoordinatorScreen {
 			CaseLet(
 				state: /NewWallet.State.step2_GenerateNewWallet,
 				action: NewWallet.Action.generateNewWallet,
-				then: GenerateNewWalletScreen.init(store:)
+				then: GenerateNewWallet.Screen.init(store:)
 			)
 			
 			CaseLet(
