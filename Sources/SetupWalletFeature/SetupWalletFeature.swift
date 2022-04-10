@@ -48,7 +48,7 @@ public extension SetupWallet {
 		public var newWalletOrRestore: NewWalletOrRestore.State
 		
 		public var newWallet: NewWallet.State
-		public var restoreWallet: RestoreWalletState
+		public var restoreWallet: RestoreWallet.State
 		
 		
 		public var alert: AlertState<SetupWallet.Action>?
@@ -58,7 +58,7 @@ public extension SetupWallet {
 			step: Step = .step1_NewWalletOrRestore,
 			newWalletOrRestore: NewWalletOrRestore.State = .init(),
 			newWallet: NewWallet.State = .init(),
-			restoreWallet: RestoreWalletState = .init(),
+			restoreWallet: RestoreWallet.State = .init(),
 			alert: AlertState<SetupWallet.Action>? = nil
 		) {
 			self.step = step
@@ -79,7 +79,7 @@ public extension SetupWallet {
 		case newWalletOrRestore(NewWalletOrRestore.Action)
 		
 		case newWallet(NewWallet.Action)
-		case restoreWallet(RestoreWalletAction)
+		case restoreWallet(RestoreWallet.Action)
 		
 		case abortDueToMightBeWatched
 		case saveNewWalletInKeychain(Wallet)
@@ -154,11 +154,11 @@ public extension SetupWallet {
 			}
 		),
 		
-		restoreWalletReducer.pullback(
+		RestoreWallet.reducer.pullback(
 			state: \.restoreWallet,
 			action: /SetupWallet.Action.restoreWallet,
 			environment: {
-				RestoreWalletEnvironment(
+				RestoreWallet.Environment(
 					backgroundQueue: $0.backgroundQueue,
 					mainQueue: $0.mainQueue,
 					passwordValidator: $0.passwordValidator,
@@ -245,7 +245,7 @@ public extension SetupWallet.CoordinatorScreen {
 						)
 					)
 				case .step2b_RestoreWallet:
-					RestoreWalletCoordinatorView(
+					RestoreWallet.CoordinatorScreen(
 						store: store.scope(
 							state: \.restoreWallet,
 							action: SetupWallet.Action.restoreWallet
