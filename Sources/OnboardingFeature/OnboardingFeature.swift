@@ -47,14 +47,14 @@ public extension Onboarding {
 	struct State: Equatable {
 		public var step: Step
 		
-		public var welcome: WelcomeState?
+		public var welcome: Welcome.State?
 		public var termsOfService: TermsOfService.State?
 		public var setupWallet: SetupWallet.State?
 		public var newPIN: NewPIN.State?
 		
 		public init(
 			step: Step = .step0_Welcome,
-			welcome: WelcomeState? = nil,
+			welcome: Welcome.State? = nil,
 			termsOfService: TermsOfService.State? = nil,
 			setupWallet: SetupWallet.State? = nil,
 			newPIN: NewPIN.State? = nil
@@ -74,7 +74,7 @@ public extension Onboarding {
 	enum Action: Equatable {
 		case delegate(Delegate)
 		
-		case welcome(WelcomeAction)
+		case welcome(Welcome.Action)
 		case termsOfService(TermsOfService.Action)
 		case setupWallet(SetupWallet.Action)
 		case newPIN(NewPIN.Action)
@@ -126,13 +126,13 @@ public extension Onboarding {
 public extension Onboarding {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		welcomeReducer
+		Welcome.reducer
 			.optional()
 			.pullback(
 				state: \.welcome,
 				action: /Action.welcome,
 				environment: { _ in
-					WelcomeEnvironment()
+					Welcome.Environment()
 				}
 			),
 		
@@ -247,7 +247,7 @@ public extension Onboarding.CoordinatorScreen {
 								state: \.welcome,
 								action: Onboarding.Action.welcome
 							),
-							then: WelcomeScreen.init(store:)
+							then: Welcome.Screen.init(store:)
 						)
 					case .step1_TermsOfService:
 						IfLetStore(

@@ -10,54 +10,62 @@ import Styleguide
 import SwiftUI
 import Screen
 
-public struct WelcomeState: Equatable {
-	public init() {}
+public enum Welcome {}
+
+public extension Welcome {
+	struct State: Equatable {
+		public init() {}
+	}
 }
 
-public enum WelcomeAction: Equatable {
-	case delegate(DelegateAction)
-	case startButtonTapped
+public extension Welcome {
+	enum Action: Equatable {
+		case delegate(Delegate)
+		case startButtonTapped
+	}
 }
-public extension WelcomeAction {
-	enum DelegateAction: Equatable {
+public extension Welcome.Action {
+	enum Delegate: Equatable {
 		case getStarted
 	}
 }
 
-public struct WelcomeEnvironment {
-	public init() {}
+public extension Welcome {
+	struct Environment {
+		public init() {}
+	}
 }
 
-public let welcomeReducer = Reducer<
-	WelcomeState,
-	WelcomeAction,
-	WelcomeEnvironment
-> { state, action, environment in
-	switch action {
-	case .startButtonTapped:
-		return Effect(value: .delegate(.getStarted))
-	case .delegate(_):
-		return .none
+public extension Welcome {
+	static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+		switch action {
+		case .startButtonTapped:
+			return Effect(value: .delegate(.getStarted))
+		case .delegate(_):
+			return .none
+		}
+		
 	}
-	
 }
 
 // MARK: - WelcomeScreen
 // MARK: -
-public struct WelcomeScreen: View {
-	let store: Store<WelcomeState, WelcomeAction>
-	
-	public init(
-		store: Store<WelcomeState, WelcomeAction>
-	) {
-		self.store = store
+public extension Welcome {
+	struct Screen: View {
+		let store: Store<State, Action>
+		
+		public init(
+			store: Store<State, Action>
+		) {
+			self.store = store
+		}
 	}
 }
 
 
 // MARK: - View
 // MARK: -
-public extension WelcomeScreen {
+public extension Welcome.Screen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
 			Screen {
