@@ -19,17 +19,14 @@ public enum NewPIN {}
 
 public extension NewPIN {
 	struct State: Equatable {
-		public var wallet: Wallet
 		public var step: Step
 		public var inputNewPIN: InputNewPIN.State?
 		public var confirmNewPIN: ConfirmNewPIN.State?
 		public init(
-			wallet: Wallet,
 			step: Step = .step0_InputNewPIN,
 			inputNewPIN: InputNewPIN.State? = .init(),
 			confirmNewPIN: ConfirmNewPIN.State? = nil
 		) {
-			self.wallet = wallet
 			self.step = step
 			self.inputNewPIN = inputNewPIN
 			self.confirmNewPIN = confirmNewPIN
@@ -54,8 +51,8 @@ public extension NewPIN {
 }
 public extension NewPIN.Action {
 	enum Delegate: Equatable {
-		case finishedSettingUpPIN(wallet: Wallet, pin: PIN)
-		case skippedPIN(wallet: Wallet)
+		case finishedSettingUpPIN(pin: PIN)
+		case skippedPIN
 	}
 }
 
@@ -112,11 +109,11 @@ public extension NewPIN {
 			case .confirmNewPIN(_):
 				return .none
 			case let .savePINResult(.success(pin)):
-				return Effect(value: .delegate(.finishedSettingUpPIN(wallet: state.wallet, pin: pin)))
+				return Effect(value: .delegate(.finishedSettingUpPIN(pin: pin)))
 			case let .savePINResult(.failure(error)):
 				fatalError("What to do? show error? \(error)")
 			case .skip:
-				return Effect(value: .delegate(.skippedPIN(wallet: state.wallet)))
+				return Effect(value: .delegate(.skippedPIN))
 			case .delegate(_):
 				return .none
 			}

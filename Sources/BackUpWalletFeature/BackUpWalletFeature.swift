@@ -11,9 +11,16 @@ import Screen
 import SwiftUI
 import Wallet
 
+// MARK: Namespace
+
+/// Back up wallet flow, guides the user through components that ensure her new
+/// wallet gets back up by the user.
 public enum BackUpWallet {}
 
 public extension BackUpWallet {
+	
+	/// Components of the back up wallet flow, a component can either be a
+	/// single screen or a subflow consisting of multiple screens.
 	enum Step: Equatable {
 		case step1_BackUpPrivateKeyAndKeystore
 		case step2a_BackUpPrivateKeyFlow
@@ -22,8 +29,9 @@ public extension BackUpWallet {
 }
 
 public extension BackUpWallet {
+	
+	/// State of the back up wallet flow.
 	struct State: Equatable {
-		
 		public var wallet: Wallet
 		public var step: Step
 		public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystore.State
@@ -41,6 +49,8 @@ public extension BackUpWallet {
 }
 
 public extension BackUpWallet {
+	
+	/// Actions from the back up wallet flow.
 	enum Action: Equatable {
 		case delegate(Delegate)
 	}

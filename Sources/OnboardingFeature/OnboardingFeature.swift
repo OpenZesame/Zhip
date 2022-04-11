@@ -52,6 +52,8 @@ public extension Onboarding {
 		public var setupWallet: SetupWallet.State?
 		public var newPIN: NewPIN.State?
 		
+		public var wallet: Wallet?
+		
 		public init(
 			step: Step = .step0_Welcome,
 			welcome: Welcome.State? = nil,
@@ -71,6 +73,8 @@ public extension Onboarding {
 // MARK: - Action
 // MARK: -
 public extension Onboarding {
+	
+	/// Actions from the onboarding flow.
 	enum Action: Equatable {
 		case delegate(Delegate)
 		
@@ -205,13 +209,21 @@ public extension Onboarding {
 				return .none
 				
 			case let .setupWallet(.delegate(.finished(wallet))):
-				state.newPIN = .init(wallet: wallet)
+				state.wallet = wallet
+				state.newPIN = .init()
 				state.step = .step3_NewPIN
 				return .none
 				
-			case let .newPIN(.delegate(.skippedPIN(wallet))):
+			case .newPIN(.delegate(.skippedPIN)):
+				guard let wallet = state.wallet else {
+					fatalError("Expected wallet")
+				}
 				return Effect(value: .delegate(.finished(wallet: wallet, pin: nil)))
-			case let .newPIN(.delegate(.finishedSettingUpPIN(wallet, pin))):
+			case let .newPIN(.delegate(.finishedSettingUpPIN(pin))):
+				guard let wallet = state.wallet else {
+					fatalError("Expected wallet")
+				}
+
 				return Effect(value: .delegate(.finished(wallet: wallet, pin: pin)))
 				
 			default:

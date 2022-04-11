@@ -11,6 +11,15 @@
 		4872FA2E27B4F8F5008B7BD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* App.swift */; };
 		4896035827E11D3A0096BE21 /* WalletGeneratorUnsafeFast in Frameworks */ = {isa = PBXBuildFile; productRef = 4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */; };
 		48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6D27DDBB83006E7938 /* AppFeature */; };
+		48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */; };
+		48B83CAB280415F500640E52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CAA280415F500640E52 /* ContentView.swift */; };
+		48B83CAD280415F600640E52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAC280415F600640E52 /* Assets.xcassets */; };
+		48B83CB0280415F600640E52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAF280415F600640E52 /* Preview Assets.xcassets */; };
+		48B83CB72804173900640E52 /* ConfirmNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB62804173900640E52 /* ConfirmNewPINFeature */; };
+		48B83CB92804173900640E52 /* NewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB82804173900640E52 /* NewPINFeature */; };
+		48B83CBB2804174000640E52 /* InputNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBA2804174000640E52 /* InputNewPINFeature */; };
+		48B83CBD2804174600640E52 /* PIN in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBC2804174600640E52 /* PIN */; };
+		48B83CBF2804174C00640E52 /* PINField in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBE2804174C00640E52 /* PINField */; };
 		48FCC6CC27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6CD27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6D027E8697200B53220 /* freesound_mattix_radar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */; };
@@ -59,6 +68,12 @@
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
+		48B83CA6280415F500640E52 /* NewPINPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewPINPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINPreviewApp.swift; sourceTree = "<group>"; };
+		48B83CAA280415F500640E52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		48B83CAC280415F600640E52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48B83CAF280415F600640E52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		48B83CB5280416E100640E52 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		48FCC6B527E8697200B53220 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48FCC6B627E8697200B53220 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
 		48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = freesound_mattix_radar.wav; sourceTree = "<group>"; };
@@ -99,6 +114,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48B83CA3280415F500640E52 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B83CB92804173900640E52 /* NewPINFeature in Frameworks */,
+				48B83CBB2804174000640E52 /* InputNewPINFeature in Frameworks */,
+				48B83CBD2804174600640E52 /* PIN in Frameworks */,
+				48B83CB72804173900640E52 /* ConfirmNewPINFeature in Frameworks */,
+				48B83CBF2804174C00640E52 /* PINField in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -120,6 +147,7 @@
 		4872FA1727B4F8F3008B7BD0 = {
 			isa = PBXGroup;
 			children = (
+				48B83C7B280414F800640E52 /* Previews */,
 				48A79E6B27DDBB23006E7938 /* Packages */,
 				48A80AC927B675B6002271BB /* Frameworks */,
 				4872FA4D27B5573F008B7BD0 /* iOS */,
@@ -143,6 +171,7 @@
 			children = (
 				4872FA2427B4F8F5008B7BD0 /* Zhip.app */,
 				4872FA2A27B4F8F5008B7BD0 /* Zhip.app */,
+				48B83CA6280415F500640E52 /* NewPINPreview.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */,
+				48B83CB5280416E100640E52 /* Zhip_SwiftUI */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -176,6 +206,33 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		48B83C7B280414F800640E52 /* Previews */ = {
+			isa = PBXGroup;
+			children = (
+				48B83CA7280415F500640E52 /* NewPINPreview */,
+			);
+			path = Previews;
+			sourceTree = "<group>";
+		};
+		48B83CA7280415F500640E52 /* NewPINPreview */ = {
+			isa = PBXGroup;
+			children = (
+				48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */,
+				48B83CAA280415F500640E52 /* ContentView.swift */,
+				48B83CAC280415F600640E52 /* Assets.xcassets */,
+				48B83CAE280415F600640E52 /* Preview Content */,
+			);
+			path = NewPINPreview;
+			sourceTree = "<group>";
+		};
+		48B83CAE280415F600640E52 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				48B83CAF280415F600640E52 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		48FCC6B427E8697200B53220 /* Resources */ = {
@@ -265,6 +322,30 @@
 			productReference = 4872FA2A27B4F8F5008B7BD0 /* Zhip.app */;
 			productType = "com.apple.product-type.application";
 		};
+		48B83CA5280415F500640E52 /* NewPINPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48B83CB1280415F600640E52 /* Build configuration list for PBXNativeTarget "NewPINPreview" */;
+			buildPhases = (
+				48B83CA2280415F500640E52 /* Sources */,
+				48B83CA3280415F500640E52 /* Frameworks */,
+				48B83CA4280415F500640E52 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NewPINPreview;
+			packageProductDependencies = (
+				48B83CB62804173900640E52 /* ConfirmNewPINFeature */,
+				48B83CB82804173900640E52 /* NewPINFeature */,
+				48B83CBA2804174000640E52 /* InputNewPINFeature */,
+				48B83CBC2804174600640E52 /* PIN */,
+				48B83CBE2804174C00640E52 /* PINField */,
+			);
+			productName = NewPINPreview;
+			productReference = 48B83CA6280415F500640E52 /* NewPINPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -272,7 +353,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					4872FA2327B4F8F5008B7BD0 = {
@@ -280,6 +361,9 @@
 					};
 					4872FA2927B4F8F5008B7BD0 = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					48B83CA5280415F500640E52 = {
+						CreatedOnToolsVersion = 13.3;
 					};
 				};
 			};
@@ -298,6 +382,7 @@
 			targets = (
 				4872FA2327B4F8F5008B7BD0 /* Zhip (iOS) */,
 				4872FA2927B4F8F5008B7BD0 /* Zhip (macOS) */,
+				48B83CA5280415F500640E52 /* NewPINPreview */,
 			);
 		};
 /* End PBXProject section */
@@ -357,6 +442,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48B83CA4280415F500640E52 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B83CB0280415F600640E52 /* Preview Assets.xcassets in Resources */,
+				48B83CAD280415F600640E52 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -373,6 +467,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4872FA2E27B4F8F5008B7BD0 /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B83CA2280415F500640E52 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B83CAB280415F500640E52 /* ContentView.swift in Sources */,
+				48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +708,69 @@
 			};
 			name = Release;
 		};
+		48B83CB2280415F600640E52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Previews/NewPINPreview/Preview Content\"";
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.NewPINPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		48B83CB3280415F600640E52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Previews/NewPINPreview/Preview Content\"";
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.NewPINPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -635,6 +801,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		48B83CB1280415F600640E52 /* Build configuration list for PBXNativeTarget "NewPINPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48B83CB2280415F600640E52 /* Debug */,
+				48B83CB3280415F600640E52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -645,6 +820,26 @@
 		48A79E6D27DDBB83006E7938 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
+		};
+		48B83CB62804173900640E52 /* ConfirmNewPINFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConfirmNewPINFeature;
+		};
+		48B83CB82804173900640E52 /* NewPINFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NewPINFeature;
+		};
+		48B83CBA2804174000640E52 /* InputNewPINFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InputNewPINFeature;
+		};
+		48B83CBC2804174600640E52 /* PIN */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PIN;
+		};
+		48B83CBE2804174C00640E52 /* PINField */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PINField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

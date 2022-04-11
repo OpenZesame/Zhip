@@ -73,6 +73,9 @@ func makePackage() -> Package {
 	let PIN = declareTarget(
 		name: "PIN",
 		test: true,
+		externalDependencies: [
+			ComposableArchitecture,
+		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			

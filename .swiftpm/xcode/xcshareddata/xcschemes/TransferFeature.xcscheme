@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ConfirmNewPINFeature"
-               BuildableName = "ConfirmNewPINFeature"
-               BlueprintName = "ConfirmNewPINFeature"
+               BlueprintIdentifier = "TransferFeature"
+               BuildableName = "TransferFeature"
+               BlueprintName = "TransferFeature"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ConfirmNewPINFeature"
-            BuildableName = "ConfirmNewPINFeature"
-            BlueprintName = "ConfirmNewPINFeature"
+            BlueprintIdentifier = "TransferFeature"
+            BuildableName = "TransferFeature"
+            BlueprintName = "TransferFeature"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
