@@ -14,7 +14,6 @@
 		48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */; };
 		48B83CAB280415F500640E52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CAA280415F500640E52 /* ContentView.swift */; };
 		48B83CAD280415F600640E52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAC280415F600640E52 /* Assets.xcassets */; };
-		48B83CB0280415F600640E52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAF280415F600640E52 /* Preview Assets.xcassets */; };
 		48B83CB72804173900640E52 /* ConfirmNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB62804173900640E52 /* ConfirmNewPINFeature */; };
 		48B83CB92804173900640E52 /* NewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB82804173900640E52 /* NewPINFeature */; };
 		48B83CBB2804174000640E52 /* InputNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBA2804174000640E52 /* InputNewPINFeature */; };
@@ -72,7 +71,6 @@
 		48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINPreviewApp.swift; sourceTree = "<group>"; };
 		48B83CAA280415F500640E52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		48B83CAC280415F600640E52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		48B83CAF280415F600640E52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		48B83CB5280416E100640E52 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		48FCC6B527E8697200B53220 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48FCC6B627E8697200B53220 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
@@ -211,28 +209,19 @@
 		48B83C7B280414F800640E52 /* Previews */ = {
 			isa = PBXGroup;
 			children = (
-				48B83CA7280415F500640E52 /* NewPINPreview */,
+				48B83CA7280415F500640E52 /* NewPIN */,
 			);
 			path = Previews;
 			sourceTree = "<group>";
 		};
-		48B83CA7280415F500640E52 /* NewPINPreview */ = {
+		48B83CA7280415F500640E52 /* NewPIN */ = {
 			isa = PBXGroup;
 			children = (
 				48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */,
 				48B83CAA280415F500640E52 /* ContentView.swift */,
 				48B83CAC280415F600640E52 /* Assets.xcassets */,
-				48B83CAE280415F600640E52 /* Preview Content */,
 			);
-			path = NewPINPreview;
-			sourceTree = "<group>";
-		};
-		48B83CAE280415F600640E52 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				48B83CAF280415F600640E52 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
+			path = NewPIN;
 			sourceTree = "<group>";
 		};
 		48FCC6B427E8697200B53220 /* Resources */ = {
@@ -446,7 +435,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48B83CB0280415F600640E52 /* Preview Assets.xcassets in Resources */,
 				48B83CAD280415F600640E52 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -715,7 +703,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Previews/NewPINPreview/Preview Content\"";
 				DEVELOPMENT_TEAM = S33QJG3B86;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -746,7 +733,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Previews/NewPINPreview/Preview Content\"";
 				DEVELOPMENT_TEAM = S33QJG3B86;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
