@@ -336,6 +336,24 @@ func makePackage() -> Package {
 		]
 	)
 	
+	// MARK: - KeystoreGeneratorFast︕！Unsafe
+	let KeystoreGeneratorFast︕！Unsafe = declareTarget(
+		name: "KeystoreGeneratorFastUnsafe",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeystoreGenerator,
+			NamedKeystore,
+			Password,
+			ZilliqaAPIEndpoint,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
 	
 	// MARK: - KeystoreRestorer
 	let KeystoreRestorer = declareTarget(
@@ -356,6 +374,24 @@ func makePackage() -> Package {
 	// MARK: - KeystoreRestorerLive
 	let KeystoreRestorerLive = declareTarget(
 		name: "KeystoreRestorerLive",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeystoreRestorer,
+			NamedKeystore,
+			Password,
+			ZilliqaAPIEndpoint,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreRestorerFast︕！Unsafe
+	let KeystoreRestorerFast︕！Unsafe = declareTarget(
+		name: "KeystoreRestorerFastUnsafe",
 		externalDependencies: [
 			ComposableArchitecture,
 			Zesame
@@ -1085,7 +1121,9 @@ func makePackage() -> Package {
 			Common,
 			KeychainClient,
 			KeystoreRestorerLive,
+			KeystoreRestorerFast︕！Unsafe, // DEBUG
 			KeystoreGeneratorLive,
+			KeystoreGeneratorFast︕！Unsafe, // DEBUG
 			MainFeature,
 			OnboardingFeature,
 			PasswordValidator,

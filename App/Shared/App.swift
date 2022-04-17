@@ -33,13 +33,10 @@ typealias App = AppFeature.App
 typealias AppProtocol = SwiftUI.App
 
 
-//#if DEBUG
-//import WalletGeneratorUnsafeFast
-//#endif // DEBUG
-//
-//#if DEBUG
-//import WalletImporterUnsafeFast
-//#endif // DEBUG
+#if DEBUG
+import KeystoreGeneratorFastUnsafe
+import KeystoreRestorerFastUnsafe
+#endif // DEBUG
 
 
 private func makeAppStore() -> Store<App.State, App.Action> {
@@ -150,8 +147,8 @@ extension App.Environment {
 		
 		let keychainClient: KeychainClient = .live()
 		
-		let keystoreGenerator: KeystoreGenerator = .live(zilliqaService: zilliqaService)
-		let keystoreRestorer: KeystoreRestorer = .live(zilliqaService: zilliqaService)
+		let keystoreGenerator = Self.keystoreGenerator(zilliqaService: zilliqaService)
+		let keystoreRestorer = Self.keystoreRestorer(zilliqaService: zilliqaService)
 		
 		let keystoreToFileWriter: KeystoreToFileWriter = .live(keychain: keychainClient)
 		let keystorFromFileReader: KeystoreFromFileReader = .live(keychain: keychainClient)
@@ -185,19 +182,20 @@ extension App.Environment {
 		)
 	}
 	
-//	static func walletGenerator() -> WalletGenerator {
-//#if DEBUG
-//		return WalletGenerator.unsafeFast()
-//#else
-//		return WalletGenerator.live()
-//#endif
-//	}
-//
-//	static func walletImporter() -> WalletImporter {
-//#if DEBUG
-//		return WalletImporter.unsafeFast()
-//#else
-//		return WalletImporter.live()
-//#endif
-//	}
+	static func keystoreGenerator(zilliqaService: ZilliqaService) -> KeystoreGenerator {
+		#if DEBUG
+		return KeystoreGenerator.fast︕！Unsafe(zilliqaService: zilliqaService)
+		#else
+		return KeystoreGenerator.live(zilliqaService: zilliqaService)
+		#endif
+	}
+	
+	static func keystoreRestorer(zilliqaService: ZilliqaService) -> KeystoreRestorer {
+		#if DEBUG
+		return KeystoreRestorer.fast︕！Unsafe(zilliqaService: zilliqaService)
+		#else
+		return KeystoreRestorer.live(zilliqaService: zilliqaService)
+		#endif
+	}
+	
 }

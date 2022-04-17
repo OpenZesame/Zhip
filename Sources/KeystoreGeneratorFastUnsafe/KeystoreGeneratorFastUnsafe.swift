@@ -2,9 +2,10 @@
 //  File.swift
 //  
 //
-//  Created by Alexander Cyon on 2022-04-16.
+//  Created by Alexander Cyon on 2022-04-17.
 //
 
+#if DEBUG
 import ComposableArchitecture
 import Foundation
 import NamedKeystore
@@ -21,13 +22,15 @@ import ZilliqaAPIEndpoint
 
 public extension KeystoreGenerator {
 	
-	static func live(zilliqaService: Zesame.ZilliqaService = Zesame.DefaultZilliqaService.default) -> Self {
+	static func fast︕！Unsafe(
+		zilliqaService: Zesame.ZilliqaService = Zesame.DefaultZilliqaService.default
+	) -> Self {
 		Self(generate: { request in
 			Effect.task {
 				try await zilliqaService.createNewKeystore(
 					encryptionPassword: request.password.password,
-					kdf: .default,
-					kdfParams: .default
+					kdf: .unsafeFast,
+					kdfParams: .unsafeFast
 				)
 			}.map {
 				NamedKeystore(keystore: $0, origin: .generatedByThisApp, name: request.name)
@@ -39,3 +42,6 @@ public extension KeystoreGenerator {
 		})
 	}
 }
+#else
+private enum Inhabited {}
+#endif // DEBUG

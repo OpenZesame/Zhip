@@ -2,9 +2,10 @@
 //  File.swift
 //  
 //
-//  Created by Alexander Cyon on 2022-04-16.
+//  Created by Alexander Cyon on 2022-04-17.
 //
 
+#if DEBUG
 import ComposableArchitecture
 import Foundation
 import NamedKeystore
@@ -22,8 +23,9 @@ import ZilliqaAPIEndpoint
 
 public extension KeystoreRestorer {
 	
-	static func live(zilliqaService: Zesame.ZilliqaService = Zesame.DefaultZilliqaService.default) -> Self {
-	
+	static func fast︕！Unsafe(
+		zilliqaService: Zesame.ZilliqaService = Zesame.DefaultZilliqaService.default
+	) -> Self {
 		
 		Self(restore: { request in
 			let password = request.password.password
@@ -34,7 +36,7 @@ public extension KeystoreRestorer {
 				keyRestoration = .keystore(keystoreWithPotentiallyWrongKDF, password: password)
 				origin = .importedKeystore
 			case let .restoreFromPrivateKey(privateKey):
-				keyRestoration = .privateKey(privateKey, encryptBy: password, kdf: .scrypt, kdfParams: .default)
+				keyRestoration = .privateKey(privateKey, encryptBy: password, kdf: .unsafeFast, kdfParams: .unsafeFast)
 				origin = .importedPrivateKey
 			}
 			return Effect.task {
@@ -47,3 +49,6 @@ public extension KeystoreRestorer {
 		})
 	}
 }
+#else
+private enum Inhabited {}
+#endif // DEBUG
