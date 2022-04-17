@@ -181,7 +181,6 @@ public extension SetupWallet {
 				return Effect(value: .abortDueToMightBeWatched)
 				
 			case let .restoreWallet(.delegate(.finishedRestoringWallet(wallet))):
-				// FIXME: assert that keystore of wallet is saved in keychain!
 				return Effect(value: .delegate(.finished(wallet)))
 				
 			case .restoreWallet(.delegate(.abortMightBeWatched)):

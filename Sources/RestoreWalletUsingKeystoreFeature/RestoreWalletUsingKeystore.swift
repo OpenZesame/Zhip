@@ -7,6 +7,7 @@
 
 import Common
 import ComposableArchitecture
+import Password
 import PasswordValidator
 import Screen
 import Styleguide
@@ -55,7 +56,7 @@ public extension RestoreWalletUsingKeystore {
 		case binding(BindingAction<State>)
 		case alertDismissed
 		case restore
-		case restoreResult(Result<Wallet, WalletRestorerError>)
+		case restoreResult(Result<Wallet, WalletRestorer.Error>)
 	}
 }
 public extension RestoreWalletUsingKeystore.Action {
@@ -107,14 +108,16 @@ public extension RestoreWalletUsingKeystore {
 			
 			state.isRestoring = true
 			
-			let restoreRequest = RestoreWalletRequest(
+			let password = Password(state.password)
+			
+			let restoreRequest = WalletRestorer.Request(
 				method: .keystore(keystore),
-				encryptionPassword: state.password,
+				password: password,
 				name: nil
 			)
 			
 			return environment.walletRestorer
-				.restore(restoreRequest)
+				.restore(request: restoreRequest)
 				.subscribe(on: environment.backgroundQueue)
 				.receive(on: environment.mainQueue)
 				.eraseToEffect()

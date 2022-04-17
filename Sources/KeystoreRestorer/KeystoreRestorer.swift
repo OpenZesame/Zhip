@@ -20,16 +20,6 @@ public struct KeystoreRestorer {
 	}
 }
 
-public struct RestoreKeystoreRequest {
-	public enum Method {
-		case restoreFromPrivateKey(PrivateKey)
-		case restoreFromKeystore(Keystore)
-	}
-	public let method: Method
-	public let password: Password
-	public let name: String?
-}
-
 
 public extension KeystoreRestorer {
 	
@@ -38,7 +28,33 @@ public extension KeystoreRestorer {
 		case unknownError
 	}
 	
-	typealias Restore = (RestoreKeystoreRequest) -> Effect<NamedKeystore, KeystoreRestorer.Error>
+	
+	struct Request {
+		public enum Method {
+			case restoreFromPrivateKey(PrivateKey)
+			case restoreFromKeystore(Keystore)
+		}
+		public let method: Method
+		public let password: Password
+		public let name: String?
+		
+		public init(
+			method: Method,
+			password: Password,
+			name: String?
+		) {
+			self.method = method
+			self.password = password
+			self.name = name
+		}
+	}
+	
+	func restore(request: Request) -> Effect<NamedKeystore, KeystoreRestorer.Error> {
+		self._restore(request)
+	}
+
+	
+	typealias Restore = (Request) -> Effect<NamedKeystore, KeystoreRestorer.Error>
 }
  
 
