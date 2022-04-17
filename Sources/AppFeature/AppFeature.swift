@@ -12,6 +12,7 @@ import MainFeature
 import OnboardingFeature
 import PasswordValidator
 import PIN
+import Purger
 import SplashFeature
 import Styleguide
 import SwiftUI
@@ -19,6 +20,7 @@ import UserDefaultsClient
 import Wallet
 import WalletGenerator
 import WalletRestorer
+import WalletLoader
 
 public enum App {}
 
@@ -84,6 +86,7 @@ public extension App {
 		public var userDefaults: UserDefaultsClient
 		public var walletGenerator: WalletGenerator
 		public var walletRestorer: WalletRestorer
+		public var walletLoader: WalletLoader
 		
 		public init(
 			backgroundQueue: AnySchedulerOf<DispatchQueue>,
@@ -92,7 +95,8 @@ public extension App {
 			passwordValidator: PasswordValidator,
 			userDefaults: UserDefaultsClient,
 			walletGenerator: WalletGenerator,
-			walletRestorer: WalletRestorer
+			walletRestorer: WalletRestorer,
+			walletLoader: WalletLoader
 		) {
 			self.backgroundQueue = backgroundQueue
 			self.keychainClient = keychainClient
@@ -101,6 +105,7 @@ public extension App {
 			self.userDefaults = userDefaults
 			self.walletGenerator = walletGenerator
 			self.walletRestorer = walletRestorer
+			self.walletLoader = walletLoader
 		}
 	}
 }
@@ -115,8 +120,12 @@ public extension App {
 				action: /App.Action.splash,
 				environment: {
 					Splash.Environment(
-						keychainClient: $0.keychainClient,
-						userDefaultsClient: $0.userDefaults
+						purger: Purger(
+							userDefaultsClient: $0.userDefaults,
+							keychainClient: $0.keychainClient
+						),
+						userDefaultsClient: $0.userDefaults,
+						walletLoader: $0.walletLoader
 					)
 				}
 			),
@@ -230,7 +239,7 @@ public extension App {
 			
 		case .main(.delegate(.userDeletedWallet)):
 			return environment.keychainClient
-				.removeWallet()
+				.removeWalletData()
 				.catchToEffect(Action.deleteWalletResult)
 			
 		case .deleteWalletResult(.success):

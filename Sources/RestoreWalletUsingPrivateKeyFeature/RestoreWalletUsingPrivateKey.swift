@@ -103,7 +103,7 @@ public extension RestoreWalletUsingPrivateKey {
 						password: state.password,
 						confirmPassword: state.passwordConfirmation
 					)
-				) && PrivateKey(hex: state.privateKeyHex) != nil
+				) != nil && PrivateKey(hex: state.privateKeyHex) != nil
 			return .none
 			
 		case .restore:
@@ -115,7 +115,13 @@ public extension RestoreWalletUsingPrivateKey {
 			
 			
 			state.isRestoring = true
-			let restoreRequest = RestoreWalletRequest(restorationMethod: .privateKey(privateKey), encryptionPassword: state.password, name: nil)
+			
+			let restoreRequest = RestoreWalletRequest(
+				method: .privateKey(privateKey),
+				encryptionPassword: state.password,
+				name: nil
+			)
+			
 			return environment.walletRestorer
 				.restore(restoreRequest)
 				.subscribe(on: environment.backgroundQueue)

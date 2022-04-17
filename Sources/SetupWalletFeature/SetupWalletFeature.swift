@@ -82,8 +82,6 @@ public extension SetupWallet {
 		case restoreWallet(RestoreWallet.Action)
 		
 		case abortDueToMightBeWatched
-		case saveNewWalletInKeychain(Wallet)
-		case saveNewWalletInKeychainResult(Result<Wallet, KeychainClient.Error>)
 		
 		case alertDismissed
 	}
@@ -176,14 +174,16 @@ public extension SetupWallet {
 				state.step = .step2b_RestoreWallet
 				return .none
 				
-			case let  .newWallet(.delegate(.finishedSettingUpNewWallet(wallet))):
-				return Effect(value: .saveNewWalletInKeychain(wallet))
+			case let .newWallet(.delegate(.finishedSettingUpNewWallet(wallet))):
+				// FIXME: assert that keystore of wallet is saved in keychain!
+				return Effect(value: .delegate(.finished(wallet)))
 				
 			case .newWallet(.delegate(.abortMightBeWatched)):
 				return Effect(value: .abortDueToMightBeWatched)
 				
 			case let .restoreWallet(.delegate(.finishedRestoringWallet(wallet))):
-				return Effect(value: .saveNewWalletInKeychain(wallet))
+				// FIXME: assert that keystore of wallet is saved in keychain!
+				return Effect(value: .delegate(.finished(wallet)))
 				
 			case .restoreWallet(.delegate(.abortMightBeWatched)):
 				return Effect(value: .abortDueToMightBeWatched)
@@ -196,17 +196,17 @@ public extension SetupWallet {
 				state.alert = nil
 				return .none
 				
-			case let .saveNewWalletInKeychain(wallet):
-				return environment.keychainClient
-					.saveWallet(wallet)
-					.catchToEffect(SetupWallet.Action.saveNewWalletInKeychainResult)
-				
-			case let .saveNewWalletInKeychainResult(.failure(error)):
-				state.alert = .init(title: TextState.init("Failed to save wallet in keychain, do you have a passcode setup on your Apple device? It is required to use Zhip. Underlying error: \(String(describing: error))"))
-				return .none
-				
-			case let .saveNewWalletInKeychainResult(.success(wallet)):
-				return Effect(value: .delegate(.finished(wallet)))
+//			case let .saveNewWalletInKeychain(wallet):
+//				return environment.walletSaver
+//					.saveWallet(wallet)
+//					.catchToEffect(SetupWallet.Action.saveNewWalletInKeychainResult)
+//
+//			case let .saveNewWalletInKeychainResult(.failure(error)):
+//				state.alert = .init(title: TextState.init("Failed to save wallet in keychain, do you have a passcode setup on your Apple device? It is required to use Zhip. Underlying error: \(String(describing: error))"))
+//				return .none
+//
+//			case let .saveNewWalletInKeychainResult(.success(wallet)):
+//				return Effect(value: .delegate(.finished(wallet)))
 				
 			default:
 				return .none

@@ -12,6 +12,6 @@ import XCTest
 
 final class TermsOfServiceFeatureTests: XCTestCase {
 	func testStateModeStartsAsMandatory() {
-		XCTAssertEqual(TermsOfServiceState().mode, .mandatoryToAcceptTermsAsPartOfOnboarding)
+		XCTAssertEqual(TermsOfService.State().mode, .mandatoryToAcceptTermsAsPartOfOnboarding)
 	}
 }

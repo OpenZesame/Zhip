@@ -1,7 +1,6 @@
 import KeychainAccess
 import Foundation
 import PIN
-import Wallet
 
 public final class WrappedKeychain {
     private let wrapped: Keychain

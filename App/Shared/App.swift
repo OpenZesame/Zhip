@@ -7,24 +7,39 @@
 
 import AppFeature
 import ComposableArchitecture
+
+import KeystoreGenerator
+import KeystoreGeneratorLive
+import KeystoreRestorer
+import KeystoreRestorerLive
+
+import KeystoreToFileWriter
+import KeystoreFromFileReader
+
+import KeychainClient
 import Styleguide
 import SwiftUI
+
+import WalletBuilder
 import WalletGenerator
-import WalletGeneratorLive
+import WalletLoader
 import WalletRestorer
-import WalletRestorerLive
+
+import protocol Zesame.ZilliqaService
+import class Zesame.DefaultZilliqaService
+import ZilliqaAPIEndpoint
 
 typealias App = AppFeature.App
 typealias AppProtocol = SwiftUI.App
 
 
-#if DEBUG
-import WalletGeneratorUnsafeFast
-#endif // DEBUG
-
-#if DEBUG
-import WalletRestorerUnsafeFast
-#endif // DEBUG
+//#if DEBUG
+//import WalletGeneratorUnsafeFast
+//#endif // DEBUG
+//
+//#if DEBUG
+//import WalletImporterUnsafeFast
+//#endif // DEBUG
 
 
 private func makeAppStore() -> Store<App.State, App.Action> {
@@ -130,30 +145,59 @@ extension ZhipApp {
 
 extension App.Environment {
 	static var live: Self {
-		.init(
+		
+		let zilliqaService: ZilliqaService = DefaultZilliqaService.default
+		
+		let keychainClient: KeychainClient = .live()
+		
+		let keystoreGenerator: KeystoreGenerator = .live(zilliqaService: zilliqaService)
+		let keystoreRestorer: KeystoreRestorer = .live(zilliqaService: zilliqaService)
+		
+		let keystoreToFileWriter: KeystoreToFileWriter = .live(keychain: keychainClient)
+		let keystorFromFileReader: KeystoreFromFileReader = .live(keychain: keychainClient)
+		
+		let walletBuilder: WalletBuilder = .live(zilliqaService: zilliqaService)
+		
+		let walletGenerator: WalletGenerator = .live(
+			keystoreGenerator: keystoreGenerator,
+			keystoreToFileWriter: keystoreToFileWriter,
+			walletBuilder: walletBuilder
+		)
+		
+		let walletRestorer: WalletRestorer = .live(
+			keystoreRestorer: keystoreRestorer,
+			keystoreToFileWriter: keystoreToFileWriter,
+			walletBuilder: walletBuilder
+		)
+		
+		let walletLoader: WalletLoader = .live(reader: keystorFromFileReader, builder: walletBuilder)
+		
+		
+		return Self(
 			backgroundQueue: DispatchQueue(label: "background-queue").eraseToAnyScheduler(),
-			keychainClient: .live(),
+			keychainClient: keychainClient,
 			mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
 			passwordValidator: .live,
 			userDefaults: .live(),
-			walletGenerator: walletGenerator(),
-			walletRestorer: walletRestorer()
+			walletGenerator: walletGenerator,
+			walletRestorer: walletRestorer,
+			walletLoader: walletLoader
 		)
 	}
 	
-	static func walletGenerator() -> WalletGenerator {
-#if DEBUG
-		return WalletGenerator.unsafeFast()
-#else
-		return WalletGenerator.live()
-#endif
-	}
-	
-	static func walletRestorer() -> WalletRestorer {
-#if DEBUG
-		return WalletRestorer.unsafeFast()
-#else
-		return WalletRestorer.live()
-#endif
-	}
+//	static func walletGenerator() -> WalletGenerator {
+//#if DEBUG
+//		return WalletGenerator.unsafeFast()
+//#else
+//		return WalletGenerator.live()
+//#endif
+//	}
+//
+//	static func walletImporter() -> WalletImporter {
+//#if DEBUG
+//		return WalletImporter.unsafeFast()
+//#else
+//		return WalletImporter.live()
+//#endif
+//	}
 }

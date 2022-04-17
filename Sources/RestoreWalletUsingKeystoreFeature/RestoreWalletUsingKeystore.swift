@@ -95,7 +95,7 @@ public extension RestoreWalletUsingKeystore {
 			state.canRestore = environment.passwordValidator
 				.validatePasswords(
 					.single(password: state.password)
-				) && Keystore(string: state.keystore) != nil
+				) != nil && Keystore(string: state.keystore) != nil
 			return .none
 			
 		case .restore:
@@ -108,7 +108,7 @@ public extension RestoreWalletUsingKeystore {
 			state.isRestoring = true
 			
 			let restoreRequest = RestoreWalletRequest(
-				restorationMethod: .keystore(keystore),
+				method: .keystore(keystore),
 				encryptionPassword: state.password,
 				name: nil
 			)

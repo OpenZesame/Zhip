@@ -13,6 +13,7 @@ import Screen
 import Styleguide
 import SwiftUI
 import Wallet
+import WalletLoader
 import UserDefaultsClient
 
 public enum Splash {}
@@ -33,7 +34,7 @@ public extension Splash {
 		case delegate(Delegate)
 		case onAppear
 		case checkForWallet
-		case checkForWalletResult(Result<Wallet?, KeychainClient.Error>)
+		case checkForWalletResult(Result<Wallet?, WalletLoader.Error>)
 		case alertDismissed
 		case walletIsFromPreviousInstallDeleteItAndSensitiveSettingsAndOnboardUser
 		case setAppHasRunBefore(thenDelegate: Delegate)
@@ -47,17 +48,19 @@ public extension Splash.Action {
 }
 public extension Splash {
 	struct Environment {
-		public let keychainClient: KeychainClient
+
 		public let userDefaultsClient: UserDefaultsClient
 		public let purger: Purger
+		public let walletLoader: WalletLoader
+
 		public init(
-			keychainClient: KeychainClient,
-			purger: Purger? = nil,
-			userDefaultsClient: UserDefaultsClient
+			purger: Purger,
+			userDefaultsClient: UserDefaultsClient,
+			walletLoader: WalletLoader
 		) {
-			self.keychainClient = keychainClient
-			self.purger = purger ?? Purger(userDefaultsClient: userDefaultsClient, keychainClient: keychainClient)
+			self.purger = purger
 			self.userDefaultsClient = userDefaultsClient
+			self.walletLoader = walletLoader
 		}
 	}
 }
@@ -85,7 +88,7 @@ public extension Splash {
 			
 		case .checkForWallet:
 			return environment
-				.keychainClient
+				.walletLoader
 				.loadWallet()
 				.catchToEffect(Splash.Action.checkForWalletResult)
 			

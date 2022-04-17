@@ -8,19 +8,6 @@
 import Foundation
 import SwiftUI
 
-protocol OptionalType {
-    associatedtype Wrapped
-    var wrapped: Wrapped? { get }
-}
-extension Optional: OptionalType {
-    var wrapped: Wrapped? {
-        if let value = self {
-            return value
-        }
-        return nil
-    }
-}
-
 extension Binding {
     func getOnly<T>(mapped transformation: @escaping (Value) -> T) -> Binding<T> {
         .init(
@@ -40,10 +27,6 @@ extension Binding where Value: OptionalType {
             }
         })
     }
-    
-//    func getOnly<T>(ifNil: T, `else` ifSome: T) -> Binding<T> {
-//        getOnly(ifNil: ifNil, mapUnwrapped: { _ in ifSome })
-//    }
     
     func ifPresent<T>(_ mapInspectIfPresent: @escaping (_ isSet: Bool) -> T) -> Binding<T> {
         getOnly(mapped: {

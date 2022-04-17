@@ -8,7 +8,6 @@
 import Foundation
 import Common
 import ComposableArchitecture
-import Wallet
 import struct Zesame.ZilAmount
 import PIN
 
@@ -75,15 +74,15 @@ public extension KeychainClient {
 // MARK: - Wallet
 // MARK: -
 public extension KeychainClient {
-	func saveWallet(_ wallet: Wallet) -> Effect<Wallet, Self.Error> {
-		save(model: wallet, forKey: walletKey)
+	func saveWalletData(_ data: Data) -> Effect<Void, Self.Error> {
+		setData(data, walletKey)
 	}
 	
-	func loadWallet() -> Effect<Wallet?, Self.Error> {
-		load(type: Wallet.self, forKey: walletKey)
+	func loadWalletData() -> Effect<Data?, Self.Error> {
+		dataForKey(walletKey)
 	}
 	
-	func removeWallet() -> Effect<VoidEq, Self.Error> {
+	func removeWalletData() -> Effect<VoidEq, Self.Error> {
 		remove(walletKey)
 			.map(VoidEq.init)
 			.eraseToEffect()

@@ -48,7 +48,8 @@ public extension QRCoding {
         of wallet: Wallet,
         size: CGFloat? = nil
     ) -> Image? {
-        encode(legacyAddress: wallet.legacyAddress, size: size)
+		let legacyAddress = try! LegacyAddress(string: wallet.address(.legacy))
+		return encode(legacyAddress: legacyAddress, size: size)
     }
 }
 

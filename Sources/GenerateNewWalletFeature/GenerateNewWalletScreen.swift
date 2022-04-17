@@ -11,6 +11,7 @@ import ComposableArchitecture
 import HoverPromptTextField
 import InputField
 import KeychainClient
+import Password
 import PasswordValidator
 import PasswordInputFields
 import Screen
@@ -114,18 +115,17 @@ public extension GenerateNewWallet {
 						password: state.password,
 						confirmPassword: state.passwordConfirmation
 					)
-				) && state.userHasConfirmedBackingUpPassword
+				) != nil && state.userHasConfirmedBackingUpPassword
 			
 			return .none
 			
 			
 		case .continueButtonTapped:
 			state.isGeneratingWallet = true
-			
-			let request = GenerateWalletRequest(encryptionPassword: state.password, name: nil)
+			let password = Password(state.password)
 			
 			return environment.walletGenerator
-				.generate(request)
+				.generate(password: password, name: nil)
 				.subscribe(on: environment.backgroundQueue)
 				.receive(on: environment.mainQueue)
 				.catchToEffect(Action.walletGenerationResult)

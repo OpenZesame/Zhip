@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Password
 
 /// TODO replace with Zesame.minLengthOfPassword
 public let minimumEncryptionPasswordLength = 8
@@ -29,7 +30,7 @@ public struct ValidatePasswordsRequest: Equatable {
 
 public struct PasswordValidator {
 	
-	public typealias ValidatePasswords = (ValidatePasswordsRequest) -> Bool
+	public typealias ValidatePasswords = (ValidatePasswordsRequest) -> Password?
 	
 	public var validatePasswords: ValidatePasswords
 	
@@ -61,10 +62,14 @@ private func _validate(password: String) -> Bool {
 private func _validatePasswords(
 	_ password: String,
 	confirmedBy passwordConfirmation: String
-) -> Bool {
-	guard [password, passwordConfirmation].allSatisfy(_validate) else {
-		return false
+) -> Password? {
+	guard
+		[password, passwordConfirmation].allSatisfy(_validate),
+			password == passwordConfirmation
+	else
+	{
+		return nil
 	}
 	
-	return password == passwordConfirmation
+	return Password(password)
 }

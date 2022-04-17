@@ -7,18 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482053E9280489560061CABB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 482053E8280489560061CABB /* AppFeature */; };
 		4872FA2D27B4F8F5008B7BD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* App.swift */; };
 		4872FA2E27B4F8F5008B7BD0 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872FA1D27B4F8F4008B7BD0 /* App.swift */; };
-		4896035827E11D3A0096BE21 /* WalletGeneratorUnsafeFast in Frameworks */ = {isa = PBXBuildFile; productRef = 4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */; };
-		48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48A79E6D27DDBB83006E7938 /* AppFeature */; };
+		4873725928044C6B0077DB07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4873725628044C6B0077DB07 /* Assets.xcassets */; };
+		4873725B28044C6B0077DB07 /* BackUpWalletPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4873725828044C6B0077DB07 /* BackUpWalletPreviewApp.swift */; };
 		48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */; };
-		48B83CAB280415F500640E52 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CAA280415F500640E52 /* ContentView.swift */; };
 		48B83CAD280415F600640E52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAC280415F600640E52 /* Assets.xcassets */; };
-		48B83CB72804173900640E52 /* ConfirmNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB62804173900640E52 /* ConfirmNewPINFeature */; };
-		48B83CB92804173900640E52 /* NewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CB82804173900640E52 /* NewPINFeature */; };
-		48B83CBB2804174000640E52 /* InputNewPINFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBA2804174000640E52 /* InputNewPINFeature */; };
-		48B83CBD2804174600640E52 /* PIN in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBC2804174600640E52 /* PIN */; };
-		48B83CBF2804174C00640E52 /* PINField in Frameworks */ = {isa = PBXBuildFile; productRef = 48B83CBE2804174C00640E52 /* PINField */; };
 		48FCC6CC27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6CD27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6D027E8697200B53220 /* freesound_mattix_radar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */; };
@@ -66,12 +61,13 @@
 		4872FA1D27B4F8F4008B7BD0 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4872FA2427B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872FA2A27B4F8F5008B7BD0 /* Zhip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zhip.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
+		4873725628044C6B0077DB07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4873725828044C6B0077DB07 /* BackUpWalletPreviewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackUpWalletPreviewApp.swift; sourceTree = "<group>"; };
 		48B83CA6280415F500640E52 /* NewPINPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewPINPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINPreviewApp.swift; sourceTree = "<group>"; };
-		48B83CAA280415F500640E52 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		48B83CAC280415F600640E52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48B83CB5280416E100640E52 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
+		48B83CC42804475500640E52 /* BackUpWalletPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackUpWalletPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48FCC6B527E8697200B53220 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48FCC6B627E8697200B53220 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
 		48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = freesound_mattix_radar.wav; sourceTree = "<group>"; };
@@ -100,8 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4896035827E11D3A0096BE21 /* WalletGeneratorUnsafeFast in Frameworks */,
-				48A79E6E27DDBB83006E7938 /* AppFeature in Frameworks */,
+				482053E9280489560061CABB /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,11 +111,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48B83CB92804173900640E52 /* NewPINFeature in Frameworks */,
-				48B83CBB2804174000640E52 /* InputNewPINFeature in Frameworks */,
-				48B83CBD2804174600640E52 /* PIN in Frameworks */,
-				48B83CB72804173900640E52 /* ConfirmNewPINFeature in Frameworks */,
-				48B83CBF2804174C00640E52 /* PINField in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B83CC12804475500640E52 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +167,7 @@
 				4872FA2427B4F8F5008B7BD0 /* Zhip.app */,
 				4872FA2A27B4F8F5008B7BD0 /* Zhip.app */,
 				48B83CA6280415F500640E52 /* NewPINPreview.app */,
+				48B83CC42804475500640E52 /* BackUpWalletPreview.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,10 +188,18 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
+		4873725528044C6B0077DB07 /* BackUpWallet */ = {
+			isa = PBXGroup;
+			children = (
+				4873725628044C6B0077DB07 /* Assets.xcassets */,
+				4873725828044C6B0077DB07 /* BackUpWalletPreviewApp.swift */,
+			);
+			path = BackUpWallet;
+			sourceTree = "<group>";
+		};
 		48A79E6B27DDBB23006E7938 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				48A79E6C27DDBB23006E7938 /* Zhip_SwiftUI */,
 				48B83CB5280416E100640E52 /* Zhip_SwiftUI */,
 			);
 			name = Packages;
@@ -209,6 +215,7 @@
 		48B83C7B280414F800640E52 /* Previews */ = {
 			isa = PBXGroup;
 			children = (
+				4873725528044C6B0077DB07 /* BackUpWallet */,
 				48B83CA7280415F500640E52 /* NewPIN */,
 			);
 			path = Previews;
@@ -218,7 +225,6 @@
 			isa = PBXGroup;
 			children = (
 				48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */,
-				48B83CAA280415F500640E52 /* ContentView.swift */,
 				48B83CAC280415F600640E52 /* Assets.xcassets */,
 			);
 			path = NewPIN;
@@ -285,8 +291,7 @@
 			);
 			name = "Zhip (iOS)";
 			packageProductDependencies = (
-				48A79E6D27DDBB83006E7938 /* AppFeature */,
-				4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */,
+				482053E8280489560061CABB /* AppFeature */,
 			);
 			productName = "Zhip (iOS)";
 			productReference = 4872FA2427B4F8F5008B7BD0 /* Zhip.app */;
@@ -325,14 +330,28 @@
 			);
 			name = NewPINPreview;
 			packageProductDependencies = (
-				48B83CB62804173900640E52 /* ConfirmNewPINFeature */,
-				48B83CB82804173900640E52 /* NewPINFeature */,
-				48B83CBA2804174000640E52 /* InputNewPINFeature */,
-				48B83CBC2804174600640E52 /* PIN */,
-				48B83CBE2804174C00640E52 /* PINField */,
 			);
 			productName = NewPINPreview;
 			productReference = 48B83CA6280415F500640E52 /* NewPINPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
+		48B83CC32804475500640E52 /* BackUpWalletPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48B83CCF2804475600640E52 /* Build configuration list for PBXNativeTarget "BackUpWalletPreview" */;
+			buildPhases = (
+				48B83CC02804475500640E52 /* Sources */,
+				48B83CC12804475500640E52 /* Frameworks */,
+				48B83CC22804475500640E52 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BackUpWalletPreview;
+			packageProductDependencies = (
+			);
+			productName = BackUpWalletPreview;
+			productReference = 48B83CC42804475500640E52 /* BackUpWalletPreview.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -354,6 +373,9 @@
 					48B83CA5280415F500640E52 = {
 						CreatedOnToolsVersion = 13.3;
 					};
+					48B83CC32804475500640E52 = {
+						CreatedOnToolsVersion = 13.3;
+					};
 				};
 			};
 			buildConfigurationList = 4872FA1B27B4F8F3008B7BD0 /* Build configuration list for PBXProject "Zhip" */;
@@ -372,6 +394,7 @@
 				4872FA2327B4F8F5008B7BD0 /* Zhip (iOS) */,
 				4872FA2927B4F8F5008B7BD0 /* Zhip (macOS) */,
 				48B83CA5280415F500640E52 /* NewPINPreview */,
+				48B83CC32804475500640E52 /* BackUpWalletPreview */,
 			);
 		};
 /* End PBXProject section */
@@ -439,6 +462,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48B83CC22804475500640E52 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4873725928044C6B0077DB07 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -462,8 +493,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48B83CAB280415F500640E52 /* ContentView.swift in Sources */,
 				48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B83CC02804475500640E52 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4873725B28044C6B0077DB07 /* BackUpWalletPreviewApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,6 +795,67 @@
 			};
 			name = Release;
 		};
+		48B83CD02804475600640E52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.BackUpWalletPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		48B83CD12804475600640E52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S33QJG3B86;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.openzesame.BackUpWalletPreview;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -796,36 +895,21 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		48B83CCF2804475600640E52 /* Build configuration list for PBXNativeTarget "BackUpWalletPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48B83CD02804475600640E52 /* Debug */,
+				48B83CD12804475600640E52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4896035727E11D3A0096BE21 /* WalletGeneratorUnsafeFast */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = WalletGeneratorUnsafeFast;
-		};
-		48A79E6D27DDBB83006E7938 /* AppFeature */ = {
+		482053E8280489560061CABB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
-		};
-		48B83CB62804173900640E52 /* ConfirmNewPINFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ConfirmNewPINFeature;
-		};
-		48B83CB82804173900640E52 /* NewPINFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NewPINFeature;
-		};
-		48B83CBA2804174000640E52 /* InputNewPINFeature */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = InputNewPINFeature;
-		};
-		48B83CBC2804174600640E52 /* PIN */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = PIN;
-		};
-		48B83CBE2804174C00640E52 /* PINField */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = PINField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

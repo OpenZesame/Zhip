@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  NewPINPreview
+//  BackUpWalletPreview
 //
 //  Created by Alexander Cyon on 2022-04-11.
 //

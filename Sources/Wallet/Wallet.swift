@@ -2,91 +2,86 @@
 //  File.swift
 //  
 //
-//  Created by Alexander Cyon on 2022-02-11.
+//  Created by Alexander Cyon on 2022-04-11.
 //
 
-import Common
-import CustomDump
+import ComposableArchitecture
 import Foundation
-import Zesame
-import ZilliqaAPIEndpoint
+import Password
+import NamedKeystore
 
-public struct Wallet: Codable, Equatable {
-    public let name: String?
-    public let wallet: Zesame.Wallet
-    public let origin: Origin
-
-    public init(name: String?, wallet: Zesame.Wallet, origin: Origin) {
-        self.name = name
-        self.wallet = wallet
-        self.origin = origin
-    }
-}
-
-public extension Wallet {
-    // MARK: Origin
-    enum Origin: Int, Codable, Equatable {
-        case generatedByThisApp
-        case importedPrivateKey
-        case importedKeystore
-    }
-
-    enum Error: Swift.Error {
-        case isNil
-    }
-}
-
-public extension Wallet {
-    var keystore: Keystore {
-        wallet.keystore
-    }
-
-    var bech32Address: Bech32Address {
-        do {
-            return try Bech32Address(ethStyleAddress: wallet.address, network: network)
-        } catch { incorrectImplementation("should work") }
-    }
-    
-    var legacyAddress: LegacyAddress {
-        wallet.address
-    }
-}
-
-
-#if DEBUG
-public extension KDFParams {
+public struct Wallet: Equatable {
+	public let equals: Equals
+	public let sign: Sign
+	public let exportKeystoreToJSON: ExportKeystoreToJSON
+	public let exportPrivateKey: ExportPrivateKey
+	public let formatAddress: FormatAddress
+	public let name: Name
+	public let origin: Origin
 	
-	static var unsafeFast: Self {
-		do {
-			return try Self(
-				costParameterN: 1,
-				costParameterC: 1
-			)
-		} catch {
-			fatalError("Incorrect implementation, should always be able to create default KDF params, unexpected error: \(error)")
-		}
-	}
-}
-#endif
-
-extension Wallet: CustomDumpStringConvertible {
-	public var customDumpDescription: String {
-"""
-Wallet(
- address: \(try! Bech32Address.init(ethStyleAddress: self.wallet.address).asString)
- origin: \(self.origin)
- legacyAddress: \(self.wallet.address.asString))
-)
-"""
+	public init(
+		equals: @escaping Equals,
+		sign: @escaping Sign,
+		exportKeystoreToJSON: @escaping ExportKeystoreToJSON,
+		exportPrivateKey: @escaping ExportPrivateKey,
+		formatAddress: @escaping FormatAddress,
+		name: @escaping Name,
+		origin: @escaping Origin
+	) {
+		self.equals = equals
+		self.sign = sign
+		self.exportKeystoreToJSON = exportKeystoreToJSON
+		self.exportPrivateKey = exportPrivateKey
+		self.formatAddress = formatAddress
+		self.name = name
+		self.origin = origin
 	}
 }
 
-extension Wallet.Origin: CustomDumpStringConvertible {
-	public var customDumpDescription: String {
-		switch self {
-		case .generatedByThisApp: return "generatedByThisApp"
-		case .importedKeystore: return "importedKeystore"
-		case .importedPrivateKey: return "importedPrivateKey"
+
+public extension Wallet {
+	typealias FormatAddress = (AddressFormat) -> String
+	typealias Equals = (_ other: Self) -> Bool
+	typealias Sign = (SignRequest) -> Effect<Bool, Never>
+	typealias ExportKeystoreToJSON = () -> Effect<String, Never>
+	typealias ExportPrivateKey = (ExportPrivateKeyRequest) -> Effect<String, Never>
+	typealias Name = () -> String?
+	typealias Origin = () -> KeystoreOrigin
+}
+
+public extension Wallet {
+	func address(_ format: AddressFormat = .mainnet) -> String {
+		formatAddress(format)
+	}
+}
+
+public enum AddressFormat {
+	/// Eth formatting, like: `0x...`
+	case legacy
+	
+	/// Mainnet Zil bech32 format like: `zil1....`
+	case mainnet
+}
+
+public struct SignRequest {
+	public let encryptionPassword: Password
+//	public let amount: ZilAmount
+//	public let recipient: LegacyAddress
+}
+
+public struct ExportPrivateKeyRequest {
+	public let encryptionPassword: Password
+}
+
+
+// MARK: Equatable
+public extension Wallet {
+	static func == (lhs: Self, rhs: Self) -> Bool {
+		guard lhs.equals(rhs) else {
+			assert(!rhs.equals(lhs))
+			return false
 		}
+		assert(rhs.equals(lhs))
+		return true
 	}
 }

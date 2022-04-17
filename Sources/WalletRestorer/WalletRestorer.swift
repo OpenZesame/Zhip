@@ -14,7 +14,7 @@ import typealias Zesame.PrivateKey
 
 public enum WalletRestorerError: LocalizedError, Equatable {
 	case invalidEncryptionPassword
-	case walletImportFailed(reason: String)
+	case walletRestoreFailed(reason: String)
 	case decryptPrivateKeyFailed(reason: String)
 	case keystoreExportFailure(reason: String)
 	
@@ -25,7 +25,7 @@ public enum WalletRestorerError: LocalizedError, Equatable {
 			return "Encryption password does not meet minimum safety requirements. Try a longer and safer password."
 		case let .internalError(underlyingError):
 			return "Internal error, reason: \(underlyingError)"
-		case let .walletImportFailed(underlyingError):
+		case let .walletRestoreFailed(underlyingError):
 			return "Wallet import failed, reason: \(underlyingError)"
 		case let .decryptPrivateKeyFailed(underlyingError):
 			return "Decrypt private key failed, reason: \(underlyingError)"
@@ -38,32 +38,32 @@ public enum WalletRestorerError: LocalizedError, Equatable {
 
 public struct RestoreWalletRequest {
 	
-	public enum RestorationMethod {
+	public enum Method {
 		case privateKey(PrivateKey)
 		case keystore(Keystore)
 	}
 	
-	public let restorationMethod: RestorationMethod
+	public let method: Method
 	public let encryptionPassword: String
 	public let name: String?
 	public init(
-		restorationMethod: RestorationMethod,
+		method: Method,
 		encryptionPassword: String,
 		name: String? = nil
 	) {
-		self.restorationMethod = restorationMethod
+		self.method = method
 		self.encryptionPassword = encryptionPassword
 		self.name = name
 	}
 }
 
 public struct WalletRestorer {
-	public typealias RestoreWallet = (RestoreWalletRequest) -> Effect<Wallet, WalletRestorerError>
+	public typealias Restore = (RestoreWalletRequest) -> Effect<Wallet, WalletRestorerError>
 	
-	public var restore: RestoreWallet
+	public var restore: Restore
 
 	public init(
-		restore: @escaping RestoreWallet
+		restore: @escaping Restore
 	) {
 		self.restore = restore
 	}

@@ -92,7 +92,7 @@ public extension BackUpWallet.CoordinatorScreen {
 		) { viewStore in
 			Screen {
 				VStack {
-					Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.bech32Address.asString)")
+					Text("BackUpWalletCoordinatorView, wallet: \(viewStore.wallet.address())")
 					Button("I have backed up my wallet") {
 						viewStore.send(.delegate(.finished(viewStore.wallet)))
 					}

@@ -20,7 +20,7 @@ var targets: [Target] = []
 let Zesame = externalDependency(
 	category: .essential,
 	// branch: structured_concurrency
-	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "8918ddb06807724383ad2965461fffeea91f89af"),
+	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "57ab0e8ed90ad84b6b0a286a963874b35e8c6dd2"),
 	target: .product(name: "Zesame", package: "Zesame"),
 	rationale: "Zilliqa Swift SDK, containing all account logic."
 )
@@ -152,21 +152,28 @@ func makePackage() -> Package {
 		]
 	)
 	
-	// MARK: - Wallet
-	let Wallet = declareTarget(
-		name: "Wallet",
-		externalDependencies: [
-			ComposableArchitecture,
-			Zesame,
-		],
+	
+	// MARK: - Password
+	let Password = declareTarget(
+		name: "Password",
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			Common,
-			ZilliqaAPIEndpoint,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
 	
+	// MARK: - PasswordValidator
+	let PasswordValidator = declareTarget(
+		name: "PasswordValidator",
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			Password,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+			
 	// MARK: - WrappedKeychain
 	let WrappedKeychain = declareTarget(
 		name: "WrappedKeychain",
@@ -175,7 +182,7 @@ func makePackage() -> Package {
 		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
-			Wallet,
+			PIN,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -204,7 +211,6 @@ func makePackage() -> Package {
 			Common,
 			WrappedKeychain,
 			PIN,
-			Wallet,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -235,17 +241,7 @@ func makePackage() -> Package {
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
-	
-	// MARK: - PasswordValidator
-	let PasswordValidator = declareTarget(
-		name: "PasswordValidator",
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			Common,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
+
 	
 	// MARK: - AmountFormatter
 	let AmountFormatter = declareTarget(
@@ -282,6 +278,224 @@ func makePackage() -> Package {
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// MARK: - NamedKeystore
+	let NamedKeystore = declareTarget(
+		name: "NamedKeystore",
+		externalDependencies: [
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreGenerator
+	let KeystoreGenerator = declareTarget(
+		name: "KeystoreGenerator",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			NamedKeystore,
+			Password,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreGeneratorLive
+	let KeystoreGeneratorLive = declareTarget(
+		name: "KeystoreGeneratorLive",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeystoreGenerator,
+			NamedKeystore,
+			Password,
+			ZilliqaAPIEndpoint,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	
+	// MARK: - KeystoreRestorer
+	let KeystoreRestorer = declareTarget(
+		name: "KeystoreRestorer",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			NamedKeystore,
+			Password,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreRestorerLive
+	let KeystoreRestorerLive = declareTarget(
+		name: "KeystoreRestorerLive",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeystoreRestorer,
+			NamedKeystore,
+			Password,
+			ZilliqaAPIEndpoint,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreFromFileReader
+	let KeystoreFromFileReader = declareTarget(
+		name: "KeystoreFromFileReader",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeychainClient,
+			NamedKeystore,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - KeystoreToFileWriter
+	let KeystoreToFileWriter = declareTarget(
+		name: "KeystoreToFileWriter",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeychainClient,
+			NamedKeystore,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - Wallet
+	let Wallet = declareTarget(
+		name: "Wallet",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame, // FIXME: Remove Zesame dependency in Wallet
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			NamedKeystore,
+			Password,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+
+	// MARK: - WalletBuilder
+	let WalletBuilder = declareTarget(
+		name: "WalletBuilder",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			NamedKeystore,
+			Password,
+			Wallet,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - WalletGenerator
+	let WalletGenerator = declareTarget(
+		name: "WalletGenerator",
+		externalDependencies: [
+			ComposableArchitecture,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
+			KeystoreGenerator,
+			KeystoreToFileWriter,
+			Password,
+			Wallet,
+			WalletBuilder,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	// MARK: - WalletRestorer
+	let WalletRestorer = declareTarget(
+		name: "WalletRestorer",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame, // KeyRestoration
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			KeystoreRestorer,
+			KeystoreToFileWriter,
+			Wallet,
+			WalletBuilder,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+		
+	// MARK: - WalletLoader
+	let WalletLoader = declareTarget(
+		name: "WalletLoader",
+		externalDependencies: [
+			ComposableArchitecture,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			KeystoreFromFileReader,
+			Wallet,
+			WalletBuilder,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// MARK: - BackUpKeystoreFeature
 	let BackUpKeystoreFeature = declareTarget(
@@ -403,91 +617,7 @@ func makePackage() -> Package {
 		]
 	)
 	
-	// MARK: - WalletGenerator
-	let WalletGenerator = declareTarget(
-		name: "WalletGenerator",
-		externalDependencies: [
-			ComposableArchitecture,
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			Common,
-			Wallet,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
-	// MARK: - WalletGeneratorLive
-	let WalletGeneratorLive = declareTarget(
-		name: "WalletGeneratorLive",
-		externalDependencies: [
-			Zesame,
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			WalletGenerator,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
-	// MARK: - WalletGeneratorUnsafeFast
-	let WalletGeneratorUnsafeFast = declareTarget(
-		name: "WalletGeneratorUnsafeFast",
-		test: true,
-		externalDependencies: [
-			Zesame,
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			WalletGenerator,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
-	// MARK: - WalletRestorer
-	let WalletRestorer = declareTarget(
-		name: "WalletRestorer",
-		externalDependencies: [
-			ComposableArchitecture,
-			Zesame, // KeyRestoration
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			Wallet,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
-	// MARK: - WalletRestorerLive
-	let WalletRestorerLive = declareTarget(
-		name: "WalletRestorerLive",
-		externalDependencies: [
-			ComposableArchitecture,
-			Zesame,
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			Wallet,
-			WalletRestorer,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
-	// MARK: - WalletRestorerUnsafeFast
-	let WalletRestorerUnsafeFast = declareTarget(
-		name: "WalletRestorerUnsafeFast",
-		externalDependencies: [
-			ComposableArchitecture,
-			Zesame,
-		],
-		internalDependencies: [
-			// ˅˅˅ Sort alphabetically ˅˅˅
-			Wallet,
-			WalletRestorer,
-			// ^^^ Sort alphabetically ^^^
-		]
-	)
-	
+
 	
 	// MARK: - BalancesFeature
 	let BalancesFeature = declareTarget(
@@ -535,6 +665,7 @@ func makePackage() -> Package {
 			HoverPromptTextField,
 			InputField,
 			KeychainClient,
+			Password,
 			PasswordInputFields,
 			PasswordValidator,
 			Screen,
@@ -916,6 +1047,7 @@ func makePackage() -> Package {
 			UserDefaultsClient,
 			WelcomeFeature,
 			WalletGenerator,
+			WalletRestorer
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -935,6 +1067,7 @@ func makePackage() -> Package {
 			Styleguide,
 			UserDefaultsClient,
 			Wallet,
+			WalletLoader,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -951,16 +1084,18 @@ func makePackage() -> Package {
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			Common,
 			KeychainClient,
+			KeystoreRestorerLive,
+			KeystoreGeneratorLive,
 			MainFeature,
 			OnboardingFeature,
 			PasswordValidator,
 			Styleguide,
 			SplashFeature,
 			UserDefaultsClient,
-			WalletGeneratorLive,
-			WalletGeneratorUnsafeFast,
-			WalletRestorerLive,
-			WalletRestorerUnsafeFast,
+			WalletGenerator,
+			WalletRestorer,
+			WalletBuilder,
+			WalletLoader,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
