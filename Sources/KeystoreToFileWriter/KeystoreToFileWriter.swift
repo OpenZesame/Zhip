@@ -20,8 +20,8 @@ public struct KeystoreToFileWriter {
 
 public extension KeystoreToFileWriter {
 	
-	enum Error: Swift.Error {
-		case failedToJSONEncode(EncodingError)
+	enum Error: Swift.Error, Hashable {
+		case failedToJSONEncode(reason: String)
 		case failedToSaveDataInKeychain(KeychainClient.Error)
 	}
 	
@@ -46,7 +46,7 @@ public extension KeystoreToFileWriter {
 				.map { _ in namedKeystore }
 				.eraseToEffect()
 			} catch let jsonEncodingError as EncodingError {
-				return Effect(error: Error.failedToJSONEncode(jsonEncodingError))
+				return Effect(error: Error.failedToJSONEncode(reason: String(describing: jsonEncodingError)))
 			} catch {
 				fatalError("expected EncodingError error")
 			}

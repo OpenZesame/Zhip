@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 
-
 extension Publisher where Output: OptionalType {
 	public func flatMap<T, E, P>(
 		ifPresent transformation: @escaping (Output.Wrapped) -> P,
@@ -16,7 +15,7 @@ extension Publisher where Output: OptionalType {
 	) -> AnyPublisher<T?, E>
 	where
 P: Publisher,
-	P.Output == T
+P.Output == T
 	{
 		self.mapError { $0 as Swift.Error  }
 			.flatMap { (`optional`: Output) -> AnyPublisher<T?, Swift.Error> in
@@ -38,3 +37,23 @@ P: Publisher,
 	}
 }
 
+extension Publisher  {
+	public func flatMap<T, E, P>(
+		transformation: @escaping (Output) -> P,
+		mapError mapErrorFn: @escaping (P.Failure) -> E
+	) -> AnyPublisher<T, E>
+	where
+P: Publisher,
+	P.Output == T
+	{
+		self.mapError { $0 as Swift.Error  }
+			.flatMap { (output: Output) -> AnyPublisher<T, Swift.Error> in
+				return transformation(output)
+					.mapError { $0 as Swift.Error }
+					.eraseToAnyPublisher()
+			}
+			.mapError { $0 as! P.Failure }
+			.mapError(mapErrorFn)
+			.eraseToAnyPublisher()
+	}
+}

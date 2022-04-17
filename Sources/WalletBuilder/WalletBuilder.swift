@@ -30,7 +30,7 @@ public struct WalletBuilder {
 
 public extension WalletBuilder {
 	
-	enum Error: Swift.Error {
+	enum Error: Swift.Error, Hashable {
 		case unknown
 	}
 	

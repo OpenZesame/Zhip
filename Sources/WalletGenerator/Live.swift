@@ -6,9 +6,11 @@
 //
 
 import Common
+import Combine
 import ComposableArchitecture
 import KeystoreGenerator
 import KeystoreToFileWriter
+import NamedKeystore
 import Password
 import Wallet
 import WalletBuilder
@@ -22,12 +24,21 @@ public extension WalletGenerator {
 		Self(generate: { request in
 			
 			keystoreGenerator
+				// Generate
 				.generate(request: request.keystoreGeneratorRequest)
 				.mapError(WalletGenerator.Error.init(keyGenError:))
-				.flatMap(
-					ifPresent: builder.build(namedKeystore:),
-					mapError: WalletGenerator.Error.init(builderError:)
-				)
+				.flatMap { namedKeystore in
+					// Build
+					builder.build(namedKeystore: namedKeystore)
+						.mapError(WalletGenerator.Error.init(buildError:))
+						.flatMap { wallet in
+							keystoreToFileWriter
+								// Persist
+								.write(keystore: namedKeystore)
+								.map { _ in wallet }
+								.mapError(WalletGenerator.Error.init(writeError:))
+						}
+				}
 				.eraseToEffect()
 		})
 	}
@@ -40,11 +51,16 @@ private extension WalletGenerator.Request {
 }
 
 private extension WalletGenerator.Error {
+	
 	init(keyGenError: KeystoreGenerator.Error) {
-		fatalError()
+		self = .failedToGenerate(keyGenError)
 	}
 	
-	init(builderError: WalletBuilder.Error) {
-		fatalError()
+	init(writeError: KeystoreToFileWriter.Error) {
+		self = .failedToPersist(writeError)
+	}
+	
+	init(buildError: WalletBuilder.Error) {
+		self = .failedToBuildWallet(buildError)
 	}
 }

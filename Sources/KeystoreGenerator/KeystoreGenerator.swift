@@ -32,7 +32,7 @@ public extension KeystoreGenerator {
 		}
 	}
 	
-	enum Error: Swift.Error {
+	enum Error: Swift.Error, Hashable {
 		case unknownError
 	}
 

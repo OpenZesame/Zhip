@@ -21,7 +21,7 @@ public struct KeychainClient {
 // MARK: -
 public extension KeychainClient {
 	
-	enum Error: LocalizedError, Equatable {
+	enum Error: LocalizedError, Hashable {
 		case keychainRemoveError(reason: String)
 		case keychainReadError(reason: String)
 		case keychainWriteError(reason: String)

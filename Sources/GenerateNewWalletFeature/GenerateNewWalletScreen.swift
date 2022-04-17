@@ -61,7 +61,7 @@ public extension GenerateNewWallet {
 		case binding(BindingAction<State>)
 		case delegate(Delegate)
 		
-		case walletGenerationResult(Result<Wallet, WalletGeneratorError>)
+		case walletGenerationResult(Result<Wallet, WalletGenerator.Error>)
 	}
 }
 
@@ -125,7 +125,7 @@ public extension GenerateNewWallet {
 			let password = Password(state.password)
 			
 			return environment.walletGenerator
-				.generate(password: password, name: nil)
+				.generate(request: .init(password: password, name: nil))
 				.subscribe(on: environment.backgroundQueue)
 				.receive(on: environment.mainQueue)
 				.catchToEffect(Action.walletGenerationResult)

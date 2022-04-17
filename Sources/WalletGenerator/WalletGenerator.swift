@@ -34,18 +34,10 @@ public extension WalletGenerator {
 		}
 	}
 	
-	enum Error: LocalizedError, Equatable {
-		case invalidEncryptionPassword
-		case internalError(error: String)
-		
-		public var errorDescription: String? {
-			switch self {
-			case .invalidEncryptionPassword:
-				return "Encryption password does not meet minimum safety requirements. Try a longer and safer password."
-			case let .internalError(underlyingError):
-				return "Internal error, reason: \(underlyingError)"
-			}
-		}
+	enum Error: Swift.Error, Hashable {
+		case failedToGenerate(KeystoreGenerator.Error)
+		case failedToPersist(KeystoreToFileWriter.Error)
+		case failedToBuildWallet(WalletBuilder.Error)
 	}
 	
 	typealias Generate = (Request) -> Effect<Wallet, WalletGenerator.Error>

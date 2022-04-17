@@ -32,8 +32,8 @@ public extension KeystoreGenerator {
 				)
 			}.map {
 				NamedKeystore(keystore: $0, origin: .generatedByThisApp, name: request.name)
-			}.mapError { _ in
-				KeystoreGeneratorError.unknownError
+			}.mapError { _ -> KeystoreGenerator.Error in
+				fatalError()
 			}.eraseToEffect()
 		
 		

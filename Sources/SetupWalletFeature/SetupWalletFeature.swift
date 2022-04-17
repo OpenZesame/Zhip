@@ -175,7 +175,6 @@ public extension SetupWallet {
 				return .none
 				
 			case let .newWallet(.delegate(.finishedSettingUpNewWallet(wallet))):
-				// FIXME: assert that keystore of wallet is saved in keychain!
 				return Effect(value: .delegate(.finished(wallet)))
 				
 			case .newWallet(.delegate(.abortMightBeWatched)):
@@ -195,19 +194,7 @@ public extension SetupWallet {
 			case .alertDismissed:
 				state.alert = nil
 				return .none
-				
-//			case let .saveNewWalletInKeychain(wallet):
-//				return environment.walletSaver
-//					.saveWallet(wallet)
-//					.catchToEffect(SetupWallet.Action.saveNewWalletInKeychainResult)
-//
-//			case let .saveNewWalletInKeychainResult(.failure(error)):
-//				state.alert = .init(title: TextState.init("Failed to save wallet in keychain, do you have a passcode setup on your Apple device? It is required to use Zhip. Underlying error: \(String(describing: error))"))
-//				return .none
-//
-//			case let .saveNewWalletInKeychainResult(.success(wallet)):
-//				return Effect(value: .delegate(.finished(wallet)))
-				
+			
 			default:
 				return .none
 			}
