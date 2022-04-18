@@ -14,6 +14,8 @@
 		4873725B28044C6B0077DB07 /* BackUpWalletPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4873725828044C6B0077DB07 /* BackUpWalletPreviewApp.swift */; };
 		48B83CA9280415F500640E52 /* NewPINPreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */; };
 		48B83CAD280415F600640E52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B83CAC280415F600640E52 /* Assets.xcassets */; };
+		48E7797A280D503800105707 /* BackUpWalletFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 48E77979280D503800105707 /* BackUpWalletFeature */; };
+		48E7797C280D512C00105707 /* WalletUnsafe in Frameworks */ = {isa = PBXBuildFile; productRef = 48E7797B280D512C00105707 /* WalletUnsafe */; };
 		48FCC6CC27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6CD27E8697200B53220 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B527E8697200B53220 /* Assets.xcassets */; };
 		48FCC6D027E8697200B53220 /* freesound_mattix_radar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */; };
@@ -118,6 +120,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48E7797A280D503800105707 /* BackUpWalletFeature in Frameworks */,
+				48E7797C280D512C00105707 /* WalletUnsafe in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +353,8 @@
 			);
 			name = BackUpWalletPreview;
 			packageProductDependencies = (
+				48E77979280D503800105707 /* BackUpWalletFeature */,
+				48E7797B280D512C00105707 /* WalletUnsafe */,
 			);
 			productName = BackUpWalletPreview;
 			productReference = 48B83CC42804475500640E52 /* BackUpWalletPreview.app */;
@@ -910,6 +916,14 @@
 		482053E8280489560061CABB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
+		};
+		48E77979280D503800105707 /* BackUpWalletFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BackUpWalletFeature;
+		};
+		48E7797B280D512C00105707 /* WalletUnsafe */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WalletUnsafe;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

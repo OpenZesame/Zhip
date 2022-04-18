@@ -5,31 +5,39 @@
 //  Created by Alexander Cyon on 2022-04-11.
 //
 
+import SwiftUI
+
+#if DEBUG
 import BackUpWalletFeature
 import ComposableArchitecture
-import SwiftUI
 import Wallet
-#if DEBUG
 import WalletUnsafe
-#endif
 
 @main
 struct BackUpWalletPreviewApp: App {
     var body: some Scene {
         WindowGroup {
 			NavigationView {
-				#if DEBUG
 				BackUpWallet.CoordinatorScreen(
 					store: Store(
-						initialState: .init(wallet: .unsafe︕！Wallet),
+						initialState: .init(wallet: Wallet.unsafe︕！Wallet),
 						reducer: BackUpWallet.reducer,
-						environment: BackUpWallet.Environment()
+						environment: .init()
 					)
 				)
-				#else
-				Text("No preview for non DEBUG.")
-				#endif
 			}
+			
         }
     }
 }
+#else
+
+@main
+struct BackUpWalletPreviewApp: App {
+	var body: some Scene {
+		WindowGroup {
+			Text("Only supported in DEBUG mode.")
+		}
+	}
+}
+#endif // DEBUG

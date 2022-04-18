@@ -454,6 +454,23 @@ func makePackage() -> Package {
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
+	
+	// MARK: - WalletUnsafe
+	let WalletUnsafe = declareTarget(
+		name: "WalletUnsafe",
+		externalDependencies: [
+			ComposableArchitecture,
+			Zesame,
+		],
+		internalDependencies: [
+			// ˅˅˅ Sort alphabetically ˅˅˅
+			NamedKeystore,
+			Password,
+			Wallet,
+			ZilliqaAPIEndpoint,
+			// ^^^ Sort alphabetically ^^^
+		]
+	)
 
 	// MARK: - WalletBuilder
 	let WalletBuilder = declareTarget(
