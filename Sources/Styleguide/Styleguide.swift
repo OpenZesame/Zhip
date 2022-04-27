@@ -27,3 +27,20 @@ private extension Styleguide {
 	}
 }
 #endif
+
+public struct ZhipStyleModifier: ViewModifier {
+	public func body(content: Content) -> some View {
+		content
+			.background(Color.appBackground)
+			.foregroundColor(.white)
+		#if os(iOS)
+			.navigationBarTitleDisplayMode(.inline)
+		#endif
+	}
+}
+
+public extension View {
+	func zhipStyle() -> some View {
+		modifier(ZhipStyleModifier())
+	}
+}

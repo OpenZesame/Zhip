@@ -33,6 +33,14 @@ let ComposableArchitecture = externalDependency(
 	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
 )
 
+// MARK: - TCACoordinators Ext.
+let TCACoordinators = externalDependency(
+	category: .architecture,
+	package: .package(url: "https://github.com/johnpatrickmorgan/TCACoordinators.git", from: "0.1.0"),
+	target: "TCACoordinators",//.product(name: "TCACoordinators", package: "TCACoordinators"),
+	rationale: "Navigation for SwiftUI using coordinator patterns which is compatible with TCA."
+)
+
 // MARK: - KeychainAccess Ext.
 let KeychainAccess = externalDependency(
 	category: .convenience,
@@ -646,6 +654,7 @@ func makePackage() -> Package {
 			BackUpKeystoreFeature,
 			BackUpPrivateKeyFeature,
 			Checkbox,
+			Common,
 			Screen,
 			Styleguide,
 			// ^^^ Sort alphabetically ^^^
@@ -657,6 +666,7 @@ func makePackage() -> Package {
 		name: "BackUpWalletFeature",
 		externalDependencies: [
 			ComposableArchitecture,
+			TCACoordinators,
 		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅

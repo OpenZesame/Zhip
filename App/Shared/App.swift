@@ -109,11 +109,7 @@ struct ZhipApp: AppProtocol {
     var body: some Scene {
 		WindowGroup {
 			App.View(store: store)
-				.background(Color.appBackground)
-				.foregroundColor(.white)
-			#if os(iOS)
-				.navigationBarTitleDisplayMode(.inline)
-			#endif
+				.zhipStyle()
 		}
 		.onChange(of: scenePhase) {
 			viewStore.send(.didChangeScenePhase($0))

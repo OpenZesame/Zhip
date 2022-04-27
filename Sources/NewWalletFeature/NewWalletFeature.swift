@@ -23,7 +23,7 @@ public extension NewWallet {
 		
 		case step1_EnsurePrivacy(EnsurePrivacy.State)
 		case step2_GenerateNewWallet(GenerateNewWallet.State)
-		case step3_BackUpWallet(BackUpWallet.State)
+		case step3_BackUpWallet(BackUpWallet.Coordinator.State)
 		
 		public init() {
 			self = .step1_EnsurePrivacy(.init())
@@ -41,7 +41,7 @@ public extension NewWallet {
 		
 		case ensurePrivacy(EnsurePrivacy.Action)
 		case generateNewWallet(GenerateNewWallet.Action)
-		case backUpWallet(BackUpWallet.Action)
+		case backUpWallet(BackUpWallet.Coordinator.Action)
 	}
 }
 public extension NewWallet.Action {
@@ -98,7 +98,7 @@ public extension NewWallet {
 			}
 		),
 		
-		BackUpWallet.reducer.pullback(
+		BackUpWallet.Coordinator.reducer.pullback(
 			state: /State.step3_BackUpWallet,
 			action: /NewWallet.Action.backUpWallet,
 			environment: { _ in
@@ -155,7 +155,7 @@ public extension NewWallet.CoordinatorScreen {
 			CaseLet(
 				state: /NewWallet.State.step3_BackUpWallet,
 				action: NewWallet.Action.backUpWallet,
-				then: BackUpWallet.CoordinatorScreen.init(store:)
+				then: BackUpWallet.Coordinator.View.init(store:)
 			)
 			
 		}

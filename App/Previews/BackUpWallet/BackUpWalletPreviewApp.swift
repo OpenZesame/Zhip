@@ -10,6 +10,7 @@ import SwiftUI
 #if DEBUG
 import BackUpWalletFeature
 import ComposableArchitecture
+import Styleguide
 import Wallet
 import WalletUnsafe
 
@@ -18,15 +19,15 @@ struct BackUpWalletPreviewApp: App {
     var body: some Scene {
         WindowGroup {
 			NavigationView {
-				BackUpWallet.CoordinatorScreen(
+				BackUpWallet.Coordinator.View(
 					store: Store(
-						initialState: .init(wallet: Wallet.unsafe︕！Wallet),
-						reducer: BackUpWallet.reducer,
-						environment: .init()
+						initialState: .fromOnboarding(wallet: .unsafe︕！Wallet),
+						reducer: BackUpWallet.Coordinator.reducer,
+						environment: BackUpWallet.Environment()
 					)
 				)
 			}
-			
+			.zhipStyle()
         }
     }
 }
