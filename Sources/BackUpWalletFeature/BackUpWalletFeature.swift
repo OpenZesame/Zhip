@@ -5,7 +5,7 @@
 //  Created by Alexander Cyon on 2022-03-13.
 //
 
-import BackUpRevealedKeyPairFeature
+import BackUpPrivateKeyFeature
 import BackUpPrivateKeyAndKeystoreFeature
 import BackUpKeystoreFeature
 
@@ -30,52 +30,27 @@ public extension BackUpWallet.Screen {
 	/// single screen or a subflow consisting of multiple screens.
 	enum State: Equatable {
 		case step1_BackUpPrivateKeyAndKeystore(BackUpPrivateKeyAndKeystore.State)
-		case step2a_BackUpPrivateKey(BackUpRevealedKeyPair.State)
+		case step2a_BackUpPrivateKey(BackUpPrivateKey.State)
 		case step2b_BackUpKeystore(BackUpKeystore.State)
 	}
 }
 
 public extension BackUpWallet.Screen {
 	
-//	/// State of the back up wallet flow.
-//	struct State: Equatable {
-//		public var wallet: Wallet
-//		public var step: Step
-//		public var backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystore.State
-//
-//		public init(
-//			wallet: Wallet,
-//			step: Step = .step1_BackUpPrivateKeyAndKeystore,
-//			backUpPrivateKeyAndKeystore: BackUpPrivateKeyAndKeystore.State = .init()
-//		) {
-//			self.wallet = wallet
-//			self.step = step
-//			self.backUpPrivateKeyAndKeystore = backUpPrivateKeyAndKeystore
-//		}
-//	}
-}
-
-public extension BackUpWallet.Screen {
-	
 	/// Actions from the back up wallet flow.
 	enum Action: Equatable {
-		
 		case step1_BackUpPrivateKeyAndKeystore(BackUpPrivateKeyAndKeystore.Action)
-		case step2a_BackUpPrivateKey(BackUpRevealedKeyPair.Action)
+		case step2a_BackUpPrivateKey(BackUpPrivateKey.Action)
 		case step2b_BackUpKeystore(BackUpKeystore.Action)
-		
-//		case delegate(Delegate)
 	}
 }
-//public extension BackUpWallet.ScreenAction {
-//	enum Delegate: Equatable {
-//		case finished(Wallet)
-//	}
-//}
 
 public extension BackUpWallet {
 	struct Environment {
-		public init() {}
+		public let wallet: Wallet
+		public init(wallet: Wallet) {
+			self.wallet = wallet
+		}
 	}
 }
 
@@ -85,8 +60,23 @@ public extension BackUpWallet.Screen {
 			.pullback(
 				state: /State.step1_BackUpPrivateKeyAndKeystore,
 				action: /Action.step1_BackUpPrivateKeyAndKeystore,
-				environment: { _ in BackUpPrivateKeyAndKeystore.Environment() }
+				environment: { BackUpPrivateKeyAndKeystore.Environment(wallet: $0.wallet) }
 			),
+		
+		BackUpPrivateKey.reducer
+			.pullback(
+				state: /State.step2a_BackUpPrivateKey,
+				action: /Action.step2a_BackUpPrivateKey,
+				environment: { BackUpPrivateKey.Environment(wallet: $0.wallet) }
+			),
+		
+		BackUpKeystore.reducer
+			.pullback(
+				state: /State.step2b_BackUpKeystore,
+				action: /Action.step2b_BackUpKeystore,
+				environment: { BackUpKeystore.Environment(wallet: $0.wallet) }
+			),
+
 		
 		Reducer { state, action, environment in
 			return .none
@@ -102,41 +92,34 @@ public extension BackUpWallet {
 public extension BackUpWallet.Coordinator {
 	typealias Routes = [Route<BackUpWallet.Screen.State>]
 	struct State: Equatable, IndexedRouterState {
-		public let wallet: Wallet
 		public var routes: Routes
 		
 		public init(
-			wallet: Wallet,
 			routes: Routes
 		) {
-			self.wallet = wallet
 			self.routes = routes
 		}
 		
-		public static func fromSettings(wallet: Wallet) -> Self {
-			.init(
-				wallet: wallet,
-				routes:  [
-					.root(
-						.step1_BackUpPrivateKeyAndKeystore(
-							.init(mode: .userInitiatedFromSettings)
-						)
-				 )
-			 ])
-		}
+		public static let fromSettings = Self(
+			routes: [
+				.root(
+					.step1_BackUpPrivateKeyAndKeystore(
+						.init(mode: .userInitiatedFromSettings)
+					)
+				)
+			]
+		)
 		
+		public static let fromOnboarding = Self(
+			routes: [
+				.root(
+					.step1_BackUpPrivateKeyAndKeystore(
+						.init(mode: .mandatoryBackUpPartOfOnboarding)
+					)
+				)
+			]
+		)
 		
-		public static func fromOnboarding(wallet: Wallet) -> Self {
-			.init(
-				wallet: wallet,
-				routes: [
-					.root(
-						.step1_BackUpPrivateKeyAndKeystore(
-							.init(mode: .mandatoryBackUpPartOfOnboarding)
-						)
-				 )
-			 ])
-		}
 	}
 }
 
@@ -165,8 +148,14 @@ public extension BackUpWallet.Coordinator {
 					case let .step1_BackUpPrivateKeyAndKeystore(.delegate(delegateAction)):
 						switch delegateAction {
 						case .finishedBackingUpWallet:
-							return Effect(value: BackUpWallet.Coordinator.Action.delegate(Action.Delegate.finished(state.wallet)))
+							return Effect(value: .delegate(.finished(environment.wallet)))
+						case .revealKeystore:
+							state.routes.push(.step2b_BackUpKeystore(.init()))
+						case .revealPrivateKey:
+							state.routes.push(.step2a_BackUpPrivateKey(.init()))
 						}
+					case .step2b_BackUpKeystore(.delegate(.done)):
+						_ = state.routes.popLast()
 					default: break
 					}
 				default: break
@@ -197,6 +186,16 @@ public extension BackUpWallet.Coordinator.View {
 					state: /BackUpWallet.Screen.State.step1_BackUpPrivateKeyAndKeystore,
 					action: BackUpWallet.Screen.Action.step1_BackUpPrivateKeyAndKeystore,
 					then: BackUpPrivateKeyAndKeystore.Screen.init
+				)
+				CaseLet(
+					state: /BackUpWallet.Screen.State.step2a_BackUpPrivateKey,
+					action: BackUpWallet.Screen.Action.step2a_BackUpPrivateKey,
+					then: BackUpPrivateKey.View.init
+				)
+				CaseLet(
+					state: /BackUpWallet.Screen.State.step2b_BackUpKeystore,
+					action: BackUpWallet.Screen.Action.step2b_BackUpKeystore,
+					then: BackUpKeystore.View.init
 				)
 			}
 		}

@@ -566,6 +566,7 @@ func makePackage() -> Package {
 		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
 			Screen,
 			Styleguide,
 			// ^^^ Sort alphabetically ^^^

@@ -14,6 +14,7 @@ import Common
 import Screen
 import Styleguide
 import SwiftUI
+import Wallet
 
 public enum BackUpPrivateKeyAndKeystore {}
 
@@ -64,10 +65,13 @@ public extension BackUpPrivateKeyAndKeystore {
 public extension BackUpPrivateKeyAndKeystore.Action {
 	enum Delegate: Equatable {
 		case finishedBackingUpWallet
+		case revealKeystore
+		case revealPrivateKey
 	}
 	enum Internal: Equatable {
 		case `continue`
 		case copyKeystore
+		case copiedKeystoreResult(Result<String, Never>)
 		case revealKeystore
 		case revealPrivateKey
 		case alertDismissed
@@ -77,7 +81,10 @@ public extension BackUpPrivateKeyAndKeystore.Action {
 
 public extension BackUpPrivateKeyAndKeystore {
 	struct Environment {
-		public init() {}
+		public let wallet: Wallet
+		public init(wallet: Wallet) {
+			self.wallet = wallet
+		}
 	}
 }
 
@@ -94,21 +101,24 @@ public extension BackUpPrivateKeyAndKeystore {
 			state.alert = nil
 			return .none
 		case .internal(.copyKeystore):
-			//        .alert(isPresented: $viewModel.isPresentingDidCopyKeystoreAlert) {
-			//            Alert(
-			//                title: Text("Copied keystore to pasteboard."),
-			//                dismissButton: .default(Text("OK"))
-			//            )
-			//        }
-			guard copyToPasteboard(contents: "WHERE IS WALLET") else {
+			return environment.wallet
+				.exportKeystoreToJSON()
+				.catchToEffect {
+					BackUpPrivateKeyAndKeystore.Action.internal(.copiedKeystoreResult($0))
+				}
+		case let .internal(.copiedKeystoreResult(.success(keystoreJSON))):
+			guard copyToPasteboard(contents: keystoreJSON) else {
 				return .none
 			}
 			state.alert = .init(title: TextState("Copied keystore to pasteboard."))
 			return .none
+		case let .internal(.copiedKeystoreResult(.failure(error))):
+			fatalError(String(describing: error))
+			
 		case .internal(.revealKeystore):
-			fatalError()
+			return Effect(value: .delegate(.revealKeystore))
 		case .internal(.revealPrivateKey):
-			fatalError()
+			return Effect(value: .delegate(.revealPrivateKey))
 		case .delegate(_):
 			return .none
 		}

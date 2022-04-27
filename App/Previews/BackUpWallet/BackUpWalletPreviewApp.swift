@@ -21,9 +21,9 @@ struct BackUpWalletPreviewApp: App {
 			NavigationView {
 				BackUpWallet.Coordinator.View(
 					store: Store(
-						initialState: .fromOnboarding(wallet: .unsafe︕！Wallet),
+						initialState: .fromOnboarding,
 						reducer: BackUpWallet.Coordinator.reducer,
-						environment: BackUpWallet.Environment()
+						environment: BackUpWallet.Environment(wallet: .unsafe︕！Wallet)
 					)
 				)
 			}
