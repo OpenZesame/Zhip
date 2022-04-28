@@ -20,7 +20,7 @@ var targets: [Target] = []
 let Zesame = externalDependency(
 	category: .essential,
 	// branch: structured_concurrency
-	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "57ab0e8ed90ad84b6b0a286a963874b35e8c6dd2"),
+	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "3212b2f0fdcd453e4e545594a895f7eeacbf4e0a"),
 	target: .product(name: "Zesame", package: "Zesame"),
 	rationale: "Zilliqa Swift SDK, containing all account logic."
 )

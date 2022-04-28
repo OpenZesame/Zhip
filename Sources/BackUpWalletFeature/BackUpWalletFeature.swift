@@ -49,15 +49,12 @@ public extension BackUpWallet {
 	struct Environment {
 		public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 		public let mainQueue: AnySchedulerOf<DispatchQueue>
-		public let wallet: Wallet
 		public init(
 			backgroundQueue: AnySchedulerOf<DispatchQueue>,
-			mainQueue: AnySchedulerOf<DispatchQueue>,
-			wallet: Wallet
+			mainQueue: AnySchedulerOf<DispatchQueue>
 		) {
 			self.backgroundQueue = backgroundQueue
 			self.mainQueue = mainQueue
-			self.wallet = wallet
 		}
 	}
 }
@@ -68,7 +65,7 @@ public extension BackUpWallet.Screen {
 			.pullback(
 				state: /State.step1_BackUpPrivateKeyAndKeystore,
 				action: /Action.step1_BackUpPrivateKeyAndKeystore,
-				environment: { BackUpPrivateKeyAndKeystore.Environment(wallet: $0.wallet) }
+				environment: { _ in BackUpPrivateKeyAndKeystore.Environment() }
 			),
 		
 		BackUpPrivateKey.Coordinator.coordinatorReducer
@@ -78,8 +75,7 @@ public extension BackUpWallet.Screen {
 				environment: {
 					BackUpPrivateKey.Environment(
 						backgroundQueue: $0.backgroundQueue,
-						mainQueue: $0.mainQueue,
-						wallet: $0.wallet
+						mainQueue: $0.mainQueue
 					)
 				}
 			),
@@ -88,7 +84,7 @@ public extension BackUpWallet.Screen {
 			.pullback(
 				state: /State.step2b_BackUpKeystore,
 				action: /Action.step2b_BackUpKeystore,
-				environment: { BackUpKeystore.Environment(wallet: $0.wallet) }
+				environment: { _ in BackUpKeystore.Environment() }
 			),
 
 		
@@ -107,33 +103,40 @@ public extension BackUpWallet.Coordinator {
 	typealias Routes = [Route<BackUpWallet.Screen.State>]
 	struct State: Equatable, IndexedRouterState {
 		public var routes: Routes
-		
+		public let wallet: Wallet
 		public init(
+			wallet: Wallet,
 			routes: Routes
 		) {
+			self.wallet = wallet
 			self.routes = routes
 		}
 		
-		public static let fromSettings = Self(
-			routes: [
-				.root(
-					.step1_BackUpPrivateKeyAndKeystore(
-						.init(mode: .userInitiatedFromSettings)
+		public static func fromSettings(wallet: Wallet) -> Self {
+			.init(
+				wallet: wallet,
+				routes: [
+					.root(
+						.step1_BackUpPrivateKeyAndKeystore(
+							.init(wallet: wallet, mode: .userInitiatedFromSettings)
+						)
 					)
-				)
-			]
-		)
+				]
+			)
+		}
 		
-		public static let fromOnboarding = Self(
-			routes: [
-				.root(
-					.step1_BackUpPrivateKeyAndKeystore(
-						.init(mode: .mandatoryBackUpPartOfOnboarding)
+		public static func fromOnboarding(wallet: Wallet) -> Self {
+			.init(
+				wallet: wallet,
+				routes: [
+					.root(
+						.step1_BackUpPrivateKeyAndKeystore(
+							.init(wallet: wallet, mode: .mandatoryBackUpPartOfOnboarding)
+						)
 					)
-				)
-			]
-		)
-		
+				]
+			)
+		}
 	}
 }
 
@@ -163,14 +166,14 @@ public extension BackUpWallet.Coordinator {
 						switch delegateAction {
 						
 						case .finishedBackingUpWallet:
-							return Effect(value: .delegate(.finished(environment.wallet)))
+							return Effect(value: .delegate(.finished(state.wallet)))
 							
 						case .revealPrivateKey:
-							let screen: BackUpWallet.Screen.State = .step2a_BackUpPrivateKey(.initialState)
+							let screen: BackUpWallet.Screen.State = .step2a_BackUpPrivateKey(.initialState(wallet: state.wallet))
 							state.routes.presentSheet(screen, embedInNavigationView: true, onDismiss: nil)
 							
 						case .revealKeystore:
-							let screen: BackUpWallet.Screen.State = .step2b_BackUpKeystore(.init())
+							let screen: BackUpWallet.Screen.State = .step2b_BackUpKeystore(.init(wallet: state.wallet))
 							state.routes.presentSheet(screen, embedInNavigationView: true, onDismiss: nil)
 						
 						}

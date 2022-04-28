@@ -12,7 +12,9 @@ import Password
 import Wallet
 
 import struct Zesame.Keystore
+import struct Zesame.KeyPair
 import struct Zesame.PrivateKey
+import struct Zesame.PublicKey
 
 import class Zesame.DefaultZilliqaService
 import struct Zesame.Bech32Address
@@ -49,9 +51,9 @@ public extension WalletBuilder {
 	) -> Self {
 		let build: Build = { namedKeystore in
 			
-			func decryptPrivateKey(password: Password) -> PrivateKey {
-//				zilliqaService.extractPrivateKeyFrom(keystore: namedKeystore.keystore, decryptWith: password)
-				fatalError()
+			@Sendable
+			func decryptPrivateKey(password: Password) async throws -> KeyPair {
+				try await zilliqaService.extractKeyPairFrom(keystore: namedKeystore.keystore, encryptedBy: password.password)
 			}
 			
 			let formatAddress: Wallet.FormatAddress = { format in
@@ -73,12 +75,27 @@ public extension WalletBuilder {
 					fatalError()
 				},
 				exportKeystoreToJSON: {
-//					.init(value(String(data: try! jsonEncoder.encode(namedKeystore.keystore), encoding: .utf8)!)
-							fatalError()
+					let keystore = namedKeystore.keystore
+					let jsonEncoder = JSONEncoder()
+					jsonEncoder.outputFormatting = .prettyPrinted
+					do {
+						let data = try jsonEncoder.encode(keystore)
+						let json = String(data: data, encoding: .utf8)!
+						return Effect(value: json)
+					} catch {
+						fatalError("Handle errors")
+					}
 				},
-				exportPrivateKey: { request in
-					let privateKey = decryptPrivateKey(password: request.encryptionPassword)
-					return Effect(value: privateKey.asHexStringLength64())
+				exportKeyPair: { request in
+					Effect.task {
+						let keyPair = try await decryptPrivateKey(password: request.encryptionPassword)
+						return KeyPairHex(
+							publicKey: keyPair.publicKey.hex.uncompressed,
+							privateKey: keyPair.privateKey.asHexStringLength64()
+						)
+					}
+					.mapError(ExportKeyPairError.init(error:))
+					.eraseToEffect()
 					
 				},
 				formatAddress: formatAddress,

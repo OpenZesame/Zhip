@@ -27,8 +27,10 @@ public extension BackUpPrivateKeyAndKeystore {
 	
 	
 	struct State: Equatable {
-		public var alert: AlertState<Action>?
+		public let wallet: Wallet
 		public var mode: Mode
+
+		public var alert: AlertState<Action>?
 		public var backUpPrivateKey: BackUpPrivateKey.Coordinator.State
 		public var backUpKeystore: BackUpKeystore.State
 		
@@ -36,17 +38,17 @@ public extension BackUpPrivateKeyAndKeystore {
 		public var canContinue: Bool
 		
 		public init(
+			wallet: Wallet,
 			mode: Mode,
-			backUpPrivateKey: BackUpPrivateKey.Coordinator.State = .initialState,
-			backUpKeystore: BackUpKeystore.State = .init(),
 			alert: AlertState<Action>? = nil,
 			userHasConfirmedBackingUpWallet: Bool = false,
 			canContinue: Bool = false
 		) {
+			self.wallet = wallet
 			self.mode = mode
 			
-			self.backUpPrivateKey = backUpPrivateKey
-			self.backUpKeystore = backUpKeystore
+			self.backUpPrivateKey = .initialState(wallet: wallet)
+			self.backUpKeystore = .init(wallet: wallet)
 			
 			self.alert = alert
 			self.userHasConfirmedBackingUpWallet = userHasConfirmedBackingUpWallet
@@ -81,9 +83,7 @@ public extension BackUpPrivateKeyAndKeystore.Action {
 
 public extension BackUpPrivateKeyAndKeystore {
 	struct Environment {
-		public let wallet: Wallet
-		public init(wallet: Wallet) {
-			self.wallet = wallet
+		public init() {
 		}
 	}
 }
@@ -101,7 +101,7 @@ public extension BackUpPrivateKeyAndKeystore {
 			state.alert = nil
 			return .none
 		case .internal(.copyKeystore):
-			return environment.wallet
+			return state.wallet
 				.exportKeystoreToJSON()
 				.catchToEffect {
 					BackUpPrivateKeyAndKeystore.Action.internal(.copiedKeystoreResult($0))

@@ -18,15 +18,12 @@ public extension BackUpPrivateKey {
 	struct Environment {
 		public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 		public let mainQueue: AnySchedulerOf<DispatchQueue>
-		public let wallet: Wallet
 		public init(
 			backgroundQueue: AnySchedulerOf<DispatchQueue>,
-			mainQueue: AnySchedulerOf<DispatchQueue>,
-			wallet: Wallet
+			mainQueue: AnySchedulerOf<DispatchQueue>
 		) {
 			self.backgroundQueue = backgroundQueue
 			self.mainQueue = mainQueue
-			self.wallet = wallet
 		}
 	}
 }
@@ -60,8 +57,7 @@ public extension BackUpPrivateKey.Screen {
 				environment: {
 					DecryptKeystore.Environment(
 						backgroundQueue: $0.backgroundQueue,
-						mainQueue: $0.mainQueue,
-						wallet: $0.wallet
+						mainQueue: $0.mainQueue
 					)
 				}
 			),
@@ -89,11 +85,11 @@ public extension BackUpPrivateKey.Coordinator {
 	typealias Routes = [Route<BackUpPrivateKey.Screen.State>]
 	struct State: Equatable, IndexedRouterState {
 		
-		public static let initialState = Self(
-			routes: [
-				.root(.decryptKeystore(.init()))
-			]
-		)
+		public static func initialState(wallet: Wallet) -> Self {
+			Self(routes: [
+				.root(.decryptKeystore(.init(wallet: wallet)))
+			])
+		}
 		
 		public var routes: Routes
 		
@@ -126,8 +122,7 @@ public extension BackUpPrivateKey.Coordinator {
 			environment: {
 				BackUpPrivateKey.Environment(
 					backgroundQueue: $0.backgroundQueue,
-					mainQueue: $0.mainQueue,
-					wallet: $0.wallet
+					mainQueue: $0.mainQueue
 				)
 			}
 		)

@@ -21,12 +21,11 @@ struct BackUpWalletPreviewApp: App {
 			NavigationView {
 				BackUpWallet.Coordinator.View(
 					store: Store(
-						initialState: .fromOnboarding,
+						initialState: .fromOnboarding(wallet: .unsafe︕！Wallet),
 						reducer: BackUpWallet.Coordinator.reducer,
 						environment: BackUpWallet.Environment(
 							backgroundQueue: DispatchQueue(label: "BackUpWalletPreviewApp-background-queue").eraseToAnyScheduler(),
-							mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-							wallet: .unsafe︕！Wallet
+							mainQueue: DispatchQueue.main.eraseToAnyScheduler()
 						)
 					)
 				)

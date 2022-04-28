@@ -101,8 +101,11 @@ public extension NewWallet {
 		BackUpWallet.Coordinator.reducer.pullback(
 			state: /State.step3_BackUpWallet,
 			action: /NewWallet.Action.backUpWallet,
-			environment: { _ in
-				BackUpWallet.Environment()
+			environment: {
+				BackUpWallet.Environment(
+					backgroundQueue: $0.backgroundQueue,
+					mainQueue: $0.mainQueue
+				)
 			}
 		),
 		
@@ -114,7 +117,7 @@ public extension NewWallet {
 				state = .step2_GenerateNewWallet(.init())
 				return .none
 			case .generateNewWallet(.delegate(.finished(let wallet))):
-				state = .step3_BackUpWallet(.init(wallet: wallet))
+				state = .step3_BackUpWallet(.fromOnboarding(wallet: wallet))
 				return .none
 			case .backUpWallet(.delegate(.finished(let wallet))):
 				return Effect(value: .delegate(.finishedSettingUpNewWallet(wallet)))

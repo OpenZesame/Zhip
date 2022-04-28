@@ -19,14 +19,20 @@ public enum DecryptKeystore {}
 
 public extension DecryptKeystore {
 	struct State: Equatable {
+		public let wallet: Wallet
 		@BindableState public var password: String
+		public var alert: AlertState<Action>?
 		public var canDecrypt: Bool
 		public var isDecrypting: Bool
 		public init(
+			wallet: Wallet,
+			alert: AlertState<Action>? = nil,
 			password: String = "",
 			canDecrypt: Bool = false,
 			isDecrypting: Bool = false
 		) {
+			self.wallet = wallet
+			self.alert = alert
 			self.password = password
 			self.canDecrypt = canDecrypt
 			self.isDecrypting = isDecrypting
@@ -44,7 +50,8 @@ public extension DecryptKeystore {
 public extension DecryptKeystore.Action {
 	enum Internal: Equatable {
 		case decrypt
-		case decryptionResult(Result<KeyPairHex, Never>)
+		case decryptionResult(Result<KeyPairHex, ExportKeyPairError>)
+		case alertDismissed
 	}
 
 	enum Delegate: Equatable {
@@ -57,15 +64,12 @@ public extension DecryptKeystore {
 	struct Environment {
 		public let backgroundQueue: AnySchedulerOf<DispatchQueue>
 		public let mainQueue: AnySchedulerOf<DispatchQueue>
-		public let wallet: Wallet
 		public init(
 			backgroundQueue: AnySchedulerOf<DispatchQueue>,
-			mainQueue: AnySchedulerOf<DispatchQueue>,
-			wallet: Wallet
+			mainQueue: AnySchedulerOf<DispatchQueue>
 		) {
 			self.backgroundQueue = backgroundQueue
 			self.mainQueue = mainQueue
-			self.wallet = wallet
 		}
 	}
 }
@@ -76,16 +80,18 @@ public extension DecryptKeystore {
 			state.canDecrypt = !state.password.isEmpty // FIXME replace with password validator
 			return .none
 		case .internal(.decrypt):
-			
+			struct DecryptionID: Hashable {}
 			let password: Password = .init(state.password)
 			let request = ExportPrivateKeyRequest(encryptionPassword: password)
 			
 			state.isDecrypting = true
 			
-			return environment.wallet
+			return state.wallet
 				.exportKeyPair(request)
 				.subscribe(on: environment.backgroundQueue)
 				.receive(on: environment.mainQueue)
+				.eraseToEffect()
+//				.cancellable(id: DecryptionID(), cancelInFlight: true)
 				.catchToEffect {
 					Action.internal(.decryptionResult($0))
 				}
@@ -95,7 +101,12 @@ public extension DecryptKeystore {
 			
 		case let .internal(.decryptionResult(.failure(error))):
 			state.isDecrypting = false
-			fatalError("\(error)")
+			state.alert = .init(title: TextState("Failed to decrypt keystore, wrong password? Underlying error: \(error.localizedDescription)"))
+			return .none
+		case .internal(.alertDismissed):
+			state.alert = nil
+			return .none
+			
 		case .delegate(_):
 			return .none
 		}
@@ -131,14 +142,6 @@ public extension DecryptKeystore.Screen {
 					
 					SecureField("Encryption Password", text: viewStore.binding(\.$password))
 					
-//					InputField(
-//						prompt: "Encryption password",
-//						text: viewStore.password,
-//						isValid: $viewModel.isPasswordOnValidFormat,
-//						isSecure: true,
-//						validationRules: .encryptionPassword
-//					)
-					
 					Spacer()
 					
 					Button("Reveal") {
@@ -149,6 +152,7 @@ public extension DecryptKeystore.Screen {
 				}
 				.foregroundColor(Color.asphaltGrey)
 				.textFieldStyle(.roundedBorder)
+				.alert(store.scope(state: \.alert), dismiss: .internal(.alertDismissed))
 				.navigationTitle("Decrypt keystore")
 			}
 		}
@@ -170,6 +174,7 @@ extension DecryptKeystore.Screen {
 	enum ViewAction: Equatable, BindableAction {
 		case binding(BindingAction<ViewState>)
 		case revealButtonTapped
+		case alertDismissed
 	}
 }
 
@@ -180,6 +185,8 @@ private extension DecryptKeystore.Action {
 			self = .binding(bindingAction.pullback(\DecryptKeystore.State.view))
 		case .revealButtonTapped:
 			self = .internal(.decrypt)
+		case .alertDismissed:
+			self = .internal(.alertDismissed)
 		}
 	}
 }

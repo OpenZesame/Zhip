@@ -53,7 +53,7 @@ public extension Wallet {
 	typealias Equals = (_ other: Self) -> Bool
 	typealias Sign = (SignRequest) -> Effect<Bool, Never>
 	typealias ExportKeystoreToJSON = () -> Effect<String, Never>
-	typealias ExportKeyPair = (ExportPrivateKeyRequest) -> Effect<KeyPairHex, Never>
+	typealias ExportKeyPair = (ExportPrivateKeyRequest) -> Effect<KeyPairHex, ExportKeyPairError>
 	typealias Name = () -> String?
 	typealias Origin = () -> KeystoreOrigin
 }
@@ -70,6 +70,16 @@ public enum AddressFormat {
 	
 	/// Mainnet Zil bech32 format like: `zil1....`
 	case mainnet
+}
+
+public struct ExportKeyPairError: Swift.Error, CustomStringConvertible, Equatable {
+	public let description: String
+	public init(description: String) {
+		self.description = description
+	}
+	public init(error: Swift.Error) {
+		self.init(description: error.localizedDescription)
+	}
 }
 
 public struct SignRequest {

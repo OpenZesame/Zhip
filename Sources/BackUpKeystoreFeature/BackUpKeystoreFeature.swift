@@ -17,12 +17,15 @@ public enum BackUpKeystore {}
 
 public extension BackUpKeystore {
 	struct State: Equatable {
+		public let wallet: Wallet
 		public var alert: AlertState<Action>?
 		public var displayableKeystore: String?
 		public init(
+			wallet: Wallet,
 			alert: AlertState<Action>? = nil,
 			displayableKeystore: String? = nil
 		) {
+			self.wallet = wallet
 			self.alert = alert
 			self.displayableKeystore = displayableKeystore
 		}
@@ -53,11 +56,8 @@ public extension BackUpKeystore.Action {
 
 public extension BackUpKeystore {
 	struct Environment {
-		public let wallet: Wallet
 		public init(
-			wallet: Wallet
 		) {
-			self.wallet = wallet
 		}
 	}
 }
@@ -69,7 +69,7 @@ public extension BackUpKeystore {
 			state.alert = nil
 			return .none
 		case .internal(.loadKeystore):
-			return environment.wallet.exportKeystoreToJSON().catchToEffect {
+			return state.wallet.exportKeystoreToJSON().catchToEffect {
 				Action.internal(.loadedKeystoreResult($0))
 			}
 		case let .internal(.loadedKeystoreResult(.success(keystoreJSON))):
