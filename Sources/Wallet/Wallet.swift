@@ -10,11 +10,20 @@ import Foundation
 import Password
 import NamedKeystore
 
+public struct KeyPairHex: Equatable {
+	public let publicKey: String
+	public let privateKey: String
+	public init(publicKey: String, privateKey: String) {
+		self.publicKey = publicKey
+		self.privateKey = privateKey
+	}
+}
+
 public struct Wallet: Equatable {
 	public let equals: Equals
 	public let sign: Sign
 	public let exportKeystoreToJSON: ExportKeystoreToJSON
-	public let exportPrivateKey: ExportPrivateKey
+	public let exportKeyPair: ExportKeyPair
 	public let formatAddress: FormatAddress
 	public let name: Name
 	public let origin: Origin
@@ -23,7 +32,7 @@ public struct Wallet: Equatable {
 		equals: @escaping Equals,
 		sign: @escaping Sign,
 		exportKeystoreToJSON: @escaping ExportKeystoreToJSON,
-		exportPrivateKey: @escaping ExportPrivateKey,
+		exportKeyPair: @escaping ExportKeyPair,
 		formatAddress: @escaping FormatAddress,
 		name: @escaping Name,
 		origin: @escaping Origin
@@ -31,7 +40,7 @@ public struct Wallet: Equatable {
 		self.equals = equals
 		self.sign = sign
 		self.exportKeystoreToJSON = exportKeystoreToJSON
-		self.exportPrivateKey = exportPrivateKey
+		self.exportKeyPair = exportKeyPair
 		self.formatAddress = formatAddress
 		self.name = name
 		self.origin = origin
@@ -44,7 +53,7 @@ public extension Wallet {
 	typealias Equals = (_ other: Self) -> Bool
 	typealias Sign = (SignRequest) -> Effect<Bool, Never>
 	typealias ExportKeystoreToJSON = () -> Effect<String, Never>
-	typealias ExportPrivateKey = (ExportPrivateKeyRequest) -> Effect<String, Never>
+	typealias ExportKeyPair = (ExportPrivateKeyRequest) -> Effect<KeyPairHex, Never>
 	typealias Name = () -> String?
 	typealias Origin = () -> KeystoreOrigin
 }
@@ -65,12 +74,20 @@ public enum AddressFormat {
 
 public struct SignRequest {
 	public let encryptionPassword: Password
-//	public let amount: ZilAmount
-//	public let recipient: LegacyAddress
+	public init(
+		encryptionPassword: Password
+	) {
+		self.encryptionPassword = encryptionPassword
+	}
 }
 
 public struct ExportPrivateKeyRequest {
 	public let encryptionPassword: Password
+	public init(
+		encryptionPassword: Password
+	) {
+		self.encryptionPassword = encryptionPassword
+	}
 }
 
 

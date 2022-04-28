@@ -30,7 +30,7 @@ public extension BackUpWallet.Screen {
 	/// single screen or a subflow consisting of multiple screens.
 	enum State: Equatable {
 		case step1_BackUpPrivateKeyAndKeystore(BackUpPrivateKeyAndKeystore.State)
-		case step2a_BackUpPrivateKey(BackUpPrivateKey.State)
+		case step2a_BackUpPrivateKey(BackUpPrivateKey.Coordinator.State)
 		case step2b_BackUpKeystore(BackUpKeystore.State)
 	}
 }
@@ -40,15 +40,23 @@ public extension BackUpWallet.Screen {
 	/// Actions from the back up wallet flow.
 	enum Action: Equatable {
 		case step1_BackUpPrivateKeyAndKeystore(BackUpPrivateKeyAndKeystore.Action)
-		case step2a_BackUpPrivateKey(BackUpPrivateKey.Action)
+		case step2a_BackUpPrivateKey(BackUpPrivateKey.Coordinator.Action)
 		case step2b_BackUpKeystore(BackUpKeystore.Action)
 	}
 }
 
 public extension BackUpWallet {
 	struct Environment {
+		public let backgroundQueue: AnySchedulerOf<DispatchQueue>
+		public let mainQueue: AnySchedulerOf<DispatchQueue>
 		public let wallet: Wallet
-		public init(wallet: Wallet) {
+		public init(
+			backgroundQueue: AnySchedulerOf<DispatchQueue>,
+			mainQueue: AnySchedulerOf<DispatchQueue>,
+			wallet: Wallet
+		) {
+			self.backgroundQueue = backgroundQueue
+			self.mainQueue = mainQueue
 			self.wallet = wallet
 		}
 	}
@@ -63,11 +71,17 @@ public extension BackUpWallet.Screen {
 				environment: { BackUpPrivateKeyAndKeystore.Environment(wallet: $0.wallet) }
 			),
 		
-		BackUpPrivateKey.reducer
+		BackUpPrivateKey.Coordinator.coordinatorReducer
 			.pullback(
 				state: /State.step2a_BackUpPrivateKey,
 				action: /Action.step2a_BackUpPrivateKey,
-				environment: { BackUpPrivateKey.Environment(wallet: $0.wallet) }
+				environment: {
+					BackUpPrivateKey.Environment(
+						backgroundQueue: $0.backgroundQueue,
+						mainQueue: $0.mainQueue,
+						wallet: $0.wallet
+					)
+				}
 			),
 		
 		BackUpKeystore.reducer
@@ -147,15 +161,26 @@ public extension BackUpWallet.Coordinator {
 					switch routeAction {
 					case let .step1_BackUpPrivateKeyAndKeystore(.delegate(delegateAction)):
 						switch delegateAction {
+						
 						case .finishedBackingUpWallet:
 							return Effect(value: .delegate(.finished(environment.wallet)))
-						case .revealKeystore:
-							state.routes.push(.step2b_BackUpKeystore(.init()))
+							
 						case .revealPrivateKey:
-							state.routes.push(.step2a_BackUpPrivateKey(.init()))
+							let screen: BackUpWallet.Screen.State = .step2a_BackUpPrivateKey(.initialState)
+							state.routes.presentSheet(screen, embedInNavigationView: true, onDismiss: nil)
+							
+						case .revealKeystore:
+							let screen: BackUpWallet.Screen.State = .step2b_BackUpKeystore(.init())
+							state.routes.presentSheet(screen, embedInNavigationView: true, onDismiss: nil)
+						
 						}
+						
+					case .step2a_BackUpPrivateKey(.delegate(.done)):
+						_ = state.routes.popLast()
+						
 					case .step2b_BackUpKeystore(.delegate(.done)):
 						_ = state.routes.popLast()
+				
 					default: break
 					}
 				default: break
@@ -190,7 +215,7 @@ public extension BackUpWallet.Coordinator.View {
 				CaseLet(
 					state: /BackUpWallet.Screen.State.step2a_BackUpPrivateKey,
 					action: BackUpWallet.Screen.Action.step2a_BackUpPrivateKey,
-					then: BackUpPrivateKey.View.init
+					then: BackUpPrivateKey.Coordinator.View.init
 				)
 				CaseLet(
 					state: /BackUpWallet.Screen.State.step2b_BackUpKeystore,

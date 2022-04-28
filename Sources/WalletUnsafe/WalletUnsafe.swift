@@ -57,8 +57,13 @@ let jsonString = """
 """
 				return Effect(value: jsonString)
 			},
-			exportPrivateKey: { request in
-				Effect(value: unsafestPrivateKey.asHexStringLength64())
+			exportKeyPair: { request in
+				Effect(
+					value: KeyPairHex(
+						publicKey: "03deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+						privateKey: unsafestPrivateKey.asHexStringLength64()
+					)
+				)
 			},
 			formatAddress: { format in
 				switch format {

@@ -23,7 +23,11 @@ struct BackUpWalletPreviewApp: App {
 					store: Store(
 						initialState: .fromOnboarding,
 						reducer: BackUpWallet.Coordinator.reducer,
-						environment: BackUpWallet.Environment(wallet: .unsafe︕！Wallet)
+						environment: BackUpWallet.Environment(
+							backgroundQueue: DispatchQueue(label: "BackUpWalletPreviewApp-background-queue").eraseToAnyScheduler(),
+							mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+							wallet: .unsafe︕！Wallet
+						)
 					)
 				)
 			}

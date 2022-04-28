@@ -29,7 +29,7 @@ public extension BackUpPrivateKeyAndKeystore {
 	struct State: Equatable {
 		public var alert: AlertState<Action>?
 		public var mode: Mode
-		public var backUpPrivateKey: BackUpPrivateKey.State
+		public var backUpPrivateKey: BackUpPrivateKey.Coordinator.State
 		public var backUpKeystore: BackUpKeystore.State
 		
 		@BindableState public var userHasConfirmedBackingUpWallet: Bool
@@ -37,7 +37,7 @@ public extension BackUpPrivateKeyAndKeystore {
 		
 		public init(
 			mode: Mode,
-			backUpPrivateKey: BackUpPrivateKey.State = .init(),
+			backUpPrivateKey: BackUpPrivateKey.Coordinator.State = .initialState,
 			backUpKeystore: BackUpKeystore.State = .init(),
 			alert: AlertState<Action>? = nil,
 			userHasConfirmedBackingUpWallet: Bool = false,

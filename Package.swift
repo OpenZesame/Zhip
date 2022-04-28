@@ -595,6 +595,7 @@ func makePackage() -> Package {
 		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
+			Common,
 			Screen,
 			Styleguide,
 			// ^^^ Sort alphabetically ^^^
@@ -624,8 +625,11 @@ func makePackage() -> Package {
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
 			InputField,
+			Password,
+			PasswordValidator,
 			Screen,
 			Styleguide,
+			Wallet,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -635,6 +639,7 @@ func makePackage() -> Package {
 		name: "BackUpPrivateKeyFeature",
 		externalDependencies: [
 			ComposableArchitecture,
+			TCACoordinators,
 		],
 		internalDependencies: [
 			// ˅˅˅ Sort alphabetically ˅˅˅
