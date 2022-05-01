@@ -66,7 +66,7 @@ public extension Balances {
 public extension Balances.Screen {
 	var body: some View {
 		WithViewStore(store) { viewStore in
-			ForceFullScreen {
+			AuroraView {
 				VStack {
 					Text("Balances")
 						.font(.zhip.bigBang)
@@ -81,7 +81,7 @@ public extension Balances.Screen {
 						.textSelection(.enabled)
 				}
 			}
-			.navigationTitle("Balances")
+			.background(Color.appBackground)
 		}
 	}
 }

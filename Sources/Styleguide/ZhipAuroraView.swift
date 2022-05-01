@@ -12,6 +12,22 @@ public struct ZhipAuroraView: View {
 	public init() {}
 	
 	public var body: some View {
+		AuroraView {
+			Text("Zhip")
+				.font(.zhip.bigBang)
+				.foregroundColor(.white)
+		}
+	}
+}
+
+
+public struct AuroraView<Content: View>: View {
+	let content: Content
+	public init(@ViewBuilder content: () -> Content) {
+		self.content = content()
+	}
+	
+	public var body: some View {
 		ZStack {
 			ParallaxImage(
 				back: "Images/Main/BackAurora",
@@ -19,9 +35,7 @@ public struct ZhipAuroraView: View {
 				front: "Images/Main/FrontAurora"
 			)
 			
-			Text("Zhip")
-				.font(.zhip.bigBang)
-				.foregroundColor(.white)
+			content
 		}
 	}
 }
