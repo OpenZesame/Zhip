@@ -569,6 +569,7 @@ func makePackage() -> Package {
 			Common,
 			Screen,
 			Styleguide,
+			Wallet,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
@@ -598,6 +599,7 @@ func makePackage() -> Package {
 			Common,
 			Screen,
 			Styleguide,
+			Wallet,
 			// ^^^ Sort alphabetically ^^^
 		]
 	)
