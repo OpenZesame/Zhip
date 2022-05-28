@@ -8,7 +8,7 @@
 import Foundation
 import Common
 import ComposableArchitecture
-import struct Zesame.ZilAmount
+import struct Zesame.Amount
 import PIN
 
 public struct KeychainClient {
@@ -103,12 +103,12 @@ public extension KeychainClient {
 // MARK: - Balance
 // MARK: -
 public extension KeychainClient {
-	func saveBalance(_ amount: ZilAmount) -> Effect<ZilAmount, Self.Error> {
+	func saveBalance(_ amount: Amount) -> Effect<Amount, Self.Error> {
 		save(model: amount, forKey: balanceKey)
 	}
 	
-	func loadBalance() -> Effect<ZilAmount?, Self.Error> {
-		load(type: ZilAmount.self, forKey: balanceKey)
+	func loadBalance() -> Effect<Amount?, Self.Error> {
+		load(type: Amount.self, forKey: balanceKey)
 	}
 }
 

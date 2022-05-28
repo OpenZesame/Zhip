@@ -157,7 +157,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OpenZesame/Zesame.git",
       "state" : {
-        "revision" : "57ab0e8ed90ad84b6b0a286a963874b35e8c6dd2"
+        "revision" : "cd863cd20cbda44c91f8fe33fcc384c065047433"
       }
     }
   ],

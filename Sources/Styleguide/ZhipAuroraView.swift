@@ -26,6 +26,14 @@ public struct AuroraView<Content: View>: View {
 	public init(@ViewBuilder content: () -> Content) {
 		self.content = content()
 	}
+
+	private var maxWidth: CGFloat {
+		#if os(iOS)
+		return UIScreen.main.bounds.width
+		#else
+		return 300
+		#endif
+	}
 	
 	public var body: some View {
 		ZStack {
@@ -34,8 +42,10 @@ public struct AuroraView<Content: View>: View {
 				middle: "Images/Main/MiddleAurora",
 				front: "Images/Main/FrontAurora"
 			)
+			.frame(maxWidth: maxWidth)
 			
 			content
+				.padding()
 		}
 	}
 }

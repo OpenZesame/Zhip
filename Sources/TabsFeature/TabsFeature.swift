@@ -24,16 +24,20 @@ public extension Tabs {
 		
 		public var selectedTab: Tab
 		
-		public var balances: Balances.State
+		public var balances: BalancesCoordinator.State
 		public var contacts: Contacts.State
 		public var transfer: Transfer.State
 		public var receive: Receive.State
 		public var settings: Settings.State
 		
-		public init(wallet: Wallet, isPINSet: Bool = false, selectedTab: Tab = .balances) {
+		public init(
+			wallet: Wallet,
+			isPINSet: Bool = false,
+			selectedTab: Tab = .balances
+		) {
 			self.selectedTab = selectedTab
 			
-			self.balances = .init(wallet: wallet)
+			self.balances = .initialState(wallet: wallet)
 			self.contacts = .init()
 			self.transfer = .init(wallet: wallet)
 			self.receive = .init(wallet: wallet)
@@ -47,7 +51,7 @@ public extension Tabs {
 		
 		case selectedTab(Tab)
 		
-		case balances(Balances.Action)
+		case balances(BalancesCoordinator.Action)
 		case contacts(Contacts.Action)
 		case transfer(Transfer.Action)
 		case receive(Receive.Action)
@@ -82,11 +86,11 @@ public extension Tabs {
 public extension Tabs {
 	static let reducer = Reducer<State, Action, Environment>.combine(
 		
-		Balances.reducer.pullback(
+		BalancesCoordinator.coordinatorReducer.pullback(
 			state: \.balances,
 			action: /Tabs.Action.balances,
 			environment: {
-				Balances.Environment(mainQueue: $0.mainQueue)
+				BalancesCoordinator.Environment(mainQueue: $0.mainQueue)
 			}
 		),
 		
@@ -135,6 +139,9 @@ public extension Tabs {
 				
 			case .balances(.delegate(.noop)):
 				fatalError()
+			case .balances(_):
+				return .none
+				
 			case .receive(.delegate(.noop)):
 				fatalError()
 			case let .transfer(.delegate(.transactionFinalized(txReceipt))):
@@ -178,9 +185,9 @@ public extension Tabs.CoordinatorScreen {
 				send: Tabs.Action.selectedTab)
 			) {
 				NavigationView {
-					Balances.Screen(
+					BalancesCoordinator.View(
 						store: store.scope(
-							state: \.balances,
+							state: \Tabs.State.balances,
 							action: Tabs.Action.balances
 						)
 					)

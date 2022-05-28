@@ -16,16 +16,16 @@ var targets: [Target] = []
 // MARK: - =====================
 
 
-// MARK: - Zesame Ext.
+// MARK: - Zesame
 let Zesame = externalDependency(
 	category: .essential,
 	// branch: structured_concurrency
-	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "3212b2f0fdcd453e4e545594a895f7eeacbf4e0a"),
+	package: .package(url: "https://github.com/OpenZesame/Zesame.git", revision: "cd863cd20cbda44c91f8fe33fcc384c065047433"),
 	target: .product(name: "Zesame", package: "Zesame"),
 	rationale: "Zilliqa Swift SDK, containing all account logic."
 )
 
-// MARK: - ComposableArchitecture Ext.
+// MARK: - ComposableArchitecture
 let ComposableArchitecture = externalDependency(
 	category: .architecture,
 	package: .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", revision: "d924b9ad27d2a2ccb0ada2639f5255084ff63382"), // later than 0.33.1, fixes WithViewStore bugs, see: https://github.com/pointfreeco/swift-composable-architecture/issues/1022 and PR https://github.com/pointfreeco/swift-composable-architecture/pull/1015
@@ -33,7 +33,7 @@ let ComposableArchitecture = externalDependency(
 	rationale: "Testable, modular, scalable architecture gaining grounds as the go-to architecture for SwiftUI."
 )
 
-// MARK: - TCACoordinators Ext.
+// MARK: - TCACoordinators
 let TCACoordinators = externalDependency(
 	category: .architecture,
 	package: .package(url: "https://github.com/johnpatrickmorgan/TCACoordinators.git", from: "0.1.0"),
@@ -41,7 +41,7 @@ let TCACoordinators = externalDependency(
 	rationale: "Navigation for SwiftUI using coordinator patterns which is compatible with TCA."
 )
 
-// MARK: - KeychainAccess Ext.
+// MARK: - KeychainAccess
 let KeychainAccess = externalDependency(
 	category: .convenience,
 	package: .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
