@@ -12,6 +12,6 @@ import XCTest
 
 final class SettingsFeatureTests: XCTestCase {
 	func testSettingsAlertStartsAsNil() {
-		XCTAssertNil(SettingsState().alert)
+        XCTAssertNil(Settings.State().alert)
 	}
 }

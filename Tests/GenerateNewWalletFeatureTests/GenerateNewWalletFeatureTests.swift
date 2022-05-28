@@ -12,6 +12,6 @@ import XCTest
 
 final class GenerateNewWalletFeatureTests: XCTestCase{
 	func testCannotProceedWithoutValidPasswords() {
-		XCTAssertFalse(GenerateNewWalletState().isContinueButtonEnabled)
+        XCTAssertFalse(GenerateNewWallet.State().isContinueButtonEnabled)
 	}
 }

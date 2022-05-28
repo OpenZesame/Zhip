@@ -68,8 +68,8 @@
 		48B83CA6280415F500640E52 /* NewPINPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewPINPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B83CA8280415F500640E52 /* NewPINPreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPINPreviewApp.swift; sourceTree = "<group>"; };
 		48B83CAC280415F600640E52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		48B83CB5280416E100640E52 /* Zhip_SwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip_SwiftUI; path = ..; sourceTree = "<group>"; };
 		48B83CC42804475500640E52 /* BackUpWalletPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackUpWalletPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48F9CBA628424ECC00FFBC7B /* Zhip */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Zhip; path = ..; sourceTree = "<group>"; };
 		48FCC6B527E8697200B53220 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48FCC6B627E8697200B53220 /* Zhip-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Zhip-Info.plist"; sourceTree = "<group>"; };
 		48FCC6B727E8697200B53220 /* freesound_mattix_radar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = freesound_mattix_radar.wav; sourceTree = "<group>"; };
@@ -128,13 +128,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		48526AAC27BE3F7000C25518 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		48526AAF27BE3F8600C25518 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,7 +142,6 @@
 				48B83C7B280414F800640E52 /* Previews */,
 				48A79E6B27DDBB23006E7938 /* Packages */,
 				48A80AC927B675B6002271BB /* Frameworks */,
-				4872FA4D27B5573F008B7BD0 /* iOS */,
 				4872FA2B27B4F8F5008B7BD0 /* macOS */,
 				4872FA2527B4F8F5008B7BD0 /* Products */,
 				4872FA1C27B4F8F4008B7BD0 /* Shared */,
@@ -184,14 +176,6 @@
 			path = macOS;
 			sourceTree = "<group>";
 		};
-		4872FA4D27B5573F008B7BD0 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				48526AAC27BE3F7000C25518 /* Resources */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
 		4873725528044C6B0077DB07 /* BackUpWallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,7 +188,7 @@
 		48A79E6B27DDBB23006E7938 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				48B83CB5280416E100640E52 /* Zhip_SwiftUI */,
+				48F9CBA628424ECC00FFBC7B /* Zhip */,
 			);
 			name = Packages;
 			sourceTree = "<group>";

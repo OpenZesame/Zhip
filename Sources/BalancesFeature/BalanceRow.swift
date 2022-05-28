@@ -12,70 +12,9 @@ import TCACoordinators
 import Zesame
 import AmountFormatter
 
-public enum TokenID: Hashable {
-	case zilling
-	case token(symbol: String, contractAddress: Bech32Address)
-	
-	public var symbol: String {
-		switch self {
-		case .zilling: return "Zil"
-		case .token(let symbol, _):
-			return symbol
-		}
-	}
+public enum BalanceRow {}
 
-	/// Governance Zilliqa
-	public static let gZil = try! Self.token(
-		symbol: "gZIL",
-		contractAddress: Bech32Address(bech32String: "zil14pzuzq6v6pmmmrfjhczywguu0e97djepxt8g3e")
-	)
-	
-	/// XCAD Network
-	public static let xcad = try! Self.token(
-		symbol: "XCAD",
-		contractAddress: Bech32Address(bech32String: "zil1z5l74hwy3pc3pr3gdh3nqju4jlyp0dzkhq2f5y")
-	)
-	
-	/// StraitsX Singapore Dollar
-	public static let xsgd = try! Self.token(
-		symbol: "XSGD",
-		contractAddress: Bech32Address(bech32String: "zil1zu72vac254htqpg3mtywdcfm84l3dfd9qzww8t")
-	)
-	
-	/// ZilSwap
-	public static let zwap = try! Self.token(
-		symbol: "ZWAP",
-		contractAddress: Bech32Address(bech32String: "zil1p5suryq6q647usxczale29cu3336hhp376c627")
-	)
-}
-
-public struct TokenBalance: Hashable, Identifiable {
-	public typealias ID = TokenID
-
-	public let amount: Amount
-	public let token: TokenID
-	public var id: ID { token }
-	
-	public static func zil(_ amount: Amount) -> Self {
-		.init(amount: amount, token: .zilling)
-	}
-	public static func gZil(_ amount: Amount) -> Self {
-		.init(amount: amount, token: .gZil)
-	}
-	public static func zwap(_ amount: Amount) -> Self {
-		.init(amount: amount, token: .zwap)
-	}
-	public static func xsgd(_ amount: Amount) -> Self {
-		.init(amount: amount, token: .xsgd)
-	}
-	public static func xcad(_ amount: Amount) -> Self {
-		.init(amount: amount, token: .xcad)
-	}
-}
-
-public enum BalanceOf {}
-
-public extension BalanceOf {
+public extension BalanceRow {
 	struct State: Equatable, Identifiable {
 		public typealias ID = TokenBalance.ID
 		public var id: ID { tokenBalance.id }
@@ -105,19 +44,19 @@ public extension BalanceOf {
 	}
 }
 
-public extension BalanceOf {
+public extension BalanceRow {
 	enum Action: Equatable {
 		case didSelect
 	}
 }
 
-public extension BalanceOf {
+public extension BalanceRow {
 	struct Environment {
 		
 	}
 }
 
-public extension BalanceOf {
+public extension BalanceRow {
 	typealias Reducer = ComposableArchitecture.Reducer<State, Action, Environment>
 
 	static let reducer = Reducer { state, action, environment in
@@ -128,7 +67,7 @@ public extension BalanceOf {
 	}
 }
 
-public extension BalanceOf {
+public extension BalanceRow {
 	struct Screen: SwiftUI.View {
 		public typealias Store = ComposableArchitecture.Store<State, Action>
 		let store: Store
@@ -140,12 +79,13 @@ public extension BalanceOf {
 	}
 }
 
-public extension BalanceOf.Screen {
+public extension BalanceRow.Screen {
 	var body: some View {
+        
 		WithViewStore(
 			store.scope(
 				state: ViewState.init,
-				action: BalanceOf.Action.init
+				action: BalanceRow.Action.init
 			)
 		) { viewStore in
 			VStack(alignment: .leading, spacing: 8) {
@@ -164,12 +104,12 @@ public extension BalanceOf.Screen {
 	}
 }
 
-internal extension BalanceOf.Screen {
+internal extension BalanceRow.Screen {
 	struct ViewState: Equatable {
 		let isZil: Bool
 		let amount: String
 		let tokenSymbol: String
-		init(state: BalanceOf.State) {
+		init(state: BalanceRow.State) {
 			self.isZil = state.tokenBalance.token == .zilling
 			self.tokenSymbol = state.tokenBalance.token.symbol
 			self.amount = AmountFormatter().format(
@@ -186,8 +126,8 @@ internal extension BalanceOf.Screen {
 	}
 }
 
-internal extension BalanceOf.Action {
-	init(action: BalanceOf.Screen.ViewAction) {
+internal extension BalanceRow.Action {
+	init(action: BalanceRow.Screen.ViewAction) {
 		switch action {
 		case .didSelect: self = .didSelect
 		}

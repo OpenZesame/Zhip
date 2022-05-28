@@ -17,11 +17,11 @@ public enum BalanceList {}
 public extension BalanceList {
 	struct State: Equatable {
 		public let wallet: Wallet
-		public var balances: IdentifiedArrayOf<BalanceOf.State>
+		public var balances: IdentifiedArrayOf<BalanceRow.State>
 		
 		public init(
 			wallet: Wallet,
-			balances: IdentifiedArrayOf<BalanceOf.State> = [
+			balances: IdentifiedArrayOf<BalanceRow.State> = [
 				.zil(4_321_000),
 				.gZil(42),
 				.xcad(237),
@@ -38,12 +38,12 @@ public extension BalanceList {
 public extension BalanceList {
 	enum Action: Equatable {
 		case delegate(Delegate)
-		case balance(id: TokenBalance.ID, action: BalanceOf.Action)
+		case balance(id: TokenBalance.ID, action: BalanceRow.Action)
 	}
 }
 public extension BalanceList.Action {
 	enum Delegate: Equatable {
-		case openDetailsFor(BalanceOf.State)
+		case openDetailsFor(TokenBalance)
 	}
 	
 }
@@ -60,27 +60,23 @@ public extension BalanceList {
 
 public extension BalanceList {
 	static let reducer = Reducer<State, Action, Environment>.combine(
-		BalanceOf.reducer.forEach(
+		BalanceRow.reducer.forEach(
 			state: \.balances,
 			action: /BalanceList.Action.balance(id:action:),
-			environment: { _ in BalanceOf.Environment.init() }
+			environment: { _ in BalanceRow.Environment.init() }
 		),
 		
 		Reducer<State, Action, Environment> { state, action, environment in
 			switch action {
-			case let .balance(tokenBalanceID, tokenBalanceAction):
-				switch tokenBalanceAction {
-				case .didSelect:
-					//				let balance = state.balances.first(where: { $0.id == tokenBalanceID })!
-					//				print("👻 please open details for: \(balance)")
-					//				return Effect(value: .delegate(.openDetailsFor(balance)))
-					print("🔮 selected token balance ID: \(tokenBalanceID)")
-					return .none
-				}
-			case .delegate(_):
-				return .none
-			}
-		}
+            case let .balance(tokenBalanceID, tokenBalanceAction):
+                switch tokenBalanceAction {
+                case .didSelect:
+                    let balance = state.balances.first(where: { $0.id == tokenBalanceID })!
+                    return Effect(value: .delegate(.openDetailsFor(balance.tokenBalance)))
+                }
+            default: return .none
+            }
+        }
 	)
 }
 
@@ -113,7 +109,7 @@ public extension BalanceList.Screen {
 									state: \.balances,
 									action: BalanceList.Action.balance(id:action:)
 								),
-								content: BalanceOf.Screen.init(store:)
+								content: BalanceRow.Screen.init(store:)
 							)
 							
 						}

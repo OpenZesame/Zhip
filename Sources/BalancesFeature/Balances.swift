@@ -16,11 +16,11 @@ public enum BalancesCoordinator {}
 public extension BalancesCoordinator {
 	enum ScreenState: Equatable {
 		case list(BalanceList.State)
-		case detail(BalanceOf.State)
+		case detail(BalanceDetails.State)
 	}
 	enum ScreenAction: Equatable {
 		case list(BalanceList.Action)
-		case detail(BalanceOf.Action)
+        case detail(BalanceDetails.Action)
 	}
 	struct Environment {
 		public let mainQueue: AnySchedulerOf<DispatchQueue>
@@ -71,8 +71,8 @@ public extension BalancesCoordinator {
 			Reducer { state, action, environment in
 				switch action {
 				case let .routeAction(_, action: .list(.delegate(BalanceList.Action.Delegate.openDetailsFor(tokenBalance)))):
-					print("✨ should open details for: \(tokenBalance)")
-					break
+                    state.routes.push(ScreenState.detail(.init(tokenBalance: tokenBalance)))
+                    break
 				default: break
 				}
 				return .none
@@ -99,7 +99,7 @@ public extension BalancesCoordinator {
 					CaseLet(
 						state: /BalancesCoordinator.ScreenState.detail,
 						action: BalancesCoordinator.ScreenAction.detail,
-						then: BalanceOf.Screen.init
+						then: BalanceDetails.Screen.init
 					)
 				}
 			}

@@ -12,6 +12,6 @@ import XCTest
 
 final class SplashFeatureTests: XCTestCase {
 	func testAlertStartsAsNil() throws {
-		XCTAssertNil(SplashState().alert)
+        XCTAssertNil(Splash.State().alert)
 	}
 }
