@@ -39,12 +39,12 @@ struct BarButtonContent {
         self.style = style
     }
 
-    init(title: CustomStringConvertible, style _: UIBarButtonItem.Style = .plain) {
-        self.init(type: .text(title.description))
+    init(title: CustomStringConvertible, style: UIBarButtonItem.Style = .plain) {
+        self.init(type: .text(title.description), style: style)
     }
 
-    init(image: ImageConvertible, style _: UIBarButtonItem.Style = .plain) {
-        self.init(type: .image(image.image))
+    init(image: ImageConvertible, style: UIBarButtonItem.Style = .plain) {
+        self.init(type: .image(image.image), style: style)
     }
 
     init(system: UIBarButtonItem.SystemItem) {
@@ -55,7 +55,7 @@ struct BarButtonContent {
 // MARK: - UIBarButtonItem
 
 extension BarButtonContent {
-    func makeBarButtonItem(target: some Any, selector: Selector) -> UIBarButtonItem {
+    func makeBarButtonItem(target: AnyObject?, selector: Selector) -> UIBarButtonItem {
         switch type {
         case let .image(image): UIBarButtonItem(image: image, style: style ?? .plain, target: target, action: selector)
         case let .text(text): UIBarButtonItem(title: text, style: style ?? .plain, target: target, action: selector)

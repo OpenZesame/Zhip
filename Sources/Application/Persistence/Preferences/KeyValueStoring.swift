@@ -27,7 +27,7 @@ import Foundation
 /// A typed simple, non thread safe, non async key-value store accessing values using its associatedtype `Key`
 protocol KeyValueStoring: AnyKeyValueStoring {
     associatedtype Key: KeyConvertible
-    func save(value: some Any, for key: Key)
+    func save(value: Any, for key: Key)
     func loadValue<Value>(for key: Key) -> Value?
     func deleteValue(for key: Key)
 }
@@ -35,7 +35,7 @@ protocol KeyValueStoring: AnyKeyValueStoring {
 // MARK: Default Implementation making use of `AnyKeyValueStoring` protocol
 
 extension KeyValueStoring {
-    func save(value: some Any, for key: Key) {
+    func save(value: Any, for key: Key) {
         save(value: value, for: key.key)
     }
 

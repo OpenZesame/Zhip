@@ -29,7 +29,7 @@ enum AnyValidation {
     case empty
     case errorMessage(String)
 
-    init(_ validation: Validation<some Any, some InputError>) {
+    init<Value, Error: InputError>(_ validation: Validation<Value, Error>) {
         switch validation {
         case let .invalid(invalid):
             switch invalid {
