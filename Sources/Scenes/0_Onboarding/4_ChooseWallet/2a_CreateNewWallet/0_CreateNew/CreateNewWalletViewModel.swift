@@ -85,7 +85,7 @@ final class CreateNewWalletViewModel:
                     $1
                 }
                 .flatMapLatest {
-                    self.useCase.createNewWallet(encryptionpassword: $0)
+                    self.useCase.createNewWallet(encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }

@@ -32,7 +32,7 @@ protocol SecurePersisting: AnyObject {
 }
 
 protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionpassword: String) -> Observable<Wallet>
+    func createNewWallet(encryptionPassword: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
     func save(wallet: Wallet)
     func deleteWallet()
