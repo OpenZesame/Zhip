@@ -24,7 +24,7 @@
 
 import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder {
     lazy var window: UIWindow? = .default
 

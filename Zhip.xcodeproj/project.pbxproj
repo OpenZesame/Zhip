@@ -154,7 +154,6 @@
 		489D40E62663707D000D35F2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E52663707D000D35F2 /* FirebaseAnalytics */; };
 		489D40E82663707D000D35F2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E72663707D000D35F2 /* FirebaseCrashlytics */; };
 		489D40ED266373A2000D35F2 /* GasLimitValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489D40EC266373A2000D35F2 /* GasLimitValidator.swift */; };
-		489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */; };
 		489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */; };
 		489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */; };
 		489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB10021C9066200664AA7 /* ViewModelTestCase.swift */; };
@@ -522,7 +521,6 @@
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
 		489D40EC266373A2000D35F2 /* GasLimitValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasLimitValidator.swift; sourceTree = "<group>"; };
-		489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedWalletUseCase.swift; sourceTree = "<group>"; };
 		489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestScheduler+Record.swift"; sourceTree = "<group>"; };
 		489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType_Extension.swift; sourceTree = "<group>"; };
 		489EB10021C9066200664AA7 /* ViewModelTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTestCase.swift; sourceTree = "<group>"; };
@@ -1164,7 +1162,6 @@
 			children = (
 				48C25DBA21DCD3BB00619620 /* Tests */,
 				489EB0F921C902D200664AA7 /* Extensions */,
-				489EB0F321C9024C00664AA7 /* Mocks */,
 				489CDBA02143E27500318450 /* Configurations */,
 				484B067920BA0D2C00C4E50A /* SupportingFiles */,
 				489EB10021C9066200664AA7 /* ViewModelTestCase.swift */,
@@ -1285,14 +1282,6 @@
 				483C0BDF219ECF89006947C7 /* ObserverType+BarButtonContent.swift */,
 			);
 			path = RxSwift;
-			sourceTree = "<group>";
-		};
-		489EB0F321C9024C00664AA7 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				489EB0F421C9025400664AA7 /* MockedWalletUseCase.swift */,
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 		489EB0F921C902D200664AA7 /* Extensions */ = {
@@ -2113,27 +2102,25 @@
 			shellScript = (
 				"\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"",
 				"",
+				"",
 			);
 		};
 		E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"/opt/homebrew/bin/swiftlint",
+				/opt/homebrew/bin/swiftlint,
 			);
 			name = "✅ Swiftlint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f \"/opt/homebrew/bin/swiftlint\" ]; then\n  /opt/homebrew/bin/swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = (
+				"if [ -f \"/opt/homebrew/bin/swiftlint\" ]; then",
+				"  /opt/homebrew/bin/swiftlint",
+				"else",
+				"  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"",
+				"fi",
+				"",
+			);
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2412,7 +2399,6 @@
 			files = (
 				489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */,
 				E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */,
-				489EB0F621C9025800664AA7 /* MockedWalletUseCase.swift in Sources */,
 				489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */,
 				48C25DC021DCD3BB00619620 /* StringFormattingTests.swift in Sources */,
 				48C25DBF21DCD3BB00619620 /* AutoEnumCaseNameTests.swift in Sources */,
@@ -2553,13 +2539,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4858D7B32194F91B00030237 /* ZhipTests-Debug.xcconfig */;
 			buildSettings = {
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxBlocking\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RxTest\"",
-				);
 			};
 			name = Debug;
 		};

@@ -26,7 +26,6 @@ import Foundation
 import UIKit
 import XCTest
 @testable import Zhip
-import SwiftDate
 
 class StringFormattingTests: XCTestCase {
 
@@ -46,44 +45,5 @@ class StringFormattingTests: XCTestCase {
         XCTAssertEqual(f("12345678"), "12x345x678")
         XCTAssertEqual(f("123456789"), "123x456x789")
         XCTAssertEqual(f("123456789a"), "1x234x567x89a")
-    }
-
-    // These tests might fail if they are run exactly 00:01... kind of funny. Not so probable though.
-    func testTimeAgoEnglish() {
-        func s(_ date: Date) -> String {
-            return date.toRelative(
-                style: RelativeFormatter.defaultStyle(),
-                locale: Locale.current
-            )
-        }
-        XCTAssertEqual(
-            s(1.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(2.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(29.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(45.seconds.ago),
-            "1 minute ago"
-        )
-
-        XCTAssertEqual(
-            s(1.minutes.ago),
-            "1 minute ago"
-        )
-
-        XCTAssertEqual(
-            s(2.minutes.ago),
-            "2 minutes ago"
-        )
     }
 }

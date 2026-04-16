@@ -47,7 +47,10 @@ class CharacterSetTests: XCTestCase {
     }
     
     func testZilAmountFromDecimalStringWithComma() {
-        XCTAssertNotNil(Double("0\(decSep)01"))
+        // AmountFromText normalizes the separator before parsing,
+        // so both "." and "," must work regardless of locale.
+        XCTAssertNoThrow(try AmountFromText<ZilAmount>(string: "0.01", unit: .zil))
+        XCTAssertNoThrow(try AmountFromText<ZilAmount>(string: "0,01", unit: .zil))
     }
     
 }
@@ -55,5 +58,3 @@ class CharacterSetTests: XCTestCase {
 private extension String {
     static let languagesKey = "AppleLanguages"
 }
-
-private let decSep = Locale.current.decimalSeparatorForSure

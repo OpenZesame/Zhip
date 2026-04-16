@@ -23,6 +23,7 @@
 //
 
 import Foundation
+import CoreText
 import IQKeyboardManagerSwift
 import SwiftyBeaver
 import FirebaseCore
@@ -33,10 +34,32 @@ import Zesame
 let log = SwiftyBeaver.self
 
 func bootstrap() {
+    registerFonts()
     AppAppearance.setupDefault()
     setupKeyboardHiding()
     setupCrashReportingIfAllowed()
     setupLogging()
+}
+
+private func registerFonts() {
+    let fontFileNames = [
+        "Barlow-Black", "Barlow-BlackItalic",
+        "Barlow-Bold", "Barlow-BoldItalic",
+        "Barlow-ExtraBold", "Barlow-ExtraBoldItalic",
+        "Barlow-ExtraLight", "Barlow-ExtraLightItalic",
+        "Barlow-Italic",
+        "Barlow-Light", "Barlow-LightItalic",
+        "Barlow-Medium", "Barlow-MediumItalic",
+        "Barlow-Regular",
+        "Barlow-SemiBold", "Barlow-SemiBoldItalic",
+        "Barlow-Thin", "Barlow-ThinItalic"
+    ]
+    for name in fontFileNames {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "ttf") else {
+            incorrectImplementation("Missing font file: \(name).ttf")
+        }
+        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+    }
 }
 
 func setupCrashReportingIfAllowed() {
