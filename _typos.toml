@@ -5,6 +5,7 @@ extend-exclude = [
 	"Zhip.xcodeproj/xcshareddata/xcschemes/",
 	# xcstrings files contain translated strings that may look like typos
 	"Sources/Application/Localization/",
+	"Sources/Application/GoogleService-Info.plist",
 ]
 
 [default.extend-identifiers]
