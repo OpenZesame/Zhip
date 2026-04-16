@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,26 +22,24 @@
 // SOFTWARE.
 //
 
-import Zesame
-
 import RxCocoa
 import RxSwift
+import Zesame
 
-private typealias € = L10n.Scene.RestoreWallet
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .restoreKeystore
 
 // MARK: - RestoreWalletViewModel
-final class RestoreWalletUsingKeystoreViewModel {
 
+final class RestoreWalletUsingKeystoreViewModel {
     let output: Output
 
-    // swiftlint:disable:next function_body_length
     init(inputFromView: InputFromView) {
-
         // MARK: - Validate input
+
         let validator = InputValidator()
 
-        let encryptionPasswordValidationValue = inputFromView.encryptionPassword.map { validator.validateEncryptionPassword($0) }
+        let encryptionPasswordValidationValue = inputFromView.encryptionPassword
+            .map { validator.validateEncryptionPassword($0) }
 
         let keyStoreValidationValue = inputFromView.keystoreText.map { validator.validateKeystore($0) }
 
@@ -51,21 +49,24 @@ final class RestoreWalletUsingKeystoreViewModel {
             // map `editingChanged` to `editingDidBegin`
             inputFromView.encryptionPassword.mapToVoid().map { true },
             inputFromView.isEditingEncryptionPassword
-            ).withLatestFrom(encryptionPasswordValidationValue) {
-                EditingValidation(isEditing: $0, validation: $1.validation)
-            }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+        ).withLatestFrom(encryptionPasswordValidationValue) {
+            EditingValidation(isEditing: $0, validation: $1.validation)
+        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
-            keyStoreValidationValue.map { $0.value },
+            keyStoreValidationValue.map(\.value),
             encryptionPassword
-            ).map {
-                guard let keystore = $0, let password = $1 else {
-                    return nil
-                }
-                return KeyRestoration.keystore(keystore, password: password)
+        ).map {
+            guard let keystore = $0, let password = $1 else {
+                return nil
+            }
+            return KeyRestoration.keystore(keystore, password: password)
         }
 
-        let encryptionPasswordPlaceHolder = Driver.just(€.Field.EncryptionPassword.keystore(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))
+        let encryptionPasswordPlaceHolder = Driver
+            .just(String(localized: .RestoreWallet
+                    .keystoreEncryptionPasswordField(minLength: WalletEncryptionPassword
+                        .minimumLength(mode: encryptionPasswordMode))))
 
         let keystoreValidation = inputFromView.isEditingKeystore.withLatestFrom(keyStoreValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
@@ -76,7 +77,7 @@ final class RestoreWalletUsingKeystoreViewModel {
             .distinctUntilChanged() // never changed, thus only emitted once, as wished
             .startWith("Paste your keystore here")
 
-        self.output = Output(
+        output = Output(
             keystoreTextFieldPlaceholder: keystoreTextFieldPlaceholder,
             encryptionPasswordPlaceholder: encryptionPasswordPlaceHolder,
             keyRestorationValidation: keystoreValidation,
@@ -87,7 +88,6 @@ final class RestoreWalletUsingKeystoreViewModel {
 }
 
 extension RestoreWalletUsingKeystoreViewModel {
-
     struct InputFromView {
         let keystoreDidBeginEditing: Driver<Void>
         let isEditingKeystore: Driver<Bool>
@@ -105,17 +105,16 @@ extension RestoreWalletUsingKeystoreViewModel {
     }
 
     struct InputValidator {
-
         private let encryptionPasswordValidator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
 
         private let keystoreValidator = KeystoreValidator()
 
         func validateKeystore(_ keystore: String) -> KeystoreValidator.ValidationResult {
-            return keystoreValidator.validate(input: keystore)
+            keystoreValidator.validate(input: keystore)
         }
 
         func validateEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.ValidationResult {
-            return encryptionPasswordValidator.validate(input: (password: password, confirmingPassword: password))
+            encryptionPasswordValidator.validate(input: (password: password, confirmingPassword: password))
         }
     }
 }

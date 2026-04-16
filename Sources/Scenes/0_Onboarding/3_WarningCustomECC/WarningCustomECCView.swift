@@ -3,27 +3,26 @@
 //  Zhip
 //
 //  Created by Alexander Cyon on 2019-02-08.
-//  Copyright © 2019 Open Zesame. All rights reserved.
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
-import RxSwift
-import RxCocoa
-
 final class WarningCustomECCView: ScrollableStackViewOwner {
-
-    private lazy var imageView          = UIImageView()
-    private lazy var headerLabel        = UILabel()
-    private lazy var textView           = UITextView()
-    private lazy var acceptTermsButton  = UIButton()
+    private lazy var imageView = UIImageView()
+    private lazy var headerLabel = UILabel()
+    private lazy var textView = UITextView()
+    private lazy var acceptTermsButton = UIButton()
 
     // MARK: - StackViewStyling
+
     lazy var stackViewStyle: UIStackView.Style = [
         imageView,
         headerLabel,
         textView,
-        acceptTermsButton
+        acceptTermsButton,
     ]
 
     override func setup() {
@@ -35,35 +34,32 @@ extension WarningCustomECCView: ViewModelled {
     typealias ViewModel = WarningCustomECCViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
+        [
             viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
-            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
+            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled,
         ]
     }
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             didScrollToBottom: textView.rx.didScrollNearBottom(),
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
 }
 
-private typealias € = L10n.Scene.WarningCustomECC
-private typealias Image = Asset.Icons.Large
 private extension WarningCustomECCView {
     func setupSubviews() {
-
         imageView.withStyle(.default) {
-            $0.image(Image.warning.image)
+            $0.image(UIImage(resource: .warningLarge))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.Label.header)
+            $0.text(String(localized: .WarningCustomECC.header))
         }
 
         acceptTermsButton.withStyle(.primary) {
-            $0.title(€.Button.accept)
+            $0.title(String(localized: .WarningCustomECC.accept))
                 .disabled()
         }
 

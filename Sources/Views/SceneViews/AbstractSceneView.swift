@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,13 +22,11 @@
 // SOFTWARE.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
-import RxSwift
-import RxCocoa
-
 class AbstractSceneView: UIView, ScrollViewOwner {
-
     lazy var refreshControl = RefreshControl()
 
     let scrollView: UIScrollView
@@ -43,17 +41,20 @@ class AbstractSceneView: UIView, ScrollViewOwner {
         scrollView.edgesToSuperview()
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    required init?(coder _: NSCoder) {
+        interfaceBuilderSucks
+    }
 
-    // MARK: Overrideable
+    // MARK: Overridable
 
     /// Override this method from you scene views, setting up its subviews.
     func setup() { /* override me */ }
 }
 
 // MARK: - Private
+
 private extension AbstractSceneView {
-    // Due to classes and inheritance we cannot name this `setupSuviews`, since the subclasses cannot use that name.
+    /// Due to classes and inheritance we cannot name this `setupSuviews`, since the subclasses cannot use that name.
     func setupAbstractSceneView() {
         defer { setup() }
 
@@ -78,6 +79,7 @@ private extension AbstractSceneView {
 }
 
 // MARK: - Rx
+
 extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
         let refreshControl = base.refreshControl
@@ -85,13 +87,13 @@ extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
     }
 
     var pullToRefreshTitle: Binder<String> {
-        return Binder<String>(base) {
+        Binder<String>(base) {
             $0.refreshControl.setTitle($1)
         }
     }
 
     var pullToRefreshTrigger: Driver<Void> {
-        return base.refreshControl.rx.controlEvent(.valueChanged)
+        base.refreshControl.rx.controlEvent(.valueChanged)
             .asDriverOnErrorReturnEmpty()
     }
 }

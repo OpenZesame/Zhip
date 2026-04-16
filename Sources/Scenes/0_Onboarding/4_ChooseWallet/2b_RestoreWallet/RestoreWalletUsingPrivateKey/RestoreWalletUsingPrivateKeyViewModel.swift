@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,24 +22,20 @@
 // SOFTWARE.
 //
 
-import Zesame
-
 import RxCocoa
 import RxSwift
+import Zesame
 
-private typealias € = L10n.Scene.RestoreWallet
 private let encryptionPasswordMode = WalletEncryptionPassword.Mode.newOrRestorePrivateKey
 
 // MARK: - RestoreWalletUsingPrivateKeyViewModel
-final class RestoreWalletUsingPrivateKeyViewModel {
 
+final class RestoreWalletUsingPrivateKeyViewModel {
     let output: Output
 
-    // swiftlint:disable:next function_body_length
     init(inputFromView: InputFromView) {
-
         let validator = InputValidator()
-        
+
         let privateKeyValidationValue = inputFromView.privateKey.map { validator.validatePrivateKey($0) }
 
         let unconfirmedPassword = inputFromView.newEncryptionPassword
@@ -48,22 +44,25 @@ final class RestoreWalletUsingPrivateKeyViewModel {
         let confirmEncryptionPasswordValidationValue = Driver.combineLatest(unconfirmedPassword, confirmingPassword)
             .map {
                 validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
-        }
+            }
 
-        let encryptionPasswordPlaceHolder = Driver.just(€.Field.EncryptionPassword.privateKey(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))
+        let encryptionPasswordPlaceHolder = Driver
+            .just(String(localized: .RestoreWallet
+                    .privateKeyEncryptionPasswordField(minLength: WalletEncryptionPassword
+                        .minimumLength(mode: encryptionPasswordMode))))
 
-        let privateKeyFieldIsSecureTextEntry = inputFromView.showPrivateKeyTrigger.scan(true) { lastState, newState in
-            return !lastState
+        let privateKeyFieldIsSecureTextEntry = inputFromView.showPrivateKeyTrigger.scan(true) { lastState, _ in
+            !lastState
         }
 
         let togglePrivateKeyVisibilityButtonTitle = privateKeyFieldIsSecureTextEntry.map {
-            $0 ? L10n.Generic.show : L10n.Generic.hide
+            $0 ? String(localized: .Generic.show) : String(localized: .Generic.hide)
         }
 
         let encryptionPasswordValidationTrigger = Driver.merge(
             unconfirmedPassword.mapToVoid().map { true },
             inputFromView.isEditingNewEncryptionPassword
-            )
+        )
 
         let encryptionPasswordValidation: Driver<AnyValidation> = encryptionPasswordValidationTrigger.withLatestFrom(
             unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }
@@ -83,8 +82,8 @@ final class RestoreWalletUsingPrivateKeyViewModel {
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
-            privateKeyValidationValue.map { $0.value },
-            confirmEncryptionPasswordValidationValue.map { $0.value }
+            privateKeyValidationValue.map(\.value),
+            confirmEncryptionPasswordValidationValue.map(\.value)
         ).map {
             guard let privateKey = $0.0, let newEncryptionPassword = $0.1?.validPassword else {
                 return nil
@@ -93,10 +92,10 @@ final class RestoreWalletUsingPrivateKeyViewModel {
         }
 
         let privateKeyValidation = inputFromView.isEditingPrivateKey.withLatestFrom(privateKeyValidationValue) {
-              EditingValidation(isEditing: $0, validation: $1.validation)
+            EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        self.output = Output(
+        output = Output(
             togglePrivateKeyVisibilityButtonTitle: togglePrivateKeyVisibilityButtonTitle,
             privateKeyFieldIsSecureTextEntry: privateKeyFieldIsSecureTextEntry,
             privateKeyValidation: privateKeyValidation,
@@ -109,7 +108,6 @@ final class RestoreWalletUsingPrivateKeyViewModel {
 }
 
 extension RestoreWalletUsingPrivateKeyViewModel {
-
     struct InputFromView {
         let privateKey: Driver<String>
         let isEditingPrivateKey: Driver<Bool>
@@ -134,7 +132,7 @@ extension RestoreWalletUsingPrivateKeyViewModel {
         private let privateKeyValidator = PrivateKeyValidator()
 
         func validatePrivateKey(_ privateKey: String?) -> PrivateKeyValidator.ValidationResult {
-            return privateKeyValidator.validate(input: privateKey)
+            privateKeyValidator.validate(input: privateKey)
         }
 
         func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.ValidationResult {
@@ -142,7 +140,10 @@ extension RestoreWalletUsingPrivateKeyViewModel {
             return validator.validate(input: (password, password))
         }
 
-        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.ValidationResult {
+        func validateConfirmedEncryptionPassword(
+            _ password: String,
+            confirmedBy confirming: String
+        ) -> EncryptionPasswordValidator.ValidationResult {
             let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
             return validator.validate(input: (password, confirming))
         }

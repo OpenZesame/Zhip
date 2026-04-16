@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -55,7 +55,7 @@ struct PrivateKeyValidator: InputValidator {
         }
 
         do {
-            return .valid(try validate(privateKeyHex: input))
+            return try .valid(validate(privateKeyHex: input))
         } catch let privateError as Error {
             return .invalid(.error(privateError))
         } catch {
@@ -66,13 +66,18 @@ struct PrivateKeyValidator: InputValidator {
 
 extension PrivateKeyValidator.Error {
     var errorMessage: String {
-        let Message = L10n.Error.Input.PrivateKey.self
         let expectedLength = PrivateKeyValidator.expectedLengthOfPrivateKey
 
         switch self {
-        case .tooShort(let lengthKeySubmitted): return Message.tooShort(expectedLength, expectedLength - lengthKeySubmitted)
-        case .tooLong(let lengthKeySubmitted): return Message.tooLong(expectedLength, lengthKeySubmitted - expectedLength)
-        case .badPrivateKey: return Message.badKey
+        case let .tooShort(lengthKeySubmitted): return String(localized: .Errors.privateKeyTooShort(
+                expected: expectedLength,
+                missing: expectedLength - lengthKeySubmitted
+            ))
+        case let .tooLong(lengthKeySubmitted): return String(localized: .Errors.privateKeyTooLong(
+                expected: expectedLength,
+                excess: lengthKeySubmitted - expectedLength
+            ))
+        case .badPrivateKey: return String(localized: .Errors.privateKeyBad)
         }
     }
 }

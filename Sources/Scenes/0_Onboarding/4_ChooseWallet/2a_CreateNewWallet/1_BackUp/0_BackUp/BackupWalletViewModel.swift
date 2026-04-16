@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,14 +22,13 @@
 // SOFTWARE.
 //
 
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 import Zesame
 
-private typealias € = L10n.Scene.BackupWallet
-
 // MARK: - BackupWalletUserAction
+
 enum BackupWalletUserAction {
     case cancelOrDismiss
     case backupWallet
@@ -38,16 +37,17 @@ enum BackupWalletUserAction {
 }
 
 // MARK: - BackupWalletViewModel
+
 final class BackupWalletViewModel: BaseViewModel<
     BackupWalletUserAction,
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
-
     private let wallet: Driver<Wallet>
     enum Mode: Int, Equatable {
         case dismissable, cancellable
     }
+
     private let mode: Mode
 
     init(wallet: Driver<Wallet>, mode: Mode = .cancellable) {
@@ -55,31 +55,30 @@ final class BackupWalletViewModel: BaseViewModel<
         self.mode = mode
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
         let isUnderstandsRiskCheckboxChecked = input.fromView.isUnderstandsRiskCheckboxChecked
-        
+
         switch mode {
         case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.cancelOrDismiss) })
                 .drive().disposed(by: bag)
         case .cancellable:
-             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
+            input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
             input.fromController.leftBarButtonTrigger
                 .do(onNext: { userDid(.cancelOrDismiss) })
                 .drive().disposed(by: bag)
         }
 
         bag <~ [
-            input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
-                .do(onNext: { (keystoreText: String) -> Void in
+            input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
+                .do(onNext: { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyKeystore))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackupWallet.copiedKeystore)))
                 }).drive(),
 
             input.fromView.revealKeystoreTrigger
@@ -93,7 +92,7 @@ final class BackupWalletViewModel: BaseViewModel<
             input.fromView.doneTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }.mapToVoid()
                 .do(onNext: { userDid(.backupWallet) })
-                .drive()
+                .drive(),
         ]
 
         return Output(
@@ -104,7 +103,6 @@ final class BackupWalletViewModel: BaseViewModel<
 }
 
 extension BackupWalletViewModel {
-
     struct InputFromView {
         let copyKeystoreToPasteboardTrigger: Driver<Void>
         let revealKeystoreTrigger: Driver<Void>
@@ -121,7 +119,7 @@ extension BackupWalletViewModel {
 
 extension Wallet {
     var keystoreAsJSON: String {
-        return keystore.asPrettyPrintedJSONString
+        keystore.asPrettyPrintedJSONString
     }
 }
 

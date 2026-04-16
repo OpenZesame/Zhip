@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,21 +22,19 @@
 // SOFTWARE.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
-import RxSwift
-import RxCocoa
-
-private typealias € = L10n.Scene.RestoreWallet
-
 // MARK: - RestoreWithKeystoreView
+
 final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingKeystoreViewModel
 
     private let bag = DisposeBag()
 
-    private lazy var keystoreTextView           = UITextView()
-    private lazy var encryptionPasswordField  = FloatingLabelTextField()
+    private lazy var keystoreTextView = UITextView()
+    private lazy var encryptionPasswordField = FloatingLabelTextField()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
@@ -52,7 +50,7 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
 
     lazy var stackViewStyle: UIStackView.Style = [
         keystoreTextView,
-        encryptionPasswordField
+        encryptionPasswordField,
     ]
 
     override func setup() {
@@ -66,7 +64,6 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
 }
 
 private extension RestoreUsingKeystoreView {
-
     func setupSubviews() {
         encryptionPasswordField.withStyle(.password)
         keystoreTextView.withStyle(.editable)
@@ -75,17 +72,17 @@ private extension RestoreUsingKeystoreView {
 
     func setupViewModelBinding() {
         bag <~ [
-            viewModelOutput.keyRestorationValidation            --> keystoreTextView.rx.validationByBorder,
-            viewModelOutput.encryptionPasswordValidation      --> encryptionPasswordField.rx.validation,
-            viewModelOutput.keystoreTextFieldPlaceholder        --> keystoreTextView.rx.text,
-            viewModelOutput.encryptionPasswordPlaceholder     --> encryptionPasswordField.rx.placeholder
+            viewModelOutput.keyRestorationValidation --> keystoreTextView.rx.validationByBorder,
+            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
+            viewModelOutput.keystoreTextFieldPlaceholder --> keystoreTextView.rx.text,
+            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
         ]
     }
 }
 
 extension Reactive where Base: UITextView {
     var validationByBorder: Binder<AnyValidation> {
-        return Binder(base) {
+        Binder(base) {
             $0.addBorderBy(validation: $1)
         }
     }

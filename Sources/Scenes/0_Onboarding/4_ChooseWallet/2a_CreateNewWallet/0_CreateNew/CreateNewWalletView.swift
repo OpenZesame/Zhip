@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,19 +22,19 @@
 // SOFTWARE.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
 final class CreateNewWalletView: ScrollableStackViewOwner {
-
-    private lazy var headerLabel                        = UILabel()
-    private lazy var subtitleLabel                      = UILabel()
-    private lazy var encryptionPasswordField          = FloatingLabelTextField()
-    private lazy var confirmEncryptionPasswordField   = FloatingLabelTextField()
-    private lazy var haveBackedUpPasswordCheckbox     = CheckboxWithLabel()
-    private lazy var continueButton                     = ButtonWithSpinner()
+    private lazy var headerLabel = UILabel()
+    private lazy var subtitleLabel = UILabel()
+    private lazy var encryptionPasswordField = FloatingLabelTextField()
+    private lazy var confirmEncryptionPasswordField = FloatingLabelTextField()
+    private lazy var haveBackedUpPasswordCheckbox = CheckboxWithLabel()
+    private lazy var continueButton = ButtonWithSpinner()
 
     // MARK: - StackViewStyling
+
     lazy var stackViewStyle: UIStackView.Style = [
         headerLabel,
         subtitleLabel,
@@ -42,7 +42,7 @@ final class CreateNewWalletView: ScrollableStackViewOwner {
         confirmEncryptionPasswordField,
         .spacer,
         haveBackedUpPasswordCheckbox,
-        continueButton
+        continueButton,
     ]
 
     override func setup() {
@@ -51,24 +51,25 @@ final class CreateNewWalletView: ScrollableStackViewOwner {
 }
 
 // MARK: - ViewModelled
+
 extension CreateNewWalletView: ViewModelled {
     typealias ViewModel = CreateNewWalletViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.encryptionPasswordPlaceholder       --> encryptionPasswordField.rx.placeholder,
-            viewModel.encryptionPasswordValidation        --> encryptionPasswordField.rx.validation,
+        [
+            viewModel.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
             viewModel.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.rx.validation,
-            viewModel.isContinueButtonEnabled               --> continueButton.rx.isEnabled,
-            viewModel.isButtonLoading                       --> continueButton.rx.isLoading
+            viewModel.isContinueButtonEnabled --> continueButton.rx.isEnabled,
+            viewModel.isButtonLoading --> continueButton.rx.isLoading,
         ]
     }
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
             isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            
+
             confirmedNewEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
             isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing,
             isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.rx.isChecked.asDriver(),
@@ -77,29 +78,28 @@ extension CreateNewWalletView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.CreateNewWallet
 private extension CreateNewWalletView {
     func setupSubviews() {
         headerLabel.withStyle(.header) {
-            $0.text(€.Labels.ChooseNewPassword.title)
+            $0.text(String(localized: .CreateNewWallet.chooseNewPasswordTitle))
         }
 
         subtitleLabel.withStyle(.body) {
-            $0.text(€.Labels.ChooseNewPassword.value)
+            $0.text(String(localized: .CreateNewWallet.chooseNewPasswordValue))
         }
 
         encryptionPasswordField.withStyle(.password)
 
         confirmEncryptionPasswordField.withStyle(.password) {
-            $0.placeholder(€.Field.confirmEncryptionPassword)
+            $0.placeholder(String(localized: .CreateNewWallet.confirmEncryptionPassword))
         }
 
         haveBackedUpPasswordCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.passwordIsBackedUp)
+            $0.text(String(localized: .CreateNewWallet.passwordIsBackedUp))
         }
 
         continueButton.withStyle(.primary) {
-            $0.title(€.Button.continue)
+            $0.title(String(localized: .CreateNewWallet.continueButton))
                 .disabled()
         }
     }

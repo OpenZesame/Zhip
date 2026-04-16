@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,8 +22,8 @@
 // SOFTWARE.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 import Zesame
 
 enum OnboardingCoordinatorNavigationStep {
@@ -31,9 +31,8 @@ enum OnboardingCoordinatorNavigationStep {
 }
 
 final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinatorNavigationStep> {
-
     private let useCaseProvider: UseCaseProvider
-    
+
     private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
@@ -43,23 +42,21 @@ final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinatorNavigati
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toWelcome()
     }
 }
 
 private extension OnboardingCoordinator {
-
     func toWelcome() {
         push(scene: Welcome.self, viewModel: WelcomeViewModel()) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .start:  self.toNextStep()
+            case .start: toNextStep()
             }
         }
     }
 
     func toNextStep() {
-
         guard onboardingUseCase.hasAcceptedTermsOfService else {
             return toTermsOfService()
         }
@@ -87,7 +84,7 @@ private extension OnboardingCoordinator {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
+            case .acceptTermsOfService, .dismiss: toAnalyticsPermission()
             }
         }
     }
@@ -97,7 +94,7 @@ private extension OnboardingCoordinator {
 
         push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutCrashReporting, .dismiss: self.toCustomECCWarning()
+            case .answerQuestionAboutCrashReporting, .dismiss: toCustomECCWarning()
             }
         }
     }
@@ -110,7 +107,7 @@ private extension OnboardingCoordinator {
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptRisks, .dismiss: self.toChooseWallet()
+            case .acceptRisks, .dismiss: toChooseWallet()
             }
         }
     }
@@ -123,13 +120,12 @@ private extension OnboardingCoordinator {
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .finishChoosingWallet: self.toChoosePincode()
+            case .finishChoosingWallet: toChoosePincode()
             }
         }
     }
 
     func toChoosePincode() {
-
         start(
             coordinator: SetPincodeCoordinator(
                 navigationController: navigationController,
@@ -137,7 +133,7 @@ private extension OnboardingCoordinator {
             )
         ) { [unowned self] (userDid: SetPincodeCoordinatorNavigationStep) in
             switch userDid {
-            case .setPincode: self.finish()
+            case .setPincode: finish()
             }
         }
     }

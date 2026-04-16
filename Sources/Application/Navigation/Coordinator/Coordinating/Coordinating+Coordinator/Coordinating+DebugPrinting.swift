@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,16 +25,16 @@
 import UIKit
 
 extension Coordinating {
-    // Please fix this ugly code for me... we want a nice ascii representation of the coordinator and its
-    // coordinator stack and navigation stack (both presented scenes and non presented scenes.),
-    // using an increasing indentation for each level of depth
-    // swiftlint:disable:next function_body_length
+    /// Please fix this ugly code for me... we want a nice ascii representation of the coordinator and its
+    /// coordinator stack and navigation stack (both presented scenes and non presented scenes.),
+    /// using an increasing indentation for each level of depth
     func stringRepresentation(level: Int) -> String {
-        let indendation: String = [String](repeating: "\t", count: level).joined()
+        let indentation: String = [String](repeating: "\t", count: level).joined()
 
         func scenesFor(_ navCont: UIViewController?) -> String? {
             guard let navCont = navCont as? UINavigationController, !navCont.viewControllers.isEmpty else { return nil }
-            return navCont.viewControllers.compactMap { $0 as? AbstractController }.map { $0.description }.joined(separator: ", ")
+            return navCont.viewControllers.compactMap { $0 as? AbstractController }.map(\.description)
+                .joined(separator: ", ")
         }
 
         let scenesString: String = {
@@ -43,7 +43,7 @@ extension Coordinating {
 
             var presentedScenes = ""
             if let presentedScenesString = scenesFor(navigationController.presentedViewController) {
-                presentedScenes = "presented scenes: [\(presentedScenesString)]\n\(indendation)\t"
+                presentedScenes = "presented scenes: [\(presentedScenesString)]\n\(indentation)\t"
                 if directScenes.isEmpty {
                     return presentedScenes
                 } else {
@@ -54,13 +54,14 @@ extension Coordinating {
             }
 
             return """
-                , scenes: [
-                \(indendation)\t\t\(directScenes)
-                \(indendation)\t]
-                """ + presentedScenes
+            , scenes: [
+            \(indentation)\t\t\(directScenes)
+            \(indentation)\t]
+            """ + presentedScenes
         }()
 
-        let children: String = childCoordinators.map { $0.stringRepresentation(level: level + 2) }.joined(separator: ", \n\t")
+        let children: String = childCoordinators.map { $0.stringRepresentation(level: level + 2) }
+            .joined(separator: ", \n\t")
 
         let childrenString: String = {
             guard !childCoordinators.isEmpty else {
@@ -71,14 +72,15 @@ extension Coordinating {
 
             return """
             \(separator)children: [\(children)
-            \(indendation)\t]
+            \(indentation)\t]
             """
         }()
 
         return """
-        \n\(indendation){
-        \(indendation)\t\(type(of: self))(nc: \(navigationController.hashValue.description.dropFirst(12)))\(scenesString)\(childrenString)
-        \(indendation)}
+        \n\(indentation){
+        \(indentation)\t\(type(of: self))(nc: \(navigationController.hashValue.description
+            .dropFirst(12)))\(scenesString)\(childrenString)
+        \(indentation)}
         """
     }
 }

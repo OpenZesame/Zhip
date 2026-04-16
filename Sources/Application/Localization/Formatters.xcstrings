@@ -1,0 +1,34 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "BalanceFirstFetch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fetching balance..."
+          }
+        }
+      }
+    },
+    "BalanceWasUpdatedAt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Balance last updated %1$(relativeTime)@."
+          }
+        }
+      },
+      "substitutions" : {
+        "relativeTime" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

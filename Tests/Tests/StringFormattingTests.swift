@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,14 +26,11 @@ import Foundation
 import UIKit
 import XCTest
 @testable import Zhip
-import SwiftDate
 
 class StringFormattingTests: XCTestCase {
-
     func testFormatting() {
         func f(_ s: String) -> String {
-            let new = s.inserting(string: "x", every: 3)
-            return new
+            s.inserting(string: "x", every: 3)
         }
 
         XCTAssertEqual(f("1"), "1")
@@ -46,44 +43,5 @@ class StringFormattingTests: XCTestCase {
         XCTAssertEqual(f("12345678"), "12x345x678")
         XCTAssertEqual(f("123456789"), "123x456x789")
         XCTAssertEqual(f("123456789a"), "1x234x567x89a")
-    }
-
-    // These tests might fail if they are run exactly 00:01... kind of funny. Not so probable though.
-    func testTimeAgoEnglish() {
-        func s(_ date: Date) -> String {
-            return date.toRelative(
-                style: RelativeFormatter.defaultStyle(),
-                locale: Locale.current
-            )
-        }
-        XCTAssertEqual(
-            s(1.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(2.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(29.seconds.ago),
-            "now"
-        )
-
-        XCTAssertEqual(
-            s(45.seconds.ago),
-            "1 minute ago"
-        )
-
-        XCTAssertEqual(
-            s(1.minutes.ago),
-            "1 minute ago"
-        )
-
-        XCTAssertEqual(
-            s(2.minutes.ago),
-            "2 minutes ago"
-        )
     }
 }

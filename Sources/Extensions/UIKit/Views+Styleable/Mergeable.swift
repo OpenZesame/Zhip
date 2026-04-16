@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,21 +30,21 @@ public protocol Mergeable {
 
 extension Mergeable {
     func merge(yieldingTo other: Self?) -> Self {
-        guard let other = other else { return self }
+        guard let other else { return self }
         return merge(yieldingTo: other)
     }
 
     func merge(yieldingTo other: Self) -> Self {
-        return merged(other: other, mode: .yieldToOther)
+        merged(other: other, mode: .yieldToOther)
     }
 
     func merge(overridingOther other: Self?) -> Self {
-        guard let other = other else { return self }
+        guard let other else { return self }
         return merge(overridingOther: other)
     }
 
     func merge(overridingOther other: Self) -> Self {
-        return merged(other: other, mode: .overrideOther)
+        merged(other: other, mode: .overrideOther)
     }
 }
 
@@ -66,15 +66,15 @@ public enum MergeMode {
 
 extension Optional where Wrapped: Mergeable {
     func merge(overridingOther other: Wrapped) -> Wrapped {
-        return merged(other: other, mode: .overrideOther)
+        merged(other: other, mode: .overrideOther)
     }
 
     func merge(yieldingTo other: Wrapped) -> Wrapped {
-        return merged(other: other, mode: .yieldToOther)
+        merged(other: other, mode: .yieldToOther)
     }
 
     private func merged(other: Wrapped, mode: MergeMode) -> Wrapped {
-        guard let `self` = self else { return other }
+        guard let self else { return other }
         return `self`.merged(other: other, mode: mode)
     }
 }

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,12 +27,14 @@ import RxCocoa
 import RxSwift
 
 // MARK: - ConfirmNewPincodeUserAction
+
 enum ConfirmNewPincodeUserAction {
     case confirmPincode
     case skip
 }
 
 // MARK: - ConfirmNewPincodeViewModel
+
 final class ConfirmNewPincodeViewModel: BaseViewModel<
     ConfirmNewPincodeUserAction,
     ConfirmNewPincodeViewModel.InputFromView,
@@ -46,7 +48,6 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
         self.unconfirmedPincode = unconfirmedPincode
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ step: NavigationStep) {
             navigator.next(step)
@@ -58,26 +59,26 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
         let isConfirmPincodeEnabled = Driver.combineLatest(
-            pincodeValidationValue.map { $0.isValid },
+            pincodeValidationValue.map(\.isValid),
             input.fromView.isHaveBackedUpPincodeCheckboxChecked
         ) { isPincodeValid, isBackedUpChecked in
             isPincodeValid && isBackedUpChecked
         }
 
         bag <~ [
-            input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map { $0.value }.filterNil())
-            .do(onNext: { [unowned self] in
-                self.useCase.userChoose(pincode: $0)
-                userDid(.confirmPincode)
-            }).drive(),
+            input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).filterNil())
+                .do(onNext: { [unowned self] in
+                    useCase.userChoose(pincode: $0)
+                    userDid(.confirmPincode)
+                }).drive(),
 
             input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.skip) })
-                .drive()
+                .drive(),
         ]
 
         return Output(
-            pincodeValidation: pincodeValidationValue.map { $0.validation },
+            pincodeValidation: pincodeValidationValue.map(\.validation),
             isConfirmPincodeEnabled: isConfirmPincodeEnabled,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
@@ -98,7 +99,6 @@ extension ConfirmNewPincodeViewModel {
     }
 
     struct InputValidator {
-
         private let existingPincode: Pincode
         private let pincodeValidator = PincodeValidator(settingNew: true)
 
@@ -107,7 +107,7 @@ extension ConfirmNewPincodeViewModel {
         }
 
         func validate(unconfirmedPincode: Pincode?) -> PincodeValidator.ValidationResult {
-            return pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
+            pincodeValidator.validate(input: (unconfirmedPincode, existingPincode))
         }
     }
 }
@@ -124,7 +124,6 @@ struct PincodeValidator: InputValidator {
     }
 
     func validate(input: (unconfirmed: Pincode?, existing: Pincode)) -> ValidationResult {
-
         let pincode = input.existing
 
         guard let unconfirmed = input.unconfirmed else {
@@ -140,14 +139,12 @@ struct PincodeValidator: InputValidator {
 
 extension PincodeValidator.Error {
     var errorMessage: String {
-        let Message = L10n.Error.Input.Pincode.self
-
         switch self {
-        case .incorrectPincode(let settingNew):
+        case let .incorrectPincode(settingNew):
             if settingNew {
-                return Message.pincodesDoesNotMatch
+                String(localized: .Errors.pincodesDoNotMatch)
             } else {
-                return Message.pincodesDoesNotMatch
+                String(localized: .Errors.pincodesDoNotMatch)
             }
         }
     }

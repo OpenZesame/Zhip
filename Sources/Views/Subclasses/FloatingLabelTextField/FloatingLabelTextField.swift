@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,48 +22,45 @@
 // SOFTWARE.
 //
 
-import UIKit
-
-import SkyFloatingLabelTextField
-
 import RxCocoa
 import RxSwift
+import SkyFloatingLabelTextField
+import UIKit
 
 private let circeViewSize: CGFloat = 16
 private let leftPaddingViewWidth: CGFloat = circeViewSize + 12
 private let distanceBetweenCircleAndBottom: CGFloat = 10
 
 final class FloatingLabelTextField: SkyFloatingLabelTextField {
-
     static let rightViewWidth: CGFloat = 45
     static let textFieldHeight: CGFloat = 64
 
-    private lazy var leftPaddingView      = UIView()
+    private lazy var leftPaddingView = UIView()
     lazy var validationCircleView = UIView()
-    private lazy var textFieldDelegate    = TextFieldDelegate()
+    private lazy var textFieldDelegate = TextFieldDelegate()
 
     // MARK: - Overridden methods
 
-    // Offset X so that label does not collide with leftView
+    /// Offset X so that label does not collide with leftView
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         let superRect = super.placeholderRect(forBounds: bounds)
         return superRect.insetBy(dx: leftPaddingView.frame.width, dy: 0)
     }
 
     override func textHeight() -> CGFloat {
-        return FloatingLabelTextField.textFieldHeight/2
+        FloatingLabelTextField.textFieldHeight / 2
     }
 
     override func titleHeight() -> CGFloat {
-        return FloatingLabelTextField.textFieldHeight/2
+        FloatingLabelTextField.textFieldHeight / 2
     }
 
     override var errorMessage: String? {
         didSet { updateFontResizing() }
     }
 
-    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        return leftPaddingView.frame
+    override func leftViewRect(forBounds _: CGRect) -> CGRect {
+        leftPaddingView.frame
     }
 
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
@@ -84,9 +81,13 @@ final class FloatingLabelTextField: SkyFloatingLabelTextField {
 }
 
 // MARK: TextField + Styling
+
 extension FloatingLabelTextField {
     @discardableResult
-    func withStyle(_ style: FloatingLabelTextField.Style, customize: ((FloatingLabelTextField.Style) -> FloatingLabelTextField.Style)? = nil) -> FloatingLabelTextField {
+    func withStyle(
+        _ style: FloatingLabelTextField.Style,
+        customize: ((FloatingLabelTextField.Style) -> FloatingLabelTextField.Style)? = nil
+    ) -> FloatingLabelTextField {
         defer { delegate = textFieldDelegate }
         apply(style: customize?(style) ?? style)
         setup()
@@ -98,16 +99,17 @@ extension FloatingLabelTextField {
     }
 }
 
-// RX
+/// RX
 extension Reactive where Base: FloatingLabelTextField {
     var validation: Binder<AnyValidation> {
-        return Binder<AnyValidation>(base) {
+        Binder<AnyValidation>(base) {
             $0.validate($1)
         }
     }
 }
 
 // MARK: - Private
+
 private extension FloatingLabelTextField {
     func setup() {
         defer {
@@ -132,10 +134,15 @@ private extension FloatingLabelTextField {
         validationCircleView.size(CGSize(width: circeViewSize, height: circeViewSize))
         validationCircleView.bottomToSuperview(offset: -distanceBetweenCircleAndBottom)
         validationCircleView.leftToSuperview()
-        UIView.Rounding.static(circeViewSize/2).apply(to: validationCircleView)
+        UIView.Rounding.static(circeViewSize / 2).apply(to: validationCircleView)
 
         leftView = leftPaddingView
         leftViewMode = .always
-        leftPaddingView.frame = CGRect(x: 0, y: 0, width: leftPaddingViewWidth, height: FloatingLabelTextField.textFieldHeight)
+        leftPaddingView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: leftPaddingViewWidth,
+            height: FloatingLabelTextField.textFieldHeight
+        )
     }
 }

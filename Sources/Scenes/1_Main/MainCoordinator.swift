@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,19 +22,16 @@
 // SOFTWARE.
 //
 
-import UIKit
-import Zesame
 import RxCocoa
 import RxSwift
-
-private typealias € = L10n.Scene
+import UIKit
+import Zesame
 
 enum MainCoordinatorNavigationStep {
     case removeWallet
 }
 
 final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
-
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
     private let deeplinkedTransaction: Driver<TransactionIntent>
@@ -42,12 +39,17 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
-    init(navigationController: UINavigationController, deepLinkGenerator: DeepLinkGenerator, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<TransactionIntent>) {
+    init(
+        navigationController: UINavigationController,
+        deepLinkGenerator: DeepLinkGenerator,
+        useCaseProvider: UseCaseProvider,
+        deeplinkedTransaction: Driver<TransactionIntent>
+    ) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in self.toSendPrefilTransaction() }).drive()
+        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in toSendPrefilTransaction() }).drive()
     }
 
     override func start(didStart: Completion? = nil) {
@@ -67,21 +69,24 @@ private extension MainCoordinator {
 }
 
 // MARK: - Navigation
+
 private extension MainCoordinator {
-
     func toMain(didStart: Completion? = nil) {
-
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             updateBalanceTrigger: updateBalanceSubject.asDriverOnErrorReturnEmpty()
         )
 
-        push(scene: Main.self, viewModel: viewModel, navigationPresentationCompletion: didStart) { [unowned self] userIntendsTo in
+        push(
+            scene: Main.self,
+            viewModel: viewModel,
+            navigationPresentationCompletion: didStart
+        ) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .send: self.toSend()
-            case .receive: self.toReceive()
-            case .goToSettings: self.toSettings()
+            case .send: toSend()
+            case .receive: toReceive()
+            case .goToSettings: toSettings()
             }
         }
     }
@@ -92,17 +97,18 @@ private extension MainCoordinator {
                 navigationController: $0,
                 useCaseProvider: useCaseProvider,
                 deeplinkedTransaction: deeplinkedTransaction
-                )
-        },
+            )
+            },
             navigationHandler: { [unowned self] userDid, dismissModalFlow in
                 switch userDid {
-                case .finish(let triggerBalanceFetching):
+                case let .finish(triggerBalanceFetching):
                     if triggerBalanceFetching {
-                        self.triggerFetchingOfBalance()
+                        triggerFetchingOfBalance()
                     }
                     dismissModalFlow(true)
                 }
-        })
+            }
+        )
     }
 
     func toReceive() {
@@ -110,13 +116,15 @@ private extension MainCoordinator {
             makeCoordinator: { ReceiveCoordinator(
                 navigationController: $0,
                 useCaseProvider: useCaseProvider,
-                deepLinkGenerator: deepLinkGenerator)
-        },
+                deepLinkGenerator: deepLinkGenerator
+            )
+            },
             navigationHandler: { userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
                 case .finish: dismissModalFlow(true)
                 }
-        })
+            }
+        )
     }
 
     func toSettings() {
@@ -124,14 +132,16 @@ private extension MainCoordinator {
             makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
-                case .removeWallet: self.navigator.next(.removeWallet)
+                case .removeWallet: navigator.next(.removeWallet)
                 case .closeSettings: dismissModalFlow(true)
                 }
-        })
+            }
+        )
     }
 }
 
 // MARK: - Private
+
 private extension MainCoordinator {
     func triggerFetchingOfBalance() {
         updateBalanceSubject.onNext(())

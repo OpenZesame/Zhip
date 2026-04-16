@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,24 +22,20 @@
 // SOFTWARE.
 //
 
-import Zesame
-
-import RxSwift
 import RxCocoa
+import RxSwift
+import Zesame
 
 enum DecryptKeystoreToRevealKeyPairUserAction {
     case dismiss
     case decryptKeystoreReavealing(keyPair: KeyPair)
 }
 
-private typealias € = L10n.Scene.DecryptKeystoreToRevealKeyPair
-
 final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
     DecryptKeystoreToRevealKeyPairUserAction,
     DecryptKeystoreToRevealKeyPairViewModel.InputFromView,
     DecryptKeystoreToRevealKeyPairViewModel.Output
 > {
-
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>
 
@@ -48,7 +44,6 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         self.wallet = wallet
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ step: NavigationStep) {
             navigator.next(step)
@@ -58,6 +53,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         let errorTracker = ErrorTracker()
 
         // MARK: - Validate input
+
         let validator = InputValidator()
 
         let encryptionPasswordValidationValue = input.fromView.encryptionPassword
@@ -85,7 +81,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userDid(.decryptKeystoreReavealing(keyPair: $0)) })
-                .drive()
+                .drive(),
         ]
 
         let encryptionPasswordValidation = Driver.merge(
@@ -102,14 +98,13 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         return Output(
             encryptionPasswordValidation: encryptionPasswordValidation,
-            isRevealButtonEnabled: encryptionPasswordValidationValue.map { $0.isValid },
+            isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid),
             isRevealButtonLoading: activityIndicator.asDriver()
         )
     }
 }
 
 extension DecryptKeystoreToRevealKeyPairViewModel {
-
     struct InputFromView {
         let encryptionPassword: Driver<String>
         let isEditingEncryptionPassword: Driver<Bool>
@@ -123,11 +118,11 @@ extension DecryptKeystoreToRevealKeyPairViewModel {
     }
 
     struct InputValidator {
-
-        func validateEncryptionPassword(_ password: String, for wallet: Wallet) -> EncryptionPasswordValidator.ValidationResult {
+        func validateEncryptionPassword(_ password: String, for wallet: Wallet) -> EncryptionPasswordValidator
+            .ValidationResult
+        {
             let validator = EncryptionPasswordValidator(mode: WalletEncryptionPassword.modeFrom(wallet: wallet))
             return validator.validate(input: (password: password, confirmingPassword: password))
         }
     }
 }
-

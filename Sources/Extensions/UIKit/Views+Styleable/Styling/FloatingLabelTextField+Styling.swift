@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,8 +22,8 @@
 // SOFTWARE.
 //
 
-import UIKit
 import TinyConstraints
+import UIKit
 
 extension FloatingLabelTextField {
     struct Style {
@@ -45,7 +45,7 @@ extension FloatingLabelTextField {
             backgroundColor: UIColor? = nil,
             isSecureTextEntry: Bool? = nil,
             keyboardType: UIKeyboardType? = nil
-            ) {
+        ) {
             self.typeOfInput = typeOfInput
             self.placeholder = placeholder
             self.font = font
@@ -59,6 +59,7 @@ extension FloatingLabelTextField {
 }
 
 // MARK: - Apply Syyle
+
 extension FloatingLabelTextField {
     func apply(style: Style) {
         updateTypeOfInput(style.typeOfInput)
@@ -75,6 +76,7 @@ extension FloatingLabelTextField {
 }
 
 // MARK: - Style + Customizing
+
 extension FloatingLabelTextField.Style {
     @discardableResult
     func placeholder(_ placeholder: String?) -> FloatingLabelTextField.Style {
@@ -85,42 +87,43 @@ extension FloatingLabelTextField.Style {
 }
 
 // MARK: - Style Presets
+
 extension FloatingLabelTextField.Style {
     static var text: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .text
         )
     }
 
     static var addressBech32OrHex: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .bech32OrHex
         )
     }
 
     static var password: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .password,
             isSecureTextEntry: true
         )
     }
 
     static var privateKey: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .hexadecimal,
             isSecureTextEntry: true
         )
     }
 
     static var number: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .number,
             keyboardType: .numberPad
         )
     }
-    
+
     static var decimal: FloatingLabelTextField.Style {
-        return FloatingLabelTextField.Style(
+        FloatingLabelTextField.Style(
             typeOfInput: .decimalWithSeparator,
             keyboardType: .decimalPad
         )

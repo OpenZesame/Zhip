@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,23 +22,22 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 final class EnsureThatYouAreNotBeingWatchedView: ScrollableStackViewOwner {
-
-    private lazy var imageView              = UIImageView()
-    private lazy var headerLabel            = UILabel()
-    private lazy var makeSureAloneLabel     = UILabel()
-    private lazy var understandButton       = UIButton()
+    private lazy var imageView = UIImageView()
+    private lazy var headerLabel = UILabel()
+    private lazy var makeSureAloneLabel = UILabel()
+    private lazy var understandButton = UIButton()
 
     lazy var stackViewStyle: UIStackView.Style = [
         imageView,
         headerLabel,
         makeSureAloneLabel,
         .spacer,
-        understandButton
+        understandButton,
     ]
 
     override func setup() {
@@ -50,29 +49,28 @@ extension EnsureThatYouAreNotBeingWatchedView: ViewModelled {
     typealias ViewModel = EnsureThatYouAreNotBeingWatchedViewModel
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             understandTrigger: understandButton.rx.tap.asDriverOnErrorReturnEmpty()
         )
     }
 }
 
-private typealias € = L10n.Scene.EnsureThatYouAreNotBeingWatched
 private extension EnsureThatYouAreNotBeingWatchedView {
     func setupSubviews() {
         imageView.withStyle(.default) {
-            $0.image(Asset.Icons.Large.shield.image)
+            $0.image(UIImage(resource: .shield))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.Label.security)
+            $0.text(String(localized: .EnsurePrivacy.security))
         }
 
         makeSureAloneLabel.withStyle(.body) {
-            $0.text(€.Label.makeSureAlone)
+            $0.text(String(localized: .EnsurePrivacy.makeSureAlone))
         }
 
         understandButton.withStyle(.primary) {
-            $0.title(€.Button.understand)
+            $0.title(String(localized: .EnsurePrivacy.understand))
         }
     }
 }

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,19 +22,19 @@
 // SOFTWARE.
 //
 
-import UIKit
-
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
-    private lazy var privateKeyField                        = FloatingLabelTextField()
-    private lazy var showPrivateKeyButton = privateKeyField.addBottomAlignedButton(titled: L10n.Generic.show)
+    private lazy var privateKeyField = FloatingLabelTextField()
+    private lazy var showPrivateKeyButton = privateKeyField
+        .addBottomAlignedButton(titled: String(localized: .Generic.show))
 
-    private lazy var encryptionPasswordField              = FloatingLabelTextField()
-    private lazy var confirmEncryptionPasswordField       = FloatingLabelTextField()
+    private lazy var encryptionPasswordField = FloatingLabelTextField()
+    private lazy var confirmEncryptionPasswordField = FloatingLabelTextField()
 
     private let bag = DisposeBag()
 
@@ -56,7 +56,7 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
         privateKeyField,
         encryptionPasswordField,
         confirmEncryptionPasswordField,
-        .spacer
+        .spacer,
     ]
 
     override func setup() {
@@ -66,35 +66,35 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
 }
 
 // MARK: - Private
-private typealias € = L10n.Scene.RestoreWallet
+
 private extension RestoreUsingPrivateKeyView {
     func setupSubviews() {
         privateKeyField.withStyle(.privateKey) {
-            $0.placeholder(€.Field.privateKey)
+            $0.placeholder(String(localized: .RestoreWallet.privateKeyField))
         }
 
         encryptionPasswordField.withStyle(.password)
 
         confirmEncryptionPasswordField.withStyle(.password) {
-            $0.placeholder(€.Field.confirmEncryptionPassword)
+            $0.placeholder(String(localized: .RestoreWallet.confirmEncryptionPassword))
         }
     }
 
     func setupViewModelBinding() {
         bag <~ [
-            viewModelOutput.togglePrivateKeyVisibilityButtonTitle   --> showPrivateKeyButton.rx.title(for: .normal),
-            viewModelOutput.privateKeyFieldIsSecureTextEntry        --> privateKeyField.rx.isSecureTextEntry,
-            viewModelOutput.encryptionPasswordPlaceholder         --> encryptionPasswordField.rx.placeholder,
-            viewModelOutput.privateKeyValidation                    --> privateKeyField.rx.validation,
-            viewModelOutput.encryptionPasswordValidation          --> encryptionPasswordField.rx.validation,
-            viewModelOutput.confirmEncryptionPasswordValidation   --> confirmEncryptionPasswordField.rx.validation
+            viewModelOutput.togglePrivateKeyVisibilityButtonTitle --> showPrivateKeyButton.rx.title(for: .normal),
+            viewModelOutput.privateKeyFieldIsSecureTextEntry --> privateKeyField.rx.isSecureTextEntry,
+            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
+            viewModelOutput.privateKeyValidation --> privateKeyField.rx.validation,
+            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
+            viewModelOutput.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.rx.validation,
         ]
     }
 }
 
 extension Reactive where Base: UITextField {
     var isSecureTextEntry: Binder<Bool> {
-        return Binder(base) {
+        Binder(base) {
             $0.isSecureTextEntry = $1
         }
     }

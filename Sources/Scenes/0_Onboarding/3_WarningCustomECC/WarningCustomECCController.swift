@@ -3,7 +3,7 @@
 //  Zhip
 //
 //  Created by Alexander Cyon on 2019-02-08.
-//  Copyright © 2019 Open Zesame. All rights reserved.
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
 import UIKit
@@ -17,11 +17,11 @@ final class WarningCustomECC: Scene<WarningCustomECCView>, NavigationBarLayoutOw
     }
 
     required init(viewModel: ViewModel) {
-        self.navigationBarLayout = .hidden
+        navigationBarLayout = .hidden
         super.init(viewModel: viewModel)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         interfaceBuilderSucks
     }
 }

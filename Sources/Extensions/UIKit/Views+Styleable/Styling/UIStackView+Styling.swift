@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,6 @@
 import UIKit
 
 extension UIEdgeInsets {
-
     init(top: CGFloat, bottom: CGFloat) {
         self.init(top: top, left: 0, bottom: bottom, right: 0)
     }
@@ -40,6 +39,7 @@ extension UIEdgeInsets {
 }
 
 // MARK: - Style
+
 extension UIStackView {
     struct Style {
         static let defaultSpacing: CGFloat = 16
@@ -61,7 +61,7 @@ extension UIStackView {
             spacing: CGFloat? = defaultSpacing,
             layoutMargins: UIEdgeInsets? = UIEdgeInsets(all: defaultMargin),
             isLayoutMarginsRelativeArrangement: Bool? = nil
-            ) {
+        ) {
             self.views = views
             self.axis = axis
             self.alignment = alignment
@@ -74,6 +74,7 @@ extension UIStackView {
 }
 
 // MARK: Style + ExpressibleByArrayLiteral
+
 extension UIStackView.Style: ExpressibleByArrayLiteral {
     init(arrayLiteral views: UIView...) {
         self.init(views)
@@ -82,11 +83,12 @@ extension UIStackView.Style: ExpressibleByArrayLiteral {
 
 extension UIEdgeInsets {
     var isZero: Bool {
-        return top == 0 && bottom == 0 && left == 0 && right == 0
+        top == 0 && bottom == 0 && left == 0 && right == 0
     }
 }
 
 // MARK: - Apply Style
+
 extension UIStackView {
     func apply(style: Style) {
         if let views = style.views, !views.isEmpty {
@@ -105,7 +107,10 @@ extension UIStackView {
     }
 
     @discardableResult
-    func withStyle(_ style: UIStackView.Style, customize: ((UIStackView.Style) -> UIStackView.Style)? = nil) -> UIStackView {
+    func withStyle(
+        _ style: UIStackView.Style,
+        customize: ((UIStackView.Style) -> UIStackView.Style)? = nil
+    ) -> UIStackView {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style
         apply(style: style)
@@ -114,8 +119,8 @@ extension UIStackView {
 }
 
 // MARK: - Style + Customizing
-extension UIStackView.Style {
 
+extension UIStackView.Style {
     @discardableResult
     func alignment(_ alignment: UIStackView.Alignment) -> UIStackView.Style {
         var style = self
@@ -146,19 +151,20 @@ extension UIStackView.Style {
 }
 
 // MARK: - Style Presets
+
 extension UIStackView.Style {
     static var `default`: UIStackView.Style {
-        return UIStackView.Style([])
+        UIStackView.Style([])
     }
 
     static var vertical: UIStackView.Style {
-        return UIStackView.Style(
+        UIStackView.Style(
             layoutMargins: .zero
         )
     }
 
     static var horizontalEqualCentering: UIStackView.Style {
-        return UIStackView.Style(
+        UIStackView.Style(
             axis: .horizontal,
             alignment: .center,
             distribution: .equalCentering,
@@ -168,16 +174,17 @@ extension UIStackView.Style {
     }
 
     static var horizontal: UIStackView.Style {
-        return UIStackView.Style(
+        UIStackView.Style(
             axis: .horizontal,
             layoutMargins: .zero
         )
     }
 
     static var horizontalFillingEqually: UIStackView.Style {
-        return UIStackView.Style(
+        UIStackView.Style(
             axis: .horizontal,
             distribution: .fillEqually,
-            layoutMargins: .zero)
+            layoutMargins: .zero
+        )
     }
 }

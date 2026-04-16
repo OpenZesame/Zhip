@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,17 +22,15 @@
 // SOFTWARE.
 //
 
+import RxCocoa
+import RxSwift
+import TinyConstraints
 import UIKit
 
-import RxSwift
-import RxCocoa
-import TinyConstraints
-
 final class InputPincodeView: UIView {
-
-    lazy var pinField   = PincodeTextField()
-    private lazy var errorLabel     = UILabel()
-    private lazy var stackView      = UIStackView(arrangedSubviews: [pinField, errorLabel])
+    lazy var pinField = PincodeTextField()
+    private lazy var errorLabel = UILabel()
+    private lazy var stackView = UIStackView(arrangedSubviews: [pinField, errorLabel])
 
     private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
     private let isClearedOnValidInput: Bool
@@ -42,7 +40,9 @@ final class InputPincodeView: UIView {
         setup()
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    required init?(coder _: NSCoder) {
+        interfaceBuilderSucks
+    }
 
     func validate(_ validation: AnyValidation) {
         pinField.validate(validation)
@@ -55,7 +55,7 @@ final class InputPincodeView: UIView {
             if isClearedOnValidInput {
                 pinField.clearInput()
             }
-        case .errorMessage(let errorMessage):
+        case let .errorMessage(errorMessage):
             vibrateOnInvalid()
             errorLabel.text = errorMessage
             shake { [weak self] in
@@ -83,19 +83,17 @@ private extension InputPincodeView {
     func vibrateOnValid() {
         vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
-
 }
 
 extension UIView {
-    
     func vibrateOnInvalid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
         vibrate(style: .error, hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
-    
+
     func vibrateOnValid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
         vibrate(style: .success, hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
-    
+
     func vibrate(
         style: UINotificationFeedbackGenerator.FeedbackType,
         hapticFeedbackGenerator: UINotificationFeedbackGenerator

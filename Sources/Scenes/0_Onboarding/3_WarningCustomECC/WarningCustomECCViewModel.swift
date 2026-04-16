@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,22 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 // MARK: - WarningCustomECCUserAction
+
 enum WarningCustomECCUserAction {
     case acceptRisks, dismiss
 }
 
-private typealias € = L10n.Scene.WarningCustomECC
-
 // MARK: - WarningCustomECCViewModel
+
 final class WarningCustomECCViewModel: BaseViewModel<
     WarningCustomECCUserAction,
     WarningCustomECCViewModel.InputFromView,
     WarningCustomECCViewModel.Output
 > {
-
     private let useCase: OnboardingUseCase
     private let isDismissible: Bool
 
@@ -48,7 +47,6 @@ final class WarningCustomECCViewModel: BaseViewModel<
         self.isDismissible = isDismissible
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -65,9 +63,9 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
-                self.useCase.didAcceptCustomECCWarning()
+                useCase.didAcceptCustomECCWarning()
                 userDid(.acceptRisks)
-            }).drive()
+            }).drive(),
         ]
 
         return Output(

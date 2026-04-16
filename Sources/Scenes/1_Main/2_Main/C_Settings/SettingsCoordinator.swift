@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,9 +22,9 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 import Zesame
 
 let githubUrlString = "https://github.com/OpenZesame/Zhip"
@@ -35,7 +35,6 @@ enum SettingsCoordinatorNavigationStep {
 }
 
 final class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorNavigationStep> {
-  
     private let useCaseProvider: UseCaseProvider
     private lazy var transactionUseCase = useCaseProvider.makeTransactionsUseCase()
     private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
@@ -47,14 +46,14 @@ final class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorNavigationSt
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toSettings()
     }
 }
 
 // MARK: - Navigate
-private extension SettingsCoordinator {
 
+private extension SettingsCoordinator {
     // swiftlint:disable:next cyclomatic_complexity
     func toSettings() {
         let viewModel = SettingsViewModel(useCase: pincodeUseCase)
@@ -62,25 +61,21 @@ private extension SettingsCoordinator {
         push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             // Navigation bar
-            case .closeSettings: self.finish()
-
+            case .closeSettings: finish()
             // Section 0
-            case .removePincode: self.toRemovePincode()
-            case .setPincode: self.toSetPincode()
-
+            case .removePincode: toRemovePincode()
+            case .setPincode: toSetPincode()
             // Section 1
-            case .starUsOnGithub: self.toStarUsOnGitHub()
-            case .reportIssueOnGithub: self.toReportIssueOnGithub()
-            case .acknowledgments: self.toAcknowledgments()
-
+            case .starUsOnGithub: toStarUsOnGitHub()
+            case .reportIssueOnGithub: toReportIssueOnGithub()
+            case .acknowledgments: toAcknowledgments()
             // Section 2
-            case .readTermsOfService: self.toReadTermsOfService()
-            case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
-            case .readCustomECCWarning: self.toReadCustomECCWarning()
-
+            case .readTermsOfService: toReadTermsOfService()
+            case .changeAnalyticsPermissions: toChangeAnalyticsPermissions()
+            case .readCustomECCWarning: toReadCustomECCWarning()
             // Section 3
-            case .backupWallet: self.toBackupWallet()
-            case .removeWallet: self.toConfirmWalletRemoval()
+            case .backupWallet: toBackupWallet()
+            case .removeWallet: toConfirmWalletRemoval()
             }
         }
     }
@@ -97,12 +92,16 @@ private extension SettingsCoordinator {
 
     func toSetPincode() {
         presentModalCoordinator(
-            makeCoordinator: { SetPincodeCoordinator(navigationController: $0, useCase: useCaseProvider.makePincodeUseCase()) },
+            makeCoordinator: { SetPincodeCoordinator(
+                navigationController: $0,
+                useCase: useCaseProvider.makePincodeUseCase()
+            ) },
             navigationHandler: { userDid, dismissModalFlow in
                 switch userDid {
                 case .setPincode: dismissModalFlow(true)
                 }
-        })
+            }
+        )
     }
 
     func toStarUsOnGitHub() {
@@ -155,13 +154,18 @@ private extension SettingsCoordinator {
 
     func toBackupWallet() {
         presentModalCoordinator(
-            makeCoordinator: { BackupWalletCoordinator(navigationController: $0, useCase: walletUseCase, mode: .dismissable)
-        },
+            makeCoordinator: { BackupWalletCoordinator(
+                navigationController: $0,
+                useCase: walletUseCase,
+                mode: .dismissable
+            )
+            },
             navigationHandler: { userFinished, dismissModalFlow in
                 switch userFinished {
                 case .cancel, .backUp: dismissModalFlow(true)
+                }
             }
-        })
+        )
     }
 
     func toConfirmWalletRemoval() {
@@ -172,7 +176,7 @@ private extension SettingsCoordinator {
             case .cancel: dismissScene(true, nil)
             case .confirm:
                 dismissScene(true) { [unowned self] in
-                    self.toChooseWallet()
+                    toChooseWallet()
                 }
             }
         }

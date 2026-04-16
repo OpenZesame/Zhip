@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,14 +33,22 @@ public extension UINavigationBar {
     func applyLayout(_ layout: NavigationBarLayout) -> NavigationBarLayout {
         barStyle = layout.barStyle
         isTranslucent = layout.isTranslucent
-
-        barTintColor = layout.barTintColor
         tintColor = layout.tintColor
-        backgroundColor = layout.backgroundColor
 
-        backgroundImage = layout.backgroundImage
-        shadowImage = layout.shadowImage
-        titleTextAttributes = layout.titleTextAttributes
+        let navBarAppearance = UINavigationBarAppearance()
+        if layout.isTranslucent, layout.backgroundColor == .clear {
+            navBarAppearance.configureWithTransparentBackground()
+        } else {
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.backgroundColor = layout.barTintColor
+        }
+        navBarAppearance.titleTextAttributes = layout.titleTextAttributes
+        navBarAppearance.shadowColor = .clear
+
+        standardAppearance = navBarAppearance
+        scrollEdgeAppearance = navBarAppearance
+        compactAppearance = navBarAppearance
+        compactScrollEdgeAppearance = navBarAppearance
 
         return layout
     }
@@ -74,7 +82,7 @@ public struct NavigationBarLayout: Equatable {
     public let titleColor: UIColor
 
     public var titleTextAttributes: [NSAttributedString.Key: Any] {
-        return [.font(titleFont), .color(titleColor)].attributes
+        [.font(titleFont), .color(titleColor)].attributes
     }
 
     public init(
@@ -103,7 +111,6 @@ public struct NavigationBarLayout: Equatable {
         self.titleFont = titleFont ?? UINavigationBar.defaultFont
         self.titleColor = titleColor ?? UINavigationBar.defaultTextColor
     }
-
 }
 
 public extension NavigationBarLayout {
@@ -112,14 +119,15 @@ public extension NavigationBarLayout {
         case visible(animated: Bool)
         var isHidden: Bool {
             switch self {
-            case .hidden: return true
-            default: return false
+            case .hidden: true
+            default: false
             }
         }
+
         var animated: Bool {
             switch self {
-            case .hidden(let animated): return animated
-            case .visible(let animated): return animated
+            case let .hidden(animated): animated
+            case let .visible(animated): animated
             }
         }
     }

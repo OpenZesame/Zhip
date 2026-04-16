@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,6 +25,7 @@
 import UIKit
 
 // MARK: - Style
+
 extension UILabel {
     struct Style: Mergeable {
         var text: String?
@@ -42,7 +43,7 @@ extension UILabel {
             numberOfLines: Int? = nil,
             backgroundColor: UIColor? = nil,
             adjustsFontSizeMinimumScaleFactor: CGFloat? = nil
-            ) {
+        ) {
             self.text = text
             self.textColor = textColor
             self.textAlignment = textAlignment
@@ -55,6 +56,7 @@ extension UILabel {
 }
 
 // MARK: Apply Style
+
 extension UILabel {
     func apply(style: Style) {
         text = style.text
@@ -79,8 +81,8 @@ extension UILabel {
 }
 
 // MARK: - Style + Customizing
-extension UILabel.Style {
 
+extension UILabel.Style {
     @discardableResult
     func text(_ text: String?) -> UILabel.Style {
         var style = self
@@ -122,40 +124,39 @@ extension UILabel.Style {
         style.adjustsFontSizeMinimumScaleFactor = minimumScaleFactor
         return style
     }
-
 }
 
 // MARK: - Style Presets
-extension UILabel.Style {
 
+extension UILabel.Style {
     static var impression: UILabel.Style {
-        return UILabel.Style(
+        UILabel.Style(
             font: UIFont.Label.impression
         )
     }
 
     static var header: UILabel.Style {
-        return UILabel.Style(
+        UILabel.Style(
             font: UIFont.Label.header,
             numberOfLines: 0
         )
     }
 
     static var title: UILabel.Style {
-        return UILabel.Style(
+        UILabel.Style(
             font: UIFont.title
         )
     }
 
     static var body: UILabel.Style {
-        return UILabel.Style(
+        UILabel.Style(
             font: UIFont.Label.body,
             numberOfLines: 0
         )
     }
 
     static var checkbox: UILabel.Style {
-        return UILabel.Style(
+        UILabel.Style(
             font: UIFont.checkbox,
             numberOfLines: 0
         )
@@ -163,10 +164,11 @@ extension UILabel.Style {
 }
 
 // MARK: - Style + Merging
+
 extension UILabel.Style {
     func merged(other: UILabel.Style, mode: MergeMode) -> UILabel.Style {
         func merge<T>(_ attributePath: KeyPath<UILabel.Style, T?>) -> T? {
-            return mergeAttribute(other: other, path: attributePath, mode: mode)
+            mergeAttribute(other: other, path: attributePath, mode: mode)
         }
 
         return UILabel.Style(

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,7 +31,6 @@ protocol CellModel {
 }
 
 struct NavigatingCellModel<Destination> {
-
     let destination: Destination
     let accessoryType: UITableViewCell.AccessoryType
 
@@ -39,7 +38,13 @@ struct NavigatingCellModel<Destination> {
     private let icon: UIImage?
     private let style: Style
 
-    fileprivate init(title: String, icon: UIImage?, destination: Destination, style: Style, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator) {
+    fileprivate init(
+        title: String,
+        icon: UIImage?,
+        destination: Destination,
+        style: Style,
+        accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
+    ) {
         self.title = title
         self.icon = icon
         self.destination = destination
@@ -72,14 +77,14 @@ extension NavigatingCellModel {
 extension NavigatingCellModel.Style {
     var labelStyle: UILabel.Style {
         switch self {
-        case .normal, .destructive: return .body
+        case .normal, .destructive: .body
         }
     }
 
     var iconTintColor: UIColor {
         switch self {
-        case .normal: return .teal
-        case .destructive: return .bloodRed
+        case .normal: .teal
+        case .destructive: .bloodRed
         }
     }
 }
@@ -92,17 +97,12 @@ extension NavigatingCellModel {
         style: Style = .normal,
         accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
     ) -> NavigatingCellModel {
-        return NavigatingCellModel(title: title, icon: icon, destination: destination, style: style, accessoryType: accessoryType)
-    }
-
-    static func whenSelectedNavigate(
-        to destination: Destination,
-        titled title: String,
-        icon: ImageAsset,
-        style: Style = .normal,
-        accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
-        ) -> NavigatingCellModel {
-        return whenSelectedNavigate(to: destination, titled: title, icon: icon.image, style: style, accessoryType: accessoryType)
+        NavigatingCellModel(
+            title: title,
+            icon: icon,
+            destination: destination,
+            style: style,
+            accessoryType: accessoryType
+        )
     }
 }
-

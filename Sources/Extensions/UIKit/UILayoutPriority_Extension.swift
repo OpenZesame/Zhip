@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,13 +24,13 @@
 
 import UIKit
 
-extension UILayoutPriority: ExpressibleByFloatLiteral {
+extension UILayoutPriority: @retroactive ExpressibleByFloatLiteral {
     public init(floatLiteral rawValue: Float) {
         self.init(rawValue: rawValue)
     }
 }
 
-extension UILayoutPriority: ExpressibleByIntegerLiteral {
+extension UILayoutPriority: @retroactive ExpressibleByIntegerLiteral {
     public init(integerLiteral intValue: Int) {
         self.init(rawValue: Float(intValue))
     }
@@ -39,7 +39,7 @@ extension UILayoutPriority: ExpressibleByIntegerLiteral {
 public extension UILayoutPriority {
     static var medium: UILayoutPriority {
         let delta = UILayoutPriority.defaultHigh.rawValue - UILayoutPriority.defaultLow.rawValue
-        let valueBetweenLowAndHeigh = UILayoutPriority.defaultLow.rawValue + delta / 2
-        return UILayoutPriority(rawValue: valueBetweenLowAndHeigh)
+        let valueBetweenLowAndHeight = UILayoutPriority.defaultLow.rawValue + delta / 2
+        return UILayoutPriority(rawValue: valueBetweenLowAndHeight)
     }
 }

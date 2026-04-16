@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,13 +22,10 @@
 // SOFTWARE.
 //
 
-import Zesame
-
-import RxSwift
 import RxCocoa
+import RxSwift
 import UIKit
-
-private typealias € = L10n.Scene.BackUpKeystore
+import Zesame
 
 enum BackUpKeystoreUserAction {
     case finished
@@ -39,7 +36,6 @@ final class BackUpKeystoreViewModel: BaseViewModel<
     BackUpKeystoreViewModel.InputFromView,
     BackUpKeystoreViewModel.Output
 > {
-
     private let keystore: Driver<Keystore>
 
     init(keystore: Driver<Keystore>) {
@@ -51,7 +47,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keystore = self.keystore.map { $0.asPrettyPrintedJSONString }
+        let keystore = keystore.map(\.asPrettyPrintedJSONString)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -61,10 +57,10 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             input.fromView.copyTrigger.withLatestFrom(keystore)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    let toast = Toast(€.Event.Toast.didCopyKeystore)
+                    let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
                     input.fromController.toastSubject.onNext(toast)
                 })
-                .drive()
+                .drive(),
         ]
 
         return Output(
@@ -75,7 +71,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 
 extension BackUpKeystoreViewModel {
     convenience init(wallet: Driver<Wallet>) {
-        self.init(keystore: wallet.map { $0.keystore })
+        self.init(keystore: wallet.map(\.keystore))
     }
 }
 

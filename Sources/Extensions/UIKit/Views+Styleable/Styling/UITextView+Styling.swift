@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,6 +25,7 @@
 import UIKit
 
 // MARK: - Style
+
 extension UITextView {
     struct Style {
         var text: String?
@@ -40,7 +41,7 @@ extension UITextView {
         init(
             text: String? = nil,
             textAlignment: NSTextAlignment? = nil,
-            height: CGFloat? = nil,
+            height _: CGFloat? = nil,
             font: UIFont? = nil,
             textColor: UIColor? = nil,
             backgroundColor: UIColor? = nil,
@@ -48,7 +49,7 @@ extension UITextView {
             isSelectable: Bool? = nil,
             isScrollEnabled: Bool? = nil,
             contentInset: UIEdgeInsets? = nil
-            ) {
+        ) {
             self.text = text
             self.textAlignment = textAlignment
             self.textColor = textColor
@@ -63,6 +64,7 @@ extension UITextView {
 }
 
 // MARK: Apply Style
+
 extension UITextView {
     func apply(style: UITextView.Style) {
         text = style.text
@@ -77,7 +79,10 @@ extension UITextView {
     }
 
     @discardableResult
-    func withStyle(_ style: UITextView.Style, customize: ((UITextView.Style) -> UITextView.Style)? = nil) -> UITextView {
+    func withStyle(
+        _ style: UITextView.Style,
+        customize: ((UITextView.Style) -> UITextView.Style)? = nil
+    ) -> UITextView {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style
         apply(style: style)
@@ -86,8 +91,8 @@ extension UITextView {
 }
 
 // MARK: - Style + Customizing
-extension UITextView.Style {
 
+extension UITextView.Style {
     @discardableResult
     func text(_ text: String?) -> UITextView.Style {
         var style = self
@@ -132,15 +137,16 @@ extension UITextView.Style {
 }
 
 // MARK: - Style Presets
+
 extension UITextView.Style {
     static var nonEditable: UITextView.Style {
-        return UITextView.Style(
+        UITextView.Style(
             isEditable: false
         )
     }
 
     static var nonSelectable: UITextView.Style {
-        return UITextView.Style(
+        UITextView.Style(
             textAlignment: .center,
             isEditable: false,
             isSelectable: false
@@ -148,13 +154,13 @@ extension UITextView.Style {
     }
 
     static var editable: UITextView.Style {
-        return UITextView.Style(
+        UITextView.Style(
             isEditable: true
         )
     }
 
     static var header: UITextView.Style {
-        return UITextView.Style(
+        UITextView.Style(
             textAlignment: .center,
             font: UIFont.header,
             isEditable: false
@@ -170,10 +176,11 @@ extension UITextView.Style {
 }
 
 // MARK: - Style + Merging
+
 extension UITextView.Style: Mergeable {
     func merged(other: UITextView.Style, mode: MergeMode) -> UITextView.Style {
         func merge<T>(_ attributePath: KeyPath<UITextView.Style, T?>) -> T? {
-            return mergeAttribute(other: other, path: attributePath, mode: mode)
+            mergeAttribute(other: other, path: attributePath, mode: mode)
         }
 
         return UITextView.Style(
@@ -188,4 +195,3 @@ extension UITextView.Style: Mergeable {
         )
     }
 }
-

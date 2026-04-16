@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,21 +23,22 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 // MARK: TermsOfServiceNavigation
+
 enum TermsOfServiceNavigation {
     case acceptTermsOfService, dismiss
 }
 
 // MARK: - TermsOfServiceViewModel
+
 final class TermsOfServiceViewModel: BaseViewModel<
     TermsOfServiceNavigation,
     TermsOfServiceViewModel.InputFromView,
     TermsOfServiceViewModel.Output
 > {
-
     private let useCase: OnboardingUseCase
     private let isDismissible: Bool
 
@@ -46,7 +47,6 @@ final class TermsOfServiceViewModel: BaseViewModel<
         self.isDismissible = isDismissible
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -63,9 +63,9 @@ final class TermsOfServiceViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
-                self.useCase.didAcceptTermsOfService()
+                useCase.didAcceptTermsOfService()
                 userDid(.acceptTermsOfService)
-            }).drive()
+            }).drive(),
         ]
 
         return Output(
@@ -76,7 +76,6 @@ final class TermsOfServiceViewModel: BaseViewModel<
 }
 
 extension TermsOfServiceViewModel {
-
     struct InputFromView {
         let didScrollToBottom: Driver<Void>
         let didAcceptTerms: Driver<Void>

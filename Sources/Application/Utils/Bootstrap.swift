@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,36 +22,60 @@
 // SOFTWARE.
 //
 
+import CoreText
+import FirebaseAnalytics
+import FirebaseCore
 import Foundation
 import IQKeyboardManagerSwift
 import SwiftyBeaver
-import Firebase
 import Zesame
 
 /// The global logger used throughout the app.
 let log = SwiftyBeaver.self
 
 func bootstrap() {
+    registerFonts()
     AppAppearance.setupDefault()
     setupKeyboardHiding()
     setupCrashReportingIfAllowed()
     setupLogging()
 }
 
+private func registerFonts() {
+    let fontFileNames = [
+        "Barlow-Black", "Barlow-BlackItalic",
+        "Barlow-Bold", "Barlow-BoldItalic",
+        "Barlow-ExtraBold", "Barlow-ExtraBoldItalic",
+        "Barlow-ExtraLight", "Barlow-ExtraLightItalic",
+        "Barlow-Italic",
+        "Barlow-Light", "Barlow-LightItalic",
+        "Barlow-Medium", "Barlow-MediumItalic",
+        "Barlow-Regular",
+        "Barlow-SemiBold", "Barlow-SemiBoldItalic",
+        "Barlow-Thin", "Barlow-ThinItalic",
+    ]
+    for name in fontFileNames {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "ttf") else {
+            incorrectImplementation("Missing font file: \(name).ttf")
+        }
+        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+    }
+}
+
 func setupCrashReportingIfAllowed() {
     guard Preferences.default.isTrue(.hasAcceptedCrashReporting) else {
         Analytics.setAnalyticsCollectionEnabled(false)
-        // unsure if this does anything or if it is needed, but seems prudent.
         FirebaseApp.app()?.delete { _ in
-            /* some required strange ObjC callback that we dont care about `- (void)deleteApp:(FIRAppVoidBoolCallback)completion;` */
+            /* required completion handler */
         }
         return
     }
     guard FirebaseApp.app() == nil else {
-        // already configured, will crash if called twice
+        // already configured, crash if called twice
         return
     }
-    FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
+    // FirebaseConfiguration.shared.setLoggerLevel was removed in Firebase 9+.
+    // Logging verbosity is now controlled via the FIREBASE_LOG_LEVEL environment variable.
     FirebaseApp.configure()
     Analytics.setAnalyticsCollectionEnabled(true)
 }
@@ -61,7 +85,7 @@ private func setupKeyboardHiding() {
 }
 
 private func setupLogging() {
-     // only allow logging for Debug builds
+    // only allow logging for Debug builds
     guard isDebug else { return }
     let console = ConsoleDestination()
     console.minLevel = .verbose

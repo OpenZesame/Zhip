@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,22 +25,19 @@
 import Zesame
 
 struct AmountValidator<Amount: ExpressibleByAmount>: InputValidator {
-
     typealias Error = AmountError<Amount>
 
     func validate(
         input: (amountString: String, unit: Zesame.Unit)
-        ) -> Validation<AmountFromText<Amount>, Error> {
+    ) -> Validation<AmountFromText<Amount>, Error> {
         let (amountString, unit) = input
         do {
-            return .valid(try AmountFromText(string: amountString, unit: unit))
+            return try .valid(AmountFromText(string: amountString, unit: unit))
         } catch {
             return self.error(Error(error: error))
         }
     }
 }
-
-private typealias € = L10n.Error.Input.Amount
 
 enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
     case tooLarge(max: String, unit: Unit)
@@ -56,7 +53,7 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
         } else if let qaError = error as? Zesame.AmountError<Qa> {
             self.init(zesameError: qaError)
         } else if let gasPriceError = error as? Zesame.AmountError<GasPrice> {
-           self.init(zesameError: gasPriceError)
+            self.init(zesameError: gasPriceError)
         } else if let zilAmountError = error as? Zesame.AmountError<ZilAmount> {
             self.init(zesameError: zilAmountError)
         } else {
@@ -64,36 +61,42 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
         }
     }
 
-    init<T>(zesameError: Zesame.AmountError<T>) where T: ExpressibleByAmount & Upperbound & Lowerbound {
+    init(zesameError: Zesame.AmountError<some ExpressibleByAmount & Upperbound & Lowerbound>) {
         switch zesameError {
-        case .nonNumericString, .endsWithDecimalSeparator, .moreThanOneDecimalSeparator, .tooManyDecimalPlaces, .containsNonDecimalStringCharacter: self = .nonNumericString
-        case .tooLarge(let max):
+        case .nonNumericString, .endsWithDecimalSeparator, .moreThanOneDecimalSeparator, .tooManyDecimalPlaces,
+             .containsNonDecimalStringCharacter: self = .nonNumericString
+        case let .tooLarge(max):
             let convertedMax = max.asString(in: ConvertTo.unit)
             self = .tooLarge(max: convertedMax, unit: ConvertTo.unit)
-        case .tooSmall(let min):
+        case let .tooSmall(min):
             let convertedMin = min.asString(in: ConvertTo.unit)
             self = .tooSmall(min: convertedMin, unit: ConvertTo.unit)
         }
     }
 
-    init<T>(zesameError: Zesame.AmountError<T>) where T: ExpressibleByAmount & Unbound {
+    init(zesameError: Zesame.AmountError<some ExpressibleByAmount & Unbound>) {
         switch zesameError {
-        case .nonNumericString, .endsWithDecimalSeparator, .moreThanOneDecimalSeparator, .tooManyDecimalPlaces, .containsNonDecimalStringCharacter: self = .nonNumericString
-        case .tooLarge, .tooSmall: incorrectImplementation("Unbound amounts should not throw `tooLarge` or `tooSmall` errors")
+        case .nonNumericString, .endsWithDecimalSeparator, .moreThanOneDecimalSeparator, .tooManyDecimalPlaces,
+             .containsNonDecimalStringCharacter: self = .nonNumericString
+        case .tooLarge,
+             .tooSmall: incorrectImplementation("Unbound amounts should not throw `tooLarge` or `tooSmall` errors")
         }
     }
 
     var errorMessage: String {
         switch self {
-        case .tooLarge(let max, let unit): return €.tooLarge("\(max.thousands) \(unit.name)")
-        case .tooSmall(let min, let unit, let shouldShowUnit):
+        case let .tooLarge(
+            max,
+            unit
+        ): String(localized: .Errors.amountTooLarge(maximum: "\(max.thousands) \(unit.name)"))
+        case let .tooSmall(min, unit, shouldShowUnit):
             if shouldShowUnit {
-                return €.tooSmall("\(min.thousands) \(unit.name)")
+                String(localized: .Errors.amountTooSmall(minimum: "\(min.thousands) \(unit.name)"))
             } else {
-                return €.tooSmall("\(min.thousands)")
+                String(localized: .Errors.amountTooSmall(minimum: "\(min.thousands)"))
             }
-        case .nonNumericString: return €.nonNumericString
-        case .other: return €.nonNumericString // TODO which error message to display?
+        case .nonNumericString: String(localized: .Errors.amountNonNumericString)
+        case .other: String(localized: .Errors.amountNonNumericString) // TODO: which error message to display?
         }
     }
 }

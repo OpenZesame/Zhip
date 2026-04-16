@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
-// 
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,9 +22,9 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 import Zesame
 
 enum SendCoordinatorNavigationStep {
@@ -32,31 +32,37 @@ enum SendCoordinatorNavigationStep {
 }
 
 // MARK: - SendCoordinator
+
 final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
-    
     private let useCaseProvider: UseCaseProvider
     private let onboardingUseCase: OnboardingUseCase
     private let transactionIntent: Driver<TransactionIntent>
     private let scannedQRTransactionSubject = PublishSubject<TransactionIntent>()
 
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider, deeplinkedTransaction: Driver<TransactionIntent>) {
+    init(
+        navigationController: UINavigationController,
+        useCaseProvider: UseCaseProvider,
+        deeplinkedTransaction: Driver<TransactionIntent>
+    ) {
         self.useCaseProvider = useCaseProvider
-        self.onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-        
-        self.transactionIntent = Driver.merge(deeplinkedTransaction, scannedQRTransactionSubject.asDriverOnErrorReturnEmpty())
+        onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
+
+        transactionIntent = Driver.merge(
+            deeplinkedTransaction,
+            scannedQRTransactionSubject.asDriverOnErrorReturnEmpty()
+        )
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toFirst()
     }
 }
 
 // MARK: - Navigate
+
 private extension SendCoordinator {
-
     func toFirst() {
-
         toPrepareTransaction()
     }
 
@@ -65,7 +71,8 @@ private extension SendCoordinator {
             walletUseCase: useCaseProvider.makeWalletUseCase(),
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             scannedOrDeeplinkedTransaction: transactionIntent.filter { [unowned self] _ in
-                let prepareTransactionIsCurrentScene = self.navigationController.viewControllers.isEmpty || self.isTopmost(scene: PrepareTransaction.self)
+                let prepareTransactionIsCurrentScene = navigationController.viewControllers
+                    .isEmpty || isTopmost(scene: PrepareTransaction.self)
                 guard prepareTransactionIsCurrentScene else {
                     // Prevented deeplinked transaction since it is not the active scene
                     return false
@@ -76,17 +83,20 @@ private extension SendCoordinator {
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .cancel: self.finish()
-            case .scanQRCode: self.toScanQRCode()
-            case .reviewPayment(let payment): self.toReviewPaymentBeforeSigning(payment)
+            case .cancel: finish()
+            case .scanQRCode: toScanQRCode()
+            case let .reviewPayment(payment): toReviewPaymentBeforeSigning(payment)
             }
         }
     }
 
     func toScanQRCode() {
-        modallyPresent(scene: ScanQRCode.self, viewModel: ScanQRCodeViewModel()) { [unowned self] userDid, dismissScene in
+        modallyPresent(
+            scene: ScanQRCode.self,
+            viewModel: ScanQRCodeViewModel()
+        ) { [unowned self] userDid, dismissScene in
             switch userDid {
-            case .scanQRContainingTransaction(let transaction):
+            case let .scanQRContainingTransaction(transaction):
                 dismissScene(true) {
                     self.scannedQRTransactionSubject.onNext(transaction)
                 }
@@ -95,16 +105,16 @@ private extension SendCoordinator {
             }
         }
     }
-    
+
     func toReviewPaymentBeforeSigning(_ payment: Payment) {
         let viewModel = ReviewTransactionBeforeSigningViewModel(
             paymentToReview: payment
         )
-        
+
         push(scene: ReviewTransactionBeforeSigning.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptPaymentProceedWithSigning(let reviewedPayment):
-                self.toSignPayment(reviewedPayment)
+            case let .acceptPaymentProceedWithSigning(reviewedPayment):
+                toSignPayment(reviewedPayment)
             }
         }
     }
@@ -118,8 +128,8 @@ private extension SendCoordinator {
 
         push(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .sign(let transactionResponse):
-                self.toWaitForReceiptForTransactionWith(id: transactionResponse.transactionIdentifier)
+            case let .sign(transactionResponse):
+                toWaitForReceiptForTransactionWith(id: transactionResponse.transactionIdentifier)
             }
         }
     }
@@ -132,9 +142,9 @@ private extension SendCoordinator {
 
         push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .skip, .waitUntilTimeout: self.finish()
-            case .dismiss: self.finish(triggerBalanceFetching: true)
-            case .viewTransactionDetailsInBrowser(let txId): self.openInBrowserDetailsForTransaction(id: txId)
+            case .skip, .waitUntilTimeout: finish()
+            case .dismiss: finish(triggerBalanceFetching: true)
+            case let .viewTransactionDetailsInBrowser(txId): openInBrowserDetailsForTransaction(id: txId)
             }
         }
     }
@@ -151,5 +161,4 @@ private extension SendCoordinator {
     func finish(triggerBalanceFetching: Bool = false) {
         navigator.next(.finish(fetchBalance: triggerBalanceFetching))
     }
-
 }
