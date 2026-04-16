@@ -10,44 +10,38 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# ── Jobs ──────────────────────────────────────────────────────────────────────
+env:
+  SWIFTLINT_VERSION: "0.63.2"
+  RESULT_BUNDLE: .build/TestResults.xcresult
+  COV_XML: .build/coverage.xml
+  SCHEME: Zhip
+  PROJECT: Zhip.xcodeproj
+  SIM_DEVICE: iPhone 17
+  SIM_OS: "26.1"
 
 jobs:
+  ci:
+    name: CI
+    runs-on: macos-26
 
-  # ── 1. Spell-check ──────────────────────────────────────────────────────────
-  typos:
-    name: Typos
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # ── 1. Typos ──────────────────────────────────────────────────────────────
+      - name: Install typos
+        run: brew install typos-cli
 
       - name: Check for typos
-        uses: crate-ci/typos@v1
+        run: typos
 
-  # ── 2. SwiftFormat ──────────────────────────────────────────────────────────
-  swiftformat:
-    name: SwiftFormat
-    runs-on: macos-26
-    steps:
-      - uses: actions/checkout@v4
-
+      # ── 2. SwiftFormat ────────────────────────────────────────────────────────
       - name: Install SwiftFormat
         run: brew install swiftformat
 
       - name: Check formatting
-        # --lint exits non-zero if any file would be reformatted, without writing changes.
         run: swiftformat --lint
 
-  # ── 3. SwiftLint ────────────────────────────────────────────────────────────
-  swiftlint:
-    name: SwiftLint
-    runs-on: macos-26
-    env:
-      # Keep in sync with the version installed locally via Homebrew.
-      SWIFTLINT_VERSION: "0.63.2"
-    steps:
-      - uses: actions/checkout@v4
-
+      # ── 3. SwiftLint ──────────────────────────────────────────────────────────
       - name: Install SwiftLint ${{ env.SWIFTLINT_VERSION }}
         run: |
           curl -fsSL \
@@ -57,27 +51,9 @@ jobs:
           swiftlint version
 
       - name: Lint
-        # github-actions-logging emits ::error / ::warning annotations
-        # that appear inline in the PR diff view.
         run: swiftlint lint --strict --reporter github-actions-logging
 
-  # ── 4. Test + coverage ──────────────────────────────────────────────────────
-  coverage:
-    name: Test & Coverage
-    runs-on: macos-26
-    env:
-      RESULT_BUNDLE: .build/TestResults.xcresult
-      COV_XML: .build/coverage.xml
-      SCHEME: Zhip
-      PROJECT: Zhip.xcodeproj
-      SIM_DEVICE: iPhone 17
-      SIM_OS: "26.1"
-
-    steps:
-      - uses: actions/checkout@v4
-
-      # Resolve the SPM dependency graph once and cache the result so that
-      # subsequent runs skip the network fetch entirely.
+      # ── 4. Test + coverage ────────────────────────────────────────────────────
       - name: Cache SPM packages
         uses: actions/cache@v4
         with:
@@ -91,8 +67,6 @@ jobs:
       - name: Select Xcode 26.1.1
         run: sudo xcode-select -s /Applications/Xcode_26.1.1.app/Contents/Developer
 
-      # Print the active Xcode and list available simulators so failures are
-      # easy to diagnose without SSH-ing into the runner.
       - name: Runner info
         run: |
           xcodebuild -version
@@ -145,7 +119,6 @@ jobs:
             | xcpretty
 
       - name: Convert coverage to Cobertura XML
-        # xcresultparser writes the report to stdout, so redirect it to the file.
         run: xcresultparser --output-format cobertura "$RESULT_BUNDLE" > "$COV_XML"
 
       - name: Print coverage summary
@@ -155,6 +128,5 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           files: ${{ env.COV_XML }}
-          # CODECOV_TOKEN must be added to the repo's Actions secrets.
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
