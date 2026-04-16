@@ -31,8 +31,8 @@ extension WKWebView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func loadHtml(file: String, in _: Bundle = Bundle.main) {
-        let htmlFile = Bundle.main.path(forResource: file, ofType: "html")!
+    func loadHtml(file: String, in bundle: Bundle = Bundle.main) {
+        let htmlFile = bundle.path(forResource: file, ofType: "html")!
         guard let html = try? String(contentsOfFile: htmlFile, encoding: .utf8) else {
             incorrectImplementation("Bad HTML file, fix it please.")
         }
