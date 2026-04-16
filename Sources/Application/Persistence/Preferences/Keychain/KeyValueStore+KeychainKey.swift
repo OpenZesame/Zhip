@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,6 +26,7 @@ import Foundation
 import Zesame
 
 // MARK: - Wallet
+
 extension KeyValueStore where KeyType == KeychainKey {
     var wallet: Wallet? {
         // Delete wallet upon reinstall if needed. This makes sure that after a reinstall of the app, the flag
@@ -43,7 +44,7 @@ extension KeyValueStore where KeyType == KeychainKey {
     }
 
     var hasConfiguredWallet: Bool {
-        return wallet != nil
+        wallet != nil
     }
 
     func save(wallet: Wallet) {
@@ -56,13 +57,12 @@ extension KeyValueStore where KeyType == KeychainKey {
 }
 
 extension KeyValueStore where KeyType == KeychainKey {
-
     var pincode: Pincode? {
-        return loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
+        loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
     }
 
     var hasConfiguredPincode: Bool {
-        return pincode != nil
+        pincode != nil
     }
 
     func save(pincode: Pincode) {

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,34 +22,33 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 import Zesame
 
 // MARK: - ReceiveUserAction
+
 enum ReceiveUserAction {
     case finish
     case requestTransaction(TransactionIntent)
 }
 
 // MARK: - ReceiveViewModel
+
 final class ReceiveViewModel: BaseViewModel<
     ReceiveUserAction,
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
-
     private let useCase: WalletUseCase
     private let qrCoder: QRCoding
 
     init(useCase: WalletUseCase, qrCoder: QRCoding = QRCoder()) {
         self.useCase = useCase
         self.qrCoder = qrCoder
-
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -59,9 +58,13 @@ final class ReceiveViewModel: BaseViewModel<
 
         let validator = InputValidator()
 
-        let amountValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> = input.fromView.amountToReceive.map { validator.validateAmount($0) }.startWith(.valid(.amount(0, in: .zil)))
+        let amountValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> = input.fromView.amountToReceive
+            .map { validator.validateAmount($0) }.startWith(.valid(.amount(
+                0,
+                in: .zil
+            )))
 
-        let amount = amountValidationValue.map { $0.value }
+        let amount = amountValidationValue.map(\.value)
 
         let amountValidationTrigger = input.fromView.didEndEditingAmount
 
@@ -79,7 +82,7 @@ final class ReceiveViewModel: BaseViewModel<
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }
 
-        let receivingAddress = wallet.map { $0.bech32Address.asString }
+        let receivingAddress = wallet.map(\.bech32Address.asString)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -94,9 +97,9 @@ final class ReceiveViewModel: BaseViewModel<
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)
                 .do(onNext: { userDid(.requestTransaction($0)) })
-                .drive()
+                .drive(),
         ]
-        
+
         return Output(
             receivingAddress: receivingAddress,
             amountPlaceholder: Driver.just(String(localized: .Receive.requestAmountField(unit: Unit.zil.name))),
@@ -107,7 +110,6 @@ final class ReceiveViewModel: BaseViewModel<
 }
 
 extension ReceiveViewModel {
-
     struct InputFromView {
         let qrCodeImageHeight: CGFloat
         let amountToReceive: Driver<String>
@@ -127,7 +129,7 @@ extension ReceiveViewModel {
         private let zilAmountValidator = AmountValidator<ZilAmount>()
 
         func validateAmount(_ amount: String) -> AmountValidator<ZilAmount>.ValidationResult {
-            return zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
+            zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
         }
     }
 }

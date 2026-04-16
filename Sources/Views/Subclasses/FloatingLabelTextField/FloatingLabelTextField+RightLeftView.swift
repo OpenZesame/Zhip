@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,19 +29,34 @@ extension FloatingLabelTextField {
         case right, left
     }
 
-    func addBottomAlignedButton(image: UIImage, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(imageOrText: .image(image), position: position, yOffset: yOffset, mode: mode)
+    func addBottomAlignedButton(
+        image: UIImage,
+        position: Position = .right,
+        yOffset: CGFloat = 0,
+        mode: UITextField.ViewMode = .always
+    ) -> UIButton {
+        addBottomAlignedButton(imageOrText: .image(image), position: position, yOffset: yOffset, mode: mode)
     }
 
-    func addBottomAlignedButton(titled: String, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(imageOrText: .text(titled), position: position, yOffset: yOffset, mode: mode)
+    func addBottomAlignedButton(
+        titled: String,
+        position: Position = .right,
+        yOffset: CGFloat = 0,
+        mode: UITextField.ViewMode = .always
+    ) -> UIButton {
+        addBottomAlignedButton(imageOrText: .text(titled), position: position, yOffset: yOffset, mode: mode)
     }
 
-    private func addBottomAlignedButton(imageOrText: ImageOrText, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
+    private func addBottomAlignedButton(
+        imageOrText: ImageOrText,
+        position: Position = .right,
+        yOffset: CGFloat = 0,
+        mode: UITextField.ViewMode = .always
+    ) -> UIButton {
         let button = UIButton()
         var width: CGFloat?
         switch imageOrText {
-        case .image(let image):
+        case let .image(image):
             button.withStyle(.image(image))
             // Use UIButton.Configuration on iOS 15+; fall back to contentEdgeInsets on earlier versions
             if #available(iOS 15.0, *) {
@@ -49,10 +64,10 @@ extension FloatingLabelTextField {
                 config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
                 button.configuration = config
             } else {
-				button.contentEdgeInsets = .init(all: 10)
+                button.contentEdgeInsets = .init(all: 10)
             }
             width = image.size.width
-        case .text(let title):
+        case let .text(title):
             button.withStyle(.title(title))
             width = button.widthOfTitle()
         }
@@ -64,7 +79,13 @@ extension FloatingLabelTextField {
         return button
     }
 
-    func addBottomAligned(view: UIView, position: Position = .right, width: CGFloat? = nil, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) {
+    func addBottomAligned(
+        view: UIView,
+        position: Position = .right,
+        width: CGFloat? = nil,
+        yOffset: CGFloat = 0,
+        mode: UITextField.ViewMode = .always
+    ) {
         view.translatesAutoresizingMaskIntoConstraints = true
         let bottomAligningContainerView = UIView()
         let width = width ?? FloatingLabelTextField.rightViewWidth
@@ -83,4 +104,3 @@ extension FloatingLabelTextField {
         }
     }
 }
-

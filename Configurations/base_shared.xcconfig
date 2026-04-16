@@ -44,8 +44,7 @@ CODE_SIGN_IDENTITY =
 SWIFT_VERSION = 5
 
 // Configuration-specific
-DEBUG_INFORMATION_FORMAT[config=Release] = dwarf-with-dsym
-DEBUG_INFORMATION_FORMAT[config=Debug] = dwarf
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 ENABLE_NS_ASSERTIONS[config=Release] = NO
 MTL_ENABLE_DEBUG_INFO[config=Release] = NO
 MTL_ENABLE_DEBUG_INFO[config=Debug] = YES

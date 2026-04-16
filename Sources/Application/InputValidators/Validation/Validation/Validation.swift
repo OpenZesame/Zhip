@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,29 +35,29 @@ enum Validation<Value, Error: InputError> {
 }
 
 // MARK: - Convenience Getters
-extension Validation {
 
+extension Validation {
     static func valid(_ value: Value) -> Validation {
-        return .valid(value, remark: nil)
+        .valid(value, remark: nil)
     }
 
     var value: Value? {
         switch self {
-        case .valid(let value, _): return value
-        default: return nil
+        case let .valid(value, _): value
+        default: nil
         }
     }
 
     var isValid: Bool {
-        return value != nil
+        value != nil
     }
 
     var error: InputError? {
-        guard case .invalid(.error(let error)) = self else { return nil }
+        guard case let .invalid(.error(error)) = self else { return nil }
         return error
     }
 
-	var isError: Bool {
-		return error != nil
-	}
+    var isError: Bool {
+        error != nil
+    }
 }

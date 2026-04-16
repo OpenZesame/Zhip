@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,13 +25,16 @@
 import UIKit
 
 extension UIButton {
-    func setOptional<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute?>, ifNotNil attribute: Attribute?) {
-        guard let attribute = attribute else { return }
+    func setOptional<Attribute>(
+        _ keyPath: ReferenceWritableKeyPath<UIButton, Attribute?>,
+        ifNotNil attribute: Attribute?
+    ) {
+        guard let attribute else { return }
         self[keyPath: keyPath] = attribute
     }
 
     func set<Attribute>(_ keyPath: ReferenceWritableKeyPath<UIButton, Attribute>, ifNotNil attribute: Attribute?) {
-        guard let attribute = attribute else { return }
+        guard let attribute else { return }
         self[keyPath: keyPath] = attribute
     }
 }
@@ -42,7 +45,7 @@ extension UIView {
 
         func apply(to view: UIView, maskToBounds: Bool = true) {
             switch self {
-            case .static(let radius):
+            case let .static(radius):
                 view.layer.cornerRadius = radius
             }
             if maskToBounds {
@@ -52,8 +55,8 @@ extension UIView {
     }
 }
 
-extension UIButton {
-    public struct Style {
+public extension UIButton {
+    struct Style {
         fileprivate var titleNormal: String?
         fileprivate var imageNormal: UIImage?
         var tintColor: UIColor?
@@ -82,7 +85,7 @@ extension UIButton {
             borderNormal: Border? = nil,
             isEnabled: Bool? = nil,
             cornerRounding: UIView.Rounding? = nil
-            ) {
+        ) {
             self.titleNormal = titleNormal
             self.imageNormal = imageNormal
             self.tintColor = tintColor
@@ -103,8 +106,6 @@ extension UIButton {
 private let defaultHeight: CGFloat = 64
 
 extension UIButton {
-
-    // swiftlint:disable:next function_body_length
     func apply(style: Style) {
         translatesAutoresizingMaskIntoConstraints = false
         if let height = style.height {
@@ -137,7 +138,7 @@ extension UIButton {
     }
 
     @discardableResult
-    func withStyle<B>(_ style: UIButton.Style, customize: ((UIButton.Style) -> UIButton.Style)? = nil) -> B where B: UIButton {
+    func withStyle<B: UIButton>(_ style: UIButton.Style, customize: ((UIButton.Style) -> UIButton.Style)? = nil) -> B {
         translatesAutoresizingMaskIntoConstraints = false
         let style = customize?(style) ?? style
         apply(style: style)
@@ -147,6 +148,7 @@ extension UIButton {
 }
 
 // MARK: - Style + Customizing
+
 extension UIButton.Style {
     @discardableResult
     func disabled() -> UIButton.Style {
@@ -171,10 +173,10 @@ extension UIButton.Style {
 }
 
 // MARK: - Style Presets
-extension UIButton.Style {
 
+extension UIButton.Style {
     static var primary: UIButton.Style {
-        return UIButton.Style(
+        UIButton.Style(
             textColorNormal: .white,
             textColorDisabled: .silverGrey,
             colorNormal: .teal,
@@ -184,14 +186,14 @@ extension UIButton.Style {
     }
 
     static var secondary: UIButton.Style {
-        return UIButton.Style(
+        UIButton.Style(
             textColorNormal: .teal,
             colorNormal: .clear
         )
     }
 
     static var hollow: UIButton.Style {
-        return UIButton.Style(
+        UIButton.Style(
             height: 44,
             textColorNormal: .teal,
             colorNormal: .clear,
@@ -201,7 +203,7 @@ extension UIButton.Style {
     }
 
     static func image(_ image: UIImage) -> UIButton.Style {
-        return UIButton.Style(
+        UIButton.Style(
             imageNormal: image,
             height: nil,
             font: .title,
@@ -212,7 +214,7 @@ extension UIButton.Style {
     }
 
     static func title(_ title: String) -> UIButton.Style {
-        return UIButton.Style(
+        UIButton.Style(
             titleNormal: title,
             height: nil,
             font: .title,

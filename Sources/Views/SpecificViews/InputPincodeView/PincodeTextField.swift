@@ -2,17 +2,17 @@
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,12 +22,11 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 final class PincodeTextField: UITextField {
-
     /// creds: https://stackoverflow.com/a/44701936/1311272
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
@@ -37,9 +36,9 @@ final class PincodeTextField: UITextField {
              #selector(UIResponderStandardEditActions.copy(_:)),
              #selector(UIResponderStandardEditActions.cut(_:)),
              #selector(UIResponderStandardEditActions.delete(_:)):
-            return false
+            false
         default:
-            return super.canPerformAction(action, withSender: sender)
+            super.canPerformAction(action, withSender: sender)
         }
     }
 
@@ -54,7 +53,7 @@ final class PincodeTextField: UITextField {
     }
 
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UILongPressGestureRecognizer && !gestureRecognizer.delaysTouchesEnded {
+        if gestureRecognizer is UILongPressGestureRecognizer, !gestureRecognizer.delaysTouchesEnded {
             return false
         }
         return true
@@ -68,10 +67,10 @@ final class PincodeTextField: UITextField {
     private lazy var textFieldDelegate = TextFieldDelegate(type: .number, maxLength: pincodeLength)
 
     private var pincodeLength: Int {
-        return presentation.length
+        presentation.length
     }
 
-    // only used to listen to change of `text` in the UITextField when it is being edited
+    /// only used to listen to change of `text` in the UITextField when it is being edited
     private let bag = DisposeBag()
 
     fileprivate var pincodeSubject = PublishSubject<Pincode?>()
@@ -84,13 +83,14 @@ final class PincodeTextField: UITextField {
         .distinctUntilChanged()
 
     // MARK: - Initialization
+
     init(height: CGFloat = 80, widthOfDigitView: CGFloat = 40, pincodeLength: Int = Pincode.length) {
         presentation = Presentation(length: pincodeLength, widthOfDigitView: widthOfDigitView)
         super.init(frame: .zero)
         setup(height: height)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         interfaceBuilderSucks
     }
 
@@ -100,12 +100,11 @@ final class PincodeTextField: UITextField {
 
     func clearInput() {
         setPincode(nil)
-        self.text = nil
+        text = nil
     }
 }
 
 private extension PincodeTextField {
-
     func setup(height: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
 
@@ -114,11 +113,11 @@ private extension PincodeTextField {
         isSecureTextEntry = true
         textColor = .clear
         tintColor = .clear
-        self.delegate = textFieldDelegate
+        delegate = textFieldDelegate
 
         bag <~ rx.text.asDriver().do(onNext: { [weak self] in
-            guard let `self` = self else { return }
-            self.setDigits(string: $0)
+            guard let self else { return }
+            setDigits(string: $0)
         }).drive()
 
         addSubview(presentation)
@@ -126,7 +125,7 @@ private extension PincodeTextField {
     }
 
     func setDigits(string: String?) {
-        guard let string = string, !string.isEmpty else {
+        guard let string, !string.isEmpty else {
             return setDigits([])
         }
 
@@ -137,8 +136,10 @@ private extension PincodeTextField {
         guard
             case let digits = string.map(String.init).compactMap(Digit.init),
             digits.count == string.count
-            else {
-                incorrectImplementation("Did you forget to protect against pasting of non numerical strings into the input field?")
+        else {
+            incorrectImplementation(
+                "Did you forget to protect against pasting of non numerical strings into the input field?"
+            )
         }
         setDigits(digits)
     }
@@ -165,7 +166,7 @@ private extension PincodeTextField.Presentation {
 
 extension String {
     var isBackspace: Bool {
-        let char = self.cString(using: String.Encoding.utf8)!
+        let char = cString(using: String.Encoding.utf8)!
         return strcmp(char, "\\b") == -92
     }
 }

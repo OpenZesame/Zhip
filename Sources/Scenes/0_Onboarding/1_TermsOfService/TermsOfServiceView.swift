@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,25 +23,24 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
-
+import RxSwift
 import UIKit
 import WebKit
 
 final class TermsOfServiceView: ScrollableStackViewOwner {
-
-    private lazy var imageView          = UIImageView()
-    private lazy var headerLabel        = UILabel()
-    private lazy var textView           = UITextView()
-    private lazy var acceptTermsButton  = UIButton()
+    private lazy var imageView = UIImageView()
+    private lazy var headerLabel = UILabel()
+    private lazy var textView = UITextView()
+    private lazy var acceptTermsButton = UIButton()
 
     // MARK: - StackViewStyling
+
     lazy var stackViewStyle: UIStackView.Style = [
         imageView,
         headerLabel,
         textView,
-        acceptTermsButton
+        acceptTermsButton,
     ]
 
     override func setup() {
@@ -53,14 +52,14 @@ extension TermsOfServiceView: ViewModelled {
     typealias ViewModel = TermsOfServiceViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
+        [
             viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
-            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled
+            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled,
         ]
     }
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             didScrollToBottom: textView.rx.didScrollNearBottom(),
             didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
         )

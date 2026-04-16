@@ -23,21 +23,22 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 // MARK: - WarningCustomECCUserAction
+
 enum WarningCustomECCUserAction {
     case acceptRisks, dismiss
 }
 
 // MARK: - WarningCustomECCViewModel
+
 final class WarningCustomECCViewModel: BaseViewModel<
     WarningCustomECCUserAction,
     WarningCustomECCViewModel.InputFromView,
     WarningCustomECCViewModel.Output
 > {
-
     private let useCase: OnboardingUseCase
     private let isDismissible: Bool
 
@@ -62,9 +63,9 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
-                self.useCase.didAcceptCustomECCWarning()
+                useCase.didAcceptCustomECCWarning()
                 userDid(.acceptRisks)
-            }).drive()
+            }).drive(),
         ]
 
         return Output(

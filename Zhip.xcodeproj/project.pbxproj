@@ -154,9 +154,7 @@
 		489D40E62663707D000D35F2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E52663707D000D35F2 /* FirebaseAnalytics */; };
 		489D40E82663707D000D35F2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 489D40E72663707D000D35F2 /* FirebaseCrashlytics */; };
 		489D40ED266373A2000D35F2 /* GasLimitValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489D40EC266373A2000D35F2 /* GasLimitValidator.swift */; };
-		489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */; };
 		489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */; };
-		489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EB10021C9066200664AA7 /* ViewModelTestCase.swift */; };
 		489EB10821CA30F200664AA7 /* Barlow-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */; };
 		489EB10921CA30F200664AA7 /* Barlow-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */; };
 		489EB10A21CA30F200664AA7 /* Barlow-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */; };
@@ -521,9 +519,7 @@
 		4898FB4921542400009501DC /* ContentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewProvider.swift; sourceTree = "<group>"; };
 		489CDBCE2143FF3E00318450 /* FilterNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNil.swift; sourceTree = "<group>"; };
 		489D40EC266373A2000D35F2 /* GasLimitValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasLimitValidator.swift; sourceTree = "<group>"; };
-		489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestScheduler+Record.swift"; sourceTree = "<group>"; };
 		489EB0FE21C9032500664AA7 /* ViewModelType_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType_Extension.swift; sourceTree = "<group>"; };
-		489EB10021C9066200664AA7 /* ViewModelTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTestCase.swift; sourceTree = "<group>"; };
 		489EB10421CA30F200664AA7 /* Barlow-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Bold.ttf"; sourceTree = "<group>"; };
 		489EB10521CA30F200664AA7 /* Barlow-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Medium.ttf"; sourceTree = "<group>"; };
 		489EB10621CA30F200664AA7 /* Barlow-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Regular.ttf"; sourceTree = "<group>"; };
@@ -1164,7 +1160,6 @@
 				489EB0F921C902D200664AA7 /* Extensions */,
 				489CDBA02143E27500318450 /* Configurations */,
 				484B067920BA0D2C00C4E50A /* SupportingFiles */,
-				489EB10021C9066200664AA7 /* ViewModelTestCase.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1288,17 +1283,8 @@
 			isa = PBXGroup;
 			children = (
 				489EB0FD21C9031300664AA7 /* ViewModel */,
-				489EB0FA21C902D700664AA7 /* Rx */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		489EB0FA21C902D700664AA7 /* Rx */ = {
-			isa = PBXGroup;
-			children = (
-				489EB0FB21C902F500664AA7 /* TestScheduler+Record.swift */,
-			);
-			path = Rx;
 			sourceTree = "<group>";
 		};
 		489EB0FD21C9031300664AA7 /* ViewModel */ = {
@@ -2103,6 +2089,7 @@
 				"\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"",
 				"",
 				"",
+				"",
 			);
 		};
 		E6DB181125E3A0A200D223B8 /* ✅ Swiftlint */ = {
@@ -2119,6 +2106,7 @@
 				"else",
 				"  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"",
 				"fi",
+				"",
 				"",
 			);
 		};
@@ -2399,10 +2387,8 @@
 			files = (
 				489EB0FF21C9032500664AA7 /* ViewModelType_Extension.swift in Sources */,
 				E6622DFA22B512440086134D /* CharacterSetTests.swift in Sources */,
-				489EB10121C9066200664AA7 /* ViewModelTestCase.swift in Sources */,
 				48C25DC021DCD3BB00619620 /* StringFormattingTests.swift in Sources */,
 				48C25DBF21DCD3BB00619620 /* AutoEnumCaseNameTests.swift in Sources */,
-				489EB0FC21C902F500664AA7 /* TestScheduler+Record.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */

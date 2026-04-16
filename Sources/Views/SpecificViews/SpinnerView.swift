@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,12 +22,11 @@
 // SOFTWARE.
 //
 
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 class SpinnerView: UIView {
-
     let circleLayer = CAShapeLayer()
     private(set) var isAnimating = false
     var animationDuration: TimeInterval = 2
@@ -37,7 +36,9 @@ class SpinnerView: UIView {
         setup(strokeColor: .white)
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    required init?(coder _: NSCoder) {
+        interfaceBuilderSucks
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -72,7 +73,7 @@ extension SpinnerView {
 
 extension Reactive where Base == SpinnerView {
     var isLoading: Binder<Bool> {
-        return Binder(base) {
+        Binder(base) {
             $0.changeTo(isLoading: $1)
         }
     }
@@ -103,17 +104,18 @@ private extension SpinnerView {
         let startAngle: CGFloat = 0
         let endAngle: CGFloat = 2 * .pi
 
-        let path = UIBezierPath(arcCenter: center,
-                                radius: radius,
-                                startAngle: startAngle,
-                                endAngle: endAngle,
-                                clockwise: true)
+        let path = UIBezierPath(
+            arcCenter: center,
+            radius: radius,
+            startAngle: startAngle,
+            endAngle: endAngle,
+            clockwise: true
+        )
 
         circleLayer.path = path.cgPath
         circleLayer.frame = bounds
     }
 
-    // swiftlint:disable:next function_body_length
     func addAnimation() {
         let rotateAnimation = CAKeyframeAnimation(keyPath: .transformRotation)
 
@@ -150,7 +152,7 @@ private extension SpinnerView {
             headAnimation,
             tailAnimation,
             endHeadAnimation,
-            endTailAnimation
+            endTailAnimation,
         ]
         animations.repeatCount = .infinity
         animations.isRemovedOnCompletion = false

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,7 @@ struct EncryptionPasswordValidator: InputValidator {
         let password = input.password
         let confirmingPassword = input.confirmingPassword
         do {
-            return .valid(try WalletEncryptionPassword(password: password, confirm: confirmingPassword, mode: mode))
+            return try .valid(WalletEncryptionPassword(password: password, confirm: confirmingPassword, mode: mode))
         } catch let passwordError as Error {
             return .invalid(.error(passwordError))
         } catch {
@@ -50,23 +50,23 @@ struct EncryptionPasswordValidator: InputValidator {
 extension WalletEncryptionPassword.Error: InputError, Equatable {
     var errorMessage: String {
         switch self {
-        case .passwordIsTooShort(let minLength): return String(localized: .Errors.passwordTooShort(minLength: minLength))
-        case .passwordsDoesNotMatch: return String(localized: .Errors.passwordMismatch)
-        case .incorrectPassword(let backingUpWalletJustCreated):
+        case let .passwordIsTooShort(minLength): String(localized: .Errors.passwordTooShort(minLength: minLength))
+        case .passwordsDoesNotMatch: String(localized: .Errors.passwordMismatch)
+        case let .incorrectPassword(backingUpWalletJustCreated):
             if backingUpWalletJustCreated {
-                return String(localized: .Errors.passwordIncorrectDuringBackup)
+                String(localized: .Errors.passwordIncorrectDuringBackup)
             } else {
-                return String(localized: .Errors.passwordIncorrect)
+                String(localized: .Errors.passwordIncorrect)
             }
         }
     }
 
     static func == (lhs: WalletEncryptionPassword.Error, rhs: WalletEncryptionPassword.Error) -> Bool {
         switch (lhs, rhs) {
-        case (.passwordIsTooShort, passwordIsTooShort): return true
-        case (.passwordsDoesNotMatch, passwordsDoesNotMatch): return true
-        case (.incorrectPassword, incorrectPassword): return true
-        default: return false
+        case (.passwordIsTooShort, passwordIsTooShort): true
+        case (.passwordsDoesNotMatch, passwordsDoesNotMatch): true
+        case (.incorrectPassword, incorrectPassword): true
+        default: false
         }
     }
 }

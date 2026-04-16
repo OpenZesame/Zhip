@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,15 +27,15 @@ import Foundation
 /// A typed simple, non thread safe, non async key-value store accessing values using its associatedtype `Key`
 protocol KeyValueStoring: AnyKeyValueStoring {
     associatedtype Key: KeyConvertible
-    func save<Value>(value: Value, for key: Key)
+    func save(value: some Any, for key: Key)
     func loadValue<Value>(for key: Key) -> Value?
     func deleteValue(for key: Key)
 }
 
 // MARK: Default Implementation making use of `AnyKeyValueStoring` protocol
-extension KeyValueStoring {
 
-    func save<Value>(value: Value, for key: Key) {
+extension KeyValueStoring {
+    func save(value: some Any, for key: Key) {
         save(value: value, for: key.key)
     }
 
@@ -50,16 +50,17 @@ extension KeyValueStoring {
 }
 
 // MARK: - Codable
+
 extension KeyValueStoring {
-    func loadCodable<C>(_ modelType: C.Type, for key: Key) -> C? where C: Codable {
+    func loadCodable<C: Codable>(_: C.Type, for key: Key) -> C? {
         guard
             let json: Data = loadValue(for: key),
             let model = try? JSONDecoder().decode(C.self, from: json)
-            else { return nil }
+        else { return nil }
         return model
     }
 
-    func saveCodable<C>(_ model: C, for key: Key) where C: Codable {
+    func saveCodable(_ model: some Codable, for key: Key) {
         let encoder = JSONEncoder()
         do {
             let json = try encoder.encode(model)
@@ -71,6 +72,7 @@ extension KeyValueStoring {
 }
 
 // MARK: Convenience
+
 extension KeyValueStoring {
     func isTrue(_ key: Key) -> Bool {
         guard let bool: Bool = loadValue(for: key) else { return false }
@@ -78,6 +80,6 @@ extension KeyValueStoring {
     }
 
     func isFalse(_ key: Key) -> Bool {
-        return !isTrue(key)
+        !isTrue(key)
     }
 }

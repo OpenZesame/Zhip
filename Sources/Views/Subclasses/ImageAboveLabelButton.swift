@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,16 +25,16 @@
 import UIKit
 
 final class ImageAboveLabelButton: UIButton {
-    private lazy var customLabel        = UILabel()
-    private lazy var customImageView    = UIImageView()
-    private lazy var stackView          = UIStackView(arrangedSubviews: [customImageView, customLabel])
+    private lazy var customLabel = UILabel()
+    private lazy var customImageView = UIImageView()
+    private lazy var stackView = UIStackView(arrangedSubviews: [customImageView, customLabel])
 
     init() {
         super.init(frame: .zero)
         setup()
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         interfaceBuilderSucks
     }
 
@@ -49,6 +49,7 @@ final class ImageAboveLabelButton: UIButton {
 }
 
 // MARK: - Internal
+
 extension ImageAboveLabelButton {
     func setTitle(_ title: String, image: UIImage) {
         customLabel.withStyle(
@@ -69,24 +70,26 @@ extension ImageAboveLabelButton {
 }
 
 // MARK: - Accessibility
+
 extension ImageAboveLabelButton {
     override var accessibilityLabel: String? {
-        get { return customLabel.accessibilityLabel }
+        get { customLabel.accessibilityLabel }
         set { customLabel.accessibilityLabel = newValue }
     }
 
     override var accessibilityHint: String? {
-        get { return customLabel.accessibilityHint }
+        get { customLabel.accessibilityHint }
         set { customLabel.accessibilityHint = newValue }
     }
 
     override var accessibilityValue: String? {
-        get { return customLabel.accessibilityValue }
+        get { customLabel.accessibilityValue }
         set { customLabel.accessibilityValue = newValue }
     }
 }
 
 // MARK: - Private Setup
+
 private extension ImageAboveLabelButton {
     func setup() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -102,4 +105,3 @@ private extension ImageAboveLabelButton {
         [stackView, customLabel, customImageView].forEach { $0.isUserInteractionEnabled = false }
     }
 }
-

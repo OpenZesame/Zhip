@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,7 +30,6 @@ enum RestoreWalletCoordinatorNavigationStep {
 }
 
 final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinatorNavigationStep> {
-
     private let useCase: WalletUseCase
 
     init(navigationController: UINavigationController, useCase: WalletUseCase) {
@@ -38,20 +37,20 @@ final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinatorNa
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toEnsureThatYouAreNotBeingWatched()
     }
 }
 
 // MARK: - Private
-private extension RestoreWalletCoordinator {
 
+private extension RestoreWalletCoordinator {
     func toEnsureThatYouAreNotBeingWatched() {
         let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
         push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understand: self.toRestoreWallet()
-            case .cancel: self.cancel()
+            case .understand: toRestoreWallet()
+            case .cancel: cancel()
             }
         }
     }
@@ -61,7 +60,7 @@ private extension RestoreWalletCoordinator {
 
         push(scene: RestoreWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .restoreWallet(let wallet): self.finishedRestoring(wallet: wallet)
+            case let .restoreWallet(wallet): finishedRestoring(wallet: wallet)
             }
         }
     }

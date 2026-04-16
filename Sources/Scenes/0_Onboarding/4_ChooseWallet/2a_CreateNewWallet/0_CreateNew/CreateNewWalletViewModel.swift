@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,31 +23,34 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 import Zesame
 
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .newOrRestorePrivateKey
 
 // MARK: - CreateNewWalletUserAction
+
 enum CreateNewWalletUserAction {
     case createWallet(Wallet), cancel
 }
 
 // MARK: - CreateNewWalletViewModel
+
 final class CreateNewWalletViewModel:
-BaseViewModel<
-    CreateNewWalletUserAction,
-    CreateNewWalletViewModel.InputFromView,
-    CreateNewWalletViewModel.Output
-> {
+    BaseViewModel<
+        CreateNewWalletUserAction,
+        CreateNewWalletViewModel.InputFromView,
+        CreateNewWalletViewModel.Output
+    >
+// swiftlint:disable:next opening_brace
+{
     private let useCase: WalletUseCase
 
     init(useCase: WalletUseCase) {
         self.useCase = useCase
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
@@ -64,9 +67,9 @@ BaseViewModel<
             }
 
         let isContinueButtonEnabled = Driver.combineLatest(
-            confirmEncryptionPasswordValidationValue.map { $0.isValid },
+            confirmEncryptionPasswordValidationValue.map(\.isValid),
             input.fromView.isHaveBackedUpPasswordCheckboxChecked
-        ) { (isPasswordConfirmed, isBackedUpChecked) in
+        ) { isPasswordConfirmed, isBackedUpChecked in
             isPasswordConfirmed && isBackedUpChecked
         }
 
@@ -78,14 +81,16 @@ BaseViewModel<
                 .drive(),
 
             input.fromView.createWalletTrigger
-                .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) { $1 }
+                .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) {
+                    $1
+                }
                 .flatMapLatest {
                     self.useCase.createNewWallet(encryptionpassword: $0)
                         .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userDid(.createWallet($0)) })
-                .drive()
+                .drive(),
         ]
 
         let encryptionPasswordValidationTrigger = Driver.merge(
@@ -111,7 +116,10 @@ BaseViewModel<
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         return Output(
-            encryptionPasswordPlaceholder: Driver.just(String(localized: .CreateNewWallet.encryptionPasswordField(minLength: WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))),
+            encryptionPasswordPlaceholder: Driver
+                .just(String(localized: .CreateNewWallet
+                        .encryptionPasswordField(minLength: WalletEncryptionPassword
+                            .minimumLength(mode: encryptionPasswordMode)))),
             encryptionPasswordValidation: encryptionPasswordValidation,
             confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             isContinueButtonEnabled: isContinueButtonEnabled,
@@ -121,13 +129,12 @@ BaseViewModel<
 }
 
 extension CreateNewWalletViewModel {
-
     struct InputFromView {
         let newEncryptionPassword: Driver<String>
         let isEditingNewEncryptionPassword: Driver<Bool>
         let confirmedNewEncryptionPassword: Driver<String>
         let isEditingConfirmedEncryptionPassword: Driver<Bool>
-        
+
         let isHaveBackedUpPasswordCheckboxChecked: Driver<Bool>
         let createWalletTrigger: Driver<Void>
     }
@@ -141,13 +148,15 @@ extension CreateNewWalletViewModel {
     }
 
     struct InputValidator {
-
         func validateNewEncryptionPassword(_ password: String) -> EncryptionPasswordValidator.ValidationResult {
             let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
             return validator.validate(input: (password, password))
         }
 
-        func validateConfirmedEncryptionPassword(_ password: String, confirmedBy confirming: String) -> EncryptionPasswordValidator.ValidationResult {
+        func validateConfirmedEncryptionPassword(
+            _ password: String,
+            confirmedBy confirming: String
+        ) -> EncryptionPasswordValidator.ValidationResult {
             let validator = EncryptionPasswordValidator(mode: encryptionPasswordMode)
             return validator.validate(input: (password, confirming))
         }

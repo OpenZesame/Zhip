@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,21 +22,20 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 final class SignTransactionView: ScrollableStackViewOwner {
-
-    private lazy var confirmTransactionLabel        = UILabel()
-    private lazy var encryptionPasswordField      = FloatingLabelTextField()
-    private lazy var signButton                     = ButtonWithSpinner()
+    private lazy var confirmTransactionLabel = UILabel()
+    private lazy var encryptionPasswordField = FloatingLabelTextField()
+    private lazy var signButton = ButtonWithSpinner()
 
     lazy var stackViewStyle: UIStackView.Style = [
         confirmTransactionLabel,
         encryptionPasswordField,
         signButton,
-        .spacer
+        .spacer,
     ]
 
     override func setup() {
@@ -48,16 +47,16 @@ extension SignTransactionView: ViewModelled {
     typealias ViewModel = SignTransactionViewModel
 
     func populate(with viewModel: ViewModel.OutputVM) -> [Disposable] {
-        return [
+        [
             viewModel.inputBecomeFirstResponder --> encryptionPasswordField.rx.becomeFirstResponder,
-            viewModel.encryptionPasswordValidation    --> encryptionPasswordField.rx.validation,
-            viewModel.isSignButtonEnabled               --> signButton.rx.isEnabled,
-            viewModel.isSignButtonLoading               --> signButton.rx.isLoading
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
+            viewModel.isSignButtonEnabled --> signButton.rx.isEnabled,
+            viewModel.isSignButtonLoading --> signButton.rx.isLoading,
         ]
     }
 
     var inputFromView: ViewModel.InputFromView {
-        return SignTransactionViewModel.InputFromView(
+        SignTransactionViewModel.InputFromView(
             encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
             signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()

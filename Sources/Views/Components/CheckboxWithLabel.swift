@@ -22,17 +22,15 @@
 // SOFTWARE.
 //
 
-// swiftlint:disable file_length
-import UIKit
-import TinyConstraints
-import RxSwift
 import RxCocoa
+import RxSwift
+import TinyConstraints
+import UIKit
 
 // MARK: - CheckboxView (native replacement for BEMCheckBox)
 
 /// A lightweight native checkbox control that replaces the abandoned BEMCheckBox library.
 final class CheckboxView: UIControl {
-
     // MARK: Public API (matches the BEMCheckBox API that was used in this project)
 
     var on: Bool = false {
@@ -88,7 +86,6 @@ final class CheckboxView: UIControl {
 // MARK: - Private drawing
 
 private extension CheckboxView {
-
     func setupLayers() {
         boxLayer.fillColor = UIColor.clear.cgColor
         boxLayer.lineWidth = lineWidth
@@ -106,8 +103,10 @@ private extension CheckboxView {
         boxLayer.frame = rect
         checkLayer.frame = rect
 
-        let path = UIBezierPath(roundedRect: rect.insetBy(dx: lineWidth / 2, dy: lineWidth / 2),
-                                cornerRadius: cornerRadius)
+        let path = UIBezierPath(
+            roundedRect: rect.insetBy(dx: lineWidth / 2, dy: lineWidth / 2),
+            cornerRadius: cornerRadius
+        )
         boxLayer.path = path.cgPath
         checkLayer.path = checkmarkPath(in: rect).cgPath
     }
@@ -133,7 +132,7 @@ private extension CheckboxView {
             self.checkLayer.strokeColor = checkStroke
         }
 
-        if animated && animationDuration > 0 {
+        if animated, animationDuration > 0 {
             UIView.animate(withDuration: animationDuration) { apply() }
         } else {
             apply()
@@ -163,8 +162,7 @@ final class CheckboxWithLabel: UIControl {
 
     fileprivate lazy var checkbox: CheckboxView = {
         let size = CheckboxWithLabel.checkboxSize
-        let view = CheckboxView(frame: CGRect(origin: .zero, size: CGSize(width: size, height: size)))
-        return view
+        return CheckboxView(frame: CGRect(origin: .zero, size: CGSize(width: size, height: size)))
     }()
 
     private lazy var label = UILabel()
@@ -179,7 +177,6 @@ final class CheckboxWithLabel: UIControl {
 }
 
 extension CheckboxWithLabel {
-
     func apply(style: Style) {
         defer { setup() }
         label.withStyle(.checkbox) {
@@ -189,9 +186,9 @@ extension CheckboxWithLabel {
 
         stackView.withStyle(.horizontal) {
             if let alignment = style.alignment {
-                return $0.alignment(alignment)
+                $0.alignment(alignment)
             } else {
-                return $0.alignment(style.numberOfLines == 0 ? .top : .fill)
+                $0.alignment(style.numberOfLines == 0 ? .top : .fill)
             }
         }
     }
@@ -209,8 +206,8 @@ extension CheckboxWithLabel {
 }
 
 // MARK: - Style + Customizing
-extension CheckboxWithLabel.Style {
 
+extension CheckboxWithLabel.Style {
     @discardableResult
     func text(_ text: String?) -> CheckboxWithLabel.Style {
         var style = self
@@ -227,6 +224,7 @@ extension CheckboxWithLabel.Style {
 }
 
 // MARK: - Style Presets
+
 extension CheckboxWithLabel.Style {
     static var `default`: CheckboxWithLabel.Style {
         .init(numberOfLines: 0)
@@ -234,6 +232,7 @@ extension CheckboxWithLabel.Style {
 }
 
 // MARK: - Private Setup
+
 private extension CheckboxWithLabel {
     func setup() {
         addSubview(stackView)
@@ -267,16 +266,18 @@ private extension CheckboxWithLabel {
 }
 
 // MARK: - CheckboxWithLabel + Reactive
+
 extension Reactive where Base: CheckboxWithLabel {
     var isChecked: ControlProperty<Bool> {
-        return base.checkbox.rx.isChecked
+        base.checkbox.rx.isChecked
     }
 }
 
 // MARK: - CheckboxView + Reactive
+
 extension Reactive where Base: CheckboxView {
     var isChecked: ControlProperty<Bool> {
-        return base.rx.controlProperty(editingEvents: .valueChanged, getter: {
+        base.rx.controlProperty(editingEvents: .valueChanged, getter: {
             $0.on
         }, setter: {
             $0.setOn($1, animated: true)

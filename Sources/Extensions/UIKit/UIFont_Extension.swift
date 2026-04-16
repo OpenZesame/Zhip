@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,16 +32,16 @@ extension UIFont {
     /// For bread text
     static let body = Font(.𝟙𝟠, .regular).make()
 
-    // `UIViewController`'s `title`, checkboxes, `UIBarButtonItem`, `UITextField`'s placeholder & value
+    /// `UIViewController`'s `title`, checkboxes, `UIBarButtonItem`, `UITextField`'s placeholder & value
     static let title = Font(.𝟙𝟠, .semiBold).make()
 
-    // UIButton
+    /// UIButton
     static let callToAction = Font(.𝟚𝟘, .semiBold).make()
 
-    // First label in a scene
+    /// First label in a scene
     static let header = Font(.𝟛𝟜, .bold).make()
 
-    // Welcome, ChoseWallet scene
+    /// Welcome, ChoseWallet scene
     static let impression = Font(.𝟜𝟠, .bold).make()
 
     static let bigBang = Font(.𝟠𝟞, .semiBold).make()
@@ -77,7 +77,7 @@ struct Font {
     fileprivate let name: String
     init(_ size: FontSize, _ barlow: FontBarlow) {
         self.size = size
-        self.name = barlow.name
+        name = barlow.name
     }
 }
 
@@ -96,6 +96,7 @@ extension Font {
         case 𝟠𝟞 = 86
     }
 }
+
 // swiftlint:enable identifier_name
 
 protocol FontNameExpressible {
@@ -104,7 +105,7 @@ protocol FontNameExpressible {
 
 extension FontNameExpressible where Self: RawRepresentable, Self.RawValue == String {
     var name: String {
-        return rawValue
+        rawValue
     }
 }
 

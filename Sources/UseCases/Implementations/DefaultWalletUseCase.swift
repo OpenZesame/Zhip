@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,8 +23,8 @@
 //
 
 import Foundation
-import Zesame
 import RxSwift
+import Zesame
 
 final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
     private let zilliqaService: ZilliqaServiceReactive
@@ -36,28 +36,25 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 }
 
 extension DefaultWalletUseCase {
-
-    /// Checks if the passed `password` was used to encypt the Keystore
+    /// Checks if the passed `password` was used to encrypt the Keystore
     func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
-
-        return zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
+        zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
     }
 
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
-        return zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
+        zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
     }
 
     func createNewWallet(encryptionpassword: String) -> Observable<Wallet> {
-        return zilliqaService.createNewWallet(encryptionPassword: encryptionpassword, kdf: .default).map {
+        zilliqaService.createNewWallet(encryptionPassword: encryptionpassword, kdf: .default).map {
             Wallet(wallet: $0, origin: .generatedByThisApp)
         }
     }
 
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet> {
-        let origin: Wallet.Origin
-        switch restoration {
-        case .keystore: origin = .importedKeystore
-        case .privateKey: origin = .importedPrivateKey
+        let origin: Wallet.Origin = switch restoration {
+        case .keystore: .importedKeystore
+        case .privateKey: .importedPrivateKey
         }
         return zilliqaService.restoreWallet(from: restoration).map {
             Wallet(wallet: $0, origin: origin)

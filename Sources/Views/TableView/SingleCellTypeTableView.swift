@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,20 +22,19 @@
 // SOFTWARE.
 //
 
-import UIKit
+import RxCocoa
 import RxDataSources
 import RxSwift
-import RxCocoa
+import UIKit
 
 typealias ListCell = AbstractTableViewCell & CellConfigurable
 
 typealias Sections<HeaderModel, CellModel> = (Observable<[SectionModel<HeaderModel, CellModel>]>) -> Disposable
 
-class SingleCellTypeTableView<Header, Cell>: UITableView where Cell: ListCell {
-
+class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView {
     typealias DataSource = RxTableViewSectionedReloadDataSource<SectionModel<Header, Cell.Model>>
 
-    lazy var rxDataSource = DataSource(configureCell: { (dataSource, tableView, indexPath, model) -> UITableViewCell in
+    lazy var rxDataSource = DataSource(configureCell: { _, tableView, indexPath, model -> UITableViewCell in
         let cell = tableView.dequeueReusableCell(withIdentifier: Cell.identifier, for: indexPath)
         if let typedCell = cell as? Cell {
             typedCell.configure(model: model)
@@ -48,22 +47,26 @@ class SingleCellTypeTableView<Header, Cell>: UITableView where Cell: ListCell {
     var cellDeselectionMode: CellDeselectionMode = .deselectCellsDirectly(animate: true)
 
     lazy var didSelectItem: Driver<IndexPath> = rx.itemSelected.asDriver().do(onNext: { [unowned self] indexPath in
-        switch self.cellDeselectionMode {
-        case .deselectCellsDirectly(let animated): self.deselectRow(at: indexPath, animated: animated)
+        switch cellDeselectionMode {
+        case let .deselectCellsDirectly(animated): deselectRow(at: indexPath, animated: animated)
         case .noImmediateDeselection: break
         }
     })
 
     // MARK: - Initialization
+
     init(style: UITableView.Style) {
         super.init(frame: .zero, style: style)
         setup()
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    required init?(coder _: NSCoder) {
+        interfaceBuilderSucks
+    }
 }
 
 // MARK: - CellDeselectionMode
+
 extension SingleCellTypeTableView {
     enum CellDeselectionMode {
         case deselectCellsDirectly(animate: Bool)
@@ -72,6 +75,7 @@ extension SingleCellTypeTableView {
 }
 
 // MARK: - Private
+
 private extension SingleCellTypeTableView {
     func setup() {
         translatesAutoresizingMaskIntoConstraints = false

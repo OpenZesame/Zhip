@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,8 +23,8 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 protocol OptionalType {
     associatedtype Wrapped
@@ -33,14 +33,13 @@ protocol OptionalType {
 
 extension Optional: OptionalType {
     var value: Wrapped? {
-        return self
+        self
     }
 }
 
 extension Observable where Element: OptionalType {
-
     func filterNil() -> Observable<Element.Wrapped> {
-        return flatMap { (element) -> Observable<Element.Wrapped> in
+        flatMap { element -> Observable<Element.Wrapped> in
             if let value = element.value {
                 return .just(value)
             } else {
@@ -50,7 +49,7 @@ extension Observable where Element: OptionalType {
     }
 
     func errorOnNil(error: Swift.Error) -> Observable<Element.Wrapped> {
-        return flatMap { (element) -> Observable<Element.Wrapped> in
+        flatMap { element -> Observable<Element.Wrapped> in
             if let value = element.value {
                 return .just(value)
             } else {
@@ -61,9 +60,8 @@ extension Observable where Element: OptionalType {
 }
 
 extension SharedSequence where SharingStrategy == DriverSharingStrategy, Element: OptionalType {
-
     func filterNil() -> Driver<Element.Wrapped> {
-        return flatMap { (element) -> Driver<Element.Wrapped> in
+        flatMap { element -> Driver<Element.Wrapped> in
             if let value = element.value {
                 return .just(value)
             } else {
@@ -71,9 +69,9 @@ extension SharedSequence where SharingStrategy == DriverSharingStrategy, Element
             }
         }
     }
-    
+
     func ifNil(switchTo replacement: Driver<Element.Wrapped?>) -> Driver<Element.Wrapped?> {
-        return flatMap { (element) -> Driver<Element.Wrapped?> in
+        flatMap { element -> Driver<Element.Wrapped?> in
             if let value = element.value {
                 return .just(value)
             } else {

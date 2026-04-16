@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,11 +22,10 @@
 // SOFTWARE.
 //
 
-import Zesame
-
+import RxCocoa
 import RxSwift
 import UIKit
-import RxCocoa
+import Zesame
 
 enum BackUpRevealedKeyPairUserAction {
     case finish
@@ -37,7 +36,6 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
     BackUpRevealedKeyPairViewModel.InputFromView,
     BackUpRevealedKeyPairViewModel.Output
 > {
-
     private let keyPair: KeyPair
 
     init(keyPair: KeyPair) {
@@ -49,10 +47,10 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keyPair = Driver.just(self.keyPair)
+        let keyPair = Driver.just(keyPair)
 
         let privateKey = keyPair.map { $0.privateKey.asHexStringLength64() }
-        let publicKeyUncompressed = keyPair.map { $0.publicKey.hex.uncompressed }
+        let publicKeyUncompressed = keyPair.map(\.publicKey.hex.uncompressed)
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -62,14 +60,16 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
+                    input.fromController.toastSubject
+                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
                 }).drive(),
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
-                }).drive()
+                    input.fromController.toastSubject
+                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
+                }).drive(),
         ]
 
         return Output(
@@ -80,7 +80,6 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
 }
 
 extension BackUpRevealedKeyPairViewModel {
-
     struct InputFromView {
         let copyPrivateKeyTrigger: Driver<Void>
         let copyPublicKeyTrigger: Driver<Void>
@@ -91,4 +90,3 @@ extension BackUpRevealedKeyPairViewModel {
         let publicKeyUncompressed: Driver<String>
     }
 }
-

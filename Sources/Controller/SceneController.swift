@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,35 +22,40 @@
 // SOFTWARE.
 //
 
+import RxSwift
 import UIKit
 
-import RxSwift
-
 /// The "Single-Line Controller" base class
-class SceneController<View: ContentView>: AbstractController where View.ViewModel.Input.FromController == InputFromController {
+class SceneController<View: ContentView>: AbstractController
+    where View.ViewModel.Input.FromController == InputFromController
+// swiftlint:disable:next opening_brace
+{
     typealias ViewModel = View.ViewModel
 
     private let bag = DisposeBag()
     let viewModel: ViewModel
-    
-    private lazy var rootContentView: View = {
-        // Beware, here be dragons!
-        // For some unknown reason (Xcode 10.2 / Swift 5 being drunk) Xcode decided to interpret `View()` (which worked fine before Xcode 10.2)
+
+    private lazy var rootContentView: View = // Beware, here be dragons!
+        // For some unknown reason (Xcode 10.2 / Swift 5 being drunk) Xcode decided to interpret `View()` (which worked
+        // fine before Xcode 10.2)
         // as `UIView.init:frame:`. Why? Oh Why?! This terribly ugly hack fixes that.
         // swiftlint:disable:next force_cast
-        return (View.self as EmptyInitializable.Type).init() as! View
-    }()
+        (View.self as EmptyInitializable.Type).init() as! View
 
     // MARK: - Initialization
+
     required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         setup()
     }
 
-    required init?(coder: NSCoder) { interfaceBuilderSucks }
+    required init?(coder _: NSCoder) {
+        interfaceBuilderSucks
+    }
 
     // MARK: View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,7 +65,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         rootContentView.edgesToSuperview()
 
         if let titled = self as? TitledScene, case let sceneTitle = titled.sceneTitle, !sceneTitle.isEmpty {
-            self.title = sceneTitle
+            title = sceneTitle
         }
 
         if let rightButtonMaker = self as? RightBarButtonContentMaking {
@@ -76,7 +81,6 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         }
 
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !(self is BackButtonHiding)
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -86,13 +90,12 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
 }
 
 // MARK: Private
-private extension SceneController {
 
+private extension SceneController {
     func setup() {
         bindViewToViewModel()
     }
 
-    // swiftlint:disable:next function_body_length
     func makeAndSubscribeToInputFromController() -> InputFromController {
         let titleSubject = PublishSubject<String>()
         let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
@@ -101,7 +104,7 @@ private extension SceneController {
 
         bag <~ [
             titleSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                self.title = $0
+                title = $0
             }).drive(),
 
             toastSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
@@ -109,12 +112,12 @@ private extension SceneController {
             }).drive(),
 
             leftBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                self.setLeftBarButtonUsing(content: $0)
+                setLeftBarButtonUsing(content: $0)
             }).drive(),
 
             rightBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                self.setRightBarButtonUsing(content: $0)
-            }).drive()
+                setRightBarButtonUsing(content: $0)
+            }).drive(),
         ]
         return InputFromController(
             viewDidLoad: rx.viewDidLoad,
@@ -136,7 +139,7 @@ private extension SceneController {
         let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
 
         // Transform input from view and controller into output used to update UI
-        // Navigatoin logic is handled by the Coordinator listening to navigation
+        // Navigation logic is handled by the Coordinator listening to navigation
         // steps in passed to the ViewModels `navigator` (`Stepper`).
         let output = viewModel.transform(input: input)
 
@@ -145,9 +148,11 @@ private extension SceneController {
     }
 
     func applyLayoutIfNeeded() {
-        guard let navigationController = navigationController else { return }
+        guard let navigationController else { return }
         guard let barLayoutingNavController = navigationController as? NavigationBarLayoutingNavigationController else {
-            incorrectImplementation("navigationController should be instance of `NavigationBarLayoutingNavigationController`")
+            incorrectImplementation(
+                "navigationController should be instance of `NavigationBarLayoutingNavigationController`"
+            )
         }
 
         guard let barLayoutOwner = self as? NavigationBarLayoutOwner else {
@@ -161,7 +166,7 @@ private extension SceneController {
                 // do not apply layout if same, to avoid potential gui glitches
                 return
             }
-               barLayoutingNavController.applyLayout(layout)
+            barLayoutingNavController.applyLayout(layout)
         } else {
             // always apply layout if this is the first scene of this navigation controller
             barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)

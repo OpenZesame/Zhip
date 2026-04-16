@@ -25,11 +25,10 @@
 import Foundation
 
 struct BalanceLastUpdatedFormatter {
-
     private let formatter: RelativeDateTimeFormatter = {
-        let f = RelativeDateTimeFormatter()
-        f.unitsStyle = .full
-        return f
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter
     }()
 
     func string(from date: Date?) -> String {

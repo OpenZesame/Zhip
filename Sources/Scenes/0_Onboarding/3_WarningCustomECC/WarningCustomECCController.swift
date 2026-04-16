@@ -17,11 +17,11 @@ final class WarningCustomECC: Scene<WarningCustomECCView>, NavigationBarLayoutOw
     }
 
     required init(viewModel: ViewModel) {
-        self.navigationBarLayout = .hidden
+        navigationBarLayout = .hidden
         super.init(viewModel: viewModel)
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         interfaceBuilderSucks
     }
 }

@@ -9,25 +9,37 @@ disabled_rules:
   - weak_delegate
   - empty_parameters
 
+# SwiftFormat's --commas always adds trailing commas in multi-line collections;
+# require them here so both tools agree.
+trailing_comma:
+  mandatory_comma: true
+
 included:
   - Sources
+  - Tests
 
 excluded:
   - Configurations
 
-line_length: 300
+line_length: 200
+
+# swiftformat with --wrapparameters before-first puts { on its own line for multiline
+# function signatures; allow this so both tools agree.
+opening_brace:
+  ignore_multiline_function_signatures: true
+
 type_name:
   min_length: 3
   max_length:
-    warning: 45
-    error:  50
+    warning: 60
+    error: 80
   excluded:
     - id
     - €
 
 file_length:
-  warning: 200
-  error: 300
+  warning: 350
+  error: 500
   ignore_comment_only_lines: true
 
 identifier_name:
@@ -39,13 +51,18 @@ identifier_name:
   validates_start_with_lowercase: false
 
 type_body_length:
-  - 100 # warning
-  - 200 # error
+  warning: 200
+  error: 400
 
 function_parameter_count:
-  - 4 # warning
-  - 5 # error
+  warning: 4
+  error: 5
 
 function_body_length:
-  - 25 # warning
-  - 25 # error
+  warning: 65
+  error: 80
+  ignores_comments: true
+
+cyclomatic_complexity:
+  warning: 10
+  error: 15

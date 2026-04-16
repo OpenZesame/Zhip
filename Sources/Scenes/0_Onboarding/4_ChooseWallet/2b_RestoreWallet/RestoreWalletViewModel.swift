@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,10 +22,9 @@
 // SOFTWARE.
 //
 
-import Zesame
-
 import RxCocoa
 import RxSwift
+import Zesame
 
 /// Navigation from RestoreWallet
 enum RestoreWalletNavigation {
@@ -33,19 +32,18 @@ enum RestoreWalletNavigation {
 }
 
 // MARK: - RestoreWalletViewModel
+
 final class RestoreWalletViewModel: BaseViewModel<
     RestoreWalletNavigation,
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output
 > {
-    
     private let useCase: WalletUseCase
 
     init(useCase: WalletUseCase) {
         self.useCase = useCase
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userIntends(to intention: NavigationStep) {
             navigator.next(intention)
@@ -55,15 +53,15 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         let keyRestoration: Driver<KeyRestoration?> = input.fromView.selectedSegment.flatMapLatest {
             switch $0 {
-            case .keystore: return input.fromView.keyRestorationUsingKeystore
-            case .privateKey: return input.fromView.keyRestorationUsingPrivateKey
+            case .keystore: input.fromView.keyRestorationUsingKeystore
+            case .privateKey: input.fromView.keyRestorationUsingPrivateKey
             }
         }
 
         let headerLabel: Driver<String> = input.fromView.selectedSegment.map {
             switch $0 {
-            case .keystore: return String(localized: .RestoreWallet.restoreWithKeystore)
-            case .privateKey: return String(localized: .RestoreWallet.restoreWithPrivateKey)
+            case .keystore: String(localized: .RestoreWallet.restoreWithKeystore)
+            case .privateKey: String(localized: .RestoreWallet.restoreWithPrivateKey)
             }
         }
 
@@ -72,13 +70,13 @@ final class RestoreWalletViewModel: BaseViewModel<
         bag <~ [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
-                    self.useCase.restoreWallet(from: $0)
+                    useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .asDriverOnErrorReturnEmpty()
                 }
                 .do(onNext: { userIntends(to: .restoreWallet($0)) })
-                .drive()
+                .drive(),
         ]
 
         let keystoreRestorationError: Driver<AnyValidation> = errorTracker.asInputValidationErrors {
@@ -95,17 +93,17 @@ final class RestoreWalletViewModel: BaseViewModel<
 }
 
 extension RestoreWalletViewModel {
-    
     struct InputFromView {
         enum Segment: Int {
             case privateKey, keystore
         }
+
         let selectedSegment: Driver<Segment>
         let keyRestorationUsingPrivateKey: Driver<KeyRestoration?>
         let keyRestorationUsingKeystore: Driver<KeyRestoration?>
         let restoreTrigger: Driver<Void>
     }
-    
+
     struct Output {
         let headerLabel: Driver<String>
         let isRestoreButtonEnabled: Driver<Bool>

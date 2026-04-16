@@ -22,12 +22,12 @@
 // SOFTWARE.
 //
 
-import Foundation
 import CoreText
+import FirebaseAnalytics
+import FirebaseCore
+import Foundation
 import IQKeyboardManagerSwift
 import SwiftyBeaver
-import FirebaseCore
-import FirebaseAnalytics
 import Zesame
 
 /// The global logger used throughout the app.
@@ -52,7 +52,7 @@ private func registerFonts() {
         "Barlow-Medium", "Barlow-MediumItalic",
         "Barlow-Regular",
         "Barlow-SemiBold", "Barlow-SemiBoldItalic",
-        "Barlow-Thin", "Barlow-ThinItalic"
+        "Barlow-Thin", "Barlow-ThinItalic",
     ]
     for name in fontFileNames {
         guard let url = Bundle.main.url(forResource: name, withExtension: "ttf") else {

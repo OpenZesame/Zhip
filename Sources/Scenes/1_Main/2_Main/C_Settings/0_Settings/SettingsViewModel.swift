@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,21 +23,21 @@
 //
 
 import Foundation
-import UIKit
-import Zesame
-
-import RxSwift
 import RxCocoa
 import RxDataSources
+import RxSwift
+import UIKit
+import Zesame
 
 typealias SettingsItem = NavigatingCellModel<SettingsViewModel.NavigationStep>
 
 // MARK: SettingsNavigation
+
 enum SettingsNavigation {
-    // Navigation Bar
+    /// Navigation Bar
     case closeSettings
 
-    // Section 0
+    /// Section 0
     case removePincode, setPincode
 
     // Section 1
@@ -56,12 +56,12 @@ enum SettingsNavigation {
 }
 
 // MARK: SettingsViewModel
+
 final class SettingsViewModel: BaseViewModel<
     SettingsNavigation,
     SettingsViewModel.InputFromView,
     SettingsViewModel.Output
 > {
-
     private let useCase: PincodeUseCase
 
     init(useCase: PincodeUseCase) {
@@ -74,9 +74,9 @@ final class SettingsViewModel: BaseViewModel<
         }
 
         let sections = input.fromController.viewWillAppear
-            .map { [unowned self] _ in return self.makeSections() }
+            .map { [unowned self] _ in return makeSections() }
 
-        let selectedCell: Driver<SettingsItem> = input.fromView.selectedIndedPath.withLatestFrom(sections) {
+        let selectedCell: Driver<SettingsItem> = input.fromView.selectedIndexPath.withLatestFrom(sections) {
             $1[$0.section].items[$0.row]
         }
 
@@ -87,7 +87,7 @@ final class SettingsViewModel: BaseViewModel<
 
             selectedCell.do(onNext: {
                 userWantsToNavigate(to: $0.destination)
-            }).drive()
+            }).drive(),
         ]
 
         return Output(
@@ -99,7 +99,7 @@ final class SettingsViewModel: BaseViewModel<
 
 extension SettingsViewModel {
     struct InputFromView {
-        let selectedIndedPath: Driver<IndexPath>
+        let selectedIndexPath: Driver<IndexPath>
     }
 
     struct Output {
@@ -109,7 +109,6 @@ extension SettingsViewModel {
 }
 
 private extension SettingsViewModel {
-
     func makeItemMatrix() -> [[SettingsItem]] {
         var sections = [[SettingsItem]]()
         let hasPin = useCase.hasConfiguredPincode
@@ -120,31 +119,64 @@ private extension SettingsViewModel {
                 titled: hasPin ? String(localized: .Settings.removePincode) : String(localized: .Settings.setPincode),
                 icon: hasPin ? UIImage(resource: .delete) : UIImage(resource: .pinCode),
                 style: hasPin ? .destructive : .normal
-            )
+            ),
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .starUsOnGithub, titled: String(localized: .Settings.starUsOnGithub), icon: UIImage(resource: .githubStar)),
-            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: String(localized: .Settings.reportIssueOnGithub), icon: UIImage(resource: .githubIssue)),
-            .whenSelectedNavigate(to: .acknowledgments, titled: String(localized: .Settings.acknowledgements), icon: UIImage(resource: .cup))
+            .whenSelectedNavigate(
+                to: .starUsOnGithub,
+                titled: String(localized: .Settings.starUsOnGithub),
+                icon: UIImage(resource: .githubStar)
+            ),
+            .whenSelectedNavigate(
+                to: .reportIssueOnGithub,
+                titled: String(localized: .Settings.reportIssueOnGithub),
+                icon: UIImage(resource: .githubIssue)
+            ),
+            .whenSelectedNavigate(
+                to: .acknowledgments,
+                titled: String(localized: .Settings.acknowledgements),
+                icon: UIImage(resource: .cup)
+            ),
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .readTermsOfService, titled: String(localized: .Settings.termsOfService), icon: UIImage(resource: .document)),
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: String(localized: .Settings.crashReportingPermissions), icon: UIImage(resource: .analyticsSmall)),
-            .whenSelectedNavigate(to: .readCustomECCWarning, titled: String(localized: .Settings.readCustomECCWarning), icon: UIImage(resource: .ECC))
+            .whenSelectedNavigate(
+                to: .readTermsOfService,
+                titled: String(localized: .Settings.termsOfService),
+                icon: UIImage(resource: .document)
+            ),
+            .whenSelectedNavigate(
+                to: .changeAnalyticsPermissions,
+                titled: String(localized: .Settings.crashReportingPermissions),
+                icon: UIImage(resource: .analyticsSmall)
+            ),
+            .whenSelectedNavigate(
+                to: .readCustomECCWarning,
+                titled: String(localized: .Settings.readCustomECCWarning),
+                icon: UIImage(resource: .ECC)
+            ),
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .backupWallet, titled: String(localized: .Settings.backupWallet), icon: UIImage(resource: .backUp)),
-            .whenSelectedNavigate(to: .removeWallet, titled: String(localized: .Settings.removeWallet), icon: UIImage(resource: .delete), style: .destructive)
+            .whenSelectedNavigate(
+                to: .backupWallet,
+                titled: String(localized: .Settings.backupWallet),
+                icon: UIImage(resource: .backUp)
+            ),
+            .whenSelectedNavigate(
+                to: .removeWallet,
+                titled: String(localized: .Settings.removeWallet),
+                icon: UIImage(resource: .delete),
+                style: .destructive
+            ),
         ]
 
         return sections
     }
 
     func makeSections() -> [SectionModel<Void, SettingsItem>] {
-        return makeItemMatrix().map { array in return SectionModel(model: (), items: array) }
+        makeItemMatrix().map { array in SectionModel(model: (), items: array) }
     }
 
     var appVersionString: String {
@@ -153,8 +185,8 @@ private extension SettingsViewModel {
             let version = bundle.version,
             let build = bundle.build,
             let appName = bundle.name
-            else { incorrectImplementation("Should be able to read name, version and build number") }
-        
+        else { incorrectImplementation("Should be able to read name, version and build number") }
+
         let networkDisplayName = network.displayName
         return "\(appName) v\(version) (\(build))\n\(String(localized: .Settings.networkFooter(network: networkDisplayName)))"
     }
@@ -163,8 +195,8 @@ private extension SettingsViewModel {
 private extension Network {
     var displayName: String {
         switch self {
-        case .mainnet: return "mainnet"
-        case .testnet: return "testnet"
+        case .mainnet: "mainnet"
+        case .testnet: "testnet"
         }
     }
 }

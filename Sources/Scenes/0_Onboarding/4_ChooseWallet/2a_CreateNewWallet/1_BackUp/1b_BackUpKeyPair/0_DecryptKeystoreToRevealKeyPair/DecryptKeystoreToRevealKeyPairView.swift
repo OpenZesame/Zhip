@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,23 +22,21 @@
 // SOFTWARE.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
-import RxSwift
-import RxCocoa
-
 final class DecryptKeystoreToRevealKeyPairView: ScrollableStackViewOwner {
-
-    private lazy var decryptToRevealLabel       = UILabel()
-    private lazy var encryptionPasswordField  = FloatingLabelTextField()
-    private lazy var revealButton               = ButtonWithSpinner()
+    private lazy var decryptToRevealLabel = UILabel()
+    private lazy var encryptionPasswordField = FloatingLabelTextField()
+    private lazy var revealButton = ButtonWithSpinner()
 
     lazy var stackViewStyle = UIStackView.Style([
         decryptToRevealLabel,
         encryptionPasswordField,
         .spacer,
-        revealButton
-        ], spacing: 20)
+        revealButton,
+    ], spacing: 20)
 
     override func setup() {
         setupSubviews()
@@ -49,15 +47,15 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
     typealias ViewModel = DecryptKeystoreToRevealKeyPairViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.encryptionPasswordValidation    --> encryptionPasswordField.rx.validation,
-            viewModel.isRevealButtonLoading             --> revealButton.rx.isLoading,
-            viewModel.isRevealButtonEnabled             --> revealButton.rx.isEnabled
+        [
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
+            viewModel.isRevealButtonLoading --> revealButton.rx.isLoading,
+            viewModel.isRevealButtonEnabled --> revealButton.rx.isEnabled,
         ]
     }
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
             revealTrigger: revealButton.rx.tap.asDriver()
@@ -67,7 +65,6 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
 
 private extension DecryptKeystoreToRevealKeyPairView {
     func setupSubviews() {
-
         decryptToRevealLabel.withStyle(.body) {
             $0.text(String(localized: .DecryptKeystore.decryptToReveal))
         }

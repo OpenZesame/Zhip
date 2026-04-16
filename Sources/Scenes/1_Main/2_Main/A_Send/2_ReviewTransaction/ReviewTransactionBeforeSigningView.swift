@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,39 +22,42 @@
 // SOFTWARE.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 final class ReviewTransactionBeforeSigningView: ScrollableStackViewOwner {
+    private lazy var recipientAddressesLabel = UILabel()
+    private lazy var recipientLegacyAddressView = TitledValueView()
+    private lazy var recipientBech32AddressView = TitledValueView()
+    private lazy var recipientViewsStackView = UIStackView(arrangedSubviews: [
+        recipientAddressesLabel,
+        recipientLegacyAddressView,
+        recipientBech32AddressView,
+    ])
 
-    private lazy var recipientAddressesLabel                = UILabel()
-    private lazy var recipientLegacyAddressView             = TitledValueView()
-    private lazy var recipientBech32AddressView             = TitledValueView()
-    private lazy var recipientViewsStackView                = UIStackView(arrangedSubviews: [recipientAddressesLabel, recipientLegacyAddressView, recipientBech32AddressView])
-    
-    private lazy var amountLabel                            = UILabel()
-    private lazy var amountToSendView                       = TitledValueView()
-    private lazy var transactionFeeView                     = TitledValueView()
-    private lazy var totalCostOfTransactionView             = TitledValueView()
-    private lazy var amountViewsStackView                   = UIStackView(arrangedSubviews: [
+    private lazy var amountLabel = UILabel()
+    private lazy var amountToSendView = TitledValueView()
+    private lazy var transactionFeeView = TitledValueView()
+    private lazy var totalCostOfTransactionView = TitledValueView()
+    private lazy var amountViewsStackView = UIStackView(arrangedSubviews: [
         amountLabel,
         amountToSendView,
         transactionFeeView,
-        totalCostOfTransactionView
+        totalCostOfTransactionView,
     ])
-    
-    private lazy var hasReviewedPaymentCheckBox             = CheckboxWithLabel()
-    private lazy var acceptPaymentProceedToSigningButton    = UIButton()
-    
+
+    private lazy var hasReviewedPaymentCheckBox = CheckboxWithLabel()
+    private lazy var acceptPaymentProceedToSigningButton = UIButton()
+
     lazy var stackViewStyle: UIStackView.Style = [
         recipientViewsStackView,
         amountViewsStackView,
         hasReviewedPaymentCheckBox,
         acceptPaymentProceedToSigningButton,
-        .spacer
+        .spacer,
     ]
-    
+
     override func setup() {
         setupSubviews()
     }
@@ -62,35 +65,35 @@ final class ReviewTransactionBeforeSigningView: ScrollableStackViewOwner {
 
 extension ReviewTransactionBeforeSigningView: ViewModelled {
     typealias ViewModel = ReviewTransactionBeforeSigningViewModel
-    
+
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             isHasReviewedPaymentCheckboxChecked: hasReviewedPaymentCheckBox.rx.isChecked.asDriverOnErrorReturnEmpty(),
             hasReviewedNowProceedWithSigningTrigger: acceptPaymentProceedToSigningButton.rx.tap.asDriver()
         )
     }
-    
+
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
-        return [
-            viewModel.isHasReviewedNowProceedWithSigningButtonEnabled --> acceptPaymentProceedToSigningButton.rx.isEnabled,
+        [
+            viewModel.isHasReviewedNowProceedWithSigningButtonEnabled --> acceptPaymentProceedToSigningButton.rx
+                .isEnabled,
             viewModel.recipientBech32Address --> recipientBech32AddressView.rx.value,
             viewModel.recipientLegacyAddress --> recipientLegacyAddressView.rx.value,
-            viewModel.amountToPay            --> amountToSendView.rx.value,
-            viewModel.paymentFee             --> transactionFeeView.rx.value,
-            viewModel.totalCost              --> totalCostOfTransactionView.rx.value
+            viewModel.amountToPay --> amountToSendView.rx.value,
+            viewModel.paymentFee --> transactionFeeView.rx.value,
+            viewModel.totalCost --> totalCostOfTransactionView.rx.value,
         ]
     }
 }
 
 private extension ReviewTransactionBeforeSigningView {
-    
-    // swiftlint:disable:next function_body_length
     func setupSubviews() {
-        
-        func setup(titledValueView: TitledValueView, customizeTitleStyle: @escaping ((UILabel.Style) -> (UILabel.Style))) {
-            
-            let titleStyle: UILabel.Style = UILabel.Style.body.font(UIFont.valueTitle)
-            let valueStyle: UITextView.Style = UITextView.Style.nonSelectable
+        func setup(
+            titledValueView: TitledValueView,
+            customizeTitleStyle: @escaping ((UILabel.Style) -> (UILabel.Style))
+        ) {
+            let titleStyle = UILabel.Style.body.font(UIFont.valueTitle)
+            let valueStyle = UITextView.Style.nonSelectable
                 .isScrollEnabled(false)
                 .textAlignment(.natural)
                 .textColor(.teal)
@@ -101,18 +104,20 @@ private extension ReviewTransactionBeforeSigningView {
                 layoutMargins: .zero,
                 isLayoutMarginsRelativeArrangement: false
             )
-            
+
             titledValueView.withStyles(
                 forTitle: titleStyle,
                 forValue: valueStyle,
                 forStackView: stackViewStyle,
-                customizeTitleStyle: customizeTitleStyle)
+                customizeTitleStyle: customizeTitleStyle
+            )
         }
-        
+
         let labelStyleForHeaders: UILabel.Style = .header
         let stackViewStyle: UIStackView.Style = .vertical
-        
+
         // MARK: - Recipient views
+
         recipientAddressesLabel.withStyle(labelStyleForHeaders) {
             $0.text(String(localized: .ReviewTransaction.recipient))
         }
@@ -128,6 +133,7 @@ private extension ReviewTransactionBeforeSigningView {
         recipientViewsStackView.withStyle(stackViewStyle)
 
         // MARK: - Amount views
+
         amountLabel.withStyle(labelStyleForHeaders) {
             $0.text(String(localized: .ReviewTransaction.amount))
         }
@@ -147,6 +153,7 @@ private extension ReviewTransactionBeforeSigningView {
         amountViewsStackView.withStyle(stackViewStyle)
 
         // MARK: Checkbox and button
+
         hasReviewedPaymentCheckBox.withStyle(.default) {
             $0.text(String(localized: .ReviewTransaction.hasReviewedPayment))
         }

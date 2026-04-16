@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -39,7 +39,7 @@ extension UIMotionEffect {
         let group = UIMotionEffectGroup()
         group.motionEffects = [
             motion(type: .tiltAlongHorizontalAxis),
-            motion(type: .tiltAlongVerticalAxis)
+            motion(type: .tiltAlongVerticalAxis),
         ]
         return group
     }
@@ -62,24 +62,26 @@ extension UIView {
         verticalInsetForImageViews: CGFloat = -40,
         horizontalInsetForImageViews: CGFloat = -80
         // swiftlint:disable:next large_tuple
-        ) -> (frontImageView: UIImageView, middleImageView: UIImageView, backImageView: UIImageView) {
+    ) -> (frontImageView: UIImageView, middleImageView: UIImageView, backImageView: UIImageView) {
+        let imageViews = [back, middle, front].map { image -> UIImageView in
+            let imageView = UIImageView()
+            imageView.withStyle(.background(image: image))
+            addSubview(imageView)
+            imageView.edgesToSuperview(insets:
+                UIEdgeInsets(
+                    top: verticalInsetForImageViews,
+                    left: horizontalInsetForImageViews,
+                    bottom: verticalInsetForImageViews,
+                    right: horizontalInsetForImageViews
+                )
+            )
+            return imageView
+        }
 
-		let imageViews = [back, middle, front].map { image -> UIImageView in
-			let imageView = UIImageView()
-			imageView.withStyle(.background(image: image))
-			addSubview(imageView)
-			imageView.edgesToSuperview(insets:
-				UIEdgeInsets(
-					top: verticalInsetForImageViews,
-					left: horizontalInsetForImageViews,
-					bottom: verticalInsetForImageViews,
-					right: horizontalInsetForImageViews
-				)
-			)
-			return imageView
-		}
-
-        addMotionEffectTo(views: (imageViews[0], imageViews[1], imageViews[2]), strengths: (frontStrength, middleStrength, backStrength))
+        addMotionEffectTo(
+            views: (imageViews[0], imageViews[1], imageViews[2]),
+            strengths: (frontStrength, middleStrength, backStrength)
+        )
         return (imageViews[2], imageViews[1], imageViews[0])
     }
 
@@ -89,7 +91,7 @@ extension UIView {
     func addMotionEffectTo(
         views: (back: UIView, middle: UIView, front: UIView),
         strengths: (back: CGFloat, middle: CGFloat, front: CGFloat)
-        ) { // swiftlint:enable large_tuple
+    ) { // swiftlint:enable large_tuple
         let views = [views.back, views.middle, views.front]
         let strengths = [strengths.back, strengths.middle, strengths.front]
         let viewsAndEffectStrength = zip(views, strengths).map { ($0.0, $0.1) }
@@ -98,8 +100,8 @@ extension UIView {
     }
 
     func addMotionEffectTo(viewsAndEffectStrength: [(UIView, CGFloat)]) {
-        viewsAndEffectStrength.forEach {
-            let (view, strength) = $0
+        for item in viewsAndEffectStrength {
+            let (view, strength) = item
             view.addMotionEffect(strength: CGFloat(strength))
         }
     }

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,12 +23,10 @@
 //
 
 import Foundation
-
+import RxCocoa
+import RxSwift
 import UIKit
 import Zesame
-
-import RxSwift
-import RxCocoa
 
 enum BackupWalletCoordinatorNavigationStep {
     case backUp
@@ -36,14 +34,18 @@ enum BackupWalletCoordinatorNavigationStep {
 }
 
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
-
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>
     private let mode: BackupWalletViewModel.Mode
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil, mode: BackupWalletViewModel.Mode = .cancellable) {
+    init(
+        navigationController: UINavigationController,
+        useCase: WalletUseCase,
+        wallet: Driver<Wallet>? = nil,
+        mode: BackupWalletViewModel.Mode = .cancellable
+    ) {
         self.useCase = useCase
         self.mode = mode
-        if let wallet = wallet {
+        if let wallet {
             self.wallet = wallet
         } else {
             self.wallet = useCase.wallet.map {
@@ -56,24 +58,23 @@ final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavi
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toBackUpWallet()
     }
 }
 
 // MARK: Private
+
 private extension BackupWalletCoordinator {
-
     func toBackUpWallet() {
-
         let viewModel = BackupWalletViewModel(wallet: wallet, mode: mode)
 
         push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .revealKeystore: self.toRevealKeystore()
-            case .revealPrivateKey: self.toDecryptKeystoreToRevealKeyPair()
-            case .cancelOrDismiss: self.cancel()
-            case .backupWallet: self.finish()
+            case .revealKeystore: toRevealKeystore()
+            case .revealPrivateKey: toDecryptKeystoreToRevealKeyPair()
+            case .cancelOrDismiss: cancel()
+            case .backupWallet: finish()
             }
         }
     }
@@ -82,10 +83,10 @@ private extension BackupWalletCoordinator {
         presentModalCoordinator(makeCoordinator: {
             DecryptKeystoreCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
         }, navigationHandler: { userFinished, dismissModalFlow in
-                switch userFinished {
-                case .backingUpKeyPair: dismissModalFlow(true)
-                case .dismiss: dismissModalFlow(true)
-                }
+            switch userFinished {
+            case .backingUpKeyPair: dismissModalFlow(true)
+            case .dismiss: dismissModalFlow(true)
+            }
         })
     }
 
@@ -107,5 +108,4 @@ private extension BackupWalletCoordinator {
         let userFinished: NavigationStep = .backUp
         navigator.next(userFinished)
     }
-
 }

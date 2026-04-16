@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,8 +23,8 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 import Zesame
 
 enum ReviewTransactionBeforeSigningUserAction {
@@ -36,7 +36,6 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
     ReviewTransactionBeforeSigningViewModel.InputFromView,
     ReviewTransactionBeforeSigningViewModel.Output
 > {
-
     private let paymentToReview: Payment
 
     init(paymentToReview: Payment) {
@@ -49,36 +48,54 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
         }
 
         // MARK: - Validate input
+
         bag <~ [
             input.fromView.hasReviewedNowProceedWithSigningTrigger.map { self.paymentToReview }
                 .do(onNext: { userDid(.acceptPaymentProceedWithSigning($0)) })
-                .drive()
+                .drive(),
         ]
 
-        let payment = Driver.just(self.paymentToReview)
-        let recipientLegacyAddress = payment.map { $0.recipient }
-        let recipientBech32Address = payment.map { try? Bech32Address(ethStyleAddress: $0.recipient, network: network) }.filterNil()
-        
+        let payment = Driver.just(paymentToReview)
+        let recipientLegacyAddress = payment.map(\.recipient)
+        let recipientBech32Address = payment.map { try? Bech32Address(ethStyleAddress: $0.recipient, network: network) }
+            .filterNil()
+
         let amountFormatter = AmountFormatter()
-        
-        let amountToPay = payment.map { amountFormatter.format(amount: $0.amount, in: .zil, formatThousands: true, minFractionDigits: 2, showUnit: true) }
-        let paymentFee = payment.map { amountFormatter.format(amount: $0.transactionFee, in: .zil, formatThousands: false, minFractionDigits: 5, showUnit: true) }
-        let totalCost = payment.map { amountFormatter.format(amount: $0.totalCostInZil, in: .zil, formatThousands: true, minFractionDigits: 2, showUnit: true) }
-        
+
+        let amountToPay = payment.map { amountFormatter.format(
+            amount: $0.amount,
+            in: .zil,
+            formatThousands: true,
+            minFractionDigits: 2,
+            showUnit: true
+        ) }
+        let paymentFee = payment.map { amountFormatter.format(
+            amount: $0.transactionFee,
+            in: .zil,
+            formatThousands: false,
+            minFractionDigits: 5,
+            showUnit: true
+        ) }
+        let totalCost = payment.map { amountFormatter.format(
+            amount: $0.totalCostInZil,
+            in: .zil,
+            formatThousands: true,
+            minFractionDigits: 2,
+            showUnit: true
+        ) }
+
         return Output(
             isHasReviewedNowProceedWithSigningButtonEnabled: input.fromView.isHasReviewedPaymentCheckboxChecked,
-            recipientLegacyAddress: recipientLegacyAddress.map { $0.asString },
-            recipientBech32Address: recipientBech32Address.map { $0.asString },
+            recipientLegacyAddress: recipientLegacyAddress.map(\.asString),
+            recipientBech32Address: recipientBech32Address.map(\.asString),
             amountToPay: amountToPay,
             paymentFee: paymentFee,
             totalCost: totalCost
         )
     }
-
 }
 
 extension ReviewTransactionBeforeSigningViewModel {
-
     struct InputFromView {
         let isHasReviewedPaymentCheckboxChecked: Driver<Bool>
         let hasReviewedNowProceedWithSigningTrigger: Driver<Void>
@@ -96,11 +113,15 @@ extension ReviewTransactionBeforeSigningViewModel {
 
 private extension Payment {
     var transactionFee: Qa {
-        return (try? Payment.estimatedTotalTransactionFee(gasPrice: gasPrice, gasLimit: gasLimit)) ?? gasPrice.asQa
+        (try? Payment.estimatedTotalTransactionFee(gasPrice: gasPrice, gasLimit: gasLimit)) ?? gasPrice.asQa
     }
-    
+
     var totalCostInZil: ZilAmount {
-        if let estimatedTotal = try? Payment.estimatedTotalCostOfTransaction(amount: amount, gasPrice: gasPrice, gasLimit: gasLimit) {
+        if let estimatedTotal = try? Payment.estimatedTotalCostOfTransaction(
+            amount: amount,
+            gasPrice: gasPrice,
+            gasLimit: gasLimit
+        ) {
             return estimatedTotal
         } else {
             let totalInQa = amount.asQa + transactionFee

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,13 +25,12 @@
 import UIKit
 
 struct BarButtonContent {
-    
     enum ButtonType {
         case text(String)
         case image(UIImage)
         case system(UIBarButtonItem.SystemItem)
     }
-    
+
     let type: ButtonType
     let style: UIBarButtonItem.Style?
 
@@ -40,11 +39,11 @@ struct BarButtonContent {
         self.style = style
     }
 
-    init(title: CustomStringConvertible, style: UIBarButtonItem.Style = .plain) {
+    init(title: CustomStringConvertible, style _: UIBarButtonItem.Style = .plain) {
         self.init(type: .text(title.description))
     }
 
-    init(image: ImageConvertible, style: UIBarButtonItem.Style = .plain) {
+    init(image: ImageConvertible, style _: UIBarButtonItem.Style = .plain) {
         self.init(type: .image(image.image))
     }
 
@@ -54,12 +53,13 @@ struct BarButtonContent {
 }
 
 // MARK: - UIBarButtonItem
+
 extension BarButtonContent {
-    func makeBarButtonItem<Target>(target: Target, selector: Selector) -> UIBarButtonItem {
+    func makeBarButtonItem(target: some Any, selector: Selector) -> UIBarButtonItem {
         switch type {
-        case .image(let image): return UIBarButtonItem(image: image, style: style ?? .plain, target: target, action: selector)
-        case .text(let text): return UIBarButtonItem(title: text, style: style ?? .plain, target: target, action: selector)
-        case .system(let system): return UIBarButtonItem(barButtonSystemItem: system, target: target, action: selector)
+        case let .image(image): UIBarButtonItem(image: image, style: style ?? .plain, target: target, action: selector)
+        case let .text(text): UIBarButtonItem(title: text, style: style ?? .plain, target: target, action: selector)
+        case let .system(system): UIBarButtonItem(barButtonSystemItem: system, target: target, action: selector)
         }
     }
 }

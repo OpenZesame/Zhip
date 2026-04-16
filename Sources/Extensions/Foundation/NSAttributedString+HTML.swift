@@ -2,17 +2,17 @@
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,8 +28,7 @@ func htmlAsAttributedString(
     htmlFileName: String,
     textColor: UIColor = .white,
     font: UIFont = .body
-    ) -> NSAttributedString {
-
+) -> NSAttributedString {
     guard let path = Bundle.main.path(forResource: htmlFileName, ofType: "html") else {
         incorrectImplementation("bad path")
     }
@@ -50,8 +49,7 @@ func generateHTMLWithCSS(
     htmlBodyString: String,
     textColor: UIColor,
     font: UIFont
-    ) -> NSAttributedString {
-
+) -> NSAttributedString {
     guard let htmlData = NSString(string: htmlBodyString).data(using: String.Encoding.unicode.rawValue) else {
         incorrectImplementation("Failed to convert html to data")
     }
@@ -75,19 +73,19 @@ extension NSMutableAttributedString {
 
         let range = NSRange(location: 0, length: length)
 
-        enumerateAttribute(.font, in: range) { (value, range, stop) in
-
+        enumerateAttribute(.font, in: range) { value, range, _ in
             guard
                 let f = value as? UIFont,
-                let newFontDescriptor = f.fontDescriptor.withFamily(font.familyName).withSymbolicTraits(f.fontDescriptor.symbolicTraits)
-                else { return }
+                let newFontDescriptor = f.fontDescriptor.withFamily(font.familyName)
+                .withSymbolicTraits(f.fontDescriptor.symbolicTraits)
+            else { return }
 
             let newFont = UIFont(descriptor: newFontDescriptor, size: font.pointSize)
 
             removeAttribute(.font, range: range)
             addAttribute(.font, value: newFont, range: range)
 
-            guard let color = color else { return }
+            guard let color else { return }
 
             removeAttribute(.foregroundColor, range: range)
             addAttribute(.foregroundColor, value: color, range: range)

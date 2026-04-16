@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,25 +23,22 @@
 //
 
 import Foundation
-
+import RxCocoa
+import RxSwift
 import UIKit
 import Zesame
-
-import RxSwift
-import RxCocoa
 
 enum DecryptKeystoreCoordinatorNavigationStep {
     case /* "user finished" */ backingUpKeyPair, dismiss
 }
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
-
     private let useCase: WalletUseCase
     private let wallet: Driver<Wallet>
 
     init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil) {
         self.useCase = useCase
-        if let wallet = wallet {
+        if let wallet {
             self.wallet = wallet
         } else {
             self.wallet = useCase.wallet.map {
@@ -49,27 +46,26 @@ final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinat
                     incorrectImplementation("Should have saved wallet earlier")
                 }
                 return wallet
-                }.asDriverOnErrorReturnEmpty()
-
+            }.asDriverOnErrorReturnEmpty()
         }
         super.init(navigationController: navigationController)
     }
 
-    override func start(didStart: Completion? = nil) {
+    override func start(didStart _: Completion? = nil) {
         toDecryptKeystore()
     }
 }
 
 // MARK: Private
-private extension DecryptKeystoreCoordinator {
 
+private extension DecryptKeystoreCoordinator {
     func toDecryptKeystore() {
         let viewModel = DecryptKeystoreToRevealKeyPairViewModel(useCase: useCase, wallet: wallet)
 
         push(scene: DecryptKeystoreToRevealKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .dismiss: self.dismiss()
-            case .decryptKeystoreReavealing(let keyPair): self.toBackUpRevealed(keyPair: keyPair)
+            case .dismiss: dismiss()
+            case let .decryptKeystoreReavealing(keyPair): toBackUpRevealed(keyPair: keyPair)
             }
         }
     }
@@ -79,7 +75,7 @@ private extension DecryptKeystoreCoordinator {
 
         push(scene: BackUpRevealedKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .finish: self.finish()
+            case .finish: finish()
             }
         }
     }
@@ -92,5 +88,4 @@ private extension DecryptKeystoreCoordinator {
         let userFinished: NavigationStep = .backingUpKeyPair
         navigator.next(userFinished)
     }
-
 }

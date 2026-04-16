@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,30 +22,29 @@
 // SOFTWARE.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
-
 import Zesame
 
-import RxSwift
-import RxCocoa
-
 final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapable {
-
-    private lazy var balanceTitleLabel              = UILabel()
-    private lazy var balanceValueLabel              = UILabel()
-    private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
-    private lazy var recipientAddressField          = FloatingLabelTextField()
+    private lazy var balanceTitleLabel = UILabel()
+    private lazy var balanceValueLabel = UILabel()
+    private lazy var balanceLabels = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
+    private lazy var recipientAddressField = FloatingLabelTextField()
     private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(image: UIImage(resource: .cameraSmall))
-    private lazy var amountToSendField              = FloatingLabelTextField()
-    private lazy var maxAmountButton = amountToSendField.addBottomAlignedButton(titled: String(localized: .PrepareTransaction.maxAmount))
-    private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
-    
-    private lazy var gasLimitField                  = FloatingLabelTextField()
-    private lazy var gasPriceField                  = FloatingLabelTextField()
-    private lazy var toReviewButton                     = UIButton()
-    private lazy var costOfTransactionLabel         = UILabel()
+    private lazy var amountToSendField = FloatingLabelTextField()
+    private lazy var maxAmountButton = amountToSendField
+        .addBottomAlignedButton(titled: String(localized: .PrepareTransaction.maxAmount))
+    private lazy var gasMeasuredInSmallUnitsLabel = UILabel()
+
+    private lazy var gasLimitField = FloatingLabelTextField()
+    private lazy var gasPriceField = FloatingLabelTextField()
+    private lazy var toReviewButton = UIButton()
+    private lazy var costOfTransactionLabel = UILabel()
 
     // MARK: - StackViewStyling
+
     lazy var stackViewStyle: UIStackView.Style = [
         balanceLabels,
         recipientAddressField,
@@ -54,7 +53,7 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
         gasPriceField,
         costOfTransactionLabel,
         .spacer,
-        toReviewButton
+        toReviewButton,
     ]
 
     override func setup() {
@@ -64,35 +63,35 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
 }
 
 // MARK: - SingleContentView
+
 extension PrepareTransactionView: ViewModelled {
     typealias ViewModel = PrepareTransactionViewModel
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+        [
+            viewModel.refreshControlLastUpdatedTitle --> rx.pullToRefreshTitle,
+            viewModel.isFetchingBalance --> rx.isRefreshing,
+            viewModel.amountPlaceholder --> amountToSendField.rx.placeholder,
+            viewModel.amount --> amountToSendField.rx.text,
+            viewModel.recipient --> recipientAddressField.rx.text,
+            viewModel.isReviewButtonEnabled --> toReviewButton.rx.isEnabled,
+            viewModel.balance --> balanceValueLabel.rx.text,
+            viewModel.recipientAddressValidation --> recipientAddressField.rx.validation,
+            viewModel.amountValidation --> amountToSendField.rx.validation,
 
-        return [
-            viewModel.refreshControlLastUpdatedTitle    --> rx.pullToRefreshTitle,
-            viewModel.isFetchingBalance                 --> rx.isRefreshing,
-            viewModel.amountPlaceholder                 --> amountToSendField.rx.placeholder,
-            viewModel.amount                            --> amountToSendField.rx.text,
-            viewModel.recipient                         --> recipientAddressField.rx.text,
-            viewModel.isReviewButtonEnabled             --> toReviewButton.rx.isEnabled,
-            viewModel.balance                           --> balanceValueLabel.rx.text,
-            viewModel.recipientAddressValidation        --> recipientAddressField.rx.validation,
-            viewModel.amountValidation                  --> amountToSendField.rx.validation,
-            
-            viewModel.gasLimitMeasuredInLi              --> gasLimitField.rx.text,
-            viewModel.gasLimitPlaceholder               --> gasLimitField.rx.placeholder,
-            viewModel.gasLimitValidation                --> gasLimitField.rx.validation,
-            
-            viewModel.gasPriceMeasuredInLi              --> gasPriceField.rx.text,
-            viewModel.gasPricePlaceholder               --> gasPriceField.rx.placeholder,
-            viewModel.gasPriceValidation                --> gasPriceField.rx.validation,
-            viewModel.costOfTransaction                 --> costOfTransactionLabel.rx.text
+            viewModel.gasLimitMeasuredInLi --> gasLimitField.rx.text,
+            viewModel.gasLimitPlaceholder --> gasLimitField.rx.placeholder,
+            viewModel.gasLimitValidation --> gasLimitField.rx.validation,
+
+            viewModel.gasPriceMeasuredInLi --> gasPriceField.rx.text,
+            viewModel.gasPricePlaceholder --> gasPriceField.rx.placeholder,
+            viewModel.gasPriceValidation --> gasPriceField.rx.validation,
+            viewModel.costOfTransaction --> costOfTransactionLabel.rx.text,
         ]
     }
 
     var inputFromView: InputFromView {
-        return InputFromView(
+        InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
             scanQRTrigger: scanQRButton.rx.tap.asDriver(),
             maxAmountTrigger: maxAmountButton.rx.tap.asDriver(),
@@ -103,7 +102,7 @@ extension PrepareTransactionView: ViewModelled {
 
             amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingAmount: amountToSendField.rx.didEndEditing,
-            
+
             gasLimit: gasLimitField.rx.text.orEmpty.asDriver().skip(1),
             didEndEditingGasLimit: gasLimitField.rx.didEndEditing,
 
@@ -114,10 +113,9 @@ extension PrepareTransactionView: ViewModelled {
 }
 
 // MARK: - Private
+
 private extension PrepareTransactionView {
-
     func setupSubviews() {
-
         balanceTitleLabel.withStyle(.title) {
             $0.text(String(localized: .PrepareTransaction.balanceTitle))
         }
@@ -138,7 +136,9 @@ private extension PrepareTransactionView {
         amountToSendField.withStyle(.decimal)
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
-            $0.text(String(localized: .PrepareTransaction.gasInSmallUnits(unit: "\(Unit.li.name) (\(Unit.li.powerOf))")))
+            $0
+                .text(String(localized: .PrepareTransaction
+                        .gasInSmallUnits(unit: "\(Unit.li.name) (\(Unit.li.powerOf))")))
         }
 
         costOfTransactionLabel.withStyle(.body) {
@@ -156,24 +156,25 @@ private extension PrepareTransactionView {
 }
 
 // MARK: - Debug builds only
+
 private extension PrepareTransactionView {
     func prefillValuesForDebugBuilds() {
         #if DEBUG
-        recipientAddressField.text = "zil175grxdeqchwnc0qghj8qsh5vnqwww353msqj82"
-        amountToSendField.text = Int.random(in: 1...5).description
-        gasLimitField.text = Int.random(in: 50...100).description
-        gasPriceField.text = Int.random(in: 1000...2000).description
+            recipientAddressField.text = "zil175grxdeqchwnc0qghj8qsh5vnqwww353msqj82"
+            amountToSendField.text = Int.random(in: 1 ... 5).description
+            gasLimitField.text = Int.random(in: 50 ... 100).description
+            gasPriceField.text = Int.random(in: 1000 ... 2000).description
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
-            [
-                self.recipientAddressField,
-                self.amountToSendField,
-                self.gasLimitField,
-                self.gasPriceField
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
+                [
+                    recipientAddressField,
+                    amountToSendField,
+                    gasLimitField,
+                    gasPriceField,
                 ].forEach {
                     $0.sendActions(for: .editingDidEnd)
+                }
             }
-        }
         #endif
     }
 }

@@ -1,18 +1,18 @@
-// 
+//
 // MIT License
 //
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,11 +23,9 @@
 //
 
 import Foundation
-
-import Zesame
-
-import RxSwift
 import RxCocoa
+import RxSwift
+import Zesame
 
 protocol SecurePersisting: AnyObject {
     var securePersistence: SecurePersistence { get }
@@ -39,7 +37,7 @@ protocol WalletUseCase: AnyObject {
     func save(wallet: Wallet)
     func deleteWallet()
 
-    /// Checks if the passed `password` was used to encypt the Keystore
+    /// Checks if the passed `password` was used to encrypt the Keystore
     func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool>
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
     func loadWallet() -> Wallet?
@@ -47,25 +45,23 @@ protocol WalletUseCase: AnyObject {
 }
 
 extension WalletUseCase {
-
-    /// Checks if the passed `password` was used to encypt the Keystore inside the Wallet
+    /// Checks if the passed `password` was used to encrypt the Keystore inside the Wallet
     func verify(password: String, forWallet wallet: Wallet) -> Observable<Bool> {
-        return verify(password: password, forKeystore: wallet.keystore)
+        verify(password: password, forKeystore: wallet.keystore)
     }
 
     func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> Observable<KeyPair> {
-        return extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
+        extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }
 
 extension WalletUseCase where Self: SecurePersisting {
-
     func deleteWallet() {
         securePersistence.deleteWallet()
     }
 
     func loadWallet() -> Wallet? {
-        return securePersistence.wallet
+        securePersistence.wallet
     }
 
     func save(wallet: Wallet) {
@@ -73,14 +69,14 @@ extension WalletUseCase where Self: SecurePersisting {
     }
 
     var hasConfiguredWallet: Bool {
-        return securePersistence.hasConfiguredWallet
+        securePersistence.hasConfiguredWallet
     }
 }
 
 extension WalletUseCase {
     var wallet: Observable<Wallet?> {
-        return Single.create { [unowned self] single in
-            single(.success(self.loadWallet()))
+        Single.create { [unowned self] single in
+            single(.success(loadWallet()))
             return Disposables.create {}
         }
         .asObservable()
