@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,6 @@ import Zesame
 import RxSwift
 import RxCocoa
 import UIKit
-
-private typealias € = L10n.Scene.BackUpKeystore
 
 enum BackUpKeystoreUserAction {
     case finished
@@ -61,7 +59,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             input.fromView.copyTrigger.withLatestFrom(keystore)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    let toast = Toast(€.Event.Toast.didCopyKeystore)
+                    let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
                     input.fromController.toastSubject.onNext(toast)
                 })
                 .drive()

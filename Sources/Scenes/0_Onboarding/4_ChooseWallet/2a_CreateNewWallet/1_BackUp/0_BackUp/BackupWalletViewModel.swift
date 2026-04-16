@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,6 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Zesame
-
-private typealias € = L10n.Scene.BackupWallet
 
 // MARK: - BackupWalletUserAction
 enum BackupWalletUserAction {
@@ -77,9 +75,9 @@ final class BackupWalletViewModel: BaseViewModel<
 
         bag <~ [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map { $0.keystoreAsJSON }) { $1 }
-                .do(onNext: { (keystoreText: String) -> Void in
+                .do(onNext: { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyKeystore))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackupWallet.copiedKeystore)))
                 }).drive(),
 
             input.fromView.revealKeystoreTrigger

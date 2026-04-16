@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -65,20 +65,19 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.DecryptKeystoreToRevealKeyPair
 private extension DecryptKeystoreToRevealKeyPairView {
     func setupSubviews() {
 
         decryptToRevealLabel.withStyle(.body) {
-            $0.text(€.Label.decryptToReaveal)
+            $0.text(String(localized: .DecryptKeystore.decryptToReveal))
         }
 
         encryptionPasswordField.withStyle(.password) {
-            $0.placeholder(€.Field.encryptionPassword)
+            $0.placeholder(String(localized: .DecryptKeystore.encryptionPassword))
         }
 
         revealButton.withStyle(.primary) {
-            $0.title(€.Button.reveal)
+            $0.title(String(localized: .DecryptKeystore.reveal))
                 .disabled()
         }
     }

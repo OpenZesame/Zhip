@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingPrivateKeyViewModel
 
     private lazy var privateKeyField                        = FloatingLabelTextField()
-    private lazy var showPrivateKeyButton = privateKeyField.addBottomAlignedButton(titled: L10n.Generic.show)
+    private lazy var showPrivateKeyButton = privateKeyField.addBottomAlignedButton(titled: String(localized: .Generic.show))
 
     private lazy var encryptionPasswordField              = FloatingLabelTextField()
     private lazy var confirmEncryptionPasswordField       = FloatingLabelTextField()
@@ -66,17 +66,16 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
 }
 
 // MARK: - Private
-private typealias € = L10n.Scene.RestoreWallet
 private extension RestoreUsingPrivateKeyView {
     func setupSubviews() {
         privateKeyField.withStyle(.privateKey) {
-            $0.placeholder(€.Field.privateKey)
+            $0.placeholder(String(localized: .RestoreWallet.privateKeyField))
         }
 
         encryptionPasswordField.withStyle(.password)
 
         confirmEncryptionPasswordField.withStyle(.password) {
-            $0.placeholder(€.Field.confirmEncryptionPassword)
+            $0.placeholder(String(localized: .RestoreWallet.confirmEncryptionPassword))
         }
     }
 

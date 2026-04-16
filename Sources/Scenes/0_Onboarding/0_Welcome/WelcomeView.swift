@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -59,8 +59,6 @@ extension WelcomeView: ViewModelled {
 }
 
 // MARK: - Private
-private typealias € = L10n.Scene.Welcome
-private typealias Image = Asset.Images.Welcome
 private extension WelcomeView {
 
     func setup() {
@@ -78,15 +76,15 @@ private extension WelcomeView {
         setupSpaceshipImageWithMotionEffect()
 
         impressionLabel.withStyle(.impression) {
-            $0.text(€.Label.header)
+            $0.text(String(localized: .Welcome.header))
         }
 
         subtitleLabel.withStyle(.body) {
-            $0.text(€.Label.body)
+            $0.text(String(localized: .Welcome.body))
         }
 
         startButton.withStyle(.primary) {
-            $0.title(€.Button.start)
+            $0.title(String(localized: .Welcome.start))
         }
     }
 
@@ -94,10 +92,10 @@ private extension WelcomeView {
         motionEffectSpaceshipImageView.backgroundColor = .clear
         motionEffectSpaceshipImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        motionEffectSpaceshipImageView.addMotionEffectFromImageAssets(
-            front: Image.frontBlastOff,
-            middle: Image.middleSpaceship,
-            back: Image.backClouds
+        motionEffectSpaceshipImageView.addMotionEffect(
+            front: UIImage(resource: .frontBlastOff),
+            middle: UIImage(resource: .middleSpaceship),
+            back: UIImage(resource: .backClouds)
         )
     }
 }

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ enum UnlockAppWithPincodeUserAction {
 }
 
 // MARK: - UnlockAppWithPincodeViewModel
-private typealias € = L10n.Scene.UnlockAppWithPincode
 final class UnlockAppWithPincodeViewModel: BaseViewModel<
     UnlockAppWithPincodeUserAction,
     UnlockAppWithPincodeViewModel.InputFromView,
@@ -65,11 +64,11 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
         func unlockUsingBiometrics() -> Driver<Void> {
             let context = LAContext()
-            context.localizedFallbackTitle = €.Biometrics.fallBack
+            context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
             var authError: NSError?
 
             // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
-            let reasonString = €.Biometrics.reason
+            let reasonString = String(localized: .UnlockApp.biometricsReason)
 
             return Observable.create { observer in
                 if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {

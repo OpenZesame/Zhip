@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,17 +38,17 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 extension DefaultWalletUseCase {
 
     /// Checks if the passed `password` was used to encypt the Keystore
-    func verify(Password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+    func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
 
-        return zilliqaService.verifyThat(encryptionPassword: Password, canDecryptKeystore: keystore)
+        return zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
     }
 
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
         return zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
     }
 
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
-        return zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default).map {
+    func createNewWallet(encryptionpassword: String) -> Observable<Wallet> {
+        return zilliqaService.createNewWallet(encryptionPassword: encryptionpassword, kdf: .default).map {
             Wallet(wallet: $0, origin: .generatedByThisApp)
         }
     }

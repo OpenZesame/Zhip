@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,9 +34,8 @@ enum PrepareTransactionUserAction {
 	case scanQRCode
 }
 
+// swiftlint:disable file_length type_body_length
 // MARK: - PrepareTransactionViewModel
-private typealias € = L10n.Scene.PrepareTransaction
-// swiftlint:disable:next file_length
 final class PrepareTransactionViewModel: BaseViewModel<
 	PrepareTransactionUserAction,
 	PrepareTransactionViewModel.InputFromView,
@@ -239,14 +238,14 @@ final class PrepareTransactionViewModel: BaseViewModel<
 		let isReviewButtonEnabled = payment.map { $0 != nil }
 
         let gasLimitPlaceholder = Driver.just(GasLimit.minimum).map {
-            €.Field.gasLimit($0)
+            String(localized: .PrepareTransaction.gasLimitField(minimum: $0.description))
         }
-        
+
         let gasPricePlaceholder = Driver.just(GasPrice.min).map {
-            €.Field.gasPrice(
-                formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: false),
-                formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true)
-            )
+            String(localized: .PrepareTransaction.gasPriceField(
+                minQa: formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: false),
+                minZil: formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true)
+            ))
         }
 
         let gasLimitFormatted = gasLimit.filterNil().map { $0.description }
@@ -276,7 +275,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             recipient: recipientFormatted,
             recipientAddressValidation: recipientValidation,
 
-            amountPlaceholder: Driver.just(€.Field.amount(Unit.zil.displayName)),
+            amountPlaceholder: Driver.just(String(localized: .PrepareTransaction.amountField(unit: Unit.zil.displayName))),
             amount: setAmountInViewOnlyByExternalTrigger,
             amountValidation: amountValidation,
             
@@ -300,7 +299,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                     .map { try Payment.estimatedTotalTransactionFee(gasPrice: $0, gasLimit: $1) }
                     .asDriverOnErrorReturnEmpty()
                     .map { formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true) }
-                    .map { €.Label.costOfTransactionInZil($0) }
+                    .map { String(localized: .PrepareTransaction.transactionFeeLabel(fee: $0)) }
             }
         )
 	}
@@ -382,3 +381,5 @@ extension PrepareTransactionViewModel {
 		}
 	}
 }
+
+// swiftlint:enable file_length type_body_length

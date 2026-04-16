@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
-private typealias € = L10n.Scene.ReviewTransactionBeforeSigning
 
 final class ReviewTransactionBeforeSigningView: ScrollableStackViewOwner {
 
@@ -116,45 +114,45 @@ private extension ReviewTransactionBeforeSigningView {
         
         // MARK: - Recipient views
         recipientAddressesLabel.withStyle(labelStyleForHeaders) {
-            $0.text(€.Label.recipient)
+            $0.text(String(localized: .ReviewTransaction.recipient))
         }
-        
+
         setup(titledValueView: recipientLegacyAddressView) {
-            $0.text(€.Label.Address.legacy)
+            $0.text(String(localized: .ReviewTransaction.addressLegacy))
         }
-        
+
         setup(titledValueView: recipientBech32AddressView) {
-            $0.text(€.Label.Address.bech32)
+            $0.text(String(localized: .ReviewTransaction.addressBech32))
         }
-        
+
         recipientViewsStackView.withStyle(stackViewStyle)
-        
+
         // MARK: - Amount views
         amountLabel.withStyle(labelStyleForHeaders) {
-            $0.text(€.Label.amount)
+            $0.text(String(localized: .ReviewTransaction.amount))
         }
 
         setup(titledValueView: amountToSendView) {
-            $0.text(€.Label.amountToSend)
+            $0.text(String(localized: .ReviewTransaction.amountToSend))
         }
-        
+
         setup(titledValueView: transactionFeeView) {
-            $0.text(€.Label.transactionFee)
+            $0.text(String(localized: .ReviewTransaction.transactionFee))
         }
-        
+
         setup(titledValueView: totalCostOfTransactionView) {
-            $0.text(€.Label.totalCostOfTransaction)
+            $0.text(String(localized: .ReviewTransaction.totalCost))
         }
-        
+
         amountViewsStackView.withStyle(stackViewStyle)
-        
+
         // MARK: Checkbox and button
         hasReviewedPaymentCheckBox.withStyle(.default) {
-            $0.text(€.Checkbox.hasReviewedPayment)
+            $0.text(String(localized: .ReviewTransaction.hasReviewedPayment))
         }
 
         acceptPaymentProceedToSigningButton.withStyle(.primary) {
-            $0.title(€.Button.hasReviewedProceedToSigning)
+            $0.title(String(localized: .ReviewTransaction.proceedToSigning))
                 .disabled()
         }
     }

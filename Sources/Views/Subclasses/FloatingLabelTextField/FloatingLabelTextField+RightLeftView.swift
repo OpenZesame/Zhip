@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,6 @@ extension FloatingLabelTextField {
         case right, left
     }
 
-    func addBottomAlignedButton(asset: ImageAsset, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
-        return addBottomAlignedButton(image: asset.image, position: position, yOffset: yOffset, mode: mode)
-    }
-
     func addBottomAlignedButton(image: UIImage, position: Position = .right, yOffset: CGFloat = 0, mode: UITextField.ViewMode = .always) -> UIButton {
         return addBottomAlignedButton(imageOrText: .image(image), position: position, yOffset: yOffset, mode: mode)
     }
@@ -47,7 +43,14 @@ extension FloatingLabelTextField {
         switch imageOrText {
         case .image(let image):
             button.withStyle(.image(image))
-            button.contentEdgeInsets = .init(all: 10)
+            // Use UIButton.Configuration on iOS 15+; fall back to contentEdgeInsets on earlier versions
+            if #available(iOS 15.0, *) {
+                var config = button.configuration ?? .plain()
+                config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+                button.configuration = config
+            } else {
+				button.contentEdgeInsets = .init(all: 10)
+            }
             width = image.size.width
         case .text(let title):
             button.withStyle(.title(title))
@@ -80,3 +83,4 @@ extension FloatingLabelTextField {
         }
     }
 }
+

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,16 +49,14 @@ struct EncryptionPasswordValidator: InputValidator {
 
 extension WalletEncryptionPassword.Error: InputError, Equatable {
     var errorMessage: String {
-        let Message = L10n.Error.Input.Password.self
-
         switch self {
-        case .passwordIsTooShort(let minLength): return Message.tooShort(minLength)
-        case .passwordsDoesNotMatch: return Message.confirmingPasswordMismatch
+        case .passwordIsTooShort(let minLength): return String(localized: .Errors.passwordTooShort(minLength: minLength))
+        case .passwordsDoesNotMatch: return String(localized: .Errors.passwordMismatch)
         case .incorrectPassword(let backingUpWalletJustCreated):
             if backingUpWalletJustCreated {
-                return Message.incorrectPasswordDuringBackupOfNewlyCreatedWallet
+                return String(localized: .Errors.passwordIncorrectDuringBackup)
             } else {
-                return Message.incorrectPassword
+                return String(localized: .Errors.passwordIncorrect)
             }
         }
     }

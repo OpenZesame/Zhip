@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,6 @@ enum BackUpRevealedKeyPairUserAction {
     case finish
 }
 
-private typealias € = L10n.Scene.BackUpRevealedKeyPair
-
 final class BackUpRevealedKeyPairViewModel: BaseViewModel<
     BackUpRevealedKeyPairUserAction,
     BackUpRevealedKeyPairViewModel.InputFromView,
@@ -46,7 +44,6 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
         self.keyPair = keyPair
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userDid(_ step: NavigationStep) {
             navigator.next(step)
@@ -65,13 +62,13 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPrivateKey))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
                 }).drive(),
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyPublicKey))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
                 }).drive()
         ]
 

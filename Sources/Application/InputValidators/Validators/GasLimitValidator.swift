@@ -3,13 +3,10 @@
 //  Zhip
 //
 //  Created by Alexander Cyon on 2021-05-30.
-//  Copyright © 2021 Open Zesame. All rights reserved.
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
 import Zesame
-
-import Validator
-
 
 struct GasLimitValidator: InputValidator {
 

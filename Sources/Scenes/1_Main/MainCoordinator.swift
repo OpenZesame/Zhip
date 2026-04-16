@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,6 @@ import UIKit
 import Zesame
 import RxCocoa
 import RxSwift
-
-private typealias € = L10n.Scene
 
 enum MainCoordinatorNavigationStep {
     case removeWallet

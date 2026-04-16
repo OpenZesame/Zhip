@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -82,28 +82,27 @@ extension PollTransactionStatusView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.PollTransactionStatus
 private extension PollTransactionStatusView {
     func setupSubviews() {
 
 		checkmarkLogoImageView.withStyle(.default) {
-			$0.image(Asset.Icons.Large.checkmark.image)
+			$0.image(UIImage(resource: .checkmarkLarge))
 		}
 
         transactionBroadcastedLabel.withStyle(.header) {
-            $0.text(€.Label.transactionBroadcasted).textAlignment(.center)
+            $0.text(String(localized: .PollTransaction.transactionBroadcasted)).textAlignment(.center)
         }
 
 		mightTakeSomeMinutesLabel.withStyle(.body) {
-			$0.text(€.Label.mightTakeSomeMinutes).textAlignment(.center)
+			$0.text(String(localized: .PollTransaction.mightTakeSomeMinutes)).textAlignment(.center)
 		}
 
         copyTransactionIdButton.withStyle(.secondary) {
-            $0.title(€.Button.copyTransactionId)
+            $0.title(String(localized: .PollTransaction.copyTransactionId))
         }
 
         seeTxDetailsWhenAvailableButton.withStyle(.primary) {
-            $0.title(€.Button.seeTransactionDetails)
+            $0.title(String(localized: .PollTransaction.seeTransactionDetails))
         }
 
 		skipWaitingOrDoneButton.withStyle(.secondary)
@@ -117,7 +116,7 @@ private extension PollTransactionStatusView {
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        let stars = Asset.Images.ChooseWallet.middleStars.image
+        let stars = UIImage(resource: .middleStars)
         let starsVerticallyFlipped = stars.withVerticallyFlippedOrientation(yOffset: -stars.size.height/2)
         let starsHorizontallyFlipped = stars.withHorizontallyFlippedOrientation()
 

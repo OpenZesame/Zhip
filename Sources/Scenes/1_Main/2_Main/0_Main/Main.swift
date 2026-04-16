@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@
 //
 
 import Foundation
+import UIKit
 
 final class Main: Scene<MainView> {}
 
 extension Main: RightBarButtonContentMaking {
-    static let makeRightContent = BarButtonContent(image: Asset.Icons.Small.settings.image)
+    static let makeRightContent = BarButtonContent(image: UIImage(resource: .settings))
 }
 
 extension Main: NavigationBarLayoutOwner {

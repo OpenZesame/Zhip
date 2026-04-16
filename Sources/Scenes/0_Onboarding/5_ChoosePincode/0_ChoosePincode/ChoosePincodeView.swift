@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -61,17 +61,16 @@ extension ChoosePincodeView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.ChoosePincode
 private extension ChoosePincodeView {
     func setupSubviews() {
         pinOnlyLocksAppTextView.withStyle(.nonSelectable) {
-            $0.text(€.Text.pincodeOnlyLocksApp)
+            $0.text(String(localized: .ChoosePincode.pincodeOnlyLocksApp))
                 .textColor(.silverGrey)
                 .isScrollEnabled(false)
         }
 
         doneButton.withStyle(.primary) {
-            $0.title(€.Button.done)
+            $0.title(String(localized: .ChoosePincode.done))
                 .disabled()
         }
     }

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,6 @@ struct AmountValidator<Amount: ExpressibleByAmount>: InputValidator {
         }
     }
 }
-
-private typealias € = L10n.Error.Input.Amount
 
 enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
     case tooLarge(max: String, unit: Unit)
@@ -85,15 +83,15 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
 
     var errorMessage: String {
         switch self {
-        case .tooLarge(let max, let unit): return €.tooLarge("\(max.thousands) \(unit.name)")
+        case .tooLarge(let max, let unit): return String(localized: .Errors.amountTooLarge(maximum: "\(max.thousands) \(unit.name)"))
         case .tooSmall(let min, let unit, let shouldShowUnit):
             if shouldShowUnit {
-                return €.tooSmall("\(min.thousands) \(unit.name)")
+                return String(localized: .Errors.amountTooSmall(minimum: "\(min.thousands) \(unit.name)"))
             } else {
-                return €.tooSmall("\(min.thousands)")
+                return String(localized: .Errors.amountTooSmall(minimum: "\(min.thousands)"))
             }
-        case .nonNumericString: return €.nonNumericString
-        case .other: return €.nonNumericString // TODO which error message to display?
+        case .nonNumericString: return String(localized: .Errors.amountNonNumericString)
+        case .other: return String(localized: .Errors.amountNonNumericString) // TODO which error message to display?
         }
     }
 }

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,29 +77,28 @@ extension CreateNewWalletView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.CreateNewWallet
 private extension CreateNewWalletView {
     func setupSubviews() {
         headerLabel.withStyle(.header) {
-            $0.text(€.Labels.ChooseNewPassword.title)
+            $0.text(String(localized: .CreateNewWallet.chooseNewPasswordTitle))
         }
 
         subtitleLabel.withStyle(.body) {
-            $0.text(€.Labels.ChooseNewPassword.value)
+            $0.text(String(localized: .CreateNewWallet.chooseNewPasswordValue))
         }
 
         encryptionPasswordField.withStyle(.password)
 
         confirmEncryptionPasswordField.withStyle(.password) {
-            $0.placeholder(€.Field.confirmEncryptionPassword)
+            $0.placeholder(String(localized: .CreateNewWallet.confirmEncryptionPassword))
         }
 
         haveBackedUpPasswordCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.passwordIsBackedUp)
+            $0.text(String(localized: .CreateNewWallet.passwordIsBackedUp))
         }
 
         continueButton.withStyle(.primary) {
-            $0.title(€.Button.continue)
+            $0.title(String(localized: .CreateNewWallet.continueButton))
                 .disabled()
         }
     }

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,8 +36,6 @@ enum PollTransactionStatusUserAction {
 }
 
 // MARK: - PollTransactionStatusViewModel
-private typealias € = L10n.Scene.PollTransactionStatus
-
 final class PollTransactionStatusViewModel: BaseViewModel<
 	PollTransactionStatusUserAction,
 	PollTransactionStatusViewModel.InputFromView,
@@ -78,7 +76,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
             input.fromView.copyTransactionIdTrigger
                 .do(onNext: { [unowned self] in
                     UIPasteboard.general.string = self.transactionId
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyTransactionId))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .PollTransaction.copiedTransactionId)))
                 }).drive(),
 
 			input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
@@ -99,7 +97,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 		// MARK: Return output
 
 		return Output(
-			skipWaitingOrDoneButtonTitle: hasReceivedReceipt.map { $0 ? €.Button.SkipWaitingOrDone.done : €.Button.SkipWaitingOrDone.skip },
+			skipWaitingOrDoneButtonTitle: hasReceivedReceipt.map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting) },
 			isSeeTxDetailsEnabled: hasReceivedReceipt,
 			isSeeTxDetailsButtonLoading: activityTracker.asDriver()
 		)

@@ -1,0 +1,161 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "AmountField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amount in %1$(unit)@"
+          }
+        }
+      },
+      "substitutions" : {
+        "unit" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "BalanceTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current balance"
+          }
+        }
+      }
+    },
+    "EncryptionPassword" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryption password"
+          }
+        }
+      }
+    },
+    "GasInSmallUnits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas price is measured in %1$(unit)@"
+          }
+        }
+      },
+      "substitutions" : {
+        "unit" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "GasLimitField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas limit (min: %1$(minimum)@)"
+          }
+        }
+      },
+      "substitutions" : {
+        "minimum" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "GasPriceField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas price in 'li' (min: %1$(minQa)@ = %2$(minZil)@)"
+          }
+        }
+      },
+      "substitutions" : {
+        "minQa" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        },
+        "minZil" : {
+          "argNum" : 2,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "MaxAmount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max"
+          }
+        }
+      }
+    },
+    "RecipientField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To address"
+          }
+        }
+      }
+    },
+    "ReviewPayment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Payment"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        }
+      }
+    },
+    "TransactionFeeLabel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaction fee: %1$(fee)@"
+          }
+        }
+      },
+      "substitutions" : {
+        "fee" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

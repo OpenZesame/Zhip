@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import RxSwift
 import RxCocoa
 import Zesame
 
-private typealias € = L10n.Scene.CreateNewWallet
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .newOrRestorePrivateKey
 
 // MARK: - CreateNewWalletUserAction
@@ -81,7 +80,7 @@ BaseViewModel<
             input.fromView.createWalletTrigger
                 .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) { $1 }
                 .flatMapLatest {
-                    self.useCase.createNewWallet(encryptionPassword: $0)
+                    self.useCase.createNewWallet(encryptionpassword: $0)
                         .trackActivity(activityIndicator)
                         .asDriverOnErrorReturnEmpty()
                 }
@@ -112,7 +111,7 @@ BaseViewModel<
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         return Output(
-            encryptionPasswordPlaceholder: Driver.just(€.Field.encryptionPassword(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode))),
+            encryptionPasswordPlaceholder: Driver.just(String(localized: .CreateNewWallet.encryptionPasswordField(minLength: WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))),
             encryptionPasswordValidation: encryptionPasswordValidation,
             confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             isContinueButtonEnabled: isContinueButtonEnabled,

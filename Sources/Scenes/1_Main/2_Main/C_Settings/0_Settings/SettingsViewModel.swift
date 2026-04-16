@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 //
 
 import Foundation
-
+import UIKit
 import Zesame
 
 import RxSwift
@@ -55,8 +55,6 @@ enum SettingsNavigation {
     case removeWallet
 }
 
-private typealias € = L10n.Scene.Settings.Cell
-
 // MARK: SettingsViewModel
 final class SettingsViewModel: BaseViewModel<
     SettingsNavigation,
@@ -70,7 +68,6 @@ final class SettingsViewModel: BaseViewModel<
         self.useCase = useCase
     }
 
-    // swiftlint:disable:next function_body_length
     override func transform(input: Input) -> Output {
         func userWantsToNavigate(to intention: NavigationStep) {
             navigator.next(intention)
@@ -113,36 +110,34 @@ extension SettingsViewModel {
 
 private extension SettingsViewModel {
 
-    // swiftlint:disable:next function_body_length
     func makeItemMatrix() -> [[SettingsItem]] {
-        let Icon = Asset.Icons.Small.self
         var sections = [[SettingsItem]]()
         let hasPin = useCase.hasConfiguredPincode
 
         sections += [
             .whenSelectedNavigate(
                 to: hasPin ? .removePincode : .setPincode,
-                titled: hasPin ? €.removePincode : €.setPincode,
-                icon: hasPin ? Icon.delete : Icon.pinCode,
+                titled: hasPin ? String(localized: .Settings.removePincode) : String(localized: .Settings.setPincode),
+                icon: hasPin ? UIImage(resource: .delete) : UIImage(resource: .pinCode),
                 style: hasPin ? .destructive : .normal
             )
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .starUsOnGithub, titled: €.starUsOnGithub, icon: Icon.githubStar),
-            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: €.reportIssueOnGithub, icon: Icon.githubIssue),
-            .whenSelectedNavigate(to: .acknowledgments, titled: €.acknowledgements, icon: Icon.cup)
+            .whenSelectedNavigate(to: .starUsOnGithub, titled: String(localized: .Settings.starUsOnGithub), icon: UIImage(resource: .githubStar)),
+            .whenSelectedNavigate(to: .reportIssueOnGithub, titled: String(localized: .Settings.reportIssueOnGithub), icon: UIImage(resource: .githubIssue)),
+            .whenSelectedNavigate(to: .acknowledgments, titled: String(localized: .Settings.acknowledgements), icon: UIImage(resource: .cup))
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .readTermsOfService, titled: €.termsOfService, icon: Icon.document),
-            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: €.crashReportingPermissions, icon: Icon.analytics),
-            .whenSelectedNavigate(to: .readCustomECCWarning, titled: €.readCustomECCWarning, icon: Icon.ecc)
+            .whenSelectedNavigate(to: .readTermsOfService, titled: String(localized: .Settings.termsOfService), icon: UIImage(resource: .document)),
+            .whenSelectedNavigate(to: .changeAnalyticsPermissions, titled: String(localized: .Settings.crashReportingPermissions), icon: UIImage(resource: .analyticsSmall)),
+            .whenSelectedNavigate(to: .readCustomECCWarning, titled: String(localized: .Settings.readCustomECCWarning), icon: UIImage(resource: .ECC))
         ]
 
         sections += [
-            .whenSelectedNavigate(to: .backupWallet, titled: €.backupWallet, icon: Icon.backUp),
-            .whenSelectedNavigate(to: .removeWallet, titled: €.removeWallet, icon: Icon.delete, style: .destructive)
+            .whenSelectedNavigate(to: .backupWallet, titled: String(localized: .Settings.backupWallet), icon: UIImage(resource: .backUp)),
+            .whenSelectedNavigate(to: .removeWallet, titled: String(localized: .Settings.removeWallet), icon: UIImage(resource: .delete), style: .destructive)
         ]
 
         return sections
@@ -161,7 +156,7 @@ private extension SettingsViewModel {
             else { incorrectImplementation("Should be able to read name, version and build number") }
         
         let networkDisplayName = network.displayName
-        return "\(appName) v\(version) (\(build))\n\(L10n.Scene.Settings.Footer.network(networkDisplayName))"
+        return "\(appName) v\(version) (\(build))\n\(String(localized: .Settings.networkFooter(network: networkDisplayName)))"
     }
 }
 

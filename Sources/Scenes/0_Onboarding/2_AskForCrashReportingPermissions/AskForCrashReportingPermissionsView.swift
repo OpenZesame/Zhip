@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -71,34 +71,32 @@ extension AskForCrashReportingPermissionsView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.AskForCrashReportingPermissions
-private typealias Icon = Asset.Icons.Large
 private extension AskForCrashReportingPermissionsView {
-    
+
     func setupSubviews() {
         imageView.withStyle(.default) {
-            $0.asset(Icon.analytics)
+            $0.image(UIImage(resource: .analyticsLarge))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.title)
+            $0.text(String(localized: .AskForCrashReporting.title))
         }
 
         disclaimerTextView.withStyle(.nonEditable) {
-            $0.text(€.Text.disclaimer).isSelectable(false)
+            $0.text(String(localized: .AskForCrashReporting.disclaimer)).isSelectable(false)
         }
 
         hasReadDisclaimerCheckbox.withStyle(.init(alignment: .center)) {
-            $0.text(€.Checkbox.readDisclaimer)
+            $0.text(String(localized: .AskForCrashReporting.readDisclaimer))
         }
 
         declineButton.withStyle(.primary) {
-            $0.title(€.Button.decline)
+            $0.title(String(localized: .AskForCrashReporting.optOut))
                 .disabled()
         }
 
         acceptButton.withStyle(.primary) {
-            $0.title(€.Button.accept)
+            $0.title(String(localized: .AskForCrashReporting.optIn))
                 .disabled()
         }
 

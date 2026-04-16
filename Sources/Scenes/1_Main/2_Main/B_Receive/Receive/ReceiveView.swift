@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,15 +77,13 @@ extension ReceiveView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.Receive
 private extension ReceiveView {
 
-    // swiftlint:disable:next function_body_length
     func setupSubviews() {
         qrImageView.withStyle(.default)
 
         addressTitleLabel.withStyle(.title) {
-            $0.text(€.Label.myPublicAddress)
+            $0.text(String(localized: .Receive.myPublicAddress))
         }
 
         addressValueTextView.withStyle(.init(
@@ -97,7 +95,7 @@ private extension ReceiveView {
             )
         )
 
-        copyMyAddressButton.withStyle(.title(€.Button.copyMyAddress))
+        copyMyAddressButton.withStyle(.title(String(localized: .Receive.copy)))
         copyMyAddressButton.setHugging(.required, for: .horizontal)
 
         addressAndCopyButton.withStyle(.horizontal)
@@ -108,7 +106,7 @@ private extension ReceiveView {
         requestingAmountField.withStyle(.decimal)
 
         requestPaymentButton.withStyle(.primary) {
-            $0.title(€.Button.requestPayment)
+            $0.title(String(localized: .Receive.requestPayment))
         }
     }
 }

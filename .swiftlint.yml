@@ -7,7 +7,6 @@ disabled_rules:
   - unused_closure_parameter
   - mark
   - weak_delegate
-  - identifier_name
   - empty_parameters
 
 included:
@@ -32,10 +31,12 @@ file_length:
   ignore_comment_only_lines: true
 
 identifier_name:
-  min_length: 2
+  min_length: 1
   max_length:
-    warning: 35
-    error:  45
+    warning: 60
+    error: 80
+  allowed_symbols: ["_"]
+  validates_start_with_lowercase: false
 
 type_body_length:
   - 100 # warning
@@ -46,5 +47,5 @@ function_parameter_count:
   - 5 # error
 
 function_body_length:
-  - 15 # warning
+  - 25 # warning
   - 25 # error

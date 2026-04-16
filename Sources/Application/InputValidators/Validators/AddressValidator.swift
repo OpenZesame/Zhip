@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -66,17 +66,15 @@ extension AddressValidator.Error {
     }
 
     var errorMessage: String {
-        let Message = L10n.Error.Input.Address.self
-
         switch self {
-        case .noBech32NorHexstring: return Message.invalid
+        case .noBech32NorHexstring: return String(localized: .Errors.addressInvalid)
         case .incorrectLength(let expected, let incorrect):
             if incorrect > expected {
-                return Message.tooLong(expected)
+                return String(localized: .Errors.addressTooLong(expectedLength: expected))
             } else {
-                return Message.tooShort(expected)
+                return String(localized: .Errors.addressTooShort(expectedLength: expected))
             }
-        case .notChecksummed: return Message.addressNotChecksummed
+        case .notChecksummed: return String(localized: .Errors.addressNotChecksummed)
         }
     }
 }

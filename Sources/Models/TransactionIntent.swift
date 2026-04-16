@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,9 @@
 import Foundation
 import Zesame
 
-extension Address: Codable {
+extension Address: @retroactive Decodable {}
+extension Address: @retroactive Encodable {}
+extension Address {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let addressString = try container.decode(String.self).lowercased()

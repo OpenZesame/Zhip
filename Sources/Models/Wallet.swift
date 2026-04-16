@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,6 @@ import Zesame
 struct Wallet: Codable {
     let wallet: Zesame.Wallet
     let origin: Origin
-
-    init(wallet: Zesame.Wallet, origin: Origin) {
-        self.wallet = wallet
-        self.origin = origin
-    }
 
     // MARK: Origin
     enum Origin: Int, Codable {

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ func setupBarButtonItemAppearance() {
 }
 
 private func replaceBackBarButtonImage() {
-    let backImage = Asset.Icons.Small.chevronLeft.image
+    let backImage = UIImage(resource: .chevronLeft)
     let stretched = backImage.stretchableImage(withLeftCapWidth: 15, topCapHeight: 30)
     UIBarButtonItem.appearance().setBackButtonBackgroundImage(stretched, for: .normal, barMetrics: .default)
 }
@@ -128,16 +128,20 @@ extension UINavigationBar {
 }
 
 private func setupNavigationBarAppearance() {
+    let navBarAppearance = UINavigationBarAppearance()
+    navBarAppearance.configureWithOpaqueBackground()
+    navBarAppearance.backgroundColor = UINavigationBar.defaultBarTintColor
+    navBarAppearance.titleTextAttributes = UINavigationBar.defaultTitleTextAttributes
+    navBarAppearance.shadowColor = .clear
+
     let appearance = UINavigationBar.appearance()
     appearance.shadow = true
-    appearance.barStyle = UINavigationBar.defaultBarStyle
-    appearance.attributeText(UINavigationBar._defaultTitleTextAttributes)
     appearance.tintColor = UINavigationBar.defaultTintColor
-    appearance.barTintColor = UINavigationBar.defaultBarTintColor
-    appearance.backgroundImage = UINavigationBar.defaultBackgroundImage
-    appearance.shadowImage = UINavigationBar.defaultShadowImage
-    appearance.backgroundColor = UINavigationBar.defaultBackgroundColor
     appearance.isTranslucent = UINavigationBar.defaultIsTranslucent
+    appearance.standardAppearance = navBarAppearance
+    appearance.scrollEdgeAppearance = navBarAppearance
+    appearance.compactAppearance = navBarAppearance
+    appearance.compactScrollEdgeAppearance = navBarAppearance
 }
 
 public extension UIControl.State {

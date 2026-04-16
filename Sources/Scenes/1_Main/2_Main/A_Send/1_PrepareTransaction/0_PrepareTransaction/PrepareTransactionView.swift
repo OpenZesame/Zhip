@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,16 +29,15 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.PrepareTransaction
 final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapable {
 
     private lazy var balanceTitleLabel              = UILabel()
     private lazy var balanceValueLabel              = UILabel()
     private lazy var balanceLabels                  = UIStackView(arrangedSubviews: [balanceTitleLabel, balanceValueLabel])
     private lazy var recipientAddressField          = FloatingLabelTextField()
-    private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(asset: Asset.Icons.Small.camera)
+    private lazy var scanQRButton = recipientAddressField.addBottomAlignedButton(image: UIImage(resource: .cameraSmall))
     private lazy var amountToSendField              = FloatingLabelTextField()
-    private lazy var maxAmountButton = amountToSendField.addBottomAlignedButton(titled: €.Button.maxAmount)
+    private lazy var maxAmountButton = amountToSendField.addBottomAlignedButton(titled: String(localized: .PrepareTransaction.maxAmount))
     private lazy var gasMeasuredInSmallUnitsLabel   = UILabel()
     
     private lazy var gasLimitField                  = FloatingLabelTextField()
@@ -68,7 +67,6 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
 extension PrepareTransactionView: ViewModelled {
     typealias ViewModel = PrepareTransactionViewModel
 
-    // swiftlint:disable:next function_body_length
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
 
         return [
@@ -118,11 +116,10 @@ extension PrepareTransactionView: ViewModelled {
 // MARK: - Private
 private extension PrepareTransactionView {
 
-    // swiftlint:disable function_body_length
     func setupSubviews() {
 
         balanceTitleLabel.withStyle(.title) {
-            $0.text(€.Labels.Balance.title)
+            $0.text(String(localized: .PrepareTransaction.balanceTitle))
         }
 
         balanceValueLabel.withStyle(.body) {
@@ -132,7 +129,7 @@ private extension PrepareTransactionView {
         balanceLabels.withStyle(.horizontal)
 
         recipientAddressField.withStyle(.addressBech32OrHex) {
-            $0.placeholder(€.Field.recipient)
+            $0.placeholder(String(localized: .PrepareTransaction.recipientField))
         }
 
         recipientAddressField.rightView = scanQRButton
@@ -141,7 +138,7 @@ private extension PrepareTransactionView {
         amountToSendField.withStyle(.decimal)
 
         gasMeasuredInSmallUnitsLabel.withStyle(.body) {
-            $0.text(€.Label.gasInSmallUnits("\(Unit.li.name) (\(Unit.li.powerOf))"))
+            $0.text(String(localized: .PrepareTransaction.gasInSmallUnits(unit: "\(Unit.li.name) (\(Unit.li.powerOf))")))
         }
 
         costOfTransactionLabel.withStyle(.body) {
@@ -152,7 +149,7 @@ private extension PrepareTransactionView {
         gasPriceField.withStyle(.number)
 
         toReviewButton.withStyle(.primary) {
-            $0.title(€.Button.reviewPayment)
+            $0.title(String(localized: .PrepareTransaction.reviewPayment))
                 .disabled()
         }
     }

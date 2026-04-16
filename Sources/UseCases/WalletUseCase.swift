@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,13 +34,13 @@ protocol SecurePersisting: AnyObject {
 }
 
 protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet>
+    func createNewWallet(encryptionpassword: String) -> Observable<Wallet>
     func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
     func save(wallet: Wallet)
     func deleteWallet()
 
     /// Checks if the passed `password` was used to encypt the Keystore
-    func verify(Password: String, forKeystore keystore: Keystore) -> Observable<Bool>
+    func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool>
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
     func loadWallet() -> Wallet?
     var hasConfiguredWallet: Bool { get }
@@ -49,8 +49,8 @@ protocol WalletUseCase: AnyObject {
 extension WalletUseCase {
 
     /// Checks if the passed `password` was used to encypt the Keystore inside the Wallet
-    func verify(Password: String, forWallet wallet: Wallet) -> Observable<Bool> {
-        return verify(Password: Password, forKeystore: wallet.keystore)
+    func verify(password: String, forWallet wallet: Wallet) -> Observable<Bool> {
+        return verify(password: password, forKeystore: wallet.keystore)
     }
 
     func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> Observable<KeyPair> {

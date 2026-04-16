@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,6 @@
 import UIKit
 import EFQRCode
 
-private typealias Image = Asset
-
 protocol QRCoding: AnyObject {
     func encode(transaction: TransactionIntent, size: CGFloat) -> UIImage?
     func decode(cgImage: CGImage) -> TransactionIntent?
@@ -47,8 +45,8 @@ extension QRCoder: QRCoding {
     }
 
     func decode(cgImage: CGImage) -> TransactionIntent? {
+		let scannedContentStrings = EFQRCode.recognize(cgImage)
         guard
-            let scannedContentStrings = EFQRCode.recognize(image: cgImage),
             let scannedContentString = scannedContentStrings.first,
             let jsonData = scannedContentString.data(using: .utf8),
             let transaction = try? JSONDecoder().decode(TransactionIntent.self, from: jsonData)
@@ -65,12 +63,12 @@ private extension QRCoding {
         backgroundColor: UIColor = .teal,
         foregroundColor: UIColor = .deepBlue,
         watermarkImage: UIImage? = nil
-        ) -> UIImage? {
+	) -> UIImage? {
         let intSize = Int(cgFloatSize)
         let size = EFIntSize(width: intSize, height: intSize)
 
         guard let cgImage = EFQRCode.generate(
-            content: content,
+			for: content,
             size: size,
             backgroundColor: backgroundColor.cgColor,
             foregroundColor: foregroundColor.cgColor,
@@ -79,3 +77,4 @@ private extension QRCoding {
         return UIImage(cgImage: cgImage)
     }
 }
+

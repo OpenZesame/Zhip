@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -67,27 +67,26 @@ extension BackUpRevealedKeyPairView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.BackUpRevealedKeyPair
 private extension BackUpRevealedKeyPairView {
     func setupSubviews() {
         privateKeyTextView.withStyles {
-            $0.text(€.Label.privateKey)
+            $0.text(String(localized: .BackUpRevealedKeyPair.privateKeyLabel))
         }
 
         privateKeyTextView.setContentHuggingPriority(.defaultHigh, for: .vertical)
 
         copyPrivateKeyButton.withStyle(.hollow) {
-            $0.title(€.Buttons.copy)
+            $0.title(String(localized: .BackUpRevealedKeyPair.copy))
         }
 
         copyPrivateKeyButtonContainer.withStyle(.horizontal)
 
         publicKeyUncompressedTextView.withStyles {
-            $0.text(€.Label.uncompressedPublicKey)
+            $0.text(String(localized: .BackUpRevealedKeyPair.uncompressedPublicKey))
         }
 
         copyUncompressedPublicKeyButton.withStyle(.hollow) {
-            $0.title(€.Buttons.copy)
+            $0.title(String(localized: .BackUpRevealedKeyPair.copy))
         }
 
         copyPublicKeyButtonContainer.withStyle(.horizontal)

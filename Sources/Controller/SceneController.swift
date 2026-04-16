@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ class SceneController<View: ContentView>: AbstractController where View.ViewMode
         // Beware, here be dragons!
         // For some unknown reason (Xcode 10.2 / Swift 5 being drunk) Xcode decided to interpret `View()` (which worked fine before Xcode 10.2)
         // as `UIView.init:frame:`. Why? Oh Why?! This terribly ugly hack fixes that.
-        // swiftlint:disable force_cast
+        // swiftlint:disable:next force_cast
         return (View.self as EmptyInitializable.Type).init() as! View
     }()
 

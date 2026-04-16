@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
-private typealias € = L10n.Scene.ConfirmNewPincode
 
 final class ConfirmNewPincodeView: ScrollableStackViewOwner {
 
@@ -70,11 +68,11 @@ private extension ConfirmNewPincodeView {
     func setupSubviews() {
 
         haveBackedUpPincodeCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.pincodeIsBackedUp)
+            $0.text(String(localized: .ConfirmNewPincode.pincodeIsBackedUp))
         }
 
         confirmPincodeButton.withStyle(.primary) {
-            $0.title(€.Button.done)
+            $0.title(String(localized: .ConfirmNewPincode.done))
                 .disabled()
         }
     }

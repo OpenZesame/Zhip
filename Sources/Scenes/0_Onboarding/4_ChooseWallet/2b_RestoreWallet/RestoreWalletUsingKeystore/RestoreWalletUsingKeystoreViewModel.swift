@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import Zesame
 import RxCocoa
 import RxSwift
 
-private typealias € = L10n.Scene.RestoreWallet
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .restoreKeystore
 
 // MARK: - RestoreWalletViewModel
@@ -65,7 +64,7 @@ final class RestoreWalletUsingKeystoreViewModel {
                 return KeyRestoration.keystore(keystore, password: password)
         }
 
-        let encryptionPasswordPlaceHolder = Driver.just(€.Field.EncryptionPassword.keystore(WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode)))
+        let encryptionPasswordPlaceHolder = Driver.just(String(localized: .RestoreWallet.keystoreEncryptionPasswordField(minLength: WalletEncryptionPassword.minimumLenght(mode: encryptionPasswordMode))))
 
         let keystoreValidation = inputFromView.isEditingKeystore.withLatestFrom(keyStoreValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)

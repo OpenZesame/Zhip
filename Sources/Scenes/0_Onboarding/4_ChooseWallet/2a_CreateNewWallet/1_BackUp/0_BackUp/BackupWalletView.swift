@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -81,25 +81,24 @@ extension BackupWalletView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.BackupWallet
 private extension BackupWalletView {
     // swiftlint:disable:next function_body_length
     func setupSubviews() {
 
         backUpLabel.withStyle(.header) {
-            $0.text(€.Label.backUpKeys)
+            $0.text(String(localized: .BackupWallet.backUpKeys))
         }
 
         urgeBackupLabel.withStyle(.body) {
-            $0.text(€.Label.urgeBackup)
+            $0.text(String(localized: .BackupWallet.urgeBackup))
         }
 
         privateKeyLabel.withStyle(.checkbox) {
-            $0.text(€.Label.privateKey)
+            $0.text(String(localized: .BackupWallet.privateKeyLabel))
         }
 
         revealPrivateKeyButton.withStyle(.hollow) {
-            $0.title(€.Buttons.reveal)
+            $0.title(String(localized: .BackupWallet.reveal))
         }
 
         privateKeyButtonContainer.withStyle(.horizontal)
@@ -107,25 +106,25 @@ private extension BackupWalletView {
         privateKeyViews.withStyle(.vertical)
 
         keystoreLabel.withStyle(.checkbox) {
-            $0.text(€.Label.keystore)
+            $0.text(String(localized: .BackupWallet.keystoreLabel))
         }
 
         copyKeystoreButton.withStyle(.hollow) {
-            $0.title(€.Button.copy)
+            $0.title(String(localized: .BackupWallet.copy))
         }
 
         revealKeystoreButton.withStyle(.hollow) {
-            $0.title(€.Buttons.reveal)
+            $0.title(String(localized: .BackupWallet.reveal))
         }
 
         keystoreButtons.withStyle(.horizontal)
 
         keystoreViews.withStyle(.vertical)
-        
+
         haveSecurelyBackedUpViews.withStyle(.vertical)
 
         haveSecurelyBackedUpCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.haveSecurelyBackedUp)
+            $0.text(String(localized: .BackupWallet.haveSecurelyBackedUp))
         }
 
         [copyKeystoreButton, revealKeystoreButton, revealPrivateKeyButton].forEach {
@@ -133,7 +132,7 @@ private extension BackupWalletView {
         }
 
         doneButton.withStyle(.primary) {
-            $0.title(€.Button.done)
+            $0.title(String(localized: .BackupWallet.done))
                 .disabled()
         }
     }

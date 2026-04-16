@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,6 @@ import Zesame
 
 import RxCocoa
 import RxSwift
-
-private typealias € = L10n.Scene.RestoreWallet
 
 /// Navigation from RestoreWallet
 enum RestoreWalletNavigation {
@@ -64,8 +62,8 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         let headerLabel: Driver<String> = input.fromView.selectedSegment.map {
             switch $0 {
-            case .keystore: return €.Label.Header.keystore
-            case .privateKey: return €.Label.Header.privateKey
+            case .keystore: return String(localized: .RestoreWallet.restoreWithKeystore)
+            case .privateKey: return String(localized: .RestoreWallet.restoreWithPrivateKey)
             }
         }
 

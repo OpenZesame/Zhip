@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -50,8 +50,8 @@ extension UIView {
         addMotionEffect(.twoAxesShift(strength: strength))
     }
 
-    func addMotionEffectFromImageAssets(front: ImageAsset, middle: ImageAsset, back: ImageAsset) {
-        addMotionEffectFromImages(front: front.image, middle: middle.image, back: back.image)
+    func addMotionEffect(front: UIImage, middle: UIImage, back: UIImage) {
+        addMotionEffectFromImages(front: front, middle: middle, back: back)
     }
 
     @discardableResult
@@ -83,13 +83,13 @@ extension UIView {
         return (imageViews[2], imageViews[1], imageViews[0])
     }
 
-    // swiftlint:disable large_tuple
     // [4, 15, 40]
     // (8, 30, 50)
+    // swiftlint:disable large_tuple
     func addMotionEffectTo(
         views: (back: UIView, middle: UIView, front: UIView),
         strengths: (back: CGFloat, middle: CGFloat, front: CGFloat)
-        ) {
+        ) { // swiftlint:enable large_tuple
         let views = [views.back, views.middle, views.front]
         let strengths = [strengths.back, strengths.middle, strengths.front]
         let viewsAndEffectStrength = zip(views, strengths).map { ($0.0, $0.1) }

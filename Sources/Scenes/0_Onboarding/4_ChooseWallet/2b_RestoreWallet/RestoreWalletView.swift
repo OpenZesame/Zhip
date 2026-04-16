@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,6 @@ import Zesame
 import RxSwift
 import RxCocoa
 
-private typealias € = L10n.Scene.RestoreWallet
 private typealias Segment = RestoreWalletViewModel.InputFromView.Segment
 
 // MARK: - RestoreWalletView
@@ -107,14 +106,13 @@ private extension RestoreWalletView {
         }
 
         restoreWalletButton.withStyle(.primary) {
-            $0.title(€.Button.restoreWallet)
+            $0.title(String(localized: .RestoreWallet.restore))
                 .disabled()
         }
 
         setupSegmentedControl()
     }
 
-    // swiftlint:disable:next function_body_length
     func setupSegmentedControl() {
         restorationMethodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         addSubview(restorationMethodSegmentedControl)
@@ -139,8 +137,8 @@ private extension RestoreWalletView {
         restorationMethodSegmentedControl.setTitleTextAttributes(whiteFontAttributes, for: .selected)
         restorationMethodSegmentedControl.setTitleTextAttributes(tealFontAttributes, for: .normal)
 
-        add(segment: .keystore, titled: €.Segment.keystore)
-        add(segment: .privateKey, titled: €.Segment.privateKey)
+        add(segment: .keystore, titled: String(localized: .RestoreWallet.keystoreSegment))
+        add(segment: .privateKey, titled: String(localized: .RestoreWallet.privateKeySegment))
 
         restorationMethodSegmentedControl.rx.value
             .asDriver()

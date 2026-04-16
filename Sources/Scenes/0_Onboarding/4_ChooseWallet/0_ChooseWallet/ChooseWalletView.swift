@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -59,11 +59,8 @@ extension ChooseWalletView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.ChooseWallet
-private typealias Image = Asset.Images.ChooseWallet
 private extension ChooseWalletView {
 
-    // swiftlint:disable:next function_body_length
     func setup() {
         stackView.withStyle(.default) {
             $0.spacing(0)
@@ -79,19 +76,19 @@ private extension ChooseWalletView {
         setupPlanetsImageWithMotionEffect()
 
         impressionLabel.withStyle(.impression) {
-            $0.text(€.Label.impression)
+            $0.text(String(localized: .ChooseWallet.impression))
         }
 
         subtitleLabel.withStyle(.body) {
-            $0.text(€.Label.setUpWallet)
+            $0.text(String(localized: .ChooseWallet.setUpWallet))
         }
 
         createNewWalletButton.withStyle(.primary) {
-            $0.title(€.Button.newWallet)
+            $0.title(String(localized: .ChooseWallet.newWallet))
         }
 
         restoreWalletButton.withStyle(.secondary) {
-            $0.title(€.Button.restoreWallet)
+            $0.title(String(localized: .ChooseWallet.restoreWalletButton))
         }
     }
 
@@ -100,9 +97,9 @@ private extension ChooseWalletView {
         motionEffectPlanetsImageView.translatesAutoresizingMaskIntoConstraints = false
 
         motionEffectPlanetsImageView.addMotionEffectFromImages(
-            front: Image.frontPlanets.image,
-            middle: Image.middleStars.image,
-            back: Image.backAbyss.image
+            front: UIImage(resource: .frontPlanets),
+            middle: UIImage(resource: .middleStars),
+            back: UIImage(resource: .backAbyss)
         )
     }
 }

@@ -1,0 +1,89 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ChooseNewPasswordTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set an encryption password"
+          }
+        }
+      }
+    },
+    "ChooseNewPasswordValue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your encryption password is used to encrypt your private key. Make sure to back up your encryption password before proceeding."
+          }
+        }
+      }
+    },
+    "ConfirmEncryptionPassword" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm encryption password"
+          }
+        }
+      }
+    },
+    "ContinueButton" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "EncryptionPasswordField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryption password (min %1$(minLength)lld chars)"
+          }
+        }
+      },
+      "substitutions" : {
+        "minLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "PasswordIsBackedUp" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have securely backed up my encryption password"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New wallet"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

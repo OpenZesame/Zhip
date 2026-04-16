@@ -1,0 +1,128 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ConfirmEncryptionPassword" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm encryption password"
+          }
+        }
+      }
+    },
+    "KeystoreEncryptionPasswordField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryption password (min %1$(minLength)lld chars)"
+          }
+        }
+      },
+      "substitutions" : {
+        "minLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "KeystoreSegment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keystore"
+          }
+        }
+      }
+    },
+    "PrivateKeyEncryptionPasswordField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New encryption password (min %1$(minLength)lld chars)"
+          }
+        }
+      },
+      "substitutions" : {
+        "minLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "PrivateKeyField" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private key"
+          }
+        }
+      }
+    },
+    "PrivateKeySegment" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private key"
+          }
+        }
+      }
+    },
+    "Restore" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore"
+          }
+        }
+      }
+    },
+    "RestoreWithKeystore" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore with keystore"
+          }
+        }
+      }
+    },
+    "RestoreWithPrivateKey" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore with private key"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore existing wallet"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

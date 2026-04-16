@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,23 +56,22 @@ extension EnsureThatYouAreNotBeingWatchedView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.EnsureThatYouAreNotBeingWatched
 private extension EnsureThatYouAreNotBeingWatchedView {
     func setupSubviews() {
         imageView.withStyle(.default) {
-            $0.image(Asset.Icons.Large.shield.image)
+            $0.image(UIImage(resource: .shield))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.Label.security)
+            $0.text(String(localized: .EnsurePrivacy.security))
         }
 
         makeSureAloneLabel.withStyle(.body) {
-            $0.text(€.Label.makeSureAlone)
+            $0.text(String(localized: .EnsurePrivacy.makeSureAlone))
         }
 
         understandButton.withStyle(.primary) {
-            $0.title(€.Button.understand)
+            $0.title(String(localized: .EnsurePrivacy.understand))
         }
     }
 }

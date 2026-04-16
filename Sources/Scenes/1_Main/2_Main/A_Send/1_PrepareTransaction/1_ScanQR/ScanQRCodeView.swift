@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,6 @@ import RxCocoa
 import QRCodeReader
 import AVFoundation
 
-private typealias € = L10n.Scene.ScanQRCode
-
 final class ScanQRCodeView: UIView {
 
     private let scannedQrCodeSubject = PublishSubject<String?>()
@@ -49,7 +47,6 @@ final class ScanQRCodeView: UIView {
 
 private extension ScanQRCodeView {
 
-    // swiftlint:disable:next function_body_length
     func setup() {
         reader.stopScanningWhenCodeIsFound = true
         readerView.backgroundColor = .black

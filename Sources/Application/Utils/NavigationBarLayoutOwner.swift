@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,22 @@ public extension UINavigationBar {
     func applyLayout(_ layout: NavigationBarLayout) -> NavigationBarLayout {
         barStyle = layout.barStyle
         isTranslucent = layout.isTranslucent
-
-        barTintColor = layout.barTintColor
         tintColor = layout.tintColor
-        backgroundColor = layout.backgroundColor
 
-        backgroundImage = layout.backgroundImage
-        shadowImage = layout.shadowImage
-        titleTextAttributes = layout.titleTextAttributes
+        let navBarAppearance = UINavigationBarAppearance()
+        if layout.isTranslucent && layout.backgroundColor == .clear {
+            navBarAppearance.configureWithTransparentBackground()
+        } else {
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.backgroundColor = layout.barTintColor
+        }
+        navBarAppearance.titleTextAttributes = layout.titleTextAttributes
+        navBarAppearance.shadowColor = .clear
+
+        standardAppearance = navBarAppearance
+        scrollEdgeAppearance = navBarAppearance
+        compactAppearance = navBarAppearance
+        compactScrollEdgeAppearance = navBarAppearance
 
         return layout
     }

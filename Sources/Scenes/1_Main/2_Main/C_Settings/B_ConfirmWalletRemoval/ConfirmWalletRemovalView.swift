@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -63,19 +63,18 @@ extension ConfirmWalletRemovalView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.ConfirmWalletRemoval
 private extension ConfirmWalletRemovalView {
     func setupSubviews() {
         areYouSureLabel.withStyle(.header) {
-            $0.text(€.Label.areYouSure)
+            $0.text(String(localized: .ConfirmWalletRemoval.areYouSure))
         }
 
         haveBackedUpWalletCheckbox.withStyle(.default) {
-            $0.text(€.Checkbox.backUpWallet)
+            $0.text(String(localized: .ConfirmWalletRemoval.backUpWallet))
         }
 
         confirmButton.withStyle(.primary) {
-            $0.title(€.Button.confirm)
+            $0.title(String(localized: .ConfirmWalletRemoval.confirm))
                 .disabled()
         }
     }

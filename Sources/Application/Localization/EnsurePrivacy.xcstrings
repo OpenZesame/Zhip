@@ -1,0 +1,39 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "MakeSureAlone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make sure that you are in a private space where no one can see/record your personal data. Avoid public places, cameras and CCTV's."
+          }
+        }
+      }
+    },
+    "Security" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        }
+      }
+    },
+    "Understand" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I understand"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

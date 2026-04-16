@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -67,20 +67,18 @@ extension TermsOfServiceView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.TermsOfService
-private typealias Image = Asset.Icons.Large
 private extension TermsOfServiceView {
     func setupSubviews() {
         imageView.withStyle(.default) {
-            $0.image(Image.analytics.image)
+            $0.image(UIImage(resource: .analyticsLarge))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.Label.termsOfService)
+            $0.text(String(localized: .TermsOfService.termsOfServiceLabel))
         }
 
         acceptTermsButton.withStyle(.primary) {
-            $0.title(€.Button.accept)
+            $0.title(String(localized: .TermsOfService.accept))
                 .disabled()
         }
 

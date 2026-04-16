@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -70,20 +70,17 @@ extension MainView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.Main
-private typealias Image = Asset.Images.Main
 private extension MainView {
 
-    // swiftlint:disable:next function_body_length
     func setupSubviews() {
 
-        balanceTitleLabel.withStyle(.init(text: €.Label.Balance.title, textColor: UIColor.white.withAlphaComponent(0.7), font: .callToAction))
+        balanceTitleLabel.withStyle(.init(text: String(localized: .Main.balanceTitle), textColor: UIColor.white.withAlphaComponent(0.7), font: .callToAction))
 
         balanceValueLabel.withStyle(.impression) {
             $0.font(.bigBang).minimumScaleFactor(0.5)
         }
 
-        let zilliqaLogo = Asset.Icons.Small.zilliqaLogo.image.withRenderingMode(.alwaysOriginal)
+        let zilliqaLogo = UIImage(resource: .zilliqaLogo).withRenderingMode(.alwaysOriginal)
         zilliqaBalanceImageView.withStyle(.init(image: zilliqaLogo, contentMode: UIView.ContentMode.bottomLeft))
 
         zilliqaImageVerticalPositioner.withStyle(.vertical) {
@@ -97,8 +94,8 @@ private extension MainView {
             $0.spacing(0)
         }
 
-        sendButton.setTitle(€.Button.send, image: Asset.Icons.Large.send.image)
-        receiveButton.setTitle(€.Button.receive, image: Asset.Icons.Large.receive.image)
+        sendButton.setTitle(String(localized: .Main.send), image: UIImage(resource: .send))
+        receiveButton.setTitle(String(localized: .Main.receive), image: UIImage(resource: .receive))
 
         buttonsView.withStyle(.horizontal) {
             $0.distribution(.fillEqually)
@@ -116,9 +113,9 @@ func addAuroraImagesWithMotionEffect(to effectView: UIView) {
     effectView.backgroundColor = .clear
     effectView.translatesAutoresizingMaskIntoConstraints = false
     
-    effectView.addMotionEffectFromImageAssets(
-        front: Image.frontAurora,
-        middle: Image.middleAurora,
-        back: Image.backAurora
+    effectView.addMotionEffect(
+        front: UIImage(resource: .frontAurora),
+        middle: UIImage(resource: .middleAurora),
+        back: UIImage(resource: .backAurora)
     )
 }

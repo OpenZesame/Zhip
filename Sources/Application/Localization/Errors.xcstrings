@@ -1,0 +1,265 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "AddressInvalid" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid address"
+          }
+        }
+      }
+    },
+    "AddressNotChecksummed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid checksum."
+          }
+        }
+      }
+    },
+    "AddressTooLong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address is too long, should be %1$(expectedLength)lld"
+          }
+        }
+      },
+      "substitutions" : {
+        "expectedLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "AddressTooShort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address is too short, should be %1$(expectedLength)lld"
+          }
+        }
+      },
+      "substitutions" : {
+        "expectedLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "AmountExceedingBalance" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insufficient funds"
+          }
+        }
+      }
+    },
+    "AmountNonNumericString" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "String not a number"
+          }
+        }
+      }
+    },
+    "AmountTooLarge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Must be at most %1$(maximum)@"
+          }
+        }
+      },
+      "substitutions" : {
+        "maximum" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "AmountTooSmall" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Must be at least %1$(minimum)@"
+          }
+        }
+      },
+      "substitutions" : {
+        "minimum" : {
+          "argNum" : 1,
+          "formatSpecifier" : "@"
+        }
+      }
+    },
+    "KeystoreBadFormat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bad JSON, control format."
+          }
+        }
+      }
+    },
+    "KeystoreIncorrectPassword" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keystore was not encrypted by this password"
+          }
+        }
+      }
+    },
+    "PasswordIncorrect" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incorrect password"
+          }
+        }
+      }
+    },
+    "PasswordIncorrectDuringBackup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incorrect password, if you can't remember it do NOT continue, restart the wallet creation from the beginning."
+          }
+        }
+      }
+    },
+    "PasswordMismatch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwords does not match"
+          }
+        }
+      }
+    },
+    "PasswordTooShort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password have length >%1$(minLength)lld"
+          }
+        }
+      },
+      "substitutions" : {
+        "minLength" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "PincodeIncorrect" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incorrect PIN"
+          }
+        }
+      }
+    },
+    "PincodesDoNotMatch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN does not match"
+          }
+        }
+      }
+    },
+    "PrivateKeyBad" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bad private key"
+          }
+        }
+      }
+    },
+    "PrivateKeyTooLong" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Should be %1$(expected)lld characters (%2$(excess)lld too many)"
+          }
+        }
+      },
+      "substitutions" : {
+        "excess" : {
+          "argNum" : 2,
+          "formatSpecifier" : "lld"
+        },
+        "expected" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        }
+      }
+    },
+    "PrivateKeyTooShort" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Should be %1$(expected)lld characters (missing %2$(missing)lld)"
+          }
+        }
+      },
+      "substitutions" : {
+        "expected" : {
+          "argNum" : 1,
+          "formatSpecifier" : "lld"
+        },
+        "missing" : {
+          "argNum" : 2,
+          "formatSpecifier" : "lld"
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

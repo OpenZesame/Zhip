@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Zesame
-
-private typealias € = L10n.Scene.Receive
 
 // MARK: - ReceiveUserAction
 enum ReceiveUserAction {
@@ -91,7 +89,7 @@ final class ReceiveViewModel: BaseViewModel<
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(€.Event.Toast.didCopyAddress))
+                    input.fromController.toastSubject.onNext(Toast(String(localized: .Receive.copiedAddress)))
                 }).drive(),
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)
@@ -101,7 +99,7 @@ final class ReceiveViewModel: BaseViewModel<
         
         return Output(
             receivingAddress: receivingAddress,
-            amountPlaceholder: Driver.just(€.Field.requestAmount(Unit.zil.name)),
+            amountPlaceholder: Driver.just(String(localized: .Receive.requestAmountField(unit: Unit.zil.name))),
             amountValidation: amountValidation,
             qrImage: qrImage
         )

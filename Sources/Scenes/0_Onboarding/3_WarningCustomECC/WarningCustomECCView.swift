@@ -3,7 +3,7 @@
 //  Zhip
 //
 //  Created by Alexander Cyon on 2019-02-08.
-//  Copyright © 2019 Open Zesame. All rights reserved.
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
 import UIKit
@@ -49,21 +49,19 @@ extension WarningCustomECCView: ViewModelled {
     }
 }
 
-private typealias € = L10n.Scene.WarningCustomECC
-private typealias Image = Asset.Icons.Large
 private extension WarningCustomECCView {
     func setupSubviews() {
 
         imageView.withStyle(.default) {
-            $0.image(Image.warning.image)
+            $0.image(UIImage(resource: .warningLarge))
         }
 
         headerLabel.withStyle(.header) {
-            $0.text(€.Label.header)
+            $0.text(String(localized: .WarningCustomECC.header))
         }
 
         acceptTermsButton.withStyle(.primary) {
-            $0.title(€.Button.accept)
+            $0.title(String(localized: .WarningCustomECC.accept))
                 .disabled()
         }
 

@@ -1,7 +1,7 @@
 // 
 // MIT License
 //
-// Copyright (c) 2018-2019 Open Zesame (https://github.com/OpenZesame)
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,13 @@
 
 import UIKit
 
-extension UILayoutPriority: ExpressibleByFloatLiteral {
+extension UILayoutPriority: @retroactive ExpressibleByFloatLiteral {
     public init(floatLiteral rawValue: Float) {
         self.init(rawValue: rawValue)
     }
 }
 
-extension UILayoutPriority: ExpressibleByIntegerLiteral {
+extension UILayoutPriority: @retroactive ExpressibleByIntegerLiteral {
     public init(integerLiteral intValue: Int) {
         self.init(rawValue: Float(intValue))
     }
