@@ -61,7 +61,7 @@ final class TermsOfServiceViewModel: BaseViewModel<
 
         [
             input.fromView.didAcceptTerms.sink { [unowned self] in
-                useCase.didAcceptTermsOfService()
+                self.useCase.didAcceptTermsOfService()
                 userDid(.acceptTermsOfService)
             },
         ].forEach { $0.store(in: &cancellables) }

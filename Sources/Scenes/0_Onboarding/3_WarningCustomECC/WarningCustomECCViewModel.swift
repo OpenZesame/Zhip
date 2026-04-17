@@ -61,7 +61,7 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
         [
             input.fromView.didAcceptTerms.sink { [unowned self] in
-                useCase.didAcceptCustomECCWarning()
+                self.useCase.didAcceptCustomECCWarning()
                 userDid(.acceptRisks)
             },
         ].forEach { $0.store(in: &cancellables) }

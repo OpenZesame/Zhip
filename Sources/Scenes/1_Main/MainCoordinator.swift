@@ -48,7 +48,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        deeplinkedTransaction.mapToVoid().sink { [unowned self] in toSendPrefilTransaction() }.store(in: &cancellables)
+        deeplinkedTransaction.mapToVoid().sink { [unowned self] in self.toSendPrefilTransaction() }.store(in: &cancellables)
     }
 
     override func start(didStart: Completion? = nil) {
@@ -83,9 +83,9 @@ private extension MainCoordinator {
             navigationPresentationCompletion: didStart
         ) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .send: toSend()
-            case .receive: toReceive()
-            case .goToSettings: toSettings()
+            case .send: self.toSend()
+            case .receive: self.toReceive()
+            case .goToSettings: self.toSettings()
             }
         }
     }
@@ -102,7 +102,7 @@ private extension MainCoordinator {
                 switch userDid {
                 case let .finish(triggerBalanceFetching):
                     if triggerBalanceFetching {
-                        triggerFetchingOfBalance()
+                        self.triggerFetchingOfBalance()
                     }
                     dismissModalFlow(true)
                 }
@@ -131,7 +131,7 @@ private extension MainCoordinator {
             makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
-                case .removeWallet: navigator.next(.removeWallet)
+                case .removeWallet: self.navigator.next(.removeWallet)
                 case .closeSettings: dismissModalFlow(true)
                 }
             }

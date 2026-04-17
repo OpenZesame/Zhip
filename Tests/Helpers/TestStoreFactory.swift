@@ -23,44 +23,25 @@
 //
 
 import Foundation
+@testable import Zhip
 
-/// A single decimal digit (0-9) used by `Pincode` and related input controls.
-///
-/// Backed by `Int` so `Digit(rawValue:)` accepts the corresponding integer literal.
-enum Digit: Int, Codable, Equatable {
+/// Convenience factories to produce test-friendly `Preferences` and
+/// `SecurePersistence` instances backed by `InMemoryKeyValueStore`.
+enum TestStoreFactory {
 
-    case zero = 0
-    case one
-    case two
-    case three
-    case four
-    case five
-    case six
-    case seven
-    case eight
-    case nine
-}
-
-extension Digit {
-
-    /// Parses a single-character numeric string. Returns `nil` if `string` is not a
-    /// decimal representation of a value in `0...9`.
-    init?(string: String) {
-        guard
-            let int = Int(string),
-            int <= 9,
-            int >= 0
-        else {
-            return nil
-        }
-        self.init(rawValue: int)
+    /// Builds an isolated `Preferences` backed by an empty in-memory store.
+    static func makePreferences() -> Preferences {
+        KeyValueStore(InMemoryKeyValueStore<PreferencesKey>())
     }
-}
 
-extension Digit: CustomStringConvertible {
-
-    /// The digit's decimal representation (`"0"` through `"9"`).
-    var description: String {
-        String(describing: rawValue)
+    /// Builds an isolated `SecurePersistence` backed by an empty in-memory store.
+    ///
+    /// The in-memory store is fully isolated, but the `KeyValueStore.wallet` getter
+    /// hard-references `Preferences.default` (`UserDefaults.standard`) to detect a
+    /// first launch. To prevent that side-effect from deleting test data, this
+    /// helper pre-writes `hasRunAppBefore = true` to `UserDefaults.standard`.
+    static func makeSecurePersistence() -> SecurePersistence {
+        Preferences.default.save(value: true, for: .hasRunAppBefore)
+        return KeyValueStore(InMemoryKeyValueStore<KeychainKey>())
     }
 }

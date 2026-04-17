@@ -26,36 +26,75 @@ import Combine
 import Foundation
 import Zesame
 
+/// Default implementation of the composite `WalletUseCase` (and all five narrow
+/// use-case protocols it composes).
+///
+/// Its only two dependencies are intentionally small so they can be swapped out in
+/// tests via `Container.shared.zilliqaService.register { ... }` /
+/// `Container.shared.securePersistence.register { ... }`:
+///   - `zilliqaService`: the reactive façade over `Zesame` blockchain operations.
+///   - `securePersistence`: the keychain-backed secure store for wallet material.
 final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
+
     private let zilliqaService: ZilliqaServiceReactive
+
     let securePersistence: SecurePersistence
+
+    /// Designated initializer.
+    ///
+    /// Prefer constructing via `Container.shared.walletUseCase()` so the dependencies
+    /// resolve automatically from the shared `Container`.
     init(zilliqaService: ZilliqaServiceReactive, securePersistence: SecurePersistence) {
         self.zilliqaService = zilliqaService
         self.securePersistence = securePersistence
     }
 }
 
+// MARK: - VerifyEncryptionPasswordUseCase
+
 extension DefaultWalletUseCase {
-    /// Checks if the passed `password` was used to encrypt the Keystore
+
+    /// Checks if `password` was used to encrypt `keystore` by asking the Zilliqa
+    /// service to attempt decryption.
     func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error> {
         zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
             .mapError { $0 as Swift.Error }
             .eraseToAnyPublisher()
     }
+}
 
+// MARK: - ExtractKeyPairUseCase
+
+extension DefaultWalletUseCase {
+
+    /// Decrypts `keystore` using `password` and returns the underlying `KeyPair`.
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
             .mapError { $0 as Swift.Error }
             .eraseToAnyPublisher()
     }
+}
 
+// MARK: - CreateWalletUseCase
+
+extension DefaultWalletUseCase {
+
+    /// Generates a new wallet encrypted with `encryptionPassword` and tagged with
+    /// origin `.generatedByThisApp`.
     func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error> {
         zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
             .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
             .mapError { $0 as Swift.Error }
             .eraseToAnyPublisher()
     }
+}
 
+// MARK: - RestoreWalletUseCase
+
+extension DefaultWalletUseCase {
+
+    /// Restores a wallet from the supplied `KeyRestoration` and tags it with the
+    /// corresponding `.importedKeystore` / `.importedPrivateKey` origin.
     func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error> {
         let origin: Wallet.Origin = switch restoration {
         case .keystore: .importedKeystore

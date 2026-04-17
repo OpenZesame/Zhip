@@ -166,10 +166,10 @@ private extension PrepareTransactionView {
 
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
                 [
-                    recipientAddressField,
-                    amountToSendField,
-                    gasLimitField,
-                    gasPriceField,
+                    self.recipientAddressField,
+                    self.amountToSendField,
+                    self.gasLimitField,
+                    self.gasPriceField,
                 ].forEach {
                     $0.sendActions(for: .editingDidEnd)
                 }

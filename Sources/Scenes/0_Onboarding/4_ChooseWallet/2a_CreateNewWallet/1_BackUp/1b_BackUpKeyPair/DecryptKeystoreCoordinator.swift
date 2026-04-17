@@ -63,8 +63,8 @@ private extension DecryptKeystoreCoordinator {
 
         push(scene: DecryptKeystoreToRevealKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .dismiss: dismiss()
-            case let .decryptKeystoreReavealing(keyPair): toBackUpRevealed(keyPair: keyPair)
+            case .dismiss: self.dismiss()
+            case let .decryptKeystoreReavealing(keyPair): self.toBackUpRevealed(keyPair: keyPair)
             }
         }
     }
@@ -74,7 +74,7 @@ private extension DecryptKeystoreCoordinator {
 
         push(scene: BackUpRevealedKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .finish: finish()
+            case .finish: self.finish()
             }
         }
     }

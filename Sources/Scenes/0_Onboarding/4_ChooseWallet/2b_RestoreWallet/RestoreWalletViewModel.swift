@@ -70,7 +70,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
-                    useCase.restoreWallet(from: $0)
+                    self.useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()

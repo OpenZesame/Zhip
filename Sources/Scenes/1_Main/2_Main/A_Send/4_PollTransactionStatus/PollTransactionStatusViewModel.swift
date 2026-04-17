@@ -72,7 +72,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
         [
             input.fromView.copyTransactionIdTrigger
                 .sink { [unowned self] in
-                    UIPasteboard.general.string = transactionId
+                    UIPasteboard.general.string = self.transactionId
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
                 },

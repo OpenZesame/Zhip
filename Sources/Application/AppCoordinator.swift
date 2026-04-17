@@ -90,7 +90,7 @@ private extension AppCoordinator {
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] userDid in
             switch userDid {
-            case .finishOnboarding: toMain()
+            case .finishOnboarding: self.toMain()
             }
         }
     }
@@ -105,11 +105,11 @@ private extension AppCoordinator {
 
         start(coordinator: main, transition: .replace, didStart: { [unowned self] in
             if displayUnlockScene {
-                toUnlockAppWithPincodeIfNeeded()
+                self.toUnlockAppWithPincodeIfNeeded()
             }
         }, navigationHandler: { [unowned self] userDid in
             switch userDid {
-            case .removeWallet: toOnboarding()
+            case .removeWallet: self.toOnboarding()
             }
         })
     }

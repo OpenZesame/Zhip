@@ -22,45 +22,31 @@
 // SOFTWARE.
 //
 
-import Foundation
+import XCTest
+@testable import Zhip
 
-/// A single decimal digit (0-9) used by `Pincode` and related input controls.
-///
-/// Backed by `Int` so `Digit(rawValue:)` accepts the corresponding integer literal.
-enum Digit: Int, Codable, Equatable {
+/// Tests for `BalanceLastUpdatedFormatter`: a pure formatter with no
+/// dependencies, so each test is a one-liner.
+final class BalanceLastUpdatedFormatterTests: XCTestCase {
 
-    case zero = 0
-    case one
-    case two
-    case three
-    case four
-    case five
-    case six
-    case seven
-    case eight
-    case nine
-}
+    private let sut = BalanceLastUpdatedFormatter()
 
-extension Digit {
+    func test_nilDate_returnsFirstFetchString() {
+        // Act
+        let result = sut.string(from: nil)
 
-    /// Parses a single-character numeric string. Returns `nil` if `string` is not a
-    /// decimal representation of a value in `0...9`.
-    init?(string: String) {
-        guard
-            let int = Int(string),
-            int <= 9,
-            int >= 0
-        else {
-            return nil
-        }
-        self.init(rawValue: int)
+        // Assert
+        XCTAssertFalse(result.isEmpty)
     }
-}
 
-extension Digit: CustomStringConvertible {
+    func test_knownDate_returnsNonEmptyRelativeString() {
+        // Arrange
+        let tenSecondsAgo = Date(timeIntervalSinceNow: -10)
 
-    /// The digit's decimal representation (`"0"` through `"9"`).
-    var description: String {
-        String(describing: rawValue)
+        // Act
+        let result = sut.string(from: tenSecondsAgo)
+
+        // Assert
+        XCTAssertFalse(result.isEmpty)
     }
 }

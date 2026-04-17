@@ -59,21 +59,21 @@ private extension SettingsCoordinator {
         push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             // Navigation bar
-            case .closeSettings: finish()
+            case .closeSettings: self.finish()
             // Section 0
-            case .removePincode: toRemovePincode()
-            case .setPincode: toSetPincode()
+            case .removePincode: self.toRemovePincode()
+            case .setPincode: self.toSetPincode()
             // Section 1
-            case .starUsOnGithub: toStarUsOnGitHub()
-            case .reportIssueOnGithub: toReportIssueOnGithub()
-            case .acknowledgments: toAcknowledgments()
+            case .starUsOnGithub: self.toStarUsOnGitHub()
+            case .reportIssueOnGithub: self.toReportIssueOnGithub()
+            case .acknowledgments: self.toAcknowledgments()
             // Section 2
-            case .readTermsOfService: toReadTermsOfService()
-            case .changeAnalyticsPermissions: toChangeAnalyticsPermissions()
-            case .readCustomECCWarning: toReadCustomECCWarning()
+            case .readTermsOfService: self.toReadTermsOfService()
+            case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
+            case .readCustomECCWarning: self.toReadCustomECCWarning()
             // Section 3
-            case .backupWallet: toBackupWallet()
-            case .removeWallet: toConfirmWalletRemoval()
+            case .backupWallet: self.toBackupWallet()
+            case .removeWallet: self.toConfirmWalletRemoval()
             }
         }
     }
@@ -174,7 +174,7 @@ private extension SettingsCoordinator {
             case .cancel: dismissScene(true, nil)
             case .confirm:
                 dismissScene(true) { [unowned self] in
-                    toChooseWallet()
+                    self.toChooseWallet()
                 }
             }
         }

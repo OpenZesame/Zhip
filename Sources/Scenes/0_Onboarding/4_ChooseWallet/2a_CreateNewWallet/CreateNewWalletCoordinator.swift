@@ -51,8 +51,8 @@ private extension CreateNewWalletCoordinator {
         let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
         push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understand: toCreateWallet()
-            case .cancel: cancel()
+            case .understand: self.toCreateWallet()
+            case .cancel: self.cancel()
             }
         }
     }
@@ -62,8 +62,8 @@ private extension CreateNewWalletCoordinator {
 
         push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case let .createWallet(wallet): toBackupWallet(wallet: wallet)
-            case .cancel: cancel()
+            case let .createWallet(wallet): self.toBackupWallet(wallet: wallet)
+            case .cancel: self.cancel()
             }
         }
     }
@@ -77,8 +77,8 @@ private extension CreateNewWalletCoordinator {
             )
         ) { [unowned self] userFinished in
             switch userFinished {
-            case .cancel: cancel()
-            case .backUp: toMain(wallet: wallet)
+            case .cancel: self.cancel()
+            case .backUp: self.toMain(wallet: wallet)
             }
         }
     }

@@ -61,8 +61,8 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
 
         [
             hasAnsweredAnalyticsPermissionsQuestionTrigger.sink { [unowned self] in
-                useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
-                navigator.next(.answerQuestionAboutCrashReporting)
+                self.useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
+                self.navigator.next(.answerQuestionAboutCrashReporting)
             },
         ].forEach { $0.store(in: &cancellables) }
 

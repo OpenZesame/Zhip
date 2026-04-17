@@ -76,7 +76,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .trackError(errorTracker)
                 .replaceErrorWithEmpty()
                 .handleEvents(receiveOutput: { [unowned self] in
-                    transactionUseCase.cacheBalance($0.balance)
+                    self.transactionUseCase.cacheBalance($0.balance)
                 })
         }
         .eraseToAnyPublisher()
@@ -267,7 +267,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             .eraseToAnyPublisher()
 
         let balanceWasUpdatedAt: AnyPublisher<Date?, Never> = fetchTrigger.map { [unowned self] in
-            transactionUseCase.balanceUpdatedAt
+            self.transactionUseCase.balanceUpdatedAt
         }.eraseToAnyPublisher()
 
         let refreshControlLastUpdatedTitle: AnyPublisher<String, Never> = balanceWasUpdatedAt.map {

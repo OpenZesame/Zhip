@@ -55,8 +55,8 @@ private extension SetPincodeCoordinator {
 
         push(scene: ChoosePincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case let .chosePincode(unconfirmedPincode): toConfirmPincode(unconfirmedPincode: unconfirmedPincode)
-            case .skip: skipPincode()
+            case let .chosePincode(unconfirmedPincode): self.toConfirmPincode(unconfirmedPincode: unconfirmedPincode)
+            case .skip: self.skipPincode()
             }
         }
     }
@@ -66,8 +66,8 @@ private extension SetPincodeCoordinator {
 
         push(scene: ConfirmNewPincode.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .skip: skipPincode()
-            case .confirmPincode: finish()
+            case .skip: self.skipPincode()
+            case .confirmPincode: self.finish()
             }
         }
     }

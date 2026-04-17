@@ -50,7 +50,7 @@ private extension OnboardingCoordinator {
     func toWelcome() {
         push(scene: Welcome.self, viewModel: WelcomeViewModel()) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .start: toNextStep()
+            case .start: self.toNextStep()
             }
         }
     }
@@ -83,7 +83,7 @@ private extension OnboardingCoordinator {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptTermsOfService, .dismiss: toAnalyticsPermission()
+            case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
             }
         }
     }
@@ -93,7 +93,7 @@ private extension OnboardingCoordinator {
 
         push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutCrashReporting, .dismiss: toCustomECCWarning()
+            case .answerQuestionAboutCrashReporting, .dismiss: self.toCustomECCWarning()
             }
         }
     }
@@ -106,7 +106,7 @@ private extension OnboardingCoordinator {
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptRisks, .dismiss: toChooseWallet()
+            case .acceptRisks, .dismiss: self.toChooseWallet()
             }
         }
     }
@@ -119,7 +119,7 @@ private extension OnboardingCoordinator {
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .finishChoosingWallet: toChoosePincode()
+            case .finishChoosingWallet: self.toChoosePincode()
             }
         }
     }
@@ -132,7 +132,7 @@ private extension OnboardingCoordinator {
             )
         ) { [unowned self] (userDid: SetPincodeCoordinatorNavigationStep) in
             switch userDid {
-            case .setPincode: finish()
+            case .setPincode: self.finish()
             }
         }
     }

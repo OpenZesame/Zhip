@@ -27,24 +27,45 @@ import KeychainSwift
 import Zesame
 
 extension KeyValueStore where KeyType == PreferencesKey {
+
+    /// The app-wide default `Preferences` store, backed by `UserDefaults.standard`.
     static var `default`: Preferences {
         KeyValueStore(UserDefaults.standard)
     }
 }
 
+/// The Zilliqa network this build targets. Currently wired to `.mainnet`.
+///
+/// When we add staging/testnet builds this will move into a build-configuration
+/// driven registration on `Container.shared.zilliqaService`.
 let network: Network = .mainnet
 
+/// Default `UseCaseProvider` implementation.
+///
+/// Retained for compatibility with coordinators that take a `UseCaseProvider` in
+/// their initializers. New code should resolve individual use cases directly from
+/// `Container.shared` — see `Container.swift` for the full factory list.
 final class DefaultUseCaseProvider {
+
+    /// Singleton seeded with production services. Coordinators that haven't yet
+    /// migrated to `Container.shared` still use this entry point.
     static let shared = DefaultUseCaseProvider(
         zilliqaService: DefaultZilliqaService(network: network).combine,
         preferences: .default,
         securePersistence: KeyValueStore(KeychainSwift())
     )
 
+    /// Reactive Zesame façade shared with every spawned use case.
     private let zilliqaService: ZilliqaServiceReactive
+
+    /// Non-secret key-value store (UserDefaults in production).
     private let preferences: Preferences
+
+    /// Secret key-value store (Keychain in production).
     private let securePersistence: SecurePersistence
 
+    /// Designated initializer — inject stand-ins in tests to exercise the provider
+    /// in isolation.
     init(zilliqaService: ZilliqaServiceReactive, preferences: Preferences, securePersistence: SecurePersistence) {
         self.zilliqaService = zilliqaService
         self.preferences = preferences
@@ -53,6 +74,8 @@ final class DefaultUseCaseProvider {
 }
 
 extension DefaultUseCaseProvider: UseCaseProvider {
+
+    /// Spawns a fresh `DefaultTransactionsUseCase` backed by the provider's services.
     func makeTransactionsUseCase() -> TransactionsUseCase {
         DefaultTransactionsUseCase(
             zilliqaService: zilliqaService,
@@ -61,6 +84,7 @@ extension DefaultUseCaseProvider: UseCaseProvider {
         )
     }
 
+    /// Spawns a fresh `DefaultOnboardingUseCase`.
     func makeOnboardingUseCase() -> OnboardingUseCase {
         DefaultOnboardingUseCase(
             zilliqaService: zilliqaService,
@@ -69,10 +93,12 @@ extension DefaultUseCaseProvider: UseCaseProvider {
         )
     }
 
+    /// Spawns a fresh `DefaultWalletUseCase`.
     func makeWalletUseCase() -> WalletUseCase {
         DefaultWalletUseCase(zilliqaService: zilliqaService, securePersistence: securePersistence)
     }
 
+    /// Spawns a fresh `DefaultPincodeUseCase`.
     func makePincodeUseCase() -> PincodeUseCase {
         DefaultPincodeUseCase(preferences: preferences, securePersistence: securePersistence)
     }

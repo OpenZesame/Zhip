@@ -70,10 +70,10 @@ private extension BackupWalletCoordinator {
 
         push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .revealKeystore: toRevealKeystore()
-            case .revealPrivateKey: toDecryptKeystoreToRevealKeyPair()
-            case .cancelOrDismiss: cancel()
-            case .backupWallet: finish()
+            case .revealKeystore: self.toRevealKeystore()
+            case .revealPrivateKey: self.toDecryptKeystoreToRevealKeyPair()
+            case .cancelOrDismiss: self.cancel()
+            case .backupWallet: self.finish()
             }
         }
     }

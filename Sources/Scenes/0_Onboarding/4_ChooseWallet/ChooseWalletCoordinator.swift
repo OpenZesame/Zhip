@@ -51,8 +51,8 @@ private extension ChooseWalletCoordinator {
 
         push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .createNewWallet: toCreateNewWallet()
-            case .restoreWallet: toRestoreWallet()
+            case .createNewWallet: self.toCreateNewWallet()
+            case .restoreWallet: self.toRestoreWallet()
             }
         }
     }
@@ -63,7 +63,7 @@ private extension ChooseWalletCoordinator {
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
-                case let .create(wallet): userFinishedChoosing(wallet: wallet)
+                case let .create(wallet): self.userFinishedChoosing(wallet: wallet)
                 case .cancel: break
                 }
             }
@@ -76,7 +76,7 @@ private extension ChooseWalletCoordinator {
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
-                case let .finishedRestoring(wallet): userFinishedChoosing(wallet: wallet)
+                case let .finishedRestoring(wallet): self.userFinishedChoosing(wallet: wallet)
                 case .cancel: break
                 }
             }

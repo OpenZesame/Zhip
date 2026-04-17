@@ -65,16 +65,16 @@ final class MainViewModel: BaseViewModel<
 
         let latestBalanceAndNonce: AnyPublisher<BalanceResponse, Never> = fetchTrigger.withLatestFrom(wallet)
             .flatMapLatest { [unowned self] in
-                transactionUseCase
+                self.transactionUseCase
                     .getBalance(for: $0.legacyAddress)
                     .trackActivity(activityIndicator)
                     .replaceErrorWithEmpty()
-                    .handleEvents(receiveOutput: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
+                    .handleEvents(receiveOutput: { [unowned self] in self.transactionUseCase.cacheBalance($0.balance) })
             }
             .eraseToAnyPublisher()
 
         let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
-            transactionUseCase.balanceUpdatedAt
+            self.transactionUseCase.balanceUpdatedAt
         }
 
         // Format output

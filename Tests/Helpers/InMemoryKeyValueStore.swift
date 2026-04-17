@@ -23,44 +23,42 @@
 //
 
 import Foundation
+@testable import Zhip
 
-/// A single decimal digit (0-9) used by `Pincode` and related input controls.
+/// In-memory backing for `KeyValueStoring`, used by tests to build mock
+/// `Preferences` / `SecurePersistence` instances without touching UserDefaults or
+/// the Keychain.
 ///
-/// Backed by `Int` so `Digit(rawValue:)` accepts the corresponding integer literal.
-enum Digit: Int, Codable, Equatable {
+/// Wrap it with `KeyValueStore(InMemoryKeyValueStore<PreferencesKey>())` or
+/// `KeyValueStore(InMemoryKeyValueStore<KeychainKey>())` to get a drop-in replacement
+/// for the production stores.
+final class InMemoryKeyValueStore<KeyType: KeyConvertible>: KeyValueStoring {
 
-    case zero = 0
-    case one
-    case two
-    case three
-    case four
-    case five
-    case six
-    case seven
-    case eight
-    case nine
-}
+    typealias Key = KeyType
 
-extension Digit {
+    /// Backing dictionary keyed by the string form of `Key`.
+    private var storage: [String: Any] = [:]
 
-    /// Parses a single-character numeric string. Returns `nil` if `string` is not a
-    /// decimal representation of a value in `0...9`.
-    init?(string: String) {
-        guard
-            let int = Int(string),
-            int <= 9,
-            int >= 0
-        else {
-            return nil
-        }
-        self.init(rawValue: int)
+    /// Creates an empty in-memory store.
+    init() {}
+
+    /// Preloads the store with `initial` entries (string-keyed for convenience).
+    init(initial: [String: Any]) {
+        storage = initial
     }
-}
 
-extension Digit: CustomStringConvertible {
-
-    /// The digit's decimal representation (`"0"` through `"9"`).
-    var description: String {
-        String(describing: rawValue)
+    func save(value: Any, for key: String) {
+        storage[key] = value
     }
+
+    func loadValue(for key: String) -> Any? {
+        storage[key]
+    }
+
+    func deleteValue(for key: String) {
+        storage.removeValue(forKey: key)
+    }
+
+    /// Direct access for test assertions (read-only snapshot).
+    var _allEntries: [String: Any] { storage }
 }
