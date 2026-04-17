@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 enum SignTransactionUserAction {
@@ -66,24 +65,20 @@ final class SignTransactionViewModel: BaseViewModel<
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
-        bag <~ [
+        [
             input.fromView.signAndSendTrigger
                 .withLatestFrom(encryptionPassword)
                 .flatMapLatest {
                     self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userDid(.sign($0)) })
-                .drive(),
-        ]
+                .sink { userDid(.sign($0)) },
+        ].forEach { $0.store(in: &cancellables) }
 
-        let encryptionPasswordValidation = Driver.merge(
-            // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassword.mapToVoid().map { true },
-            input.fromView.isEditingEncryptionPassword
-        ).withLatestFrom(encryptionPasswordValidationValue) {
+        let encryptionPasswordValidation = // map `editingChanged` to `editingDidBegin`
+            input.fromView.encryptionPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingEncryptionPassword).eraseToAnyPublisher().withLatestFrom(encryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit(
             directlyDisplayErrorsTrackedBy: errorTracker
@@ -91,11 +86,11 @@ final class SignTransactionViewModel: BaseViewModel<
             WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0)
         }
 
-        let isSignButtonEnabled = encryptionPasswordValidation.map(\.isValid)
+        let isSignButtonEnabled: AnyPublisher<Bool, Never> = encryptionPasswordValidation.map(\.isValid).eraseToAnyPublisher()
 
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
-            isSignButtonLoading: activityIndicator.asDriver(),
+            isSignButtonLoading: activityIndicator.asPublisher(),
             encryptionPasswordValidation: encryptionPasswordValidation,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
@@ -104,16 +99,16 @@ final class SignTransactionViewModel: BaseViewModel<
 
 extension SignTransactionViewModel {
     struct InputFromView {
-        let encryptionPassword: Driver<String>
-        let isEditingEncryptionPassword: Driver<Bool>
-        let signAndSendTrigger: Driver<Void>
+        let encryptionPassword: AnyPublisher<String, Never>
+        let isEditingEncryptionPassword: AnyPublisher<Bool, Never>
+        let signAndSendTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isSignButtonEnabled: Driver<Bool>
-        let isSignButtonLoading: Driver<Bool>
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let inputBecomeFirstResponder: Driver<Void>
+        let isSignButtonEnabled: AnyPublisher<Bool, Never>
+        let isSignButtonLoading: AnyPublisher<Bool, Never>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
     }
 
     struct InputValidator {

@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 
@@ -46,15 +45,13 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .sink { userDid(.cancel) },
 
             input.fromView.understandTrigger
-                .do(onNext: { userDid(.understand) })
-                .drive(),
-        ]
+                .sink { userDid(.understand) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output()
     }
@@ -62,7 +59,7 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
 extension EnsureThatYouAreNotBeingWatchedViewModel {
     struct InputFromView {
-        let understandTrigger: Driver<Void>
+        let understandTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}

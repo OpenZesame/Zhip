@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - AnalyticsPermissionNavigation
 
@@ -52,24 +51,20 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let hasAnsweredAnalyticsPermissionsQuestionTrigger = Driver.merge(
-            input.fromView.acceptTrigger.map { true },
-            input.fromView.declineTrigger.map { false }
-        )
+        let hasAnsweredAnalyticsPermissionsQuestionTrigger = input.fromView.acceptTrigger.map { true }.merge(with: input.fromView.declineTrigger.map { false }).eraseToAnyPublisher()
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive().disposed(by: bag)
+                .sink { userDid(.dismiss) }.store(in: &cancellables)
         }
 
-        bag <~ [
-            hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
+        [
+            hasAnsweredAnalyticsPermissionsQuestionTrigger.sink { [unowned self] in
                 useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
                 navigator.next(.answerQuestionAboutCrashReporting)
-            }).drive(),
-        ]
+            },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             areButtonsEnabled: input.fromView.isHaveReadDisclaimerCheckboxChecked
@@ -79,12 +74,12 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
 
 extension AskForCrashReportingPermissionsViewModel {
     struct InputFromView {
-        let isHaveReadDisclaimerCheckboxChecked: Driver<Bool>
-        let acceptTrigger: Driver<Void>
-        let declineTrigger: Driver<Void>
+        let isHaveReadDisclaimerCheckboxChecked: AnyPublisher<Bool, Never>
+        let acceptTrigger: AnyPublisher<Void, Never>
+        let declineTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let areButtonsEnabled: Driver<Bool>
+        let areButtonsEnabled: AnyPublisher<Bool, Never>
     }
 }

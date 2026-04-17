@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class BackUpKeystoreView: ScrollableStackViewOwner {
@@ -43,15 +42,15 @@ final class BackUpKeystoreView: ScrollableStackViewOwner {
 extension BackUpKeystoreView: ViewModelled {
     typealias ViewModel = BackUpKeystoreViewModel
 
-    func populate(with viewModel: BackUpKeystoreViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: BackUpKeystoreViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.keystore --> keystoreTextView.rx.text,
+            viewModel.keystore --> keystoreTextView.textBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyTrigger: copyButton.rx.tap.asDriver()
+            copyTrigger: copyButton.tapPublisher
         )
     }
 }

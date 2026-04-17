@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 // MARK: - RestoreWithKeystoreView
@@ -31,18 +30,18 @@ import UIKit
 final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
     typealias ViewModel = RestoreWalletUsingKeystoreViewModel
 
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var keystoreTextView = UITextView()
     private lazy var encryptionPasswordField = FloatingLabelTextField()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
-            keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing.asDriver(),
-            isEditingKeystore: keystoreTextView.rx.isEditing,
-            keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing
+            keystoreDidBeginEditing: keystoreTextView.didBeginEditingPublisher,
+            isEditingKeystore: keystoreTextView.isEditingPublisher,
+            keystoreText: keystoreTextView.textPublisher.orEmpty.removeDuplicates().eraseToAnyPublisher(),
+            encryptionPassword: encryptionPasswordField.textPublisher.orEmpty.removeDuplicates().eraseToAnyPublisher(),
+            isEditingEncryptionPassword: encryptionPasswordField.isEditingPublisher
         )
     )
 
@@ -71,18 +70,18 @@ private extension RestoreUsingKeystoreView {
     }
 
     func setupViewModelBinding() {
-        bag <~ [
-            viewModelOutput.keyRestorationValidation --> keystoreTextView.rx.validationByBorder,
-            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
-            viewModelOutput.keystoreTextFieldPlaceholder --> keystoreTextView.rx.text,
-            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
-        ]
+        [
+            viewModelOutput.keyRestorationValidation --> keystoreTextView.validationBorderBinder,
+            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.validationBinder,
+            viewModelOutput.keystoreTextFieldPlaceholder --> keystoreTextView.textBinder,
+            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.placeholderBinder,
+        ].forEach { $0.store(in: &cancellables) }
     }
 }
 
-extension Reactive where Base: UITextView {
-    var validationByBorder: Binder<AnyValidation> {
-        Binder(base) {
+extension UITextView {
+    var validationBorderBinder: Binder<AnyValidation> {
+        Binder(self) {
             $0.addBorderBy(validation: $1)
         }
     }

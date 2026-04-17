@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 
 // MARK: - ChooseWalletUserAction
 
@@ -44,23 +43,21 @@ final class ChooseWalletViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        bag <~ [
+        [
             input.fromView.createNewWalletTrigger
-                .do(onNext: { userIntends(to: .createNewWallet) })
-                .drive(),
+                .sink { userIntends(to: .createNewWallet) },
 
             input.fromView.restoreWalletTrigger
-                .do(onNext: { userIntends(to: .restoreWallet) })
-                .drive(),
-        ]
+                .sink { userIntends(to: .restoreWallet) },
+        ].forEach { $0.store(in: &cancellables) }
         return Output()
     }
 }
 
 extension ChooseWalletViewModel {
     struct InputFromView {
-        let createNewWalletTrigger: Driver<Void>
-        let restoreWalletTrigger: Driver<Void>
+        let createNewWalletTrigger: AnyPublisher<Void, Never>
+        let restoreWalletTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}

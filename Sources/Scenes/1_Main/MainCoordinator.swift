@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -34,8 +33,8 @@ enum MainCoordinatorNavigationStep {
 final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
-    private let deeplinkedTransaction: Driver<TransactionIntent>
-    private let updateBalanceSubject = PublishSubject<Void>()
+    private let deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
+    private let updateBalanceSubject = PassthroughSubject<Void, Never>()
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
@@ -43,13 +42,13 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
         navigationController: UINavigationController,
         deepLinkGenerator: DeepLinkGenerator,
         useCaseProvider: UseCaseProvider,
-        deeplinkedTransaction: Driver<TransactionIntent>
+        deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in toSendPrefilTransaction() }).drive()
+        deeplinkedTransaction.mapToVoid().sink { [unowned self] in toSendPrefilTransaction() }.store(in: &cancellables)
     }
 
     override func start(didStart: Completion? = nil) {
@@ -75,7 +74,7 @@ private extension MainCoordinator {
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             walletUseCase: useCaseProvider.makeWalletUseCase(),
-            updateBalanceTrigger: updateBalanceSubject.asDriverOnErrorReturnEmpty()
+            updateBalanceTrigger: updateBalanceSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
 
         push(
@@ -144,6 +143,6 @@ private extension MainCoordinator {
 
 private extension MainCoordinator {
     func triggerFetchingOfBalance() {
-        updateBalanceSubject.onNext(())
+        updateBalanceSubject.send(())
     }
 }

@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -47,30 +46,29 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keyPair = Driver.just(keyPair)
+        let keyPair = Just(keyPair).eraseToAnyPublisher()
 
-        let privateKey = keyPair.map { $0.privateKey.asHexStringLength64() }
-        let publicKeyUncompressed = keyPair.map(\.publicKey.hex.uncompressed)
+        let privateKey: AnyPublisher<String, Never> = keyPair.map(\.privateKey.rawRepresentation.asHex).eraseToAnyPublisher()
+        let publicKeyUncompressed: AnyPublisher<String, Never> = keyPair.map(\.publicKey.x963Representation.asHex).eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.finish) })
-                .drive(),
+                .sink { userDid(.finish) },
 
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
-                .do(onNext: {
+                .sink {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
-                }).drive(),
+                        .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
+                },
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
-                .do(onNext: {
+                .sink {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
-                }).drive(),
-        ]
+                        .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
+                },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             privateKey: privateKey,
@@ -81,12 +79,12 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
 
 extension BackUpRevealedKeyPairViewModel {
     struct InputFromView {
-        let copyPrivateKeyTrigger: Driver<Void>
-        let copyPublicKeyTrigger: Driver<Void>
+        let copyPrivateKeyTrigger: AnyPublisher<Void, Never>
+        let copyPublicKeyTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let privateKey: Driver<String>
-        let publicKeyUncompressed: Driver<String>
+        let privateKey: AnyPublisher<String, Never>
+        let publicKeyUncompressed: AnyPublisher<String, Never>
     }
 }

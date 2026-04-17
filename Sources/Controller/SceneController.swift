@@ -1,28 +1,6 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
-import RxSwift
+import Combine
 import UIKit
 
 /// The "Single-Line Controller" base class
@@ -32,13 +10,15 @@ class SceneController<View: ContentView>: AbstractController
 {
     typealias ViewModel = View.ViewModel
 
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     let viewModel: ViewModel
 
-    private lazy var rootContentView: View = // Beware, here be dragons!
-        // For some unknown reason (Xcode 10.2 / Swift 5 being drunk) Xcode decided to interpret `View()` (which worked
-        // fine before Xcode 10.2)
-        // as `UIView.init:frame:`. Why? Oh Why?! This terribly ugly hack fixes that.
+    // Lifecycle subjects – fired in overrides below; passed into InputFromController.
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+    private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
+    private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
+
+    private lazy var rootContentView: View =
         // swiftlint:disable:next force_cast
         (View.self as EmptyInitializable.Type).init() as! View
 
@@ -81,11 +61,19 @@ class SceneController<View: ContentView>: AbstractController
         }
 
         navigationController?.interactivePopGestureRecognizer?.isEnabled = !(self is BackButtonHiding)
+
+        viewDidLoadSubject.send(())
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyLayoutIfNeeded()
+        viewWillAppearSubject.send(())
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidAppearSubject.send(())
     }
 }
 
@@ -97,34 +85,31 @@ private extension SceneController {
     }
 
     func makeAndSubscribeToInputFromController() -> InputFromController {
-        let titleSubject = PublishSubject<String>()
-        let leftBarButtonContentSubject = PublishSubject<BarButtonContent>()
-        let rightBarButtonContentSubject = PublishSubject<BarButtonContent>()
-        let toastSubject = PublishSubject<Toast>()
+        let titleSubject = PassthroughSubject<String, Never>()
+        let leftBarButtonContentSubject = PassthroughSubject<BarButtonContent, Never>()
+        let rightBarButtonContentSubject = PassthroughSubject<BarButtonContent, Never>()
+        let toastSubject = PassthroughSubject<Toast, Never>()
 
-        bag <~ [
-            titleSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                title = $0
-            }).drive(),
-
-            toastSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
+        [
+            titleSubject.receive(on: RunLoop.main).sink { [weak self] in self?.title = $0 },
+            toastSubject.receive(on: RunLoop.main).sink { [weak self] in
+                guard let self else { return }
                 $0.present(using: self)
-            }).drive(),
+            },
+            leftBarButtonContentSubject.receive(on: RunLoop.main).sink { [weak self] in
+                self?.setLeftBarButtonUsing(content: $0)
+            },
+            rightBarButtonContentSubject.receive(on: RunLoop.main).sink { [weak self] in
+                self?.setRightBarButtonUsing(content: $0)
+            },
+        ].forEach { $0.store(in: &cancellables) }
 
-            leftBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                setLeftBarButtonUsing(content: $0)
-            }).drive(),
-
-            rightBarButtonContentSubject.asDriverOnErrorReturnEmpty().do(onNext: { [unowned self] in
-                setRightBarButtonUsing(content: $0)
-            }).drive(),
-        ]
         return InputFromController(
-            viewDidLoad: rx.viewDidLoad,
-            viewWillAppear: rx.viewWillAppear,
-            viewDidAppear: rx.viewDidAppear,
-            leftBarButtonTrigger: leftBarButtonSubject.asDriverOnErrorReturnEmpty(),
-            rightBarButtonTrigger: rightBarButtonSubject.asDriverOnErrorReturnEmpty(),
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
+            viewWillAppear: viewWillAppearSubject.eraseToAnyPublisher(),
+            viewDidAppear: viewDidAppearSubject.eraseToAnyPublisher(),
+            leftBarButtonTrigger: leftBarButtonSubject.eraseToAnyPublisher(),
+            rightBarButtonTrigger: rightBarButtonSubject.eraseToAnyPublisher(),
             titleSubject: titleSubject,
             leftBarButtonContentSubject: leftBarButtonContentSubject,
             rightBarButtonContentSubject: rightBarButtonContentSubject,
@@ -137,14 +122,9 @@ private extension SceneController {
         let inputFromController = makeAndSubscribeToInputFromController()
 
         let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
-
-        // Transform input from view and controller into output used to update UI
-        // Navigation logic is handled by the Coordinator listening to navigation
-        // steps in passed to the ViewModels `navigator` (`Stepper`).
         let output = viewModel.transform(input: input)
 
-        // Update UI, dispose the array of `Disposable`s
-        rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
+        rootContentView.populate(with: output).forEach { $0.store(in: &cancellables) }
     }
 
     func applyLayoutIfNeeded() {
@@ -162,13 +142,9 @@ private extension SceneController {
 
         if let lastLayout = barLayoutingNavController.lastLayout {
             let layout = barLayoutOwner.navigationBarLayout
-            guard layout != lastLayout else {
-                // do not apply layout if same, to avoid potential gui glitches
-                return
-            }
+            guard layout != lastLayout else { return }
             barLayoutingNavController.applyLayout(layout)
         } else {
-            // always apply layout if this is the first scene of this navigation controller
             barLayoutingNavController.applyLayout(barLayoutOwner.navigationBarLayout)
         }
     }

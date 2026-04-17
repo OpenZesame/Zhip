@@ -46,8 +46,8 @@ class CharacterSetTests: XCTestCase {
     func testZilAmountFromDecimalStringWithComma() {
         // AmountFromText normalizes the separator before parsing,
         // so both "." and "," must work regardless of locale.
-        XCTAssertNoThrow(try AmountFromText<ZilAmount>(string: "0.01", unit: .zil))
-        XCTAssertNoThrow(try AmountFromText<ZilAmount>(string: "0,01", unit: .zil))
+        XCTAssertNoThrow(try AmountFromText<Amount>(string: "0.01", unit: .zil))
+        XCTAssertNoThrow(try AmountFromText<Amount>(string: "0,01", unit: .zil))
     }
 }
 

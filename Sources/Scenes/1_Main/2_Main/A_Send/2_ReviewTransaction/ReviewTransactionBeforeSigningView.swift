@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class ReviewTransactionBeforeSigningView: ScrollableStackViewOwner {
@@ -68,20 +67,19 @@ extension ReviewTransactionBeforeSigningView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            isHasReviewedPaymentCheckboxChecked: hasReviewedPaymentCheckBox.rx.isChecked.asDriverOnErrorReturnEmpty(),
-            hasReviewedNowProceedWithSigningTrigger: acceptPaymentProceedToSigningButton.rx.tap.asDriver()
+            isHasReviewedPaymentCheckboxChecked: hasReviewedPaymentCheckBox.isCheckedPublisher,
+            hasReviewedNowProceedWithSigningTrigger: acceptPaymentProceedToSigningButton.tapPublisher
         )
     }
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isHasReviewedNowProceedWithSigningButtonEnabled --> acceptPaymentProceedToSigningButton.rx
-                .isEnabled,
-            viewModel.recipientBech32Address --> recipientBech32AddressView.rx.value,
-            viewModel.recipientLegacyAddress --> recipientLegacyAddressView.rx.value,
-            viewModel.amountToPay --> amountToSendView.rx.value,
-            viewModel.paymentFee --> transactionFeeView.rx.value,
-            viewModel.totalCost --> totalCostOfTransactionView.rx.value,
+            viewModel.isHasReviewedNowProceedWithSigningButtonEnabled --> acceptPaymentProceedToSigningButton.isEnabledBinder,
+            viewModel.recipientBech32Address --> recipientBech32AddressView.valueBinder,
+            viewModel.recipientLegacyAddress --> recipientLegacyAddressView.valueBinder,
+            viewModel.amountToPay --> amountToSendView.valueBinder,
+            viewModel.paymentFee --> transactionFeeView.valueBinder,
+            viewModel.totalCost --> totalCostOfTransactionView.valueBinder,
         ]
     }
 }

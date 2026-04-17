@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 enum ReviewTransactionBeforeSigningUserAction {
@@ -49,13 +48,12 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
         // MARK: - Validate input
 
-        bag <~ [
+        [
             input.fromView.hasReviewedNowProceedWithSigningTrigger.map { self.paymentToReview }
-                .do(onNext: { userDid(.acceptPaymentProceedWithSigning($0)) })
-                .drive(),
-        ]
+                .sink { userDid(.acceptPaymentProceedWithSigning($0)) },
+        ].forEach { $0.store(in: &cancellables) }
 
-        let payment = Driver.just(paymentToReview)
+        let payment = Just(paymentToReview).eraseToAnyPublisher()
         let recipientLegacyAddress = payment.map(\.recipient)
         let recipientBech32Address = payment.map { try? Bech32Address(ethStyleAddress: $0.recipient, network: network) }
             .filterNil()
@@ -86,28 +84,28 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
         return Output(
             isHasReviewedNowProceedWithSigningButtonEnabled: input.fromView.isHasReviewedPaymentCheckboxChecked,
-            recipientLegacyAddress: recipientLegacyAddress.map(\.asString),
-            recipientBech32Address: recipientBech32Address.map(\.asString),
-            amountToPay: amountToPay,
-            paymentFee: paymentFee,
-            totalCost: totalCost
+            recipientLegacyAddress: recipientLegacyAddress.map(\.asString).eraseToAnyPublisher(),
+            recipientBech32Address: recipientBech32Address.map(\.asString).eraseToAnyPublisher(),
+            amountToPay: amountToPay.eraseToAnyPublisher(),
+            paymentFee: paymentFee.eraseToAnyPublisher(),
+            totalCost: totalCost.eraseToAnyPublisher()
         )
     }
 }
 
 extension ReviewTransactionBeforeSigningViewModel {
     struct InputFromView {
-        let isHasReviewedPaymentCheckboxChecked: Driver<Bool>
-        let hasReviewedNowProceedWithSigningTrigger: Driver<Void>
+        let isHasReviewedPaymentCheckboxChecked: AnyPublisher<Bool, Never>
+        let hasReviewedNowProceedWithSigningTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isHasReviewedNowProceedWithSigningButtonEnabled: Driver<Bool>
-        let recipientLegacyAddress: Driver<String>
-        let recipientBech32Address: Driver<String>
-        let amountToPay: Driver<String>
-        let paymentFee: Driver<String>
-        let totalCost: Driver<String>
+        let isHasReviewedNowProceedWithSigningButtonEnabled: AnyPublisher<Bool, Never>
+        let recipientLegacyAddress: AnyPublisher<String, Never>
+        let recipientBech32Address: AnyPublisher<String, Never>
+        let amountToPay: AnyPublisher<String, Never>
+        let paymentFee: AnyPublisher<String, Never>
+        let totalCost: AnyPublisher<String, Never>
     }
 }
 
@@ -116,7 +114,7 @@ private extension Payment {
         (try? Payment.estimatedTotalTransactionFee(gasPrice: gasPrice, gasLimit: gasLimit)) ?? gasPrice.asQa
     }
 
-    var totalCostInZil: ZilAmount {
+    var totalCostInZil: Amount {
         if let estimatedTotal = try? Payment.estimatedTotalCostOfTransaction(
             amount: amount,
             gasPrice: gasPrice,
@@ -126,7 +124,7 @@ private extension Payment {
         } else {
             let totalInQa = amount.asQa + transactionFee
             // swiftlint:disable:next force_try
-            return try! ZilAmount(qa: totalInQa)
+            return try! Amount(qa: totalInQa)
         }
     }
 }

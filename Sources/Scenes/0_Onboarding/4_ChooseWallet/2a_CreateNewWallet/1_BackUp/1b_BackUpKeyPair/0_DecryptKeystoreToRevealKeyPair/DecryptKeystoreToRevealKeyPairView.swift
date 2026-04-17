@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class DecryptKeystoreToRevealKeyPairView: ScrollableStackViewOwner {
@@ -46,19 +45,19 @@ final class DecryptKeystoreToRevealKeyPairView: ScrollableStackViewOwner {
 extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
     typealias ViewModel = DecryptKeystoreToRevealKeyPairViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
-            viewModel.isRevealButtonLoading --> revealButton.rx.isLoading,
-            viewModel.isRevealButtonEnabled --> revealButton.rx.isEnabled,
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.validationBinder,
+            viewModel.isRevealButtonLoading --> revealButton.isLoadingBinder,
+            viewModel.isRevealButtonEnabled --> revealButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
-            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            revealTrigger: revealButton.rx.tap.asDriver()
+            encryptionPassword: encryptionPasswordField.textPublisher.orEmpty,
+            isEditingEncryptionPassword: encryptionPasswordField.isEditingPublisher,
+            revealTrigger: revealButton.tapPublisher
         )
     }
 }

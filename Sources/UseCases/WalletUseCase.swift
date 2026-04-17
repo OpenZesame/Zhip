@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 protocol SecurePersisting: AnyObject {
@@ -32,25 +31,25 @@ protocol SecurePersisting: AnyObject {
 }
 
 protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet>
-    func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet>
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error>
+    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error>
     func save(wallet: Wallet)
     func deleteWallet()
 
     /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool>
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair>
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error>
     func loadWallet() -> Wallet?
     var hasConfiguredWallet: Bool { get }
 }
 
 extension WalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore inside the Wallet
-    func verify(password: String, forWallet wallet: Wallet) -> Observable<Bool> {
+    func verify(password: String, forWallet wallet: Wallet) -> AnyPublisher<Bool, Swift.Error> {
         verify(password: password, forKeystore: wallet.keystore)
     }
 
-    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> Observable<KeyPair> {
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }
@@ -74,11 +73,7 @@ extension WalletUseCase where Self: SecurePersisting {
 }
 
 extension WalletUseCase {
-    var wallet: Observable<Wallet?> {
-        Single.create { [unowned self] single in
-            single(.success(loadWallet()))
-            return Disposables.create {}
-        }
-        .asObservable()
+    var wallet: AnyPublisher<Wallet?, Never> {
+        Just(loadWallet()).eraseToAnyPublisher()
     }
 }

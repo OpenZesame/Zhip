@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -40,18 +40,16 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
-        self.bag <~ scene.viewModel.navigator.navigation
-            .asObservable()
-            .observe(on: MainScheduler.asyncInstance)
-            .do(onNext: { [weak self] userDid in
+        scene.viewModel.navigator.navigation
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userDid in
                 switch userDid {
                 case .unlockApp:
                     self?.appIsUnlockedEmitBufferedDeeplinks()
                     self?.restoreMainNavigationStack()
                 }
-            })
-            .asDriverOnErrorReturnEmpty()
-            .drive()
+            }
+            .store(in: &cancellables)
         return scene
     }()
 
@@ -102,7 +100,7 @@ private extension AppCoordinator {
             navigationController: navigationController,
             deepLinkGenerator: DeepLinkGenerator(),
             useCaseProvider: useCaseProvider,
-            deeplinkedTransaction: deepLinkHandler.navigation.map(\.asTransaction).filterNil()
+            deeplinkedTransaction: deepLinkHandler.navigation.map(\.asTransaction).filterNil().eraseToAnyPublisher()
         )
 
         start(coordinator: main, transition: .replace, didStart: { [unowned self] in

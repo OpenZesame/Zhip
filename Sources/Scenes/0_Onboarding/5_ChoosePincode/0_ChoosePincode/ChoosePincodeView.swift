@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-import RxSwift
+import Combine
 import UIKit
 
 final class ChoosePincodeView: ScrollableStackViewOwner {
@@ -47,15 +47,15 @@ extension ChoosePincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver(),
-            doneTrigger: doneButton.rx.tap.asDriver()
+            pincode: inputPincodeView.pincodePublisher,
+            doneTrigger: doneButton.tapPublisher
         )
     }
 
-    func populate(with viewModel: ChoosePincodeViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ChoosePincodeViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
-            viewModel.isDoneButtonEnabled --> doneButton.rx.isEnabled,
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.becomeFirstResponderBinder,
+            viewModel.isDoneButtonEnabled --> doneButton.isEnabledBinder,
         ]
     }
 }

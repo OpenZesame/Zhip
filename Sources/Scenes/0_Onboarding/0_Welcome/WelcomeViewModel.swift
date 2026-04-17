@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 
@@ -44,11 +43,10 @@ final class WelcomeViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromView.startTrigger
-                .do(onNext: { userIntends(to: .start) })
-                .drive(),
-        ]
+                .sink { userIntends(to: .start) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output()
     }
@@ -56,7 +54,7 @@ final class WelcomeViewModel: BaseViewModel<
 
 extension WelcomeViewModel {
     struct InputFromView {
-        let startTrigger: Driver<Void>
+        let startTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}

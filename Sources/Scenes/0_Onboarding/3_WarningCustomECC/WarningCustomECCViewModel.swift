@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - WarningCustomECCUserAction
 
@@ -52,24 +51,23 @@ final class WarningCustomECCViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
+        let isAcceptButtonEnabled: AnyPublisher<Bool, Never> = input.fromView.didScrollToBottom.map { true }.eraseToAnyPublisher()
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive().disposed(by: bag)
+                .sink { userDid(.dismiss) }.store(in: &cancellables)
         }
 
-        bag <~ [
-            input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
+        [
+            input.fromView.didAcceptTerms.sink { [unowned self] in
                 useCase.didAcceptCustomECCWarning()
                 userDid(.acceptRisks)
-            }).drive(),
-        ]
+            },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            isAcceptButtonVisible: Driver.just(!isDismissible),
+            isAcceptButtonVisible: Just(!isDismissible).eraseToAnyPublisher(),
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
     }
@@ -77,12 +75,12 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
 extension WarningCustomECCViewModel {
     struct InputFromView {
-        let didScrollToBottom: Driver<Void>
-        let didAcceptTerms: Driver<Void>
+        let didScrollToBottom: AnyPublisher<Void, Never>
+        let didAcceptTerms: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isAcceptButtonVisible: Driver<Bool>
-        let isAcceptButtonEnabled: Driver<Bool>
+        let isAcceptButtonVisible: AnyPublisher<Bool, Never>
+        let isAcceptButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

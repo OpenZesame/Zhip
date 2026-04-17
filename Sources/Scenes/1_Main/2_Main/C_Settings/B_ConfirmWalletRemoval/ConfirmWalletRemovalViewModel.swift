@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 
@@ -52,15 +51,13 @@ final class ConfirmWalletRemovalViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .sink { userDid(.cancel) },
 
             input.fromView.confirmTrigger
-                .do(onNext: { userDid(.confirm) })
-                .drive(),
-        ]
+                .sink { userDid(.confirm) },
+        ].forEach { $0.store(in: &cancellables) }
 
         // MARK: Return output
 
@@ -72,11 +69,11 @@ final class ConfirmWalletRemovalViewModel: BaseViewModel<
 
 extension ConfirmWalletRemovalViewModel {
     struct InputFromView {
-        let confirmTrigger: Driver<Void>
-        let isWalletBackedUpCheckboxChecked: Driver<Bool>
+        let confirmTrigger: AnyPublisher<Void, Never>
+        let isWalletBackedUpCheckboxChecked: AnyPublisher<Bool, Never>
     }
 
     struct Output {
-        let isConfirmButtonEnabled: Driver<Bool>
+        let isConfirmButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

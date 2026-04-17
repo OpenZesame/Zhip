@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class WelcomeView: UIView {
@@ -54,7 +52,7 @@ extension WelcomeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            startTrigger: startButton.rx.tap.asDriverOnErrorReturnEmpty()
+            startTrigger: startButton.tapPublisher
         )
     }
 }

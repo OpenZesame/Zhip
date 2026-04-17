@@ -27,12 +27,12 @@ import Zesame
 struct SufficientFundsValidator: InputValidator {
     enum Error: Swift.Error {
         case insufficientFunds
-        case amountError(AmountError<ZilAmount>)
+        case amountError(AmountError<Amount>)
     }
 
     // swiftlint:disable:next large_tuple
-    func validate(input: (amount: ZilAmount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: ZilAmount?))
-        -> Validation<ZilAmount, Error>
+    func validate(input: (amount: Amount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: Amount?))
+        -> Validation<Amount, Error>
     {
         guard let amount = input.amount, let gasLimit = input.gasLimit, let gasPrice = input.gasPrice,
               let balance = input.balance
@@ -49,10 +49,10 @@ struct SufficientFundsValidator: InputValidator {
             guard totalCost <= balance else {
                 return self.error(Error.insufficientFunds)
             }
-        } catch let error as AmountError<ZilAmount> {
+        } catch let error as AmountError<Amount> {
             return self.error(Error.amountError(error))
         } catch let otherError {
-            let zilAmountError: AmountError<ZilAmount> = .init(error: otherError)
+            let zilAmountError: AmountError<Amount> = .init(error: otherError)
             return self.error(Error.amountError(zilAmountError))
         }
 

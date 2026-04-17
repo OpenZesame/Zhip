@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -36,9 +35,9 @@ final class BackUpKeystoreViewModel: BaseViewModel<
     BackUpKeystoreViewModel.InputFromView,
     BackUpKeystoreViewModel.Output
 > {
-    private let keystore: Driver<Keystore>
+    private let keystore: AnyPublisher<Keystore, Never>
 
-    init(keystore: Driver<Keystore>) {
+    init(keystore: AnyPublisher<Keystore, Never>) {
         self.keystore = keystore
     }
 
@@ -47,21 +46,19 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keystore = keystore.map(\.asPrettyPrintedJSONString)
+        let keystore: AnyPublisher<String, Never> = keystore.map(\.asPrettyPrintedJSONString).eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.finished) })
-                .drive(),
+                .sink { userDid(.finished) },
 
             input.fromView.copyTrigger.withLatestFrom(keystore)
-                .do(onNext: {
+                .sink {
                     UIPasteboard.general.string = $0
                     let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
-                    input.fromController.toastSubject.onNext(toast)
-                })
-                .drive(),
-        ]
+                    input.fromController.toastSubject.send(toast)
+                },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             keystore: keystore
@@ -70,17 +67,17 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 }
 
 extension BackUpKeystoreViewModel {
-    convenience init(wallet: Driver<Wallet>) {
-        self.init(keystore: wallet.map(\.keystore))
+    convenience init(wallet: AnyPublisher<Wallet, Never>) {
+        self.init(keystore: wallet.map(\.keystore).eraseToAnyPublisher())
     }
 }
 
 extension BackUpKeystoreViewModel {
     struct InputFromView {
-        let copyTrigger: Driver<Void>
+        let copyTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let keystore: Driver<String>
+        let keystore: AnyPublisher<String, Never>
     }
 }

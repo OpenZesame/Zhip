@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 
@@ -41,14 +40,14 @@ final class ScanQRCodeViewModel: BaseViewModel<
 > {
     typealias ScannedQRResult = Result<TransactionIntent, Swift.Error>
 
-    private let startScanningSubject = BehaviorSubject(value: ())
+    private let startScanningSubject = CurrentValueSubject<Void, Never>(())
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
-        let transactionIntentResult: Driver<ScannedQRResult> = input.fromView.scannedQrCodeString.map {
+        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = input.fromView.scannedQrCodeString.map {
             guard var stringFromQR = $0 else {
                 return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
             }
@@ -63,42 +62,41 @@ final class ScanQRCodeViewModel: BaseViewModel<
             } catch {
                 return ScannedQRResult.failure(error)
             }
-        }
+        }.eraseToAnyPublisher()
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .sink { userDid(.cancel) },
 
-            transactionIntentResult.do(onNext: { [unowned self] in
+            transactionIntentResult.sink { [unowned self] in
                 switch $0 {
                 case .failure:
                     let toast = Toast(
                         String(localized: .ScanQRCode.incompatibleQRTitle),
                         dismissing: .manual(dismissButtonTitle: String(localized: .ScanQRCode.dismiss))
                     ) {
-                        self.startScanningSubject.onNext(())
+                        self.startScanningSubject.send(())
                     }
-                    input.fromController.toastSubject.onNext(toast)
+                    input.fromController.toastSubject.send(toast)
                 case let .success(transactionIntent): userDid(.scanQRContainingTransaction(transactionIntent))
                 }
-            }).drive(),
-        ]
+            },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            startScanning: startScanningSubject.asDriverOnErrorReturnEmpty()
+            startScanning: startScanningSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
     }
 }
 
 extension ScanQRCodeViewModel {
     struct InputFromView {
-        let scannedQrCodeString: Driver<String?>
+        let scannedQrCodeString: AnyPublisher<String?, Never>
     }
 
     struct Output {
-        let startScanning: Driver<Void>
+        let startScanning: AnyPublisher<Void, Never>
     }
 }

@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
@@ -36,17 +35,17 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
     private lazy var encryptionPasswordField = FloatingLabelTextField()
     private lazy var confirmEncryptionPasswordField = FloatingLabelTextField()
 
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
-            privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
-            isEditingPrivateKey: privateKeyField.rx.isEditing,
-            showPrivateKeyTrigger: showPrivateKeyButton.rx.tap.asDriver(),
-            newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
-            isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            confirmEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
-            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing
+            privateKey: privateKeyField.textPublisher.orEmpty,
+            isEditingPrivateKey: privateKeyField.isEditingPublisher,
+            showPrivateKeyTrigger: showPrivateKeyButton.tapPublisher,
+            newEncryptionPassword: encryptionPasswordField.textPublisher.orEmpty,
+            isEditingNewEncryptionPassword: encryptionPasswordField.isEditingPublisher,
+            confirmEncryptionPassword: confirmEncryptionPasswordField.textPublisher.orEmpty,
+            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.isEditingPublisher
         )
     )
 
@@ -81,20 +80,23 @@ private extension RestoreUsingPrivateKeyView {
     }
 
     func setupViewModelBinding() {
-        bag <~ [
-            viewModelOutput.togglePrivateKeyVisibilityButtonTitle --> showPrivateKeyButton.rx.title(for: .normal),
-            viewModelOutput.privateKeyFieldIsSecureTextEntry --> privateKeyField.rx.isSecureTextEntry,
-            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
-            viewModelOutput.privateKeyValidation --> privateKeyField.rx.validation,
-            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
-            viewModelOutput.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.rx.validation,
-        ]
+        let showPrivateKeyButtonTitleBinder = Binder<String>(showPrivateKeyButton) { button, title in
+            button.setTitle(title, for: .normal)
+        }
+        [
+            viewModelOutput.togglePrivateKeyVisibilityButtonTitle --> showPrivateKeyButtonTitleBinder,
+            viewModelOutput.privateKeyFieldIsSecureTextEntry --> privateKeyField.isSecureTextEntryBinder,
+            viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.placeholderBinder,
+            viewModelOutput.privateKeyValidation --> privateKeyField.validationBinder,
+            viewModelOutput.encryptionPasswordValidation --> encryptionPasswordField.validationBinder,
+            viewModelOutput.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.validationBinder,
+        ].forEach { $0.store(in: &cancellables) }
     }
 }
 
-extension Reactive where Base: UITextField {
-    var isSecureTextEntry: Binder<Bool> {
-        Binder(base) {
+extension UITextField {
+    var isSecureTextEntryBinder: Binder<Bool> {
+        Binder(self) {
             $0.isSecureTextEntry = $1
         }
     }

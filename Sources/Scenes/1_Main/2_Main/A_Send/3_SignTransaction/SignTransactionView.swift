@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class SignTransactionView: ScrollableStackViewOwner {
@@ -46,20 +45,20 @@ final class SignTransactionView: ScrollableStackViewOwner {
 extension SignTransactionView: ViewModelled {
     typealias ViewModel = SignTransactionViewModel
 
-    func populate(with viewModel: ViewModel.OutputVM) -> [Disposable] {
+    func populate(with viewModel: ViewModel.OutputVM) -> [AnyCancellable] {
         [
-            viewModel.inputBecomeFirstResponder --> encryptionPasswordField.rx.becomeFirstResponder,
-            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
-            viewModel.isSignButtonEnabled --> signButton.rx.isEnabled,
-            viewModel.isSignButtonLoading --> signButton.rx.isLoading,
+            viewModel.inputBecomeFirstResponder --> encryptionPasswordField.becomeFirstResponderBinder,
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.validationBinder,
+            viewModel.isSignButtonEnabled --> signButton.isEnabledBinder,
+            viewModel.isSignButtonLoading --> signButton.isLoadingBinder,
         ]
     }
 
     var inputFromView: ViewModel.InputFromView {
         SignTransactionViewModel.InputFromView(
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
-            isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
+            encryptionPassword: encryptionPasswordField.textPublisher.orEmpty,
+            isEditingEncryptionPassword: encryptionPasswordField.isEditingPublisher,
+            signAndSendTrigger: signButton.tapPublisher
         )
     }
 }

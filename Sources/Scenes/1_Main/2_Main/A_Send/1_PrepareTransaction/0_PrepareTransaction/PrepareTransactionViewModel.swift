@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 // MARK: - PrepareTransactionUserAction
@@ -37,7 +36,7 @@ enum PrepareTransactionUserAction {
 
 // MARK: - PrepareTransactionViewModel
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 final class PrepareTransactionViewModel: BaseViewModel<
     PrepareTransactionUserAction,
     PrepareTransactionViewModel.InputFromView,
@@ -45,12 +44,12 @@ final class PrepareTransactionViewModel: BaseViewModel<
 > {
     private let transactionUseCase: TransactionsUseCase
     private let walletUseCase: WalletUseCase
-    private let scannedOrDeeplinkedTransaction: Driver<TransactionIntent>
+    private let scannedOrDeeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
 
     init(
         walletUseCase: WalletUseCase,
         transactionUseCase: TransactionsUseCase,
-        scannedOrDeeplinkedTransaction: Driver<TransactionIntent>
+        scannedOrDeeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
         self.walletUseCase = walletUseCase
         self.transactionUseCase = transactionUseCase
@@ -63,30 +62,28 @@ final class PrepareTransactionViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
 
-        let fetchTrigger = Driver.merge(
-            input.fromView.pullToRefreshTrigger,
-            wallet.mapToVoid()
-        )
+        let fetchTrigger = input.fromView.pullToRefreshTrigger.merge(with: wallet.mapToVoid()).eraseToAnyPublisher()
 
         // Fetch latest balance from API
-        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
+        let latestBalanceAndNonce: AnyPublisher<BalanceResponse, Never> = fetchTrigger.withLatestFrom(wallet).flatMapLatest {
             self.transactionUseCase
                 .getBalance(for: $0.legacyAddress)
                 .trackActivity(activityIndicator)
                 .trackError(errorTracker)
-                .asDriverOnErrorReturnEmpty()
-                .do(onNext: { [unowned self] in
+                .replaceErrorWithEmpty()
+                .handleEvents(receiveOutput: { [unowned self] in
                     transactionUseCase.cacheBalance($0.balance)
                 })
         }
+        .eraseToAnyPublisher()
 
-        let nonce = latestBalanceAndNonce.map(\.nonce).startWith(0)
-        let startingBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
-        let balance: Driver<ZilAmount> = latestBalanceAndNonce.map(\.balance).startWith(startingBalance)
+        let nonce = latestBalanceAndNonce.map(\.nonce).prepend(0)
+        let startingBalance: Amount = transactionUseCase.cachedBalance ?? 0
+        let balance: AnyPublisher<Amount, Never> = latestBalanceAndNonce.map(\.balance).prepend(startingBalance).eraseToAnyPublisher()
 
         // MARK: - VALIDATION -> VALUE
 
@@ -94,178 +91,153 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         // MARK: Recipient Input ->  Value + Validation
 
-        let recipientValidationValue: Driver<Validation<Address, AddressValidator.Error>> = Driver.merge(
-            input.fromView.recipientAddress.map { validator.validateRecipient($0) },
-            scannedOrDeeplinkedTransaction.map { .valid($0.to) }
-        )
+        let recipientValidationValue: AnyPublisher<Validation<Address, AddressValidator.Error>, Never> = input.fromView.recipientAddress
+            .map { validator.validateRecipient($0) }
+            .merge(with: scannedOrDeeplinkedTransaction.map { .valid($0.to) })
+            .eraseToAnyPublisher()
 
-        let recipient: Driver<Address?> = recipientValidationValue.map(\.value)
+        let recipient: AnyPublisher<Address?, Never> = recipientValidationValue.map(\.value).eraseToAnyPublisher()
 
         let recipientValidationTrigger = input.fromView.didEndEditingRecipientAddress
 
-        let recipientValidation: Driver<AnyValidation> = Driver.merge(
-            recipientValidationTrigger.withLatestFrom(recipientValidationValue).onlyErrors(),
-            recipientValidationValue.nonErrors()
-        )
+        let recipientValidation: AnyPublisher<AnyValidation, Never> = recipientValidationTrigger
+            .withLatestFrom(recipientValidationValue)
+            .onlyErrors()
+            .merge(with: recipientValidationValue.nonErrors())
+            .eraseToAnyPublisher()
 
         // MARK: GasLimit + GasPrice Input -> Value + Validation
 
         let _startingGasLimit = GasLimit.minimum
         let gasLimitValidationValue = input.fromView.gasLimit.map { validator.validateGasLimit($0) }
-            .startWith(.valid(_startingGasLimit))
-        let gasLimit = gasLimitValidationValue.map(\.value)
+            .prepend(.valid(_startingGasLimit))
+            .eraseToAnyPublisher()
+        let gasLimit: AnyPublisher<GasLimit?, Never> = gasLimitValidationValue.map(\.value).eraseToAnyPublisher()
 
         let _startingGasPrice: GasPrice = .min
         let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
-            .startWith(.valid(_startingGasPrice))
+            .prepend(.valid(_startingGasPrice))
+            .eraseToAnyPublisher()
 
-        let gasPrice = gasPriceValidationValue.map(\.value)
+        let gasPrice: AnyPublisher<GasPrice?, Never> = gasPriceValidationValue.map(\.value).eraseToAnyPublisher()
 
         let maxAmountTrigger = input.fromView.maxAmountTrigger
 
-        let gasLimitValidationErrorTrigger: Driver<Void> = Driver.merge(
-            input.fromView.didEndEditingGasLimit,
-            maxAmountTrigger
-        )
+        let gasLimitValidationErrorTrigger: AnyPublisher<Void, Never> = input.fromView.didEndEditingGasLimit.merge(with: maxAmountTrigger).eraseToAnyPublisher()
 
-        let gasLimitValidation = Driver.merge(
-            gasLimitValidationErrorTrigger.withLatestFrom(gasLimitValidationValue).onlyErrors(),
-            gasLimitValidationValue.nonErrors()
-        )
+        let gasLimitValidation = gasLimitValidationErrorTrigger.withLatestFrom(gasLimitValidationValue).onlyErrors().merge(with: gasLimitValidationValue.nonErrors()).eraseToAnyPublisher()
 
-        let gasPriceValidationErrorTrigger: Driver<Void> = Driver.merge(
-            input.fromView.didEndEditingGasPrice,
-            maxAmountTrigger
-        )
+        let gasPriceValidationErrorTrigger: AnyPublisher<Void, Never> = input.fromView.didEndEditingGasPrice.merge(with: maxAmountTrigger).eraseToAnyPublisher()
 
-        let gasPriceValidation = Driver.merge(
-            gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors(),
-            gasPriceValidationValue.nonErrors()
-        )
+        let gasPriceValidation = gasPriceValidationErrorTrigger.withLatestFrom(gasPriceValidationValue).onlyErrors().merge(with: gasPriceValidationValue.nonErrors()).eraseToAnyPublisher()
 
-        let zilAmountFromScannedOrDeeplinkedTransaction: Driver<AmountValidator<ZilAmount>.ValidationResult> =
+        let zilAmountFromScannedOrDeeplinkedTransaction: AnyPublisher<AmountValidator<Amount>.ValidationResult, Never> =
             scannedOrDeeplinkedTransaction.map(\.amount).filterNil().map { .valid(.amount(
                 $0,
                 in: .zil
-            )) }
+            )) }.eraseToAnyPublisher()
 
         // MARK: Amount + MaxAmountTrigger Input -> Value + Validation
 
-        let amountWithoutSufficientFundsCheckValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> =
-            Driver.merge(
-                input.fromView.amountToSend.map { validator.validateAmount($0) },
-                zilAmountFromScannedOrDeeplinkedTransaction
-            )
+        let amountWithoutSufficientFundsCheckValidationValue: AnyPublisher<AmountValidator<Amount>.ValidationResult, Never> =
+            input.fromView.amountToSend.map { validator.validateAmount($0) }.merge(with: zilAmountFromScannedOrDeeplinkedTransaction).eraseToAnyPublisher()
 
-        let amountWithoutSufficientFundsCheck: Driver<ZilAmount?> = amountWithoutSufficientFundsCheckValidationValue
-            .map { $0.value?.amount }
+        let amountWithoutSufficientFundsCheck: AnyPublisher<Amount?, Never> = amountWithoutSufficientFundsCheckValidationValue
+            .map { $0.value?.amount }.eraseToAnyPublisher()
 
-        let amountValidationValue: Driver<SufficientFundsValidator.ValidationResult> = Driver.combineLatest(
-            Driver.merge(
-                // Input from fields or deeplinked/scanned
-                amountWithoutSufficientFundsCheck,
-
-                // Max trigger -> Balance SUBTRACT GasPrice (default to min)
+        let amountValidationValue: AnyPublisher<SufficientFundsValidator.ValidationResult, Never> = // Input from fields or deeplinked/scanned
+                amountWithoutSufficientFundsCheck.merge(with: // Max trigger -> Balance SUBTRACT GasPrice (default to min)
                 maxAmountTrigger.withLatestFrom(
-                    Driver.combineLatest(
-                        balance.startWith(startingBalance),
-                        gasLimit.startWith(_startingGasLimit),
-                        gasPrice.startWith(_startingGasPrice)
-                    ) { (
-                        latestBalance: ZilAmount?,
-                        latestGasLimit: GasLimit?,
-                        latestGasPrice: GasPrice?
-                    ) -> ZilAmount? in
-                        let balanceOrZero: ZilAmount = latestBalance ?? startingBalance
-                        let gasLimitOrMin: GasLimit = latestGasLimit ?? _startingGasLimit
-                        let gasPriceOrMin: GasPrice = latestGasPrice ?? _startingGasPrice
+                    balance.prepend(startingBalance).combineLatest(gasLimit.prepend(_startingGasLimit), gasPrice.prepend(_startingGasPrice), { (
+                            latestBalance: Amount?,
+                            latestGasLimit: GasLimit?,
+                            latestGasPrice: GasPrice?
+                        ) -> Amount? in
+                            let balanceOrZero: Amount = latestBalance ?? startingBalance
+                            let gasLimitOrMin: GasLimit = latestGasLimit ?? _startingGasLimit
+                            let gasPriceOrMin: GasPrice = latestGasPrice ?? _startingGasPrice
 
-                        guard let balanceMinusGas: ZilAmount = try? balanceOrZero - Payment
-                            .estimatedTotalTransactionFee(
-                                gasPrice: gasPriceOrMin,
-                                gasLimit: gasLimitOrMin
-                            )
-                        else {
-                            return nil
-                        }
-                        return balanceMinusGas
-                    }
-                ) { $1 }
-            ),
+                            guard let balanceMinusGas: Amount = try? balanceOrZero - Payment
+                                .estimatedTotalTransactionFee(
+                                    gasPrice: gasPriceOrMin,
+                                    gasLimit: gasLimitOrMin
+                                )
+                            else {
+                                return nil
+                            }
+                            return balanceMinusGas
+                        }).eraseToAnyPublisher()
+                ) { $1 })
+            .combineLatest(
+                gasLimit.prepend(_startingGasLimit),
+                gasPrice.prepend(_startingGasPrice),
+                balance.prepend(startingBalance)
+            ) { (amount: Amount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: Amount?) in
+                validator.validate(amount: amount, gasLimit: gasLimit, gasPrice: gasPrice, lessThanBalance: balance)
+            }.eraseToAnyPublisher()
 
-            gasLimit.startWith(_startingGasLimit),
-            gasPrice.startWith(_startingGasPrice),
-            balance.startWith(startingBalance)
-        ) { (amount: ZilAmount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: ZilAmount?) in
-            validator.validate(amount: amount, gasLimit: gasLimit, gasPrice: gasPrice, lessThanBalance: balance)
-        }
+        let amountBoundByBalance: AnyPublisher<Amount?, Never> = amountValidationValue.map(\.value).eraseToAnyPublisher()
 
-        let amountBoundByBalance = amountValidationValue.map(\.value)
-
-        let amountValidationErrorTrigger: Driver<Void> = Driver.merge(
+        let amountValidationErrorTrigger: AnyPublisher<Void, Never> = Publishers.Merge3(
             input.fromView.didEndEditingAmount,
             scannedOrDeeplinkedTransaction.mapToVoid(),
             gasPriceValidationValue.mapToVoid()
-        )
+        ).eraseToAnyPublisher()
 
-        let amountValidation = Driver.merge(
-            amountValidationErrorTrigger.withLatestFrom(amountValidationValue)
-                .map { AnyValidation($0) },
-            amountValidationValue.nonErrors()
-        )
+        let amountValidation: AnyPublisher<AnyValidation, Never> = amountValidationErrorTrigger
+            .withLatestFrom(amountValidationValue)
+            .map { AnyValidation($0) }
+            .merge(with: amountValidationValue.nonErrors())
+            .eraseToAnyPublisher()
 
-        let payment: Driver<Payment?> = Driver.combineLatest(
-            recipient,
-            amountBoundByBalance,
-            gasLimit,
-            gasPrice,
-            nonce
-        ) {
-            guard let to = try? $0?.toChecksummedLegacyAddress(), let amount = $1, let gasLimit = $2, let gasPrice = $3,
-                  case let nonce = $4
-            else {
-                return nil
+        let payment: AnyPublisher<Payment?, Never> = recipient
+            .combineLatest(amountBoundByBalance, gasLimit, gasPrice)
+            .combineLatest(nonce) { tuple, n -> Payment? in
+                let (r, a, gl, gp) = tuple
+                guard let to = try? r?.toChecksummedLegacyAddress(), let amount = a, let gasLimit = gl,
+                      let gasPrice = gp
+                else {
+                    return nil
+                }
+                do {
+                    return try Payment(to: to, amount: amount, gasLimit: gasLimit, gasPrice: gasPrice, nonce: n)
+                } catch {
+                    print(error)
+                    return nil
+                }
             }
-            do {
-                return try Payment(to: to, amount: amount, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonce)
-            } catch {
-                print(error)
-                return nil
-            }
-        }
+            .eraseToAnyPublisher()
 
         // Setup navigation
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userIntends(to: .cancel) })
-                .drive(),
+                .sink { userIntends(to: .cancel) },
 
             input.fromView.scanQRTrigger
-                .do(onNext: { userIntends(to: .scanQRCode) })
-                .drive(),
+                .sink { userIntends(to: .scanQRCode) },
 
             input.fromView.toReviewTrigger.withLatestFrom(payment.filterNil())
-                .do(onNext: { userIntends(to: .reviewPayment($0)) })
-                .drive(),
-        ]
+                .sink { userIntends(to: .reviewPayment($0)) },
+        ].forEach { $0.store(in: &cancellables) }
 
         // MARK: FORMATTING
 
         let formatter = AmountFormatter()
-        let balanceFormatted = balance.map { formatter.format(
+        let balanceFormatted: AnyPublisher<String, Never> = balance.map { formatter.format(
             amount: $0,
             in: .zil,
             formatThousands: true,
             showUnit: true
-        ) }
+        ) }.eraseToAnyPublisher()
 
         // It is deliberate that we do NOT auto checksum the address here. We would like to be able to inform the user
         // that
         // she might have pasted an unchecksummed address.
-        let recipientFormatted = recipient.filterNil().map(\.asString)
+        let recipientFormatted: AnyPublisher<String, Never> = recipient.filterNil().map(\.asString).eraseToAnyPublisher()
 
-        let amountFormatted: Driver<String?> = amountBoundByBalance.filterNil()
-            .map { formatter.format(amount: $0, in: .zil, formatThousands: false) }
+        let amountFormatted: AnyPublisher<String?, Never> = amountBoundByBalance.filterNil()
+            .map { formatter.format(amount: $0, in: .zil, formatThousands: false) as String? }
+            .eraseToAnyPublisher()
             .ifEmpty(switchTo: amountWithoutSufficientFundsCheckValidationValue.map {
                 guard let value = $0.value else { return nil }
                 switch value {
@@ -273,51 +245,50 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 case let .amount(amount, _):
                     return formatter.format(amount: amount, in: .zil, formatThousands: false)
                 }
-            })
+            }.eraseToAnyPublisher())
+            .eraseToAnyPublisher()
 
-        let isReviewButtonEnabled = payment.map { $0 != nil }
+        let isReviewButtonEnabled: AnyPublisher<Bool, Never> = payment.map { $0 != nil }.eraseToAnyPublisher()
 
-        let gasLimitPlaceholder = Driver.just(GasLimit.minimum).map {
+        let gasLimitPlaceholder: AnyPublisher<String, Never> = Just(GasLimit.minimum).eraseToAnyPublisher().map {
             String(localized: .PrepareTransaction.gasLimitField(minimum: $0.description))
-        }
+        }.eraseToAnyPublisher()
 
-        let gasPricePlaceholder = Driver.just(GasPrice.min).map {
+        let gasPricePlaceholder: AnyPublisher<String, Never> = Just(GasPrice.min).eraseToAnyPublisher().map {
             String(localized: .PrepareTransaction.gasPriceField(
                 minQa: formatter.format(amount: $0, in: .li, formatThousands: true, showUnit: false),
                 minZil: formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true)
             ))
-        }
+        }.eraseToAnyPublisher()
 
-        let gasLimitFormatted = gasLimit.filterNil().map(\.description)
-        let gasPriceFormatted = gasPrice.filterNil()
+        let gasLimitFormatted: AnyPublisher<String, Never> = gasLimit.filterNil().map(\.description).eraseToAnyPublisher()
+        let gasPriceFormatted: AnyPublisher<String, Never> = gasPrice.filterNil()
             .map { formatter.format(amount: $0, in: .li, formatThousands: true) }
+            .eraseToAnyPublisher()
 
-        let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
+        let balanceWasUpdatedAt: AnyPublisher<Date?, Never> = fetchTrigger.map { [unowned self] in
             transactionUseCase.balanceUpdatedAt
-        }
+        }.eraseToAnyPublisher()
 
-        let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
+        let refreshControlLastUpdatedTitle: AnyPublisher<String, Never> = balanceWasUpdatedAt.map {
             BalanceLastUpdatedFormatter().string(from: $0)
-        }
+        }.eraseToAnyPublisher()
 
-        let setAmountInViewTrigger = Driver.merge(
-            input.fromView.maxAmountTrigger,
-            scannedOrDeeplinkedTransaction.mapToVoid()
-        )
+        let setAmountInViewTrigger = input.fromView.maxAmountTrigger.merge(with: scannedOrDeeplinkedTransaction.mapToVoid()).eraseToAnyPublisher()
 
-        let setAmountInViewOnlyByExternalTrigger = setAmountInViewTrigger.withLatestFrom(amountFormatted)
+        let setAmountInViewOnlyByExternalTrigger = setAmountInViewTrigger.withLatestFrom(amountFormatted).eraseToAnyPublisher()
 
         return Output(
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
-            isFetchingBalance: activityIndicator.asDriver(),
+            isFetchingBalance: activityIndicator.asPublisher(),
             isReviewButtonEnabled: isReviewButtonEnabled,
             balance: balanceFormatted,
 
             recipient: recipientFormatted,
             recipientAddressValidation: recipientValidation,
 
-            amountPlaceholder: Driver
-                .just(String(localized: .PrepareTransaction.amountField(unit: Unit.zil.displayName))),
+            amountPlaceholder: Just(String(localized: .PrepareTransaction.amountField(unit: Unit.zil.displayName)))
+                .eraseToAnyPublisher(),
             amount: setAmountInViewOnlyByExternalTrigger,
             amountValidation: amountValidation,
 
@@ -329,66 +300,68 @@ final class PrepareTransactionViewModel: BaseViewModel<
             gasPricePlaceholder: gasPricePlaceholder,
             gasPriceValidation: gasPriceValidation,
 
-            costOfTransaction: Driver.combineLatest(gasLimit, gasPrice).flatMapLatest {
-                guard let gasLimit = $0 else {
-                    return Driver<String?>.just(nil)
+            costOfTransaction: gasLimit.combineLatest(gasPrice).eraseToAnyPublisher().flatMapLatest {
+                (gl: GasLimit?, gp: GasPrice?) -> AnyPublisher<String?, Never> in
+                guard let gasLimit = gl else {
+                    return AnyPublisher<String?, Never>.just(nil)
                 }
-                guard let gasPrice = $1 else {
-                    return Driver<String?>.just(nil)
+                guard let gasPrice = gp else {
+                    return AnyPublisher<String?, Never>.just(nil)
                 }
                 return
-                    Observable.combineLatest(Observable<GasPrice>.just(gasPrice), Observable<GasLimit>.just(gasLimit))
-                        .map { try Payment.estimatedTotalTransactionFee(gasPrice: $0, gasLimit: $1) }
-                        .asDriverOnErrorReturnEmpty()
+                    Just((gasPrice, gasLimit)).eraseToAnyPublisher()
+                        .compactMap { try? Payment.estimatedTotalTransactionFee(gasPrice: $0, gasLimit: $1) }
                         .map { formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true) }
                         .map { String(localized: .PrepareTransaction.transactionFeeLabel(fee: $0)) }
+                        .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
         )
     }
 }
 
 extension PrepareTransactionViewModel {
     struct InputFromView {
-        let pullToRefreshTrigger: Driver<Void>
-        let scanQRTrigger: Driver<Void>
-        let maxAmountTrigger: Driver<Void>
-        let toReviewTrigger: Driver<Void>
+        let pullToRefreshTrigger: AnyPublisher<Void, Never>
+        let scanQRTrigger: AnyPublisher<Void, Never>
+        let maxAmountTrigger: AnyPublisher<Void, Never>
+        let toReviewTrigger: AnyPublisher<Void, Never>
 
-        let recipientAddress: Driver<String>
-        let didEndEditingRecipientAddress: Driver<Void>
+        let recipientAddress: AnyPublisher<String, Never>
+        let didEndEditingRecipientAddress: AnyPublisher<Void, Never>
 
-        let amountToSend: Driver<String>
-        let didEndEditingAmount: Driver<Void>
+        let amountToSend: AnyPublisher<String, Never>
+        let didEndEditingAmount: AnyPublisher<Void, Never>
 
-        let gasLimit: Driver<String>
-        let didEndEditingGasLimit: Driver<Void>
+        let gasLimit: AnyPublisher<String, Never>
+        let didEndEditingGasLimit: AnyPublisher<Void, Never>
 
-        let gasPrice: Driver<String>
-        let didEndEditingGasPrice: Driver<Void>
+        let gasPrice: AnyPublisher<String, Never>
+        let didEndEditingGasPrice: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let refreshControlLastUpdatedTitle: Driver<String>
-        let isFetchingBalance: Driver<Bool>
-        let isReviewButtonEnabled: Driver<Bool>
-        let balance: Driver<String>
+        let refreshControlLastUpdatedTitle: AnyPublisher<String, Never>
+        let isFetchingBalance: AnyPublisher<Bool, Never>
+        let isReviewButtonEnabled: AnyPublisher<Bool, Never>
+        let balance: AnyPublisher<String, Never>
 
-        let recipient: Driver<String>
-        let recipientAddressValidation: Driver<AnyValidation>
+        let recipient: AnyPublisher<String, Never>
+        let recipientAddressValidation: AnyPublisher<AnyValidation, Never>
 
-        let amountPlaceholder: Driver<String>
-        let amount: Driver<String?>
-        let amountValidation: Driver<AnyValidation>
+        let amountPlaceholder: AnyPublisher<String, Never>
+        let amount: AnyPublisher<String?, Never>
+        let amountValidation: AnyPublisher<AnyValidation, Never>
 
-        let gasLimitMeasuredInLi: Driver<String>
-        let gasLimitPlaceholder: Driver<String>
-        let gasLimitValidation: Driver<AnyValidation>
+        let gasLimitMeasuredInLi: AnyPublisher<String, Never>
+        let gasLimitPlaceholder: AnyPublisher<String, Never>
+        let gasLimitValidation: AnyPublisher<AnyValidation, Never>
 
-        let gasPriceMeasuredInLi: Driver<String>
-        let gasPricePlaceholder: Driver<String>
-        let gasPriceValidation: Driver<AnyValidation>
+        let gasPriceMeasuredInLi: AnyPublisher<String, Never>
+        let gasPricePlaceholder: AnyPublisher<String, Never>
+        let gasPriceValidation: AnyPublisher<AnyValidation, Never>
 
-        let costOfTransaction: Driver<String?>
+        let costOfTransaction: AnyPublisher<String?, Never>
     }
 }
 
@@ -397,7 +370,7 @@ extension PrepareTransactionViewModel {
 extension PrepareTransactionViewModel {
     struct InputValidator {
         private let addressValidator = AddressValidator()
-        private let zilAmountValidator = AmountValidator<ZilAmount>()
+        private let zilAmountValidator = AmountValidator<Amount>()
         private let gasPriceValidator = GasPriceValidator()
         private let gasLimitValidator = GasLimitValidator()
         private let sufficientFundsValidator = SufficientFundsValidator()
@@ -407,15 +380,15 @@ extension PrepareTransactionViewModel {
         }
 
         func validate(
-            amount: ZilAmount?,
+            amount: Amount?,
             gasLimit: GasLimit?,
             gasPrice: GasPrice?,
-            lessThanBalance balance: ZilAmount?
+            lessThanBalance balance: Amount?
         ) -> SufficientFundsValidator.ValidationResult {
             sufficientFundsValidator.validate(input: (amount, gasLimit, gasPrice, balance))
         }
 
-        func validateAmount(_ amount: String) -> AmountValidator<ZilAmount>.ValidationResult {
+        func validateAmount(_ amount: String) -> AmountValidator<Amount>.ValidationResult {
             zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
         }
 
@@ -429,4 +402,3 @@ extension PrepareTransactionViewModel {
     }
 }
 
-// swiftlint:enable type_body_length

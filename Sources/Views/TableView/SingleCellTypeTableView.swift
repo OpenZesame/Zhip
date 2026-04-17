@@ -1,57 +1,30 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
-import RxCocoa
-import RxDataSources
-import RxSwift
+import Combine
 import UIKit
 
 typealias ListCell = AbstractTableViewCell & CellConfigurable
 
-typealias Sections<HeaderModel, CellModel> = (Observable<[SectionModel<HeaderModel, CellModel>]>) -> Disposable
+class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView, UITableViewDelegate, UITableViewDataSource, SelectionPublishing {
+    // MARK: - Data
 
-class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView {
-    typealias DataSource = RxTableViewSectionedReloadDataSource<SectionModel<Header, Cell.Model>>
+    private var sectionModels: [SectionModel<Header, Cell.Model>] = [] {
+        didSet { reloadData() }
+    }
 
-    lazy var rxDataSource = DataSource(configureCell: { _, tableView, indexPath, model -> UITableViewCell in
-        let cell = tableView.dequeueReusableCell(withIdentifier: Cell.identifier, for: indexPath)
-        if let typedCell = cell as? Cell {
-            typedCell.configure(model: model)
-        }
-        return cell
-    })
+    /// Sink: bind a publisher of section models to reload the table.
+    var sections: Binder<[SectionModel<Header, Cell.Model>]> {
+        Binder(self) { $0.sectionModels = $1 }
+    }
 
-    lazy var sections: Sections<Header, Cell.Model> = rx.items(dataSource: rxDataSource)
+    // MARK: - Selection
+
+    private let selectionSubject = PassthroughSubject<IndexPath, Never>()
+    var selectionPublisher: AnyPublisher<IndexPath, Never> { selectionSubject.eraseToAnyPublisher() }
+
+    var didSelectItem: AnyPublisher<IndexPath, Never> { selectionPublisher }
 
     var cellDeselectionMode: CellDeselectionMode = .deselectCellsDirectly(animate: true)
-
-    lazy var didSelectItem: Driver<IndexPath> = rx.itemSelected.asDriver().do(onNext: { [unowned self] indexPath in
-        switch cellDeselectionMode {
-        case let .deselectCellsDirectly(animated): deselectRow(at: indexPath, animated: animated)
-        case .noImmediateDeselection: break
-        }
-    })
 
     // MARK: - Initialization
 
@@ -60,8 +33,32 @@ class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView {
         setup()
     }
 
-    required init?(coder _: NSCoder) {
-        interfaceBuilderSucks
+    required init?(coder _: NSCoder) { interfaceBuilderSucks }
+
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cellDeselectionMode {
+        case let .deselectCellsDirectly(animated): tableView.deselectRow(at: indexPath, animated: animated)
+        case .noImmediateDeselection: break
+        }
+        selectionSubject.send(indexPath)
+    }
+
+    // MARK: - UITableViewDataSource
+
+    func numberOfSections(in _: UITableView) -> Int { sectionModels.count }
+
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        sectionModels[section].items.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Cell.identifier, for: indexPath)
+        if let typedCell = cell as? Cell {
+            typedCell.configure(model: sectionModels[indexPath.section].items[indexPath.row])
+        }
+        return cell
     }
 }
 
@@ -82,5 +79,15 @@ private extension SingleCellTypeTableView {
         register(Cell.self, forCellReuseIdentifier: Cell.identifier)
         backgroundColor = .clear
         separatorStyle = .none
+        dataSource = self
+        delegate = self
     }
+}
+
+// MARK: - SectionModel
+
+/// Minimal section model replacing RxDataSources.SectionModel.
+struct SectionModel<Section, Item> {
+    let model: Section
+    let items: [Item]
 }

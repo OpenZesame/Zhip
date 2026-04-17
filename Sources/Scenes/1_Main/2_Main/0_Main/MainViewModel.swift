@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import Zesame
 
 // MARK: - MainUserAction
@@ -43,11 +42,11 @@ final class MainViewModel: BaseViewModel<
 > {
     private let transactionUseCase: TransactionsUseCase
     private let walletUseCase: WalletUseCase
-    private let updateBalanceTrigger: Driver<Void>
+    private let updateBalanceTrigger: AnyPublisher<Void, Never>
 
     // MARK: - Initialization
 
-    init(transactionUseCase: TransactionsUseCase, walletUseCase: WalletUseCase, updateBalanceTrigger: Driver<Void>) {
+    init(transactionUseCase: TransactionsUseCase, walletUseCase: WalletUseCase, updateBalanceTrigger: AnyPublisher<Void, Never>) {
         self.transactionUseCase = transactionUseCase
         self.walletUseCase = walletUseCase
         self.updateBalanceTrigger = updateBalanceTrigger
@@ -58,58 +57,52 @@ final class MainViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let activityIndicator = ActivityIndicator()
 
-        let fetchTrigger = Driver.merge(
-            updateBalanceTrigger,
-            input.fromView.pullToRefreshTrigger,
-            wallet.mapToVoid()
-        )
+        let fetchTrigger = Publishers.Merge3(updateBalanceTrigger, input.fromView.pullToRefreshTrigger, wallet.mapToVoid()).eraseToAnyPublisher()
 
-        let latestBalanceAndNonce: Driver<BalanceResponse> = fetchTrigger.withLatestFrom(wallet)
+        let latestBalanceAndNonce: AnyPublisher<BalanceResponse, Never> = fetchTrigger.withLatestFrom(wallet)
             .flatMapLatest { [unowned self] in
                 transactionUseCase
                     .getBalance(for: $0.legacyAddress)
                     .trackActivity(activityIndicator)
-                    .asDriverOnErrorReturnEmpty()
-                    .do(onNext: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
+                    .replaceErrorWithEmpty()
+                    .handleEvents(receiveOutput: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
             }
+            .eraseToAnyPublisher()
 
         let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
             transactionUseCase.balanceUpdatedAt
         }
 
         // Format output
-        let _cachedBalance: ZilAmount = transactionUseCase.cachedBalance ?? 0
-        let latestBalanceOrZero = latestBalanceAndNonce.map(\.balance).startWith(_cachedBalance)
+        let _cachedBalance: Amount = transactionUseCase.cachedBalance ?? 0
+        let latestBalanceOrZero = latestBalanceAndNonce.map(\.balance).prepend(_cachedBalance)
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userIntends(to: .goToSettings) })
-                .drive(),
+                .sink { userIntends(to: .goToSettings) },
 
             input.fromView.sendTrigger
-                .do(onNext: { userIntends(to: .send) })
-                .drive(),
+                .sink { userIntends(to: .send) },
 
             input.fromView.receiveTrigger
-                .do(onNext: { userIntends(to: .receive) })
-                .drive(),
+                .sink { userIntends(to: .receive) },
 
-            transactionUseCase.getMinimumGasPrice().subscribe(),
-        ]
+            transactionUseCase.getMinimumGasPrice().sink(receiveCompletion: { _ in }, receiveValue: { _ in }),
+        ].forEach { $0.store(in: &cancellables) }
 
         let formatter = AmountFormatter()
 
-        let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
+        let refreshControlLastUpdatedTitle: AnyPublisher<String, Never> = balanceWasUpdatedAt.map {
             BalanceLastUpdatedFormatter().string(from: $0)
-        }
+        }.eraseToAnyPublisher()
 
         return Output(
-            isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) },
+            isFetchingBalance: activityIndicator.asPublisher(),
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) }.eraseToAnyPublisher(),
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle
         )
     }
@@ -117,14 +110,14 @@ final class MainViewModel: BaseViewModel<
 
 extension MainViewModel {
     struct InputFromView {
-        let pullToRefreshTrigger: Driver<Void>
-        let sendTrigger: Driver<Void>
-        let receiveTrigger: Driver<Void>
+        let pullToRefreshTrigger: AnyPublisher<Void, Never>
+        let sendTrigger: AnyPublisher<Void, Never>
+        let receiveTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isFetchingBalance: Driver<Bool>
-        let balance: Driver<String>
-        let refreshControlLastUpdatedTitle: Driver<String>
+        let isFetchingBalance: AnyPublisher<Bool, Never>
+        let balance: AnyPublisher<String, Never>
+        let refreshControlLastUpdatedTitle: AnyPublisher<String, Never>
     }
 }

@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 final class DeepLinkHandler {
@@ -64,8 +63,9 @@ extension DeepLinkHandler {
         return true
     }
 
-    var navigation: Driver<DeepLink> {
-        navigator.navigation.filter { [unowned self] _ in return !appIsLockedSoBufferLink }
+    var navigation: AnyPublisher<DeepLink, Never> {
+        navigator.navigation.filter { [unowned self] _ in !appIsLockedSoBufferLink }
+            .eraseToAnyPublisher()
     }
 }
 

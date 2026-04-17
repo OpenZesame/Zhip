@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import SkyFloatingLabelTextField
 import UIKit
 
@@ -99,10 +97,9 @@ extension FloatingLabelTextField {
     }
 }
 
-/// RX
-extension Reactive where Base: FloatingLabelTextField {
-    var validation: Binder<AnyValidation> {
-        Binder<AnyValidation>(base) {
+extension FloatingLabelTextField {
+    var validationBinder: Binder<AnyValidation> {
+        Binder<AnyValidation>(self) {
             $0.validate($1)
         }
     }

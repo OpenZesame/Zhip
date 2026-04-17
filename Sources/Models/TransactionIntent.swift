@@ -42,9 +42,9 @@ public extension Address {
 
 struct TransactionIntent: Codable, Equatable {
     let to: Address
-    let amount: ZilAmount?
+    let amount: Amount?
 
-    init(to recipient: Address, amount: ZilAmount? = nil) {
+    init(to recipient: Address, amount: Amount? = nil) {
         to = recipient
         self.amount = amount
     }
@@ -68,7 +68,7 @@ extension TransactionIntent {
 extension TransactionIntent {
     init?(to recipientString: String, amount: String?) {
         guard let recipient = try? Address(string: recipientString) else { return nil }
-        self.init(to: recipient, amount: ZilAmount.fromQa(optionalString: amount))
+        self.init(to: recipient, amount: Amount.fromQa(optionalString: amount))
     }
 
     init?(queryParameters params: [URLQueryItem]) {
@@ -98,7 +98,7 @@ extension TransactionIntent {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         to = try container.decode(Address.self, forKey: .to)
-        amount = try container.decodeIfPresent(ZilAmount.self, forKey: .amount)
+        amount = try container.decodeIfPresent(Amount.self, forKey: .amount)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -108,9 +108,9 @@ extension TransactionIntent {
     }
 }
 
-private extension ZilAmount {
-    static func fromQa(optionalString: String?) -> ZilAmount? {
+private extension Amount {
+    static func fromQa(optionalString: String?) -> Amount? {
         guard let qaAmountString = optionalString else { return nil }
-        return try? ZilAmount(qa: qaAmountString)
+        return try? Amount(qa: qaAmountString)
     }
 }

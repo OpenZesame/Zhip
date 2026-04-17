@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - ConfirmNewPincodeUserAction
 
@@ -55,30 +54,27 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
         let validator = InputValidator(existingPincode: unconfirmedPincode)
 
-        let pincodeValidationValue = input.fromView.pincode.map {
+        let pincodeValidationValue: AnyPublisher<PincodeValidator.ValidationResult, Never> = input.fromView.pincode.map {
             validator.validate(unconfirmedPincode: $0)
-        }
-        let isConfirmPincodeEnabled = Driver.combineLatest(
-            pincodeValidationValue.map(\.isValid),
-            input.fromView.isHaveBackedUpPincodeCheckboxChecked
-        ) { isPincodeValid, isBackedUpChecked in
-            isPincodeValid && isBackedUpChecked
-        }
+        }.eraseToAnyPublisher()
+        let isConfirmPincodeEnabled: AnyPublisher<Bool, Never> = pincodeValidationValue.map(\.isValid)
+            .combineLatest(input.fromView.isHaveBackedUpPincodeCheckboxChecked) { isPincodeValid, isBackedUpChecked in
+                isPincodeValid && isBackedUpChecked
+            }.eraseToAnyPublisher()
 
-        bag <~ [
-            input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).filterNil())
-                .do(onNext: { [unowned self] in
+        [
+            input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).eraseToAnyPublisher().filterNil())
+                .sink { [unowned self] in
                     useCase.userChoose(pincode: $0)
                     userDid(.confirmPincode)
-                }).drive(),
+                },
 
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.skip) })
-                .drive(),
-        ]
+                .sink { userDid(.skip) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            pincodeValidation: pincodeValidationValue.map(\.validation),
+            pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher(),
             isConfirmPincodeEnabled: isConfirmPincodeEnabled,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )
@@ -87,15 +83,15 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
 extension ConfirmNewPincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
-        let isHaveBackedUpPincodeCheckboxChecked: Driver<Bool>
-        let confirmedTrigger: Driver<Void>
+        let pincode: AnyPublisher<Pincode?, Never>
+        let isHaveBackedUpPincodeCheckboxChecked: AnyPublisher<Bool, Never>
+        let confirmedTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let pincodeValidation: Driver<AnyValidation>
-        let isConfirmPincodeEnabled: Driver<Bool>
-        let inputBecomeFirstResponder: Driver<Void>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
+        let isConfirmPincodeEnabled: AnyPublisher<Bool, Never>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
     }
 
     struct InputValidator {

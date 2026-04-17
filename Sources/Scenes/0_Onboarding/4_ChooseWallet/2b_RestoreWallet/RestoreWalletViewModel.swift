@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import Zesame
 
 /// Navigation from RestoreWallet
@@ -51,42 +50,42 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         let activityIndicator = ActivityIndicator()
 
-        let keyRestoration: Driver<KeyRestoration?> = input.fromView.selectedSegment.flatMapLatest {
+        let keyRestoration: AnyPublisher<KeyRestoration?, Never> = input.fromView.selectedSegment.flatMapLatest {
             switch $0 {
             case .keystore: input.fromView.keyRestorationUsingKeystore
             case .privateKey: input.fromView.keyRestorationUsingPrivateKey
             }
         }
+        .eraseToAnyPublisher()
 
-        let headerLabel: Driver<String> = input.fromView.selectedSegment.map {
+        let headerLabel: AnyPublisher<String, Never> = input.fromView.selectedSegment.map {
             switch $0 {
             case .keystore: String(localized: .RestoreWallet.restoreWithKeystore)
             case .privateKey: String(localized: .RestoreWallet.restoreWithPrivateKey)
             }
-        }
+        }.eraseToAnyPublisher()
 
         let errorTracker = ErrorTracker()
 
-        bag <~ [
+        [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
                     useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userIntends(to: .restoreWallet($0)) })
-                .drive(),
-        ]
+                .sink { userIntends(to: .restoreWallet($0)) },
+        ].forEach { $0.store(in: &cancellables) }
 
-        let keystoreRestorationError: Driver<AnyValidation> = errorTracker.asInputValidationErrors {
+        let keystoreRestorationError: AnyPublisher<AnyValidation, Never> = errorTracker.asInputValidationErrors {
             KeystoreValidator.Error(error: $0)
         }
 
         return Output(
             headerLabel: headerLabel,
-            isRestoreButtonEnabled: keyRestoration.map { $0 != nil },
-            isRestoring: activityIndicator.asDriver(),
+            isRestoreButtonEnabled: keyRestoration.map { $0 != nil }.eraseToAnyPublisher(),
+            isRestoring: activityIndicator.asPublisher(),
             keystoreRestorationError: keystoreRestorationError
         )
     }
@@ -98,16 +97,16 @@ extension RestoreWalletViewModel {
             case privateKey, keystore
         }
 
-        let selectedSegment: Driver<Segment>
-        let keyRestorationUsingPrivateKey: Driver<KeyRestoration?>
-        let keyRestorationUsingKeystore: Driver<KeyRestoration?>
-        let restoreTrigger: Driver<Void>
+        let selectedSegment: AnyPublisher<Segment, Never>
+        let keyRestorationUsingPrivateKey: AnyPublisher<KeyRestoration?, Never>
+        let keyRestorationUsingKeystore: AnyPublisher<KeyRestoration?, Never>
+        let restoreTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let headerLabel: Driver<String>
-        let isRestoreButtonEnabled: Driver<Bool>
-        let isRestoring: Driver<Bool>
-        let keystoreRestorationError: Driver<AnyValidation>
+        let headerLabel: AnyPublisher<String, Never>
+        let isRestoreButtonEnabled: AnyPublisher<Bool, Never>
+        let isRestoring: AnyPublisher<Bool, Never>
+        let keystoreRestorationError: AnyPublisher<AnyValidation, Never>
     }
 }

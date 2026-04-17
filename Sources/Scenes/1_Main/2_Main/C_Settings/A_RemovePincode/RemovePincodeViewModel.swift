@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - RemovePincodeUserAction
 
@@ -58,39 +57,37 @@ final class RemovePincodeViewModel: BaseViewModel<
 
         let validator = InputValidator(existingPincode: pincode)
 
-        let pincodeValidationValue: Driver<PincodeValidator.ValidationResult> = input.fromView.pincode.map {
+        let pincodeValidationValue: AnyPublisher<PincodeValidator.ValidationResult, Never> = input.fromView.pincode.map {
             validator.validate(unconfirmedPincode: $0)
-        }
+        }.eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancelPincodeRemoval) })
-                .drive(),
+                .sink { userDid(.cancelPincodeRemoval) },
 
             pincodeValidationValue.filter(\.isValid)
                 .mapToVoid()
-                .do(onNext: { [unowned useCase] in
+                .sink { [unowned useCase] in
                     useCase.deletePincode()
                     userDid(.removePincode)
-                })
-                .drive(),
-        ]
+                },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewDidAppear,
-            pincodeValidation: pincodeValidationValue.map(\.validation)
+            pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher()
         )
     }
 }
 
 extension RemovePincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
+        let pincode: AnyPublisher<Pincode?, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let pincodeValidation: Driver<AnyValidation>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
     }
 
     struct InputValidator {

@@ -1,29 +1,7 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import Foundation
-import RxSwift
 import Zesame
 
 final class DefaultTransactionsUseCase {
@@ -39,16 +17,12 @@ final class DefaultTransactionsUseCase {
 }
 
 extension DefaultTransactionsUseCase: TransactionsUseCase {
-    var cachedBalance: ZilAmount? {
-        guard let qa: String = preferences.loadValue(for: .cachedBalance) else {
-            return nil
-        }
-        return try? ZilAmount(qa: qa)
+    var cachedBalance: Amount? {
+        guard let qa: String = preferences.loadValue(for: .cachedBalance) else { return nil }
+        return try? Amount(qa: qa)
     }
 
-    var balanceUpdatedAt: Date? {
-        preferences.loadValue(for: .balanceWasUpdatedAt)
-    }
+    var balanceUpdatedAt: Date? { preferences.loadValue(for: .balanceWasUpdatedAt) }
 
     func balanceWasUpdated(at date: Date) {
         preferences.save(value: date, for: .balanceWasUpdatedAt)
@@ -59,35 +33,42 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         preferences.deleteValue(for: .balanceWasUpdatedAt)
     }
 
-    func cacheBalance(_ balance: ZilAmount) {
+    func cacheBalance(_ balance: Amount) {
         preferences.save(value: balance.qaString, for: .cachedBalance)
         balanceWasUpdated(at: Date())
     }
 
-    func getMinimumGasPrice() -> Observable<ZilAmount> {
-        zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true).map(\.amount)
+    func getMinimumGasPrice() -> AnyPublisher<Amount, Swift.Error> {
+        zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true)
+            .map(\.amount)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse> {
+    func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Swift.Error> {
         zilliqaService.getBalance(for: address)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func sendTransaction(
-        for payment: Payment,
-        wallet: Wallet,
-        encryptionPassword: String
-    ) -> Observable<TransactionResponse> {
-        zilliqaService.getNetworkFromAPI().flatMapLatest { [unowned self] in
-            zilliqaService.sendTransaction(
-                for: payment,
-                keystore: wallet.keystore,
-                password: encryptionPassword,
-                network: $0.network
-            )
-        }
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassword: String)
+        -> AnyPublisher<TransactionResponse, Swift.Error> {
+        zilliqaService.getNetworkFromAPI()
+            .flatMapLatest { [unowned self] networkResponse in
+                zilliqaService.sendTransaction(
+                    for: payment,
+                    keystore: wallet.keystore,
+                    password: encryptionPassword,
+                    network: networkResponse.network
+                )
+            }
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func receiptOfTransaction(byId txId: String, polling: Polling) -> Observable<TransactionReceipt> {
+    func receiptOfTransaction(byId txId: String, polling: Polling) -> AnyPublisher<TransactionReceipt, Swift.Error> {
         zilliqaService.hasNetworkReachedConsensusYetForTransactionWith(id: txId, polling: polling)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 }

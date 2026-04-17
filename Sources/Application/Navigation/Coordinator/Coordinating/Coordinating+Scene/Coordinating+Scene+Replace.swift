@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 /// MARKL - REPLACE
@@ -79,12 +80,15 @@ extension Coordinating {
             oldVCs.forEach { $0.dismiss(animated: false, completion: nil) }
         }
 
-        bag <~ viewModel.navigator.navigation.do(onNext: {
-            navigationHandler($0) { [unowned scene] animated, navigationCompletion in
-                print("⛱ replaceAllScenes dismissCompletion of navigationHandler")
-                scene.dismiss(animated: animated, completion: navigationCompletion)
+        viewModel.navigator.navigation
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned scene] step in
+                navigationHandler(step) { animated, navigationCompletion in
+                    print("⛱ replaceAllScenes dismissCompletion of navigationHandler")
+                    scene.dismiss(animated: animated, completion: navigationCompletion)
+                }
             }
-        }).drive()
+            .store(in: &cancellables)
     }
 }
 

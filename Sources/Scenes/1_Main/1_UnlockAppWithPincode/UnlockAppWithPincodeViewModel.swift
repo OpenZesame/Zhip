@@ -22,10 +22,9 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import LocalAuthentication
-import RxCocoa
-import RxSwift
 
 // MARK: - UnlockAppWithPincodeUserAction
 
@@ -62,56 +61,57 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
 
-        func unlockUsingBiometrics() -> Driver<Void> {
-            let context = LAContext()
-            context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
-            var authError: NSError?
-
-            // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
-            let reasonString = String(localized: .UnlockApp.biometricsReason)
-
-            return Observable.create { observer in
-                if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
-                    context
-                        .evaluatePolicy(
-                            .deviceOwnerAuthenticationWithBiometrics,
-                            localizedReason: reasonString
-                        ) { didAuth, _ in
-                            if didAuth {
-                                observer.onNext(())
-                            }
-                        }
+        // Always resolves the promise (even on unavailable / cancel / failure) so the publisher
+        // completes and doesn't leave dangling inner subscriptions when used under flatMap.
+        func unlockUsingBiometrics() -> AnyPublisher<Void, Never> {
+            Deferred {
+                Future<Bool, Never> { promise in
+                    let context = LAContext()
+                    context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
+                    // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
+                    let reasonString = String(localized: .UnlockApp.biometricsReason)
+                    var authError: NSError?
+                    guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) else {
+                        promise(.success(false))
+                        return
+                    }
+                    context.evaluatePolicy(
+                        .deviceOwnerAuthenticationWithBiometrics,
+                        localizedReason: reasonString
+                    ) { didAuth, _ in
+                        promise(.success(didAuth))
+                    }
                 }
-                return Disposables.create {}
-            }.asDriverOnErrorReturnEmpty()
+            }
+            .filter { $0 }
+            .mapToVoid()
+            .eraseToAnyPublisher()
         }
 
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
 
-        bag <~ [
-            Driver.merge(
-                pincodeValidationValue.filter(\.isValid).mapToVoid(),
-                unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }
-            )
-            .do(onNext: { userDid(.unlockApp) })
-            .drive(),
-        ]
+        [
+            pincodeValidationValue.filter(\.isValid).mapToVoid()
+                .merge(with: unlockUsingBiometricsTrigger.flatMapLatest { unlockUsingBiometrics() })
+                .receive(on: DispatchQueue.main)
+                .sink { userDid(.unlockApp) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,
-            pincodeValidation: pincodeValidationValue.map(\.validation)
+            pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher()
         )
     }
 }
 
 extension UnlockAppWithPincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
+        let pincode: AnyPublisher<Pincode?, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let pincodeValidation: Driver<AnyValidation>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
     }
 
     struct InputValidator {

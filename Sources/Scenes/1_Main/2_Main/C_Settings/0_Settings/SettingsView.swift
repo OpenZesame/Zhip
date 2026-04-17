@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 // MARK: - SettingsView
@@ -45,16 +44,16 @@ final class SettingsView: HeaderlessTableViewSceneView<SettingsTableViewCell> {
 extension SettingsView: ViewModelled {
     typealias ViewModel = SettingsViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.sections.drive(tableView.sections),
-            viewModel.footerText.drive(tableView.rx.footerLabel),
+            viewModel.sections --> tableView.sections,
+            viewModel.footerText --> tableView.footerLabelBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            selectedIndexPath: tableView.rx.itemSelected.asDriver()
+            selectedIndexPath: tableView.selectionPublisher
         )
     }
 }

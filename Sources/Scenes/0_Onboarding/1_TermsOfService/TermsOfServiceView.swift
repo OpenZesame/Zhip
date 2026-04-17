@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import UIKit
 import WebKit
 
@@ -51,17 +50,17 @@ final class TermsOfServiceView: ScrollableStackViewOwner {
 extension TermsOfServiceView: ViewModelled {
     typealias ViewModel = TermsOfServiceViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
-            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled,
+            viewModel.isAcceptButtonVisible --> acceptTermsButton.isVisibleBinder,
+            viewModel.isAcceptButtonEnabled --> acceptTermsButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            didScrollToBottom: textView.rx.didScrollNearBottom(),
-            didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
+            didScrollToBottom: textView.didScrollNearBottomPublisher(),
+            didAcceptTerms: acceptTermsButton.tapPublisher
         )
     }
 }

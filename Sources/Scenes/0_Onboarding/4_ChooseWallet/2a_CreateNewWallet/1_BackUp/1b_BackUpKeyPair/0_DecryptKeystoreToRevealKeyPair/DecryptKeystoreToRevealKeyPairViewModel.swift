@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import Zesame
 
 enum DecryptKeystoreToRevealKeyPairUserAction {
@@ -37,9 +36,9 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
     DecryptKeystoreToRevealKeyPairViewModel.Output
 > {
     private let useCase: WalletUseCase
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
 
-    init(useCase: WalletUseCase, wallet: Driver<Wallet>) {
+    init(useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>) {
         self.useCase = useCase
         self.wallet = wallet
     }
@@ -59,62 +58,63 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         let encryptionPasswordValidationValue = input.fromView.encryptionPassword
             .withLatestFrom(wallet) { (password: $0, wallet: $1) }
             .map { validator.validateEncryptionPassword($0.password, for: $0.wallet) }
+            .eraseToAnyPublisher()
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive(),
+                .sink { userDid(.dismiss) },
 
             input.fromView.revealTrigger
                 .withLatestFrom(
-                    Driver.combineLatest(
-                        wallet,
-                        encryptionPassword
-                    )
-                ) { (wallet: $1.0, password: $1.1) }
+                    wallet.combineLatest(encryptionPassword).eraseToAnyPublisher()
+                ) { (_: Void, pair: (Wallet, String)) -> (wallet: Wallet, password: String) in
+                    (wallet: pair.0, password: pair.1)
+                }
                 .flatMapLatest { [unowned useCase] in
                     useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userDid(.decryptKeystoreReavealing(keyPair: $0)) })
-                .drive(),
-        ]
+                .sink { userDid(.decryptKeystoreReavealing(keyPair: $0)) },
+        ].forEach { $0.store(in: &cancellables) }
 
-        let encryptionPasswordValidation = Driver.merge(
-            // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassword.mapToVoid().map { true },
-            input.fromView.isEditingEncryptionPassword
-        ).withLatestFrom(encryptionPasswordValidationValue) {
-            EditingValidation(isEditing: $0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit(
-            directlyDisplayErrorsTrackedBy: errorTracker
-        ) {
-            WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0, backingUpWalletJustCreated: true)
-        }
+        // map `editingChanged` to `editingDidBegin`
+        let encryptionPasswordEditingTrigger = input.fromView.encryptionPassword.mapToVoid().map { true }
+            .merge(with: input.fromView.isEditingEncryptionPassword)
+            .eraseToAnyPublisher()
+
+        let encryptionPasswordValidation = encryptionPasswordEditingTrigger
+            .withLatestFrom(encryptionPasswordValidationValue) {
+                EditingValidation(isEditing: $0, validation: $1.validation)
+            }
+            .eagerValidLazyErrorTurnedToEmptyOnEdit(
+                directlyDisplayErrorsTrackedBy: errorTracker
+            ) {
+                WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0, backingUpWalletJustCreated: true)
+            }
 
         return Output(
             encryptionPasswordValidation: encryptionPasswordValidation,
-            isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid),
-            isRevealButtonLoading: activityIndicator.asDriver()
+            isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid).eraseToAnyPublisher(),
+            isRevealButtonLoading: activityIndicator.asPublisher()
         )
     }
 }
 
 extension DecryptKeystoreToRevealKeyPairViewModel {
     struct InputFromView {
-        let encryptionPassword: Driver<String>
-        let isEditingEncryptionPassword: Driver<Bool>
-        let revealTrigger: Driver<Void>
+        let encryptionPassword: AnyPublisher<String, Never>
+        let isEditingEncryptionPassword: AnyPublisher<Bool, Never>
+        let revealTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let isRevealButtonEnabled: Driver<Bool>
-        let isRevealButtonLoading: Driver<Bool>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let isRevealButtonEnabled: AnyPublisher<Bool, Never>
+        let isRevealButtonLoading: AnyPublisher<Bool, Never>
     }
 
     struct InputValidator {

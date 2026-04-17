@@ -1,87 +1,47 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
-/// Stolen from: https://github.com/sergdort/CleanArchitectureRxSwift
-public final class ErrorTracker: SharedSequenceConvertibleType {
-    public typealias SharingStrategy = DriverSharingStrategy
-    private let _subject = PublishSubject<Error>()
+public final class ErrorTracker {
+    private let subject = PassthroughSubject<Error, Never>()
 
-    public func trackError<O: ObservableConvertibleType>(from source: O) -> Observable<O.Element> {
-        source.asObservable().do(onError: onError)
+    public init() {}
+
+    public func asPublisher() -> AnyPublisher<Error, Never> {
+        subject.eraseToAnyPublisher()
     }
 
-    public func asSharedSequence() -> SharedSequence<SharingStrategy, Error> {
-        _subject.asObservable().asDriverOnErrorReturnEmpty()
+    public func track<P: Publisher>(from source: P) -> some Publisher<P.Output, P.Failure>
+        where P.Failure: Error {
+        source
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.subject.send(error)
+                }
+            })
     }
 
-    public func asObservable() -> Observable<Error> {
-        _subject.asObservable()
+    func asInputErrors<IE: InputError>(
+        mapError: @escaping (Swift.Error) -> IE?
+    ) -> AnyPublisher<IE, Never> {
+        subject
+            .compactMap { mapError($0) }
+            .eraseToAnyPublisher()
     }
 
-    private func onError(_ error: Error) {
-        _subject.onNext(error)
-    }
-
-    deinit {
-        _subject.onCompleted()
-    }
-}
-
-public extension ObservableConvertibleType {
-    func trackError(_ errorTracker: ErrorTracker) -> Observable<Element> {
-        errorTracker.trackError(from: self)
-    }
-}
-
-// MARK: Input Validation
-
-extension ErrorTracker {
-    func asInputErrors<IE: InputError>(mapError: @escaping (Swift.Error) -> IE?) -> Driver<IE> {
-        asObservable().materialize().map { (event: Event<Error>) -> IE? in
-            guard case let .next(swiftError) = event else {
-                return nil
-            }
-
-            guard let mappedError = mapError(swiftError) else {
-                return nil
-            }
-
-            return mappedError
-        }
-        .filterNil()
-        // This is an Driver of Errors, so it is correct to call `asDriverOnErrorReturnEmpty`, which will not filter out
-        // our elements (errors).
-        .asDriverOnErrorReturnEmpty()
-    }
-
-    func asInputValidationErrors(mapError: @escaping (Swift.Error) -> (some InputError)?) -> Driver<AnyValidation> {
+    func asInputValidationErrors(
+        mapError: @escaping (Swift.Error) -> (some InputError)?
+    ) -> AnyPublisher<AnyValidation, Never> {
         asInputErrors(mapError: mapError)
-            .map(\.errorMessage)
-            .map { .errorMessage($0) }
+            .map { .errorMessage($0.errorMessage) }
+            .eraseToAnyPublisher()
+    }
+}
+
+public extension Publisher {
+    func trackError(_ tracker: ErrorTracker) -> some Publisher<Output, Failure>
+        where Failure: Error {
+        tracker.track(from: self)
     }
 }

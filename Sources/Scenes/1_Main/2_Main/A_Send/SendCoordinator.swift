@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -36,21 +35,18 @@ enum SendCoordinatorNavigationStep {
 final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let onboardingUseCase: OnboardingUseCase
-    private let transactionIntent: Driver<TransactionIntent>
-    private let scannedQRTransactionSubject = PublishSubject<TransactionIntent>()
+    private let transactionIntent: AnyPublisher<TransactionIntent, Never>
+    private let scannedQRTransactionSubject = PassthroughSubject<TransactionIntent, Never>()
 
     init(
         navigationController: UINavigationController,
         useCaseProvider: UseCaseProvider,
-        deeplinkedTransaction: Driver<TransactionIntent>
+        deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
         self.useCaseProvider = useCaseProvider
         onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
 
-        transactionIntent = Driver.merge(
-            deeplinkedTransaction,
-            scannedQRTransactionSubject.asDriverOnErrorReturnEmpty()
-        )
+        transactionIntent = deeplinkedTransaction.merge(with: scannedQRTransactionSubject.replaceErrorWithEmpty()).eraseToAnyPublisher()
         super.init(navigationController: navigationController)
     }
 
@@ -78,7 +74,7 @@ private extension SendCoordinator {
                     return false
                 }
                 return true
-            }
+            }.eraseToAnyPublisher()
         )
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
@@ -98,7 +94,7 @@ private extension SendCoordinator {
             switch userDid {
             case let .scanQRContainingTransaction(transaction):
                 dismissScene(true) {
-                    self.scannedQRTransactionSubject.onNext(transaction)
+                    self.scannedQRTransactionSubject.send(transaction)
                 }
             case .cancel:
                 dismissScene(true, nil)

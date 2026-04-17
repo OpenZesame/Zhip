@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -34,9 +33,9 @@ enum DecryptKeystoreCoordinatorNavigationStep {
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
     private let useCase: WalletUseCase
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
 
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil) {
+    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>? = nil) {
         self.useCase = useCase
         if let wallet {
             self.wallet = wallet
@@ -46,7 +45,7 @@ final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinat
                     incorrectImplementation("Should have saved wallet earlier")
                 }
                 return wallet
-            }.asDriverOnErrorReturnEmpty()
+            }.replaceErrorWithEmpty().eraseToAnyPublisher()
         }
         super.init(navigationController: navigationController)
     }

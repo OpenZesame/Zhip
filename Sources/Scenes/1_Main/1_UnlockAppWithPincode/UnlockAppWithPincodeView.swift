@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-import RxSwift
+import Combine
 import UIKit
 
 final class UnlockAppWithPincodeView: ScrollableStackViewOwner {
@@ -43,16 +43,16 @@ final class UnlockAppWithPincodeView: ScrollableStackViewOwner {
 extension UnlockAppWithPincodeView: ViewModelled {
     typealias ViewModel = UnlockAppWithPincodeViewModel
 
-    func populate(with viewModel: UnlockAppWithPincodeViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: UnlockAppWithPincodeViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
-            viewModel.pincodeValidation --> inputPincodeView.rx.validation,
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.becomeFirstResponderBinder,
+            viewModel.pincodeValidation --> inputPincodeView.validationBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver()
+            pincode: inputPincodeView.pincodePublisher
         )
     }
 }

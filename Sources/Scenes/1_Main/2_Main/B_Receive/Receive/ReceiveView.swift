@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -59,22 +58,22 @@ final class ReceiveView: ScrollableStackViewOwner {
 extension ReceiveView: ViewModelled {
     typealias ViewModel = ReceiveViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.receivingAddress --> addressValueTextView.rx.text,
-            viewModel.amountPlaceholder --> requestingAmountField.rx.placeholder,
-            viewModel.amountValidation --> requestingAmountField.rx.validation,
-            viewModel.qrImage --> qrImageView.rx.image,
+            viewModel.receivingAddress --> addressValueTextView.textBinder,
+            viewModel.amountPlaceholder --> requestingAmountField.placeholderBinder,
+            viewModel.amountValidation --> requestingAmountField.validationBinder,
+            viewModel.qrImage --> qrImageView.imageBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
             qrCodeImageHeight: 200,
-            amountToReceive: requestingAmountField.rx.text.orEmpty.asDriver().skip(1),
-            didEndEditingAmount: requestingAmountField.rx.didEndEditing,
-            copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
-            shareTrigger: requestPaymentButton.rx.tap.asDriverOnErrorReturnEmpty()
+            amountToReceive: requestingAmountField.textPublisher.orEmpty.dropFirst(1).eraseToAnyPublisher(),
+            didEndEditingAmount: requestingAmountField.didEndEditingPublisher,
+            copyMyAddressTrigger: copyMyAddressButton.tapPublisher,
+            shareTrigger: requestPaymentButton.tapPublisher
         )
     }
 }

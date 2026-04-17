@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -58,65 +57,60 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         let receipt = useCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
             .trackActivity(activityTracker)
-            .do(onError: {
-                guard let error = $0 as? Zesame.Error else {
-                    incorrectImplementation("Wrong type of error")
-                }
-                if case .api(.timeout) = error {
+            .handleEvents(receiveCompletion: { completion in
+                if case .failure(let error) = completion,
+                   let zError = error as? Zesame.Error,
+                   case .api(.timeout) = zError {
                     userDid(.waitUntilTimeout)
                 }
-            }
-            )
+            })
 
-        let hasReceivedReceipt = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false)
+        let hasReceivedReceipt: AnyPublisher<Bool, Never> = receipt.mapToVoid().replaceErrorWithEmpty().map { true }.prepend(false).eraseToAnyPublisher()
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromView.copyTransactionIdTrigger
-                .do(onNext: { [unowned self] in
+                .sink { [unowned self] in
                     UIPasteboard.general.string = transactionId
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .PollTransaction.copiedTransactionId)))
-                }).drive(),
+                        .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
+                },
 
             input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
-                .do(onNext: { hasReceivedReceipt in
+                .sink { hasReceivedReceipt in
                     let action: NavigationStep = hasReceivedReceipt ? .dismiss : .skip
                     userDid(action)
 
-                })
-                .drive(),
+                },
 
-            input.fromView.seeTxDetails.withLatestFrom(receipt.asDriverOnErrorReturnEmpty()) {
+            input.fromView.seeTxDetails.withLatestFrom(receipt.replaceErrorWithEmpty()) {
                 $1
-            }.do(
-                onNext: { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) }
-            ).drive(),
-        ]
+            }.sink { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) },
+        ].forEach { $0.store(in: &cancellables) }
 
         // MARK: Return output
 
         return Output(
             skipWaitingOrDoneButtonTitle: hasReceivedReceipt
-                .map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting)
-                },
+                .map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting) }
+                .eraseToAnyPublisher(),
             isSeeTxDetailsEnabled: hasReceivedReceipt,
-            isSeeTxDetailsButtonLoading: activityTracker.asDriver()
+            isSeeTxDetailsButtonLoading: activityTracker.asPublisher()
         )
     }
 }
 
 extension PollTransactionStatusViewModel {
     struct InputFromView {
-        let copyTransactionIdTrigger: Driver<Void>
-        let skipWaitingOrDoneTrigger: Driver<Void>
-        let seeTxDetails: Driver<Void>
+        let copyTransactionIdTrigger: AnyPublisher<Void, Never>
+        let skipWaitingOrDoneTrigger: AnyPublisher<Void, Never>
+        let seeTxDetails: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let skipWaitingOrDoneButtonTitle: Driver<String>
-        let isSeeTxDetailsEnabled: Driver<Bool>
-        let isSeeTxDetailsButtonLoading: Driver<Bool>
+        let skipWaitingOrDoneButtonTitle: AnyPublisher<String, Never>
+        let isSeeTxDetailsEnabled: AnyPublisher<Bool, Never>
+        let isSeeTxDetailsButtonLoading: AnyPublisher<Bool, Never>
     }
 }

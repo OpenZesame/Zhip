@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import Zesame
 
 private let encryptionPasswordMode = WalletEncryptionPassword.Mode.newOrRestorePrivateKey
@@ -37,63 +36,65 @@ final class RestoreWalletUsingPrivateKeyViewModel {
         let validator = InputValidator()
 
         let privateKeyValidationValue = inputFromView.privateKey.map { validator.validatePrivateKey($0) }
+            .eraseToAnyPublisher()
 
         let unconfirmedPassword = inputFromView.newEncryptionPassword
         let confirmingPassword = inputFromView.confirmEncryptionPassword
 
-        let confirmEncryptionPasswordValidationValue = Driver.combineLatest(unconfirmedPassword, confirmingPassword)
+        let confirmEncryptionPasswordValidationValue: AnyPublisher<EncryptionPasswordValidator.ValidationResult, Never> =
+            unconfirmedPassword.combineLatest(confirmingPassword).eraseToAnyPublisher()
             .map {
                 validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
-            }
+            }.eraseToAnyPublisher()
 
-        let encryptionPasswordPlaceHolder = Driver
-            .just(String(localized: .RestoreWallet
-                    .privateKeyEncryptionPasswordField(minLength: WalletEncryptionPassword
-                        .minimumLength(mode: encryptionPasswordMode))))
+        let encryptionPasswordPlaceHolder = Just(String(localized: .RestoreWallet
+            .privateKeyEncryptionPasswordField(minLength: WalletEncryptionPassword
+                .minimumLength(mode: encryptionPasswordMode))))
+            .eraseToAnyPublisher()
 
-        let privateKeyFieldIsSecureTextEntry = inputFromView.showPrivateKeyTrigger.scan(true) { lastState, _ in
+        let privateKeyFieldIsSecureTextEntry: AnyPublisher<Bool, Never> = inputFromView.showPrivateKeyTrigger.scan(true) { lastState, _ in
             !lastState
-        }
+        }.eraseToAnyPublisher()
 
-        let togglePrivateKeyVisibilityButtonTitle = privateKeyFieldIsSecureTextEntry.map {
+        let togglePrivateKeyVisibilityButtonTitle: AnyPublisher<String, Never> = privateKeyFieldIsSecureTextEntry.map {
             $0 ? String(localized: .Generic.show) : String(localized: .Generic.hide)
-        }
+        }.eraseToAnyPublisher()
 
-        let encryptionPasswordValidationTrigger = Driver.merge(
-            unconfirmedPassword.mapToVoid().map { true },
-            inputFromView.isEditingNewEncryptionPassword
-        )
+        let encryptionPasswordValidationTrigger: AnyPublisher<Bool, Never> = unconfirmedPassword.mapToVoid().map { true }
+            .merge(with: inputFromView.isEditingNewEncryptionPassword)
+            .eraseToAnyPublisher()
 
-        let encryptionPasswordValidation: Driver<AnyValidation> = encryptionPasswordValidationTrigger.withLatestFrom(
-            unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never> = encryptionPasswordValidationTrigger.withLatestFrom(
+            unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }.eraseToAnyPublisher()
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = Driver.combineLatest(
-            Driver.merge(
-                // map `editingChanged` to `editingDidBegin`
-                confirmingPassword.mapToVoid().map { true },
-                inputFromView.isEditingConfirmedEncryptionPassword
-            ),
-            encryptionPasswordValidationTrigger // used for triggering, but value never used
-        ).withLatestFrom(confirmEncryptionPasswordValidationValue) {
-            EditingValidation(isEditing: $0.0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+        // map `editingChanged` to `editingDidBegin`
+        let confirmEditingTrigger = confirmingPassword.mapToVoid().map { true }
+            .merge(with: inputFromView.isEditingConfirmedEncryptionPassword)
+            .eraseToAnyPublisher()
 
-        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
-            privateKeyValidationValue.map(\.value),
-            confirmEncryptionPasswordValidationValue.map(\.value)
-        ).map {
-            guard let privateKey = $0.0, let newEncryptionPassword = $0.1?.validPassword else {
-                return nil
-            }
-            return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassword, kdf: .default)
-        }
+        // encryptionPasswordValidationTrigger used solely to trigger re-evaluation; value discarded
+        let confirmEncryptionPasswordValidation: AnyPublisher<AnyValidation, Never> = confirmEditingTrigger
+            .combineLatest(encryptionPasswordValidationTrigger)
+            .withLatestFrom(confirmEncryptionPasswordValidationValue) {
+                EditingValidation(isEditing: $0.0, validation: $1.validation)
+            }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let privateKeyValidation = inputFromView.isEditingPrivateKey.withLatestFrom(privateKeyValidationValue) {
-            EditingValidation(isEditing: $0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+        let keyRestoration: AnyPublisher<KeyRestoration?, Never> = privateKeyValidationValue.map(\.value)
+            .combineLatest(confirmEncryptionPasswordValidationValue.map(\.value))
+            .map {
+                guard let privateKey = $0.0, let newEncryptionPassword = $0.1?.validPassword else {
+                    return nil
+                }
+                return KeyRestoration.privateKey(privateKey, encryptBy: newEncryptionPassword, kdf: .default)
+            }.eraseToAnyPublisher()
+
+        let privateKeyValidation: AnyPublisher<AnyValidation, Never> = inputFromView.isEditingPrivateKey
+            .withLatestFrom(privateKeyValidationValue) {
+                EditingValidation(isEditing: $0, validation: $1.validation)
+            }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         output = Output(
             togglePrivateKeyVisibilityButtonTitle: togglePrivateKeyVisibilityButtonTitle,
@@ -109,23 +110,23 @@ final class RestoreWalletUsingPrivateKeyViewModel {
 
 extension RestoreWalletUsingPrivateKeyViewModel {
     struct InputFromView {
-        let privateKey: Driver<String>
-        let isEditingPrivateKey: Driver<Bool>
-        let showPrivateKeyTrigger: Driver<Void>
-        let newEncryptionPassword: Driver<String>
-        let isEditingNewEncryptionPassword: Driver<Bool>
-        let confirmEncryptionPassword: Driver<String>
-        let isEditingConfirmedEncryptionPassword: Driver<Bool>
+        let privateKey: AnyPublisher<String, Never>
+        let isEditingPrivateKey: AnyPublisher<Bool, Never>
+        let showPrivateKeyTrigger: AnyPublisher<Void, Never>
+        let newEncryptionPassword: AnyPublisher<String, Never>
+        let isEditingNewEncryptionPassword: AnyPublisher<Bool, Never>
+        let confirmEncryptionPassword: AnyPublisher<String, Never>
+        let isEditingConfirmedEncryptionPassword: AnyPublisher<Bool, Never>
     }
 
     struct Output {
-        let togglePrivateKeyVisibilityButtonTitle: Driver<String>
-        let privateKeyFieldIsSecureTextEntry: Driver<Bool>
-        let privateKeyValidation: Driver<AnyValidation>
-        let encryptionPasswordPlaceholder: Driver<String>
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let confirmEncryptionPasswordValidation: Driver<AnyValidation>
-        let keyRestoration: Driver<KeyRestoration?>
+        let togglePrivateKeyVisibilityButtonTitle: AnyPublisher<String, Never>
+        let privateKeyFieldIsSecureTextEntry: AnyPublisher<Bool, Never>
+        let privateKeyValidation: AnyPublisher<AnyValidation, Never>
+        let encryptionPasswordPlaceholder: AnyPublisher<String, Never>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let confirmEncryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let keyRestoration: AnyPublisher<KeyRestoration?, Never>
     }
 
     struct InputValidator {

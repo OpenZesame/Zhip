@@ -22,8 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxSwift
 import Zesame
 
 final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
@@ -37,27 +37,33 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 
 extension DefaultWalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error> {
         zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
-        zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default).map {
-            Wallet(wallet: $0, origin: .generatedByThisApp)
-        }
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error> {
+        zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
+            .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
-    func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet> {
+    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error> {
         let origin: Wallet.Origin = switch restoration {
         case .keystore: .importedKeystore
         case .privateKey: .importedPrivateKey
         }
-        return zilliqaService.restoreWallet(from: restoration).map {
-            Wallet(wallet: $0, origin: origin)
-        }
+        return zilliqaService.restoreWallet(from: restoration)
+            .map { Wallet(wallet: $0, origin: origin) }
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 }

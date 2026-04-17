@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 // MARK: - Start Child Coordinator
@@ -91,17 +92,20 @@ extension Coordinating {
         // from the `child.navigator` we also pass a trailing closure, the `((_ animateDismiss: Bool) -> Void)`
         // closure, which the parent coordinator _SHOULD_ invoke when it wants to finish this
         // temporary child coordinator.
-        bag <~ child.navigator.navigation.do(onNext: { [
-            unowned self,
-            unowned newModalNavigationController,
-            unowned child
-        ] navigationStep in
-            navigationHandler(navigationStep) { animated in
-                // Clean up navigation stack
-                newModalNavigationController.dismiss(animated: animated, completion: nil)
-                // Clean up coordinator stack
-                self.remove(childCoordinator: child)
+        child.navigator.navigation
+            .receive(on: DispatchQueue.main)
+            .sink { [
+                unowned self,
+                unowned newModalNavigationController,
+                unowned child
+            ] navigationStep in
+                navigationHandler(navigationStep) { animated in
+                    // Clean up navigation stack
+                    newModalNavigationController.dismiss(animated: animated, completion: nil)
+                    // Clean up coordinator stack
+                    self.remove(childCoordinator: child)
+                }
             }
-        }).drive()
+            .store(in: &cancellables)
     }
 }

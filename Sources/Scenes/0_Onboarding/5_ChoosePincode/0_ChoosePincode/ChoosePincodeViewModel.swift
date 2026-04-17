@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
 enum ChoosePincodeUserAction {
     case chosePincode(Pincode)
@@ -43,31 +42,29 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
         let pincode = input.fromView.pincode
 
-        bag <~ [
+        [
             input.fromView.doneTrigger.withLatestFrom(pincode.filterNil())
-                .do(onNext: { userDid(.chosePincode($0)) })
-                .drive(),
+                .sink { userDid(.chosePincode($0)) },
 
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.skip) })
-                .drive(),
-        ]
+                .sink { userDid(.skip) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,
-            isDoneButtonEnabled: pincode.map { $0 != nil }
+            isDoneButtonEnabled: pincode.map { $0 != nil }.eraseToAnyPublisher()
         )
     }
 }
 
 extension ChoosePincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
-        let doneTrigger: Driver<Void>
+        let pincode: AnyPublisher<Pincode?, Never>
+        let doneTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let isDoneButtonEnabled: Driver<Bool>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let isDoneButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

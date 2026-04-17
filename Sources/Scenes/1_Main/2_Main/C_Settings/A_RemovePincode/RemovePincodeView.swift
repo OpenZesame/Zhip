@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-import RxSwift
+import Combine
 import UIKit
 
 final class RemovePincodeView: ScrollableStackViewOwner {
@@ -41,16 +41,16 @@ final class RemovePincodeView: ScrollableStackViewOwner {
 extension RemovePincodeView: ViewModelled {
     typealias ViewModel = RemovePincodeViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
-            viewModel.pincodeValidation --> inputPincodeView.rx.validation,
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.becomeFirstResponderBinder,
+            viewModel.pincodeValidation --> inputPincodeView.validationBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver()
+            pincode: inputPincodeView.pincodePublisher
         )
     }
 }

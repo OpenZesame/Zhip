@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import TinyConstraints
 import UIKit
 
@@ -265,22 +264,22 @@ private extension CheckboxWithLabel {
     }
 }
 
-// MARK: - CheckboxWithLabel + Reactive
+// MARK: - CheckboxWithLabel + Publishers
 
-extension Reactive where Base: CheckboxWithLabel {
-    var isChecked: ControlProperty<Bool> {
-        base.checkbox.rx.isChecked
+extension CheckboxWithLabel {
+    var isCheckedPublisher: AnyPublisher<Bool, Never> {
+        checkbox.isCheckedPublisher
     }
 }
 
-// MARK: - CheckboxView + Reactive
+// MARK: - CheckboxView + Publishers
 
-extension Reactive where Base: CheckboxView {
-    var isChecked: ControlProperty<Bool> {
-        base.rx.controlProperty(editingEvents: .valueChanged, getter: {
-            $0.on
-        }, setter: {
-            $0.setOn($1, animated: true)
-        })
+extension CheckboxView {
+    var isCheckedPublisher: AnyPublisher<Bool, Never> {
+        Publishers.Merge(
+            Just(on),
+            publisher(for: .valueChanged).map { [weak self] _ in self?.on ?? false }
+        )
+        .eraseToAnyPublisher()
     }
 }

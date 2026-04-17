@@ -1,77 +1,41 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 
-public class ActivityIndicator: SharedSequenceConvertibleType {
-    public typealias Element = Bool
-    public typealias SharingStrategy = DriverSharingStrategy
-
+public final class ActivityIndicator {
     private let lock = NSRecursiveLock()
-    private let subject = BehaviorSubject(value: false)
-    private lazy var isLoading = subject.asDriverOnErrorReturnEmpty().distinctUntilChanged()
+    private let subject = CurrentValueSubject<Bool, Never>(false)
 
     public init() {}
-}
 
-public extension ActivityIndicator {
-    func asSharedSequence() -> SharedSequence<SharingStrategy, Element> {
-        isLoading
+    public func asPublisher() -> AnyPublisher<Bool, Never> {
+        subject.removeDuplicates().eraseToAnyPublisher()
     }
 }
 
 private extension ActivityIndicator {
-    private func subscribed() {
-        lock.lock()
-        subject.onNext(true)
-        lock.unlock()
+    func start() {
+        lock.lock(); subject.send(true); lock.unlock()
     }
 
-    private func sendStopLoading() {
-        lock.lock()
-        subject.onNext(false)
-        lock.unlock()
+    func stop() {
+        lock.lock(); subject.send(false); lock.unlock()
     }
 
-    func trackActivityOfObservable<O: ObservableConvertibleType>(_ source: O) -> Observable<O.Element> {
-        source.asObservable()
-            .do(onNext: { _ in
-                self.sendStopLoading()
-            }, onError: { _ in
-                self.sendStopLoading()
-            }, onCompleted: {
-                self.sendStopLoading()
-            }, onSubscribe: subscribed)
+    func track<P: Publisher>(_ source: P) -> some Publisher<P.Output, P.Failure> {
+        source
+            .handleEvents(
+                receiveSubscription: { [weak self] _ in self?.start() },
+                receiveOutput: { [weak self] _ in self?.stop() },
+                receiveCompletion: { [weak self] _ in self?.stop() },
+                receiveCancel: { [weak self] in self?.stop() }
+            )
     }
 }
 
-// MARK: - ObservableConvertibleType + ActivityIndicator
-
-public extension ObservableConvertibleType {
-    func trackActivity(_ activityIndicator: ActivityIndicator) -> Observable<Element> {
-        activityIndicator.trackActivityOfObservable(self)
+public extension Publisher {
+    func trackActivity(_ indicator: ActivityIndicator) -> some Publisher<Output, Failure> {
+        indicator.track(self)
     }
 }

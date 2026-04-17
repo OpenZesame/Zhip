@@ -22,7 +22,7 @@
 // SOFTWARE.
 //
 
-import RxSwift
+import Combine
 import TinyConstraints
 import UIKit
 
@@ -55,18 +55,18 @@ final class AskForCrashReportingPermissionsView: ScrollableStackViewOwner {
 extension AskForCrashReportingPermissionsView: ViewModelled {
     typealias ViewModel = AskForCrashReportingPermissionsViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.areButtonsEnabled --> declineButton.rx.isEnabled,
-            viewModel.areButtonsEnabled --> acceptButton.rx.isEnabled,
+            viewModel.areButtonsEnabled --> declineButton.isEnabledBinder,
+            viewModel.areButtonsEnabled --> acceptButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            isHaveReadDisclaimerCheckboxChecked: hasReadDisclaimerCheckbox.rx.isChecked.asDriver(),
-            acceptTrigger: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            declineTrigger: declineButton.rx.tap.asDriverOnErrorReturnEmpty()
+            isHaveReadDisclaimerCheckboxChecked: hasReadDisclaimerCheckbox.isCheckedPublisher,
+            acceptTrigger: acceptButton.tapPublisher,
+            declineTrigger: declineButton.tapPublisher
         )
     }
 }

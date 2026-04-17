@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 class AbstractSceneView: UIView, ScrollViewOwner {
@@ -78,22 +77,26 @@ private extension AbstractSceneView {
     }
 }
 
-// MARK: - Rx
+// MARK: - Publishers & Binders
 
-extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
-    var isRefreshing: Binder<Bool> {
-        let refreshControl = base.refreshControl
-        return refreshControl.rx.isRefreshing
+extension PullToRefreshCapable where Self: AbstractSceneView {
+    var isRefreshingBinder: Binder<Bool> {
+        Binder<Bool>(self) { view, refreshing in
+            if refreshing {
+                view.refreshControl.beginRefreshing()
+            } else {
+                view.refreshControl.endRefreshing()
+            }
+        }
     }
 
-    var pullToRefreshTitle: Binder<String> {
-        Binder<String>(base) {
+    var pullToRefreshTitleBinder: Binder<String> {
+        Binder<String>(self) {
             $0.refreshControl.setTitle($1)
         }
     }
 
-    var pullToRefreshTrigger: Driver<Void> {
-        base.refreshControl.rx.controlEvent(.valueChanged)
-            .asDriverOnErrorReturnEmpty()
+    var pullToRefreshTriggerPublisher: AnyPublisher<Void, Never> {
+        refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher()
     }
 }

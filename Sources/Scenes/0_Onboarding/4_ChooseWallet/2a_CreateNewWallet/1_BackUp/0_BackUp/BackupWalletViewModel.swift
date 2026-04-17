@@ -22,8 +22,7 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 import Zesame
 
@@ -43,14 +42,14 @@ final class BackupWalletViewModel: BaseViewModel<
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
     enum Mode: Int, Equatable {
         case dismissable, cancellable
     }
 
     private let mode: Mode
 
-    init(wallet: Driver<Wallet>, mode: Mode = .cancellable) {
+    init(wallet: AnyPublisher<Wallet, Never>, mode: Mode = .cancellable) {
         self.wallet = wallet
         self.mode = mode
     }
@@ -65,38 +64,33 @@ final class BackupWalletViewModel: BaseViewModel<
         switch mode {
         case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive().disposed(by: bag)
+                .sink { userDid(.cancelOrDismiss) }.store(in: &cancellables)
         case .cancellable:
             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive().disposed(by: bag)
+                .sink { userDid(.cancelOrDismiss) }.store(in: &cancellables)
         }
 
-        bag <~ [
+        [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
-                .do(onNext: { (keystoreText: String) in
+                .sink { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackupWallet.copiedKeystore)))
-                }).drive(),
+                    input.fromController.toastSubject.send(Toast(String(localized: .BackupWallet.copiedKeystore)))
+                },
 
             input.fromView.revealKeystoreTrigger
-                .do(onNext: { userDid(.revealKeystore) })
-                .drive(),
+                .sink { userDid(.revealKeystore) },
 
             input.fromView.revealPrivateKeyTrigger
-                .do(onNext: { userDid(.revealPrivateKey) })
-                .drive(),
+                .sink { userDid(.revealPrivateKey) },
 
             input.fromView.doneTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }.mapToVoid()
-                .do(onNext: { userDid(.backupWallet) })
-                .drive(),
-        ]
+                .sink { userDid(.backupWallet) },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            isHaveSecurelyBackedUpViewsVisible: Driver<Mode>.just(mode).map { $0 == .cancellable },
+            isHaveSecurelyBackedUpViewsVisible: AnyPublisher<Mode, Never>.just(mode).map { $0 == .cancellable }.eraseToAnyPublisher(),
             isDoneButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }
@@ -104,16 +98,16 @@ final class BackupWalletViewModel: BaseViewModel<
 
 extension BackupWalletViewModel {
     struct InputFromView {
-        let copyKeystoreToPasteboardTrigger: Driver<Void>
-        let revealKeystoreTrigger: Driver<Void>
-        let revealPrivateKeyTrigger: Driver<Void>
-        let isUnderstandsRiskCheckboxChecked: Driver<Bool>
-        let doneTrigger: Driver<Void>
+        let copyKeystoreToPasteboardTrigger: AnyPublisher<Void, Never>
+        let revealKeystoreTrigger: AnyPublisher<Void, Never>
+        let revealPrivateKeyTrigger: AnyPublisher<Void, Never>
+        let isUnderstandsRiskCheckboxChecked: AnyPublisher<Bool, Never>
+        let doneTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isHaveSecurelyBackedUpViewsVisible: Driver<Bool>
-        let isDoneButtonEnabled: Driver<Bool>
+        let isHaveSecurelyBackedUpViewsVisible: AnyPublisher<Bool, Never>
+        let isDoneButtonEnabled: AnyPublisher<Bool, Never>
     }
 }
 
