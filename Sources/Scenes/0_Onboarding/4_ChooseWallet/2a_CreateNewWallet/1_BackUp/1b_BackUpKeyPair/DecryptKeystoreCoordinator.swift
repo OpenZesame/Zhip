@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import UIKit
 import Zesame
@@ -32,9 +33,9 @@ enum DecryptKeystoreCoordinatorNavigationStep {
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
     private let useCase: WalletUseCase
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
 
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: Driver<Wallet>? = nil) {
+    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>? = nil) {
         self.useCase = useCase
         if let wallet {
             self.wallet = wallet

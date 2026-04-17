@@ -47,7 +47,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let transactionIntentResult: Driver<ScannedQRResult> = input.fromView.scannedQrCodeString.map {
+        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = input.fromView.scannedQrCodeString.map {
             guard var stringFromQR = $0 else {
                 return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
             }
@@ -94,10 +94,10 @@ final class ScanQRCodeViewModel: BaseViewModel<
 
 extension ScanQRCodeViewModel {
     struct InputFromView {
-        let scannedQrCodeString: Driver<String?>
+        let scannedQrCodeString: AnyPublisher<String?, Never>
     }
 
     struct Output {
-        let startScanning: Driver<Void>
+        let startScanning: AnyPublisher<Void, Never>
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -41,14 +42,14 @@ final class BackupWalletViewModel: BaseViewModel<
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
     enum Mode: Int, Equatable {
         case dismissable, cancellable
     }
 
     private let mode: Mode
 
-    init(wallet: Driver<Wallet>, mode: Mode = .cancellable) {
+    init(wallet: AnyPublisher<Wallet, Never>, mode: Mode = .cancellable) {
         self.wallet = wallet
         self.mode = mode
     }
@@ -94,7 +95,7 @@ final class BackupWalletViewModel: BaseViewModel<
         ]
 
         return Output(
-            isHaveSecurelyBackedUpViewsVisible: Driver<Mode>.just(mode).map { $0 == .cancellable }.eraseToAnyPublisher(),
+            isHaveSecurelyBackedUpViewsVisible: AnyPublisher<Mode, Never>.just(mode).map { $0 == .cancellable }.eraseToAnyPublisher(),
             isDoneButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }
@@ -102,16 +103,16 @@ final class BackupWalletViewModel: BaseViewModel<
 
 extension BackupWalletViewModel {
     struct InputFromView {
-        let copyKeystoreToPasteboardTrigger: Driver<Void>
-        let revealKeystoreTrigger: Driver<Void>
-        let revealPrivateKeyTrigger: Driver<Void>
-        let isUnderstandsRiskCheckboxChecked: Driver<Bool>
-        let doneTrigger: Driver<Void>
+        let copyKeystoreToPasteboardTrigger: AnyPublisher<Void, Never>
+        let revealKeystoreTrigger: AnyPublisher<Void, Never>
+        let revealPrivateKeyTrigger: AnyPublisher<Void, Never>
+        let isUnderstandsRiskCheckboxChecked: AnyPublisher<Bool, Never>
+        let doneTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isHaveSecurelyBackedUpViewsVisible: Driver<Bool>
-        let isDoneButtonEnabled: Driver<Bool>
+        let isHaveSecurelyBackedUpViewsVisible: AnyPublisher<Bool, Never>
+        let isDoneButtonEnabled: AnyPublisher<Bool, Never>
     }
 }
 

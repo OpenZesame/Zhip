@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Zesame
 
 private let encryptionPasswordMode: WalletEncryptionPassword.Mode = .restoreKeystore
@@ -43,34 +44,36 @@ final class RestoreWalletUsingKeystoreViewModel {
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }
 
-        let encryptionPasswordValidation = Driver.merge(
-            // map `editingChanged` to `editingDidBegin`
-            inputFromView.encryptionPassword.mapToVoid().map { true },
-            inputFromView.isEditingEncryptionPassword
-        ).withLatestFrom(encryptionPasswordValidationValue) {
-            EditingValidation(isEditing: $0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+        // map `editingChanged` to `editingDidBegin`
+        let encryptionPasswordEditingTrigger = inputFromView.encryptionPassword.mapToVoid().map { true }
+            .merge(with: inputFromView.isEditingEncryptionPassword)
+            .eraseToAnyPublisher()
 
-        let keyRestoration: Driver<KeyRestoration?> = combineLatest(
-            keyStoreValidationValue.map(\.value).eraseToAnyPublisher(),
-            encryptionPassword.eraseToAnyPublisher()
-        ).map { (keystoreOpt, passwordOpt) -> KeyRestoration? in
-            guard let keystore = keystoreOpt, let password = passwordOpt else {
-                return nil
+        let encryptionPasswordValidation = encryptionPasswordEditingTrigger
+            .withLatestFrom(encryptionPasswordValidationValue) {
+                EditingValidation(isEditing: $0, validation: $1.validation)
             }
-            return KeyRestoration.keystore(keystore, password: password)
-        }.eraseToAnyPublisher()
+            .eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let encryptionPasswordPlaceHolder = Driver
-            .just(String(localized: .RestoreWallet
-                    .keystoreEncryptionPasswordField(minLength: WalletEncryptionPassword
-                        .minimumLength(mode: encryptionPasswordMode))))
+        let keyRestoration: AnyPublisher<KeyRestoration?, Never> = keyStoreValidationValue.map(\.value)
+            .combineLatest(encryptionPassword)
+            .map { (keystoreOpt, passwordOpt) -> KeyRestoration? in
+                guard let keystore = keystoreOpt, let password = passwordOpt else {
+                    return nil
+                }
+                return KeyRestoration.keystore(keystore, password: password)
+            }.eraseToAnyPublisher()
+
+        let encryptionPasswordPlaceHolder = Just(String(localized: .RestoreWallet
+            .keystoreEncryptionPasswordField(minLength: WalletEncryptionPassword
+                .minimumLength(mode: encryptionPasswordMode))))
+            .eraseToAnyPublisher()
 
         let keystoreValidation = inputFromView.isEditingKeystore.withLatestFrom(keyStoreValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let keystoreTextFieldPlaceholder: Driver<String> = inputFromView.keystoreDidBeginEditing
+        let keystoreTextFieldPlaceholder: AnyPublisher<String, Never> = inputFromView.keystoreDidBeginEditing
             .map { "" }
             .removeDuplicates() // never changed, thus only emitted once, as wished
             .startWith("Paste your keystore here")
@@ -88,19 +91,19 @@ final class RestoreWalletUsingKeystoreViewModel {
 
 extension RestoreWalletUsingKeystoreViewModel {
     struct InputFromView {
-        let keystoreDidBeginEditing: Driver<Void>
-        let isEditingKeystore: Driver<Bool>
-        let keystoreText: Driver<String>
-        let encryptionPassword: Driver<String>
-        let isEditingEncryptionPassword: Driver<Bool>
+        let keystoreDidBeginEditing: AnyPublisher<Void, Never>
+        let isEditingKeystore: AnyPublisher<Bool, Never>
+        let keystoreText: AnyPublisher<String, Never>
+        let encryptionPassword: AnyPublisher<String, Never>
+        let isEditingEncryptionPassword: AnyPublisher<Bool, Never>
     }
 
     struct Output {
-        let keystoreTextFieldPlaceholder: Driver<String>
-        let encryptionPasswordPlaceholder: Driver<String>
-        let keyRestorationValidation: Driver<AnyValidation>
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let keyRestoration: Driver<KeyRestoration?>
+        let keystoreTextFieldPlaceholder: AnyPublisher<String, Never>
+        let encryptionPasswordPlaceholder: AnyPublisher<String, Never>
+        let keyRestorationValidation: AnyPublisher<AnyValidation, Never>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let keyRestoration: AnyPublisher<KeyRestoration?, Never>
     }
 
     struct InputValidator {

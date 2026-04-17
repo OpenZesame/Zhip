@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import UIKit
 import Zesame
@@ -33,12 +34,12 @@ enum BackupWalletCoordinatorNavigationStep {
 
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
     private let useCase: WalletUseCase
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
     private let mode: BackupWalletViewModel.Mode
     init(
         navigationController: UINavigationController,
         useCase: WalletUseCase,
-        wallet: Driver<Wallet>? = nil,
+        wallet: AnyPublisher<Wallet, Never>? = nil,
         mode: BackupWalletViewModel.Mode = .cancellable
     ) {
         self.useCase = useCase

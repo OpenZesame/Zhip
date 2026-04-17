@@ -17,9 +17,9 @@ final class DefaultTransactionsUseCase {
 }
 
 extension DefaultTransactionsUseCase: TransactionsUseCase {
-    var cachedBalance: ZilAmount? {
+    var cachedBalance: Amount? {
         guard let qa: String = preferences.loadValue(for: .cachedBalance) else { return nil }
-        return try? ZilAmount(qa: qa)
+        return try? Amount(qa: qa)
     }
 
     var balanceUpdatedAt: Date? { preferences.loadValue(for: .balanceWasUpdatedAt) }
@@ -33,38 +33,42 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         preferences.deleteValue(for: .balanceWasUpdatedAt)
     }
 
-    func cacheBalance(_ balance: ZilAmount) {
+    func cacheBalance(_ balance: Amount) {
         preferences.save(value: balance.qaString, for: .cachedBalance)
         balanceWasUpdated(at: Date())
     }
 
-    func getMinimumGasPrice() -> AnyPublisher<ZilAmount, Swift.Error> {
+    func getMinimumGasPrice() -> AnyPublisher<Amount, Swift.Error> {
         zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true)
             .map(\.amount)
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Swift.Error> {
-        zilliqaService.getBalance(for: address).asAnyPublisher()
+        zilliqaService.getBalance(for: address)
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassword: String)
         -> AnyPublisher<TransactionResponse, Swift.Error> {
         zilliqaService.getNetworkFromAPI()
-            .flatMapLatest { [unowned self] in
+            .flatMapLatest { [unowned self] networkResponse in
                 zilliqaService.sendTransaction(
                     for: payment,
                     keystore: wallet.keystore,
                     password: encryptionPassword,
-                    network: $0.network
+                    network: networkResponse.network
                 )
             }
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func receiptOfTransaction(byId txId: String, polling: Polling) -> AnyPublisher<TransactionReceipt, Swift.Error> {
         zilliqaService.hasNetworkReachedConsensusYetForTransactionWith(id: txId, polling: polling)
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 }
-

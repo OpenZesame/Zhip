@@ -11,4 +11,3 @@ extend-exclude = [
 [default.extend-identifiers]
 udid = "udid"
 UDID = "UDID"
-minumumPasswordLength = "minumumPasswordLength" # typo in Zesame, I should fix.

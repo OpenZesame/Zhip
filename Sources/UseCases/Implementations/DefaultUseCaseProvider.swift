@@ -24,7 +24,6 @@
 
 import Foundation
 import KeychainSwift
-import RxSwift // needed: ZilliqaServiceReactive is a Zesame RxSwift type
 import Zesame
 
 extension KeyValueStore where KeyType == PreferencesKey {
@@ -37,7 +36,7 @@ let network: Network = .mainnet
 
 final class DefaultUseCaseProvider {
     static let shared = DefaultUseCaseProvider(
-        zilliqaService: DefaultZilliqaService(network: network).rx,
+        zilliqaService: DefaultZilliqaService(network: network).combine,
         preferences: .default,
         securePersistence: KeyValueStore(KeychainSwift())
     )

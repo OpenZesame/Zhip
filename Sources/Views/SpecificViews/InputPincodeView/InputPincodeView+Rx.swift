@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 extension Reactive where Base == InputPincodeView {
@@ -29,7 +30,7 @@ extension Reactive where Base == InputPincodeView {
         base.pinField.rx.becomeFirstResponder
     }
 
-    var pincode: Driver<Pincode?> {
+    var pincode: AnyPublisher<Pincode?, Never> {
         base.pinField.pincodeDriver
     }
 

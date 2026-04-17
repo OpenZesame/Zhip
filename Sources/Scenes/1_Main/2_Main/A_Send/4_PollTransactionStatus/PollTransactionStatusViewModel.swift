@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import UIKit
 import Zesame
@@ -64,7 +65,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
                 }
             })
 
-        let hasReceivedReceipt: Driver<Bool> = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false).eraseToAnyPublisher()
+        let hasReceivedReceipt: AnyPublisher<Bool, Never> = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false).eraseToAnyPublisher()
 
         // MARK: Navigate
 
@@ -105,14 +106,14 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
 extension PollTransactionStatusViewModel {
     struct InputFromView {
-        let copyTransactionIdTrigger: Driver<Void>
-        let skipWaitingOrDoneTrigger: Driver<Void>
-        let seeTxDetails: Driver<Void>
+        let copyTransactionIdTrigger: AnyPublisher<Void, Never>
+        let skipWaitingOrDoneTrigger: AnyPublisher<Void, Never>
+        let seeTxDetails: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let skipWaitingOrDoneButtonTitle: Driver<String>
-        let isSeeTxDetailsEnabled: Driver<Bool>
-        let isSeeTxDetailsButtonLoading: Driver<Bool>
+        let skipWaitingOrDoneButtonTitle: AnyPublisher<String, Never>
+        let isSeeTxDetailsEnabled: AnyPublisher<Bool, Never>
+        let isSeeTxDetailsButtonLoading: AnyPublisher<Bool, Never>
     }
 }

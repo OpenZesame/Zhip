@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -56,7 +57,7 @@ final class ReceiveViewModel: BaseViewModel<
 
         let validator = InputValidator()
 
-        let amountValidationValue: Driver<AmountValidator<ZilAmount>.ValidationResult> = input.fromView.amountToReceive
+        let amountValidationValue: AnyPublisher<AmountValidator<Amount>.ValidationResult, Never> = input.fromView.amountToReceive
             .map { validator.validateAmount($0) }.startWith(.valid(.amount(
                 0,
                 in: .zil
@@ -66,21 +67,22 @@ final class ReceiveViewModel: BaseViewModel<
 
         let amountValidationTrigger = input.fromView.didEndEditingAmount
 
-        let amountValidation: Driver<AnyValidation> = Driver.merge(
-            amountValidationTrigger.withLatestFrom(amountValidationValue).onlyErrors(),
-            amountValidationValue.nonErrors()
-        )
+        let amountValidation: AnyPublisher<AnyValidation, Never> = amountValidationTrigger
+            .withLatestFrom(amountValidationValue)
+            .onlyErrors()
+            .merge(with: amountValidationValue.nonErrors())
+            .eraseToAnyPublisher()
 
-        let transactionToReceive: Driver<TransactionIntent> = combineLatest(
-            wallet.map { Address.bech32($0.bech32Address) }.eraseToAnyPublisher(),
-            amount.map { $0?.amount }.filterNil()
-        ) { TransactionIntent(to: $0, amount: $1) }
+        let transactionToReceive: AnyPublisher<TransactionIntent, Never> = wallet
+            .map { Address.bech32($0.bech32Address) }
+            .combineLatest(amount.map { $0?.amount }.filterNil()) { TransactionIntent(to: $0, amount: $1) }
+            .eraseToAnyPublisher()
 
-        let qrImage: Driver<UIImage?> = transactionToReceive.map { [unowned qrCoder] in
+        let qrImage: AnyPublisher<UIImage?, Never> = transactionToReceive.map { [unowned qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }.eraseToAnyPublisher()
 
-        let receivingAddress: Driver<String> = wallet.map(\.bech32Address.asString).eraseToAnyPublisher()
+        let receivingAddress: AnyPublisher<String, Never> = wallet.map(\.bech32Address.asString).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -100,7 +102,7 @@ final class ReceiveViewModel: BaseViewModel<
 
         return Output(
             receivingAddress: receivingAddress,
-            amountPlaceholder: Driver.just(String(localized: .Receive.requestAmountField(unit: Unit.zil.name))),
+            amountPlaceholder: Just(String(localized: .Receive.requestAmountField(unit: Unit.zil.name))).eraseToAnyPublisher(),
             amountValidation: amountValidation,
             qrImage: qrImage
         )
@@ -110,23 +112,23 @@ final class ReceiveViewModel: BaseViewModel<
 extension ReceiveViewModel {
     struct InputFromView {
         let qrCodeImageHeight: CGFloat
-        let amountToReceive: Driver<String>
-        let didEndEditingAmount: Driver<Void>
-        let copyMyAddressTrigger: Driver<Void>
-        let shareTrigger: Driver<Void>
+        let amountToReceive: AnyPublisher<String, Never>
+        let didEndEditingAmount: AnyPublisher<Void, Never>
+        let copyMyAddressTrigger: AnyPublisher<Void, Never>
+        let shareTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let receivingAddress: Driver<String>
-        let amountPlaceholder: Driver<String>
-        let amountValidation: Driver<AnyValidation>
-        let qrImage: Driver<UIImage?>
+        let receivingAddress: AnyPublisher<String, Never>
+        let amountPlaceholder: AnyPublisher<String, Never>
+        let amountValidation: AnyPublisher<AnyValidation, Never>
+        let qrImage: AnyPublisher<UIImage?, Never>
     }
 
     struct InputValidator {
-        private let zilAmountValidator = AmountValidator<ZilAmount>()
+        private let zilAmountValidator = AmountValidator<Amount>()
 
-        func validateAmount(_ amount: String) -> AmountValidator<ZilAmount>.ValidationResult {
+        func validateAmount(_ amount: String) -> AmountValidator<Amount>.ValidationResult {
             zilAmountValidator.validate(input: (amount, Zesame.Unit.zil))
         }
     }

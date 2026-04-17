@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class PincodeTextField: UITextField {
@@ -71,7 +72,7 @@ final class PincodeTextField: UITextField {
     /// only used to listen to change of `text` in the UITextField when it is being edited
     private let bag = DisposeBag()
 
-    fileprivate var pincodeSubject = PublishSubject<Pincode?>()
+    fileprivate var pincodeSubject = PassthroughSubject<Pincode?, Never>()
     lazy var pincodeDriver = pincodeSubject.asDriverOnErrorReturnEmpty()
         // Calling `distinctUntilChanged` really is quite important, since it fixes potential bugs where
         // we use `UIViewController.viewWillAppear` as a trigger for invoking `PincodeTextField.becomeFirstResponder`

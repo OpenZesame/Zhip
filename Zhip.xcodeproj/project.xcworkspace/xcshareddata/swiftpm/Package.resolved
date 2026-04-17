@@ -1,5 +1,5 @@
 {
-  "originHash" : "d8c988360294d4833d593c8d53b00ed2bd85924da2ce254677a5a34d8aa8c8d7",
+  "originHash" : "58e88dbe0682fb0f6765f77af04eb63f2e6d99ee1f04b0bd5392b1a0e266cb9a",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
         "version" : "1.2024072200.0"
-      }
-    },
-    {
-      "identity" : "alamofire",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/Alamofire.git",
-      "state" : {
-        "revision" : "e938f8c66708e7352fc7e3512647fa54255b267a",
-        "version" : "5.11.2"
       }
     },
     {
@@ -38,30 +29,12 @@
       }
     },
     {
-      "identity" : "cryptoswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
-      "state" : {
-        "revision" : "5669f222e46c8134fb1f399c745fa6882b43532e",
-        "version" : "1.3.8"
-      }
-    },
-    {
       "identity" : "efqrcode",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EFPrefix/EFQRCode",
       "state" : {
         "revision" : "3a6c5012f1a0df404a92e55bb01b4b685ff5a2d1",
         "version" : "6.2.2"
-      }
-    },
-    {
-      "identity" : "ellipticcurvekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Sajjon/EllipticCurveKit.git",
-      "state" : {
-        "revision" : "9ebdfefe73f97cd9a2b95cd94a093d4aad61d12e",
-        "version" : "1.0.2"
       }
     },
     {
@@ -146,6 +119,15 @@
       }
     },
     {
+      "identity" : "k1",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Sajjon/K1.git",
+      "state" : {
+        "revision" : "142c0c0194a53d249d0bfcb5d7998ea2f2403153",
+        "version" : "0.7.1"
+      }
+    },
+    {
       "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/evgenyneu/keychain-swift",
@@ -188,24 +170,6 @@
       "state" : {
         "revision" : "5020b5a47199d8ba80c83a4b4fafd70e9dc9dc7f",
         "version" : "10.1.1"
-      }
-    },
-    {
-      "identity" : "rxdatasources",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/RxDataSources",
-      "state" : {
-        "revision" : "90c29b48b628479097fe775ed1966d75ac374518",
-        "version" : "5.0.2"
-      }
-    },
-    {
-      "identity" : "rxswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ReactiveX/RxSwift.git",
-      "state" : {
-        "revision" : "7e01c05f25c025143073eaa3be3532f9375c614b",
-        "version" : "6.1.0"
       }
     },
     {
@@ -258,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OpenZesame/Zesame",
       "state" : {
-        "revision" : "6c6b2ac63401b87cb93bd9540ca1cfe88fc30b55",
-        "version" : "1.1.1"
+        "revision" : "d61e96aa83020979b6c5c2b55e7957f8bf0a8ebf",
+        "version" : "2.0.0"
       }
     }
   ],

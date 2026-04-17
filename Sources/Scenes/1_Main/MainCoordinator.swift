@@ -33,7 +33,7 @@ enum MainCoordinatorNavigationStep {
 final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
-    private let deeplinkedTransaction: Driver<TransactionIntent>
+    private let deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     private let updateBalanceSubject = PassthroughSubject<Void, Never>()
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
@@ -42,7 +42,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
         navigationController: UINavigationController,
         deepLinkGenerator: DeepLinkGenerator,
         useCaseProvider: UseCaseProvider,
-        deeplinkedTransaction: Driver<TransactionIntent>
+        deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
         self.useCaseProvider = useCaseProvider
         self.deepLinkGenerator = deepLinkGenerator

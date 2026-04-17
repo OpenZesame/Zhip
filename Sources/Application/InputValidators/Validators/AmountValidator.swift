@@ -54,7 +54,7 @@ enum AmountError<ConvertTo: ExpressibleByAmount>: Swift.Error, InputError {
             self.init(zesameError: qaError)
         } else if let gasPriceError = error as? Zesame.AmountError<GasPrice> {
             self.init(zesameError: gasPriceError)
-        } else if let zilAmountError = error as? Zesame.AmountError<ZilAmount> {
+        } else if let zilAmountError = error as? Zesame.AmountError<Amount> {
             self.init(zesameError: zilAmountError)
         } else {
             self = .other(error)

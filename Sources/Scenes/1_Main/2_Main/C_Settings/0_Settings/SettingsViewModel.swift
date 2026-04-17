@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import UIKit
 import Zesame
@@ -70,11 +71,11 @@ final class SettingsViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let sections: Driver<[SectionModel<Void, SettingsItem>]> = input.fromController.viewWillAppear
+        let sections: AnyPublisher<[SectionModel<Void, SettingsItem>], Never> = input.fromController.viewWillAppear
             .map { [unowned self] _ in return makeSections() }
             .eraseToAnyPublisher()
 
-        let selectedCell: Driver<SettingsItem> = input.fromView.selectedIndexPath.withLatestFrom(sections) {
+        let selectedCell: AnyPublisher<SettingsItem, Never> = input.fromView.selectedIndexPath.withLatestFrom(sections) {
             $1[$0.section].items[$0.row]
         }
 
@@ -97,12 +98,12 @@ final class SettingsViewModel: BaseViewModel<
 
 extension SettingsViewModel {
     struct InputFromView {
-        let selectedIndexPath: Driver<IndexPath>
+        let selectedIndexPath: AnyPublisher<IndexPath, Never>
     }
 
     struct Output {
-        let sections: Driver<[SectionModel<Void, SettingsItem>]>
-        let footerText: Driver<String>
+        let sections: AnyPublisher<[SectionModel<Void, SettingsItem>], Never>
+        let footerText: AnyPublisher<String, Never>
     }
 }
 

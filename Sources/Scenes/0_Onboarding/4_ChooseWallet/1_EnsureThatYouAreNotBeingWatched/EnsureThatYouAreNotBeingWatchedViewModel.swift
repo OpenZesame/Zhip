@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - User action and navigation steps
@@ -60,7 +61,7 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
 extension EnsureThatYouAreNotBeingWatchedViewModel {
     struct InputFromView {
-        let understandTrigger: Driver<Void>
+        let understandTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}

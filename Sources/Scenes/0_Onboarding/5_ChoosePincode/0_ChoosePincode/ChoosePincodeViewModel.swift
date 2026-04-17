@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 enum ChoosePincodeUserAction {
@@ -60,12 +61,12 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
 extension ChoosePincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
-        let doneTrigger: Driver<Void>
+        let pincode: AnyPublisher<Pincode?, Never>
+        let doneTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let isDoneButtonEnabled: Driver<Bool>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let isDoneButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

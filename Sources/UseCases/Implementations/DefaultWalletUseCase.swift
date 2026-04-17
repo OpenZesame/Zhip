@@ -39,18 +39,21 @@ extension DefaultWalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore
     func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error> {
         zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error> {
         zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
             .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 
     func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error> {
@@ -60,7 +63,7 @@ extension DefaultWalletUseCase {
         }
         return zilliqaService.restoreWallet(from: restoration)
             .map { Wallet(wallet: $0, origin: origin) }
-            .asAnyPublisher()
+            .mapError { $0 as Swift.Error }
+            .eraseToAnyPublisher()
     }
 }
-

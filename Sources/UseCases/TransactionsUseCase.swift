@@ -5,9 +5,9 @@ import Foundation
 import Zesame
 
 protocol TransactionsUseCase {
-    var cachedBalance: ZilAmount? { get }
-    func cacheBalance(_ balance: ZilAmount)
-    func getMinimumGasPrice() -> AnyPublisher<ZilAmount, Swift.Error>
+    var cachedBalance: Amount? { get }
+    func cacheBalance(_ balance: Amount)
+    func getMinimumGasPrice() -> AnyPublisher<Amount, Swift.Error>
     func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Swift.Error>
     func deleteCachedBalance()
     var balanceUpdatedAt: Date? { get }

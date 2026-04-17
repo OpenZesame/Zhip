@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -45,10 +46,10 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keyPair = Driver.just(keyPair)
+        let keyPair = Just(keyPair).eraseToAnyPublisher()
 
-        let privateKey: Driver<String> = keyPair.map { $0.privateKey.asHexStringLength64() }.eraseToAnyPublisher()
-        let publicKeyUncompressed: Driver<String> = keyPair.map(\.publicKey.hex.uncompressed).eraseToAnyPublisher()
+        let privateKey: AnyPublisher<String, Never> = keyPair.map(\.privateKey.rawRepresentation.asHex).eraseToAnyPublisher()
+        let publicKeyUncompressed: AnyPublisher<String, Never> = keyPair.map(\.publicKey.x963Representation.asHex).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -79,12 +80,12 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
 
 extension BackUpRevealedKeyPairViewModel {
     struct InputFromView {
-        let copyPrivateKeyTrigger: Driver<Void>
-        let copyPublicKeyTrigger: Driver<Void>
+        let copyPrivateKeyTrigger: AnyPublisher<Void, Never>
+        let copyPublicKeyTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let privateKey: Driver<String>
-        let publicKeyUncompressed: Driver<String>
+        let privateKey: AnyPublisher<String, Never>
+        let publicKeyUncompressed: AnyPublisher<String, Never>
     }
 }

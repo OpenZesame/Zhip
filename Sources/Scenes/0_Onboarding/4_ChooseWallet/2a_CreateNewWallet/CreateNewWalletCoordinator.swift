@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -72,7 +73,7 @@ private extension CreateNewWalletCoordinator {
             coordinator: BackupWalletCoordinator(
                 navigationController: navigationController,
                 useCase: useCaseProvider.makeWalletUseCase(),
-                wallet: Driver.just(wallet)
+                wallet: Just(wallet).eraseToAnyPublisher()
             )
         ) { [unowned self] userFinished in
             switch userFinished {

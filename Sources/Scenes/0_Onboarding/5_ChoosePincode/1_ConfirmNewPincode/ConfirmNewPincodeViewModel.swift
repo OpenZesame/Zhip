@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - ConfirmNewPincodeUserAction
@@ -53,16 +54,13 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
         let validator = InputValidator(existingPincode: unconfirmedPincode)
 
-        let pincodeValidationValue: Driver<PincodeValidator.ValidationResult> = input.fromView.pincode.map {
+        let pincodeValidationValue: AnyPublisher<PincodeValidator.ValidationResult, Never> = input.fromView.pincode.map {
             validator.validate(unconfirmedPincode: $0)
         }.eraseToAnyPublisher()
-        let isConfirmPincodeEnabled: Driver<Bool> = combineLatest(
-            pincodeValidationValue.map(\.isValid).eraseToAnyPublisher(),
-            input.fromView.isHaveBackedUpPincodeCheckboxChecked,
-            resultSelector: { isPincodeValid, isBackedUpChecked in
+        let isConfirmPincodeEnabled: AnyPublisher<Bool, Never> = pincodeValidationValue.map(\.isValid)
+            .combineLatest(input.fromView.isHaveBackedUpPincodeCheckboxChecked) { isPincodeValid, isBackedUpChecked in
                 isPincodeValid && isBackedUpChecked
-            }
-        )
+            }.eraseToAnyPublisher()
 
         bag <~ [
             input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).eraseToAnyPublisher().filterNil())
@@ -86,15 +84,15 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
 extension ConfirmNewPincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
-        let isHaveBackedUpPincodeCheckboxChecked: Driver<Bool>
-        let confirmedTrigger: Driver<Void>
+        let pincode: AnyPublisher<Pincode?, Never>
+        let isHaveBackedUpPincodeCheckboxChecked: AnyPublisher<Bool, Never>
+        let confirmedTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let pincodeValidation: Driver<AnyValidation>
-        let isConfirmPincodeEnabled: Driver<Bool>
-        let inputBecomeFirstResponder: Driver<Void>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
+        let isConfirmPincodeEnabled: AnyPublisher<Bool, Never>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
     }
 
     struct InputValidator {

@@ -61,7 +61,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
 
-        func unlockUsingBiometrics() -> Driver<Void> {
+        func unlockUsingBiometrics() -> AnyPublisher<Void, Never> {
             let context = LAContext()
             context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
             var authError: NSError?
@@ -84,10 +84,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
 
         bag <~ [
-            Driver.merge(
-                pincodeValidationValue.filter(\.isValid).mapToVoid(),
-                unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }
-            )
+            pincodeValidationValue.filter(\.isValid).mapToVoid().merge(with: unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }).eraseToAnyPublisher()
             .do(onNext: { userDid(.unlockApp) })
             .drive(),
         ]
@@ -101,12 +98,12 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
 extension UnlockAppWithPincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
+        let pincode: AnyPublisher<Pincode?, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let pincodeValidation: Driver<AnyValidation>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
     }
 
     struct InputValidator {

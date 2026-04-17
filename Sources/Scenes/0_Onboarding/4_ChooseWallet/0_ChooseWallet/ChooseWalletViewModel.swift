@@ -22,6 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
+
 // MARK: - ChooseWalletUserAction
 
 enum ChooseWalletUserAction {
@@ -56,8 +58,8 @@ final class ChooseWalletViewModel: BaseViewModel<
 
 extension ChooseWalletViewModel {
     struct InputFromView {
-        let createNewWalletTrigger: Driver<Void>
-        let restoreWalletTrigger: Driver<Void>
+        let createNewWalletTrigger: AnyPublisher<Void, Never>
+        let restoreWalletTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}

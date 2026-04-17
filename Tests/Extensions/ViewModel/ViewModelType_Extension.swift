@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 @testable import Zhip
 
 extension ViewModelType where Input: InputType, Self.Input.FromController == InputFromController {
@@ -37,15 +36,15 @@ extension ViewModelType where Input: InputType, Self.Input.FromController == Inp
 private extension InputFromController {
     static var empty: InputFromController {
         InputFromController(
-            viewDidLoad: .empty(),
-            viewWillAppear: .empty(),
-            viewDidAppear: .empty(),
-            leftBarButtonTrigger: .empty(),
-            rightBarButtonTrigger: .empty(),
-            titleSubject: PublishSubject<String>(),
-            leftBarButtonContentSubject: PublishSubject<BarButtonContent>(),
-            rightBarButtonContentSubject: PublishSubject<BarButtonContent>(),
-            toastSubject: PublishSubject<Toast>()
+            viewDidLoad: Empty().eraseToAnyPublisher(),
+            viewWillAppear: Empty().eraseToAnyPublisher(),
+            viewDidAppear: Empty().eraseToAnyPublisher(),
+            leftBarButtonTrigger: Empty().eraseToAnyPublisher(),
+            rightBarButtonTrigger: Empty().eraseToAnyPublisher(),
+            titleSubject: PassthroughSubject<String, Never>(),
+            leftBarButtonContentSubject: PassthroughSubject<BarButtonContent, Never>(),
+            rightBarButtonContentSubject: PassthroughSubject<BarButtonContent, Never>(),
+            toastSubject: PassthroughSubject<Toast, Never>()
         )
     }
 }

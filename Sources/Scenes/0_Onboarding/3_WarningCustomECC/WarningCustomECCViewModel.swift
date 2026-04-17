@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - WarningCustomECCUserAction
@@ -50,7 +51,7 @@ final class WarningCustomECCViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let isAcceptButtonEnabled: Driver<Bool> = input.fromView.didScrollToBottom.map { true }.eraseToAnyPublisher()
+        let isAcceptButtonEnabled: AnyPublisher<Bool, Never> = input.fromView.didScrollToBottom.map { true }.eraseToAnyPublisher()
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
@@ -67,7 +68,7 @@ final class WarningCustomECCViewModel: BaseViewModel<
         ]
 
         return Output(
-            isAcceptButtonVisible: Driver.just(!isDismissible),
+            isAcceptButtonVisible: Just(!isDismissible).eraseToAnyPublisher(),
             isAcceptButtonEnabled: isAcceptButtonEnabled
         )
     }
@@ -75,12 +76,12 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
 extension WarningCustomECCViewModel {
     struct InputFromView {
-        let didScrollToBottom: Driver<Void>
-        let didAcceptTerms: Driver<Void>
+        let didScrollToBottom: AnyPublisher<Void, Never>
+        let didAcceptTerms: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isAcceptButtonVisible: Driver<Bool>
-        let isAcceptButtonEnabled: Driver<Bool>
+        let isAcceptButtonVisible: AnyPublisher<Bool, Never>
+        let isAcceptButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

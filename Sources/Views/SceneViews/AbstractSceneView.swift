@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 class AbstractSceneView: UIView, ScrollViewOwner {
@@ -95,7 +96,7 @@ extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
         }
     }
 
-    var pullToRefreshTrigger: Driver<Void> {
+    var pullToRefreshTrigger: AnyPublisher<Void, Never> {
         base.refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher()
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - User action and navigation steps
@@ -70,11 +71,11 @@ final class ConfirmWalletRemovalViewModel: BaseViewModel<
 
 extension ConfirmWalletRemovalViewModel {
     struct InputFromView {
-        let confirmTrigger: Driver<Void>
-        let isWalletBackedUpCheckboxChecked: Driver<Bool>
+        let confirmTrigger: AnyPublisher<Void, Never>
+        let isWalletBackedUpCheckboxChecked: AnyPublisher<Bool, Never>
     }
 
     struct Output {
-        let isConfirmButtonEnabled: Driver<Bool>
+        let isConfirmButtonEnabled: AnyPublisher<Bool, Never>
     }
 }

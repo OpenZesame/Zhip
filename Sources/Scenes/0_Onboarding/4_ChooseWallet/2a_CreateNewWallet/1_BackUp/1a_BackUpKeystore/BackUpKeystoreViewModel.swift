@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -34,9 +35,9 @@ final class BackUpKeystoreViewModel: BaseViewModel<
     BackUpKeystoreViewModel.InputFromView,
     BackUpKeystoreViewModel.Output
 > {
-    private let keystore: Driver<Keystore>
+    private let keystore: AnyPublisher<Keystore, Never>
 
-    init(keystore: Driver<Keystore>) {
+    init(keystore: AnyPublisher<Keystore, Never>) {
         self.keystore = keystore
     }
 
@@ -45,7 +46,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keystore: Driver<String> = keystore.map(\.asPrettyPrintedJSONString).eraseToAnyPublisher()
+        let keystore: AnyPublisher<String, Never> = keystore.map(\.asPrettyPrintedJSONString).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -68,17 +69,17 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 }
 
 extension BackUpKeystoreViewModel {
-    convenience init(wallet: Driver<Wallet>) {
+    convenience init(wallet: AnyPublisher<Wallet, Never>) {
         self.init(keystore: wallet.map(\.keystore).eraseToAnyPublisher())
     }
 }
 
 extension BackUpKeystoreViewModel {
     struct InputFromView {
-        let copyTrigger: Driver<Void>
+        let copyTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let keystore: Driver<String>
+        let keystore: AnyPublisher<String, Never>
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import Zesame
 
@@ -59,18 +60,15 @@ final class CreateNewWalletViewModel:
 
         let validator = InputValidator()
 
-        let confirmEncryptionPasswordValidationValue: Driver<EncryptionPasswordValidator.ValidationResult> = combineLatest(unconfirmedPassword, confirmingPassword)
+        let confirmEncryptionPasswordValidationValue: AnyPublisher<EncryptionPasswordValidator.ValidationResult, Never> = unconfirmedPassword.combineLatest(confirmingPassword).eraseToAnyPublisher()
             .map {
                 validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
             }.eraseToAnyPublisher()
 
-        let isContinueButtonEnabled: Driver<Bool> = combineLatest(
-            confirmEncryptionPasswordValidationValue.map(\.isValid).eraseToAnyPublisher(),
-            input.fromView.isHaveBackedUpPasswordCheckboxChecked,
-            resultSelector: { isPasswordConfirmed, isBackedUpChecked in
+        let isContinueButtonEnabled: AnyPublisher<Bool, Never> = confirmEncryptionPasswordValidationValue.map(\.isValid)
+            .combineLatest(input.fromView.isHaveBackedUpPasswordCheckboxChecked) { isPasswordConfirmed, isBackedUpChecked in
                 isPasswordConfirmed && isBackedUpChecked
-            }
-        )
+            }.eraseToAnyPublisher()
 
         let activityIndicator = ActivityIndicator()
 
@@ -92,33 +90,31 @@ final class CreateNewWalletViewModel:
                 .drive(),
         ]
 
-        let encryptionPasswordValidationTrigger = Driver.merge(
-            unconfirmedPassword.mapToVoid().map { true },
-            input.fromView.isEditingNewEncryptionPassword
-        )
+        let encryptionPasswordValidationTrigger = unconfirmedPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingNewEncryptionPassword).eraseToAnyPublisher()
 
-        let encryptionPasswordValidation: Driver<AnyValidation> = encryptionPasswordValidationTrigger.withLatestFrom(
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never> = encryptionPasswordValidationTrigger.withLatestFrom(
             unconfirmedPassword.map { validator.validateNewEncryptionPassword($0) }
         ) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = combineLatest(
-            Driver.merge(
-                // map `editingChanged` to `editingDidBegin`
-                confirmingPassword.mapToVoid().map { true },
-                input.fromView.isEditingConfirmedEncryptionPassword
-            ),
-            encryptionPasswordValidationTrigger // used for triggering, but value never used
-        ).withLatestFrom(confirmEncryptionPasswordValidationValue) {
-            EditingValidation(isEditing: $0.0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit()
+        // map `editingChanged` to `editingDidBegin`
+        let confirmEditingTrigger = confirmingPassword.mapToVoid().map { true }
+            .merge(with: input.fromView.isEditingConfirmedEncryptionPassword)
+            .eraseToAnyPublisher()
+
+        // encryptionPasswordValidationTrigger used solely to trigger re-evaluation; value discarded
+        let confirmEncryptionPasswordValidation: AnyPublisher<AnyValidation, Never> = confirmEditingTrigger
+            .combineLatest(encryptionPasswordValidationTrigger)
+            .withLatestFrom(confirmEncryptionPasswordValidationValue) {
+                EditingValidation(isEditing: $0.0, validation: $1.validation)
+            }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
         return Output(
-            encryptionPasswordPlaceholder: Driver
-                .just(String(localized: .CreateNewWallet
-                        .encryptionPasswordField(minLength: WalletEncryptionPassword
-                            .minimumLength(mode: encryptionPasswordMode)))),
+            encryptionPasswordPlaceholder: Just(String(localized: .CreateNewWallet
+                .encryptionPasswordField(minLength: WalletEncryptionPassword
+                    .minimumLength(mode: encryptionPasswordMode))))
+                .eraseToAnyPublisher(),
             encryptionPasswordValidation: encryptionPasswordValidation,
             confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             isContinueButtonEnabled: isContinueButtonEnabled,
@@ -129,21 +125,21 @@ final class CreateNewWalletViewModel:
 
 extension CreateNewWalletViewModel {
     struct InputFromView {
-        let newEncryptionPassword: Driver<String>
-        let isEditingNewEncryptionPassword: Driver<Bool>
-        let confirmedNewEncryptionPassword: Driver<String>
-        let isEditingConfirmedEncryptionPassword: Driver<Bool>
+        let newEncryptionPassword: AnyPublisher<String, Never>
+        let isEditingNewEncryptionPassword: AnyPublisher<Bool, Never>
+        let confirmedNewEncryptionPassword: AnyPublisher<String, Never>
+        let isEditingConfirmedEncryptionPassword: AnyPublisher<Bool, Never>
 
-        let isHaveBackedUpPasswordCheckboxChecked: Driver<Bool>
-        let createWalletTrigger: Driver<Void>
+        let isHaveBackedUpPasswordCheckboxChecked: AnyPublisher<Bool, Never>
+        let createWalletTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let encryptionPasswordPlaceholder: Driver<String>
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let confirmEncryptionPasswordValidation: Driver<AnyValidation>
-        let isContinueButtonEnabled: Driver<Bool>
-        let isButtonLoading: Driver<Bool>
+        let encryptionPasswordPlaceholder: AnyPublisher<String, Never>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let confirmEncryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let isContinueButtonEnabled: AnyPublisher<Bool, Never>
+        let isButtonLoading: AnyPublisher<Bool, Never>
     }
 
     struct InputValidator {

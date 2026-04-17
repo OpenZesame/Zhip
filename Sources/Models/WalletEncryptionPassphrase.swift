@@ -95,7 +95,7 @@ extension WalletEncryptionPassword.Mode {
     var minimumPasswordLength: Int {
         switch self {
         case .newOrRestorePrivateKey: 8
-        case .restoreKeystore: Zesame.Keystore.minumumPasswordLength
+        case .restoreKeystore: Zesame.Keystore.minimumPasswordLength
         }
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - RemovePincodeUserAction
@@ -56,7 +57,7 @@ final class RemovePincodeViewModel: BaseViewModel<
 
         let validator = InputValidator(existingPincode: pincode)
 
-        let pincodeValidationValue: Driver<PincodeValidator.ValidationResult> = input.fromView.pincode.map {
+        let pincodeValidationValue: AnyPublisher<PincodeValidator.ValidationResult, Never> = input.fromView.pincode.map {
             validator.validate(unconfirmedPincode: $0)
         }.eraseToAnyPublisher()
 
@@ -83,12 +84,12 @@ final class RemovePincodeViewModel: BaseViewModel<
 
 extension RemovePincodeViewModel {
     struct InputFromView {
-        let pincode: Driver<Pincode?>
+        let pincode: AnyPublisher<Pincode?, Never>
     }
 
     struct Output {
-        let inputBecomeFirstResponder: Driver<Void>
-        let pincodeValidation: Driver<AnyValidation>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
+        let pincodeValidation: AnyPublisher<AnyValidation, Never>
     }
 
     struct InputValidator {

@@ -47,7 +47,10 @@ struct PrivateKeyValidator: InputValidator {
                 throw Error.tooLong(lengthKeySubmitted: lengthKeySubmitted)
             }
 
-            guard let privateKey = PrivateKey(hex: privateKeyHex) else {
+            guard
+                let privateKeyData = Data(validatingHex: privateKeyHex),
+                let privateKey = try? PrivateKey(rawRepresentation: privateKeyData)
+            else {
                 throw Error.badPrivateKey
             }
 

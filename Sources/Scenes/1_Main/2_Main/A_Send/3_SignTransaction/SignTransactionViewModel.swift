@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import Zesame
 
@@ -77,11 +78,8 @@ final class SignTransactionViewModel: BaseViewModel<
                 .drive(),
         ]
 
-        let encryptionPasswordValidation = Driver.merge(
-            // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassword.mapToVoid().map { true },
-            input.fromView.isEditingEncryptionPassword
-        ).withLatestFrom(encryptionPasswordValidationValue) {
+        let encryptionPasswordValidation = // map `editingChanged` to `editingDidBegin`
+            input.fromView.encryptionPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingEncryptionPassword).eraseToAnyPublisher().withLatestFrom(encryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit(
             directlyDisplayErrorsTrackedBy: errorTracker
@@ -89,7 +87,7 @@ final class SignTransactionViewModel: BaseViewModel<
             WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0)
         }
 
-        let isSignButtonEnabled: Driver<Bool> = encryptionPasswordValidation.map(\.isValid).eraseToAnyPublisher()
+        let isSignButtonEnabled: AnyPublisher<Bool, Never> = encryptionPasswordValidation.map(\.isValid).eraseToAnyPublisher()
 
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
@@ -102,16 +100,16 @@ final class SignTransactionViewModel: BaseViewModel<
 
 extension SignTransactionViewModel {
     struct InputFromView {
-        let encryptionPassword: Driver<String>
-        let isEditingEncryptionPassword: Driver<Bool>
-        let signAndSendTrigger: Driver<Void>
+        let encryptionPassword: AnyPublisher<String, Never>
+        let isEditingEncryptionPassword: AnyPublisher<Bool, Never>
+        let signAndSendTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let isSignButtonEnabled: Driver<Bool>
-        let isSignButtonLoading: Driver<Bool>
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let inputBecomeFirstResponder: Driver<Void>
+        let isSignButtonEnabled: AnyPublisher<Bool, Never>
+        let isSignButtonLoading: AnyPublisher<Bool, Never>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let inputBecomeFirstResponder: AnyPublisher<Void, Never>
     }
 
     struct InputValidator {

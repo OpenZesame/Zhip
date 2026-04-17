@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Zesame
 
 enum DecryptKeystoreToRevealKeyPairUserAction {
@@ -35,9 +36,9 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
     DecryptKeystoreToRevealKeyPairViewModel.Output
 > {
     private let useCase: WalletUseCase
-    private let wallet: Driver<Wallet>
+    private let wallet: AnyPublisher<Wallet, Never>
 
-    init(useCase: WalletUseCase, wallet: Driver<Wallet>) {
+    init(useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>) {
         self.useCase = useCase
         self.wallet = wallet
     }
@@ -68,7 +69,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
             input.fromView.revealTrigger
                 .withLatestFrom(
-                    combineLatest(wallet, encryptionPassword)
+                    wallet.combineLatest(encryptionPassword).eraseToAnyPublisher()
                 ) { (_: Void, pair: (Wallet, String)) -> (wallet: Wallet, password: String) in
                     (wallet: pair.0, password: pair.1)
                 }
@@ -82,17 +83,20 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                 .drive(),
         ]
 
-        let encryptionPasswordValidation = Driver.merge(
-            // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassword.mapToVoid().map { true }.eraseToAnyPublisher(),
-            input.fromView.isEditingEncryptionPassword
-        ).withLatestFrom(encryptionPasswordValidationValue) {
-            EditingValidation(isEditing: $0, validation: $1.validation)
-        }.eagerValidLazyErrorTurnedToEmptyOnEdit(
-            directlyDisplayErrorsTrackedBy: errorTracker
-        ) {
-            WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0, backingUpWalletJustCreated: true)
-        }
+        // map `editingChanged` to `editingDidBegin`
+        let encryptionPasswordEditingTrigger = input.fromView.encryptionPassword.mapToVoid().map { true }
+            .merge(with: input.fromView.isEditingEncryptionPassword)
+            .eraseToAnyPublisher()
+
+        let encryptionPasswordValidation = encryptionPasswordEditingTrigger
+            .withLatestFrom(encryptionPasswordValidationValue) {
+                EditingValidation(isEditing: $0, validation: $1.validation)
+            }
+            .eagerValidLazyErrorTurnedToEmptyOnEdit(
+                directlyDisplayErrorsTrackedBy: errorTracker
+            ) {
+                WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0, backingUpWalletJustCreated: true)
+            }
 
         return Output(
             encryptionPasswordValidation: encryptionPasswordValidation,
@@ -104,15 +108,15 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
 extension DecryptKeystoreToRevealKeyPairViewModel {
     struct InputFromView {
-        let encryptionPassword: Driver<String>
-        let isEditingEncryptionPassword: Driver<Bool>
-        let revealTrigger: Driver<Void>
+        let encryptionPassword: AnyPublisher<String, Never>
+        let isEditingEncryptionPassword: AnyPublisher<Bool, Never>
+        let revealTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {
-        let encryptionPasswordValidation: Driver<AnyValidation>
-        let isRevealButtonEnabled: Driver<Bool>
-        let isRevealButtonLoading: Driver<Bool>
+        let encryptionPasswordValidation: AnyPublisher<AnyValidation, Never>
+        let isRevealButtonEnabled: AnyPublisher<Bool, Never>
+        let isRevealButtonLoading: AnyPublisher<Bool, Never>
     }
 
     struct InputValidator {

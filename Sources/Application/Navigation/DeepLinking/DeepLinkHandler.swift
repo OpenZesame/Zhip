@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class DeepLinkHandler {
@@ -62,7 +63,7 @@ extension DeepLinkHandler {
         return true
     }
 
-    var navigation: Driver<DeepLink> {
+    var navigation: AnyPublisher<DeepLink, Never> {
         navigator.navigation.filter { [unowned self] _ in !appIsLockedSoBufferLink }
             .eraseToAnyPublisher()
     }

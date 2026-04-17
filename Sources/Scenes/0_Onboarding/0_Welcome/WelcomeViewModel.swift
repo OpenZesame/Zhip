@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - User action and navigation steps
@@ -54,7 +55,7 @@ final class WelcomeViewModel: BaseViewModel<
 
 extension WelcomeViewModel {
     struct InputFromView {
-        let startTrigger: Driver<Void>
+        let startTrigger: AnyPublisher<Void, Never>
     }
 
     struct Output {}
