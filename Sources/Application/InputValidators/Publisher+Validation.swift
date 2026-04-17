@@ -44,14 +44,14 @@ extension AnyPublisher where Output == EditingValidation, Failure == Never {
     }
 }
 
-extension AnyPublisher where Failure == Never {
-    func onlyErrors<V: ValidationConvertible>() -> AnyPublisher<AnyValidation, Never> where Output == V {
+extension AnyPublisher where Failure == Never, Output: ValidationConvertible {
+    func onlyErrors() -> AnyPublisher<AnyValidation, Never> {
         map(\.validation)
             .compactMap { $0.isError ? $0 : nil }
             .eraseToAnyPublisher()
     }
 
-    func nonErrors<V: ValidationConvertible>() -> AnyPublisher<AnyValidation, Never> where Output == V {
+    func nonErrors() -> AnyPublisher<AnyValidation, Never> {
         map(\.validation)
             .compactMap { !$0.isError ? $0 : nil }
             .eraseToAnyPublisher()
