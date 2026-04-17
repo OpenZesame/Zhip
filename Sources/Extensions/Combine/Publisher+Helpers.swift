@@ -30,9 +30,7 @@ public extension AnyPublisher where Failure == Never {
         _ p1: some Publisher<Output, Never>,
         _ p2: some Publisher<Output, Never>
     ) -> AnyPublisher<Output, Never> {
-        p1.eraseToAnyPublisher()
-            .merge(with: p2.eraseToAnyPublisher())
-            .eraseToAnyPublisher()
+        p1.merge(with: p2).eraseToAnyPublisher()
     }
 
     static func merge(
@@ -40,11 +38,7 @@ public extension AnyPublisher where Failure == Never {
         _ p2: some Publisher<Output, Never>,
         _ p3: some Publisher<Output, Never>
     ) -> AnyPublisher<Output, Never> {
-        Publishers.Merge3(
-            p1.eraseToAnyPublisher(),
-            p2.eraseToAnyPublisher(),
-            p3.eraseToAnyPublisher()
-        ).eraseToAnyPublisher()
+        Publishers.Merge3(p1, p2, p3).eraseToAnyPublisher()
     }
 
     static func merge(
@@ -53,12 +47,7 @@ public extension AnyPublisher where Failure == Never {
         _ p3: some Publisher<Output, Never>,
         _ p4: some Publisher<Output, Never>
     ) -> AnyPublisher<Output, Never> {
-        Publishers.Merge4(
-            p1.eraseToAnyPublisher(),
-            p2.eraseToAnyPublisher(),
-            p3.eraseToAnyPublisher(),
-            p4.eraseToAnyPublisher()
-        ).eraseToAnyPublisher()
+        Publishers.Merge4(p1, p2, p3, p4).eraseToAnyPublisher()
     }
 }
 
@@ -68,7 +57,7 @@ public func combineLatest<A, B>(
     _ a: some Publisher<A, Never>,
     _ b: some Publisher<B, Never>
 ) -> AnyPublisher<(A, B), Never> {
-    a.eraseToAnyPublisher().combineLatest(b).eraseToAnyPublisher()
+    a.combineLatest(b).eraseToAnyPublisher()
 }
 
 // swiftlint:disable large_tuple
@@ -77,7 +66,7 @@ public func combineLatest<A, B, C>(
     _ b: some Publisher<B, Never>,
     _ c: some Publisher<C, Never>
 ) -> AnyPublisher<(A, B, C), Never> {
-    a.eraseToAnyPublisher().combineLatest(b, c).eraseToAnyPublisher()
+    a.combineLatest(b, c).eraseToAnyPublisher()
 }
 
 public func combineLatest<A, B, C, D>(
@@ -86,7 +75,7 @@ public func combineLatest<A, B, C, D>(
     _ c: some Publisher<C, Never>,
     _ d: some Publisher<D, Never>
 ) -> AnyPublisher<(A, B, C, D), Never> {
-    a.eraseToAnyPublisher().combineLatest(b, c, d).eraseToAnyPublisher()
+    a.combineLatest(b, c, d).eraseToAnyPublisher()
 }
 // swiftlint:enable large_tuple
 
@@ -95,7 +84,7 @@ public func combineLatest<A, B, R>(
     _ b: some Publisher<B, Never>,
     resultSelector: @escaping (A, B) -> R
 ) -> AnyPublisher<R, Never> {
-    a.eraseToAnyPublisher().combineLatest(b, resultSelector).eraseToAnyPublisher()
+    a.combineLatest(b, resultSelector).eraseToAnyPublisher()
 }
 
 public func combineLatest<A, B, C, R>(
@@ -104,9 +93,7 @@ public func combineLatest<A, B, C, R>(
     _ c: some Publisher<C, Never>,
     resultSelector: @escaping (A, B, C) -> R
 ) -> AnyPublisher<R, Never> {
-    a.eraseToAnyPublisher()
-        .combineLatest(b.eraseToAnyPublisher(), c.eraseToAnyPublisher(), resultSelector)
-        .eraseToAnyPublisher()
+    a.combineLatest(b, c, resultSelector).eraseToAnyPublisher()
 }
 
 // swiftlint:disable function_parameter_count
@@ -117,14 +104,9 @@ public func combineLatest<A, B, C, D, R>(
     _ d: some Publisher<D, Never>,
     resultSelector: @escaping (A, B, C, D) -> R
 ) -> AnyPublisher<R, Never> {
-    Publishers.CombineLatest4(
-        a.eraseToAnyPublisher(),
-        b.eraseToAnyPublisher(),
-        c.eraseToAnyPublisher(),
-        d.eraseToAnyPublisher()
-    )
-    .map { resultSelector($0.0, $0.1, $0.2, $0.3) }
-    .eraseToAnyPublisher()
+    Publishers.CombineLatest4(a, b, c, d)
+        .map { resultSelector($0.0, $0.1, $0.2, $0.3) }
+        .eraseToAnyPublisher()
 }
 
 public func combineLatest<A, B, C, D, E, R>(
@@ -135,15 +117,10 @@ public func combineLatest<A, B, C, D, E, R>(
     _ e: some Publisher<E, Never>,
     resultSelector: @escaping (A, B, C, D, E) -> R
 ) -> AnyPublisher<R, Never> {
-    Publishers.CombineLatest4(
-        a.eraseToAnyPublisher(),
-        b.eraseToAnyPublisher(),
-        c.eraseToAnyPublisher(),
-        d.eraseToAnyPublisher()
-    )
-    .combineLatest(e.eraseToAnyPublisher())
-    .map { tuple4, eVal in resultSelector(tuple4.0, tuple4.1, tuple4.2, tuple4.3, eVal) }
-    .eraseToAnyPublisher()
+    Publishers.CombineLatest4(a, b, c, d)
+        .combineLatest(e)
+        .map { tuple4, eVal in resultSelector(tuple4.0, tuple4.1, tuple4.2, tuple4.3, eVal) }
+        .eraseToAnyPublisher()
 }
 // swiftlint:enable function_parameter_count
 
@@ -154,7 +131,7 @@ public extension AnyPublisher where Failure == Never {
         _ a: some Publisher<A, Never>,
         _ b: some Publisher<B, Never>
     ) -> AnyPublisher<(A, B), Never> {
-        a.eraseToAnyPublisher().combineLatest(b).eraseToAnyPublisher()
+        a.combineLatest(b).eraseToAnyPublisher()
     }
 
     // swiftlint:disable large_tuple
@@ -163,7 +140,7 @@ public extension AnyPublisher where Failure == Never {
         _ b: some Publisher<B, Never>,
         _ c: some Publisher<C, Never>
     ) -> AnyPublisher<(A, B, C), Never> {
-        a.eraseToAnyPublisher().combineLatest(b, c).eraseToAnyPublisher()
+        a.combineLatest(b, c).eraseToAnyPublisher()
     }
 
     static func combineLatest<A, B, C, D>(
@@ -172,7 +149,7 @@ public extension AnyPublisher where Failure == Never {
         _ c: some Publisher<C, Never>,
         _ d: some Publisher<D, Never>
     ) -> AnyPublisher<(A, B, C, D), Never> {
-        a.eraseToAnyPublisher().combineLatest(b, c, d).eraseToAnyPublisher()
+        a.combineLatest(b, c, d).eraseToAnyPublisher()
     }
     // swiftlint:enable large_tuple
 
@@ -181,7 +158,7 @@ public extension AnyPublisher where Failure == Never {
         _ b: some Publisher<B, Never>,
         resultSelector: @escaping (A, B) -> R
     ) -> AnyPublisher<R, Never> {
-        a.eraseToAnyPublisher().combineLatest(b, resultSelector).eraseToAnyPublisher()
+        a.combineLatest(b, resultSelector).eraseToAnyPublisher()
     }
 
     static func combineLatest<A, B, C, R>(
@@ -190,9 +167,7 @@ public extension AnyPublisher where Failure == Never {
         _ c: some Publisher<C, Never>,
         resultSelector: @escaping (A, B, C) -> R
     ) -> AnyPublisher<R, Never> {
-        a.eraseToAnyPublisher()
-            .combineLatest(b.eraseToAnyPublisher(), c.eraseToAnyPublisher(), resultSelector)
-            .eraseToAnyPublisher()
+        a.combineLatest(b, c, resultSelector).eraseToAnyPublisher()
     }
 
     // swiftlint:disable function_parameter_count
@@ -203,14 +178,9 @@ public extension AnyPublisher where Failure == Never {
         _ d: some Publisher<D, Never>,
         resultSelector: @escaping (A, B, C, D) -> R
     ) -> AnyPublisher<R, Never> {
-        Publishers.CombineLatest4(
-            a.eraseToAnyPublisher(),
-            b.eraseToAnyPublisher(),
-            c.eraseToAnyPublisher(),
-            d.eraseToAnyPublisher()
-        )
-        .map { resultSelector($0.0, $0.1, $0.2, $0.3) }
-        .eraseToAnyPublisher()
+        Publishers.CombineLatest4(a, b, c, d)
+            .map { resultSelector($0.0, $0.1, $0.2, $0.3) }
+            .eraseToAnyPublisher()
     }
 
     static func combineLatest<A, B, C, D, E, R>(
@@ -221,15 +191,10 @@ public extension AnyPublisher where Failure == Never {
         _ e: some Publisher<E, Never>,
         resultSelector: @escaping (A, B, C, D, E) -> R
     ) -> AnyPublisher<R, Never> {
-        Publishers.CombineLatest4(
-            a.eraseToAnyPublisher(),
-            b.eraseToAnyPublisher(),
-            c.eraseToAnyPublisher(),
-            d.eraseToAnyPublisher()
-        )
-        .combineLatest(e.eraseToAnyPublisher())
-        .map { tuple4, eVal in resultSelector(tuple4.0, tuple4.1, tuple4.2, tuple4.3, eVal) }
-        .eraseToAnyPublisher()
+        Publishers.CombineLatest4(a, b, c, d)
+            .combineLatest(e)
+            .map { tuple4, eVal in resultSelector(tuple4.0, tuple4.1, tuple4.2, tuple4.3, eVal) }
+            .eraseToAnyPublisher()
     }
     // swiftlint:enable function_parameter_count
 }

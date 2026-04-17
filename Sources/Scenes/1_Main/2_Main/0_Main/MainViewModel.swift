@@ -71,6 +71,7 @@ final class MainViewModel: BaseViewModel<
                     .replaceErrorWithEmpty()
                     .handleEvents(receiveOutput: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
             }
+            .eraseToAnyPublisher()
 
         let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
             transactionUseCase.balanceUpdatedAt

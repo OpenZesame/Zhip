@@ -78,6 +78,7 @@ final class SettingsViewModel: BaseViewModel<
         let selectedCell: AnyPublisher<SettingsItem, Never> = input.fromView.selectedIndexPath.withLatestFrom(sections) {
             $1[$0.section].items[$0.row]
         }
+        .eraseToAnyPublisher()
 
         [
             input.fromController.rightBarButtonTrigger

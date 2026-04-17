@@ -31,7 +31,7 @@ extension UITextField {
     }
 
     var didEndEditingPublisher: AnyPublisher<Void, Never> {
-        isEditingPublisher.filter { !$0 }.mapToVoid()
+        isEditingPublisher.filter { !$0 }.mapToVoid().eraseToAnyPublisher()
     }
 }
 
@@ -45,6 +45,7 @@ extension UITextView {
         NotificationCenter.default
             .publisher(for: UITextView.textDidBeginEditingNotification, object: self)
             .mapToVoid()
+            .eraseToAnyPublisher()
     }
 
     var textPublisher: AnyPublisher<String?, Never> {
@@ -81,6 +82,6 @@ extension UITextView {
     }
 
     func didScrollNearBottomPublisher(yThreshold: CGFloat = 0.98) -> AnyPublisher<Void, Never> {
-        isNearBottomPublisher(yThreshold: yThreshold).filter { $0 }.mapToVoid()
+        isNearBottomPublisher(yThreshold: yThreshold).filter { $0 }.mapToVoid().eraseToAnyPublisher()
     }
 }

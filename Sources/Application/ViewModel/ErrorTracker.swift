@@ -12,7 +12,7 @@ public final class ErrorTracker {
         subject.eraseToAnyPublisher()
     }
 
-    public func track<P: Publisher>(from source: P) -> AnyPublisher<P.Output, P.Failure>
+    public func track<P: Publisher>(from source: P) -> some Publisher<P.Output, P.Failure>
         where P.Failure: Error {
         source
             .handleEvents(receiveCompletion: { [weak self] completion in
@@ -20,7 +20,6 @@ public final class ErrorTracker {
                     self?.subject.send(error)
                 }
             })
-            .eraseToAnyPublisher()
     }
 
     func asInputErrors<IE: InputError>(
@@ -41,7 +40,7 @@ public final class ErrorTracker {
 }
 
 public extension Publisher {
-    func trackError(_ tracker: ErrorTracker) -> AnyPublisher<Output, Failure>
+    func trackError(_ tracker: ErrorTracker) -> some Publisher<Output, Failure>
         where Failure: Error {
         tracker.track(from: self)
     }

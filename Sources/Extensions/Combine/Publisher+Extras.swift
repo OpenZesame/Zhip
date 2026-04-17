@@ -7,25 +7,24 @@ import Foundation
 
 public extension Publisher {
     /// Swallow errors and return an empty publisher.
-    func replaceErrorWithEmpty() -> AnyPublisher<Output, Never> {
+    func replaceErrorWithEmpty() -> some Publisher<Output, Never> {
         self.catch { _ in Empty<Output, Never>() }
-            .eraseToAnyPublisher()
     }
 }
 
 // MARK: - mapToVoid
 
 public extension Publisher {
-    func mapToVoid() -> AnyPublisher<Void, Failure> {
-        map { _ in () }.eraseToAnyPublisher()
+    func mapToVoid() -> some Publisher<Void, Failure> {
+        map { _ in () }
     }
 }
 
 // MARK: - filterNil
 
 public extension Publisher {
-    func filterNil<Wrapped>() -> AnyPublisher<Wrapped, Failure> where Output == Wrapped? {
-        compactMap { $0 }.eraseToAnyPublisher()
+    func filterNil<Wrapped>() -> some Publisher<Wrapped, Failure> where Output == Wrapped? {
+        compactMap { $0 }
     }
 }
 
@@ -49,20 +48,16 @@ public extension Publisher where Failure == Never {
     /// Map to a new publisher and switch to the latest — cancels the previous inner publisher on a new value.
     func flatMapLatest<P: Publisher>(
         _ transform: @escaping (Output) -> P
-    ) -> AnyPublisher<P.Output, Never> where P.Failure == Never {
-        map(transform)
-            .switchToLatest()
-            .eraseToAnyPublisher()
+    ) -> some Publisher<P.Output, Never> where P.Failure == Never {
+        map(transform).switchToLatest()
     }
 }
 
 public extension Publisher {
     func flatMapLatest<P: Publisher>(
         _ transform: @escaping (Output) -> P
-    ) -> AnyPublisher<P.Output, P.Failure> where P.Failure == Failure {
-        map(transform)
-            .switchToLatest()
-            .eraseToAnyPublisher()
+    ) -> some Publisher<P.Output, P.Failure> where P.Failure == Failure {
+        map(transform).switchToLatest()
     }
 }
 
@@ -71,16 +66,15 @@ public extension Publisher {
 public extension Publisher where Failure == Never {
     func withLatestFrom<Other: Publisher>(
         _ other: Other
-    ) -> AnyPublisher<Other.Output, Never> where Other.Failure == Never {
+    ) -> some Publisher<Other.Output, Never> where Other.Failure == Never {
         withLatestFrom(other) { $1 }
     }
 
     func withLatestFrom<Other: Publisher, Result>(
         _ other: Other,
         resultSelector: @escaping (Output, Other.Output) -> Result
-    ) -> AnyPublisher<Result, Never> where Other.Failure == Never {
+    ) -> some Publisher<Result, Never> where Other.Failure == Never {
         WithLatestFromPublisher(upstream: self, other: other, resultSelector: resultSelector)
-            .eraseToAnyPublisher()
     }
 }
 
@@ -175,7 +169,7 @@ private struct WithLatestFromPublisher<
 // MARK: - ifEmpty(switchTo:)
 
 public extension Publisher where Failure == Never {
-    func ifEmpty(switchTo replacement: AnyPublisher<Output, Never>) -> AnyPublisher<Output, Never> {
+    func ifEmpty(switchTo replacement: AnyPublisher<Output, Never>) -> some Publisher<Output, Never> {
         var didEmit = false
         return handleEvents(receiveOutput: { _ in didEmit = true })
             .append(
@@ -183,6 +177,5 @@ public extension Publisher where Failure == Never {
                     didEmit ? AnyPublisher<Output, Never>.empty() : replacement
                 }
             )
-            .eraseToAnyPublisher()
     }
 }

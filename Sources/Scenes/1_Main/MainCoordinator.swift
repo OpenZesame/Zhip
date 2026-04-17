@@ -74,7 +74,7 @@ private extension MainCoordinator {
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             walletUseCase: useCaseProvider.makeWalletUseCase(),
-            updateBalanceTrigger: updateBalanceSubject.replaceErrorWithEmpty()
+            updateBalanceTrigger: updateBalanceSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
 
         push(

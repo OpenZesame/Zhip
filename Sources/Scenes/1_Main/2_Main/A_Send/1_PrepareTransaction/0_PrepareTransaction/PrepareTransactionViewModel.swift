@@ -79,6 +79,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                     transactionUseCase.cacheBalance($0.balance)
                 })
         }
+        .eraseToAnyPublisher()
 
         let nonce = latestBalanceAndNonce.map(\.nonce).prepend(0)
         let startingBalance: Amount = transactionUseCase.cachedBalance ?? 0
@@ -235,7 +236,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         let recipientFormatted: AnyPublisher<String, Never> = recipient.filterNil().map(\.asString).eraseToAnyPublisher()
 
         let amountFormatted: AnyPublisher<String?, Never> = amountBoundByBalance.filterNil()
-            .map { formatter.format(amount: $0, in: .zil, formatThousands: false) }
+            .map { formatter.format(amount: $0, in: .zil, formatThousands: false) as String? }
             .eraseToAnyPublisher()
             .ifEmpty(switchTo: amountWithoutSufficientFundsCheckValidationValue.map {
                 guard let value = $0.value else { return nil }
@@ -245,6 +246,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                     return formatter.format(amount: amount, in: .zil, formatThousands: false)
                 }
             }.eraseToAnyPublisher())
+            .eraseToAnyPublisher()
 
         let isReviewButtonEnabled: AnyPublisher<Bool, Never> = payment.map { $0 != nil }.eraseToAnyPublisher()
 
@@ -274,7 +276,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let setAmountInViewTrigger = input.fromView.maxAmountTrigger.merge(with: scannedOrDeeplinkedTransaction.mapToVoid()).eraseToAnyPublisher()
 
-        let setAmountInViewOnlyByExternalTrigger = setAmountInViewTrigger.withLatestFrom(amountFormatted)
+        let setAmountInViewOnlyByExternalTrigger = setAmountInViewTrigger.withLatestFrom(amountFormatted).eraseToAnyPublisher()
 
         return Output(
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
@@ -313,6 +315,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
                         .map { String(localized: .PrepareTransaction.transactionFeeLabel(fee: $0)) }
                         .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
         )
     }
 }

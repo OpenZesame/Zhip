@@ -56,6 +56,7 @@ final class RestoreWalletViewModel: BaseViewModel<
             case .privateKey: input.fromView.keyRestorationUsingPrivateKey
             }
         }
+        .eraseToAnyPublisher()
 
         let headerLabel: AnyPublisher<String, Never> = input.fromView.selectedSegment.map {
             switch $0 {

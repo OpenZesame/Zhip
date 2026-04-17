@@ -23,7 +23,7 @@ private extension ActivityIndicator {
         lock.lock(); subject.send(false); lock.unlock()
     }
 
-    func track<P: Publisher>(_ source: P) -> AnyPublisher<P.Output, P.Failure> {
+    func track<P: Publisher>(_ source: P) -> some Publisher<P.Output, P.Failure> {
         source
             .handleEvents(
                 receiveSubscription: { [weak self] _ in self?.start() },
@@ -31,12 +31,11 @@ private extension ActivityIndicator {
                 receiveCompletion: { [weak self] _ in self?.stop() },
                 receiveCancel: { [weak self] in self?.stop() }
             )
-            .eraseToAnyPublisher()
     }
 }
 
 public extension Publisher {
-    func trackActivity(_ indicator: ActivityIndicator) -> AnyPublisher<Output, Failure> {
+    func trackActivity(_ indicator: ActivityIndicator) -> some Publisher<Output, Failure> {
         indicator.track(self)
     }
 }

@@ -86,7 +86,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            startScanning: startScanningSubject.replaceErrorWithEmpty()
+            startScanning: startScanningSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
     }
 }

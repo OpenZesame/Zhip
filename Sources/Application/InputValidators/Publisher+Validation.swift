@@ -7,21 +7,20 @@ struct EditingValidation {
     let validation: AnyValidation
 }
 
-extension AnyPublisher where Output == EditingValidation, Failure == Never {
+extension Publisher where Output == EditingValidation, Failure == Never {
     func eagerValidLazyErrorTurnedToEmptyOnEdit(
         directlyDisplayErrorMessages: AnyPublisher<String, Never> = Empty().eraseToAnyPublisher()
     ) -> AnyPublisher<AnyValidation, Never> {
-        let editingValidation: AnyPublisher<AnyValidation, Never> = map {
-            switch ($0.isEditing, $0.validation) {
-            case (_, .valid): $0.validation
-            case (false, _): $0.validation
+        let editingValidation = map { (input: EditingValidation) -> AnyValidation in
+            switch (input.isEditing, input.validation) {
+            case (_, .valid): input.validation
+            case (false, _): input.validation
             case (true, _): .empty
             }
-        }.eraseToAnyPublisher()
+        }
 
         return directlyDisplayErrorMessages
             .map { AnyValidation.errorMessage($0) }
-            .eraseToAnyPublisher()
             .merge(with: editingValidation)
             .eraseToAnyPublisher()
     }
@@ -44,7 +43,7 @@ extension AnyPublisher where Output == EditingValidation, Failure == Never {
     }
 }
 
-extension AnyPublisher where Failure == Never, Output: ValidationConvertible {
+extension Publisher where Failure == Never, Output: ValidationConvertible {
     func onlyErrors() -> AnyPublisher<AnyValidation, Never> {
         map(\.validation)
             .compactMap { $0.isError ? $0 : nil }

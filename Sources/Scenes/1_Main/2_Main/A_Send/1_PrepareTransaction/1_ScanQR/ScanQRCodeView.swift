@@ -91,7 +91,7 @@ extension ScanQRCodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            scannedQrCodeString: scannedQrCodeSubject.replaceErrorWithEmpty()
+            scannedQrCodeString: scannedQrCodeSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
     }
 
