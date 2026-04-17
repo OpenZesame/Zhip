@@ -106,17 +106,17 @@ final class Container {
 
     /// The reactive façade over `Zesame` blockchain operations. Shared across every
     /// use case so they all talk to the same underlying service instance.
-    lazy var zilliqaService: Factory<ZilliqaServiceReactive> = _register {
+    lazy var zilliqaService: Factory<ZilliqaServiceReactive> = _register { () -> ZilliqaServiceReactive in
         DefaultZilliqaService(network: .mainnet).combine
     }
 
     /// The `UserDefaults`-backed key-value store for non-secret preferences.
-    lazy var preferences: Factory<Preferences> = _register {
+    lazy var preferences: Factory<Preferences> = _register { () -> Preferences in
         KeyValueStore(UserDefaults.standard)
     }
 
     /// The Keychain-backed secure store for wallet material and pincode.
-    lazy var securePersistence: Factory<SecurePersistence> = _register {
+    lazy var securePersistence: Factory<SecurePersistence> = _register { () -> SecurePersistence in
         KeyValueStore(KeychainSwift())
     }
 
@@ -129,7 +129,7 @@ final class Container {
     /// or `ExtractKeyPairUseCase` protocols in new code — the default factories below
     /// resolve the same shared `DefaultWalletUseCase` so overriding any of them in a
     /// test substitutes a mock for every caller of that narrow protocol.
-    lazy var walletUseCase: Factory<WalletUseCase> = _register { [unowned self] in
+    lazy var walletUseCase: Factory<WalletUseCase> = _register { [unowned self] () -> WalletUseCase in
         DefaultWalletUseCase(
             zilliqaService: self.zilliqaService(),
             securePersistence: self.securePersistence()
@@ -137,7 +137,7 @@ final class Container {
     }
 
     /// Factory for the composite `TransactionsUseCase`.
-    lazy var transactionsUseCase: Factory<TransactionsUseCase> = _register { [unowned self] in
+    lazy var transactionsUseCase: Factory<TransactionsUseCase> = _register { [unowned self] () -> TransactionsUseCase in
         DefaultTransactionsUseCase(
             zilliqaService: self.zilliqaService(),
             securePersistence: self.securePersistence(),
@@ -146,7 +146,7 @@ final class Container {
     }
 
     /// Factory for the composite `OnboardingUseCase`.
-    lazy var onboardingUseCase: Factory<OnboardingUseCase> = _register { [unowned self] in
+    lazy var onboardingUseCase: Factory<OnboardingUseCase> = _register { [unowned self] () -> OnboardingUseCase in
         DefaultOnboardingUseCase(
             zilliqaService: self.zilliqaService(),
             preferences: self.preferences(),
@@ -155,7 +155,7 @@ final class Container {
     }
 
     /// Factory for the composite `PincodeUseCase`.
-    lazy var pincodeUseCase: Factory<PincodeUseCase> = _register { [unowned self] in
+    lazy var pincodeUseCase: Factory<PincodeUseCase> = _register { [unowned self] () -> PincodeUseCase in
         DefaultPincodeUseCase(
             preferences: self.preferences(),
             securePersistence: self.securePersistence()
@@ -165,53 +165,53 @@ final class Container {
     // MARK: - Narrow use cases (bind to the same composite instances)
 
     /// Factory returning the current `WalletUseCase` narrowed to `CreateWalletUseCase`.
-    lazy var createWalletUseCase: Factory<CreateWalletUseCase> = _register { [unowned self] in
+    lazy var createWalletUseCase: Factory<CreateWalletUseCase> = _register { [unowned self] () -> CreateWalletUseCase in
         self.walletUseCase()
     }
 
     /// Factory returning the current `WalletUseCase` narrowed to `RestoreWalletUseCase`.
-    lazy var restoreWalletUseCase: Factory<RestoreWalletUseCase> = _register { [unowned self] in
+    lazy var restoreWalletUseCase: Factory<RestoreWalletUseCase> = _register { [unowned self] () -> RestoreWalletUseCase in
         self.walletUseCase()
     }
 
     /// Factory returning the current `WalletUseCase` narrowed to `WalletStorageUseCase`.
-    lazy var walletStorageUseCase: Factory<WalletStorageUseCase> = _register { [unowned self] in
+    lazy var walletStorageUseCase: Factory<WalletStorageUseCase> = _register { [unowned self] () -> WalletStorageUseCase in
         self.walletUseCase()
     }
 
     /// Factory returning the current `WalletUseCase` narrowed to
     /// `VerifyEncryptionPasswordUseCase`.
-    lazy var verifyEncryptionPasswordUseCase: Factory<VerifyEncryptionPasswordUseCase> = _register { [unowned self] in
+    lazy var verifyEncryptionPasswordUseCase: Factory<VerifyEncryptionPasswordUseCase> = _register { [unowned self] () -> VerifyEncryptionPasswordUseCase in
         self.walletUseCase()
     }
 
     /// Factory returning the current `WalletUseCase` narrowed to `ExtractKeyPairUseCase`.
-    lazy var extractKeyPairUseCase: Factory<ExtractKeyPairUseCase> = _register { [unowned self] in
+    lazy var extractKeyPairUseCase: Factory<ExtractKeyPairUseCase> = _register { [unowned self] () -> ExtractKeyPairUseCase in
         self.walletUseCase()
     }
 
     /// Factory returning the current `TransactionsUseCase` narrowed to `BalanceCacheUseCase`.
-    lazy var balanceCacheUseCase: Factory<BalanceCacheUseCase> = _register { [unowned self] in
+    lazy var balanceCacheUseCase: Factory<BalanceCacheUseCase> = _register { [unowned self] () -> BalanceCacheUseCase in
         self.transactionsUseCase()
     }
 
     /// Factory returning the current `TransactionsUseCase` narrowed to `GasPriceUseCase`.
-    lazy var gasPriceUseCase: Factory<GasPriceUseCase> = _register { [unowned self] in
+    lazy var gasPriceUseCase: Factory<GasPriceUseCase> = _register { [unowned self] () -> GasPriceUseCase in
         self.transactionsUseCase()
     }
 
     /// Factory returning the current `TransactionsUseCase` narrowed to `FetchBalanceUseCase`.
-    lazy var fetchBalanceUseCase: Factory<FetchBalanceUseCase> = _register { [unowned self] in
+    lazy var fetchBalanceUseCase: Factory<FetchBalanceUseCase> = _register { [unowned self] () -> FetchBalanceUseCase in
         self.transactionsUseCase()
     }
 
     /// Factory returning the current `TransactionsUseCase` narrowed to `SendTransactionUseCase`.
-    lazy var sendTransactionUseCase: Factory<SendTransactionUseCase> = _register { [unowned self] in
+    lazy var sendTransactionUseCase: Factory<SendTransactionUseCase> = _register { [unowned self] () -> SendTransactionUseCase in
         self.transactionsUseCase()
     }
 
     /// Factory returning the current `TransactionsUseCase` narrowed to `TransactionReceiptUseCase`.
-    lazy var transactionReceiptUseCase: Factory<TransactionReceiptUseCase> = _register { [unowned self] in
+    lazy var transactionReceiptUseCase: Factory<TransactionReceiptUseCase> = _register { [unowned self] () -> TransactionReceiptUseCase in
         self.transactionsUseCase()
     }
 
@@ -220,7 +220,7 @@ final class Container {
     /// Factory for the composite `UseCaseProvider` used by older call sites that
     /// want to spawn fresh use cases. New code should resolve individual use cases
     /// directly from `Container.shared`.
-    lazy var useCaseProvider: Factory<UseCaseProvider> = _register { [unowned self] in
+    lazy var useCaseProvider: Factory<UseCaseProvider> = _register { [unowned self] () -> UseCaseProvider in
         DefaultUseCaseProvider(
             zilliqaService: self.zilliqaService(),
             preferences: self.preferences(),
