@@ -71,8 +71,7 @@ extension Coordinating {
         // And invoke the navigationHandler closure passed in to this method
         child.navigator.navigation
             .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { navigationHandler($0) })
-            .sink { _ in }
+            .sink { navigationHandler($0) }
             .store(in: &cancellables)
     }
 }

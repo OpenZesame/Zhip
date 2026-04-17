@@ -210,16 +210,13 @@ final class PrepareTransactionViewModel: BaseViewModel<
         // Setup navigation
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .cancel) })
-                .sink { _ in },
+                .sink { userIntends(to: .cancel) },
 
             input.fromView.scanQRTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .scanQRCode) })
-                .sink { _ in },
+                .sink { userIntends(to: .scanQRCode) },
 
             input.fromView.toReviewTrigger.withLatestFrom(payment.filterNil())
-                .handleEvents(receiveOutput: { userIntends(to: .reviewPayment($0)) })
-                .sink { _ in },
+                .sink { userIntends(to: .reviewPayment($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         // MARK: FORMATTING

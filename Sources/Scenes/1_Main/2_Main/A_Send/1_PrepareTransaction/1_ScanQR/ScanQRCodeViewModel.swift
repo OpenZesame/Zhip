@@ -68,10 +68,9 @@ final class ScanQRCodeViewModel: BaseViewModel<
 
         [
             input.fromController.leftBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancel) })
-                .sink { _ in },
+                .sink { userDid(.cancel) },
 
-            transactionIntentResult.handleEvents(receiveOutput: { [unowned self] in
+            transactionIntentResult.sink { [unowned self] in
                 switch $0 {
                 case .failure:
                     let toast = Toast(
@@ -83,7 +82,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
                     input.fromController.toastSubject.send(toast)
                 case let .success(transactionIntent): userDid(.scanQRContainingTransaction(transactionIntent))
                 }
-            }).sink { _ in },
+            },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

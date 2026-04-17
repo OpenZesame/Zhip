@@ -64,8 +64,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.dismiss) })
-                .sink { _ in },
+                .sink { userDid(.dismiss) },
 
             input.fromView.revealTrigger
                 .withLatestFrom(
@@ -79,8 +78,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()
                 }
-                .handleEvents(receiveOutput: { userDid(.decryptKeystoreReavealing(keyPair: $0)) })
-                .sink { _ in },
+                .sink { userDid(.decryptKeystoreReavealing(keyPair: $0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         // map `editingChanged` to `editingDidBegin`

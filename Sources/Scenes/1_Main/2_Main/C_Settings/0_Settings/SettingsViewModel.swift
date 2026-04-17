@@ -81,12 +81,11 @@ final class SettingsViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userWantsToNavigate(to: .closeSettings) })
-                .sink { _ in },
+                .sink { userWantsToNavigate(to: .closeSettings) },
 
-            selectedCell.handleEvents(receiveOutput: {
+            selectedCell.sink {
                 userWantsToNavigate(to: $0.destination)
-            }).sink { _ in },
+            },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

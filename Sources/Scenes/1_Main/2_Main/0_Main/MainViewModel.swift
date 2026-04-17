@@ -82,16 +82,13 @@ final class MainViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .goToSettings) })
-                .sink { _ in },
+                .sink { userIntends(to: .goToSettings) },
 
             input.fromView.sendTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .send) })
-                .sink { _ in },
+                .sink { userIntends(to: .send) },
 
             input.fromView.receiveTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .receive) })
-                .sink { _ in },
+                .sink { userIntends(to: .receive) },
 
             transactionUseCase.getMinimumGasPrice().sink(receiveCompletion: { _ in }, receiveValue: { _ in }),
         ].forEach { $0.store(in: &cancellables) }

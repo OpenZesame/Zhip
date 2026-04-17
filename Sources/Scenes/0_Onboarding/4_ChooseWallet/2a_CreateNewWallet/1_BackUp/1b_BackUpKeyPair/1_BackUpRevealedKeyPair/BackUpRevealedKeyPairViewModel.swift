@@ -53,22 +53,21 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.finish) })
-                .sink { _ in },
+                .sink { userDid(.finish) },
 
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
-                .handleEvents(receiveOutput: {
+                .sink {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
-                }).sink { _ in },
+                },
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
-                .handleEvents(receiveOutput: {
+                .sink {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
-                }).sink { _ in },
+                },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

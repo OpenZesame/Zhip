@@ -35,12 +35,11 @@ extension Coordinating {
 
         viewModel.navigator.navigation
             .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: {
-                navigationHandler($0) { [unowned scene] animated, navigationCompletion in
+            .sink { [unowned scene] step in
+                navigationHandler(step) { animated, navigationCompletion in
                     scene.dismiss(animated: animated, completion: navigationCompletion)
                 }
-            })
-            .sink { _ in }
+            }
             .store(in: &cancellables)
     }
 }

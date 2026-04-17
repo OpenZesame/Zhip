@@ -62,12 +62,12 @@ extension PollTransactionStatusView: ViewModelled {
             viewModel.skipWaitingOrDoneButtonTitle --> skipWaitingOrDoneButton.titleBinder(for: .normal),
             viewModel.isSeeTxDetailsEnabled --> seeTxDetailsWhenAvailableButton.isEnabledBinder,
             viewModel.isSeeTxDetailsButtonLoading --> seeTxDetailsWhenAvailableButton.isLoadingBinder,
-            vibrateSuccessTrigger.handleEvents(receiveOutput: { [weak self] finishedPolling in
+            vibrateSuccessTrigger.sink { [weak self] finishedPolling in
                 if !finishedPolling {
                     self?.playSound()
                 }
                 self?.vibrate()
-            }).sink { _ in },
+            },
         ]
     }
 

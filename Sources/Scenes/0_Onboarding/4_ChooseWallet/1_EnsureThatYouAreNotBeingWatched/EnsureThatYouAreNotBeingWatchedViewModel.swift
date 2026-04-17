@@ -47,12 +47,10 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
         [
             input.fromController.leftBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancel) })
-                .sink { _ in },
+                .sink { userDid(.cancel) },
 
             input.fromView.understandTrigger
-                .handleEvents(receiveOutput: { userDid(.understand) })
-                .sink { _ in },
+                .sink { userDid(.understand) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output()

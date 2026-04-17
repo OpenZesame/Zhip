@@ -64,14 +64,13 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
 
         [
             input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).eraseToAnyPublisher().filterNil())
-                .handleEvents(receiveOutput: { [unowned self] in
+                .sink { [unowned self] in
                     useCase.userChoose(pincode: $0)
                     userDid(.confirmPincode)
-                }).sink { _ in },
+                },
 
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.skip) })
-                .sink { _ in },
+                .sink { userDid(.skip) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

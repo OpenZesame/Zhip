@@ -53,12 +53,10 @@ final class ConfirmWalletRemovalViewModel: BaseViewModel<
 
         [
             input.fromController.leftBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancel) })
-                .sink { _ in },
+                .sink { userDid(.cancel) },
 
             input.fromView.confirmTrigger
-                .handleEvents(receiveOutput: { userDid(.confirm) })
-                .sink { _ in },
+                .sink { userDid(.confirm) },
         ].forEach { $0.store(in: &cancellables) }
 
         // MARK: Return output

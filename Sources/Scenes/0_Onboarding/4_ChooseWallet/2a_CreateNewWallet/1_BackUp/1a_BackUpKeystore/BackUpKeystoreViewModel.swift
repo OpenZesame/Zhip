@@ -50,16 +50,14 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.finished) })
-                .sink { _ in },
+                .sink { userDid(.finished) },
 
             input.fromView.copyTrigger.withLatestFrom(keystore)
-                .handleEvents(receiveOutput: {
+                .sink {
                     UIPasteboard.general.string = $0
                     let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
                     input.fromController.toastSubject.send(toast)
-                })
-                .sink { _ in },
+                },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

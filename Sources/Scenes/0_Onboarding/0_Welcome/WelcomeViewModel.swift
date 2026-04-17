@@ -45,8 +45,7 @@ final class WelcomeViewModel: BaseViewModel<
 
         [
             input.fromView.startTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .start) })
-                .sink { _ in },
+                .sink { userIntends(to: .start) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output()

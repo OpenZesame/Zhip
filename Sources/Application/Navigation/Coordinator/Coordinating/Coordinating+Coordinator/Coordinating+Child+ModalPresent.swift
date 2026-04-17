@@ -94,7 +94,7 @@ extension Coordinating {
         // temporary child coordinator.
         child.navigator.navigation
             .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { [
+            .sink { [
                 unowned self,
                 unowned newModalNavigationController,
                 unowned child
@@ -105,8 +105,7 @@ extension Coordinating {
                     // Clean up coordinator stack
                     self.remove(childCoordinator: child)
                 }
-            })
-            .sink { _ in }
+            }
             .store(in: &cancellables)
     }
 }

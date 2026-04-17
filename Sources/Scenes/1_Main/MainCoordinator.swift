@@ -48,7 +48,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        deeplinkedTransaction.mapToVoid().handleEvents(receiveOutput: { [unowned self] in toSendPrefilTransaction() }).sink { _ in }.store(in: &cancellables)
+        deeplinkedTransaction.mapToVoid().sink { [unowned self] in toSendPrefilTransaction() }.store(in: &cancellables)
     }
 
     override func start(didStart: Completion? = nil) {

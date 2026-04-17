@@ -44,12 +44,10 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
         [
             input.fromView.doneTrigger.withLatestFrom(pincode.filterNil())
-                .handleEvents(receiveOutput: { userDid(.chosePincode($0)) })
-                .sink { _ in },
+                .sink { userDid(.chosePincode($0)) },
 
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.skip) })
-                .sink { _ in },
+                .sink { userDid(.skip) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

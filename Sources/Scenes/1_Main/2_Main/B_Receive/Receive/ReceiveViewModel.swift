@@ -86,18 +86,16 @@ final class ReceiveViewModel: BaseViewModel<
 
         [
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.finish) })
-                .sink { _ in },
+                .sink { userDid(.finish) },
 
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
-                .handleEvents(receiveOutput: {
+                .sink {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject.send(Toast(String(localized: .Receive.copiedAddress)))
-                }).sink { _ in },
+                },
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)
-                .handleEvents(receiveOutput: { userDid(.requestTransaction($0)) })
-                .sink { _ in },
+                .sink { userDid(.requestTransaction($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

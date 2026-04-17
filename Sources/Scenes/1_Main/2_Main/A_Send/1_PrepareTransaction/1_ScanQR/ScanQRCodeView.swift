@@ -97,9 +97,9 @@ extension ScanQRCodeView: ViewModelled {
 
     func populate(with viewModel: ScanQRCodeViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.startScanning.handleEvents(receiveOutput: { [weak self] in
+            viewModel.startScanning.sink { [weak self] in
                 self?.reader.startScanning()
-            }).sink { _ in },
+            },
         ]
     }
 }

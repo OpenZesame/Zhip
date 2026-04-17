@@ -64,34 +64,29 @@ final class BackupWalletViewModel: BaseViewModel<
         switch mode {
         case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancelOrDismiss) })
-                .sink { _ in }.store(in: &cancellables)
+                .sink { userDid(.cancelOrDismiss) }.store(in: &cancellables)
         case .cancellable:
             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
             input.fromController.leftBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancelOrDismiss) })
-                .sink { _ in }.store(in: &cancellables)
+                .sink { userDid(.cancelOrDismiss) }.store(in: &cancellables)
         }
 
         [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
-                .handleEvents(receiveOutput: { (keystoreText: String) in
+                .sink { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
                     input.fromController.toastSubject.send(Toast(String(localized: .BackupWallet.copiedKeystore)))
-                }).sink { _ in },
+                },
 
             input.fromView.revealKeystoreTrigger
-                .handleEvents(receiveOutput: { userDid(.revealKeystore) })
-                .sink { _ in },
+                .sink { userDid(.revealKeystore) },
 
             input.fromView.revealPrivateKeyTrigger
-                .handleEvents(receiveOutput: { userDid(.revealPrivateKey) })
-                .sink { _ in },
+                .sink { userDid(.revealPrivateKey) },
 
             input.fromView.doneTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }.mapToVoid()
-                .handleEvents(receiveOutput: { userDid(.backupWallet) })
-                .sink { _ in },
+                .sink { userDid(.backupWallet) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

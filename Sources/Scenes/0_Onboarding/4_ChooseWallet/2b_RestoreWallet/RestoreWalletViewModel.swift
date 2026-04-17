@@ -74,8 +74,7 @@ final class RestoreWalletViewModel: BaseViewModel<
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()
                 }
-                .handleEvents(receiveOutput: { userIntends(to: .restoreWallet($0)) })
-                .sink { _ in },
+                .sink { userIntends(to: .restoreWallet($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         let keystoreRestorationError: AnyPublisher<AnyValidation, Never> = errorTracker.asInputValidationErrors {

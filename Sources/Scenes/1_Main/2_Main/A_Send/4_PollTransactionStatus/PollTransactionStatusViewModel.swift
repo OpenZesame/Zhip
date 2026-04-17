@@ -71,25 +71,22 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         [
             input.fromView.copyTransactionIdTrigger
-                .handleEvents(receiveOutput: { [unowned self] in
+                .sink { [unowned self] in
                     UIPasteboard.general.string = transactionId
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
-                }).sink { _ in },
+                },
 
             input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
-                .handleEvents(receiveOutput: { hasReceivedReceipt in
+                .sink { hasReceivedReceipt in
                     let action: NavigationStep = hasReceivedReceipt ? .dismiss : .skip
                     userDid(action)
 
-                })
-                .sink { _ in },
+                },
 
             input.fromView.seeTxDetails.withLatestFrom(receipt.replaceErrorWithEmpty()) {
                 $1
-            }.handleEvents(
-                receiveOutput: { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) }
-            ).sink { _ in },
+            }.sink { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) },
         ].forEach { $0.store(in: &cancellables) }
 
         // MARK: Return output

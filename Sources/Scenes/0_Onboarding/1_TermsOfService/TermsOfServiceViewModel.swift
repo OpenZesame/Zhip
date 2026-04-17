@@ -56,15 +56,14 @@ final class TermsOfServiceViewModel: BaseViewModel<
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.dismiss) })
-                .sink { _ in }.store(in: &cancellables)
+                .sink { userDid(.dismiss) }.store(in: &cancellables)
         }
 
         [
-            input.fromView.didAcceptTerms.handleEvents(receiveOutput: { [unowned self] in
+            input.fromView.didAcceptTerms.sink { [unowned self] in
                 useCase.didAcceptTermsOfService()
                 userDid(.acceptTermsOfService)
-            }).sink { _ in },
+            },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

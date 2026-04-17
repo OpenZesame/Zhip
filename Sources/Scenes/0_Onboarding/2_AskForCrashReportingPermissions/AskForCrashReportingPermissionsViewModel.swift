@@ -56,15 +56,14 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
             input.fromController.rightBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.dismiss) })
-                .sink { _ in }.store(in: &cancellables)
+                .sink { userDid(.dismiss) }.store(in: &cancellables)
         }
 
         [
-            hasAnsweredAnalyticsPermissionsQuestionTrigger.handleEvents(receiveOutput: { [unowned self] in
+            hasAnsweredAnalyticsPermissionsQuestionTrigger.sink { [unowned self] in
                 useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
                 navigator.next(.answerQuestionAboutCrashReporting)
-            }).sink { _ in },
+            },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

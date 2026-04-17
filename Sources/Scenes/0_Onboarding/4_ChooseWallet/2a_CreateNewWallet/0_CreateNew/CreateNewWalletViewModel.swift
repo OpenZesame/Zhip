@@ -74,8 +74,7 @@ final class CreateNewWalletViewModel:
 
         [
             input.fromController.leftBarButtonTrigger
-                .handleEvents(receiveOutput: { userDid(.cancel) })
-                .sink { _ in },
+                .sink { userDid(.cancel) },
 
             input.fromView.createWalletTrigger
                 .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) {
@@ -86,8 +85,7 @@ final class CreateNewWalletViewModel:
                         .trackActivity(activityIndicator)
                         .replaceErrorWithEmpty()
                 }
-                .handleEvents(receiveOutput: { userDid(.createWallet($0)) })
-                .sink { _ in },
+                .sink { userDid(.createWallet($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         let encryptionPasswordValidationTrigger = unconfirmedPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingNewEncryptionPassword).eraseToAnyPublisher()

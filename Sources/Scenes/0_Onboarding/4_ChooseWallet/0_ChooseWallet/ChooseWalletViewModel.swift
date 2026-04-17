@@ -45,12 +45,10 @@ final class ChooseWalletViewModel: BaseViewModel<
 
         [
             input.fromView.createNewWalletTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .createNewWallet) })
-                .sink { _ in },
+                .sink { userIntends(to: .createNewWallet) },
 
             input.fromView.restoreWalletTrigger
-                .handleEvents(receiveOutput: { userIntends(to: .restoreWallet) })
-                .sink { _ in },
+                .sink { userIntends(to: .restoreWallet) },
         ].forEach { $0.store(in: &cancellables) }
         return Output()
     }

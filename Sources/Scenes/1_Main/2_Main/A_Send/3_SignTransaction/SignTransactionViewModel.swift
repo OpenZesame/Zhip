@@ -74,8 +74,7 @@ final class SignTransactionViewModel: BaseViewModel<
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()
                 }
-                .handleEvents(receiveOutput: { userDid(.sign($0)) })
-                .sink { _ in },
+                .sink { userDid(.sign($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         let encryptionPasswordValidation = // map `editingChanged` to `editingDidBegin`

@@ -50,8 +50,7 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
         [
             input.fromView.hasReviewedNowProceedWithSigningTrigger.map { self.paymentToReview }
-                .handleEvents(receiveOutput: { userDid(.acceptPaymentProceedWithSigning($0)) })
-                .sink { _ in },
+                .sink { userDid(.acceptPaymentProceedWithSigning($0)) },
         ].forEach { $0.store(in: &cancellables) }
 
         let payment = Just(paymentToReview).eraseToAnyPublisher()
