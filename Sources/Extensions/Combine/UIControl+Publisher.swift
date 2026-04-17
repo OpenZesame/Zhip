@@ -5,15 +5,33 @@ import UIKit
 
 // MARK: - UIControl event publisher
 
+private final class WeakBox<Object: AnyObject> {
+    weak var value: Object?
+
+    init(_ value: Object) {
+        self.value = value
+    }
+}
+
 public struct UIControlPublisher<Control: UIControl>: Publisher {
     public typealias Output = Void
     public typealias Failure = Never
 
-    let control: Control
+    private let control: WeakBox<Control>
     let events: UIControl.Event
+
+    init(control: Control, events: UIControl.Event) {
+        self.control = WeakBox(control)
+        self.events = events
+    }
 
     public func receive<S: Subscriber>(subscriber: S)
         where S.Input == Void, S.Failure == Never {
+        guard let control = control.value else {
+            subscriber.receive(subscription: Subscriptions.empty)
+            subscriber.receive(completion: .finished)
+            return
+        }
         let subscription = UIControlSubscription(
             subscriber: subscriber,
             control: control,
