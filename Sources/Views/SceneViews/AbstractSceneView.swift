@@ -80,8 +80,13 @@ private extension AbstractSceneView {
 
 extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
     var isRefreshing: Binder<Bool> {
-        let refreshControl = base.refreshControl
-        return refreshControl.rx.isRefreshing
+        Binder<Bool>(base) { view, refreshing in
+            if refreshing {
+                view.refreshControl.beginRefreshing()
+            } else {
+                view.refreshControl.endRefreshing()
+            }
+        }
     }
 
     var pullToRefreshTitle: Binder<String> {
@@ -91,7 +96,6 @@ extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
     }
 
     var pullToRefreshTrigger: Driver<Void> {
-        base.refreshControl.rx.controlEvent(.valueChanged)
-            .asDriverOnErrorReturnEmpty()
+        base.refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher()
     }
 }

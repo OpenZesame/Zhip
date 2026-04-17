@@ -47,8 +47,8 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
 
         let keyPair = Driver.just(keyPair)
 
-        let privateKey = keyPair.map { $0.privateKey.asHexStringLength64() }
-        let publicKeyUncompressed = keyPair.map(\.publicKey.hex.uncompressed)
+        let privateKey: Driver<String> = keyPair.map { $0.privateKey.asHexStringLength64() }.eraseToAnyPublisher()
+        let publicKeyUncompressed: Driver<String> = keyPair.map(\.publicKey.hex.uncompressed).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger

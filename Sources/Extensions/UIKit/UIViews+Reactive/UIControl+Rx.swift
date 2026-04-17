@@ -22,3 +22,21 @@ extension Reactive where Base: UILabel {
         Binder(base) { $0.text = $1 }
     }
 }
+
+extension Reactive where Base: UIButton {
+    func title(for state: UIControl.State) -> Binder<String?> {
+        Binder(base) { button, title in
+            button.setTitle(title, for: state)
+        }
+    }
+}
+
+extension Reactive where Base: UISegmentedControl {
+    var value: AnyPublisher<Int, Never> {
+        Publishers.Merge(
+            Just(base.selectedSegmentIndex),
+            base.publisher(for: .valueChanged).map { [weak base] _ in base?.selectedSegmentIndex ?? 0 }
+        )
+        .eraseToAnyPublisher()
+    }
+}

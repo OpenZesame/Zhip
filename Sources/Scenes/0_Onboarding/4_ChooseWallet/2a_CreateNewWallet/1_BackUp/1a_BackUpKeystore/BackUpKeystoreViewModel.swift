@@ -45,7 +45,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
             navigator.next(step)
         }
 
-        let keystore = keystore.map(\.asPrettyPrintedJSONString)
+        let keystore: Driver<String> = keystore.map(\.asPrettyPrintedJSONString).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger
@@ -69,7 +69,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 
 extension BackUpKeystoreViewModel {
     convenience init(wallet: Driver<Wallet>) {
-        self.init(keystore: wallet.map(\.keystore))
+        self.init(keystore: wallet.map(\.keystore).eraseToAnyPublisher())
     }
 }
 

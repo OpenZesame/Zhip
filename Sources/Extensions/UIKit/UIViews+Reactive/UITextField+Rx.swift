@@ -25,10 +25,9 @@ extension Reactive where Base: UITextField {
     }
 
     var isEditing: AnyPublisher<Bool, Never> {
-        AnyPublisher.merge(
-            base.publisher(for: .editingDidBegin).map { true },
-            base.publisher(for: .editingDidEnd).map { false }
-        )
+        base.publisher(for: .editingDidBegin).map { _ in true }
+            .merge(with: base.publisher(for: .editingDidEnd).map { _ in false })
+            .eraseToAnyPublisher()
     }
 
     var didEndEditing: AnyPublisher<Void, Never> {
@@ -42,23 +41,41 @@ extension Reactive where Base: UITextView {
         Binder(base) { $0.text = $1 }
     }
 
-    var isEditing: AnyPublisher<Bool, Never> {
-        AnyPublisher.merge(
+    var didBeginEditing: AnyPublisher<Void, Never> {
+        NotificationCenter.default
+            .publisher(for: UITextView.textDidBeginEditingNotification, object: base)
+            .mapToVoid()
+    }
+
+    var textChanges: AnyPublisher<String?, Never> {
+        Publishers.Merge(
+            Just(base.text),
             NotificationCenter.default
-                .publisher(for: UITextView.textDidBeginEditingNotification, object: base)
-                .map { _ in true },
-            NotificationCenter.default
-                .publisher(for: UITextView.textDidEndEditingNotification, object: base)
-                .map { _ in false }
+                .publisher(for: UITextView.textDidChangeNotification, object: base)
+                .map { ($0.object as? UITextView)?.text }
         )
+        .eraseToAnyPublisher()
+    }
+
+    var isEditing: AnyPublisher<Bool, Never> {
+        NotificationCenter.default
+            .publisher(for: UITextView.textDidBeginEditingNotification, object: base)
+            .map { _ in true }
+            .merge(
+                with: NotificationCenter.default
+                    .publisher(for: UITextView.textDidEndEditingNotification, object: base)
+                    .map { _ in false }
+            )
+            .eraseToAnyPublisher()
     }
 
     func isNearBottom(yThreshold: CGFloat = 0.98) -> AnyPublisher<Bool, Never> {
-        NotificationCenter.default
-            .publisher(for: UITextView.textDidChangeNotification, object: base)
+        base.publisher(for: \.contentOffset)
             .map { [weak base] _ -> Bool in
                 guard let base else { return false }
-                return base.contentOffset.y >= yThreshold * (base.contentSize.height - base.frame.height)
+                let excess = base.contentSize.height - base.frame.height
+                guard excess > 0 else { return true }
+                return base.contentOffset.y >= yThreshold * excess
             }
             .eraseToAnyPublisher()
     }

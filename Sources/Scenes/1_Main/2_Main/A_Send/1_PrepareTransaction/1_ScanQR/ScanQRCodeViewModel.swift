@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 
 // MARK: - User action and navigation steps
@@ -61,7 +62,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
             } catch {
                 return ScannedQRResult.failure(error)
             }
-        }
+        }.eraseToAnyPublisher()
 
         // MARK: Navigate
 

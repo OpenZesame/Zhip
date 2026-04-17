@@ -78,7 +78,8 @@ final class PincodeTextField: UITextField {
         // If we have logic presenting some alert when a pincode was removed, dismissing said alert would cause
         // `viewWillAppear` to be called resulting in `becomeFirstResponder` which would emit the same Pincode,
         // which might result in the same alert being presented.
-        .distinctUntilChanged()
+        .removeDuplicates()
+        .eraseToAnyPublisher()
 
     // MARK: - Initialization
 

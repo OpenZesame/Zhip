@@ -276,8 +276,8 @@ extension Reactive where Base: CheckboxWithLabel {
 
 extension Reactive where Base: CheckboxView {
     var isChecked: AnyPublisher<Bool, Never> {
-        base.rx.controlEvent(.valueChanged)
-            .map { [weak base] in base?.on ?? false }
+        base.publisher(for: .valueChanged)
+            .map { [weak base] _ in base?.on ?? false }
             .eraseToAnyPublisher()
     }
 }

@@ -89,7 +89,7 @@ final class SignTransactionViewModel: BaseViewModel<
             WalletEncryptionPassword.Error.incorrectPasswordErrorFrom(error: $0)
         }
 
-        let isSignButtonEnabled = encryptionPasswordValidation.map(\.isValid)
+        let isSignButtonEnabled: Driver<Bool> = encryptionPasswordValidation.map(\.isValid).eraseToAnyPublisher()
 
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,

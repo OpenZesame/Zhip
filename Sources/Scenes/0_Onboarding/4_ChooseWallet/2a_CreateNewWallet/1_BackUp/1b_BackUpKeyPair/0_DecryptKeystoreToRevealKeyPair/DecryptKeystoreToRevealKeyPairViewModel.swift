@@ -57,6 +57,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         let encryptionPasswordValidationValue = input.fromView.encryptionPassword
             .withLatestFrom(wallet) { (password: $0, wallet: $1) }
             .map { validator.validateEncryptionPassword($0.password, for: $0.wallet) }
+            .eraseToAnyPublisher()
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
@@ -67,11 +68,10 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
             input.fromView.revealTrigger
                 .withLatestFrom(
-                    Driver.combineLatest(
-                        wallet,
-                        encryptionPassword
-                    )
-                ) { (wallet: $1.0, password: $1.1) }
+                    combineLatest(wallet, encryptionPassword)
+                ) { (_: Void, pair: (Wallet, String)) -> (wallet: Wallet, password: String) in
+                    (wallet: pair.0, password: pair.1)
+                }
                 .flatMapLatest { [unowned useCase] in
                     useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
                         .trackActivity(activityIndicator)
@@ -84,7 +84,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         let encryptionPasswordValidation = Driver.merge(
             // map `editingChanged` to `editingDidBegin`
-            input.fromView.encryptionPassword.mapToVoid().map { true },
+            input.fromView.encryptionPassword.mapToVoid().map { true }.eraseToAnyPublisher(),
             input.fromView.isEditingEncryptionPassword
         ).withLatestFrom(encryptionPasswordValidationValue) {
             EditingValidation(isEditing: $0, validation: $1.validation)
@@ -96,7 +96,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         return Output(
             encryptionPasswordValidation: encryptionPasswordValidation,
-            isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid),
+            isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid).eraseToAnyPublisher(),
             isRevealButtonLoading: activityIndicator.asDriver()
         )
     }

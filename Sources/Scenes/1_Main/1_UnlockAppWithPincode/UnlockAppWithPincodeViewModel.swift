@@ -94,7 +94,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,
-            pincodeValidation: pincodeValidationValue.map(\.validation)
+            pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher()
         )
     }
 }

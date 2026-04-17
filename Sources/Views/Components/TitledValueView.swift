@@ -86,7 +86,7 @@ extension Reactive where Base: TitledValueView {
         base.titleLabel.rx.text
     }
 
-    var value: Binder<String?> {
+    var value: Binder<String> {
         base.valueTextView.rx.text
     }
 }

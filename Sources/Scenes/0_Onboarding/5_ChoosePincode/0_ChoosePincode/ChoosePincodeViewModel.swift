@@ -53,7 +53,7 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,
-            isDoneButtonEnabled: pincode.map { $0 != nil }
+            isDoneButtonEnabled: pincode.map { $0 != nil }.eraseToAnyPublisher()
         )
     }
 }

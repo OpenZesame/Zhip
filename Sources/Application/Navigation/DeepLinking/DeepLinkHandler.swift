@@ -63,7 +63,8 @@ extension DeepLinkHandler {
     }
 
     var navigation: Driver<DeepLink> {
-        navigator.navigation.filter { [unowned self] _ in return !appIsLockedSoBufferLink }
+        navigator.navigation.filter { [unowned self] _ in !appIsLockedSoBufferLink }
+            .eraseToAnyPublisher()
     }
 }
 

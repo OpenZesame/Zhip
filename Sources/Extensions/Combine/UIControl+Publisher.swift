@@ -70,7 +70,7 @@ final class UIControlSubscription<S: Subscriber, Control: UIControl>: Subscripti
 // MARK: - UIControl extension
 
 public extension UIControl {
-    func publisher(for events: UIControl.Event) -> UIControlPublisher<Self> {
+    func publisher(for events: UIControl.Event) -> UIControlPublisher<UIControl> {
         UIControlPublisher(control: self, events: events)
     }
 }

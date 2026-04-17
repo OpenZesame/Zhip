@@ -58,7 +58,7 @@ final class RemovePincodeViewModel: BaseViewModel<
 
         let pincodeValidationValue: Driver<PincodeValidator.ValidationResult> = input.fromView.pincode.map {
             validator.validate(unconfirmedPincode: $0)
-        }
+        }.eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.leftBarButtonTrigger
@@ -76,7 +76,7 @@ final class RemovePincodeViewModel: BaseViewModel<
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewDidAppear,
-            pincodeValidation: pincodeValidationValue.map(\.validation)
+            pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher()
         )
     }
 }

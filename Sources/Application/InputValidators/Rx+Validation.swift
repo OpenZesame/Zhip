@@ -19,10 +19,11 @@ extension AnyPublisher where Output == EditingValidation, Failure == Never {
             }
         }.eraseToAnyPublisher()
 
-        return AnyPublisher.merge(
-            directlyDisplayErrorMessages.map { .errorMessage($0) },
-            editingValidation
-        )
+        return directlyDisplayErrorMessages
+            .map { AnyValidation.errorMessage($0) }
+            .eraseToAnyPublisher()
+            .merge(with: editingValidation)
+            .eraseToAnyPublisher()
     }
 
     func eagerValidLazyErrorTurnedToEmptyOnEdit(

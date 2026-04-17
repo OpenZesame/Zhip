@@ -13,7 +13,7 @@ public final class ErrorTracker {
     }
 
     public func track<P: Publisher>(from source: P) -> AnyPublisher<P.Output, Never>
-        where P.Failure == Error {
+        where P.Failure: Error {
         source
             .catch { [weak self] error -> Empty<P.Output, Never> in
                 self?.subject.send(error)
@@ -41,7 +41,7 @@ public final class ErrorTracker {
 
 public extension Publisher {
     func trackError(_ tracker: ErrorTracker) -> AnyPublisher<Output, Never>
-        where Failure == Error {
+        where Failure: Error {
         tracker.track(from: self)
     }
 }

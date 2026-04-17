@@ -70,20 +70,16 @@ extension DefaultWalletUseCase {
 private extension Observable {
     /// Bridges an RxSwift Observable (from Zesame) to a Combine AnyPublisher.
     func asAnyPublisher() -> AnyPublisher<Element, Error> {
-        let subject = PassthroughSubject<Element, Error>()
-        var disposable: Disposable?
-        let publisher = subject.handleEvents(
-            receiveSubscription: { _ in
-                disposable = self.subscribe(
-                    onNext: { subject.send($0) },
-                    onError: { subject.send(completion: .failure($0)) },
-                    onCompleted: { subject.send(completion: .finished) }
-                )
-            },
-            receiveCancel: {
-                disposable?.dispose()
-            }
+        let relay = PassthroughSubject<Element, Never>()
+        var rxDisposable: RxSwift.Disposable?
+        rxDisposable = self.subscribe(
+            onNext: { relay.send($0) },
+            onError: { _ in relay.send(completion: .finished) },
+            onCompleted: { relay.send(completion: .finished) }
         )
-        return publisher.eraseToAnyPublisher()
+        return relay
+            .handleEvents(receiveCancel: { rxDisposable?.dispose() })
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }

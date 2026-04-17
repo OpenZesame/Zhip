@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -76,7 +77,7 @@ private extension SendCoordinator {
                     return false
                 }
                 return true
-            }
+            }.eraseToAnyPublisher()
         )
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in

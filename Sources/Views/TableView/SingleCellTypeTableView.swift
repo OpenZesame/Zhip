@@ -5,7 +5,7 @@ import UIKit
 
 typealias ListCell = AbstractTableViewCell & CellConfigurable
 
-class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView, UITableViewDelegate, SelectionPublishing {
+class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView, UITableViewDelegate, UITableViewDataSource, SelectionPublishing {
     // MARK: - Data
 
     private var sectionModels: [SectionModel<Header, Cell.Model>] = [] {
@@ -44,11 +44,9 @@ class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView, UITableViewD
         }
         selectionSubject.send(indexPath)
     }
-}
 
-// MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
-extension SingleCellTypeTableView: UITableViewDataSource {
     func numberOfSections(in _: UITableView) -> Int { sectionModels.count }
 
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {

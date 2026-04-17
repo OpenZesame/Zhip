@@ -61,7 +61,7 @@ final class RestoreWalletViewModel: BaseViewModel<
             case .keystore: String(localized: .RestoreWallet.restoreWithKeystore)
             case .privateKey: String(localized: .RestoreWallet.restoreWithPrivateKey)
             }
-        }
+        }.eraseToAnyPublisher()
 
         let errorTracker = ErrorTracker()
 
@@ -83,7 +83,7 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         return Output(
             headerLabel: headerLabel,
-            isRestoreButtonEnabled: keyRestoration.map { $0 != nil },
+            isRestoreButtonEnabled: keyRestoration.map { $0 != nil }.eraseToAnyPublisher(),
             isRestoring: activityIndicator.asDriver(),
             keystoreRestorationError: keystoreRestorationError
         )

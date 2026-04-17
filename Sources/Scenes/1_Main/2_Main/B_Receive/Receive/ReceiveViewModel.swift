@@ -62,7 +62,7 @@ final class ReceiveViewModel: BaseViewModel<
                 in: .zil
             )))
 
-        let amount = amountValidationValue.map(\.value)
+        let amount = amountValidationValue.map(\.value).eraseToAnyPublisher()
 
         let amountValidationTrigger = input.fromView.didEndEditingAmount
 
@@ -71,16 +71,16 @@ final class ReceiveViewModel: BaseViewModel<
             amountValidationValue.nonErrors()
         )
 
-        let transactionToReceive = Driver.combineLatest(
-            wallet.map { Address.bech32($0.bech32Address) },
+        let transactionToReceive: Driver<TransactionIntent> = combineLatest(
+            wallet.map { Address.bech32($0.bech32Address) }.eraseToAnyPublisher(),
             amount.map { $0?.amount }.filterNil()
         ) { TransactionIntent(to: $0, amount: $1) }
 
-        let qrImage = transactionToReceive.map { [unowned qrCoder] in
+        let qrImage: Driver<UIImage?> = transactionToReceive.map { [unowned qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
-        }
+        }.eraseToAnyPublisher()
 
-        let receivingAddress = wallet.map(\.bech32Address.asString)
+        let receivingAddress: Driver<String> = wallet.map(\.bech32Address.asString).eraseToAnyPublisher()
 
         bag <~ [
             input.fromController.rightBarButtonTrigger

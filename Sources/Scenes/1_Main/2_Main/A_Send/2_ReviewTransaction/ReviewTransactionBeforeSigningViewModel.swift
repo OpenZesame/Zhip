@@ -84,11 +84,11 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
         return Output(
             isHasReviewedNowProceedWithSigningButtonEnabled: input.fromView.isHasReviewedPaymentCheckboxChecked,
-            recipientLegacyAddress: recipientLegacyAddress.map(\.asString),
-            recipientBech32Address: recipientBech32Address.map(\.asString),
-            amountToPay: amountToPay,
-            paymentFee: paymentFee,
-            totalCost: totalCost
+            recipientLegacyAddress: recipientLegacyAddress.map(\.asString).eraseToAnyPublisher(),
+            recipientBech32Address: recipientBech32Address.map(\.asString).eraseToAnyPublisher(),
+            amountToPay: amountToPay.eraseToAnyPublisher(),
+            paymentFee: paymentFee.eraseToAnyPublisher(),
+            totalCost: totalCost.eraseToAnyPublisher()
         )
     }
 }

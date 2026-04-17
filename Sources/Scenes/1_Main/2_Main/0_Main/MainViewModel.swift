@@ -96,18 +96,18 @@ final class MainViewModel: BaseViewModel<
                 .do(onNext: { userIntends(to: .receive) })
                 .drive(),
 
-            transactionUseCase.getMinimumGasPrice().subscribe(),
+            transactionUseCase.getMinimumGasPrice().sink(receiveCompletion: { _ in }, receiveValue: { _ in }),
         ]
 
         let formatter = AmountFormatter()
 
         let refreshControlLastUpdatedTitle: Driver<String> = balanceWasUpdatedAt.map {
             BalanceLastUpdatedFormatter().string(from: $0)
-        }
+        }.eraseToAnyPublisher()
 
         return Output(
             isFetchingBalance: activityIndicator.asDriver(),
-            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) },
+            balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) }.eraseToAnyPublisher(),
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle
         )
     }

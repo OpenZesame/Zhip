@@ -50,7 +50,7 @@ final class TermsOfServiceViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let isAcceptButtonEnabled = input.fromView.didScrollToBottom.map { true }
+        let isAcceptButtonEnabled: Driver<Bool> = input.fromView.didScrollToBottom.map { true }.eraseToAnyPublisher()
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)

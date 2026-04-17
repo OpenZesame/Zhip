@@ -94,7 +94,7 @@ final class BackupWalletViewModel: BaseViewModel<
         ]
 
         return Output(
-            isHaveSecurelyBackedUpViewsVisible: Driver<Mode>.just(mode).map { $0 == .cancellable },
+            isHaveSecurelyBackedUpViewsVisible: Driver<Mode>.just(mode).map { $0 == .cancellable }.eraseToAnyPublisher(),
             isDoneButtonEnabled: isUnderstandsRiskCheckboxChecked
         )
     }

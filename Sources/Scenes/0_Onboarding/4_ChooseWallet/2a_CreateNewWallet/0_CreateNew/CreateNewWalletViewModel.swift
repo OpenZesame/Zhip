@@ -59,17 +59,18 @@ final class CreateNewWalletViewModel:
 
         let validator = InputValidator()
 
-        let confirmEncryptionPasswordValidationValue = Driver.combineLatest(unconfirmedPassword, confirmingPassword)
+        let confirmEncryptionPasswordValidationValue: Driver<EncryptionPasswordValidator.ValidationResult> = combineLatest(unconfirmedPassword, confirmingPassword)
             .map {
                 validator.validateConfirmedEncryptionPassword($0.0, confirmedBy: $0.1)
-            }
+            }.eraseToAnyPublisher()
 
-        let isContinueButtonEnabled = Driver.combineLatest(
-            confirmEncryptionPasswordValidationValue.map(\.isValid),
-            input.fromView.isHaveBackedUpPasswordCheckboxChecked
-        ) { isPasswordConfirmed, isBackedUpChecked in
-            isPasswordConfirmed && isBackedUpChecked
-        }
+        let isContinueButtonEnabled: Driver<Bool> = combineLatest(
+            confirmEncryptionPasswordValidationValue.map(\.isValid).eraseToAnyPublisher(),
+            input.fromView.isHaveBackedUpPasswordCheckboxChecked,
+            resultSelector: { isPasswordConfirmed, isBackedUpChecked in
+                isPasswordConfirmed && isBackedUpChecked
+            }
+        )
 
         let activityIndicator = ActivityIndicator()
 
@@ -102,7 +103,7 @@ final class CreateNewWalletViewModel:
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = Driver.combineLatest(
+        let confirmEncryptionPasswordValidation: Driver<AnyValidation> = combineLatest(
             Driver.merge(
                 // map `editingChanged` to `editingDidBegin`
                 confirmingPassword.mapToVoid().map { true },

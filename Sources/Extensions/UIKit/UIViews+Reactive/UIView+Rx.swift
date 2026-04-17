@@ -9,3 +9,11 @@ public extension Reactive where Base: UIView {
         }
     }
 }
+
+public extension Reactive where Base: UIImageView {
+    var image: Binder<UIImage?> {
+        Binder(base) { imageView, image in
+            imageView.image = image
+        }
+    }
+}

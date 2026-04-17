@@ -70,8 +70,9 @@ final class SettingsViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let sections = input.fromController.viewWillAppear
+        let sections: Driver<[SectionModel<Void, SettingsItem>]> = input.fromController.viewWillAppear
             .map { [unowned self] _ in return makeSections() }
+            .eraseToAnyPublisher()
 
         let selectedCell: Driver<SettingsItem> = input.fromView.selectedIndexPath.withLatestFrom(sections) {
             $1[$0.section].items[$0.row]

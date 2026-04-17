@@ -76,15 +76,16 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
 
 private extension ObservableConvertibleType {
     func asAnyPublisher() -> AnyPublisher<Element, Error> {
-        let subject = PassthroughSubject<Element, Error>()
-        var disposable: Disposable?
-        disposable = asObservable().subscribe(
-            onNext: { subject.send($0) },
-            onError: { subject.send(completion: .failure($0)) },
-            onCompleted: { subject.send(completion: .finished) }
+        let relay = PassthroughSubject<Element, Never>()
+        var rxDisposable: RxSwift.Disposable?
+        rxDisposable = self.asObservable().subscribe(
+            onNext: { relay.send($0) },
+            onError: { _ in relay.send(completion: .finished) },
+            onCompleted: { relay.send(completion: .finished) }
         )
-        return subject
-            .handleEvents(receiveCancel: { disposable?.dispose() })
+        return relay
+            .handleEvents(receiveCancel: { rxDisposable?.dispose() })
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 }

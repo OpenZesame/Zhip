@@ -56,17 +56,15 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         let receipt = useCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
             .trackActivity(activityTracker)
-            .do(onError: {
-                guard let error = $0 as? Zesame.Error else {
-                    incorrectImplementation("Wrong type of error")
-                }
-                if case .api(.timeout) = error {
+            .handleEvents(receiveCompletion: { completion in
+                if case .failure(let error) = completion,
+                   let zError = error as? Zesame.Error,
+                   case .api(.timeout) = zError {
                     userDid(.waitUntilTimeout)
                 }
-            }
-            )
+            })
 
-        let hasReceivedReceipt = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false)
+        let hasReceivedReceipt: Driver<Bool> = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false).eraseToAnyPublisher()
 
         // MARK: Navigate
 
@@ -97,8 +95,8 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         return Output(
             skipWaitingOrDoneButtonTitle: hasReceivedReceipt
-                .map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting)
-                },
+                .map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting) }
+                .eraseToAnyPublisher(),
             isSeeTxDetailsEnabled: hasReceivedReceipt,
             isSeeTxDetailsButtonLoading: activityTracker.asDriver()
         )

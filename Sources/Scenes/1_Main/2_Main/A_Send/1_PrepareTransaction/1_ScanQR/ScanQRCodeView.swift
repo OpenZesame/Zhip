@@ -23,6 +23,7 @@
 //
 
 import AVFoundation
+import Combine
 import QRCodeReader
 import UIKit
 

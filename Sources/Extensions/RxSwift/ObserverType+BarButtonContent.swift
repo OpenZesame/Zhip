@@ -1,5 +1,6 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import Foundation
 
 extension PassthroughSubject where Output == BarButtonContent, Failure == Never {

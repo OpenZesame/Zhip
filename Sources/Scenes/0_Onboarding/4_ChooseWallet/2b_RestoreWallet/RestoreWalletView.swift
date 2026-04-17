@@ -64,9 +64,13 @@ extension RestoreWalletView: ViewModelled {
     typealias ViewModel = RestoreWalletViewModel
 
     var inputFromView: InputFromView {
-        InputFromView(
-            selectedSegment: restorationMethodSegmentedControl.rx.value.map { Segment(rawValue: $0) }
-                .filterNil(),
+        let segmentValue = restorationMethodSegmentedControl.publisher(for: .valueChanged)
+            .map { [weak restorationMethodSegmentedControl] _ in
+                restorationMethodSegmentedControl?.selectedSegmentIndex ?? 0
+            }
+            .eraseToAnyPublisher()
+        return InputFromView(
+            selectedSegment: segmentValue.map { Segment(rawValue: $0) }.filterNil(),
             keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
             keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
             restoreTrigger: restoreWalletButton.rx.tap
@@ -143,7 +147,8 @@ private extension RestoreWalletView {
         add(segment: .keystore, titled: String(localized: .RestoreWallet.keystoreSegment))
         add(segment: .privateKey, titled: String(localized: .RestoreWallet.privateKeySegment))
 
-        bag <~ restorationMethodSegmentedControl.rx.value
+        bag <~ restorationMethodSegmentedControl.publisher(for: .valueChanged)
+            .map { [weak restorationMethodSegmentedControl] _ in restorationMethodSegmentedControl?.selectedSegmentIndex ?? 0 }
             .map { Segment(rawValue: $0) }
             .filterNil()
             .do(onNext: { [unowned self] in switchToViewFor(selectedSegment: $0) })

@@ -51,15 +51,15 @@ final class RestoreWalletUsingKeystoreViewModel {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let keyRestoration: Driver<KeyRestoration?> = Driver.combineLatest(
-            keyStoreValidationValue.map(\.value),
-            encryptionPassword
-        ).map {
-            guard let keystore = $0, let password = $1 else {
+        let keyRestoration: Driver<KeyRestoration?> = combineLatest(
+            keyStoreValidationValue.map(\.value).eraseToAnyPublisher(),
+            encryptionPassword.eraseToAnyPublisher()
+        ).map { (keystoreOpt, passwordOpt) -> KeyRestoration? in
+            guard let keystore = keystoreOpt, let password = passwordOpt else {
                 return nil
             }
             return KeyRestoration.keystore(keystore, password: password)
-        }
+        }.eraseToAnyPublisher()
 
         let encryptionPasswordPlaceHolder = Driver
             .just(String(localized: .RestoreWallet
@@ -70,10 +70,11 @@ final class RestoreWalletUsingKeystoreViewModel {
             EditingValidation(isEditing: $0, validation: $1.validation)
         }.eagerValidLazyErrorTurnedToEmptyOnEdit()
 
-        let keystoreTextFieldPlaceholder = inputFromView.keystoreDidBeginEditing
+        let keystoreTextFieldPlaceholder: Driver<String> = inputFromView.keystoreDidBeginEditing
             .map { "" }
-            .distinctUntilChanged() // never changed, thus only emitted once, as wished
+            .removeDuplicates() // never changed, thus only emitted once, as wished
             .startWith("Paste your keystore here")
+            .eraseToAnyPublisher()
 
         output = Output(
             keystoreTextFieldPlaceholder: keystoreTextFieldPlaceholder,

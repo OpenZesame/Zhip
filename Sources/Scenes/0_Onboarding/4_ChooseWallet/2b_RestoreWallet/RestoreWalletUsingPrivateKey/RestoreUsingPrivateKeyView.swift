@@ -79,8 +79,11 @@ private extension RestoreUsingPrivateKeyView {
     }
 
     func setupViewModelBinding() {
+        let showPrivateKeyButtonTitleBinder = Binder<String>(showPrivateKeyButton) { button, title in
+            button.setTitle(title, for: .normal)
+        }
         bag <~ [
-            viewModelOutput.togglePrivateKeyVisibilityButtonTitle --> showPrivateKeyButton.rx.title(for: .normal),
+            viewModelOutput.togglePrivateKeyVisibilityButtonTitle --> showPrivateKeyButtonTitleBinder,
             viewModelOutput.privateKeyFieldIsSecureTextEntry --> privateKeyField.rx.isSecureTextEntry,
             viewModelOutput.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
             viewModelOutput.privateKeyValidation --> privateKeyField.rx.validation,
