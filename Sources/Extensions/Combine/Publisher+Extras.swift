@@ -117,29 +117,78 @@ private struct WithLatestFromPublisher<
 
     func receive<S: Subscriber>(subscriber: S)
         where S.Input == Result, S.Failure == Never {
-        let storage = WithLatestFromStorage<Other.Output>()
+        let subscription = Inner(
+            downstream: subscriber,
+            other: other,
+            resultSelector: resultSelector
+        )
+        subscriber.receive(subscription: subscription)
+        upstream.subscribe(subscription)
+    }
 
-        var otherCancellable: AnyCancellable?
-        otherCancellable = other.sink { [weak storage] value in
-            storage?.latest = value
-            _ = otherCancellable // keep alive
-        }
-        storage.otherCancellable = otherCancellable
+    private final class Inner<Downstream: Subscriber>: Subscription, Subscriber
+    where Downstream.Input == Result, Downstream.Failure == Never {
+        typealias Input = Upstream.Output
+        typealias Failure = Never
 
-        upstream
-            .compactMap { [weak storage] upstreamValue -> Result? in
-                guard let latestOther = storage?.latest else { return nil }
-                return resultSelector(upstreamValue, latestOther)
+        private var downstream: Downstream?
+        private var upstreamSubscription: Subscription?
+        private var otherCancellable: AnyCancellable?
+        private var latestOther: Other.Output?
+        private var pendingDemand: Subscribers.Demand = .none
+        private let resultSelector: (Upstream.Output, Other.Output) -> Result
+
+        init(
+            downstream: Downstream,
+            other: Other,
+            resultSelector: @escaping (Upstream.Output, Other.Output) -> Result
+        ) {
+            self.downstream = downstream
+            self.resultSelector = resultSelector
+            self.otherCancellable = other.sink { [weak self] value in
+                self?.latestOther = value
             }
-            .receive(subscriber: subscriber)
+        }
+
+        func request(_ demand: Subscribers.Demand) {
+            guard demand > .none else { return }
+            pendingDemand += demand
+            upstreamSubscription?.request(demand)
+        }
+
+        func cancel() {
+            upstreamSubscription?.cancel()
+            upstreamSubscription = nil
+            otherCancellable?.cancel()
+            otherCancellable = nil
+            downstream = nil
+            latestOther = nil
+            pendingDemand = .none
+        }
+
+        func receive(subscription: Subscription) {
+            upstreamSubscription = subscription
+            if pendingDemand > .none {
+                subscription.request(pendingDemand)
+            }
+        }
+
+        func receive(_ input: Upstream.Output) -> Subscribers.Demand {
+            guard
+                let latestOther,
+                let downstream
+            else {
+                return .none
+            }
+            return downstream.receive(resultSelector(input, latestOther))
+        }
+
+        func receive(completion: Subscribers.Completion<Never>) {
+            downstream?.receive(completion: completion)
+            cancel()
+        }
     }
 }
-
-private final class WithLatestFromStorage<T> {
-    var latest: T?
-    var otherCancellable: AnyCancellable?
-}
-
 // MARK: - .drive() shim — subscribe and discard values
 
 public extension AnyPublisher where Failure == Never {
