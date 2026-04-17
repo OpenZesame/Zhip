@@ -66,12 +66,12 @@ final class ScanQRCodeViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.cancel) })
+                .sink { _ in },
 
-            transactionIntentResult.do(onNext: { [unowned self] in
+            transactionIntentResult.handleEvents(receiveOutput: { [unowned self] in
                 switch $0 {
                 case .failure:
                     let toast = Toast(
@@ -83,11 +83,11 @@ final class ScanQRCodeViewModel: BaseViewModel<
                     input.fromController.toastSubject.send(toast)
                 case let .success(transactionIntent): userDid(.scanQRContainingTransaction(transactionIntent))
                 }
-            }).drive(),
-        ]
+            }).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
-            startScanning: startScanningSubject.asDriverOnErrorReturnEmpty()
+            startScanning: startScanningSubject.replaceErrorWithEmpty()
         )
     }
 }

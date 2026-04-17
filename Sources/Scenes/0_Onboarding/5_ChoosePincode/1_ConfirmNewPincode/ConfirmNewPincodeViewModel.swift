@@ -62,17 +62,17 @@ final class ConfirmNewPincodeViewModel: BaseViewModel<
                 isPincodeValid && isBackedUpChecked
             }.eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromView.confirmedTrigger.withLatestFrom(pincodeValidationValue.map(\.value).eraseToAnyPublisher().filterNil())
-                .do(onNext: { [unowned self] in
+                .handleEvents(receiveOutput: { [unowned self] in
                     useCase.userChoose(pincode: $0)
                     userDid(.confirmPincode)
-                }).drive(),
+                }).sink { _ in },
 
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.skip) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.skip) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             pincodeValidation: pincodeValidationValue.map(\.validation).eraseToAnyPublisher(),

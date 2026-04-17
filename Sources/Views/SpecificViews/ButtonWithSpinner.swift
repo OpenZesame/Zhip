@@ -88,9 +88,9 @@ private extension ButtonWithSpinner {
     }
 }
 
-extension Reactive where Base: ButtonWithSpinner {
-    var isLoading: Binder<Bool> {
-        Binder(base) {
+extension ButtonWithSpinner {
+    var isLoadingBinder: Binder<Bool> {
+        Binder(self) {
             $0.changeTo(isSpinning: $1)
         }
     }

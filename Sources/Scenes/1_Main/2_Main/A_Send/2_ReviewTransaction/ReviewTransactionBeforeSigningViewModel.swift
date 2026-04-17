@@ -48,11 +48,11 @@ final class ReviewTransactionBeforeSigningViewModel: BaseViewModel<
 
         // MARK: - Validate input
 
-        bag <~ [
+        [
             input.fromView.hasReviewedNowProceedWithSigningTrigger.map { self.paymentToReview }
-                .do(onNext: { userDid(.acceptPaymentProceedWithSigning($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.acceptPaymentProceedWithSigning($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         let payment = Just(paymentToReview).eraseToAnyPublisher()
         let recipientLegacyAddress = payment.map(\.recipient)

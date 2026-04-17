@@ -51,25 +51,25 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
         let privateKey: AnyPublisher<String, Never> = keyPair.map(\.privateKey.rawRepresentation.asHex).eraseToAnyPublisher()
         let publicKeyUncompressed: AnyPublisher<String, Never> = keyPair.map(\.publicKey.x963Representation.asHex).eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.finish) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.finish) })
+                .sink { _ in },
 
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
-                .do(onNext: {
+                .handleEvents(receiveOutput: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
-                }).drive(),
+                }).sink { _ in },
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
-                .do(onNext: {
+                .handleEvents(receiveOutput: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
-                }).drive(),
-        ]
+                }).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             privateKey: privateKey,

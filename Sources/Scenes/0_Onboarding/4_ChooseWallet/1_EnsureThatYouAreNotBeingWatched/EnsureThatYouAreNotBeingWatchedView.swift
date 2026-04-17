@@ -48,7 +48,7 @@ extension EnsureThatYouAreNotBeingWatchedView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            understandTrigger: understandButton.rx.tap
+            understandTrigger: understandButton.tapPublisher
         )
     }
 }

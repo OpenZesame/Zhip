@@ -79,15 +79,15 @@ final class SettingsViewModel: BaseViewModel<
             $1[$0.section].items[$0.row]
         }
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userWantsToNavigate(to: .closeSettings) })
-                .drive(),
+                .handleEvents(receiveOutput: { userWantsToNavigate(to: .closeSettings) })
+                .sink { _ in },
 
-            selectedCell.do(onNext: {
+            selectedCell.handleEvents(receiveOutput: {
                 userWantsToNavigate(to: $0.destination)
-            }).drive(),
-        ]
+            }).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             sections: sections,

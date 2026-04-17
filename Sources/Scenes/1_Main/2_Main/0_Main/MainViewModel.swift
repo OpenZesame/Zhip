@@ -57,7 +57,7 @@ final class MainViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let activityIndicator = ActivityIndicator()
 
@@ -68,8 +68,8 @@ final class MainViewModel: BaseViewModel<
                 transactionUseCase
                     .getBalance(for: $0.legacyAddress)
                     .trackActivity(activityIndicator)
-                    .asDriverOnErrorReturnEmpty()
-                    .do(onNext: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
+                    .replaceErrorWithEmpty()
+                    .handleEvents(receiveOutput: { [unowned self] in transactionUseCase.cacheBalance($0.balance) })
             }
 
         let balanceWasUpdatedAt = fetchTrigger.map { [unowned self] in
@@ -78,23 +78,23 @@ final class MainViewModel: BaseViewModel<
 
         // Format output
         let _cachedBalance: Amount = transactionUseCase.cachedBalance ?? 0
-        let latestBalanceOrZero = latestBalanceAndNonce.map(\.balance).startWith(_cachedBalance)
+        let latestBalanceOrZero = latestBalanceAndNonce.map(\.balance).prepend(_cachedBalance)
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userIntends(to: .goToSettings) })
-                .drive(),
+                .handleEvents(receiveOutput: { userIntends(to: .goToSettings) })
+                .sink { _ in },
 
             input.fromView.sendTrigger
-                .do(onNext: { userIntends(to: .send) })
-                .drive(),
+                .handleEvents(receiveOutput: { userIntends(to: .send) })
+                .sink { _ in },
 
             input.fromView.receiveTrigger
-                .do(onNext: { userIntends(to: .receive) })
-                .drive(),
+                .handleEvents(receiveOutput: { userIntends(to: .receive) })
+                .sink { _ in },
 
             transactionUseCase.getMinimumGasPrice().sink(receiveCompletion: { _ in }, receiveValue: { _ in }),
-        ]
+        ].forEach { $0.store(in: &cancellables) }
 
         let formatter = AmountFormatter()
 
@@ -103,7 +103,7 @@ final class MainViewModel: BaseViewModel<
         }.eraseToAnyPublisher()
 
         return Output(
-            isFetchingBalance: activityIndicator.asDriver(),
+            isFetchingBalance: activityIndicator.asPublisher(),
             balance: latestBalanceOrZero.map { formatter.format(amount: $0, in: .zil, formatThousands: true) }.eraseToAnyPublisher(),
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle
         )

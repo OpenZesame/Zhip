@@ -1,32 +1,9 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
-//
-// Type-level compatibility shims so that existing type annotations
-// (Driver<T>, PublishSubject<T>, BehaviorSubject<T>) compile without changes.
 
 import Combine
 import Foundation
 
-// MARK: - Driver
-
-public typealias Driver<T> = AnyPublisher<T, Never>
-
-// MARK: - Subject shims
-
-public typealias PublishSubject<T> = PassthroughSubject<T, Never>
-public typealias BehaviorSubject<T> = CurrentValueSubject<T, Never>
-
-// onNext / onCompleted bridge so existing call sites compile.
-public extension PassthroughSubject where Failure == Never {
-    func onNext(_ value: Output) { send(value) }
-    func onCompleted() { send(completion: .finished) }
-}
-
-public extension CurrentValueSubject where Failure == Never {
-    func onNext(_ value: Output) { send(value) }
-    func onCompleted() { send(completion: .finished) }
-}
-
-// MARK: - AnyPublisher static constructors (match Driver.just / Driver.merge / etc.)
+// MARK: - AnyPublisher static constructors
 
 public extension AnyPublisher where Failure == Never {
     static func just(_ value: Output) -> AnyPublisher<Output, Never> {
@@ -41,7 +18,6 @@ public extension AnyPublisher where Failure == Never {
         Empty<Output, Never>(completeImmediately: false).eraseToAnyPublisher()
     }
 
-    // Variadic overload for pre-erased publishers
     static func merge(_ publishers: AnyPublisher<Output, Never>...) -> AnyPublisher<Output, Never> {
         Publishers.MergeMany(publishers).eraseToAnyPublisher()
     }
@@ -50,7 +26,6 @@ public extension AnyPublisher where Failure == Never {
         Publishers.MergeMany(publishers).eraseToAnyPublisher()
     }
 
-    // Overloads that accept any Publisher (auto-erases, avoids call-site .eraseToAnyPublisher())
     static func merge(
         _ p1: some Publisher<Output, Never>,
         _ p2: some Publisher<Output, Never>
@@ -172,7 +147,7 @@ public func combineLatest<A, B, C, D, E, R>(
 }
 // swiftlint:enable function_parameter_count
 
-// MARK: - Driver.combineLatest(...) call syntax
+// MARK: - AnyPublisher.combineLatest(...) static overloads
 
 public extension AnyPublisher where Failure == Never {
     static func combineLatest<A, B>(

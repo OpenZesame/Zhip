@@ -66,17 +66,17 @@ final class RestoreWalletViewModel: BaseViewModel<
 
         let errorTracker = ErrorTracker()
 
-        bag <~ [
+        [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
                     useCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userIntends(to: .restoreWallet($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userIntends(to: .restoreWallet($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         let keystoreRestorationError: AnyPublisher<AnyValidation, Never> = errorTracker.asInputValidationErrors {
             KeystoreValidator.Error(error: $0)
@@ -85,7 +85,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         return Output(
             headerLabel: headerLabel,
             isRestoreButtonEnabled: keyRestoration.map { $0 != nil }.eraseToAnyPublisher(),
-            isRestoring: activityIndicator.asDriver(),
+            isRestoring: activityIndicator.asPublisher(),
             keystoreRestorationError: keystoreRestorationError
         )
     }

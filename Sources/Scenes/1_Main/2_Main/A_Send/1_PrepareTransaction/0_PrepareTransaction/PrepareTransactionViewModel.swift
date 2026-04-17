@@ -62,7 +62,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
 
@@ -74,15 +74,15 @@ final class PrepareTransactionViewModel: BaseViewModel<
                 .getBalance(for: $0.legacyAddress)
                 .trackActivity(activityIndicator)
                 .trackError(errorTracker)
-                .asDriverOnErrorReturnEmpty()
-                .do(onNext: { [unowned self] in
+                .replaceErrorWithEmpty()
+                .handleEvents(receiveOutput: { [unowned self] in
                     transactionUseCase.cacheBalance($0.balance)
                 })
         }
 
-        let nonce = latestBalanceAndNonce.map(\.nonce).startWith(0)
+        let nonce = latestBalanceAndNonce.map(\.nonce).prepend(0)
         let startingBalance: Amount = transactionUseCase.cachedBalance ?? 0
-        let balance: AnyPublisher<Amount, Never> = latestBalanceAndNonce.map(\.balance).startWith(startingBalance)
+        let balance: AnyPublisher<Amount, Never> = latestBalanceAndNonce.map(\.balance).prepend(startingBalance).eraseToAnyPublisher()
 
         // MARK: - VALIDATION -> VALUE
 
@@ -109,12 +109,14 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         let _startingGasLimit = GasLimit.minimum
         let gasLimitValidationValue = input.fromView.gasLimit.map { validator.validateGasLimit($0) }
-            .startWith(.valid(_startingGasLimit))
+            .prepend(.valid(_startingGasLimit))
+            .eraseToAnyPublisher()
         let gasLimit: AnyPublisher<GasLimit?, Never> = gasLimitValidationValue.map(\.value).eraseToAnyPublisher()
 
         let _startingGasPrice: GasPrice = .min
         let gasPriceValidationValue = input.fromView.gasPrice.map { validator.validateGasPrice($0) }
-            .startWith(.valid(_startingGasPrice))
+            .prepend(.valid(_startingGasPrice))
+            .eraseToAnyPublisher()
 
         let gasPrice: AnyPublisher<GasPrice?, Never> = gasPriceValidationValue.map(\.value).eraseToAnyPublisher()
 
@@ -145,7 +147,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
         let amountValidationValue: AnyPublisher<SufficientFundsValidator.ValidationResult, Never> = // Input from fields or deeplinked/scanned
                 amountWithoutSufficientFundsCheck.merge(with: // Max trigger -> Balance SUBTRACT GasPrice (default to min)
                 maxAmountTrigger.withLatestFrom(
-                    balance.startWith(startingBalance).combineLatest(gasLimit.startWith(_startingGasLimit), gasPrice.startWith(_startingGasPrice), { (
+                    balance.prepend(startingBalance).combineLatest(gasLimit.prepend(_startingGasLimit), gasPrice.prepend(_startingGasPrice), { (
                             latestBalance: Amount?,
                             latestGasLimit: GasLimit?,
                             latestGasPrice: GasPrice?
@@ -166,9 +168,9 @@ final class PrepareTransactionViewModel: BaseViewModel<
                         }).eraseToAnyPublisher()
                 ) { $1 })
             .combineLatest(
-                gasLimit.startWith(_startingGasLimit),
-                gasPrice.startWith(_startingGasPrice),
-                balance.startWith(startingBalance)
+                gasLimit.prepend(_startingGasLimit),
+                gasPrice.prepend(_startingGasPrice),
+                balance.prepend(startingBalance)
             ) { (amount: Amount?, gasLimit: GasLimit?, gasPrice: GasPrice?, balance: Amount?) in
                 validator.validate(amount: amount, gasLimit: gasLimit, gasPrice: gasPrice, lessThanBalance: balance)
             }.eraseToAnyPublisher()
@@ -206,19 +208,19 @@ final class PrepareTransactionViewModel: BaseViewModel<
             .eraseToAnyPublisher()
 
         // Setup navigation
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userIntends(to: .cancel) })
-                .drive(),
+                .handleEvents(receiveOutput: { userIntends(to: .cancel) })
+                .sink { _ in },
 
             input.fromView.scanQRTrigger
-                .do(onNext: { userIntends(to: .scanQRCode) })
-                .drive(),
+                .handleEvents(receiveOutput: { userIntends(to: .scanQRCode) })
+                .sink { _ in },
 
             input.fromView.toReviewTrigger.withLatestFrom(payment.filterNil())
-                .do(onNext: { userIntends(to: .reviewPayment($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userIntends(to: .reviewPayment($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         // MARK: FORMATTING
 
@@ -279,7 +281,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
 
         return Output(
             refreshControlLastUpdatedTitle: refreshControlLastUpdatedTitle,
-            isFetchingBalance: activityIndicator.asDriver(),
+            isFetchingBalance: activityIndicator.asPublisher(),
             isReviewButtonEnabled: isReviewButtonEnabled,
             balance: balanceFormatted,
 

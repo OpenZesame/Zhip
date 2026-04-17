@@ -91,7 +91,7 @@ extension Coordinating {
         // from the `child.navigator` we also pass a trailing closure, the `((_ animateDismiss: Bool) -> Void)`
         // closure, which the parent coordinator _SHOULD_ invoke when it wants to finish this
         // temporary child coordinator.
-        bag <~ child.navigator.navigation.do(onNext: { [
+        child.navigator.navigation.handleEvents(receiveOutput: { [
             unowned self,
             unowned newModalNavigationController,
             unowned child
@@ -102,6 +102,8 @@ extension Coordinating {
                 // Clean up coordinator stack
                 self.remove(childCoordinator: child)
             }
-        }).drive()
+        })
+        .sink { _ in }
+        .store(in: &cancellables)
     }
 }

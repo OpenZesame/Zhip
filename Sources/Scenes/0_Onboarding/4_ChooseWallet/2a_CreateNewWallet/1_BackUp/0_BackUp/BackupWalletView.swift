@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class BackupWalletView: ScrollableStackViewOwner {
@@ -69,20 +70,20 @@ final class BackupWalletView: ScrollableStackViewOwner {
 extension BackupWalletView: ViewModelled {
     typealias ViewModel = BackupWalletViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isHaveSecurelyBackedUpViewsVisible --> haveSecurelyBackedUpViews.rx.isVisible,
-            viewModel.isDoneButtonEnabled --> doneButton.rx.isEnabled,
+            viewModel.isHaveSecurelyBackedUpViewsVisible --> haveSecurelyBackedUpViews.isVisibleBinder,
+            viewModel.isDoneButtonEnabled --> doneButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyKeystoreToPasteboardTrigger: copyKeystoreButton.rx.tap,
-            revealKeystoreTrigger: revealKeystoreButton.rx.tap,
-            revealPrivateKeyTrigger: revealPrivateKeyButton.rx.tap,
-            isUnderstandsRiskCheckboxChecked: haveSecurelyBackedUpCheckbox.rx.isChecked,
-            doneTrigger: doneButton.rx.tap
+            copyKeystoreToPasteboardTrigger: copyKeystoreButton.tapPublisher,
+            revealKeystoreTrigger: revealKeystoreButton.tapPublisher,
+            revealPrivateKeyTrigger: revealPrivateKeyButton.tapPublisher,
+            isUnderstandsRiskCheckboxChecked: haveSecurelyBackedUpCheckbox.isCheckedPublisher,
+            doneTrigger: doneButton.tapPublisher
         )
     }
 }

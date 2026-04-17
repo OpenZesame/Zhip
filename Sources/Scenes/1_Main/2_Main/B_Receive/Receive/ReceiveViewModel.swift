@@ -53,15 +53,15 @@ final class ReceiveViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let wallet = useCase.wallet.filterNil().asDriverOnErrorReturnEmpty()
+        let wallet = useCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let validator = InputValidator()
 
         let amountValidationValue: AnyPublisher<AmountValidator<Amount>.ValidationResult, Never> = input.fromView.amountToReceive
-            .map { validator.validateAmount($0) }.startWith(.valid(.amount(
+            .map { validator.validateAmount($0) }.prepend(.valid(.amount(
                 0,
                 in: .zil
-            )))
+            ))).eraseToAnyPublisher()
 
         let amount = amountValidationValue.map(\.value).eraseToAnyPublisher()
 
@@ -84,21 +84,21 @@ final class ReceiveViewModel: BaseViewModel<
 
         let receivingAddress: AnyPublisher<String, Never> = wallet.map(\.bech32Address.asString).eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.finish) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.finish) })
+                .sink { _ in },
 
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
-                .do(onNext: {
+                .handleEvents(receiveOutput: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject.send(Toast(String(localized: .Receive.copiedAddress)))
-                }).drive(),
+                }).sink { _ in },
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)
-                .do(onNext: { userDid(.requestTransaction($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.requestTransaction($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             receivingAddress: receivingAddress,

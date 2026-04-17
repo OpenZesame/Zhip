@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class BackUpRevealedKeyPairView: ScrollableStackViewOwner {
@@ -51,17 +52,17 @@ final class BackUpRevealedKeyPairView: ScrollableStackViewOwner {
 extension BackUpRevealedKeyPairView: ViewModelled {
     typealias ViewModel = BackUpRevealedKeyPairViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.privateKey --> privateKeyTextView.rx.value,
-            viewModel.publicKeyUncompressed --> publicKeyUncompressedTextView.rx.value,
+            viewModel.privateKey --> privateKeyTextView.valueBinder,
+            viewModel.publicKeyUncompressed --> publicKeyUncompressedTextView.valueBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyPrivateKeyTrigger: copyPrivateKeyButton.rx.tap,
-            copyPublicKeyTrigger: copyUncompressedPublicKeyButton.rx.tap
+            copyPrivateKeyTrigger: copyPrivateKeyButton.tapPublisher,
+            copyPublicKeyTrigger: copyUncompressedPublicKeyButton.tapPublisher
         )
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 // MARK: - SettingsView
@@ -43,16 +44,16 @@ final class SettingsView: HeaderlessTableViewSceneView<SettingsTableViewCell> {
 extension SettingsView: ViewModelled {
     typealias ViewModel = SettingsViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
             viewModel.sections --> tableView.sections,
-            viewModel.footerText --> tableView.rx.footerLabel,
+            viewModel.footerText --> tableView.footerLabelBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            selectedIndexPath: tableView.rx.itemSelected
+            selectedIndexPath: tableView.selectionPublisher
         )
     }
 }

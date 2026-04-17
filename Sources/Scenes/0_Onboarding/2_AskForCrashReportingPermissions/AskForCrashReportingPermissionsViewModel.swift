@@ -55,17 +55,17 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            bag <~ input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive()
+            input.fromController.rightBarButtonTrigger
+                .handleEvents(receiveOutput: { userDid(.dismiss) })
+                .sink { _ in }.store(in: &cancellables)
         }
 
-        bag <~ [
-            hasAnsweredAnalyticsPermissionsQuestionTrigger.do(onNext: { [unowned self] in
+        [
+            hasAnsweredAnalyticsPermissionsQuestionTrigger.handleEvents(receiveOutput: { [unowned self] in
                 useCase.answeredCrashReportingQuestion(acceptsCrashReporting: $0)
                 navigator.next(.answerQuestionAboutCrashReporting)
-            }).drive(),
-        ]
+            }).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             areButtonsEnabled: input.fromView.isHaveReadDisclaimerCheckboxChecked

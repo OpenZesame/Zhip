@@ -83,11 +83,11 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
 
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
 
-        bag <~ [
+        [
             pincodeValidationValue.filter(\.isValid).mapToVoid().merge(with: unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }).eraseToAnyPublisher()
-            .do(onNext: { userDid(.unlockApp) })
-            .drive(),
-        ]
+            .handleEvents(receiveOutput: { userDid(.unlockApp) })
+            .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,

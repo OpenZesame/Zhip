@@ -45,15 +45,15 @@ final class EnsureThatYouAreNotBeingWatchedViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.cancel) })
+                .sink { _ in },
 
             input.fromView.understandTrigger
-                .do(onNext: { userDid(.understand) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.understand) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output()
     }

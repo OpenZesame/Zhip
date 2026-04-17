@@ -69,9 +69,9 @@ extension SpinnerView {
     }
 }
 
-extension Reactive where Base == SpinnerView {
-    var isLoading: Binder<Bool> {
-        Binder(base) {
+extension SpinnerView {
+    var isLoadingBinder: Binder<Bool> {
+        Binder(self) {
             $0.changeTo(isLoading: $1)
         }
     }

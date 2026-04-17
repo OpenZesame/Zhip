@@ -72,10 +72,10 @@ final class CreateNewWalletViewModel:
 
         let activityIndicator = ActivityIndicator()
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancel) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.cancel) })
+                .sink { _ in },
 
             input.fromView.createWalletTrigger
                 .withLatestFrom(confirmEncryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()) {
@@ -84,11 +84,11 @@ final class CreateNewWalletViewModel:
                 .flatMapLatest {
                     self.useCase.createNewWallet(encryptionPassword: $0)
                         .trackActivity(activityIndicator)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userDid(.createWallet($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.createWallet($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         let encryptionPasswordValidationTrigger = unconfirmedPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingNewEncryptionPassword).eraseToAnyPublisher()
 
@@ -118,7 +118,7 @@ final class CreateNewWalletViewModel:
             encryptionPasswordValidation: encryptionPasswordValidation,
             confirmEncryptionPasswordValidation: confirmEncryptionPasswordValidation,
             isContinueButtonEnabled: isContinueButtonEnabled,
-            isButtonLoading: activityIndicator.asDriver()
+            isButtonLoading: activityIndicator.asPublisher()
         )
     }
 }

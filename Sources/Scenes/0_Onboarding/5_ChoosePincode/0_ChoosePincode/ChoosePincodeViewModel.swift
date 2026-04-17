@@ -42,15 +42,15 @@ final class ChoosePincodeViewModel: BaseViewModel<
 
         let pincode = input.fromView.pincode
 
-        bag <~ [
+        [
             input.fromView.doneTrigger.withLatestFrom(pincode.filterNil())
-                .do(onNext: { userDid(.chosePincode($0)) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.chosePincode($0)) })
+                .sink { _ in },
 
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.skip) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.skip) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewWillAppear,

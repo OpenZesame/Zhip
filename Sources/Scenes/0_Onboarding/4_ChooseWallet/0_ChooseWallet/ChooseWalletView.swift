@@ -53,8 +53,8 @@ extension ChooseWalletView: ViewModelled {
     typealias ViewModel = ChooseWalletViewModel
     var inputFromView: InputFromView {
         InputFromView(
-            createNewWalletTrigger: createNewWalletButton.rx.tap,
-            restoreWalletTrigger: restoreWalletButton.rx.tap
+            createNewWalletTrigger: createNewWalletButton.tapPublisher,
+            restoreWalletTrigger: restoreWalletButton.tapPublisher
         )
     }
 }

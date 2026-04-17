@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
@@ -54,27 +55,27 @@ final class PollTransactionStatusView: ScrollableStackViewOwner {
 extension PollTransactionStatusView: ViewModelled {
     typealias ViewModel = PollTransactionStatusViewModel
 
-    func populate(with viewModel: PollTransactionStatusViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: PollTransactionStatusViewModel.Output) -> [AnyCancellable] {
         let vibrateSuccessTrigger = viewModel.isSeeTxDetailsEnabled
 
         return [
-            viewModel.skipWaitingOrDoneButtonTitle --> skipWaitingOrDoneButton.rx.title(for: .normal),
-            viewModel.isSeeTxDetailsEnabled --> seeTxDetailsWhenAvailableButton.rx.isEnabled,
-            viewModel.isSeeTxDetailsButtonLoading --> seeTxDetailsWhenAvailableButton.rx.isLoading,
-            vibrateSuccessTrigger.do(onNext: { [weak self] finishedPolling in
+            viewModel.skipWaitingOrDoneButtonTitle --> skipWaitingOrDoneButton.titleBinder(for: .normal),
+            viewModel.isSeeTxDetailsEnabled --> seeTxDetailsWhenAvailableButton.isEnabledBinder,
+            viewModel.isSeeTxDetailsButtonLoading --> seeTxDetailsWhenAvailableButton.isLoadingBinder,
+            vibrateSuccessTrigger.handleEvents(receiveOutput: { [weak self] finishedPolling in
                 if !finishedPolling {
                     self?.playSound()
                 }
                 self?.vibrate()
-            }).drive(),
+            }).sink { _ in },
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyTransactionIdTrigger: copyTransactionIdButton.rx.tap,
-            skipWaitingOrDoneTrigger: skipWaitingOrDoneButton.rx.tap,
-            seeTxDetails: seeTxDetailsWhenAvailableButton.rx.tap
+            copyTransactionIdTrigger: copyTransactionIdButton.tapPublisher,
+            skipWaitingOrDoneTrigger: skipWaitingOrDoneButton.tapPublisher,
+            seeTxDetails: seeTxDetailsWhenAvailableButton.tapPublisher
         )
     }
 }

@@ -63,36 +63,36 @@ final class BackupWalletViewModel: BaseViewModel<
 
         switch mode {
         case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            bag <~ input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive()
+            input.fromController.rightBarButtonTrigger
+                .handleEvents(receiveOutput: { userDid(.cancelOrDismiss) })
+                .sink { _ in }.store(in: &cancellables)
         case .cancellable:
             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
-            bag <~ input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive()
+            input.fromController.leftBarButtonTrigger
+                .handleEvents(receiveOutput: { userDid(.cancelOrDismiss) })
+                .sink { _ in }.store(in: &cancellables)
         }
 
-        bag <~ [
+        [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
-                .do(onNext: { (keystoreText: String) in
+                .handleEvents(receiveOutput: { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
                     input.fromController.toastSubject.send(Toast(String(localized: .BackupWallet.copiedKeystore)))
-                }).drive(),
+                }).sink { _ in },
 
             input.fromView.revealKeystoreTrigger
-                .do(onNext: { userDid(.revealKeystore) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.revealKeystore) })
+                .sink { _ in },
 
             input.fromView.revealPrivateKeyTrigger
-                .do(onNext: { userDid(.revealPrivateKey) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.revealPrivateKey) })
+                .sink { _ in },
 
             input.fromView.doneTrigger.withLatestFrom(isUnderstandsRiskCheckboxChecked)
                 .filter { $0 }.mapToVoid()
-                .do(onNext: { userDid(.backupWallet) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.backupWallet) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             isHaveSecurelyBackedUpViewsVisible: AnyPublisher<Mode, Never>.just(mode).map { $0 == .cancellable }.eraseToAnyPublisher(),

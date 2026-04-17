@@ -45,7 +45,7 @@ final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinat
                     incorrectImplementation("Should have saved wallet earlier")
                 }
                 return wallet
-            }.asDriverOnErrorReturnEmpty()
+            }.replaceErrorWithEmpty()
         }
         super.init(navigationController: navigationController)
     }

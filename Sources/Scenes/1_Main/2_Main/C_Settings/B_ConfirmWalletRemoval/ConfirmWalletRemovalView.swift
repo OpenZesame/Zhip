@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class ConfirmWalletRemovalView: ScrollableStackViewOwner {
@@ -46,16 +47,16 @@ final class ConfirmWalletRemovalView: ScrollableStackViewOwner {
 extension ConfirmWalletRemovalView: ViewModelled {
     typealias ViewModel = ConfirmWalletRemovalViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isConfirmButtonEnabled --> confirmButton.rx.isEnabled,
+            viewModel.isConfirmButtonEnabled --> confirmButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            confirmTrigger: confirmButton.rx.tap,
-            isWalletBackedUpCheckboxChecked: haveBackedUpWalletCheckbox.rx.isChecked
+            confirmTrigger: confirmButton.tapPublisher,
+            isWalletBackedUpCheckboxChecked: haveBackedUpWalletCheckbox.isCheckedPublisher
         )
     }
 }

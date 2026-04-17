@@ -9,7 +9,7 @@ public final class ActivityIndicator {
 
     public init() {}
 
-    public func asDriver() -> AnyPublisher<Bool, Never> {
+    public func asPublisher() -> AnyPublisher<Bool, Never> {
         subject.removeDuplicates().eraseToAnyPublisher()
     }
 }

@@ -10,7 +10,7 @@ class SceneController<View: ContentView>: AbstractController
 {
     typealias ViewModel = View.ViewModel
 
-    private let bag = CancellableBag()
+    private var cancellables = Set<AnyCancellable>()
     let viewModel: ViewModel
 
     // Lifecycle subjects – fired in overrides below; passed into InputFromController.
@@ -90,7 +90,7 @@ private extension SceneController {
         let rightBarButtonContentSubject = PassthroughSubject<BarButtonContent, Never>()
         let toastSubject = PassthroughSubject<Toast, Never>()
 
-        bag <~ [
+        [
             titleSubject.receive(on: RunLoop.main).sink { [weak self] in self?.title = $0 },
             toastSubject.receive(on: RunLoop.main).sink { [weak self] in
                 guard let self else { return }
@@ -102,7 +102,7 @@ private extension SceneController {
             rightBarButtonContentSubject.receive(on: RunLoop.main).sink { [weak self] in
                 self?.setRightBarButtonUsing(content: $0)
             },
-        ]
+        ].forEach { $0.store(in: &cancellables) }
 
         return InputFromController(
             viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
@@ -124,7 +124,7 @@ private extension SceneController {
         let input = ViewModel.Input(fromView: inputFromView, fromController: inputFromController)
         let output = viewModel.transform(input: input)
 
-        rootContentView.populate(with: output).forEach { $0.disposed(by: bag) }
+        rootContentView.populate(with: output).forEach { $0.store(in: &cancellables) }
     }
 
     func applyLayoutIfNeeded() {

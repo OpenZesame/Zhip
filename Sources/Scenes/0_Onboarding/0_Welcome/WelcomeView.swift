@@ -52,7 +52,7 @@ extension WelcomeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            startTrigger: startButton.rx.tap
+            startTrigger: startButton.tapPublisher
         )
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class MainView: ScrollableStackViewOwner, PullToRefreshCapable {
@@ -60,17 +61,17 @@ extension MainView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pullToRefreshTrigger: rx.pullToRefreshTrigger,
-            sendTrigger: sendButton.rx.tap,
-            receiveTrigger: receiveButton.rx.tap
+            pullToRefreshTrigger: pullToRefreshTriggerPublisher,
+            sendTrigger: sendButton.tapPublisher,
+            receiveTrigger: receiveButton.tapPublisher
         )
     }
 
-    func populate(with viewModel: MainViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: MainViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isFetchingBalance --> rx.isRefreshing,
-            viewModel.balance --> balanceValueLabel.rx.text,
-            viewModel.refreshControlLastUpdatedTitle --> rx.pullToRefreshTitle,
+            viewModel.isFetchingBalance --> isRefreshingBinder,
+            viewModel.balance --> balanceValueLabel.textBinder,
+            viewModel.refreshControlLastUpdatedTitle --> pullToRefreshTitleBinder,
         ]
     }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -39,7 +40,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
-        self.bag <~ scene.viewModel.navigator.navigation
+        scene.viewModel.navigator.navigation
             .receive(on: DispatchQueue.main)
             .sink { [weak self] userDid in
                 switch userDid {
@@ -48,6 +49,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
                     self?.restoreMainNavigationStack()
                 }
             }
+            .store(in: &cancellables)
         return scene
     }()
 

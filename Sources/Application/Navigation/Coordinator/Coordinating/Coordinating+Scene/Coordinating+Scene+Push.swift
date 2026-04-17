@@ -1,5 +1,6 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import UIKit
 
 extension Coordinating {
@@ -33,8 +34,8 @@ extension Coordinating {
             completion: navigationPresentationCompletion
         )
 
-        bag <~ viewModel.navigator.navigation
-            .do(onNext: { navigationHandler($0) })
-            .drive()
+        viewModel.navigator.navigation
+            .handleEvents(receiveOutput: { navigationHandler($0) })
+            .sink { _ in }.store(in: &cancellables)
     }
 }

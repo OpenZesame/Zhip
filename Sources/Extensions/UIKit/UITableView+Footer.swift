@@ -25,21 +25,21 @@ extension UITableView {
     }
 }
 
-extension Reactive where Base: UITableView {
-    var footerLabel: Binder<String> {
-        Binder(base) { $0.setFooterLabel(text: $1) }
+extension UITableView {
+    var footerLabelBinder: Binder<String> {
+        Binder(self) { $0.setFooterLabel(text: $1) }
     }
 
-    var itemSelected: AnyPublisher<IndexPath, Never> {
-        guard let selectableTable = base as? SelectionPublishing else {
-            assertionFailure("UITableView must adopt SelectionPublishing to use rx.itemSelected")
+    var itemSelectedPublisher: AnyPublisher<IndexPath, Never> {
+        guard let selectableTable = self as? SelectionPublishing else {
+            assertionFailure("UITableView must adopt SelectionPublishing to expose itemSelectedPublisher")
             return Empty().eraseToAnyPublisher()
         }
-        return selectableTable.itemSelectedPublisher
+        return selectableTable.selectionPublisher
     }
 }
 
-// Views that want rx.itemSelected must conform to this.
+// Views that want itemSelectedPublisher must conform to this.
 protocol SelectionPublishing: AnyObject {
-    var itemSelectedPublisher: AnyPublisher<IndexPath, Never> { get }
+    var selectionPublisher: AnyPublisher<IndexPath, Never> { get }
 }

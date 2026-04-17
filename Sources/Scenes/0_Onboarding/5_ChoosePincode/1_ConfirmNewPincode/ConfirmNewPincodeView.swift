@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class ConfirmNewPincodeView: ScrollableStackViewOwner {
@@ -46,17 +47,17 @@ extension ConfirmNewPincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode,
-            isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.rx.isChecked,
-            confirmedTrigger: confirmPincodeButton.rx.tap
+            pincode: inputPincodeView.pincodePublisher,
+            isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.isCheckedPublisher,
+            confirmedTrigger: confirmPincodeButton.tapPublisher
         )
     }
 
-    func populate(with viewModel: ConfirmNewPincodeViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ConfirmNewPincodeViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.inputBecomeFirstResponder --> inputPincodeView.rx.becomeFirstResponder,
-            viewModel.pincodeValidation --> inputPincodeView.rx.validation,
-            viewModel.isConfirmPincodeEnabled --> confirmPincodeButton.rx.isEnabled,
+            viewModel.inputBecomeFirstResponder --> inputPincodeView.becomeFirstResponderBinder,
+            viewModel.pincodeValidation --> inputPincodeView.validationBinder,
+            viewModel.isConfirmPincodeEnabled --> confirmPincodeButton.isEnabledBinder,
         ]
     }
 }

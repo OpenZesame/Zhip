@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 final class CreateNewWalletView: ScrollableStackViewOwner {
@@ -54,25 +55,25 @@ final class CreateNewWalletView: ScrollableStackViewOwner {
 extension CreateNewWalletView: ViewModelled {
     typealias ViewModel = CreateNewWalletViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.encryptionPasswordPlaceholder --> encryptionPasswordField.rx.placeholder,
-            viewModel.encryptionPasswordValidation --> encryptionPasswordField.rx.validation,
-            viewModel.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.rx.validation,
-            viewModel.isContinueButtonEnabled --> continueButton.rx.isEnabled,
-            viewModel.isButtonLoading --> continueButton.rx.isLoading,
+            viewModel.encryptionPasswordPlaceholder --> encryptionPasswordField.placeholderBinder,
+            viewModel.encryptionPasswordValidation --> encryptionPasswordField.validationBinder,
+            viewModel.confirmEncryptionPasswordValidation --> confirmEncryptionPasswordField.validationBinder,
+            viewModel.isContinueButtonEnabled --> continueButton.isEnabledBinder,
+            viewModel.isButtonLoading --> continueButton.isLoadingBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            newEncryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty,
-            isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
+            newEncryptionPassword: encryptionPasswordField.textPublisher.orEmpty,
+            isEditingNewEncryptionPassword: encryptionPasswordField.isEditingPublisher,
 
-            confirmedNewEncryptionPassword: confirmEncryptionPasswordField.rx.textChanges.orEmpty,
-            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing,
-            isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.rx.isChecked,
-            createWalletTrigger: continueButton.rx.tap
+            confirmedNewEncryptionPassword: confirmEncryptionPasswordField.textPublisher.orEmpty,
+            isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.isEditingPublisher,
+            isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.isCheckedPublisher,
+            createWalletTrigger: continueButton.tapPublisher
         )
     }
 }

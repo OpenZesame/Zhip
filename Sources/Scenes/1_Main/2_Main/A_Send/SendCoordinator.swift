@@ -46,7 +46,7 @@ final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
         self.useCaseProvider = useCaseProvider
         onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
 
-        transactionIntent = deeplinkedTransaction.merge(with: scannedQRTransactionSubject.asDriverOnErrorReturnEmpty()).eraseToAnyPublisher()
+        transactionIntent = deeplinkedTransaction.merge(with: scannedQRTransactionSubject.replaceErrorWithEmpty()).eraseToAnyPublisher()
         super.init(navigationController: navigationController)
     }
 

@@ -52,7 +52,7 @@ final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavi
                     incorrectImplementation("Should have saved wallet earlier")
                 }
                 return wallet
-            }.asDriverOnErrorReturnEmpty()
+            }.replaceErrorWithEmpty()
         }
         super.init(navigationController: navigationController)
     }

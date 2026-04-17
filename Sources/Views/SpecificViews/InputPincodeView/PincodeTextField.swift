@@ -69,12 +69,11 @@ final class PincodeTextField: UITextField {
         presentation.length
     }
 
-    /// only used to listen to change of `text` in the UITextField when it is being edited
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
 
     fileprivate var pincodeSubject = PassthroughSubject<Pincode?, Never>()
-    lazy var pincodeDriver = pincodeSubject.asDriverOnErrorReturnEmpty()
-        // Calling `distinctUntilChanged` really is quite important, since it fixes potential bugs where
+    lazy var pincodePublisher: AnyPublisher<Pincode?, Never> = pincodeSubject
+        // Calling `removeDuplicates` really is quite important, since it fixes potential bugs where
         // we use `UIViewController.viewWillAppear` as a trigger for invoking `PincodeTextField.becomeFirstResponder`
         // If we have logic presenting some alert when a pincode was removed, dismissing said alert would cause
         // `viewWillAppear` to be called resulting in `becomeFirstResponder` which would emit the same Pincode,
@@ -115,10 +114,12 @@ private extension PincodeTextField {
         tintColor = .clear
         delegate = textFieldDelegate
 
-        bag <~ rx.textChanges.do(onNext: { [weak self] in
-            guard let self else { return }
-            setDigits(string: $0)
-        }).drive()
+        textPublisher
+            .sink { [weak self] in
+                guard let self else { return }
+                setDigits(string: $0)
+            }
+            .store(in: &cancellables)
 
         addSubview(presentation)
         presentation.edgesToSuperview()

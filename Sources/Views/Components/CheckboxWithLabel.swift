@@ -264,21 +264,21 @@ private extension CheckboxWithLabel {
     }
 }
 
-// MARK: - CheckboxWithLabel + Reactive
+// MARK: - CheckboxWithLabel + Publishers
 
-extension Reactive where Base: CheckboxWithLabel {
-    var isChecked: AnyPublisher<Bool, Never> {
-        base.checkbox.rx.isChecked
+extension CheckboxWithLabel {
+    var isCheckedPublisher: AnyPublisher<Bool, Never> {
+        checkbox.isCheckedPublisher
     }
 }
 
-// MARK: - CheckboxView + Reactive
+// MARK: - CheckboxView + Publishers
 
-extension Reactive where Base: CheckboxView {
-    var isChecked: AnyPublisher<Bool, Never> {
+extension CheckboxView {
+    var isCheckedPublisher: AnyPublisher<Bool, Never> {
         Publishers.Merge(
-            Just(base.on),
-            base.publisher(for: .valueChanged).map { [weak base] _ in base?.on ?? false }
+            Just(on),
+            publisher(for: .valueChanged).map { [weak self] _ in self?.on ?? false }
         )
         .eraseToAnyPublisher()
     }

@@ -61,19 +61,19 @@ final class RemovePincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }.eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.leftBarButtonTrigger
-                .do(onNext: { userDid(.cancelPincodeRemoval) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.cancelPincodeRemoval) })
+                .sink { _ in },
 
             pincodeValidationValue.filter(\.isValid)
                 .mapToVoid()
-                .do(onNext: { [unowned useCase] in
+                .handleEvents(receiveOutput: { [unowned useCase] in
                     useCase.deletePincode()
                     userDid(.removePincode)
                 })
-                .drive(),
-        ]
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             inputBecomeFirstResponder: input.fromController.viewDidAppear,

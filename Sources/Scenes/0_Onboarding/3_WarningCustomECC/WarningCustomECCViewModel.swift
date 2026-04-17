@@ -55,17 +55,17 @@ final class WarningCustomECCViewModel: BaseViewModel<
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            bag <~ input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive()
+            input.fromController.rightBarButtonTrigger
+                .handleEvents(receiveOutput: { userDid(.dismiss) })
+                .sink { _ in }.store(in: &cancellables)
         }
 
-        bag <~ [
-            input.fromView.didAcceptTerms.do(onNext: { [unowned self] in
+        [
+            input.fromView.didAcceptTerms.handleEvents(receiveOutput: { [unowned self] in
                 useCase.didAcceptCustomECCWarning()
                 userDid(.acceptRisks)
-            }).drive(),
-        ]
+            }).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             isAcceptButtonVisible: Just(!isDismissible).eraseToAnyPublisher(),

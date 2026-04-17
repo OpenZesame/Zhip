@@ -48,7 +48,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
         self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        bag <~ deeplinkedTransaction.mapToVoid().do(onNext: { [unowned self] in toSendPrefilTransaction() }).drive()
+        deeplinkedTransaction.mapToVoid().handleEvents(receiveOutput: { [unowned self] in toSendPrefilTransaction() }).sink { _ in }.store(in: &cancellables)
     }
 
     override func start(didStart: Completion? = nil) {
@@ -74,7 +74,7 @@ private extension MainCoordinator {
         let viewModel = MainViewModel(
             transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             walletUseCase: useCaseProvider.makeWalletUseCase(),
-            updateBalanceTrigger: updateBalanceSubject.asDriverOnErrorReturnEmpty()
+            updateBalanceTrigger: updateBalanceSubject.replaceErrorWithEmpty()
         )
 
         push(

@@ -65,18 +65,18 @@ final class SignTransactionViewModel: BaseViewModel<
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
-        bag <~ [
+        [
             input.fromView.signAndSendTrigger
                 .withLatestFrom(encryptionPassword)
                 .flatMapLatest {
                     self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userDid(.sign($0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.sign($0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         let encryptionPasswordValidation = // map `editingChanged` to `editingDidBegin`
             input.fromView.encryptionPassword.mapToVoid().map { true }.merge(with: input.fromView.isEditingEncryptionPassword).eraseToAnyPublisher().withLatestFrom(encryptionPasswordValidationValue) {
@@ -91,7 +91,7 @@ final class SignTransactionViewModel: BaseViewModel<
 
         return Output(
             isSignButtonEnabled: isSignButtonEnabled,
-            isSignButtonLoading: activityIndicator.asDriver(),
+            isSignButtonLoading: activityIndicator.asPublisher(),
             encryptionPasswordValidation: encryptionPasswordValidation,
             inputBecomeFirstResponder: input.fromController.viewDidAppear
         )

@@ -81,12 +81,12 @@ extension TitledValueView {
     }
 }
 
-extension Reactive where Base: TitledValueView {
-    var title: Binder<String?> {
-        base.titleLabel.rx.text
+extension TitledValueView {
+    var titleBinder: Binder<String?> {
+        titleLabel.textBinder
     }
 
-    var value: Binder<String> {
-        base.valueTextView.rx.text
+    var valueBinder: Binder<String> {
+        valueTextView.textBinder
     }
 }

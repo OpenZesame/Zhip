@@ -62,10 +62,10 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
 
         let encryptionPassword = encryptionPasswordValidationValue.map { $0.value?.validPassword }.filterNil()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.dismiss) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.dismiss) })
+                .sink { _ in },
 
             input.fromView.revealTrigger
                 .withLatestFrom(
@@ -77,11 +77,11 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                     useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
-                        .asDriverOnErrorReturnEmpty()
+                        .replaceErrorWithEmpty()
                 }
-                .do(onNext: { userDid(.decryptKeystoreReavealing(keyPair: $0)) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userDid(.decryptKeystoreReavealing(keyPair: $0)) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         // map `editingChanged` to `editingDidBegin`
         let encryptionPasswordEditingTrigger = input.fromView.encryptionPassword.mapToVoid().map { true }
@@ -101,7 +101,7 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
         return Output(
             encryptionPasswordValidation: encryptionPasswordValidation,
             isRevealButtonEnabled: encryptionPasswordValidationValue.map(\.isValid).eraseToAnyPublisher(),
-            isRevealButtonLoading: activityIndicator.asDriver()
+            isRevealButtonLoading: activityIndicator.asPublisher()
         )
     }
 }

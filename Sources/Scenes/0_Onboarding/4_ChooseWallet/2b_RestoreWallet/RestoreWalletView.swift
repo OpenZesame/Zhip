@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -30,7 +31,7 @@ private typealias Segment = RestoreWalletViewModel.InputFromView.Segment
 // MARK: - RestoreWalletView
 
 final class RestoreWalletView: ScrollableStackViewOwner {
-    private let bag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Subviews
 
@@ -73,15 +74,15 @@ extension RestoreWalletView: ViewModelled {
             selectedSegment: segmentValue.map { Segment(rawValue: $0) }.filterNil(),
             keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
             keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
-            restoreTrigger: restoreWalletButton.rx.tap
+            restoreTrigger: restoreWalletButton.tapPublisher
         )
     }
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.headerLabel --> headerLabel.rx.text,
-            viewModel.isRestoring --> restoreWalletButton.rx.isLoading,
-            viewModel.isRestoreButtonEnabled --> restoreWalletButton.rx.isEnabled,
+            viewModel.headerLabel --> headerLabel.textBinder,
+            viewModel.isRestoring --> restoreWalletButton.isLoadingBinder,
+            viewModel.isRestoreButtonEnabled --> restoreWalletButton.isEnabledBinder,
             viewModel.keystoreRestorationError --> keystoreRestorationValidatino,
         ]
     }
@@ -147,12 +148,12 @@ private extension RestoreWalletView {
         add(segment: .keystore, titled: String(localized: .RestoreWallet.keystoreSegment))
         add(segment: .privateKey, titled: String(localized: .RestoreWallet.privateKeySegment))
 
-        bag <~ restorationMethodSegmentedControl.publisher(for: .valueChanged)
+        restorationMethodSegmentedControl.publisher(for: .valueChanged)
             .map { [weak restorationMethodSegmentedControl] _ in restorationMethodSegmentedControl?.selectedSegmentIndex ?? 0 }
             .map { Segment(rawValue: $0) }
             .filterNil()
-            .do(onNext: { [unowned self] in switchToViewFor(selectedSegment: $0) })
-            .drive()
+            .handleEvents(receiveOutput: { [unowned self] in switchToViewFor(selectedSegment: $0) })
+            .sink { _ in }.store(in: &cancellables)
 
         selectSegment(.privateKey)
     }

@@ -48,19 +48,19 @@ final class BackUpKeystoreViewModel: BaseViewModel<
 
         let keystore: AnyPublisher<String, Never> = keystore.map(\.asPrettyPrintedJSONString).eraseToAnyPublisher()
 
-        bag <~ [
+        [
             input.fromController.rightBarButtonTrigger
-                .do(onNext: { userDid(.finished) })
-                .drive(),
+                .handleEvents(receiveOutput: { userDid(.finished) })
+                .sink { _ in },
 
             input.fromView.copyTrigger.withLatestFrom(keystore)
-                .do(onNext: {
+                .handleEvents(receiveOutput: {
                     UIPasteboard.general.string = $0
                     let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
                     input.fromController.toastSubject.send(toast)
                 })
-                .drive(),
-        ]
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output(
             keystore: keystore

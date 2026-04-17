@@ -77,11 +77,11 @@ private extension AbstractSceneView {
     }
 }
 
-// MARK: - Rx
+// MARK: - Publishers & Binders
 
-extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
-    var isRefreshing: Binder<Bool> {
-        Binder<Bool>(base) { view, refreshing in
+extension PullToRefreshCapable where Self: AbstractSceneView {
+    var isRefreshingBinder: Binder<Bool> {
+        Binder<Bool>(self) { view, refreshing in
             if refreshing {
                 view.refreshControl.beginRefreshing()
             } else {
@@ -90,13 +90,13 @@ extension Reactive where Base: AbstractSceneView, Base: PullToRefreshCapable {
         }
     }
 
-    var pullToRefreshTitle: Binder<String> {
-        Binder<String>(base) {
+    var pullToRefreshTitleBinder: Binder<String> {
+        Binder<String>(self) {
             $0.refreshControl.setTitle($1)
         }
     }
 
-    var pullToRefreshTrigger: AnyPublisher<Void, Never> {
-        base.refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher()
+    var pullToRefreshTriggerPublisher: AnyPublisher<Void, Never> {
+        refreshControl.publisher(for: .valueChanged).eraseToAnyPublisher()
     }
 }

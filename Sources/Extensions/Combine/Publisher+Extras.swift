@@ -3,29 +3,11 @@
 import Combine
 import Foundation
 
-// MARK: - asDriver / asDriverOnErrorReturnEmpty
-
-public extension Publisher where Failure == Never {
-    /// Identity – already a Driver (AnyPublisher<T, Never>).
-    func asDriver() -> AnyPublisher<Output, Never> {
-        eraseToAnyPublisher()
-    }
-
-    /// Identity – no errors to catch.
-    func asDriverOnErrorReturnEmpty() -> AnyPublisher<Output, Never> {
-        eraseToAnyPublisher()
-    }
-}
+// MARK: - replaceErrorWithEmpty
 
 public extension Publisher {
-    /// Swallow errors and return an empty Driver.
-    func asDriverOnErrorReturnEmpty() -> AnyPublisher<Output, Never> {
-        self.catch { _ in Empty<Output, Never>() }
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-    }
-
-    func catchErrorReturnEmpty() -> AnyPublisher<Output, Never> {
+    /// Swallow errors and return an empty publisher.
+    func replaceErrorWithEmpty() -> AnyPublisher<Output, Never> {
         self.catch { _ in Empty<Output, Never>() }
             .eraseToAnyPublisher()
     }
@@ -64,7 +46,7 @@ public extension AnyPublisher where Output == String?, Failure == Never {
 // MARK: - flatMapLatest
 
 public extension Publisher where Failure == Never {
-    /// Equivalent to RxSwift's flatMapLatest – cancels previous inner publisher when a new one starts.
+    /// Map to a new publisher and switch to the latest — cancels the previous inner publisher on a new value.
     func flatMapLatest<P: Publisher>(
         _ transform: @escaping (Output) -> P
     ) -> AnyPublisher<P.Output, Never> where P.Failure == Never {
@@ -189,22 +171,6 @@ private struct WithLatestFromPublisher<
         }
     }
 }
-// MARK: - .drive() shim — subscribe and discard values
-
-public extension AnyPublisher where Failure == Never {
-    @discardableResult
-    func drive() -> AnyCancellable {
-        sink(receiveValue: { _ in })
-    }
-}
-
-// MARK: - .do(onNext:) shim
-
-public extension Publisher where Failure == Never {
-    func `do`(onNext: @escaping (Output) -> Void) -> AnyPublisher<Output, Never> {
-        handleEvents(receiveOutput: onNext).eraseToAnyPublisher()
-    }
-}
 
 // MARK: - ifEmpty(switchTo:)
 
@@ -218,13 +184,5 @@ public extension Publisher where Failure == Never {
                 }
             )
             .eraseToAnyPublisher()
-    }
-}
-
-// MARK: - startWith / prepend alias
-
-public extension Publisher {
-    func startWith(_ value: Output) -> AnyPublisher<Output, Failure> {
-        prepend(value).eraseToAnyPublisher()
     }
 }

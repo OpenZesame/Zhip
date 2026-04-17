@@ -43,11 +43,11 @@ final class WelcomeViewModel: BaseViewModel<
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromView.startTrigger
-                .do(onNext: { userIntends(to: .start) })
-                .drive(),
-        ]
+                .handleEvents(receiveOutput: { userIntends(to: .start) })
+                .sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         return Output()
     }

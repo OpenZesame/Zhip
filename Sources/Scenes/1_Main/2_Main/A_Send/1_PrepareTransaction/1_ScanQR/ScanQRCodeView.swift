@@ -91,15 +91,15 @@ extension ScanQRCodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            scannedQrCodeString: scannedQrCodeSubject.asDriverOnErrorReturnEmpty()
+            scannedQrCodeString: scannedQrCodeSubject.replaceErrorWithEmpty()
         )
     }
 
-    func populate(with viewModel: ScanQRCodeViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ScanQRCodeViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.startScanning.do(onNext: { [weak self] in
+            viewModel.startScanning.handleEvents(receiveOutput: { [weak self] in
                 self?.reader.startScanning()
-            }).drive(),
+            }).sink { _ in },
         ]
     }
 }

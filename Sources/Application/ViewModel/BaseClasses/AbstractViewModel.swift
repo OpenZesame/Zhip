@@ -4,7 +4,7 @@ import Combine
 import Foundation
 
 class AbstractViewModel<FromView, FromController, OutputFromViewModel>: ViewModelType {
-    let bag = CancellableBag()
+    var cancellables = Set<AnyCancellable>()
 
     struct Input: InputType {
         let fromController: FromController

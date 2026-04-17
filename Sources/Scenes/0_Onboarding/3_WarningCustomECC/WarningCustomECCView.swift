@@ -6,6 +6,7 @@
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
+import Combine
 import UIKit
 
 final class WarningCustomECCView: ScrollableStackViewOwner {
@@ -31,17 +32,17 @@ final class WarningCustomECCView: ScrollableStackViewOwner {
 extension WarningCustomECCView: ViewModelled {
     typealias ViewModel = WarningCustomECCViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.isAcceptButtonVisible --> acceptTermsButton.rx.isVisible,
-            viewModel.isAcceptButtonEnabled --> acceptTermsButton.rx.isEnabled,
+            viewModel.isAcceptButtonVisible --> acceptTermsButton.isVisibleBinder,
+            viewModel.isAcceptButtonEnabled --> acceptTermsButton.isEnabledBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            didScrollToBottom: textView.rx.didScrollNearBottom(),
-            didAcceptTerms: acceptTermsButton.rx.tap
+            didScrollToBottom: textView.didScrollNearBottomPublisher(),
+            didAcceptTerms: acceptTermsButton.tapPublisher
         )
     }
 }

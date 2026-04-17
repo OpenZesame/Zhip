@@ -20,9 +20,9 @@ class SingleCellTypeTableView<Header, Cell: ListCell>: UITableView, UITableViewD
     // MARK: - Selection
 
     private let selectionSubject = PassthroughSubject<IndexPath, Never>()
-    var itemSelectedPublisher: AnyPublisher<IndexPath, Never> { selectionSubject.eraseToAnyPublisher() }
+    var selectionPublisher: AnyPublisher<IndexPath, Never> { selectionSubject.eraseToAnyPublisher() }
 
-    var didSelectItem: AnyPublisher<IndexPath, Never> { itemSelectedPublisher }
+    var didSelectItem: AnyPublisher<IndexPath, Never> { selectionPublisher }
 
     var cellDeselectionMode: CellDeselectionMode = .deselectCellsDirectly(animate: true)
 

@@ -65,32 +65,32 @@ final class PollTransactionStatusViewModel: BaseViewModel<
                 }
             })
 
-        let hasReceivedReceipt: AnyPublisher<Bool, Never> = receipt.mapToVoid().asDriverOnErrorReturnEmpty().map { true }.startWith(false).eraseToAnyPublisher()
+        let hasReceivedReceipt: AnyPublisher<Bool, Never> = receipt.mapToVoid().replaceErrorWithEmpty().map { true }.prepend(false).eraseToAnyPublisher()
 
         // MARK: Navigate
 
-        bag <~ [
+        [
             input.fromView.copyTransactionIdTrigger
-                .do(onNext: { [unowned self] in
+                .handleEvents(receiveOutput: { [unowned self] in
                     UIPasteboard.general.string = transactionId
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
-                }).drive(),
+                }).sink { _ in },
 
             input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }
-                .do(onNext: { hasReceivedReceipt in
+                .handleEvents(receiveOutput: { hasReceivedReceipt in
                     let action: NavigationStep = hasReceivedReceipt ? .dismiss : .skip
                     userDid(action)
 
                 })
-                .drive(),
+                .sink { _ in },
 
-            input.fromView.seeTxDetails.withLatestFrom(receipt.asDriverOnErrorReturnEmpty()) {
+            input.fromView.seeTxDetails.withLatestFrom(receipt.replaceErrorWithEmpty()) {
                 $1
-            }.do(
-                onNext: { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) }
-            ).drive(),
-        ]
+            }.handleEvents(
+                receiveOutput: { userDid(.viewTransactionDetailsInBrowser(id: $0.transactionId)) }
+            ).sink { _ in },
+        ].forEach { $0.store(in: &cancellables) }
 
         // MARK: Return output
 
@@ -99,7 +99,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
                 .map { $0 ? String(localized: .PollTransaction.done) : String(localized: .PollTransaction.skipWaiting) }
                 .eraseToAnyPublisher(),
             isSeeTxDetailsEnabled: hasReceivedReceipt,
-            isSeeTxDetailsButtonLoading: activityTracker.asDriver()
+            isSeeTxDetailsButtonLoading: activityTracker.asPublisher()
         )
     }
 }

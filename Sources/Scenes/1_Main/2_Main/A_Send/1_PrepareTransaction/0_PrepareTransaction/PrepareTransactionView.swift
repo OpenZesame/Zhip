@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 import Zesame
 
@@ -65,47 +66,47 @@ final class PrepareTransactionView: ScrollableStackViewOwner, PullToRefreshCapab
 extension PrepareTransactionView: ViewModelled {
     typealias ViewModel = PrepareTransactionViewModel
 
-    func populate(with viewModel: ViewModel.Output) -> [Disposable] {
+    func populate(with viewModel: ViewModel.Output) -> [AnyCancellable] {
         [
-            viewModel.refreshControlLastUpdatedTitle --> rx.pullToRefreshTitle,
-            viewModel.isFetchingBalance --> rx.isRefreshing,
-            viewModel.amountPlaceholder --> amountToSendField.rx.placeholder,
-            viewModel.amount --> amountToSendField.rx.text,
-            viewModel.recipient --> recipientAddressField.rx.text,
-            viewModel.isReviewButtonEnabled --> toReviewButton.rx.isEnabled,
-            viewModel.balance --> balanceValueLabel.rx.text,
-            viewModel.recipientAddressValidation --> recipientAddressField.rx.validation,
-            viewModel.amountValidation --> amountToSendField.rx.validation,
+            viewModel.refreshControlLastUpdatedTitle --> pullToRefreshTitleBinder,
+            viewModel.isFetchingBalance --> isRefreshingBinder,
+            viewModel.amountPlaceholder --> amountToSendField.placeholderBinder,
+            viewModel.amount --> amountToSendField.textBinder,
+            viewModel.recipient --> recipientAddressField.textBinder,
+            viewModel.isReviewButtonEnabled --> toReviewButton.isEnabledBinder,
+            viewModel.balance --> balanceValueLabel.textBinder,
+            viewModel.recipientAddressValidation --> recipientAddressField.validationBinder,
+            viewModel.amountValidation --> amountToSendField.validationBinder,
 
-            viewModel.gasLimitMeasuredInLi --> gasLimitField.rx.text,
-            viewModel.gasLimitPlaceholder --> gasLimitField.rx.placeholder,
-            viewModel.gasLimitValidation --> gasLimitField.rx.validation,
+            viewModel.gasLimitMeasuredInLi --> gasLimitField.textBinder,
+            viewModel.gasLimitPlaceholder --> gasLimitField.placeholderBinder,
+            viewModel.gasLimitValidation --> gasLimitField.validationBinder,
 
-            viewModel.gasPriceMeasuredInLi --> gasPriceField.rx.text,
-            viewModel.gasPricePlaceholder --> gasPriceField.rx.placeholder,
-            viewModel.gasPriceValidation --> gasPriceField.rx.validation,
-            viewModel.costOfTransaction --> costOfTransactionLabel.rx.text,
+            viewModel.gasPriceMeasuredInLi --> gasPriceField.textBinder,
+            viewModel.gasPricePlaceholder --> gasPriceField.placeholderBinder,
+            viewModel.gasPriceValidation --> gasPriceField.validationBinder,
+            viewModel.costOfTransaction --> costOfTransactionLabel.textBinder,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            pullToRefreshTrigger: rx.pullToRefreshTrigger,
-            scanQRTrigger: scanQRButton.rx.tap,
-            maxAmountTrigger: maxAmountButton.rx.tap,
-            toReviewTrigger: toReviewButton.rx.tap,
+            pullToRefreshTrigger: pullToRefreshTriggerPublisher,
+            scanQRTrigger: scanQRButton.tapPublisher,
+            maxAmountTrigger: maxAmountButton.tapPublisher,
+            toReviewTrigger: toReviewButton.tapPublisher,
 
-            recipientAddress: recipientAddressField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
-            didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
+            recipientAddress: recipientAddressField.textPublisher.orEmpty.dropFirst(1).eraseToAnyPublisher(),
+            didEndEditingRecipientAddress: recipientAddressField.didEndEditingPublisher,
 
-            amountToSend: amountToSendField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
-            didEndEditingAmount: amountToSendField.rx.didEndEditing,
+            amountToSend: amountToSendField.textPublisher.orEmpty.dropFirst(1).eraseToAnyPublisher(),
+            didEndEditingAmount: amountToSendField.didEndEditingPublisher,
 
-            gasLimit: gasLimitField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
-            didEndEditingGasLimit: gasLimitField.rx.didEndEditing,
+            gasLimit: gasLimitField.textPublisher.orEmpty.dropFirst(1).eraseToAnyPublisher(),
+            didEndEditingGasLimit: gasLimitField.didEndEditingPublisher,
 
-            gasPrice: gasPriceField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
-            didEndEditingGasPrice: gasPriceField.rx.didEndEditing
+            gasPrice: gasPriceField.textPublisher.orEmpty.dropFirst(1).eraseToAnyPublisher(),
+            didEndEditingGasPrice: gasPriceField.didEndEditingPublisher
         )
     }
 }

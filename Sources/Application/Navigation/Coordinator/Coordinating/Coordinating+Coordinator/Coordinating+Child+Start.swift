@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import UIKit
 
 extension Coordinating {
@@ -68,9 +69,10 @@ extension Coordinating {
 
         // Subscribe to the navigation steps emitted by the child coordinator
         // And invoke the navigationHandler closure passed in to this method
-        bag <~ child.navigator.navigation.do(onNext: {
-            navigationHandler($0)
-        }).drive()
+        child.navigator.navigation
+            .handleEvents(receiveOutput: { navigationHandler($0) })
+            .sink { _ in }
+            .store(in: &cancellables)
     }
 }
 

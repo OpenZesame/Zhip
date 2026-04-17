@@ -1,5 +1,6 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
 
+import Combine
 import UIKit
 
 typealias Completion = () -> Void
@@ -32,12 +33,13 @@ extension Coordinating {
         let viewControllerToPresent = NavigationBarLayoutingNavigationController(rootViewController: scene)
         navigationController.present(viewControllerToPresent, animated: animated, completion: presentationCompletion)
 
-        bag <~ viewModel.navigator.navigation
-            .do(onNext: {
+        viewModel.navigator.navigation
+            .handleEvents(receiveOutput: {
                 navigationHandler($0) { [unowned scene] animated, navigationCompletion in
                     scene.dismiss(animated: animated, completion: navigationCompletion)
                 }
             })
-            .drive()
+            .sink { _ in }
+            .store(in: &cancellables)
     }
 }

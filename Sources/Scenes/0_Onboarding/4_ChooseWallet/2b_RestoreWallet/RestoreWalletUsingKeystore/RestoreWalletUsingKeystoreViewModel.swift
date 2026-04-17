@@ -76,7 +76,7 @@ final class RestoreWalletUsingKeystoreViewModel {
         let keystoreTextFieldPlaceholder: AnyPublisher<String, Never> = inputFromView.keystoreDidBeginEditing
             .map { "" }
             .removeDuplicates() // never changed, thus only emitted once, as wished
-            .startWith("Paste your keystore here")
+            .prepend("Paste your keystore here")
             .eraseToAnyPublisher()
 
         output = Output(
