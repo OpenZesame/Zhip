@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -61,14 +59,14 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
                 .do(onNext: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
+                        .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
                 }).drive(),
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
                 .do(onNext: {
                     UIPasteboard.general.string = $0
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
+                        .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
                 }).drive(),
         ]
 

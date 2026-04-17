@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -67,11 +65,11 @@ extension RestoreWalletView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            selectedSegment: restorationMethodSegmentedControl.rx.value.asDriver().map { Segment(rawValue: $0) }
+            selectedSegment: restorationMethodSegmentedControl.rx.value.map { Segment(rawValue: $0) }
                 .filterNil(),
             keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
             keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
-            restoreTrigger: restoreWalletButton.rx.tap.asDriver()
+            restoreTrigger: restoreWalletButton.rx.tap
         )
     }
 
@@ -145,12 +143,11 @@ private extension RestoreWalletView {
         add(segment: .keystore, titled: String(localized: .RestoreWallet.keystoreSegment))
         add(segment: .privateKey, titled: String(localized: .RestoreWallet.privateKeySegment))
 
-        restorationMethodSegmentedControl.rx.value
-            .asDriver()
+        bag <~ restorationMethodSegmentedControl.rx.value
             .map { Segment(rawValue: $0) }
             .filterNil()
             .do(onNext: { [unowned self] in switchToViewFor(selectedSegment: $0) })
-            .drive().disposed(by: bag)
+            .drive()
 
         selectSegment(.privateKey)
     }

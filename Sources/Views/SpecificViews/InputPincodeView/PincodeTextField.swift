@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class PincodeTextField: UITextField {
@@ -115,7 +113,7 @@ private extension PincodeTextField {
         tintColor = .clear
         delegate = textFieldDelegate
 
-        bag <~ rx.text.asDriver().do(onNext: { [weak self] in
+        bag <~ rx.textChanges.do(onNext: { [weak self] in
             guard let self else { return }
             setDigits(string: $0)
         }).drive()
@@ -145,7 +143,7 @@ private extension PincodeTextField {
     }
 
     func setDigits(_ digits: [Digit]) {
-        defer { pincodeSubject.onNext(try? Pincode(digits: digits)) }
+        defer { pincodeSubject.send(try? Pincode(digits: digits)) }
         guard digits.count <= pincodeLength else {
             return
         }

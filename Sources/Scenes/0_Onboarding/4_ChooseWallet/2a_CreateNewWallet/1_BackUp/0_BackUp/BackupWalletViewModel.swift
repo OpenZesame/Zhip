@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -64,21 +62,21 @@ final class BackupWalletViewModel: BaseViewModel<
 
         switch mode {
         case .dismissable: input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            input.fromController.rightBarButtonTrigger
+            bag <~ input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive().disposed(by: bag)
+                .drive()
         case .cancellable:
             input.fromController.leftBarButtonContentSubject.onBarButton(.cancel)
-            input.fromController.leftBarButtonTrigger
+            bag <~ input.fromController.leftBarButtonTrigger
                 .do(onNext: { userDid(.cancelOrDismiss) })
-                .drive().disposed(by: bag)
+                .drive()
         }
 
         bag <~ [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
                 .do(onNext: { (keystoreText: String) in
                     UIPasteboard.general.string = keystoreText
-                    input.fromController.toastSubject.onNext(Toast(String(localized: .BackupWallet.copiedKeystore)))
+                    input.fromController.toastSubject.send(Toast(String(localized: .BackupWallet.copiedKeystore)))
                 }).drive(),
 
             input.fromView.revealKeystoreTrigger

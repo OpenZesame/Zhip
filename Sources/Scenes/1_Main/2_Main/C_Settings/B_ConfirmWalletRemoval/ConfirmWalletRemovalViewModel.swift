@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 

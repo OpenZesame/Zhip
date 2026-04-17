@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 enum ChoosePincodeUserAction {
     case chosePincode(Pincode)

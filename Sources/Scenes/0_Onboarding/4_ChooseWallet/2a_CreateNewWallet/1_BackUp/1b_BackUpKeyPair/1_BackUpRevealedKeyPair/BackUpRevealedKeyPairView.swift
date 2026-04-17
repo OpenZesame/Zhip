@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class BackUpRevealedKeyPairView: ScrollableStackViewOwner {
@@ -62,8 +60,8 @@ extension BackUpRevealedKeyPairView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyPrivateKeyTrigger: copyPrivateKeyButton.rx.tap.asDriver(),
-            copyPublicKeyTrigger: copyUncompressedPublicKeyButton.rx.tap.asDriver()
+            copyPrivateKeyTrigger: copyPrivateKeyButton.rx.tap,
+            copyPublicKeyTrigger: copyUncompressedPublicKeyButton.rx.tap
         )
     }
 }

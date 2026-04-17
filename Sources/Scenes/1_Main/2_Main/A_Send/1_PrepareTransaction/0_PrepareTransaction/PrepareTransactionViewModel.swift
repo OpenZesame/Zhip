@@ -22,9 +22,8 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 // MARK: - PrepareTransactionUserAction
@@ -337,9 +336,8 @@ final class PrepareTransactionViewModel: BaseViewModel<
                     return Driver<String?>.just(nil)
                 }
                 return
-                    Observable.combineLatest(Observable<GasPrice>.just(gasPrice), Observable<GasLimit>.just(gasLimit))
-                        .map { try Payment.estimatedTotalTransactionFee(gasPrice: $0, gasLimit: $1) }
-                        .asDriverOnErrorReturnEmpty()
+                    Just((gasPrice, gasLimit)).eraseToAnyPublisher()
+                        .compactMap { try? Payment.estimatedTotalTransactionFee(gasPrice: $0, gasLimit: $1) }
                         .map { formatter.format(amount: $0, in: .zil, formatThousands: true, showUnit: true) }
                         .map { String(localized: .PrepareTransaction.transactionFeeLabel(fee: $0)) }
             }

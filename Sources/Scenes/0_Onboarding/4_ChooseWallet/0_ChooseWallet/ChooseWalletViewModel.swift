@@ -22,9 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
-
 // MARK: - ChooseWalletUserAction
 
 enum ChooseWalletUserAction {

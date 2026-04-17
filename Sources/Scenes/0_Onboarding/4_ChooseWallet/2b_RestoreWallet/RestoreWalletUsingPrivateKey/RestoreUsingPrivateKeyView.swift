@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
@@ -40,12 +38,12 @@ final class RestoreUsingPrivateKeyView: ScrollableStackViewOwner {
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
-            privateKey: privateKeyField.rx.text.orEmpty.asDriver(),
+            privateKey: privateKeyField.rx.textChanges.orEmpty,
             isEditingPrivateKey: privateKeyField.rx.isEditing,
-            showPrivateKeyTrigger: showPrivateKeyButton.rx.tap.asDriver(),
-            newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            showPrivateKeyTrigger: showPrivateKeyButton.rx.tap,
+            newEncryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty,
             isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            confirmEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
+            confirmEncryptionPassword: confirmEncryptionPasswordField.rx.textChanges.orEmpty,
             isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing
         )
     )

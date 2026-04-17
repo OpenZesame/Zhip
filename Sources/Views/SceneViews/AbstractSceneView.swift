@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 class AbstractSceneView: UIView, ScrollViewOwner {

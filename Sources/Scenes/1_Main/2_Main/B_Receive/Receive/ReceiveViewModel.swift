@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -92,7 +90,7 @@ final class ReceiveViewModel: BaseViewModel<
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
                 .do(onNext: {
                     UIPasteboard.general.string = $0
-                    input.fromController.toastSubject.onNext(Toast(String(localized: .Receive.copiedAddress)))
+                    input.fromController.toastSubject.send(Toast(String(localized: .Receive.copiedAddress)))
                 }).drive(),
 
             input.fromView.shareTrigger.withLatestFrom(transactionToReceive)

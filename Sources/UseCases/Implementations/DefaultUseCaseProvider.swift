@@ -24,7 +24,7 @@
 
 import Foundation
 import KeychainSwift
-import RxSwift
+import RxSwift // needed: ZilliqaServiceReactive is a Zesame RxSwift type
 import Zesame
 
 extension KeyValueStore where KeyType == PreferencesKey {

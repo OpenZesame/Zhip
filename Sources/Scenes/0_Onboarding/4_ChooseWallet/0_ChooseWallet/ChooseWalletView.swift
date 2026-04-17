@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 
 final class ChooseWalletView: UIView {
@@ -54,8 +53,8 @@ extension ChooseWalletView: ViewModelled {
     typealias ViewModel = ChooseWalletViewModel
     var inputFromView: InputFromView {
         InputFromView(
-            createNewWalletTrigger: createNewWalletButton.rx.tap.asDriver(),
-            restoreWalletTrigger: restoreWalletButton.rx.tap.asDriver()
+            createNewWalletTrigger: createNewWalletButton.rx.tap,
+            restoreWalletTrigger: restoreWalletButton.rx.tap
         )
     }
 }

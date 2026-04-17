@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 import UIKit
 import WebKit
 
@@ -61,7 +59,7 @@ extension TermsOfServiceView: ViewModelled {
     var inputFromView: InputFromView {
         InputFromView(
             didScrollToBottom: textView.rx.didScrollNearBottom(),
-            didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
+            didAcceptTerms: acceptTermsButton.rx.tap
         )
     }
 }

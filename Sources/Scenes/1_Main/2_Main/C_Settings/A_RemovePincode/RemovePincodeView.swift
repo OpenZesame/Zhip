@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 
 final class RemovePincodeView: ScrollableStackViewOwner {
@@ -50,7 +49,7 @@ extension RemovePincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver()
+            pincode: inputPincodeView.rx.pincode
         )
     }
 }

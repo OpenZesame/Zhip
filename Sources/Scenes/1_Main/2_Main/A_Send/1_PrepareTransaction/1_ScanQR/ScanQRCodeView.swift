@@ -24,12 +24,10 @@
 
 import AVFoundation
 import QRCodeReader
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class ScanQRCodeView: UIView {
-    private let scannedQrCodeSubject = PublishSubject<String?>()
+    private let scannedQrCodeSubject = PassthroughSubject<String?, Never>()
     private lazy var readerView = QRCodeReaderView()
     private lazy var reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
 
@@ -59,11 +57,11 @@ private extension ScanQRCodeView {
         })
 
         reader.didFindCode = { [unowned self] in
-            scannedQrCodeSubject.onNext($0.value)
+            scannedQrCodeSubject.send($0.value)
         }
 
         reader.didFailDecoding = { [unowned self] in
-            scannedQrCodeSubject.onNext(nil)
+            scannedQrCodeSubject.send(nil)
         }
 
         readerView.switchCameraButton?.addTarget(

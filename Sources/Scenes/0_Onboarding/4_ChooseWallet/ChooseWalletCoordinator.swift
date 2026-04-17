@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 import Zesame
 

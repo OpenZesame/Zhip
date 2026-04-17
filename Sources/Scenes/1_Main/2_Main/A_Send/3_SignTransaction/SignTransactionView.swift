@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class SignTransactionView: ScrollableStackViewOwner {
@@ -57,9 +55,9 @@ extension SignTransactionView: ViewModelled {
 
     var inputFromView: ViewModel.InputFromView {
         SignTransactionViewModel.InputFromView(
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriverOnErrorReturnEmpty(),
+            encryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty,
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            signAndSendTrigger: signButton.rx.tap.asDriverOnErrorReturnEmpty()
+            signAndSendTrigger: signButton.rx.tap
         )
     }
 }

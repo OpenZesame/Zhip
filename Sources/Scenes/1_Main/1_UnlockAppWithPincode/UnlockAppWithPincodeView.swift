@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 
 final class UnlockAppWithPincodeView: ScrollableStackViewOwner {
@@ -52,7 +51,7 @@ extension UnlockAppWithPincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver()
+            pincode: inputPincodeView.rx.pincode
         )
     }
 }

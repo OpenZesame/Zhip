@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class ReviewTransactionBeforeSigningView: ScrollableStackViewOwner {
@@ -68,8 +66,8 @@ extension ReviewTransactionBeforeSigningView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            isHasReviewedPaymentCheckboxChecked: hasReviewedPaymentCheckBox.rx.isChecked.asDriverOnErrorReturnEmpty(),
-            hasReviewedNowProceedWithSigningTrigger: acceptPaymentProceedToSigningButton.rx.tap.asDriver()
+            isHasReviewedPaymentCheckboxChecked: hasReviewedPaymentCheckBox.rx.isChecked,
+            hasReviewedNowProceedWithSigningTrigger: acceptPaymentProceedToSigningButton.rx.tap
         )
     }
 

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import RxSwift
 import Zesame
@@ -37,27 +38,52 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 
 extension DefaultWalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> Observable<Bool> {
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Error> {
         zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
+            .asAnyPublisher()
     }
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> Observable<KeyPair> {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Error> {
         zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
+            .asAnyPublisher()
     }
 
-    func createNewWallet(encryptionPassword: String) -> Observable<Wallet> {
-        zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default).map {
-            Wallet(wallet: $0, origin: .generatedByThisApp)
-        }
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Error> {
+        zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
+            .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
+            .asAnyPublisher()
     }
 
-    func restoreWallet(from restoration: KeyRestoration) -> Observable<Wallet> {
+    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Error> {
         let origin: Wallet.Origin = switch restoration {
         case .keystore: .importedKeystore
         case .privateKey: .importedPrivateKey
         }
-        return zilliqaService.restoreWallet(from: restoration).map {
-            Wallet(wallet: $0, origin: origin)
-        }
+        return zilliqaService.restoreWallet(from: restoration)
+            .map { Wallet(wallet: $0, origin: origin) }
+            .asAnyPublisher()
+    }
+}
+
+// MARK: - Observable → AnyPublisher bridge
+
+private extension Observable {
+    /// Bridges an RxSwift Observable (from Zesame) to a Combine AnyPublisher.
+    func asAnyPublisher() -> AnyPublisher<Element, Error> {
+        let subject = PassthroughSubject<Element, Error>()
+        var disposable: Disposable?
+        let publisher = subject.handleEvents(
+            receiveSubscription: { _ in
+                disposable = self.subscribe(
+                    onNext: { subject.send($0) },
+                    onError: { subject.send(completion: .failure($0)) },
+                    onCompleted: { subject.send(completion: .finished) }
+                )
+            },
+            receiveCancel: {
+                disposable?.dispose()
+            }
+        )
+        return publisher.eraseToAnyPublisher()
     }
 }

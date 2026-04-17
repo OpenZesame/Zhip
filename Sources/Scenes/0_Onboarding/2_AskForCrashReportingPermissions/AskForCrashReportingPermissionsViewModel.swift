@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - AnalyticsPermissionNavigation
 
@@ -59,9 +57,9 @@ final class AskForCrashReportingPermissionsViewModel: BaseViewModel<
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            input.fromController.rightBarButtonTrigger
+            bag <~ input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.dismiss) })
-                .drive().disposed(by: bag)
+                .drive()
         }
 
         bag <~ [

@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class TitledValueView: UIStackView {
@@ -88,7 +86,7 @@ extension Reactive where Base: TitledValueView {
         base.titleLabel.rx.text
     }
 
-    var value: ControlProperty<String?> {
+    var value: Binder<String?> {
         base.valueTextView.rx.text
     }
 }

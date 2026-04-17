@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 // MARK: - SettingsView
@@ -47,14 +45,14 @@ extension SettingsView: ViewModelled {
 
     func populate(with viewModel: ViewModel.Output) -> [Disposable] {
         [
-            viewModel.sections.drive(tableView.sections),
-            viewModel.footerText.drive(tableView.rx.footerLabel),
+            viewModel.sections --> tableView.sections,
+            viewModel.footerText --> tableView.rx.footerLabel,
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            selectedIndexPath: tableView.rx.itemSelected.asDriver()
+            selectedIndexPath: tableView.rx.itemSelected
         )
     }
 }

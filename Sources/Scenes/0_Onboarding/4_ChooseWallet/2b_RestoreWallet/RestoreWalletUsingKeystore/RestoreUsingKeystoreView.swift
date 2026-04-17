@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 // MARK: - RestoreWithKeystoreView
@@ -38,10 +36,10 @@ final class RestoreUsingKeystoreView: ScrollableStackViewOwner {
 
     private lazy var viewModel = ViewModel(
         inputFromView: ViewModel.InputFromView(
-            keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing.asDriver(),
+            keystoreDidBeginEditing: keystoreTextView.rx.didBeginEditing,
             isEditingKeystore: keystoreTextView.rx.isEditing,
-            keystoreText: keystoreTextView.rx.text.orEmpty.asDriver().distinctUntilChanged(),
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver().distinctUntilChanged(),
+            keystoreText: keystoreTextView.rx.textChanges.orEmpty.removeDuplicates().eraseToAnyPublisher(),
+            encryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty.removeDuplicates().eraseToAnyPublisher(),
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing
         )
     )

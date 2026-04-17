@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import SkyFloatingLabelTextField
 import UIKit
 

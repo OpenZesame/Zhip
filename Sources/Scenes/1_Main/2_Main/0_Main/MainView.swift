@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class MainView: ScrollableStackViewOwner, PullToRefreshCapable {
@@ -63,8 +61,8 @@ extension MainView: ViewModelled {
     var inputFromView: InputFromView {
         InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
-            sendTrigger: sendButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            receiveTrigger: receiveButton.rx.tap.asDriverOnErrorReturnEmpty()
+            sendTrigger: sendButton.rx.tap,
+            receiveTrigger: receiveButton.rx.tap
         )
     }
 

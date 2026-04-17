@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 
 final class CreateNewWalletView: ScrollableStackViewOwner {
@@ -67,13 +66,13 @@ extension CreateNewWalletView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            newEncryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            newEncryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty,
             isEditingNewEncryptionPassword: encryptionPasswordField.rx.isEditing,
 
-            confirmedNewEncryptionPassword: confirmEncryptionPasswordField.rx.text.orEmpty.asDriver(),
+            confirmedNewEncryptionPassword: confirmEncryptionPasswordField.rx.textChanges.orEmpty,
             isEditingConfirmedEncryptionPassword: confirmEncryptionPasswordField.rx.isEditing,
-            isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.rx.isChecked.asDriver(),
-            createWalletTrigger: continueButton.rx.tap.asDriver()
+            isHaveBackedUpPasswordCheckboxChecked: haveBackedUpPasswordCheckbox.rx.isChecked,
+            createWalletTrigger: continueButton.rx.tap
         )
     }
 }

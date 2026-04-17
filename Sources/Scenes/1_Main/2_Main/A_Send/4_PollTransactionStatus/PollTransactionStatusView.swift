@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
@@ -63,20 +61,20 @@ extension PollTransactionStatusView: ViewModelled {
             viewModel.skipWaitingOrDoneButtonTitle --> skipWaitingOrDoneButton.rx.title(for: .normal),
             viewModel.isSeeTxDetailsEnabled --> seeTxDetailsWhenAvailableButton.rx.isEnabled,
             viewModel.isSeeTxDetailsButtonLoading --> seeTxDetailsWhenAvailableButton.rx.isLoading,
-            vibrateSuccessTrigger.drive(onNext: { [weak self] finishedPolling in
+            vibrateSuccessTrigger.do(onNext: { [weak self] finishedPolling in
                 if !finishedPolling {
                     self?.playSound()
                 }
                 self?.vibrate()
-            }),
+            }).drive(),
         ]
     }
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyTransactionIdTrigger: copyTransactionIdButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            skipWaitingOrDoneTrigger: skipWaitingOrDoneButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            seeTxDetails: seeTxDetailsWhenAvailableButton.rx.tap.asDriver()
+            copyTransactionIdTrigger: copyTransactionIdButton.rx.tap,
+            skipWaitingOrDoneTrigger: skipWaitingOrDoneButton.rx.tap,
+            seeTxDetails: seeTxDetailsWhenAvailableButton.rx.tap
         )
     }
 }

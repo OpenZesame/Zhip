@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class ConfirmWalletRemovalView: ScrollableStackViewOwner {
@@ -56,8 +54,8 @@ extension ConfirmWalletRemovalView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            confirmTrigger: confirmButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            isWalletBackedUpCheckboxChecked: haveBackedUpWalletCheckbox.rx.isChecked.asDriver()
+            confirmTrigger: confirmButton.rx.tap,
+            isWalletBackedUpCheckboxChecked: haveBackedUpWalletCheckbox.rx.isChecked
         )
     }
 }

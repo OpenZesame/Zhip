@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 import Zesame
 
 enum ReviewTransactionBeforeSigningUserAction {

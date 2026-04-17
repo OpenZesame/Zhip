@@ -6,8 +6,6 @@
 // Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class WarningCustomECCView: ScrollableStackViewOwner {
@@ -43,7 +41,7 @@ extension WarningCustomECCView: ViewModelled {
     var inputFromView: InputFromView {
         InputFromView(
             didScrollToBottom: textView.rx.didScrollNearBottom(),
-            didAcceptTerms: acceptTermsButton.rx.tap.asDriverOnErrorReturnEmpty()
+            didAcceptTerms: acceptTermsButton.rx.tap
         )
     }
 }

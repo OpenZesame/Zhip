@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import TinyConstraints
 import UIKit
 
@@ -64,9 +63,9 @@ extension AskForCrashReportingPermissionsView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            isHaveReadDisclaimerCheckboxChecked: hasReadDisclaimerCheckbox.rx.isChecked.asDriver(),
-            acceptTrigger: acceptButton.rx.tap.asDriverOnErrorReturnEmpty(),
-            declineTrigger: declineButton.rx.tap.asDriverOnErrorReturnEmpty()
+            isHaveReadDisclaimerCheckboxChecked: hasReadDisclaimerCheckbox.rx.isChecked,
+            acceptTrigger: acceptButton.rx.tap,
+            declineTrigger: declineButton.rx.tap
         )
     }
 }

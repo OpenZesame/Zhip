@@ -1,55 +1,69 @@
-//
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 
-import RxCocoa
-import RxSwift
+import Combine
 import UIKit
 
 extension Reactive where Base: UITextField {
     var placeholder: Binder<String?> {
-        Binder(base) {
-            $0.placeholder = $1
-        }
+        Binder(base) { $0.placeholder = $1 }
     }
 
-    var isEditing: Driver<Bool> {
-        Driver.merge(
-            controlEvent([.editingDidBegin]).asDriver().map { true },
-            controlEvent([.editingDidEnd]).asDriver().map { false }
+    /// Write text from ViewModel output.
+    var text: Binder<String?> {
+        Binder(base) { $0.text = $1 }
+    }
+
+    /// Publisher of text changes; use in `inputFromView`.
+    var textChanges: AnyPublisher<String?, Never> {
+        Publishers.Merge(
+            Just(base.text),
+            NotificationCenter.default
+                .publisher(for: UITextField.textDidChangeNotification, object: base)
+                .map { ($0.object as? UITextField)?.text }
+        )
+        .eraseToAnyPublisher()
+    }
+
+    var isEditing: AnyPublisher<Bool, Never> {
+        AnyPublisher.merge(
+            base.publisher(for: .editingDidBegin).map { true },
+            base.publisher(for: .editingDidEnd).map { false }
         )
     }
 
-    var didEndEditing: Driver<Void> {
+    var didEndEditing: AnyPublisher<Void, Never> {
         isEditing.filter { !$0 }.mapToVoid()
     }
 }
 
 extension Reactive where Base: UITextView {
-    var isEditing: Driver<Bool> {
-        Driver.merge(
-            didBeginEditing.asDriver().map { true },
-            didEndEditing.asDriver().map { false }
+    /// Write text from ViewModel output.
+    var text: Binder<String> {
+        Binder(base) { $0.text = $1 }
+    }
+
+    var isEditing: AnyPublisher<Bool, Never> {
+        AnyPublisher.merge(
+            NotificationCenter.default
+                .publisher(for: UITextView.textDidBeginEditingNotification, object: base)
+                .map { _ in true },
+            NotificationCenter.default
+                .publisher(for: UITextView.textDidEndEditingNotification, object: base)
+                .map { _ in false }
         )
+    }
+
+    func isNearBottom(yThreshold: CGFloat = 0.98) -> AnyPublisher<Bool, Never> {
+        NotificationCenter.default
+            .publisher(for: UITextView.textDidChangeNotification, object: base)
+            .map { [weak base] _ -> Bool in
+                guard let base else { return false }
+                return base.contentOffset.y >= yThreshold * (base.contentSize.height - base.frame.height)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func didScrollNearBottom(yThreshold: CGFloat = 0.98) -> AnyPublisher<Void, Never> {
+        isNearBottom(yThreshold: yThreshold).filter { $0 }.mapToVoid()
     }
 }

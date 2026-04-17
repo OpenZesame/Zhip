@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -35,7 +33,7 @@ final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let deepLinkGenerator: DeepLinkGenerator
     private let deeplinkedTransaction: Driver<TransactionIntent>
-    private let updateBalanceSubject = PublishSubject<Void>()
+    private let updateBalanceSubject = PassthroughSubject<Void, Never>()
 
     private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
 
@@ -144,6 +142,6 @@ private extension MainCoordinator {
 
 private extension MainCoordinator {
     func triggerFetchingOfBalance() {
-        updateBalanceSubject.onNext(())
+        updateBalanceSubject.send(())
     }
 }

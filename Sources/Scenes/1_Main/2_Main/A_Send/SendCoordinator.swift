@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -37,7 +35,7 @@ final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
     private let useCaseProvider: UseCaseProvider
     private let onboardingUseCase: OnboardingUseCase
     private let transactionIntent: Driver<TransactionIntent>
-    private let scannedQRTransactionSubject = PublishSubject<TransactionIntent>()
+    private let scannedQRTransactionSubject = PassthroughSubject<TransactionIntent, Never>()
 
     init(
         navigationController: UINavigationController,
@@ -98,7 +96,7 @@ private extension SendCoordinator {
             switch userDid {
             case let .scanQRContainingTransaction(transaction):
                 dismissScene(true) {
-                    self.scannedQRTransactionSubject.onNext(transaction)
+                    self.scannedQRTransactionSubject.send(transaction)
                 }
             case .cancel:
                 dismissScene(true, nil)

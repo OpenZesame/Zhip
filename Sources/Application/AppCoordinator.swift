@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import RxSwift
 import UIKit
 import Zesame
 
@@ -41,17 +40,14 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
         self.bag <~ scene.viewModel.navigator.navigation
-            .asObservable()
-            .observe(on: MainScheduler.asyncInstance)
-            .do(onNext: { [weak self] userDid in
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userDid in
                 switch userDid {
                 case .unlockApp:
                     self?.appIsUnlockedEmitBufferedDeeplinks()
                     self?.restoreMainNavigationStack()
                 }
-            })
-            .asDriverOnErrorReturnEmpty()
-            .drive()
+            }
         return scene
     }()
 

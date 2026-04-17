@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class ConfirmNewPincodeView: ScrollableStackViewOwner {
@@ -48,9 +46,9 @@ extension ConfirmNewPincodeView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            pincode: inputPincodeView.rx.pincode.asDriver(),
-            isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.rx.isChecked.asDriverOnErrorReturnEmpty(),
-            confirmedTrigger: confirmPincodeButton.rx.tap.asDriver()
+            pincode: inputPincodeView.rx.pincode,
+            isHaveBackedUpPincodeCheckboxChecked: haveBackedUpPincodeCheckbox.rx.isChecked,
+            confirmedTrigger: confirmPincodeButton.rx.tap
         )
     }
 

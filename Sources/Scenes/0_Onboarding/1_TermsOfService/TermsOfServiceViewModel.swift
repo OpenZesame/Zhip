@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: TermsOfServiceNavigation
 
@@ -56,9 +54,9 @@ final class TermsOfServiceViewModel: BaseViewModel<
 
         if isDismissible {
             input.fromController.rightBarButtonContentSubject.onBarButton(.done)
-            input.fromController.rightBarButtonTrigger
+            bag <~ input.fromController.rightBarButtonTrigger
                 .do(onNext: { userDid(.dismiss) })
-                .drive().disposed(by: bag)
+                .drive()
         }
 
         bag <~ [

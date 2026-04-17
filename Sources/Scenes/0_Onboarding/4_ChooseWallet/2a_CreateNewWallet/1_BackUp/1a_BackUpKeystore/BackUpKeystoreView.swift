@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class BackUpKeystoreView: ScrollableStackViewOwner {
@@ -51,7 +49,7 @@ extension BackUpKeystoreView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            copyTrigger: copyButton.rx.tap.asDriver()
+            copyTrigger: copyButton.rx.tap
         )
     }
 }

@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -77,7 +75,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
                 .do(onNext: { [unowned self] in
                     UIPasteboard.general.string = transactionId
                     input.fromController.toastSubject
-                        .onNext(Toast(String(localized: .PollTransaction.copiedTransactionId)))
+                        .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
                 }).drive(),
 
             input.fromView.skipWaitingOrDoneTrigger.withLatestFrom(hasReceivedReceipt) { $1 }

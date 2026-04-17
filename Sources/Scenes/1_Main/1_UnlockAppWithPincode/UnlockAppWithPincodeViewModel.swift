@@ -22,10 +22,9 @@
 // SOFTWARE.
 //
 
+import Combine
 import Foundation
 import LocalAuthentication
-import RxCocoa
-import RxSwift
 
 // MARK: - UnlockAppWithPincodeUserAction
 
@@ -70,20 +69,16 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
             let reasonString = String(localized: .UnlockApp.biometricsReason)
 
-            return Observable.create { observer in
-                if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
-                    context
-                        .evaluatePolicy(
-                            .deviceOwnerAuthenticationWithBiometrics,
-                            localizedReason: reasonString
-                        ) { didAuth, _ in
-                            if didAuth {
-                                observer.onNext(())
-                            }
-                        }
+            let subject = PassthroughSubject<Void, Never>()
+            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
+                context.evaluatePolicy(
+                    .deviceOwnerAuthenticationWithBiometrics,
+                    localizedReason: reasonString
+                ) { didAuth, _ in
+                    if didAuth { subject.send(()); subject.send(completion: .finished) }
                 }
-                return Disposables.create {}
-            }.asDriverOnErrorReturnEmpty()
+            }
+            return subject.eraseToAnyPublisher()
         }
 
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear

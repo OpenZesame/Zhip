@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -58,7 +56,7 @@ final class BackUpKeystoreViewModel: BaseViewModel<
                 .do(onNext: {
                     UIPasteboard.general.string = $0
                     let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
-                    input.fromController.toastSubject.onNext(toast)
+                    input.fromController.toastSubject.send(toast)
                 })
                 .drive(),
         ]

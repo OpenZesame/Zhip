@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -93,20 +91,20 @@ extension PrepareTransactionView: ViewModelled {
     var inputFromView: InputFromView {
         InputFromView(
             pullToRefreshTrigger: rx.pullToRefreshTrigger,
-            scanQRTrigger: scanQRButton.rx.tap.asDriver(),
-            maxAmountTrigger: maxAmountButton.rx.tap.asDriver(),
-            toReviewTrigger: toReviewButton.rx.tap.asDriver(),
+            scanQRTrigger: scanQRButton.rx.tap,
+            maxAmountTrigger: maxAmountButton.rx.tap,
+            toReviewTrigger: toReviewButton.rx.tap,
 
-            recipientAddress: recipientAddressField.rx.text.orEmpty.asDriver().skip(1),
+            recipientAddress: recipientAddressField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
             didEndEditingRecipientAddress: recipientAddressField.rx.didEndEditing,
 
-            amountToSend: amountToSendField.rx.text.orEmpty.asDriver().skip(1),
+            amountToSend: amountToSendField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
             didEndEditingAmount: amountToSendField.rx.didEndEditing,
 
-            gasLimit: gasLimitField.rx.text.orEmpty.asDriver().skip(1),
+            gasLimit: gasLimitField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
             didEndEditingGasLimit: gasLimitField.rx.didEndEditing,
 
-            gasPrice: gasPriceField.rx.text.orEmpty.asDriver().skip(1),
+            gasPrice: gasPriceField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
             didEndEditingGasPrice: gasPriceField.rx.didEndEditing
         )
     }

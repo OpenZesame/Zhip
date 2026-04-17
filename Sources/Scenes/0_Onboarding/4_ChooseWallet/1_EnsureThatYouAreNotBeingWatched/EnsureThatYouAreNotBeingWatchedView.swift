@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class EnsureThatYouAreNotBeingWatchedView: ScrollableStackViewOwner {
@@ -50,7 +48,7 @@ extension EnsureThatYouAreNotBeingWatchedView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            understandTrigger: understandButton.rx.tap.asDriverOnErrorReturnEmpty()
+            understandTrigger: understandButton.rx.tap
         )
     }
 }

@@ -23,8 +23,6 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 // MARK: - User action and navigation steps
 
@@ -41,7 +39,7 @@ final class ScanQRCodeViewModel: BaseViewModel<
 > {
     typealias ScannedQRResult = Result<TransactionIntent, Swift.Error>
 
-    private let startScanningSubject = BehaviorSubject(value: ())
+    private let startScanningSubject = CurrentValueSubject<Void, Never>(())
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
@@ -79,9 +77,9 @@ final class ScanQRCodeViewModel: BaseViewModel<
                         String(localized: .ScanQRCode.incompatibleQRTitle),
                         dismissing: .manual(dismissButtonTitle: String(localized: .ScanQRCode.dismiss))
                     ) {
-                        self.startScanningSubject.onNext(())
+                        self.startScanningSubject.send(())
                     }
-                    input.fromController.toastSubject.onNext(toast)
+                    input.fromController.toastSubject.send(toast)
                 case let .success(transactionIntent): userDid(.scanQRContainingTransaction(transactionIntent))
                 }
             }).drive(),

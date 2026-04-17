@@ -1,27 +1,9 @@
+// MIT License — Copyright (c) 2018-2026 Open Zesame
 //
-// MIT License
-//
-// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+// RxSwift is retained here ONLY to bridge Zesame's Observable API to AnyPublisher.
+// Once Zesame is migrated to Combine/async-await this file can drop the import.
 
+import Combine
 import Foundation
 import RxSwift
 import Zesame
@@ -40,15 +22,11 @@ final class DefaultTransactionsUseCase {
 
 extension DefaultTransactionsUseCase: TransactionsUseCase {
     var cachedBalance: ZilAmount? {
-        guard let qa: String = preferences.loadValue(for: .cachedBalance) else {
-            return nil
-        }
+        guard let qa: String = preferences.loadValue(for: .cachedBalance) else { return nil }
         return try? ZilAmount(qa: qa)
     }
 
-    var balanceUpdatedAt: Date? {
-        preferences.loadValue(for: .balanceWasUpdatedAt)
-    }
+    var balanceUpdatedAt: Date? { preferences.loadValue(for: .balanceWasUpdatedAt) }
 
     func balanceWasUpdated(at date: Date) {
         preferences.save(value: date, for: .balanceWasUpdatedAt)
@@ -64,30 +42,49 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         balanceWasUpdated(at: Date())
     }
 
-    func getMinimumGasPrice() -> Observable<ZilAmount> {
-        zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true).map(\.amount)
+    func getMinimumGasPrice() -> AnyPublisher<ZilAmount, Error> {
+        zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true)
+            .map(\.amount)
+            .asAnyPublisher()
     }
 
-    func getBalance(for address: LegacyAddress) -> Observable<BalanceResponse> {
-        zilliqaService.getBalance(for: address)
+    func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Error> {
+        zilliqaService.getBalance(for: address).asAnyPublisher()
     }
 
-    func sendTransaction(
-        for payment: Payment,
-        wallet: Wallet,
-        encryptionPassword: String
-    ) -> Observable<TransactionResponse> {
-        zilliqaService.getNetworkFromAPI().flatMapLatest { [unowned self] in
-            zilliqaService.sendTransaction(
-                for: payment,
-                keystore: wallet.keystore,
-                password: encryptionPassword,
-                network: $0.network
-            )
-        }
+    func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassword: String)
+        -> AnyPublisher<TransactionResponse, Error> {
+        zilliqaService.getNetworkFromAPI()
+            .flatMapLatest { [unowned self] in
+                zilliqaService.sendTransaction(
+                    for: payment,
+                    keystore: wallet.keystore,
+                    password: encryptionPassword,
+                    network: $0.network
+                )
+            }
+            .asAnyPublisher()
     }
 
-    func receiptOfTransaction(byId txId: String, polling: Polling) -> Observable<TransactionReceipt> {
+    func receiptOfTransaction(byId txId: String, polling: Polling) -> AnyPublisher<TransactionReceipt, Error> {
         zilliqaService.hasNetworkReachedConsensusYetForTransactionWith(id: txId, polling: polling)
+            .asAnyPublisher()
+    }
+}
+
+// MARK: - Observable → AnyPublisher bridge (Zesame ↔ Combine)
+
+private extension ObservableConvertibleType {
+    func asAnyPublisher() -> AnyPublisher<Element, Error> {
+        let subject = PassthroughSubject<Element, Error>()
+        var disposable: Disposable?
+        disposable = asObservable().subscribe(
+            onNext: { subject.send($0) },
+            onError: { subject.send(completion: .failure($0)) },
+            onCompleted: { subject.send(completion: .finished) }
+        )
+        return subject
+            .handleEvents(receiveCancel: { disposable?.dispose() })
+            .eraseToAnyPublisher()
     }
 }

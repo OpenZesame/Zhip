@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 
 final class DecryptKeystoreToRevealKeyPairView: ScrollableStackViewOwner {
@@ -56,9 +54,9 @@ extension DecryptKeystoreToRevealKeyPairView: ViewModelled {
 
     var inputFromView: InputFromView {
         InputFromView(
-            encryptionPassword: encryptionPasswordField.rx.text.orEmpty.asDriver(),
+            encryptionPassword: encryptionPasswordField.rx.textChanges.orEmpty,
             isEditingEncryptionPassword: encryptionPasswordField.rx.isEditing,
-            revealTrigger: revealButton.rx.tap.asDriver()
+            revealTrigger: revealButton.rx.tap
         )
     }
 }

@@ -22,8 +22,6 @@
 // SOFTWARE.
 //
 
-import RxCocoa
-import RxSwift
 import UIKit
 import Zesame
 
@@ -71,10 +69,10 @@ extension ReceiveView: ViewModelled {
     var inputFromView: InputFromView {
         InputFromView(
             qrCodeImageHeight: 200,
-            amountToReceive: requestingAmountField.rx.text.orEmpty.asDriver().skip(1),
+            amountToReceive: requestingAmountField.rx.textChanges.orEmpty.dropFirst(1).eraseToAnyPublisher(),
             didEndEditingAmount: requestingAmountField.rx.didEndEditing,
-            copyMyAddressTrigger: copyMyAddressButton.rx.tap.asDriver(),
-            shareTrigger: requestPaymentButton.rx.tap.asDriverOnErrorReturnEmpty()
+            copyMyAddressTrigger: copyMyAddressButton.rx.tap,
+            shareTrigger: requestPaymentButton.rx.tap
         )
     }
 }
