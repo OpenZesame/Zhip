@@ -69,9 +69,10 @@ extension RestoreWalletView: ViewModelled {
             .map { [weak restorationMethodSegmentedControl] _ in
                 restorationMethodSegmentedControl?.selectedSegmentIndex ?? 0
             }
+            .prepend(restorationMethodSegmentedControl.selectedSegmentIndex)
             .eraseToAnyPublisher()
         return InputFromView(
-            selectedSegment: segmentValue.map { Segment(rawValue: $0) }.filterNil(),
+            selectedSegment: segmentValue.map { Segment(rawValue: $0) }.filterNil().eraseToAnyPublisher(),
             keyRestorationUsingPrivateKey: restoreUsingPrivateKeyView.viewModelOutput.keyRestoration,
             keyRestorationUsingKeystore: restoreUsingKeyStoreView.viewModelOutput.keyRestoration,
             restoreTrigger: restoreWalletButton.tapPublisher

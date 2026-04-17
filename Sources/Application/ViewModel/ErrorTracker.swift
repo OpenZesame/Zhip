@@ -8,17 +8,18 @@ public final class ErrorTracker {
 
     public init() {}
 
-    public func asDriver() -> AnyPublisher<Error, Never> {
+    public func asPublisher() -> AnyPublisher<Error, Never> {
         subject.eraseToAnyPublisher()
     }
 
-    public func track<P: Publisher>(from source: P) -> AnyPublisher<P.Output, Never>
+    public func track<P: Publisher>(from source: P) -> AnyPublisher<P.Output, P.Failure>
         where P.Failure: Error {
         source
-            .catch { [weak self] error -> Empty<P.Output, Never> in
-                self?.subject.send(error)
-                return Empty()
-            }
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.subject.send(error)
+                }
+            })
             .eraseToAnyPublisher()
     }
 
@@ -40,7 +41,7 @@ public final class ErrorTracker {
 }
 
 public extension Publisher {
-    func trackError(_ tracker: ErrorTracker) -> AnyPublisher<Output, Never>
+    func trackError(_ tracker: ErrorTracker) -> AnyPublisher<Output, Failure>
         where Failure: Error {
         tracker.track(from: self)
     }
