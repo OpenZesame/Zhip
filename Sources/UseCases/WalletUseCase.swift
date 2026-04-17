@@ -31,25 +31,25 @@ protocol SecurePersisting: AnyObject {
 }
 
 protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Error>
-    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Error>
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error>
+    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error>
     func save(wallet: Wallet)
     func deleteWallet()
 
     /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Error>
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Error>
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error>
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error>
     func loadWallet() -> Wallet?
     var hasConfiguredWallet: Bool { get }
 }
 
 extension WalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore inside the Wallet
-    func verify(password: String, forWallet wallet: Wallet) -> AnyPublisher<Bool, Error> {
+    func verify(password: String, forWallet wallet: Wallet) -> AnyPublisher<Bool, Swift.Error> {
         verify(password: password, forKeystore: wallet.keystore)
     }
 
-    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> AnyPublisher<KeyPair, Error> {
+    func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }

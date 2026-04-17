@@ -1,11 +1,7 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
-//
-// RxSwift is retained here ONLY to bridge Zesame's Observable API to AnyPublisher.
-// Once Zesame is migrated to Combine/async-await this file can drop the import.
 
 import Combine
 import Foundation
-import RxSwift
 import Zesame
 
 final class DefaultTransactionsUseCase {
@@ -42,18 +38,18 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
         balanceWasUpdated(at: Date())
     }
 
-    func getMinimumGasPrice() -> AnyPublisher<ZilAmount, Error> {
+    func getMinimumGasPrice() -> AnyPublisher<ZilAmount, Swift.Error> {
         zilliqaService.getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: true)
             .map(\.amount)
             .asAnyPublisher()
     }
 
-    func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Error> {
+    func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Swift.Error> {
         zilliqaService.getBalance(for: address).asAnyPublisher()
     }
 
     func sendTransaction(for payment: Payment, wallet: Wallet, encryptionPassword: String)
-        -> AnyPublisher<TransactionResponse, Error> {
+        -> AnyPublisher<TransactionResponse, Swift.Error> {
         zilliqaService.getNetworkFromAPI()
             .flatMapLatest { [unowned self] in
                 zilliqaService.sendTransaction(
@@ -66,26 +62,9 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
             .asAnyPublisher()
     }
 
-    func receiptOfTransaction(byId txId: String, polling: Polling) -> AnyPublisher<TransactionReceipt, Error> {
+    func receiptOfTransaction(byId txId: String, polling: Polling) -> AnyPublisher<TransactionReceipt, Swift.Error> {
         zilliqaService.hasNetworkReachedConsensusYetForTransactionWith(id: txId, polling: polling)
             .asAnyPublisher()
     }
 }
 
-// MARK: - Observable → AnyPublisher bridge (Zesame ↔ Combine)
-
-private extension ObservableConvertibleType {
-    func asAnyPublisher() -> AnyPublisher<Element, Error> {
-        let relay = PassthroughSubject<Element, Never>()
-        var rxDisposable: RxSwift.Disposable?
-        rxDisposable = self.asObservable().subscribe(
-            onNext: { relay.send($0) },
-            onError: { _ in relay.send(completion: .finished) },
-            onCompleted: { relay.send(completion: .finished) }
-        )
-        return relay
-            .handleEvents(receiveCancel: { rxDisposable?.dispose() })
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-}

@@ -24,7 +24,6 @@
 
 import Combine
 import Foundation
-import RxSwift
 import Zesame
 
 final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
@@ -38,23 +37,23 @@ final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
 
 extension DefaultWalletUseCase {
     /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Error> {
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error> {
         zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
             .asAnyPublisher()
     }
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Error> {
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
             .asAnyPublisher()
     }
 
-    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Error> {
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error> {
         zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
             .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
             .asAnyPublisher()
     }
 
-    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Error> {
+    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error> {
         let origin: Wallet.Origin = switch restoration {
         case .keystore: .importedKeystore
         case .privateKey: .importedPrivateKey
@@ -65,21 +64,3 @@ extension DefaultWalletUseCase {
     }
 }
 
-// MARK: - Observable → AnyPublisher bridge
-
-private extension Observable {
-    /// Bridges an RxSwift Observable (from Zesame) to a Combine AnyPublisher.
-    func asAnyPublisher() -> AnyPublisher<Element, Error> {
-        let relay = PassthroughSubject<Element, Never>()
-        var rxDisposable: RxSwift.Disposable?
-        rxDisposable = self.subscribe(
-            onNext: { relay.send($0) },
-            onError: { _ in relay.send(completion: .finished) },
-            onCompleted: { relay.send(completion: .finished) }
-        )
-        return relay
-            .handleEvents(receiveCancel: { rxDisposable?.dispose() })
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-}

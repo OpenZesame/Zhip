@@ -91,6 +91,7 @@
 		483F0F752146E25400E6EE08 /* Driver+Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483F0F742146E25400E6EE08 /* Driver+Operator.swift */; };
 		4847EDCC215FDC96002FF978 /* DefaultUseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */; };
 		4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */; };
+		AA00000000000000000000AA /* ObservableToPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000000000BB /* ObservableToPublisher.swift */; };
 		4847EDD1215FE93D002FF978 /* DefaultWalletUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD0215FE93D002FF978 /* DefaultWalletUseCase.swift */; };
 		4847EDD5215FEA7C002FF978 /* TransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDD4215FEA7C002FF978 /* TransactionsUseCase.swift */; };
 		4847EDF72160F520002FF978 /* UITextView+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847EDF62160F520002FF978 /* UITextView+Styling.swift */; };
@@ -466,6 +467,7 @@
 		483F0F742146E25400E6EE08 /* Driver+Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Operator.swift"; sourceTree = "<group>"; };
 		4847EDCB215FDC96002FF978 /* DefaultUseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUseCaseProvider.swift; sourceTree = "<group>"; };
 		4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTransactionsUseCase.swift; sourceTree = "<group>"; };
+		AA00000000000000000000BB /* ObservableToPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableToPublisher.swift; sourceTree = "<group>"; };
 		4847EDD0215FE93D002FF978 /* DefaultWalletUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWalletUseCase.swift; sourceTree = "<group>"; };
 		4847EDD4215FEA7C002FF978 /* TransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsUseCase.swift; sourceTree = "<group>"; };
 		4847EDF62160F520002FF978 /* UITextView+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Styling.swift"; sourceTree = "<group>"; };
@@ -1144,6 +1146,7 @@
 				4847EDFA2160FD7B002FF978 /* DefaultOnboardingUseCase.swift */,
 				4847EDCE215FE914002FF978 /* DefaultTransactionsUseCase.swift */,
 				483DDEAA219B6456009D3F4C /* DefaultPincodeUseCase.swift */,
+				AA00000000000000000000BB /* ObservableToPublisher.swift */,
 			);
 			path = Implementations;
 			sourceTree = "<group>";
@@ -2239,6 +2242,7 @@
 				48ECF4B221A06C4D0078D659 /* SpinnerView.swift in Sources */,
 				E635A4B0225D301B00124823 /* ChooseWalletView.swift in Sources */,
 				4847EDCF215FE914002FF978 /* DefaultTransactionsUseCase.swift in Sources */,
+				AA00000000000000000000AA /* ObservableToPublisher.swift in Sources */,
 				487C19E2219A116400308550 /* Error+CustomStringConvertible.swift in Sources */,
 				48379C6C21AE925400B95DB9 /* BaseViewModel.swift in Sources */,
 				484D1AFA21D7A8B800589E38 /* KeystoreValidator.swift in Sources */,
