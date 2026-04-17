@@ -8,6 +8,9 @@ Usage: python3 cov_detailed.py <TestResults.xcresult> <coverage.json>
 """
 import json, os, re, subprocess, sys
 
+if len(sys.argv) != 3:
+    sys.exit("Usage: python3 cov_detailed.py <TestResults.xcresult> <coverage.json>")
+
 RESULT_BUNDLE = sys.argv[1]
 COV_JSON      = sys.argv[2]
 
@@ -86,3 +89,7 @@ for f in files:
         count  = counts.get(lineno)
         if count == "0":
             print(f"{RED}{lineno:{line_w}d}  ✗    {source}{RESET}")
+        elif count is not None:
+            print(f"{GREEN}{lineno:{line_w}d}  ✓{RESET} {count:>4}  {source}")
+        else:
+            print(f"{DIM}{lineno:{line_w}d}       {source}{RESET}")

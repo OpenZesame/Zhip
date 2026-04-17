@@ -2,9 +2,11 @@
 
 ## Overview
 
-Zhip is an iOS Zilliqa wallet app built with UIKit + RxSwift using a custom MVVM architecture centered on reactive data-binding. The app targets **iOS 16.6**.
+Zhip is an iOS Zilliqa wallet app built with UIKit + Combine using a custom MVVM architecture centered on reactive data-binding. The app targets **iOS 16.6**.
 
-Dependencies relevant to architecture: `RxSwift 6.1`, `RxCocoa`, `RxDataSources 5.0`.
+Dependencies relevant to architecture: Apple's `Combine` framework as the primary reactive layer. `RxSwift 6.1` is retained **only** in `DefaultWalletUseCase`, `DefaultTransactionsUseCase`, and `ObservableToPublisher` to bridge Zesame's `Observable` API to `AnyPublisher`. `RxCocoa`/`RxDataSources` are no longer used.
+
+Compatibility typealiases let legacy `Driver<T>`, `DisposeBag`/`Disposable`, and `PublishSubject<T>`/`BehaviorSubject<T>` call sites compile unchanged on top of Combine — see `Sources/Extensions/Combine/RxCompat.swift` and `CancellableBag.swift`.
 
 ---
 

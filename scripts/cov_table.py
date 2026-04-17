@@ -5,6 +5,9 @@ Usage: python3 cov_table.py <coverage.json>
 """
 import json, os, sys
 
+if len(sys.argv) != 2:
+    sys.exit("Usage: python3 cov_table.py <coverage.json>")
+
 COV_JSON = sys.argv[1]
 
 RED    = "\033[31m"
