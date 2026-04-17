@@ -170,12 +170,16 @@ private struct WithLatestFromPublisher<
 
 public extension Publisher where Failure == Never {
     func ifEmpty(switchTo replacement: AnyPublisher<Output, Never>) -> some Publisher<Output, Never> {
-        var didEmit = false
-        return handleEvents(receiveOutput: { _ in didEmit = true })
-            .append(
-                Deferred {
-                    didEmit ? AnyPublisher<Output, Never>.empty() : replacement
-                }
-            )
+        // Outer Deferred ensures each subscription gets its own `didEmit` state.
+        Deferred {
+            var didEmit = false
+            return self.handleEvents(receiveOutput: { _ in didEmit = true })
+                .append(
+                    Deferred {
+                        didEmit ? AnyPublisher<Output, Never>.empty() : replacement
+                    }
+                )
+                .eraseToAnyPublisher()
+        }
     }
 }

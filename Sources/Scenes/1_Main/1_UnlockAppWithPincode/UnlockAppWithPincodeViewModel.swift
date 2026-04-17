@@ -84,8 +84,10 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
 
         [
-            pincodeValidationValue.filter(\.isValid).mapToVoid().merge(with: unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() }).eraseToAnyPublisher()
-            .sink { userDid(.unlockApp) },
+            pincodeValidationValue.filter(\.isValid).mapToVoid()
+                .merge(with: unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() })
+                .receive(on: DispatchQueue.main)
+                .sink { userDid(.unlockApp) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(
