@@ -61,31 +61,38 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
 
+        // Always resolves the promise (even on unavailable / cancel / failure) so the publisher
+        // completes and doesn't leave dangling inner subscriptions when used under flatMap.
         func unlockUsingBiometrics() -> AnyPublisher<Void, Never> {
-            let context = LAContext()
-            context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
-            var authError: NSError?
-
-            // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
-            let reasonString = String(localized: .UnlockApp.biometricsReason)
-
-            let subject = PassthroughSubject<Void, Never>()
-            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
-                context.evaluatePolicy(
-                    .deviceOwnerAuthenticationWithBiometrics,
-                    localizedReason: reasonString
-                ) { didAuth, _ in
-                    if didAuth { subject.send(()); subject.send(completion: .finished) }
+            Deferred {
+                Future<Bool, Never> { promise in
+                    let context = LAContext()
+                    context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
+                    // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
+                    let reasonString = String(localized: .UnlockApp.biometricsReason)
+                    var authError: NSError?
+                    guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) else {
+                        promise(.success(false))
+                        return
+                    }
+                    context.evaluatePolicy(
+                        .deviceOwnerAuthenticationWithBiometrics,
+                        localizedReason: reasonString
+                    ) { didAuth, _ in
+                        promise(.success(didAuth))
+                    }
                 }
             }
-            return subject.eraseToAnyPublisher()
+            .filter { $0 }
+            .mapToVoid()
+            .eraseToAnyPublisher()
         }
 
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
 
         [
             pincodeValidationValue.filter(\.isValid).mapToVoid()
-                .merge(with: unlockUsingBiometricsTrigger.flatMap { unlockUsingBiometrics() })
+                .merge(with: unlockUsingBiometricsTrigger.flatMapLatest { unlockUsingBiometrics() })
                 .receive(on: DispatchQueue.main)
                 .sink { userDid(.unlockApp) },
         ].forEach { $0.store(in: &cancellables) }
