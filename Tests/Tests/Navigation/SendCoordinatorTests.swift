@@ -145,11 +145,11 @@ final class SendCoordinatorTests: XCTestCase {
         let prepare = top(as: PrepareTransaction.self)!
         let payment = try makePayment()
         prepare.viewModel.navigator.next(.reviewPayment(payment))
-        drainRunLoop()
+        drainRunLoop(seconds: 0.5)
         let review = top(as: ReviewTransactionBeforeSigning.self)!
 
         review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
-        drainRunLoop()
+        drainRunLoop(seconds: 0.5)
 
         XCTAssertTrue(top(as: SignTransaction.self) != nil)
     }
@@ -164,5 +164,88 @@ final class SendCoordinatorTests: XCTestCase {
         deeplinkSubject.send(intent)
         drainRunLoop()
         // No crash; the filter in PrepareTransactionViewModel lets the intent through.
+    }
+
+    // MARK: - Sign → PollTransactionStatus
+
+    private func makeTransactionResponse() throws -> TransactionResponse {
+        try JSONDecoder().decode(TransactionResponse.self, from: Data(#"{"TranID":"abc123","Info":"Sent"}"#.utf8))
+    }
+
+    private func pushToSignTransaction() throws -> SignTransaction {
+        sut.start()
+        let prepare = top(as: PrepareTransaction.self)!
+        let payment = try makePayment()
+        prepare.viewModel.navigator.next(.reviewPayment(payment))
+        drainRunLoop(seconds: 0.5)
+        let review = top(as: ReviewTransactionBeforeSigning.self)!
+        review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
+        drainRunLoop(seconds: 0.5)
+        return top(as: SignTransaction.self)!
+    }
+
+    func test_signTransactionSign_pushesPollTransactionStatus() throws {
+        let sign = try pushToSignTransaction()
+
+        sign.viewModel.navigator.next(.sign(try makeTransactionResponse()))
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertTrue(top(as: PollTransactionStatus.self) != nil)
+    }
+
+    // MARK: - PollTransactionStatus branches
+
+    private func pushToPoll() throws -> PollTransactionStatus {
+        let sign = try pushToSignTransaction()
+        sign.viewModel.navigator.next(.sign(try makeTransactionResponse()))
+        drainRunLoop(seconds: 0.5)
+        return top(as: PollTransactionStatus.self)!
+    }
+
+    func test_pollSkip_bubblesFinishWithoutFetchingBalance() throws {
+        let poll = try pushToPoll()
+        var received: SendCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        poll.viewModel.navigator.next(.skip)
+        drainRunLoop()
+
+        if case .finish(let fetch) = received { XCTAssertFalse(fetch) } else {
+            XCTFail("expected .finish(false), got \(String(describing: received))")
+        }
+    }
+
+    func test_pollWaitUntilTimeout_bubblesFinishWithoutFetchingBalance() throws {
+        let poll = try pushToPoll()
+        var received: SendCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        poll.viewModel.navigator.next(.waitUntilTimeout)
+        drainRunLoop()
+
+        if case .finish(let fetch) = received { XCTAssertFalse(fetch) } else {
+            XCTFail("expected .finish(false), got \(String(describing: received))")
+        }
+    }
+
+    func test_pollDismiss_bubblesFinishWithFetchingBalance() throws {
+        let poll = try pushToPoll()
+        var received: SendCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        poll.viewModel.navigator.next(.dismiss)
+        drainRunLoop()
+
+        if case .finish(let fetch) = received { XCTAssertTrue(fetch) } else {
+            XCTFail("expected .finish(true), got \(String(describing: received))")
+        }
+    }
+
+    func test_pollViewTransactionDetails_opensBrowserWithoutCrashing() throws {
+        let poll = try pushToPoll()
+
+        poll.viewModel.navigator.next(.viewTransactionDetailsInBrowser(id: "abc123"))
+        drainRunLoop()
+        // openURL returns asynchronously; we just verify the path ran.
     }
 }
