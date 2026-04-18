@@ -23,11 +23,13 @@
 //
 
 import Combine
+import Factory
 import UIKit
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
+    @Injected(\.soundPlayer) private var soundPlayer: SoundPlayer
+
     private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
-    private var player: AVAudioPlayer?
 
     private lazy var motionEffectStarsImageViewWithGradient = GradientView()
     private lazy var checkmarkLogoImageView = UIImageView()
@@ -127,26 +129,9 @@ private extension PollTransactionStatusView {
     func vibrate() {
         vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
     }
-}
 
-import AVFoundation
-
-private extension PollTransactionStatusView {
-    /// https://stackoverflow.com/a/32036291/1311272
+    /// Sound found here: https://freesound.org/people/MATTIX/sounds/445723/
     func playSound() {
-        // Sound found here: https://freesound.org/people/MATTIX/sounds/445723/
-        guard let url = Bundle.main.url(forResource: "freesound_mattix_radar", withExtension: "wav") else { return }
-
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-
-            /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            guard let player else { return }
-            player.play()
-        } catch {
-            print(error.localizedDescription)
-        }
+        soundPlayer.play(resource: "freesound_mattix_radar", withExtension: "wav")
     }
 }

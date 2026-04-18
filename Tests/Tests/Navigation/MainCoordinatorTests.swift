@@ -153,4 +153,79 @@ final class MainCoordinatorTests: XCTestCase {
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is SettingsCoordinator })
     }
+
+    // MARK: - Bubbled navigation from child coordinators
+
+    private func firstChild<T>(as _: T.Type) throws -> T {
+        try XCTUnwrap(sut.childCoordinators.first { $0 is T } as? T)
+    }
+
+    func test_sendFinish_dismissesSendChildCoordinator() throws {
+        sut.start()
+        let main = top(as: Main.self)!
+        main.viewModel.navigator.next(.send)
+        drainRunLoop()
+        let send = try firstChild(as: SendCoordinator.self)
+
+        send.navigator.next(.finish(fetchBalance: true))
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is SendCoordinator })
+    }
+
+    func test_sendFinish_withoutBalanceFetching_dismissesSendChildCoordinator() throws {
+        sut.start()
+        let main = top(as: Main.self)!
+        main.viewModel.navigator.next(.send)
+        drainRunLoop()
+        let send = try firstChild(as: SendCoordinator.self)
+
+        send.navigator.next(.finish(fetchBalance: false))
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is SendCoordinator })
+    }
+
+    func test_receiveFinish_dismissesReceiveChildCoordinator() throws {
+        sut.start()
+        let main = top(as: Main.self)!
+        main.viewModel.navigator.next(.receive)
+        drainRunLoop()
+        let receive = try firstChild(as: ReceiveCoordinator.self)
+
+        receive.navigator.next(.finish)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is ReceiveCoordinator })
+    }
+
+    func test_settingsCloseSettings_dismissesSettingsChildCoordinator() throws {
+        sut.start()
+        let main = top(as: Main.self)!
+        main.viewModel.navigator.next(.goToSettings)
+        drainRunLoop()
+        let settings = try firstChild(as: SettingsCoordinator.self)
+
+        settings.navigator.next(.closeSettings)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is SettingsCoordinator })
+    }
+
+    func test_settingsRemoveWallet_bubblesRemoveWalletNavigationStep() throws {
+        sut.start()
+        let main = top(as: Main.self)!
+        main.viewModel.navigator.next(.goToSettings)
+        drainRunLoop()
+        let settings = try firstChild(as: SettingsCoordinator.self)
+        var received: MainCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        settings.navigator.next(.removeWallet)
+        drainRunLoop()
+
+        if case .removeWallet = received { } else {
+            XCTFail("expected .removeWallet, got \(String(describing: received))")
+        }
+    }
 }

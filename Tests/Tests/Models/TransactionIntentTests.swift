@@ -52,4 +52,18 @@ final class TransactionIntentTests: XCTestCase {
     func test_error_equatable() {
         XCTAssertEqual(TransactionIntent.Error.scannedStringNotAddressNorJson, .scannedStringNotAddressNorJson)
     }
+
+    // MARK: - Codable / fromScannedQrCodeString JSON branch
+
+    func test_initWithQueryParameters_validAmount_parsesAmount() {
+        let sut = TransactionIntent(
+            queryParameters: [
+                URLQueryItem(name: "to", value: validAddressString),
+                URLQueryItem(name: "amount", value: "1000000000000"),
+            ]
+        )
+
+        XCTAssertNotNil(sut)
+        XCTAssertNotNil(sut?.amount)
+    }
 }

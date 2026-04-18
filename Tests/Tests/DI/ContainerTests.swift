@@ -97,4 +97,98 @@ final class ContainerTests: XCTestCase {
         XCTAssertTrue((resolvedA as AnyObject) === (resolvedB as AnyObject))
         XCTAssertTrue((resolvedA as AnyObject) === mock)
     }
+
+    // MARK: - additional narrow factories register/resolve
+
+    func test_restoreWalletUseCase_registerOverridesDefault() {
+        let mock = MockWalletUseCase()
+        Container.shared.restoreWalletUseCase.register { mock }
+        XCTAssertTrue((Container.shared.restoreWalletUseCase() as AnyObject) === mock)
+    }
+
+    func test_verifyEncryptionPasswordUseCase_registerOverridesDefault() {
+        let mock = MockWalletUseCase()
+        Container.shared.verifyEncryptionPasswordUseCase.register { mock }
+        XCTAssertTrue((Container.shared.verifyEncryptionPasswordUseCase() as AnyObject) === mock)
+    }
+
+    func test_extractKeyPairUseCase_registerOverridesDefault() {
+        let mock = MockWalletUseCase()
+        Container.shared.extractKeyPairUseCase.register { mock }
+        XCTAssertTrue((Container.shared.extractKeyPairUseCase() as AnyObject) === mock)
+    }
+
+    func test_pincodeUseCase_registerOverridesDefault() {
+        let mock = MockPincodeUseCase()
+        Container.shared.pincodeUseCase.register { mock }
+        XCTAssertTrue((Container.shared.pincodeUseCase() as AnyObject) === mock)
+    }
+
+    func test_onboardingUseCase_registerOverridesDefault() {
+        let mock = MockOnboardingUseCase()
+        Container.shared.onboardingUseCase.register { mock }
+        XCTAssertTrue((Container.shared.onboardingUseCase() as AnyObject) === mock)
+    }
+
+    func test_transactionsUseCase_registerOverridesDefault() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.transactionsUseCase() as AnyObject) === mock)
+    }
+
+    // MARK: - narrow transactions facets resolve to shared singleton
+
+    func test_balanceCacheUseCase_resolvesToSharedTransactionsInstance() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.balanceCacheUseCase() as AnyObject) === mock)
+    }
+
+    func test_gasPriceUseCase_resolvesToSharedTransactionsInstance() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.gasPriceUseCase() as AnyObject) === mock)
+    }
+
+    func test_fetchBalanceUseCase_resolvesToSharedTransactionsInstance() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.fetchBalanceUseCase() as AnyObject) === mock)
+    }
+
+    func test_sendTransactionUseCase_resolvesToSharedTransactionsInstance() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.sendTransactionUseCase() as AnyObject) === mock)
+    }
+
+    func test_transactionReceiptUseCase_resolvesToSharedTransactionsInstance() {
+        let mock = MockTransactionsUseCase()
+        Container.shared.transactionsUseCase.register { mock }
+        XCTAssertTrue((Container.shared.transactionReceiptUseCase() as AnyObject) === mock)
+    }
+
+    // MARK: - default factories
+
+    func test_securePersistence_resolvesDefault() {
+        let resolved = Container.shared.securePersistence()
+        XCTAssertNotNil(resolved)
+    }
+
+    func test_zilliqaService_resolvesDefault() {
+        let resolved = Container.shared.zilliqaService()
+        XCTAssertNotNil(resolved)
+    }
+
+    func test_deepLinkGenerator_resolvesDefault() {
+        let resolved = Container.shared.deepLinkGenerator()
+        XCTAssertNotNil(resolved)
+    }
+
+    // MARK: - KeyValueStore.default helper
+
+    func test_preferencesDefault_isUsable() {
+        let prefs = KeyValueStore<PreferencesKey>.default
+        XCTAssertNotNil(prefs)
+    }
 }

@@ -310,6 +310,20 @@
 		B10000000000000000000440 /* GradientViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000441 /* GradientViewTests.swift */; };
 		B10000000000000000000442 /* UITextViewStylingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000443 /* UITextViewStylingTests.swift */; };
 		B10000000000000000000444 /* NavigationBarLayoutingNavigationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000445 /* NavigationBarLayoutingNavigationControllerTests.swift */; };
+		B10000000000000000000446 /* ScrollableContentSizedTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000447 /* ScrollableContentSizedTextViewTests.swift */; };
+		B10000000000000000000448 /* ImageAboveLabelButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000449 /* ImageAboveLabelButtonTests.swift */; };
+		B1000000000000000000044A /* InputValidatorExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000044B /* InputValidatorExtensionTests.swift */; };
+		B1000000000000000000044C /* UIColorExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000044D /* UIColorExtensionTests.swift */; };
+		B1000000000000000000044E /* UILabelStylingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000044F /* UILabelStylingTests.swift */; };
+		B10000000000000000000450 /* PublisherExtrasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000451 /* PublisherExtrasTests.swift */; };
+		B10000000000000000000452 /* SpinnerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000453 /* SpinnerViewTests.swift */; };
+		B10000000000000000000454 /* KeyValueStoreKeychainKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000455 /* KeyValueStoreKeychainKeyTests.swift */; };
+		B10000000000000000000458 /* AppAppearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000457 /* AppAppearanceTests.swift */; };
+		B1000000000000000000045A /* UIKitExtrasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000459 /* UIKitExtrasTests.swift */; };
+		B1000000000000000000045B /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000045C /* SoundPlayer.swift */; };
+		B1000000000000000000045D /* MockSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000045E /* MockSoundPlayer.swift */; };
+		B1000000000000000000045F /* SilenceSideEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000460 /* SilenceSideEffects.swift */; };
+		B10000000000000000000462 /* SoundPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000463 /* SoundPlayerTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -849,6 +863,21 @@
 		B10000000000000000000441 /* GradientViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientViewTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000443 /* UITextViewStylingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewStylingTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000445 /* NavigationBarLayoutingNavigationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutingNavigationControllerTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000447 /* ScrollableContentSizedTextViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableContentSizedTextViewTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000449 /* ImageAboveLabelButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAboveLabelButtonTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000044B /* InputValidatorExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidatorExtensionTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000044D /* UIColorExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensionTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000044F /* UILabelStylingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelStylingTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000451 /* PublisherExtrasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtrasTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000453 /* SpinnerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000455 /* KeyValueStoreKeychainKeyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStoreKeychainKeyTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000457 /* AppAppearanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearanceTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000459 /* UIKitExtrasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtrasTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000045C /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
+		B1000000000000000000045E /* MockSoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSoundPlayer.swift; sourceTree = "<group>"; };
+		B10000000000000000000460 /* SilenceSideEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceSideEffects.swift; sourceTree = "<group>"; };
+		B10000000000000000000461 /* Audio */ = {isa = PBXGroup; children = (B1000000000000000000045C /* SoundPlayer.swift */, ); path = Audio; sourceTree = "<group>"; };
+		B10000000000000000000463 /* SoundPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -1168,6 +1197,7 @@
 				483CE9982194E9E300BED31C /* Assets.xcassets */,
 				483CE9C22194E9E300BED31C /* Assets */,
 				483CE98B2194E9E300BED31C /* Configurations */,
+				B10000000000000000000461 /* Audio */,
 				B10000000000000000000010 /* DI */,
 				485AAC9421AAC68E005C56CC /* InputValidators */,
 				485AA28F21DD301900E700C5 /* OutputFormatting */,
@@ -1581,6 +1611,7 @@
 				C10000000000000000000012 /* Validators */,
 				B10000000000000000000014 /* ViewModels */,
 				B10000000000000000000300 /* Views */,
+				B10000000000000000000456 /* Persistence */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -2107,6 +2138,8 @@
 				B10000000000000000000022 /* TestWalletFactory.swift */,
 				B1000000000000000000020A /* MockTransactionsUseCase.swift */,
 				B10000000000000000000401 /* MockZilliqaServiceReactive.swift */,
+				B1000000000000000000045E /* MockSoundPlayer.swift */,
+				B10000000000000000000460 /* SilenceSideEffects.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2167,6 +2200,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		B10000000000000000000456 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000455 /* KeyValueStoreKeychainKeyTests.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		B10000000000000000000300 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2176,6 +2217,9 @@
 				B1000000000000000000043D /* InputPincodeViewTests.swift */,
 				B1000000000000000000043F /* CheckboxWithLabelTests.swift */,
 				B10000000000000000000441 /* GradientViewTests.swift */,
+				B10000000000000000000447 /* ScrollableContentSizedTextViewTests.swift */,
+				B10000000000000000000449 /* ImageAboveLabelButtonTests.swift */,
+				B10000000000000000000453 /* SpinnerViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2186,6 +2230,7 @@
 				C10000000000000000000001 /* AnyValidationTests.swift */,
 				C10000000000000000000002 /* ValidationTests.swift */,
 				C10000000000000000000003 /* ValidationRuleTests.swift */,
+				B1000000000000000000044B /* InputValidatorExtensionTests.swift */,
 			);
 			path = Validation;
 			sourceTree = "<group>";
@@ -2213,6 +2258,8 @@
 				C1000000000000000000000B /* BundleVersionBuildTests.swift */,
 				C1000000000000000000000C /* WeakTests.swift */,
 				B1000000000000000000040F /* EnumReflectionTests.swift */,
+				B10000000000000000000457 /* AppAppearanceTests.swift */,
+				B10000000000000000000463 /* SoundPlayerTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2263,6 +2310,10 @@
 				B10000000000000000000419 /* PublisherHelpersTests.swift */,
 				B10000000000000000000439 /* MergeableTests.swift */,
 				B10000000000000000000443 /* UITextViewStylingTests.swift */,
+				B1000000000000000000044D /* UIColorExtensionTests.swift */,
+				B1000000000000000000044F /* UILabelStylingTests.swift */,
+				B10000000000000000000451 /* PublisherExtrasTests.swift */,
+				B10000000000000000000459 /* UIKitExtrasTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2621,6 +2672,7 @@
 				489EB13521CA7A6100664AA7 /* WelcomeView.swift in Sources */,
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
+				B1000000000000000000045B /* SoundPlayer.swift in Sources */,
 				E6019A4B225E75020079DDE8 /* MainViewModel.swift in Sources */,
 				483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
@@ -2790,6 +2842,9 @@
 				B10000000000000000000101 /* InMemoryKeyValueStore.swift in Sources */,
 				B10000000000000000000102 /* InputFromControllerFactory.swift in Sources */,
 				B10000000000000000000103 /* MockOnboardingUseCase.swift in Sources */,
+				B1000000000000000000045D /* MockSoundPlayer.swift in Sources */,
+				B1000000000000000000045F /* SilenceSideEffects.swift in Sources */,
+				B10000000000000000000462 /* SoundPlayerTests.swift in Sources */,
 				B10000000000000000000120 /* MockPincodeUseCase.swift in Sources */,
 				B10000000000000000000121 /* MockWalletUseCase.swift in Sources */,
 				B10000000000000000000104 /* TestStoreFactory.swift in Sources */,
@@ -2860,6 +2915,16 @@
 				B10000000000000000000440 /* GradientViewTests.swift in Sources */,
 				B10000000000000000000442 /* UITextViewStylingTests.swift in Sources */,
 				B10000000000000000000444 /* NavigationBarLayoutingNavigationControllerTests.swift in Sources */,
+				B10000000000000000000446 /* ScrollableContentSizedTextViewTests.swift in Sources */,
+				B10000000000000000000448 /* ImageAboveLabelButtonTests.swift in Sources */,
+				B1000000000000000000044A /* InputValidatorExtensionTests.swift in Sources */,
+				B1000000000000000000044C /* UIColorExtensionTests.swift in Sources */,
+				B1000000000000000000044E /* UILabelStylingTests.swift in Sources */,
+				B10000000000000000000450 /* PublisherExtrasTests.swift in Sources */,
+				B10000000000000000000452 /* SpinnerViewTests.swift in Sources */,
+				B10000000000000000000454 /* KeyValueStoreKeychainKeyTests.swift in Sources */,
+				B10000000000000000000458 /* AppAppearanceTests.swift in Sources */,
+				B1000000000000000000045A /* UIKitExtrasTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,

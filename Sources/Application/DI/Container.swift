@@ -64,6 +64,12 @@ extension Container {
     var deepLinkGenerator: Factory<DeepLinkGenerator> {
         self { DefaultDeepLinkGenerator() }
     }
+
+    /// Plays bundled sound effects. Tests register a no-op so unit tests never
+    /// produce real audio.
+    var soundPlayer: Factory<SoundPlayer> {
+        self { DefaultSoundPlayer() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)

@@ -211,4 +211,59 @@ final class AppCoordinatorTests: XCTestCase {
 
         XCTAssertFalse(sut.handleDeepLink(url))
     }
+
+    // MARK: - Bubbled navigation from child coordinators
+
+    func test_onboardingFinishOnboarding_replacesOnboardingWithMain() throws {
+        _ = makeCoordinator(hasWallet: false, hasPincode: false)
+        sut.start()
+        let onboarding = try XCTUnwrap(sut.childCoordinators.first as? OnboardingCoordinator)
+        // Simulate completed onboarding by writing a wallet so the subsequent
+        // toMain() call has stored state to read.
+        mockWallet.storedWallet = TestWalletFactory.makeWallet()
+
+        onboarding.navigator.next(.finishOnboarding)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertTrue(sut.childCoordinators.contains { $0 is MainCoordinator })
+    }
+
+    func test_mainRemoveWallet_replacesMainWithOnboarding() throws {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        let main = try XCTUnwrap(sut.childCoordinators.first as? MainCoordinator)
+        // Simulate wallet removal so toOnboarding() reflects fresh state.
+        mockWallet.storedWallet = nil
+
+        main.navigator.next(.removeWallet)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertTrue(sut.childCoordinators.contains { $0 is OnboardingCoordinator })
+    }
+
+    func test_unlockSceneUnlockApp_restoresMainNavigationStack() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: true)
+        sut.start()
+        // Wait for the unlock scene to be presented.
+        let setupExpectation = expectation(description: "unlock scene available")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { setupExpectation.fulfill() }
+        wait(for: [setupExpectation], timeout: 2)
+
+        // The unlock scene is a private lazy var; re-trigger it via lock/unlock so
+        // we can grab a UnlockAppWithPincode controller from rootControllers.
+        sut.appWillResignActive()
+        sut.appDidBecomeActive()
+        drainRunLoop(seconds: 0.3)
+
+        guard let unlock = rootControllers.compactMap({ $0 as? UnlockAppWithPincode }).first else {
+            XCTFail("expected UnlockAppWithPincode in root controller history")
+            return
+        }
+        let setCountBefore = setRootCallCount
+
+        unlock.viewModel.navigator.next(.unlockApp)
+        drainRunLoop(seconds: 0.3)
+
+        XCTAssertGreaterThan(setRootCallCount, setCountBefore)
+    }
 }
