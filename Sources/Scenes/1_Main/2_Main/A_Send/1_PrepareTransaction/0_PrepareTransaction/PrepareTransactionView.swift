@@ -164,7 +164,8 @@ private extension PrepareTransactionView {
             gasLimitField.text = Int.random(in: 50 ... 100).description
             gasPriceField.text = Int.random(in: 1000 ... 2000).description
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [weak self] in
+                guard let self else { return }
                 [
                     self.recipientAddressField,
                     self.amountToSendField,

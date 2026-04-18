@@ -275,6 +275,11 @@
 		B1000000000000000000020B /* UnlockAppWithPincodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000020C /* UnlockAppWithPincodeViewModelTests.swift */; };
 		B1000000000000000000020D /* PrepareTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000020E /* PrepareTransactionViewModelTests.swift */; };
 		B10000000000000000000301 /* SimpleViewSmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000302 /* SimpleViewSmokeTests.swift */; };
+		B10000000000000000000400 /* MockZilliqaServiceReactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000401 /* MockZilliqaServiceReactive.swift */; };
+		B10000000000000000000402 /* DefaultCreateWalletUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000403 /* DefaultCreateWalletUseCaseTests.swift */; };
+		B10000000000000000000404 /* DefaultRestoreWalletUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000405 /* DefaultRestoreWalletUseCaseTests.swift */; };
+		B10000000000000000000406 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000407 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift */; };
+		B10000000000000000000408 /* DefaultExtractKeyPairUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000409 /* DefaultExtractKeyPairUseCaseTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -779,6 +784,11 @@
 		B1000000000000000000020C /* UnlockAppWithPincodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPincodeViewModelTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000020E /* PrepareTransactionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareTransactionViewModelTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000302 /* SimpleViewSmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewSmokeTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000401 /* MockZilliqaServiceReactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockZilliqaServiceReactive.swift; sourceTree = "<group>"; };
+		B10000000000000000000403 /* DefaultCreateWalletUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCreateWalletUseCaseTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000405 /* DefaultRestoreWalletUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRestoreWalletUseCaseTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000407 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultVerifyEncryptionPasswordUseCaseTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000409 /* DefaultExtractKeyPairUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultExtractKeyPairUseCaseTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2036,6 +2046,7 @@
 				B10000000000000000000005 /* TestStoreFactory.swift */,
 				B10000000000000000000022 /* TestWalletFactory.swift */,
 				B1000000000000000000020A /* MockTransactionsUseCase.swift */,
+				B10000000000000000000401 /* MockZilliqaServiceReactive.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2053,6 +2064,10 @@
 			children = (
 				B10000000000000000000007 /* DefaultOnboardingUseCaseTests.swift */,
 				B10000000000000000000008 /* DefaultPincodeUseCaseTests.swift */,
+				B10000000000000000000403 /* DefaultCreateWalletUseCaseTests.swift */,
+				B10000000000000000000405 /* DefaultRestoreWalletUseCaseTests.swift */,
+				B10000000000000000000407 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift */,
+				B10000000000000000000409 /* DefaultExtractKeyPairUseCaseTests.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -2720,6 +2735,11 @@
 				B1000000000000000000020B /* UnlockAppWithPincodeViewModelTests.swift in Sources */,
 				B1000000000000000000020D /* PrepareTransactionViewModelTests.swift in Sources */,
 				B10000000000000000000301 /* SimpleViewSmokeTests.swift in Sources */,
+				B10000000000000000000400 /* MockZilliqaServiceReactive.swift in Sources */,
+				B10000000000000000000402 /* DefaultCreateWalletUseCaseTests.swift in Sources */,
+				B10000000000000000000404 /* DefaultRestoreWalletUseCaseTests.swift in Sources */,
+				B10000000000000000000406 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift in Sources */,
+				B10000000000000000000408 /* DefaultExtractKeyPairUseCaseTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,
