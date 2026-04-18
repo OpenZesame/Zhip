@@ -37,25 +37,38 @@ final class MockZilliqaServiceReactive: ZilliqaServiceReactive {
     var extractKeyPairResult: Result<KeyPair, Zesame.Error>?
     var minimumGasPriceResult: Result<MinimumGasPriceResponse, Zesame.Error>?
     var balanceResult: Result<BalanceResponse, Zesame.Error>?
+    var networkResult: Result<NetworkResponse, Zesame.Error>?
+    var sendTransactionResult: Result<TransactionResponse, Zesame.Error>?
+    var transactionReceiptResult: Result<TransactionReceipt, Zesame.Error>?
 
     private(set) var createNewWalletCallCount = 0
     private(set) var restoreWalletCallCount = 0
     private(set) var verifyEncryptionPasswordCallCount = 0
     private(set) var extractKeyPairCallCount = 0
+    private(set) var getNetworkCallCount = 0
+    private(set) var getBalanceCallCount = 0
+    private(set) var getMinimumGasPriceCallCount = 0
+    private(set) var sendTransactionCallCount = 0
+    private(set) var receiptCallCount = 0
 
     private(set) var lastCreateWalletPassword: String?
     private(set) var lastCreateWalletKDF: KDF?
     private(set) var lastRestoration: KeyRestoration?
     private(set) var lastVerifyPassword: String?
+    private(set) var lastBalanceAddress: LegacyAddress?
+    private(set) var lastSendTransactionPassword: String?
+    private(set) var lastReceiptTxId: String?
 
     func getNetworkFromAPI() -> AnyPublisher<NetworkResponse, Zesame.Error> {
-        Empty<NetworkResponse, Zesame.Error>().eraseToAnyPublisher()
+        getNetworkCallCount += 1
+        return Self.publisher(for: networkResult)
     }
 
     func getMinimumGasPrice(alsoUpdateLocallyCachedMinimum: Bool)
         -> AnyPublisher<MinimumGasPriceResponse, Zesame.Error>
     {
-        Self.publisher(for: minimumGasPriceResult)
+        getMinimumGasPriceCallCount += 1
+        return Self.publisher(for: minimumGasPriceResult)
     }
 
     func verifyThat(encryptionPassword: String, canDecryptKeystore: Keystore)
@@ -97,25 +110,31 @@ final class MockZilliqaServiceReactive: ZilliqaServiceReactive {
     }
 
     func getBalance(for address: LegacyAddress) -> AnyPublisher<BalanceResponse, Zesame.Error> {
-        Self.publisher(for: balanceResult)
+        getBalanceCallCount += 1
+        lastBalanceAddress = address
+        return Self.publisher(for: balanceResult)
     }
 
     func sendTransaction(for payment: Payment, keystore: Keystore, password: String, network: Network)
         -> AnyPublisher<TransactionResponse, Zesame.Error>
     {
-        Empty<TransactionResponse, Zesame.Error>().eraseToAnyPublisher()
+        sendTransactionCallCount += 1
+        lastSendTransactionPassword = password
+        return Self.publisher(for: sendTransactionResult)
     }
 
     func sendTransaction(for payment: Payment, signWith keyPair: KeyPair, network: Network)
         -> AnyPublisher<TransactionResponse, Zesame.Error>
     {
-        Empty<TransactionResponse, Zesame.Error>().eraseToAnyPublisher()
+        Self.publisher(for: sendTransactionResult)
     }
 
     func hasNetworkReachedConsensusYetForTransactionWith(id: String, polling: Polling)
         -> AnyPublisher<TransactionReceipt, Zesame.Error>
     {
-        Empty<TransactionReceipt, Zesame.Error>().eraseToAnyPublisher()
+        receiptCallCount += 1
+        lastReceiptTxId = id
+        return Self.publisher(for: transactionReceiptResult)
     }
 
     private static func publisher<T>(for result: Result<T, Zesame.Error>?) -> AnyPublisher<T, Zesame.Error> {
