@@ -103,4 +103,80 @@ final class ChooseWalletCoordinatorTests: XCTestCase {
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is RestoreWalletCoordinator })
     }
+
+    // MARK: - Modal navigation handlers
+
+    private func firstChild<T>(as _: T.Type) throws -> T {
+        try XCTUnwrap(sut.childCoordinators.first { $0 is T } as? T)
+    }
+
+    func test_createNewWalletCreate_savesWalletAndEmitsFinishStep() throws {
+        sut.start()
+        let choose = top(as: ChooseWallet.self)!
+        choose.viewModel.navigator.next(.createNewWallet)
+        drainRunLoop()
+        let create = try firstChild(as: CreateNewWalletCoordinator.self)
+        var received: ChooseWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        let wallet = TestWalletFactory.makeWallet()
+        create.navigator.next(.create(wallet: wallet))
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertNotNil(mockWallet.storedWallet)
+        if case .finishChoosingWallet = received { } else {
+            XCTFail("expected .finishChoosingWallet, got \(String(describing: received))")
+        }
+    }
+
+    func test_createNewWalletCancel_doesNotSaveWallet() throws {
+        sut.start()
+        let choose = top(as: ChooseWallet.self)!
+        choose.viewModel.navigator.next(.createNewWallet)
+        drainRunLoop()
+        let create = try firstChild(as: CreateNewWalletCoordinator.self)
+        var received: ChooseWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        create.navigator.next(.cancel)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertNil(mockWallet.storedWallet)
+        XCTAssertNil(received)
+    }
+
+    func test_restoreWalletFinishedRestoring_savesWalletAndEmitsFinishStep() throws {
+        sut.start()
+        let choose = top(as: ChooseWallet.self)!
+        choose.viewModel.navigator.next(.restoreWallet)
+        drainRunLoop()
+        let restore = try firstChild(as: RestoreWalletCoordinator.self)
+        var received: ChooseWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        let wallet = TestWalletFactory.makeWallet()
+        restore.navigator.next(.finishedRestoring(wallet: wallet))
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertNotNil(mockWallet.storedWallet)
+        if case .finishChoosingWallet = received { } else {
+            XCTFail("expected .finishChoosingWallet, got \(String(describing: received))")
+        }
+    }
+
+    func test_restoreWalletCancel_doesNotSaveWallet() throws {
+        sut.start()
+        let choose = top(as: ChooseWallet.self)!
+        choose.viewModel.navigator.next(.restoreWallet)
+        drainRunLoop()
+        let restore = try firstChild(as: RestoreWalletCoordinator.self)
+        var received: ChooseWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        restore.navigator.next(.cancel)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertNil(mockWallet.storedWallet)
+        XCTAssertNil(received)
+    }
 }
