@@ -302,6 +302,7 @@
 		B10000000000000000000430 /* ReceiveCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000431 /* ReceiveCoordinatorTests.swift */; };
 		B10000000000000000000432 /* KeystoreValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000433 /* KeystoreValidatorTests.swift */; };
 		B10000000000000000000434 /* WalletEncryptionPasswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000435 /* WalletEncryptionPasswordTests.swift */; };
+		B10000000000000000000436 /* PincodeTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000437 /* PincodeTextFieldTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -833,6 +834,7 @@
 		B10000000000000000000431 /* ReceiveCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveCoordinatorTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000433 /* KeystoreValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidatorTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000435 /* WalletEncryptionPasswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEncryptionPasswordTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000437 /* PincodeTextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PincodeTextFieldTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2155,6 +2157,7 @@
 			isa = PBXGroup;
 			children = (
 				B10000000000000000000302 /* SimpleViewSmokeTests.swift */,
+				B10000000000000000000437 /* PincodeTextFieldTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2828,6 +2831,7 @@
 				B10000000000000000000430 /* ReceiveCoordinatorTests.swift in Sources */,
 				B10000000000000000000432 /* KeystoreValidatorTests.swift in Sources */,
 				B10000000000000000000434 /* WalletEncryptionPasswordTests.swift in Sources */,
+				B10000000000000000000436 /* PincodeTextFieldTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,
