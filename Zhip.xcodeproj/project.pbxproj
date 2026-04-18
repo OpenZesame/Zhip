@@ -303,6 +303,10 @@
 		B10000000000000000000432 /* KeystoreValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000433 /* KeystoreValidatorTests.swift */; };
 		B10000000000000000000434 /* WalletEncryptionPasswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000435 /* WalletEncryptionPasswordTests.swift */; };
 		B10000000000000000000436 /* PincodeTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000437 /* PincodeTextFieldTests.swift */; };
+		B10000000000000000000438 /* MergeableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000439 /* MergeableTests.swift */; };
+		B1000000000000000000043A /* TextFieldDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043B /* TextFieldDelegateTests.swift */; };
+		B1000000000000000000043C /* InputPincodeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043D /* InputPincodeViewTests.swift */; };
+		B1000000000000000000043E /* CheckboxWithLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043F /* CheckboxWithLabelTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -835,6 +839,10 @@
 		B10000000000000000000433 /* KeystoreValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystoreValidatorTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000435 /* WalletEncryptionPasswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEncryptionPasswordTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000437 /* PincodeTextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PincodeTextFieldTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000439 /* MergeableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeableTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000043B /* TextFieldDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegateTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000043D /* InputPincodeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPincodeViewTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000043F /* CheckboxWithLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabelTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2158,6 +2166,9 @@
 			children = (
 				B10000000000000000000302 /* SimpleViewSmokeTests.swift */,
 				B10000000000000000000437 /* PincodeTextFieldTests.swift */,
+				B1000000000000000000043B /* TextFieldDelegateTests.swift */,
+				B1000000000000000000043D /* InputPincodeViewTests.swift */,
+				B1000000000000000000043F /* CheckboxWithLabelTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2242,6 +2253,7 @@
 				B10000000000000000000411 /* UITableViewFooterTests.swift */,
 				B10000000000000000000413 /* UIViewExtensionsTests.swift */,
 				B10000000000000000000419 /* PublisherHelpersTests.swift */,
+				B10000000000000000000439 /* MergeableTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2832,6 +2844,10 @@
 				B10000000000000000000432 /* KeystoreValidatorTests.swift in Sources */,
 				B10000000000000000000434 /* WalletEncryptionPasswordTests.swift in Sources */,
 				B10000000000000000000436 /* PincodeTextFieldTests.swift in Sources */,
+				B10000000000000000000438 /* MergeableTests.swift in Sources */,
+				B1000000000000000000043A /* TextFieldDelegateTests.swift in Sources */,
+				B1000000000000000000043C /* InputPincodeViewTests.swift in Sources */,
+				B1000000000000000000043E /* CheckboxWithLabelTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,
