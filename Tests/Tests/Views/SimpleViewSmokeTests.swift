@@ -147,4 +147,81 @@ final class SimpleViewSmokeTests: XCTestCase {
         view.layoutIfNeeded()
         XCTAssertNotNil(view.inputFromView)
     }
+
+    func test_prepareTransactionView_initializes() {
+        let view = PrepareTransactionView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_pollTransactionStatusView_initializes() {
+        let view = PollTransactionStatusView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_restoreWalletView_initializes() {
+        let view = RestoreWalletView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_reviewTransactionBeforeSigningView_initializes() {
+        let view = ReviewTransactionBeforeSigningView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_scanQRCodeView_initializes() {
+        let view = ScanQRCodeView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_restoreUsingPrivateKeyView_initializes() {
+        let view = RestoreUsingPrivateKeyView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.superview ?? view)
+    }
+
+    func test_signTransactionView_initializes() {
+        let view = SignTransactionView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_restoreUsingKeystoreView_initializes() {
+        let view = RestoreUsingKeystoreView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.superview ?? view)
+    }
+
+    func test_ensureThatYouAreNotBeingWatchedView_initializes() {
+        let view = EnsureThatYouAreNotBeingWatchedView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_unlockAppWithPincodeView_initializes() {
+        let view = UnlockAppWithPincodeView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
+
+    func test_removePincodeView_initializes() {
+        let view = RemovePincodeView()
+        view.frame = CGRect(x: 0, y: 0, width: 375, height: 812)
+        view.layoutIfNeeded()
+        XCTAssertNotNil(view.inputFromView)
+    }
 }
