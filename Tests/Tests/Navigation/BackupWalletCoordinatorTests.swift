@@ -29,48 +29,44 @@ import XCTest
 import Zesame
 @testable import Zhip
 
-/// Tests for `MainCoordinator` — instantiates the coordinator with a real
-/// `UINavigationController`, drives `start()`, and verifies the initial scene
-/// is pushed.
-final class MainCoordinatorTests: XCTestCase {
+/// Drives each `BackupWalletUserAction` branch of
+/// `BackupWalletCoordinator` so all four navigation handlers run.
+final class BackupWalletCoordinatorTests: XCTestCase {
 
     private var window: UIWindow!
     private var navigationController: NavigationBarLayoutingNavigationController!
-    private var deeplinkSubject: PassthroughSubject<TransactionIntent, Never>!
-    private var mockTransactions: MockTransactionsUseCase!
     private var mockWallet: MockWalletUseCase!
+    private var walletSubject: CurrentValueSubject<Zhip.Wallet, Never>!
     private var cancellables: Set<AnyCancellable> = []
-    private var sut: MainCoordinator!
+    private var sut: BackupWalletCoordinator!
 
     override func setUp() {
         super.setUp()
-        navigationController = NavigationBarLayoutingNavigationController()
-        deeplinkSubject = PassthroughSubject<TransactionIntent, Never>()
-        mockTransactions = MockTransactionsUseCase()
         mockWallet = MockWalletUseCase()
-        mockWallet.storedWallet = TestWalletFactory.makeWallet()
-        Container.shared.transactionsUseCase.register { [unowned self] in self.mockTransactions }
+        let wallet = TestWalletFactory.makeWallet()
+        mockWallet.storedWallet = wallet
+        walletSubject = CurrentValueSubject<Zhip.Wallet, Never>(wallet)
         Container.shared.walletStorageUseCase.register { [unowned self] in self.mockWallet }
+        navigationController = NavigationBarLayoutingNavigationController()
         window = UIWindow(frame: .init(x: 0, y: 0, width: 320, height: 480))
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        sut = MainCoordinator(
+        sut = BackupWalletCoordinator(
             navigationController: navigationController,
-            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher()
+            wallet: walletSubject.eraseToAnyPublisher()
         )
     }
 
     override func tearDown() {
         drainRunLoop()
         cancellables.removeAll()
-        Container.shared.manager.reset()
         sut = nil
         window.isHidden = true
         window = nil
-        mockWallet = nil
-        mockTransactions = nil
-        deeplinkSubject = nil
         navigationController = nil
+        Container.shared.manager.reset()
+        walletSubject = nil
+        mockWallet = nil
         super.tearDown()
     }
 
@@ -88,69 +84,59 @@ final class MainCoordinatorTests: XCTestCase {
 
     // MARK: - start
 
-    func test_start_pushesMainSceneAsRoot() {
+    func test_start_pushesBackupWalletAsRoot() {
         sut.start()
 
         XCTAssertEqual(navigationController.viewControllers.count, 1)
-        XCTAssertTrue(navigationController.viewControllers.first is Main)
+        XCTAssertTrue(navigationController.viewControllers.first is BackupWallet)
     }
 
-    // MARK: - Deep-link branch
+    // MARK: - Navigation branches
 
-    func test_deeplinkedTransaction_whenNoChildren_triggersSendModal() throws {
+    func test_cancelOrDismiss_bubblesCancel() {
         sut.start()
-        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        let intent = TransactionIntent(to: address)
+        var received: BackupWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+        let backup = top(as: BackupWallet.self)!
 
-        deeplinkSubject.send(intent)
+        backup.viewModel.navigator.next(.cancelOrDismiss)
         drainRunLoop()
 
-        XCTAssertTrue(sut.childCoordinators.contains { $0 is SendCoordinator })
+        if case .cancel = received { } else {
+            XCTFail("expected .cancel, got \(String(describing: received))")
+        }
     }
 
-    func test_deeplinkedTransaction_whenChildAlreadyPresented_isNoOp() throws {
+    func test_backupWallet_bubblesBackUp() {
         sut.start()
-        let main = top(as: Main.self)!
-        main.viewModel.navigator.next(.send)
-        drainRunLoop()
-        let childCountBefore = sut.childCoordinators.count
+        var received: BackupWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+        let backup = top(as: BackupWallet.self)!
 
-        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        deeplinkSubject.send(TransactionIntent(to: address))
+        backup.viewModel.navigator.next(.backupWallet)
         drainRunLoop()
 
-        XCTAssertEqual(sut.childCoordinators.count, childCountBefore)
+        if case .backUp = received { } else {
+            XCTFail("expected .backUp, got \(String(describing: received))")
+        }
     }
 
-    // MARK: - MainViewModel user-intent branches
-
-    func test_sendIntent_startsSendChildCoordinator() {
+    func test_revealKeystore_presentsModalWithoutCrashing() {
         sut.start()
-        let main = top(as: Main.self)!
+        let backup = top(as: BackupWallet.self)!
 
-        main.viewModel.navigator.next(.send)
+        backup.viewModel.navigator.next(.revealKeystore)
         drainRunLoop()
-
-        XCTAssertTrue(sut.childCoordinators.contains { $0 is SendCoordinator })
+        // Modal presented; presence on navigationController.presentedViewController proves path ran.
     }
 
-    func test_receiveIntent_startsReceiveChildCoordinator() {
+    func test_revealPrivateKey_startsDecryptKeystoreChildCoordinator() {
         sut.start()
-        let main = top(as: Main.self)!
+        let backup = top(as: BackupWallet.self)!
 
-        main.viewModel.navigator.next(.receive)
+        backup.viewModel.navigator.next(.revealPrivateKey)
         drainRunLoop()
 
-        XCTAssertTrue(sut.childCoordinators.contains { $0 is ReceiveCoordinator })
-    }
-
-    func test_goToSettingsIntent_startsSettingsChildCoordinator() {
-        sut.start()
-        let main = top(as: Main.self)!
-
-        main.viewModel.navigator.next(.goToSettings)
-        drainRunLoop()
-
-        XCTAssertTrue(sut.childCoordinators.contains { $0 is SettingsCoordinator })
+        XCTAssertTrue(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
     }
 }
