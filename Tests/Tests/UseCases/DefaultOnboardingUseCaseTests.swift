@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import XCTest
 @testable import Zhip
 
@@ -52,7 +53,7 @@ final class DefaultOnboardingUseCaseTests: XCTestCase {
         sut = nil
         secureStore = nil
         preferences = nil
-        Container.shared.reset()
+        Container.shared.manager.reset()
         super.tearDown()
     }
 

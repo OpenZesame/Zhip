@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -33,16 +34,10 @@ enum SettingsCoordinatorNavigationStep {
 }
 
 final class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var transactionUseCase = useCaseProvider.makeTransactionsUseCase()
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.transactionsUseCase) private var transactionUseCase: TransactionsUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
+    @Injected(\.onboardingUseCase) private var onboardingUseCase: OnboardingUseCase
 
     override func start(didStart _: Completion? = nil) {
         toSettings()
@@ -92,7 +87,7 @@ private extension SettingsCoordinator {
         presentModalCoordinator(
             makeCoordinator: { SetPincodeCoordinator(
                 navigationController: $0,
-                useCase: useCaseProvider.makePincodeUseCase()
+                useCase: pincodeUseCase
             ) },
             navigationHandler: { userDid, dismissModalFlow in
                 switch userDid {
@@ -154,7 +149,6 @@ private extension SettingsCoordinator {
         presentModalCoordinator(
             makeCoordinator: { BackupWalletCoordinator(
                 navigationController: $0,
-                useCase: walletUseCase,
                 mode: .dismissable
             )
             },
@@ -167,7 +161,7 @@ private extension SettingsCoordinator {
     }
 
     func toConfirmWalletRemoval() {
-        let viewModel = ConfirmWalletRemovalViewModel(useCase: walletUseCase)
+        let viewModel = ConfirmWalletRemovalViewModel()
 
         modallyPresent(scene: ConfirmWalletRemoval.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
@@ -182,7 +176,7 @@ private extension SettingsCoordinator {
 
     func toChooseWallet() {
         transactionUseCase.deleteCachedBalance()
-        walletUseCase.deleteWallet()
+        walletStorageUseCase.deleteWallet()
         pincodeUseCase.deletePincode()
         userIntends(to: .removeWallet)
     }

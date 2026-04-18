@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import Zesame
@@ -32,15 +33,13 @@ enum DecryptKeystoreCoordinatorNavigationStep {
 }
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
-    private let useCase: WalletUseCase
     private let wallet: AnyPublisher<Wallet, Never>
 
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>? = nil) {
-        self.useCase = useCase
+    init(navigationController: UINavigationController, wallet: AnyPublisher<Wallet, Never>? = nil) {
         if let wallet {
             self.wallet = wallet
         } else {
-            self.wallet = useCase.wallet.map {
+            self.wallet = Container.shared.walletStorageUseCase().wallet.map {
                 guard let wallet = $0 else {
                     incorrectImplementation("Should have saved wallet earlier")
                 }
@@ -59,7 +58,7 @@ final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinat
 
 private extension DecryptKeystoreCoordinator {
     func toDecryptKeystore() {
-        let viewModel = DecryptKeystoreToRevealKeyPairViewModel(useCase: useCase, wallet: wallet)
+        let viewModel = DecryptKeystoreToRevealKeyPairViewModel(wallet: wallet)
 
         push(scene: DecryptKeystoreToRevealKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {

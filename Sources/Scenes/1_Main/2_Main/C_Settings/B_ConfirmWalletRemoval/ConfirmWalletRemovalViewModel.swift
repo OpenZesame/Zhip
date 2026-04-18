@@ -38,11 +38,6 @@ final class ConfirmWalletRemovalViewModel: BaseViewModel<
     ConfirmWalletRemovalViewModel.InputFromView,
     ConfirmWalletRemovalViewModel.Output
 > {
-    private let useCase: WalletUseCase
-
-    init(useCase: WalletUseCase) {
-        self.useCase = useCase
-    }
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {

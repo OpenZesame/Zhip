@@ -31,13 +31,6 @@ enum CreateNewWalletCoordinatorNavigationStep {
 }
 
 final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
 
     override func start(didStart _: Completion? = nil) {
         toEnsureThatYouAreNotBeingWatched()
@@ -58,7 +51,7 @@ private extension CreateNewWalletCoordinator {
     }
 
     func toCreateWallet() {
-        let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
+        let viewModel = CreateNewWalletViewModel()
 
         push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
@@ -72,7 +65,6 @@ private extension CreateNewWalletCoordinator {
         start(
             coordinator: BackupWalletCoordinator(
                 navigationController: navigationController,
-                useCase: useCaseProvider.makeWalletUseCase(),
                 wallet: Just(wallet).eraseToAnyPublisher()
             )
         ) { [unowned self] userFinished in

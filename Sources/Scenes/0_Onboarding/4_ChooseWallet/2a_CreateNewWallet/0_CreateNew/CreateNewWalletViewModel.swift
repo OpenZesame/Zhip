@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import Zesame
 
@@ -44,11 +45,7 @@ final class CreateNewWalletViewModel:
     >
 // swiftlint:disable:next opening_brace
 {
-    private let useCase: WalletUseCase
-
-    init(useCase: WalletUseCase) {
-        self.useCase = useCase
-    }
+    @Injected(\.createWalletUseCase) private var createWalletUseCase: CreateWalletUseCase
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
@@ -81,7 +78,7 @@ final class CreateNewWalletViewModel:
                     $1
                 }
                 .flatMapLatest {
-                    self.useCase.createNewWallet(encryptionPassword: $0)
+                    self.createWalletUseCase.createNewWallet(encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .replaceErrorWithEmpty()
                 }

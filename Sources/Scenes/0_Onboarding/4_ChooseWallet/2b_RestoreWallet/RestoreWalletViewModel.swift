@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Zesame
 
 /// Navigation from RestoreWallet
@@ -37,11 +38,7 @@ final class RestoreWalletViewModel: BaseViewModel<
     RestoreWalletViewModel.InputFromView,
     RestoreWalletViewModel.Output
 > {
-    private let useCase: WalletUseCase
-
-    init(useCase: WalletUseCase) {
-        self.useCase = useCase
-    }
+    @Injected(\.restoreWalletUseCase) private var restoreWalletUseCase: RestoreWalletUseCase
 
     override func transform(input: Input) -> Output {
         func userIntends(to intention: NavigationStep) {
@@ -70,7 +67,7 @@ final class RestoreWalletViewModel: BaseViewModel<
         [
             input.fromView.restoreTrigger.withLatestFrom(keyRestoration.filterNil()) { $1 }
                 .flatMapLatest { [unowned self] in
-                    self.useCase.restoreWallet(from: $0)
+                    self.restoreWalletUseCase.restoreWallet(from: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()

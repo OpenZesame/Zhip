@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -40,11 +41,11 @@ final class ReceiveViewModel: BaseViewModel<
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
-    private let useCase: WalletUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
     private let qrCoder: QRCoding
 
-    init(useCase: WalletUseCase, qrCoder: QRCoding = QRCoder()) {
-        self.useCase = useCase
+    init(qrCoder: QRCoding = QRCoder()) {
         self.qrCoder = qrCoder
     }
 
@@ -53,7 +54,7 @@ final class ReceiveViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        let wallet = useCase.wallet.filterNil().replaceErrorWithEmpty()
+        let wallet = walletStorageUseCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let validator = InputValidator()
 

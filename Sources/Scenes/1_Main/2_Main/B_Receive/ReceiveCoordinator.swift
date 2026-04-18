@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -30,22 +31,8 @@ enum ReceiveCoordinatorNavigationStep {
 }
 
 final class ReceiveCoordinator: BaseCoordinator<ReceiveCoordinatorNavigationStep> {
-    private let deepLinkGenerator: DeepLinkGenerator
-    private let useCaseProvider: UseCaseProvider
-    private let walletUseCase: WalletUseCase
-    private let onboardingUseCase: OnboardingUseCase
 
-    init(
-        navigationController: UINavigationController,
-        useCaseProvider: UseCaseProvider,
-        deepLinkGenerator: DeepLinkGenerator
-    ) {
-        self.useCaseProvider = useCaseProvider
-        walletUseCase = useCaseProvider.makeWalletUseCase()
-        onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-        self.deepLinkGenerator = deepLinkGenerator
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.deepLinkGenerator) private var deepLinkGenerator: DeepLinkGenerator
 
     override func start(didStart _: Completion? = nil) {
         toFirst()
@@ -60,7 +47,7 @@ private extension ReceiveCoordinator {
     }
 
     func toReceive() {
-        let viewModel = ReceiveViewModel(useCase: walletUseCase)
+        let viewModel = ReceiveViewModel()
 
         push(scene: Receive.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {

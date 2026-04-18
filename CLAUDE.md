@@ -245,20 +245,37 @@ Coordinators hold a `cancellables: Set<AnyCancellable>` for retaining navigation
 
 ## Use Cases
 
-Use cases live in `Sources/UseCases/`. Each subsystem exposes a set of narrow
-protocols (1-2 methods each) plus a composite façade protocol kept for
-backwards compatibility with existing call sites — prefer depending on the
-narrow protocols in new code.
+Use cases live in `Sources/UseCases/`. The wallet subsystem is split into five
+narrow protocols, each backed by its own concrete `Default*` implementation
+that uses `@Injected` to resolve its own dependencies. The transactions,
+onboarding, and pincode subsystems still have a composite façade protocol
+(kept for now — prefer the narrow protocols in new code) plus per-facet
+factories that all resolve to the same shared instance.
+
+### Wallet subsystem (fully split)
+
+| Narrow protocol | Concrete implementation | What it injects |
+|-----------------|------------------------|-----------------|
+| `CreateWalletUseCase` | `DefaultCreateWalletUseCase` | `zilliqaService` |
+| `RestoreWalletUseCase` | `DefaultRestoreWalletUseCase` | `zilliqaService` |
+| `WalletStorageUseCase` | `DefaultWalletStorageUseCase` | `securePersistence` |
+| `VerifyEncryptionPasswordUseCase` | `DefaultVerifyEncryptionPasswordUseCase` | `zilliqaService` |
+| `ExtractKeyPairUseCase` | `DefaultExtractKeyPairUseCase` | `zilliqaService` |
+
+Each ViewModel/coordinator depends on *only* the narrow protocols it
+actually uses (`@Injected(\.createWalletUseCase) private var createWalletUseCase: CreateWalletUseCase`).
+
+### Other subsystems (composite + narrow facets)
 
 | Composite | Narrow protocols |
 |-----------|------------------|
-| `WalletUseCase` | `CreateWalletUseCase`, `RestoreWalletUseCase`, `WalletStorageUseCase`, `VerifyEncryptionPasswordUseCase`, `ExtractKeyPairUseCase` |
 | `TransactionsUseCase` | `BalanceCacheUseCase`, `GasPriceUseCase`, `FetchBalanceUseCase`, `SendTransactionUseCase`, `TransactionReceiptUseCase` |
 | `OnboardingUseCase` | `TermsOfServiceAcceptanceUseCase`, `CustomECCWarningAcceptanceUseCase`, `CrashReportingPermissionsUseCase`, `PincodePromptUseCase` |
 | `PincodeUseCase` | `PincodeReadUseCase`, `PincodeWriteUseCase` |
 
-All `Default*UseCase` implementations conform to every narrow protocol, so one
-concrete type can satisfy several injection sites without any adapter glue.
+The single `Default{Transactions,Onboarding,Pincode}UseCase` concrete type
+conforms to every narrow protocol in its family, so the per-facet factories
+all resolve to the same shared instance (no adapter glue needed).
 
 ---
 
@@ -271,12 +288,12 @@ the real SPM package is a near-no-op.
 
 ```swift
 // Production
-let wallet = Container.shared.walletUseCase()
+let storage = Container.shared.walletStorageUseCase()
 
 // Test
-Container.shared.walletUseCase.register { FakeWalletUseCase() }
+Container.shared.walletStorageUseCase.register { MockWalletUseCase() }
 // ...
-Container.shared.reset()  // restores every registered default
+Container.shared.manager.reset()  // restores every registered default
 ```
 
 Each factory follows the pattern `lazy var <name>: Factory<Protocol> = _register { ... }`.

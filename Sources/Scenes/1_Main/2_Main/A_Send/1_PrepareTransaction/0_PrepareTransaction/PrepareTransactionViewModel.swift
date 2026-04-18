@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import Zesame
 
@@ -42,17 +43,12 @@ final class PrepareTransactionViewModel: BaseViewModel<
     PrepareTransactionViewModel.InputFromView,
     PrepareTransactionViewModel.Output
 > {
-    private let transactionUseCase: TransactionsUseCase
-    private let walletUseCase: WalletUseCase
+    @Injected(\.transactionsUseCase) private var transactionUseCase: TransactionsUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
     private let scannedOrDeeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
 
-    init(
-        walletUseCase: WalletUseCase,
-        transactionUseCase: TransactionsUseCase,
-        scannedOrDeeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
-    ) {
-        self.walletUseCase = walletUseCase
-        self.transactionUseCase = transactionUseCase
+    init(scannedOrDeeplinkedTransaction: AnyPublisher<TransactionIntent, Never>) {
         self.scannedOrDeeplinkedTransaction = scannedOrDeeplinkedTransaction
     }
 
@@ -62,7 +58,7 @@ final class PrepareTransactionViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
+        let wallet = walletStorageUseCase.wallet.filterNil().replaceErrorWithEmpty()
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
 

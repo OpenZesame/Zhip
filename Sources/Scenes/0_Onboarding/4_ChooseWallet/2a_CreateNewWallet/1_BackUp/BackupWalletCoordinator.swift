@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import Zesame
@@ -33,21 +34,22 @@ enum BackupWalletCoordinatorNavigationStep {
 }
 
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
-    private let useCase: WalletUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
     private let wallet: AnyPublisher<Wallet, Never>
     private let mode: BackupWalletViewModel.Mode
+
     init(
         navigationController: UINavigationController,
-        useCase: WalletUseCase,
         wallet: AnyPublisher<Wallet, Never>? = nil,
         mode: BackupWalletViewModel.Mode = .cancellable
     ) {
-        self.useCase = useCase
         self.mode = mode
         if let wallet {
             self.wallet = wallet
         } else {
-            self.wallet = useCase.wallet.map {
+            // Resolve stored wallet lazily from the injected storage use case.
+            self.wallet = Container.shared.walletStorageUseCase().wallet.map {
                 guard let wallet = $0 else {
                     incorrectImplementation("Should have saved wallet earlier")
                 }
@@ -80,7 +82,7 @@ private extension BackupWalletCoordinator {
 
     func toDecryptKeystoreToRevealKeyPair() {
         presentModalCoordinator(makeCoordinator: {
-            DecryptKeystoreCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
+            DecryptKeystoreCoordinator(navigationController: $0, wallet: wallet)
         }, navigationHandler: { userFinished, dismissModalFlow in
             switch userFinished {
             case .backingUpKeyPair: dismissModalFlow(true)

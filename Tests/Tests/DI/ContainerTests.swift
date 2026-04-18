@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import XCTest
 @testable import Zhip
 
@@ -33,7 +34,7 @@ import XCTest
 final class ContainerTests: XCTestCase {
 
     override func tearDown() {
-        Container.shared.reset()
+        Container.shared.manager.reset()
         super.tearDown()
     }
 
@@ -62,7 +63,7 @@ final class ContainerTests: XCTestCase {
         Container.shared.preferences.register { mock }
 
         // Act
-        Container.shared.reset()
+        Container.shared.manager.reset()
 
         // Assert: after reset, the old mock is no longer seen.
         mock.save(value: true, for: .hasAcceptedTermsOfService)
@@ -71,18 +72,29 @@ final class ContainerTests: XCTestCase {
 
     // MARK: - narrow use case factories
 
-    func test_walletUseCase_isUsedByNarrowCreateWalletFactory() {
+    func test_createWalletUseCase_registerOverridesDefault() {
         // Arrange
-        let sentinel = DefaultWalletUseCase(
-            zilliqaService: Container.shared.zilliqaService(),
-            securePersistence: TestStoreFactory.makeSecurePersistence()
-        )
-        Container.shared.walletUseCase.register { sentinel }
+        let mock = MockWalletUseCase()
+        Container.shared.createWalletUseCase.register { mock }
 
         // Act
-        let narrow = Container.shared.createWalletUseCase()
+        let resolved = Container.shared.createWalletUseCase()
 
         // Assert
-        XCTAssertTrue((narrow as AnyObject) === sentinel)
+        XCTAssertTrue((resolved as AnyObject) === mock)
+    }
+
+    func test_walletStorageUseCase_isSharedAcrossResolutions() {
+        // Arrange
+        let mock = MockWalletUseCase()
+        Container.shared.walletStorageUseCase.register { mock }
+
+        // Act
+        let resolvedA = Container.shared.walletStorageUseCase()
+        let resolvedB = Container.shared.walletStorageUseCase()
+
+        // Assert — singleton scope returns the same instance.
+        XCTAssertTrue((resolvedA as AnyObject) === (resolvedB as AnyObject))
+        XCTAssertTrue((resolvedA as AnyObject) === mock)
     }
 }

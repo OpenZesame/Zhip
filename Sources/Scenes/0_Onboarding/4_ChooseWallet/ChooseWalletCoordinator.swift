@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -30,13 +31,7 @@ enum ChooseWalletCoordinatorNavigationStep {
 }
 
 final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var useCase = useCaseProvider.makeWalletUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
 
     override func start(didStart _: Completion? = nil) {
         toChooseWallet()
@@ -59,7 +54,7 @@ private extension ChooseWalletCoordinator {
 
     func toCreateNewWallet() {
         presentModalCoordinator(
-            makeCoordinator: { CreateNewWalletCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
+            makeCoordinator: { CreateNewWalletCoordinator(navigationController: $0) },
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
@@ -72,7 +67,7 @@ private extension ChooseWalletCoordinator {
 
     func toRestoreWallet() {
         presentModalCoordinator(
-            makeCoordinator: { RestoreWalletCoordinator(navigationController: $0, useCase: useCase) },
+            makeCoordinator: { RestoreWalletCoordinator(navigationController: $0) },
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
@@ -84,7 +79,7 @@ private extension ChooseWalletCoordinator {
     }
 
     func userFinishedChoosing(wallet: Wallet) {
-        useCase.save(wallet: wallet)
+        walletStorageUseCase.save(wallet: wallet)
         navigator.next(.finishChoosingWallet)
     }
 }

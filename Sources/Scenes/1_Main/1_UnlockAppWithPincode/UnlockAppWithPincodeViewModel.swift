@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import LocalAuthentication
 
@@ -39,16 +40,14 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
     UnlockAppWithPincodeViewModel.InputFromView,
     UnlockAppWithPincodeViewModel.Output
 > {
-    private let useCase: PincodeUseCase
-    private let pincode: Pincode
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
 
-    init(useCase: PincodeUseCase) {
-        self.useCase = useCase
-        guard let pincode = useCase.pincode else {
+    private lazy var pincode: Pincode = {
+        guard let pincode = pincodeUseCase.pincode else {
             incorrectImplementation("Should have pincode set")
         }
-        self.pincode = pincode
-    }
+        return pincode
+    }()
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {

@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import Zesame
@@ -40,11 +41,11 @@ final class PollTransactionStatusViewModel: BaseViewModel<
     PollTransactionStatusViewModel.InputFromView,
     PollTransactionStatusViewModel.Output
 > {
-    private let useCase: TransactionsUseCase
+    @Injected(\.transactionReceiptUseCase) private var transactionReceiptUseCase: TransactionReceiptUseCase
+
     private let transactionId: String
 
-    init(useCase: TransactionsUseCase, transactionId: String) {
-        self.useCase = useCase
+    init(transactionId: String) {
         self.transactionId = transactionId
     }
 
@@ -55,7 +56,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         let activityTracker = ActivityIndicator()
 
-        let receipt = useCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
+        let receipt = transactionReceiptUseCase.receiptOfTransaction(byId: transactionId, polling: .twentyTimesLinearBackoff)
             .trackActivity(activityTracker)
             .handleEvents(receiveCompletion: { completion in
                 if case .failure(let error) = completion,

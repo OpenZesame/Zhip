@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -35,19 +36,12 @@ enum AppCoordinatorNavigationStep {}
 /// the app resigns active / returns active.
 final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 
-    /// Legacy service locator used to spawn the wallet and pincode use cases below.
-    /// New code should resolve these from `Container.shared` instead.
-    private let useCaseProvider: UseCaseProvider
-
     /// Handles incoming deep links and decides whether they should be buffered
     /// (while the lock screen is visible) or delivered immediately.
     private let deepLinkHandler: DeepLinkHandler
 
-    /// Lazily-resolved wallet use case. Initialized once on first access.
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-
-    /// Lazily-resolved pincode use case. Initialized once on first access.
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
 
     /// Splash-style lock scene shown while the app is in the background.
     private lazy var lockAppScene = LockAppScene()
@@ -56,7 +50,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
     /// has been configured. Lazily constructed so the use case and navigation
     /// subscription only exist once the scene is actually needed.
     private lazy var unlockAppScene: UnlockAppWithPincode = {
-        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        let viewModel = UnlockAppWithPincodeViewModel()
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
         scene.viewModel.navigator.navigation
@@ -86,18 +80,15 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
     ///   - navigationController: the wallet/onboarding navigation stack.
     ///   - deepLinkHandler: handles buffering and replay of deep links around the
     ///     lock/unlock boundary.
-    ///   - useCaseProvider: seed for the wallet and pincode use cases.
     ///   - isViewControllerRootOfWindow: window-level root predicate.
     ///   - setRootViewControllerOfWindow: window-level root setter.
     init(
         navigationController: UINavigationController,
         deepLinkHandler: DeepLinkHandler,
-        useCaseProvider: UseCaseProvider,
         isViewControllerRootOfWindow: @escaping (UIViewController) -> Bool,
         setRootViewControllerOfWindow: @escaping (UIViewController) -> Void
     ) {
         self.deepLinkHandler = deepLinkHandler
-        self.useCaseProvider = useCaseProvider
         __setRootViewControllerOfWindow = setRootViewControllerOfWindow
         self.isViewControllerRootOfWindow = isViewControllerRootOfWindow
         super.init(navigationController: navigationController)
@@ -107,7 +98,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
     /// scene if needed) or the onboarding flow, depending on whether a wallet is
     /// already configured in secure storage.
     override func start(didStart _: Completion? = nil) {
-        if walletUseCase.hasConfiguredWallet {
+        if walletStorageUseCase.hasConfiguredWallet {
             toMain(displayUnlockSceneIfNeeded: true)
         } else {
             toOnboarding()
@@ -120,8 +111,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 private extension AppCoordinator {
     func toOnboarding() {
         let onboarding = OnboardingCoordinator(
-            navigationController: navigationController,
-            useCaseProvider: useCaseProvider
+            navigationController: navigationController
         )
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] userDid in
@@ -134,8 +124,6 @@ private extension AppCoordinator {
     func toMain(displayUnlockSceneIfNeeded displayUnlockScene: Bool = false) {
         let main = MainCoordinator(
             navigationController: navigationController,
-            deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider,
             deeplinkedTransaction: deepLinkHandler.navigation.map(\.asTransaction).filterNil().eraseToAnyPublisher()
         )
 

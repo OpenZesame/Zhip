@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import Zesame
 
@@ -35,14 +36,13 @@ final class SignTransactionViewModel: BaseViewModel<
     SignTransactionViewModel.InputFromView,
     SignTransactionViewModel.Output
 > {
-    private let transactionUseCase: TransactionsUseCase
-    private let payment: Payment
-    private let walletUseCase: WalletUseCase
+    @Injected(\.sendTransactionUseCase) private var sendTransactionUseCase: SendTransactionUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
 
-    init(paymentToSign: Payment, walletUseCase: WalletUseCase, transactionUseCase: TransactionsUseCase) {
+    private let payment: Payment
+
+    init(paymentToSign: Payment) {
         payment = paymentToSign
-        self.walletUseCase = walletUseCase
-        self.transactionUseCase = transactionUseCase
     }
 
     override func transform(input: Input) -> Output {
@@ -50,7 +50,7 @@ final class SignTransactionViewModel: BaseViewModel<
             navigator.next(userAction)
         }
 
-        guard let _wallet = walletUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }
+        guard let _wallet = walletStorageUseCase.loadWallet() else { incorrectImplementation("Should have wallet") }
         let _payment = payment
 
         let errorTracker = ErrorTracker()
@@ -69,7 +69,7 @@ final class SignTransactionViewModel: BaseViewModel<
             input.fromView.signAndSendTrigger
                 .withLatestFrom(encryptionPassword)
                 .flatMapLatest {
-                    self.transactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassword: $0)
+                    self.sendTransactionUseCase.sendTransaction(for: _payment, wallet: _wallet, encryptionPassword: $0)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()

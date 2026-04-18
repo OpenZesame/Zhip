@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Zesame
 
 // MARK: - MainUserAction
@@ -40,15 +41,14 @@ final class MainViewModel: BaseViewModel<
     MainViewModel.InputFromView,
     MainViewModel.Output
 > {
-    private let transactionUseCase: TransactionsUseCase
-    private let walletUseCase: WalletUseCase
+    @Injected(\.transactionsUseCase) private var transactionUseCase: TransactionsUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
     private let updateBalanceTrigger: AnyPublisher<Void, Never>
 
     // MARK: - Initialization
 
-    init(transactionUseCase: TransactionsUseCase, walletUseCase: WalletUseCase, updateBalanceTrigger: AnyPublisher<Void, Never>) {
-        self.transactionUseCase = transactionUseCase
-        self.walletUseCase = walletUseCase
+    init(updateBalanceTrigger: AnyPublisher<Void, Never>) {
         self.updateBalanceTrigger = updateBalanceTrigger
     }
 
@@ -57,7 +57,7 @@ final class MainViewModel: BaseViewModel<
             navigator.next(intention)
         }
 
-        let wallet = walletUseCase.wallet.filterNil().replaceErrorWithEmpty()
+        let wallet = walletStorageUseCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let activityIndicator = ActivityIndicator()
 

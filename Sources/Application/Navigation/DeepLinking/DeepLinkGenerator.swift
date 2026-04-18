@@ -24,11 +24,21 @@
 
 import Foundation
 
-final class DeepLinkGenerator {
-    init() {}
+/// Builds outgoing `zhip.app` HTTPS URLs that, when opened, re-enter the app via
+/// the deep-link handler. Exists behind a protocol so coordinators depend on the
+/// abstraction and tests can stub URL construction deterministically.
+protocol DeepLinkGenerator: AnyObject {
+
+    /// Builds a sharable URL that, when opened, navigates the recipient to the
+    /// "send" flow pre-populated with the fields of `transaction`.
+    func linkTo(transaction: TransactionIntent) -> URL
 }
 
-extension DeepLinkGenerator {
+/// Default URL-components–based builder used in production.
+final class DefaultDeepLinkGenerator: DeepLinkGenerator {
+
+    init() {}
+
     func linkTo(transaction: TransactionIntent) -> URL {
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"

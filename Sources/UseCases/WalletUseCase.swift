@@ -26,20 +26,7 @@ import Combine
 import Foundation
 import Zesame
 
-// MARK: - Marker protocols
-
-/// Marker protocol for any type that owns a `SecurePersistence` dependency.
-///
-/// Adopters get free, default storage-related implementations via the extensions on
-/// `WalletStorageUseCase` below.
-protocol SecurePersisting: AnyObject {
-
-    /// The underlying secure keystore (typically Keychain-backed) used to read and
-    /// write sensitive wallet material.
-    var securePersistence: SecurePersistence { get }
-}
-
-// MARK: - Narrow use cases (split from the old monolithic `WalletUseCase`)
+// MARK: - Narrow wallet use cases
 
 /// Creates a brand-new wallet from a user-chosen encryption password.
 protocol CreateWalletUseCase: AnyObject {
@@ -58,9 +45,6 @@ protocol RestoreWalletUseCase: AnyObject {
 }
 
 /// Reads and writes the user's wallet to secure persistent storage.
-///
-/// All methods have default implementations in terms of `SecurePersisting`, so any
-/// concrete type owning a `SecurePersistence` gets these for free.
 protocol WalletStorageUseCase: AnyObject {
 
     /// Persists `wallet` to secure storage (replacing any previously saved wallet).
@@ -92,19 +76,6 @@ protocol ExtractKeyPairUseCase: AnyObject {
     func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error>
 }
 
-// MARK: - Composite façade (backward-compatibility)
-
-/// Composite protocol retained for backwards compatibility with existing call sites.
-///
-/// Prefer depending on the narrower protocols above (`CreateWalletUseCase`,
-/// `RestoreWalletUseCase`, `WalletStorageUseCase`, `VerifyEncryptionPasswordUseCase`,
-/// `ExtractKeyPairUseCase`) in new code.
-protocol WalletUseCase: CreateWalletUseCase,
-                       RestoreWalletUseCase,
-                       WalletStorageUseCase,
-                       VerifyEncryptionPasswordUseCase,
-                       ExtractKeyPairUseCase {}
-
 // MARK: - Convenience extensions
 
 extension VerifyEncryptionPasswordUseCase {
@@ -121,27 +92,6 @@ extension ExtractKeyPairUseCase {
     /// Convenience overload that extracts a key pair from the keystore inside a `Wallet`.
     func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
-    }
-}
-
-// MARK: - Default `WalletStorageUseCase` implementation for `SecurePersisting` types
-
-extension WalletStorageUseCase where Self: SecurePersisting {
-
-    func deleteWallet() {
-        securePersistence.deleteWallet()
-    }
-
-    func loadWallet() -> Wallet? {
-        securePersistence.wallet
-    }
-
-    func save(wallet: Wallet) {
-        securePersistence.save(wallet: wallet)
-    }
-
-    var hasConfiguredWallet: Bool {
-        securePersistence.hasConfiguredWallet
     }
 }
 

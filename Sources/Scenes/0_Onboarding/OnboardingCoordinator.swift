@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -30,16 +31,9 @@ enum OnboardingCoordinatorNavigationStep {
 }
 
 final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-
-    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.onboardingUseCase) private var onboardingUseCase: OnboardingUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
 
     override func start(didStart _: Completion? = nil) {
         toWelcome()
@@ -68,7 +62,7 @@ private extension OnboardingCoordinator {
             return toCustomECCWarning()
         }
 
-        guard walletUseCase.hasConfiguredWallet else {
+        guard walletStorageUseCase.hasConfiguredWallet else {
             return toChooseWallet()
         }
 
@@ -113,8 +107,7 @@ private extension OnboardingCoordinator {
 
     func toChooseWallet() {
         let coordinator = ChooseWalletCoordinator(
-            navigationController: navigationController,
-            useCaseProvider: useCaseProvider
+            navigationController: navigationController
         )
 
         start(coordinator: coordinator) { [unowned self] in
@@ -128,7 +121,7 @@ private extension OnboardingCoordinator {
         start(
             coordinator: SetPincodeCoordinator(
                 navigationController: navigationController,
-                useCase: useCaseProvider.makePincodeUseCase()
+                useCase: pincodeUseCase
             )
         ) { [unowned self] (userDid: SetPincodeCoordinatorNavigationStep) in
             switch userDid {
