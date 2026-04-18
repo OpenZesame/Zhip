@@ -1,0 +1,214 @@
+//
+// MIT License
+//
+// Copyright (c) 2018-2026 Open Zesame (https://github.com/OpenZesame)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
+import Combine
+import Factory
+import UIKit
+import XCTest
+@testable import Zhip
+
+/// Covers `AppCoordinator` routing behavior: the decision between onboarding
+/// and main on start, lock/unlock transitions around background/foreground
+/// lifecycle, and deep-link forwarding.
+///
+/// `AppCoordinator` uses `[unowned self]` inside async `.replace` transition
+/// callbacks, so the SUT is held as an instance var and we drain the run loop
+/// before tearDown to let those callbacks fire against a still-alive object.
+final class AppCoordinatorTests: XCTestCase {
+
+    private var mockWallet: MockWalletUseCase!
+    private var mockPincode: MockPincodeUseCase!
+    private var mockTransactions: MockTransactionsUseCase!
+    private var mockOnboarding: MockOnboardingUseCase!
+    private var sut: AppCoordinator!
+    private var rootControllers: [UIViewController] = []
+    private var setRootCallCount = 0
+    private var currentRoot: UIViewController?
+
+    override func setUp() {
+        super.setUp()
+        mockWallet = MockWalletUseCase()
+        mockPincode = MockPincodeUseCase()
+        mockTransactions = MockTransactionsUseCase()
+        mockOnboarding = MockOnboardingUseCase()
+        rootControllers = []
+        setRootCallCount = 0
+        currentRoot = nil
+        Container.shared.walletStorageUseCase.register { [unowned self] in self.mockWallet }
+        Container.shared.pincodeUseCase.register { [unowned self] in self.mockPincode }
+        Container.shared.transactionsUseCase.register { [unowned self] in self.mockTransactions }
+        Container.shared.onboardingUseCase.register { [unowned self] in self.mockOnboarding }
+    }
+
+    override func tearDown() {
+        drainRunLoop()
+        sut = nil
+        Container.shared.manager.reset()
+        mockOnboarding = nil
+        mockTransactions = nil
+        mockPincode = nil
+        mockWallet = nil
+        super.tearDown()
+    }
+
+    // MARK: - Helpers
+
+    private func makeCoordinator(hasWallet: Bool, hasPincode: Bool) -> AppCoordinator {
+        if hasWallet {
+            mockWallet.storedWallet = TestWalletFactory.makeWallet()
+        }
+        if hasPincode {
+            mockPincode.pincode = try? Pincode(digits: [Digit.zero, .one, .two, .three])
+        }
+        let nav = UINavigationController()
+        let handler = DeepLinkHandler()
+        sut = AppCoordinator(
+            navigationController: nav,
+            deepLinkHandler: handler,
+            isViewControllerRootOfWindow: { [weak self] vc in self?.currentRoot === vc },
+            setRootViewControllerOfWindow: { [weak self] vc in
+                self?.setRootCallCount += 1
+                self?.rootControllers.append(vc)
+                self?.currentRoot = vc
+            }
+        )
+        return sut
+    }
+
+    /// Spins the run loop briefly so async `.replace` transition callbacks fire
+    /// while `sut` is still alive.
+    private func drainRunLoop(seconds: TimeInterval = 0.25) {
+        let expectation = expectation(description: "runloop drain")
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { expectation.fulfill() }
+        wait(for: [expectation], timeout: seconds + 1)
+    }
+
+    // MARK: - start() routing
+
+    func test_start_withoutConfiguredWallet_routesToOnboarding() {
+        _ = makeCoordinator(hasWallet: false, hasPincode: false)
+
+        sut.start()
+
+        XCTAssertFalse(sut.childCoordinators.isEmpty)
+        XCTAssertTrue(sut.childCoordinators.first is OnboardingCoordinator)
+    }
+
+    func test_start_withConfiguredWallet_noPincode_routesToMain() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+
+        sut.start()
+
+        XCTAssertTrue(sut.childCoordinators.first is MainCoordinator)
+    }
+
+    func test_start_withWalletAndPincode_presentsUnlockSceneAsync() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: true)
+        let expectation = expectation(description: "unlock scene presented")
+
+        sut.start()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            if self?.rootControllers.contains(where: { $0 is UnlockAppWithPincode }) == true {
+                expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 2)
+    }
+
+    // MARK: - Lock/unlock transitions
+
+    func test_appWillResignActive_whenNotLocked_presentsLockScene() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        let setCountBefore = setRootCallCount
+
+        sut.appWillResignActive()
+
+        XCTAssertGreaterThan(setRootCallCount, setCountBefore)
+        XCTAssertTrue(rootControllers.contains { $0 is LockAppScene })
+    }
+
+    func test_appWillResignActive_whenAlreadyLocked_isNoOp() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        sut.appWillResignActive()
+        let setCountBefore = setRootCallCount
+
+        sut.appWillResignActive()
+
+        XCTAssertEqual(setRootCallCount, setCountBefore)
+    }
+
+    func test_appDidBecomeActive_whenLocked_noPincode_restoresMainStack() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        sut.appWillResignActive()
+        let setCountBefore = setRootCallCount
+
+        sut.appDidBecomeActive()
+
+        XCTAssertGreaterThan(setRootCallCount, setCountBefore)
+    }
+
+    func test_appDidBecomeActive_whenLocked_withPincode_presentsUnlock() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: true)
+        sut.start()
+        sut.appWillResignActive()
+        let setCountBefore = setRootCallCount
+
+        sut.appDidBecomeActive()
+
+        XCTAssertGreaterThanOrEqual(setRootCallCount, setCountBefore)
+    }
+
+    func test_appDidBecomeActive_whenNotLocked_isNoOp() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        let setCountBefore = setRootCallCount
+
+        sut.appDidBecomeActive()
+
+        XCTAssertEqual(setRootCallCount, setCountBefore)
+    }
+
+    // MARK: - Deep link forwarding
+
+    func test_handleDeepLink_validSendUrl_returnsTrue() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        let url = URL(string: "https://zhip.app/send?to=e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")!
+
+        XCTAssertTrue(sut.handleDeepLink(url))
+    }
+
+    func test_handleDeepLink_invalidUrl_returnsFalse() {
+        _ = makeCoordinator(hasWallet: true, hasPincode: false)
+        sut.start()
+        let url = URL(string: "https://zhip.app/unknown")!
+
+        XCTAssertFalse(sut.handleDeepLink(url))
+    }
+}
