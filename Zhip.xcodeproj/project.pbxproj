@@ -307,6 +307,9 @@
 		B1000000000000000000043A /* TextFieldDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043B /* TextFieldDelegateTests.swift */; };
 		B1000000000000000000043C /* InputPincodeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043D /* InputPincodeViewTests.swift */; };
 		B1000000000000000000043E /* CheckboxWithLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000043F /* CheckboxWithLabelTests.swift */; };
+		B10000000000000000000440 /* GradientViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000441 /* GradientViewTests.swift */; };
+		B10000000000000000000442 /* UITextViewStylingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000443 /* UITextViewStylingTests.swift */; };
+		B10000000000000000000444 /* NavigationBarLayoutingNavigationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000445 /* NavigationBarLayoutingNavigationControllerTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -843,6 +846,9 @@
 		B1000000000000000000043B /* TextFieldDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegateTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000043D /* InputPincodeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPincodeViewTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000043F /* CheckboxWithLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxWithLabelTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000441 /* GradientViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientViewTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000443 /* UITextViewStylingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewStylingTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000445 /* NavigationBarLayoutingNavigationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarLayoutingNavigationControllerTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2169,6 +2175,7 @@
 				B1000000000000000000043B /* TextFieldDelegateTests.swift */,
 				B1000000000000000000043D /* InputPincodeViewTests.swift */,
 				B1000000000000000000043F /* CheckboxWithLabelTests.swift */,
+				B10000000000000000000441 /* GradientViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2240,6 +2247,7 @@
 				B1000000000000000000042D /* DecryptKeystoreCoordinatorTests.swift */,
 				B1000000000000000000042F /* SetPincodeCoordinatorTests.swift */,
 				B10000000000000000000431 /* ReceiveCoordinatorTests.swift */,
+				B10000000000000000000445 /* NavigationBarLayoutingNavigationControllerTests.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -2254,6 +2262,7 @@
 				B10000000000000000000413 /* UIViewExtensionsTests.swift */,
 				B10000000000000000000419 /* PublisherHelpersTests.swift */,
 				B10000000000000000000439 /* MergeableTests.swift */,
+				B10000000000000000000443 /* UITextViewStylingTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2848,6 +2857,9 @@
 				B1000000000000000000043A /* TextFieldDelegateTests.swift in Sources */,
 				B1000000000000000000043C /* InputPincodeViewTests.swift in Sources */,
 				B1000000000000000000043E /* CheckboxWithLabelTests.swift in Sources */,
+				B10000000000000000000440 /* GradientViewTests.swift in Sources */,
+				B10000000000000000000442 /* UITextViewStylingTests.swift in Sources */,
+				B10000000000000000000444 /* NavigationBarLayoutingNavigationControllerTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,
