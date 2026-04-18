@@ -295,6 +295,10 @@
 		B10000000000000000000422 /* SendCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000423 /* SendCoordinatorTests.swift */; };
 		B10000000000000000000424 /* ChooseWalletCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000425 /* ChooseWalletCoordinatorTests.swift */; };
 		B10000000000000000000426 /* BackupWalletCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000427 /* BackupWalletCoordinatorTests.swift */; };
+		B10000000000000000000428 /* CreateNewWalletCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000429 /* CreateNewWalletCoordinatorTests.swift */; };
+		B1000000000000000000042A /* RestoreWalletCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000042B /* RestoreWalletCoordinatorTests.swift */; };
+		B1000000000000000000042C /* DecryptKeystoreCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000042D /* DecryptKeystoreCoordinatorTests.swift */; };
+		B1000000000000000000042E /* SetPincodeCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000042F /* SetPincodeCoordinatorTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -819,6 +823,10 @@
 		B10000000000000000000423 /* SendCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCoordinatorTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000425 /* ChooseWalletCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseWalletCoordinatorTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000427 /* BackupWalletCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWalletCoordinatorTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000429 /* CreateNewWalletCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewWalletCoordinatorTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000042B /* RestoreWalletCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletCoordinatorTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000042D /* DecryptKeystoreCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptKeystoreCoordinatorTests.swift; sourceTree = "<group>"; };
+		B1000000000000000000042F /* SetPincodeCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPincodeCoordinatorTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2205,6 +2213,10 @@
 				B10000000000000000000423 /* SendCoordinatorTests.swift */,
 				B10000000000000000000425 /* ChooseWalletCoordinatorTests.swift */,
 				B10000000000000000000427 /* BackupWalletCoordinatorTests.swift */,
+				B10000000000000000000429 /* CreateNewWalletCoordinatorTests.swift */,
+				B1000000000000000000042B /* RestoreWalletCoordinatorTests.swift */,
+				B1000000000000000000042D /* DecryptKeystoreCoordinatorTests.swift */,
+				B1000000000000000000042F /* SetPincodeCoordinatorTests.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -2800,6 +2812,10 @@
 				B10000000000000000000422 /* SendCoordinatorTests.swift in Sources */,
 				B10000000000000000000424 /* ChooseWalletCoordinatorTests.swift in Sources */,
 				B10000000000000000000426 /* BackupWalletCoordinatorTests.swift in Sources */,
+				B10000000000000000000428 /* CreateNewWalletCoordinatorTests.swift in Sources */,
+				B1000000000000000000042A /* RestoreWalletCoordinatorTests.swift in Sources */,
+				B1000000000000000000042C /* DecryptKeystoreCoordinatorTests.swift in Sources */,
+				B1000000000000000000042E /* SetPincodeCoordinatorTests.swift in Sources */,
 				C10000000000000000000101 /* AnyValidationTests.swift in Sources */,
 				C10000000000000000000102 /* ValidationTests.swift in Sources */,
 				C10000000000000000000103 /* ValidationRuleTests.swift in Sources */,
