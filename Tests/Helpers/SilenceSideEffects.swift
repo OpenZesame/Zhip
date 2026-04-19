@@ -52,5 +52,6 @@ final class ZhipTestsBundle: NSObject, XCTestObservation {
     private static func registerSilentSideEffects() {
         Container.shared.soundPlayer.register { MockSoundPlayer() }
         Container.shared.pasteboard.register { MockPasteboard() }
+        Container.shared.biometricsAuthenticator.register { MockBiometricsAuthenticator() }
     }
 }

@@ -29,16 +29,18 @@ import XCTest
 
 /// Tests for `UnlockAppWithPincodeViewModel`.
 ///
-/// Covers the pincode-validation gate that drives `.unlockApp`, and the
-/// validation publisher that downstream views bind to. The biometric
-/// `viewDidAppear` branch is intentionally not exercised — it requires a
-/// `LAContext` that can't be authenticated in unit tests.
+/// Covers the pincode-validation gate that drives `.unlockApp`, the
+/// validation publisher that downstream views bind to, and the biometric
+/// `viewDidAppear` branch through the injected `BiometricsAuthenticator`
+/// protocol (real `LAContext` is replaced with a mock so no system prompt
+/// fires in tests).
 final class UnlockAppWithPincodeViewModelTests: XCTestCase {
 
     private var cancellables: Set<AnyCancellable> = []
     private var pincodeSubject: CurrentValueSubject<Pincode?, Never>!
     private var fakeController: FakeInputFromController!
     private var mockPincode: MockPincodeUseCase!
+    private var mockBiometrics: MockBiometricsAuthenticator!
     private var existingPincode: Pincode!
 
     override func setUpWithError() throws {
@@ -48,12 +50,15 @@ final class UnlockAppWithPincodeViewModelTests: XCTestCase {
         fakeController = FakeInputFromController()
         mockPincode = MockPincodeUseCase()
         mockPincode.pincode = existingPincode
+        mockBiometrics = MockBiometricsAuthenticator()
         Container.shared.pincodeUseCase.register { [unowned self] in self.mockPincode }
+        Container.shared.biometricsAuthenticator.register { [unowned self] in self.mockBiometrics }
     }
 
     override func tearDown() {
         cancellables.removeAll()
         Container.shared.manager.reset()
+        mockBiometrics = nil
         mockPincode = nil
         fakeController = nil
         pincodeSubject = nil
@@ -112,6 +117,51 @@ final class UnlockAppWithPincodeViewModelTests: XCTestCase {
         pincodeSubject.send(existingPincode)
 
         XCTAssertTrue(validations.contains { if case .valid = $0 { true } else { false } })
+    }
+
+    // MARK: - Biometrics
+
+    func test_viewDidAppear_triggersBiometricsAuthenticator() {
+        let sut = makeSUT()
+        _ = sut.transform(input: makeInput())
+
+        fakeController.viewDidAppearSubject.send(())
+
+        XCTAssertEqual(mockBiometrics.authenticateCallCount, 1)
+    }
+
+    func test_biometricsSuccess_emitsUnlockApp() {
+        mockBiometrics.result = true
+        let sut = makeSUT()
+        _ = sut.transform(input: makeInput())
+        let expectation = expectation(description: "unlockApp emitted")
+        var observed: UnlockAppWithPincodeUserAction?
+        sut.navigator.navigation.sink {
+            observed = $0
+            expectation.fulfill()
+        }.store(in: &cancellables)
+
+        fakeController.viewDidAppearSubject.send(())
+
+        wait(for: [expectation], timeout: 1.0)
+        guard case .unlockApp = observed else {
+            return XCTFail("Expected .unlockApp, got \(String(describing: observed))")
+        }
+    }
+
+    func test_biometricsFailure_doesNotEmitUnlockApp() {
+        mockBiometrics.result = false
+        let sut = makeSUT()
+        _ = sut.transform(input: makeInput())
+        var observed: UnlockAppWithPincodeUserAction?
+        sut.navigator.navigation.sink { observed = $0 }.store(in: &cancellables)
+
+        fakeController.viewDidAppearSubject.send(())
+        let expectation = expectation(description: "drain")
+        DispatchQueue.main.async { expectation.fulfill() }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertNil(observed)
     }
 
     private func makeSUT() -> UnlockAppWithPincodeViewModel {

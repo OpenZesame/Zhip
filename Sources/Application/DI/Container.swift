@@ -76,6 +76,12 @@ extension Container {
     var pasteboard: Factory<Pasteboard> {
         self { DefaultPasteboard() }.singleton
     }
+
+    /// Abstracts `LAContext` biometric authentication. Tests register a mock
+    /// so unit tests never trigger a real Face ID / Touch ID prompt.
+    var biometricsAuthenticator: Factory<BiometricsAuthenticator> {
+        self { LAContextBiometricsAuthenticator() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)
