@@ -274,6 +274,7 @@
 		B10000000000000000000209 /* MockTransactionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000020A /* MockTransactionsUseCase.swift */; };
 		B1000000000000000000020B /* UnlockAppWithPincodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000020C /* UnlockAppWithPincodeViewModelTests.swift */; };
 		B1000000000000000000020D /* PrepareTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000020E /* PrepareTransactionViewModelTests.swift */; };
+		B10000000000000000000482 /* AbstractTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000483 /* AbstractTargetTests.swift */; };
 		B10000000000000000000301 /* SimpleViewSmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000302 /* SimpleViewSmokeTests.swift */; };
 		B10000000000000000000400 /* MockZilliqaServiceReactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000401 /* MockZilliqaServiceReactive.swift */; };
 		B10000000000000000000402 /* DefaultCreateWalletUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000403 /* DefaultCreateWalletUseCaseTests.swift */; };
@@ -841,6 +842,7 @@
 		B1000000000000000000020A /* MockTransactionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTransactionsUseCase.swift; sourceTree = "<group>"; };
 		B1000000000000000000020C /* UnlockAppWithPincodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockAppWithPincodeViewModelTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000020E /* PrepareTransactionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareTransactionViewModelTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000483 /* AbstractTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTargetTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000302 /* SimpleViewSmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewSmokeTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000401 /* MockZilliqaServiceReactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockZilliqaServiceReactive.swift; sourceTree = "<group>"; };
 		B10000000000000000000403 /* DefaultCreateWalletUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCreateWalletUseCaseTests.swift; sourceTree = "<group>"; };
@@ -2232,6 +2234,7 @@
 				B10000000000000000000208 /* MainViewModelTests.swift */,
 				B1000000000000000000020C /* UnlockAppWithPincodeViewModelTests.swift */,
 				B1000000000000000000020E /* PrepareTransactionViewModelTests.swift */,
+				B10000000000000000000483 /* AbstractTargetTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2929,6 +2932,7 @@
 				B10000000000000000000209 /* MockTransactionsUseCase.swift in Sources */,
 				B1000000000000000000020B /* UnlockAppWithPincodeViewModelTests.swift in Sources */,
 				B1000000000000000000020D /* PrepareTransactionViewModelTests.swift in Sources */,
+				B10000000000000000000482 /* AbstractTargetTests.swift in Sources */,
 				B10000000000000000000301 /* SimpleViewSmokeTests.swift in Sources */,
 				B10000000000000000000400 /* MockZilliqaServiceReactive.swift in Sources */,
 				B10000000000000000000402 /* DefaultCreateWalletUseCaseTests.swift in Sources */,
