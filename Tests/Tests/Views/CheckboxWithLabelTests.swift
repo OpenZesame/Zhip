@@ -131,4 +131,29 @@ final class CheckboxWithLabelTests: XCTestCase {
         let sut = CheckboxWithLabel()
         sut.withStyle(.init(labelText: nil, numberOfLines: 1, alignment: .center))
     }
+
+    // MARK: - beginTracking
+
+    func test_checkboxView_beginTracking_togglesOnAndSendsValueChanged() {
+        let sut = CheckboxView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        var emitted: [Bool] = []
+        sut.isCheckedPublisher.sink { emitted.append($0) }.store(in: &cancellables)
+
+        let touch = UITouch()
+        _ = sut.beginTracking(touch, with: nil)
+
+        XCTAssertTrue(sut.on)
+        XCTAssertTrue(emitted.contains(true))
+    }
+
+    func test_checkboxWithLabel_beginTracking_togglesCheckboxAndSendsValueChanged() {
+        let sut = CheckboxWithLabel()
+        var emitted: [Bool] = []
+        sut.isCheckedPublisher.sink { emitted.append($0) }.store(in: &cancellables)
+
+        let touch = UITouch()
+        _ = sut.beginTracking(touch, with: nil)
+
+        XCTAssertTrue(emitted.contains(true))
+    }
 }
