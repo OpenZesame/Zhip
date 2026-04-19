@@ -200,6 +200,10 @@ final class SettingsCoordinatorTests: XCTestCase {
             if case .removeWallet = step { removeWalletEmitted.fulfill() }
         }.store(in: &cancellables)
         fire(.removeWallet, on: scene)
+        // Let the modal present animation fully complete before we dismiss,
+        // otherwise on CI the in-flight presentation swallows the dismiss
+        // request and the completion handler never runs.
+        drainRunLoop(seconds: 0.5)
 
         guard
             let nav = navigationController.presentedViewController as? UINavigationController,
@@ -210,7 +214,7 @@ final class SettingsCoordinatorTests: XCTestCase {
 
         modal.viewModel.navigator.next(.confirm)
 
-        wait(for: [removeWalletEmitted], timeout: 3)
+        wait(for: [removeWalletEmitted], timeout: 10)
         XCTAssertEqual(mockTransactions.deleteCachedBalanceCallCount, 1)
         XCTAssertEqual(mockWallet.deleteWalletCallCount, 1)
         XCTAssertEqual(mockPincode.deletePincodeCallCount, 1)
