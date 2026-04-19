@@ -185,4 +185,27 @@ final class SettingsCoordinatorTests: XCTestCase {
 
         fire(.removeWallet, on: scene)
     }
+
+    func test_confirmWalletRemoval_confirm_emitsRemoveWalletAndClearsState() {
+        let scene = startAndGetScene()
+        let removeWalletEmitted = expectation(description: "removeWallet emitted")
+        sut.navigator.navigation.sink { step in
+            if case .removeWallet = step { removeWalletEmitted.fulfill() }
+        }.store(in: &cancellables)
+        fire(.removeWallet, on: scene)
+
+        guard
+            let nav = navigationController.presentedViewController as? UINavigationController,
+            let modal = nav.viewControllers.first as? ConfirmWalletRemoval
+        else {
+            return XCTFail("Expected ConfirmWalletRemoval modal, got \(String(describing: navigationController.presentedViewController))")
+        }
+
+        modal.viewModel.navigator.next(.confirm)
+
+        wait(for: [removeWalletEmitted], timeout: 3)
+        XCTAssertEqual(mockTransactions.deleteCachedBalanceCallCount, 1)
+        XCTAssertEqual(mockWallet.deleteWalletCallCount, 1)
+        XCTAssertEqual(mockPincode.deletePincodeCallCount, 1)
+    }
 }
