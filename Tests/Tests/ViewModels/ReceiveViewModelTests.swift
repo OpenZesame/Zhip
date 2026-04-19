@@ -24,6 +24,7 @@
 
 import Combine
 import Factory
+import UIKit
 import XCTest
 @testable import Zhip
 
@@ -98,6 +99,17 @@ final class ReceiveViewModelTests: XCTestCase {
         output.receivingAddress.sink { receivedAddress = $0 }.store(in: &cancellables)
 
         XCTAssertEqual(receivedAddress, mockWallet.storedWallet?.bech32Address.asString)
+    }
+
+    func test_copyMyAddressTrigger_copiesAddressAndEmitsToast() {
+        _ = makeSUT()
+        var emittedToast: Toast?
+        fakeController.toastSubject.sink { emittedToast = $0 }.store(in: &cancellables)
+
+        copySubject.send(())
+
+        XCTAssertEqual(UIPasteboard.general.string, mockWallet.storedWallet?.bech32Address.asString)
+        XCTAssertNotNil(emittedToast)
     }
 
     private func makeSUT() -> ReceiveViewModel {
