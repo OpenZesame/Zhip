@@ -324,6 +324,7 @@
 		B1000000000000000000045D /* MockSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000045E /* MockSoundPlayer.swift */; };
 		B1000000000000000000045F /* SilenceSideEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000460 /* SilenceSideEffects.swift */; };
 		B10000000000000000000462 /* SoundPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000463 /* SoundPlayerTests.swift */; };
+		B10000000000000000000464 /* ErrorCustomStringConvertibleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000465 /* ErrorCustomStringConvertibleTests.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -878,6 +879,7 @@
 		B10000000000000000000460 /* SilenceSideEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceSideEffects.swift; sourceTree = "<group>"; };
 		B10000000000000000000461 /* Audio */ = {isa = PBXGroup; children = (B1000000000000000000045C /* SoundPlayer.swift */, ); path = Audio; sourceTree = "<group>"; };
 		B10000000000000000000463 /* SoundPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000465 /* ErrorCustomStringConvertibleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCustomStringConvertibleTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -2314,6 +2316,7 @@
 				B1000000000000000000044F /* UILabelStylingTests.swift */,
 				B10000000000000000000451 /* PublisherExtrasTests.swift */,
 				B10000000000000000000459 /* UIKitExtrasTests.swift */,
+				B10000000000000000000465 /* ErrorCustomStringConvertibleTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2845,6 +2848,7 @@
 				B1000000000000000000045D /* MockSoundPlayer.swift in Sources */,
 				B1000000000000000000045F /* SilenceSideEffects.swift in Sources */,
 				B10000000000000000000462 /* SoundPlayerTests.swift in Sources */,
+				B10000000000000000000464 /* ErrorCustomStringConvertibleTests.swift in Sources */,
 				B10000000000000000000120 /* MockPincodeUseCase.swift in Sources */,
 				B10000000000000000000121 /* MockWalletUseCase.swift in Sources */,
 				B10000000000000000000104 /* TestStoreFactory.swift in Sources */,

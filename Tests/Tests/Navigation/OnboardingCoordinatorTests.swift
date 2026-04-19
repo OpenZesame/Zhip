@@ -224,4 +224,51 @@ final class OnboardingCoordinatorTests: XCTestCase {
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is ChooseWalletCoordinator })
     }
+
+    // MARK: - Child coordinator completion handlers
+
+    private func firstChild<T>(as _: T.Type) throws -> T {
+        try XCTUnwrap(sut.childCoordinators.first { $0 is T } as? T)
+    }
+
+    func test_chooseWalletFinishChoosing_startsSetPincodeChild() throws {
+        mockOnboarding.hasAcceptedTermsOfService = true
+        mockOnboarding.hasAnsweredCrashReportingQuestion = true
+        mockOnboarding.hasAcceptedCustomECCWarning = true
+        mockOnboarding.shouldPromptUserToChosePincode = true
+        sut.start()
+        let welcome = top(as: Welcome.self)!
+        welcome.viewModel.navigator.next(.start)
+        drainRunLoop()
+        let chooseWallet = try firstChild(as: ChooseWalletCoordinator.self)
+
+        // Emit .finishChoosingWallet from the inner ChooseWalletCoordinator to
+        // exercise OnboardingCoordinator's toChooseWallet navigationHandler.
+        chooseWallet.navigator.next(.finishChoosingWallet)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertTrue(sut.childCoordinators.contains { $0 is SetPincodeCoordinator })
+    }
+
+    func test_setPincodeDone_bubblesFinishOnboarding() throws {
+        mockOnboarding.hasAcceptedTermsOfService = true
+        mockOnboarding.hasAnsweredCrashReportingQuestion = true
+        mockOnboarding.hasAcceptedCustomECCWarning = true
+        mockWallet.storedWallet = TestWalletFactory.makeWallet()
+        mockOnboarding.shouldPromptUserToChosePincode = true
+        sut.start()
+        let welcome = top(as: Welcome.self)!
+        welcome.viewModel.navigator.next(.start)
+        drainRunLoop()
+        let setPin = try firstChild(as: SetPincodeCoordinator.self)
+        var received: OnboardingCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        setPin.navigator.next(.setPincode)
+        drainRunLoop(seconds: 0.5)
+
+        if case .finishOnboarding = received { } else {
+            XCTFail("expected .finishOnboarding, got \(String(describing: received))")
+        }
+    }
 }
