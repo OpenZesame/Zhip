@@ -239,7 +239,7 @@ final class OnboardingCoordinatorTests: XCTestCase {
         // Emit .finishChoosingWallet from the inner ChooseWalletCoordinator to
         // exercise OnboardingCoordinator's toChooseWallet navigationHandler.
         chooseWallet.navigator.next(.finishChoosingWallet)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is SetPincodeCoordinator })
     }
@@ -259,7 +259,7 @@ final class OnboardingCoordinatorTests: XCTestCase {
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
         setPin.navigator.next(.setPincode)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         if case .finishOnboarding = received { } else {
             XCTFail("expected .finishOnboarding, got \(String(describing: received))")

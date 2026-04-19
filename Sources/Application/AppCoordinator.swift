@@ -42,6 +42,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 
     @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
     @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
+    @Injected(\.clock) private var clock: Clock
 
     /// Splash-style lock scene shown while the app is in the background.
     private lazy var lockAppScene = LockAppScene()
@@ -205,7 +206,7 @@ private extension AppCoordinator {
     }
 
     func appIsUnlockedEmitBufferedDeeplinks(delayInSeconds: TimeInterval = 0.2) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) { [weak self] in
+        clock.schedule(after: delayInSeconds) { [weak self] in
             self?.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
         }
     }

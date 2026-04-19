@@ -159,7 +159,7 @@ final class BackupWalletCoordinatorTests: XCTestCase {
         let decrypt = try firstChild(as: DecryptKeystoreCoordinator.self)
 
         decrypt.navigator.next(.backingUpKeyPair)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
     }
@@ -172,7 +172,7 @@ final class BackupWalletCoordinatorTests: XCTestCase {
         let decrypt = try firstChild(as: DecryptKeystoreCoordinator.self)
 
         decrypt.navigator.next(.dismiss)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
     }
@@ -181,7 +181,7 @@ final class BackupWalletCoordinatorTests: XCTestCase {
         sut.start()
         let backup = top(as: BackupWallet.self)!
         backup.viewModel.navigator.next(.revealKeystore)
-        drainRunLoop(seconds: 0.3)
+        drainRunLoop()
         guard let presentedNav = navigationController.presentedViewController as? UINavigationController,
               let backUp = presentedNav.viewControllers.first as? BackUpKeystore
         else {
@@ -190,7 +190,7 @@ final class BackupWalletCoordinatorTests: XCTestCase {
         }
 
         backUp.viewModel.navigator.next(.finished)
-        drainRunLoop(seconds: 0.3)
+        drainRunLoop()
         // Dismissal ran; no crash.
     }
 }

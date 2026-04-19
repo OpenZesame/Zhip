@@ -115,7 +115,7 @@ final class ChooseWalletCoordinatorTests: XCTestCase {
 
         let wallet = TestWalletFactory.makeWallet()
         create.navigator.next(.create(wallet: wallet))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertNotNil(mockWallet.storedWallet)
         if case .finishChoosingWallet = received { } else {
@@ -133,7 +133,7 @@ final class ChooseWalletCoordinatorTests: XCTestCase {
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
         create.navigator.next(.cancel)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertNil(mockWallet.storedWallet)
         XCTAssertNil(received)
@@ -150,7 +150,7 @@ final class ChooseWalletCoordinatorTests: XCTestCase {
 
         let wallet = TestWalletFactory.makeWallet()
         restore.navigator.next(.finishedRestoring(wallet: wallet))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertNotNil(mockWallet.storedWallet)
         if case .finishChoosingWallet = received { } else {
@@ -168,7 +168,7 @@ final class ChooseWalletCoordinatorTests: XCTestCase {
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
         restore.navigator.next(.cancel)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertNil(mockWallet.storedWallet)
         XCTAssertNil(received)

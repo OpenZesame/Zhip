@@ -24,6 +24,7 @@
 
 import Factory
 import Foundation
+import UIKit
 import XCTest
 @testable import Zhip
 
@@ -40,6 +41,12 @@ final class ZhipTestsBundle: NSObject, XCTestObservation {
     override init() {
         super.init()
         XCTestObservationCenter.shared.addTestObserver(self)
+        // Disabling UIView animations makes `present(animated: true)` and
+        // `dismiss(animated: true)` resolve on the next runloop tick instead
+        // of spending ~0.35s per transition on the real animator. Coordinator
+        // tests depend on this: without it, their 0.5s drains are effectively
+        // mandatory, and the whole navigation suite costs seconds per test.
+        UIView.setAnimationsEnabled(false)
         Self.registerSilentSideEffects()
     }
 
@@ -54,5 +61,6 @@ final class ZhipTestsBundle: NSObject, XCTestObservation {
         Container.shared.pasteboard.register { MockPasteboard() }
         Container.shared.biometricsAuthenticator.register { MockBiometricsAuthenticator() }
         Container.shared.urlOpener.register { MockUrlOpener() }
+        Container.shared.clock.register { ImmediateClock() }
     }
 }

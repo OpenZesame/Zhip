@@ -139,11 +139,11 @@ final class SendCoordinatorTests: XCTestCase {
         let prepare = top(as: PrepareTransaction.self)!
         let payment = try makePayment()
         prepare.viewModel.navigator.next(.reviewPayment(payment))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
         let review = top(as: ReviewTransactionBeforeSigning.self)!
 
         review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertTrue(top(as: SignTransaction.self) != nil)
     }
@@ -171,10 +171,10 @@ final class SendCoordinatorTests: XCTestCase {
         let prepare = top(as: PrepareTransaction.self)!
         let payment = try makePayment()
         prepare.viewModel.navigator.next(.reviewPayment(payment))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
         let review = top(as: ReviewTransactionBeforeSigning.self)!
         review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
         return top(as: SignTransaction.self)!
     }
 
@@ -182,7 +182,7 @@ final class SendCoordinatorTests: XCTestCase {
         let sign = try pushToSignTransaction()
 
         sign.viewModel.navigator.next(.sign(try makeTransactionResponse()))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertTrue(top(as: PollTransactionStatus.self) != nil)
     }
@@ -192,7 +192,7 @@ final class SendCoordinatorTests: XCTestCase {
     private func pushToPoll() throws -> PollTransactionStatus {
         let sign = try pushToSignTransaction()
         sign.viewModel.navigator.next(.sign(try makeTransactionResponse()))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
         return top(as: PollTransactionStatus.self)!
     }
 
@@ -253,7 +253,7 @@ final class SendCoordinatorTests: XCTestCase {
         let prepare = top(as: PrepareTransaction.self)!
         let payment = try makePayment()
         prepare.viewModel.navigator.next(.reviewPayment(payment))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
         XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
 
         let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
@@ -268,25 +268,25 @@ final class SendCoordinatorTests: XCTestCase {
         sut.start()
         let prepare = top(as: PrepareTransaction.self)!
         prepare.viewModel.navigator.next(.scanQRCode)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         let presentedNav = navigationController.presentedViewController as? UINavigationController
         let scan = presentedNav?.topViewController as? ScanQRCode
         scan?.viewModel.navigator.next(.cancel)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
     }
 
     func test_scanQRCode_scannedTransaction_dismissesAndForwardsToSubject() throws {
         sut.start()
         let prepare = top(as: PrepareTransaction.self)!
         prepare.viewModel.navigator.next(.scanQRCode)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         let presentedNav = navigationController.presentedViewController as? UINavigationController
         let scan = presentedNav?.topViewController as? ScanQRCode
         let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
         let intent = TransactionIntent(to: address)
         scan?.viewModel.navigator.next(.scanQRContainingTransaction(intent))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
     }
 }

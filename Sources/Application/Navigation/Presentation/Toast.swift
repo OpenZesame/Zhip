@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 
 /// A lightweight text message the UI surfaces as an auto-dismissing alert,
@@ -81,7 +82,7 @@ extension Toast {
             }
             alert.addAction(dismissAction)
         case let .after(duration):
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) {
+            Container.shared.clock().schedule(after: duration) {
                 alert.dismiss(animated: true, completion: dismissedCompletion)
             }
         }

@@ -162,7 +162,7 @@ final class MainCoordinatorTests: XCTestCase {
         let send = try firstChild(as: SendCoordinator.self)
 
         send.navigator.next(.finish(fetchBalance: true))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is SendCoordinator })
     }
@@ -175,7 +175,7 @@ final class MainCoordinatorTests: XCTestCase {
         let send = try firstChild(as: SendCoordinator.self)
 
         send.navigator.next(.finish(fetchBalance: false))
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is SendCoordinator })
     }
@@ -188,7 +188,7 @@ final class MainCoordinatorTests: XCTestCase {
         let receive = try firstChild(as: ReceiveCoordinator.self)
 
         receive.navigator.next(.finish)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is ReceiveCoordinator })
     }
@@ -201,7 +201,7 @@ final class MainCoordinatorTests: XCTestCase {
         let settings = try firstChild(as: SettingsCoordinator.self)
 
         settings.navigator.next(.closeSettings)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertFalse(sut.childCoordinators.contains { $0 is SettingsCoordinator })
     }

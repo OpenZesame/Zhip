@@ -96,6 +96,14 @@ extension Container {
     var urlOpener: Factory<UrlOpener> {
         self { DefaultUrlOpener() }.singleton
     }
+
+    /// Abstracts delayed main-queue dispatch (`asyncAfter`). Tests register
+    /// `ImmediateClock`, which ignores the requested delay and fires on the
+    /// next main-queue cycle, so timer-driven flows run in milliseconds
+    /// instead of seconds.
+    var clock: Factory<Clock> {
+        self { MainQueueClock() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)

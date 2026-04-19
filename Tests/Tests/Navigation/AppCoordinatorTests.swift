@@ -217,7 +217,7 @@ final class AppCoordinatorTests: XCTestCase {
         mockWallet.storedWallet = TestWalletFactory.makeWallet()
 
         onboarding.navigator.next(.finishOnboarding)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is MainCoordinator })
     }
@@ -230,7 +230,7 @@ final class AppCoordinatorTests: XCTestCase {
         mockWallet.storedWallet = nil
 
         main.navigator.next(.removeWallet)
-        drainRunLoop(seconds: 0.5)
+        drainRunLoop()
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is OnboardingCoordinator })
     }
@@ -247,7 +247,7 @@ final class AppCoordinatorTests: XCTestCase {
         // we can grab a UnlockAppWithPincode controller from rootControllers.
         sut.appWillResignActive()
         sut.appDidBecomeActive()
-        drainRunLoop(seconds: 0.3)
+        drainRunLoop()
 
         guard let unlock = rootControllers.compactMap({ $0 as? UnlockAppWithPincode }).first else {
             XCTFail("expected UnlockAppWithPincode in root controller history")
@@ -256,7 +256,7 @@ final class AppCoordinatorTests: XCTestCase {
         let setCountBefore = setRootCallCount
 
         unlock.viewModel.navigator.next(.unlockApp)
-        drainRunLoop(seconds: 0.3)
+        drainRunLoop()
 
         XCTAssertGreaterThan(setRootCallCount, setCountBefore)
     }
