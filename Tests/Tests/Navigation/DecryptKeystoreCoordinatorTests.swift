@@ -126,6 +126,16 @@ final class DecryptKeystoreCoordinatorTests: XCTestCase {
 
     // MARK: - BackUpRevealed branch
 
+    func test_init_withoutWalletPublisher_fallsBackToContainerWalletStorage() {
+        // Exercise the `wallet == nil` fallback branch that reads from the
+        // shared Container-registered walletStorageUseCase.
+        let coordinator = DecryptKeystoreCoordinator(navigationController: navigationController)
+
+        coordinator.start()
+
+        XCTAssertTrue(navigationController.viewControllers.first is DecryptKeystoreToRevealKeyPair)
+    }
+
     func test_backUpRevealedFinish_bubblesBackingUpKeyPair() throws {
         sut.start()
         let decrypt = top(as: DecryptKeystoreToRevealKeyPair.self)!

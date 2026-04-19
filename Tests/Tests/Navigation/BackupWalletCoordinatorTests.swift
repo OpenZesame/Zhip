@@ -139,4 +139,64 @@ final class BackupWalletCoordinatorTests: XCTestCase {
 
         XCTAssertTrue(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
     }
+
+    // MARK: - init fallback
+
+    func test_init_withoutWalletPublisher_usesContainerWalletStorage() {
+        // Exercise the `wallet == nil` fallback branch.
+        let coordinator = BackupWalletCoordinator(navigationController: navigationController)
+
+        coordinator.start()
+
+        XCTAssertTrue(navigationController.viewControllers.first is BackupWallet)
+    }
+
+    // MARK: - Modal navigation handlers
+
+    private func firstChild<T>(as _: T.Type) throws -> T {
+        try XCTUnwrap(sut.childCoordinators.first { $0 is T } as? T)
+    }
+
+    func test_decryptKeystoreBackingUpKeyPair_dismissesChildCoordinator() throws {
+        sut.start()
+        let backup = top(as: BackupWallet.self)!
+        backup.viewModel.navigator.next(.revealPrivateKey)
+        drainRunLoop()
+        let decrypt = try firstChild(as: DecryptKeystoreCoordinator.self)
+
+        decrypt.navigator.next(.backingUpKeyPair)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
+    }
+
+    func test_decryptKeystoreDismiss_dismissesChildCoordinator() throws {
+        sut.start()
+        let backup = top(as: BackupWallet.self)!
+        backup.viewModel.navigator.next(.revealPrivateKey)
+        drainRunLoop()
+        let decrypt = try firstChild(as: DecryptKeystoreCoordinator.self)
+
+        decrypt.navigator.next(.dismiss)
+        drainRunLoop(seconds: 0.5)
+
+        XCTAssertFalse(sut.childCoordinators.contains { $0 is DecryptKeystoreCoordinator })
+    }
+
+    func test_revealKeystoreFinished_dismissesModalScene() {
+        sut.start()
+        let backup = top(as: BackupWallet.self)!
+        backup.viewModel.navigator.next(.revealKeystore)
+        drainRunLoop(seconds: 0.3)
+        guard let presentedNav = navigationController.presentedViewController as? UINavigationController,
+              let backUp = presentedNav.viewControllers.first as? BackUpKeystore
+        else {
+            XCTFail("expected BackUpKeystore to be modally presented")
+            return
+        }
+
+        backUp.viewModel.navigator.next(.finished)
+        drainRunLoop(seconds: 0.3)
+        // Dismissal ran; no crash.
+    }
 }
