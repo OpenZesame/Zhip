@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -35,6 +36,8 @@ final class BackUpKeystoreViewModel: BaseViewModel<
     BackUpKeystoreViewModel.InputFromView,
     BackUpKeystoreViewModel.Output
 > {
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
+
     private let keystore: AnyPublisher<Keystore, Never>
 
     init(keystore: AnyPublisher<Keystore, Never>) {
@@ -53,8 +56,8 @@ final class BackUpKeystoreViewModel: BaseViewModel<
                 .sink { userDid(.finished) },
 
             input.fromView.copyTrigger.withLatestFrom(keystore)
-                .sink {
-                    UIPasteboard.general.string = $0
+                .sink { [pasteboard] in
+                    pasteboard.copy($0)
                     let toast = Toast(String(localized: .BackUpKeystore.copiedKeystore))
                     input.fromController.toastSubject.send(toast)
                 },

@@ -42,6 +42,7 @@ final class ReceiveViewModel: BaseViewModel<
     ReceiveViewModel.Output
 > {
     @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
 
     private let qrCoder: QRCoding
 
@@ -90,8 +91,8 @@ final class ReceiveViewModel: BaseViewModel<
                 .sink { userDid(.finish) },
 
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
-                .sink {
-                    UIPasteboard.general.string = $0
+                .sink { [pasteboard] in
+                    pasteboard.copy($0)
                     input.fromController.toastSubject.send(Toast(String(localized: .Receive.copiedAddress)))
                 },
 

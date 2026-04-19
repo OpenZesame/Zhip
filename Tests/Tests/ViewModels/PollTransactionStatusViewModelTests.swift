@@ -24,7 +24,6 @@
 
 import Combine
 import Factory
-import UIKit
 import XCTest
 import Zesame
 @testable import Zhip
@@ -42,6 +41,7 @@ final class PollTransactionStatusViewModelTests: XCTestCase {
     private var seeTxDetails: PassthroughSubject<Void, Never>!
     private var fakeController: FakeInputFromController!
     private var mockTransactions: MockTransactionsUseCase!
+    private var mockPasteboard: MockPasteboard!
     private let txId = "tx-id-12345"
 
     override func setUp() {
@@ -52,17 +52,19 @@ final class PollTransactionStatusViewModelTests: XCTestCase {
         fakeController = FakeInputFromController()
         mockTransactions = MockTransactionsUseCase()
         Container.shared.transactionReceiptUseCase.register { [unowned self] in self.mockTransactions }
+        mockPasteboard = MockPasteboard()
+        Container.shared.pasteboard.register { [unowned self] in self.mockPasteboard }
     }
 
     override func tearDown() {
         cancellables.removeAll()
         Container.shared.manager.reset()
+        mockPasteboard = nil
         mockTransactions = nil
         fakeController = nil
         seeTxDetails = nil
         skipTrigger = nil
         copyTrigger = nil
-        UIPasteboard.general.string = ""
         super.tearDown()
     }
 
@@ -75,7 +77,7 @@ final class PollTransactionStatusViewModelTests: XCTestCase {
         copyTrigger.send(())
 
         XCTAssertEqual(toasts.count, 1)
-        XCTAssertEqual(UIPasteboard.general.string, txId)
+        XCTAssertEqual(mockPasteboard.copiedString, txId)
     }
 
     func test_skipBeforeReceipt_emitsSkip() {

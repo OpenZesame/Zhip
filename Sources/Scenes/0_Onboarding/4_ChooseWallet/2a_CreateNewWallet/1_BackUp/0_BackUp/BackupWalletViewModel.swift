@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -42,6 +43,8 @@ final class BackupWalletViewModel: BaseViewModel<
     BackupWalletViewModel.InputFromView,
     BackupWalletViewModel.Output
 > {
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
+
     private let wallet: AnyPublisher<Wallet, Never>
     enum Mode: Int, Equatable {
         case dismissable, cancellable
@@ -73,8 +76,8 @@ final class BackupWalletViewModel: BaseViewModel<
 
         [
             input.fromView.copyKeystoreToPasteboardTrigger.withLatestFrom(wallet.map(\.keystoreAsJSON)) { $1 }
-                .sink { (keystoreText: String) in
-                    UIPasteboard.general.string = keystoreText
+                .sink { [pasteboard] (keystoreText: String) in
+                    pasteboard.copy(keystoreText)
                     input.fromController.toastSubject.send(Toast(String(localized: .BackupWallet.copiedKeystore)))
                 },
 

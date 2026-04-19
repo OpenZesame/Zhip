@@ -22,35 +22,25 @@
 // SOFTWARE.
 //
 
-import Factory
 import Foundation
-import XCTest
 @testable import Zhip
 
-/// Test-bundle principal class — instantiated automatically by XCTest at bundle
-/// load and re-applied before every individual test case.
-///
-/// **Why this exists:** real-world side effects like audio playback MUST be
-/// modeled as injected dependencies and replaced with no-ops in tests so unit
-/// tests never produce real audio (or other observable effects). Registering
-/// here guarantees coverage even for tests that never call `setUp` themselves.
-@objc(ZhipTestsBundle)
-final class ZhipTestsBundle: NSObject, XCTestObservation {
+/// In-test `Pasteboard` that NEVER mutates the real `UIPasteboard.general`.
+/// Records each `copy(...)` invocation so tests can assert on intent without
+/// leaking clipboard data across test runs or onto the host device.
+final class MockPasteboard: Pasteboard {
 
-    override init() {
-        super.init()
-        XCTestObservationCenter.shared.addTestObserver(self)
-        Self.registerSilentSideEffects()
-    }
+    /// The most recent string passed to `copy(_:)`, or `nil` if no copy has
+    /// occurred since this mock was created or reset.
+    private(set) var copiedString: String?
 
-    func testCaseWillStart(_ testCase: XCTestCase) {
-        // Container.shared.manager.reset() in test tearDown wipes registrations,
-        // so we re-apply the silent defaults before each test starts.
-        Self.registerSilentSideEffects()
-    }
+    /// Every string passed to `copy(_:)`, in call order.
+    private(set) var copyInvocations: [String] = []
 
-    private static func registerSilentSideEffects() {
-        Container.shared.soundPlayer.register { MockSoundPlayer() }
-        Container.shared.pasteboard.register { MockPasteboard() }
+    init() {}
+
+    func copy(_ string: String) {
+        copiedString = string
+        copyInvocations.append(string)
     }
 }

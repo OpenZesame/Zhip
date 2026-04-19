@@ -42,6 +42,7 @@ final class PollTransactionStatusViewModel: BaseViewModel<
     PollTransactionStatusViewModel.Output
 > {
     @Injected(\.transactionReceiptUseCase) private var transactionReceiptUseCase: TransactionReceiptUseCase
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
 
     private let transactionId: String
 
@@ -72,8 +73,8 @@ final class PollTransactionStatusViewModel: BaseViewModel<
 
         [
             input.fromView.copyTransactionIdTrigger
-                .sink { [unowned self] in
-                    UIPasteboard.general.string = self.transactionId
+                .sink { [unowned self, pasteboard] in
+                    pasteboard.copy(self.transactionId)
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .PollTransaction.copiedTransactionId)))
                 },

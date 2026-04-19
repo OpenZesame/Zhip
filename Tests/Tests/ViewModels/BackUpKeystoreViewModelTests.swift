@@ -23,7 +23,7 @@
 //
 
 import Combine
-import UIKit
+import Factory
 import XCTest
 import Zesame
 @testable import Zhip
@@ -38,20 +38,24 @@ final class BackUpKeystoreViewModelTests: XCTestCase {
     private var copyTrigger: PassthroughSubject<Void, Never>!
     private var fakeController: FakeInputFromController!
     private var wallet: Zhip.Wallet!
+    private var mockPasteboard: MockPasteboard!
 
     override func setUp() {
         super.setUp()
         copyTrigger = PassthroughSubject<Void, Never>()
         fakeController = FakeInputFromController()
         wallet = TestWalletFactory.makeWallet()
+        mockPasteboard = MockPasteboard()
+        Container.shared.pasteboard.register { [unowned self] in self.mockPasteboard }
     }
 
     override func tearDown() {
         cancellables.removeAll()
+        Container.shared.manager.reset()
+        mockPasteboard = nil
         wallet = nil
         fakeController = nil
         copyTrigger = nil
-        UIPasteboard.general.string = ""
         super.tearDown()
     }
 
@@ -74,7 +78,7 @@ final class BackUpKeystoreViewModelTests: XCTestCase {
         copyTrigger.send(())
 
         XCTAssertEqual(toasts.count, 1)
-        let pasted = UIPasteboard.general.string ?? ""
+        let pasted = mockPasteboard.copiedString ?? ""
         XCTAssertTrue(pasted.contains(wallet.keystore.address.asString))
         XCTAssertTrue(pasted.contains("\"version\""))
     }

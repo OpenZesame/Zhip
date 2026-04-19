@@ -23,7 +23,7 @@
 //
 
 import Combine
-import UIKit
+import Factory
 import XCTest
 import Zesame
 @testable import Zhip
@@ -40,6 +40,7 @@ final class BackUpRevealedKeyPairViewModelTests: XCTestCase {
     private var copyPublicKey: PassthroughSubject<Void, Never>!
     private var fakeController: FakeInputFromController!
     private var keyPair: KeyPair!
+    private var mockPasteboard: MockPasteboard!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -50,15 +51,18 @@ final class BackUpRevealedKeyPairViewModelTests: XCTestCase {
             rawRepresentation: Data(hex: "0E891B9DFF485000C7D1DC22ECF3A583CC50328684321D61947A86E57CF6C638")
         )
         keyPair = KeyPair(private: privateKey)
+        mockPasteboard = MockPasteboard()
+        Container.shared.pasteboard.register { [unowned self] in self.mockPasteboard }
     }
 
     override func tearDown() {
         cancellables.removeAll()
+        Container.shared.manager.reset()
+        mockPasteboard = nil
         keyPair = nil
         fakeController = nil
         copyPublicKey = nil
         copyPrivateKey = nil
-        UIPasteboard.general.string = ""
         super.tearDown()
     }
 
@@ -83,7 +87,7 @@ final class BackUpRevealedKeyPairViewModelTests: XCTestCase {
         copyPrivateKey.send(())
 
         XCTAssertEqual(toasts.count, 1)
-        XCTAssertEqual(UIPasteboard.general.string, keyPair.privateKey.rawRepresentation.asHex)
+        XCTAssertEqual(mockPasteboard.copiedString, keyPair.privateKey.rawRepresentation.asHex)
     }
 
     func test_copyPublicKey_writesHexPublicKeyToPasteboardAndSendsToast() {
@@ -95,7 +99,7 @@ final class BackUpRevealedKeyPairViewModelTests: XCTestCase {
         copyPublicKey.send(())
 
         XCTAssertEqual(toasts.count, 1)
-        XCTAssertEqual(UIPasteboard.general.string, keyPair.publicKey.x963Representation.asHex)
+        XCTAssertEqual(mockPasteboard.copiedString, keyPair.publicKey.x963Representation.asHex)
     }
 
     func test_rightBarButton_emitsFinish() {

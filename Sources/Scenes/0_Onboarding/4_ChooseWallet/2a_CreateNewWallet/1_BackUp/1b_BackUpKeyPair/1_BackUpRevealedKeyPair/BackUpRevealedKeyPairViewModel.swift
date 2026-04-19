@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -35,6 +36,8 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
     BackUpRevealedKeyPairViewModel.InputFromView,
     BackUpRevealedKeyPairViewModel.Output
 > {
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
+
     private let keyPair: KeyPair
 
     init(keyPair: KeyPair) {
@@ -56,15 +59,15 @@ final class BackUpRevealedKeyPairViewModel: BaseViewModel<
                 .sink { userDid(.finish) },
 
             input.fromView.copyPrivateKeyTrigger.withLatestFrom(privateKey) { $1 }
-                .sink {
-                    UIPasteboard.general.string = $0
+                .sink { [pasteboard] in
+                    pasteboard.copy($0)
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPrivateKey)))
                 },
 
             input.fromView.copyPublicKeyTrigger.withLatestFrom(publicKeyUncompressed) { $1 }
-                .sink {
-                    UIPasteboard.general.string = $0
+                .sink { [pasteboard] in
+                    pasteboard.copy($0)
                     input.fromController.toastSubject
                         .send(Toast(String(localized: .BackUpRevealedKeyPair.copiedPublicKey)))
                 },

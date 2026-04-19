@@ -330,6 +330,8 @@
 		B1000000000000000000046A /* SingleCellTypeTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000046B /* SingleCellTypeTableViewTests.swift */; };
 		B1000000000000000000046C /* RestoreWalletViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000046D /* RestoreWalletViewTests.swift */; };
 		B1000000000000000000046E /* KeychainSwiftKeyValueStoringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000046F /* KeychainSwiftKeyValueStoringTests.swift */; };
+		B10000000000000000000470 /* Pasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000471 /* Pasteboard.swift */; };
+		B10000000000000000000472 /* MockPasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000473 /* MockPasteboard.swift */; };
 		B7B961E4E0584B6694455665 /* CreateNewWallet.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 058EC2B351BF4BE7B8C8D010 /* CreateNewWallet.xcstrings */; };
 		BDA18D9B08D64136A8BA23C5 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADC68A73D8C4E799FCF1541 /* Publisher+Helpers.swift */; };
 		C10000000000000000000101 /* AnyValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* AnyValidationTests.swift */; };
@@ -890,6 +892,8 @@
 		B1000000000000000000046B /* SingleCellTypeTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCellTypeTableViewTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000046D /* RestoreWalletViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreWalletViewTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000046F /* KeychainSwiftKeyValueStoringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSwiftKeyValueStoringTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000471 /* Pasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pasteboard.swift; sourceTree = "<group>"; };
+		B10000000000000000000473 /* MockPasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPasteboard.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* AnyValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000002 /* ValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTests.swift; sourceTree = "<group>"; };
 		C10000000000000000000003 /* ValidationRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRuleTests.swift; sourceTree = "<group>"; };
@@ -1306,6 +1310,7 @@
 				480B0E9621CE2C8E00A72133 /* AppAppearance.swift */,
 				48DEF91321D2080100B02E98 /* NavigationBarLayoutOwner.swift */,
 				483CE9B12194E9E300BED31C /* ConfigurationDetection.swift */,
+				B10000000000000000000471 /* Pasteboard.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2151,6 +2156,7 @@
 				B1000000000000000000020A /* MockTransactionsUseCase.swift */,
 				B10000000000000000000401 /* MockZilliqaServiceReactive.swift */,
 				B1000000000000000000045E /* MockSoundPlayer.swift */,
+				B10000000000000000000473 /* MockPasteboard.swift */,
 				B10000000000000000000460 /* SilenceSideEffects.swift */,
 			);
 			path = Helpers;
@@ -2691,6 +2697,7 @@
 				48F832EE2185DE0200EDAD40 /* UIWindow.swift in Sources */,
 				483CE9D62194E9E300BED31C /* DeepLinkGenerator.swift in Sources */,
 				B1000000000000000000045B /* SoundPlayer.swift in Sources */,
+				B10000000000000000000470 /* Pasteboard.swift in Sources */,
 				E6019A4B225E75020079DDE8 /* MainViewModel.swift in Sources */,
 				483DDECE219CB877009D3F4C /* InputFromController.swift in Sources */,
 				483CE9EA2194E9E300BED31C /* AnyKeyValueStoring.swift in Sources */,
@@ -2861,6 +2868,7 @@
 				B10000000000000000000102 /* InputFromControllerFactory.swift in Sources */,
 				B10000000000000000000103 /* MockOnboardingUseCase.swift in Sources */,
 				B1000000000000000000045D /* MockSoundPlayer.swift in Sources */,
+				B10000000000000000000472 /* MockPasteboard.swift in Sources */,
 				B1000000000000000000045F /* SilenceSideEffects.swift in Sources */,
 				B10000000000000000000462 /* SoundPlayerTests.swift in Sources */,
 				B10000000000000000000468 /* QRCodingTests.swift in Sources */,

@@ -70,6 +70,12 @@ extension Container {
     var soundPlayer: Factory<SoundPlayer> {
         self { DefaultSoundPlayer() }.singleton
     }
+
+    /// Abstracts `UIPasteboard.general`. Tests register a `MockPasteboard` so
+    /// unit tests never mutate the real simulator pasteboard.
+    var pasteboard: Factory<Pasteboard> {
+        self { DefaultPasteboard() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)

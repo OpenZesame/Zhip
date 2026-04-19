@@ -24,7 +24,6 @@
 
 import Combine
 import Factory
-import UIKit
 import XCTest
 @testable import Zhip
 
@@ -37,6 +36,7 @@ final class ReceiveViewModelTests: XCTestCase {
 
     private var cancellables: Set<AnyCancellable> = []
     private var mockWallet: MockWalletUseCase!
+    private var mockPasteboard: MockPasteboard!
     private var amountSubject: PassthroughSubject<String, Never>!
     private var didEndEditing: PassthroughSubject<Void, Never>!
     private var copySubject: PassthroughSubject<Void, Never>!
@@ -48,6 +48,8 @@ final class ReceiveViewModelTests: XCTestCase {
         mockWallet = MockWalletUseCase()
         mockWallet.storedWallet = TestWalletFactory.makeWallet()
         Container.shared.walletStorageUseCase.register { [unowned self] in self.mockWallet }
+        mockPasteboard = MockPasteboard()
+        Container.shared.pasteboard.register { [unowned self] in self.mockPasteboard }
         amountSubject = PassthroughSubject<String, Never>()
         didEndEditing = PassthroughSubject<Void, Never>()
         copySubject = PassthroughSubject<Void, Never>()
@@ -63,6 +65,7 @@ final class ReceiveViewModelTests: XCTestCase {
         copySubject = nil
         didEndEditing = nil
         amountSubject = nil
+        mockPasteboard = nil
         mockWallet = nil
         super.tearDown()
     }
@@ -108,7 +111,7 @@ final class ReceiveViewModelTests: XCTestCase {
 
         copySubject.send(())
 
-        XCTAssertEqual(UIPasteboard.general.string, mockWallet.storedWallet?.bech32Address.asString)
+        XCTAssertEqual(mockPasteboard.copiedString, mockWallet.storedWallet?.bech32Address.asString)
         XCTAssertNotNil(emittedToast)
     }
 
