@@ -74,12 +74,6 @@ final class DecryptKeystoreCoordinatorTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func drainRunLoop(seconds: TimeInterval = 0.1) {
-        let expectation = expectation(description: "runloop drain")
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { expectation.fulfill() }
-        wait(for: [expectation], timeout: seconds + 1)
-    }
-
     private func top<T>(as _: T.Type) -> T? {
         navigationController.viewControllers.last as? T
     }

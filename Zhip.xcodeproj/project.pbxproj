@@ -209,6 +209,7 @@
 		48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ECF62921A356DA0078D659 /* OpenUrl.swift */; };
 		B10000000000000000000484 /* UrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000485 /* UrlOpener.swift */; };
 		B10000000000000000000486 /* MockUrlOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000487 /* MockUrlOpener.swift */; };
+		B10000000000000000000488 /* XCTestCase+DrainRunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */; };
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* TransactionIntent.swift */; };
@@ -760,6 +761,7 @@
 		48ECF62921A356DA0078D659 /* OpenUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenUrl.swift; sourceTree = "<group>"; };
 		B10000000000000000000485 /* UrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlOpener.swift; sourceTree = "<group>"; };
 		B10000000000000000000487 /* MockUrlOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUrlOpener.swift; sourceTree = "<group>"; };
+		B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+DrainRunLoop.swift"; sourceTree = "<group>"; };
 		48EF265E2F9246CA00247ACF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
@@ -2182,6 +2184,7 @@
 				B10000000000000000000473 /* MockPasteboard.swift */,
 				B1000000000000000000047B /* MockBiometricsAuthenticator.swift */,
 				B10000000000000000000487 /* MockUrlOpener.swift */,
+				B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */,
 				B10000000000000000000460 /* SilenceSideEffects.swift */,
 			);
 			path = Helpers;
@@ -2902,6 +2905,7 @@
 				B10000000000000000000472 /* MockPasteboard.swift in Sources */,
 				B1000000000000000000047A /* MockBiometricsAuthenticator.swift in Sources */,
 				B10000000000000000000486 /* MockUrlOpener.swift in Sources */,
+				B10000000000000000000488 /* XCTestCase+DrainRunLoop.swift in Sources */,
 				B1000000000000000000045F /* SilenceSideEffects.swift in Sources */,
 				B10000000000000000000462 /* SoundPlayerTests.swift in Sources */,
 				B10000000000000000000468 /* QRCodingTests.swift in Sources */,

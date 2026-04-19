@@ -81,16 +81,6 @@ final class SettingsCoordinatorTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func drainRunLoop(seconds: TimeInterval = 0.1) {
-        // Run the main runloop directly instead of waiting on an
-        // asyncAfter-fulfilled XCTestExpectation. Some tests in this class
-        // (modal presentation, openUrl branches) keep the main queue busy
-        // longer than XCTest's 1.1s expectation timeout can tolerate, which
-        // surfaced as flakes. A direct `RunLoop.run(until:)` pump sidesteps
-        // that entirely — it simply processes events for the given window.
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: seconds))
-    }
-
     private func startAndGetScene() -> Settings {
         sut.start()
         // swiftlint:disable:next force_cast

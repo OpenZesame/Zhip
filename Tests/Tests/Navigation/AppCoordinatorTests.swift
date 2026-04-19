@@ -62,7 +62,9 @@ final class AppCoordinatorTests: XCTestCase {
     }
 
     override func tearDown() {
-        drainRunLoop()
+        // Longer drain than the default: `.replace` transition callbacks fire
+        // async while `sut` is still alive and need more than 100ms to settle.
+        drainRunLoop(seconds: 0.25)
         sut = nil
         Container.shared.manager.reset()
         mockOnboarding = nil
@@ -94,14 +96,6 @@ final class AppCoordinatorTests: XCTestCase {
             }
         )
         return sut
-    }
-
-    /// Spins the run loop briefly so async `.replace` transition callbacks fire
-    /// while `sut` is still alive.
-    private func drainRunLoop(seconds: TimeInterval = 0.25) {
-        let expectation = expectation(description: "runloop drain")
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { expectation.fulfill() }
-        wait(for: [expectation], timeout: seconds + 1)
     }
 
     // MARK: - start() routing
