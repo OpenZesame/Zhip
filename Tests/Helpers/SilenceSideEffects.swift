@@ -62,6 +62,7 @@ final class ZhipTestsBundle: NSObject, XCTestObservation {
         Container.shared.biometricsAuthenticator.register { MockBiometricsAuthenticator() }
         Container.shared.urlOpener.register { MockUrlOpener() }
         Container.shared.clock.register { ImmediateClock() }
+        Container.shared.mainScheduler.register { ImmediateMainScheduler() }
         Container.shared.htmlLoader.register { MockHtmlLoader() }
         Container.shared.hapticFeedback.register { MockHapticFeedback() }
         Container.shared.dateProvider.register { FixedDateProvider() }

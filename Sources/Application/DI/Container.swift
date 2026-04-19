@@ -105,6 +105,15 @@ extension Container {
         self { MainQueueClock() }.singleton
     }
 
+    /// Abstracts immediate main-thread scheduling (the Combine
+    /// `.receive(on: DispatchQueue.main)` hop used by navigation plumbing).
+    /// Tests register `ImmediateMainScheduler`, which invokes work
+    /// synchronously so coordinator tests can assert on navigation side
+    /// effects without pumping the runloop.
+    var mainScheduler: Factory<MainScheduler> {
+        self { DispatchMainScheduler() }.singleton
+    }
+
     /// Loads bundled HTML files into attributed strings. Production uses
     /// WebKit-backed parsing which can block the main thread for seconds on CI
     /// simulators; tests register a stub that returns an empty string so view

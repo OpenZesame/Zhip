@@ -218,6 +218,7 @@
 		B1000000000000000000049A /* MockHapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000049B /* MockHapticFeedback.swift */; };
 		B1000000000000000000049C /* DateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000049D /* DateProvider.swift */; };
 		B1000000000000000000049E /* FixedDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000049F /* FixedDateProvider.swift */; };
+		B100000000000000000004A0 /* MainScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000004A1 /* MainScheduler.swift */; };
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* TransactionIntent.swift */; };
@@ -778,6 +779,7 @@
 		B1000000000000000000049B /* MockHapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHapticFeedback.swift; sourceTree = "<group>"; };
 		B1000000000000000000049D /* DateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateProvider.swift; sourceTree = "<group>"; };
 		B1000000000000000000049F /* FixedDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedDateProvider.swift; sourceTree = "<group>"; };
+		B100000000000000000004A1 /* MainScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScheduler.swift; sourceTree = "<group>"; };
 		48EF265E2F9246CA00247ACF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
@@ -2184,6 +2186,7 @@
 				B1000000000000000000049D /* DateProvider.swift */,
 				B10000000000000000000499 /* HapticFeedback.swift */,
 				B10000000000000000000495 /* HtmlLoader.swift */,
+				B100000000000000000004A1 /* MainScheduler.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -2771,6 +2774,7 @@
 				B10000000000000000000494 /* HtmlLoader.swift in Sources */,
 				B10000000000000000000498 /* HapticFeedback.swift in Sources */,
 				B1000000000000000000049C /* DateProvider.swift in Sources */,
+				B100000000000000000004A0 /* MainScheduler.swift in Sources */,
 				E6019A5C225E754D0079DDE8 /* PrepareTransactionViewModel.swift in Sources */,
 				E635A4B6225D301B00124823 /* CreateNewWallet.swift in Sources */,
 				483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */,

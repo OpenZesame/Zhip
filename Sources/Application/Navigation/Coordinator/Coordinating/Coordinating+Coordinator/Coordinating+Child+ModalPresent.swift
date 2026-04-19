@@ -93,8 +93,7 @@ extension Coordinating {
         // closure, which the parent coordinator _SHOULD_ invoke when it wants to finish this
         // temporary child coordinator.
         child.navigator.navigation
-            .receive(on: DispatchQueue.main)
-            .sink { [
+            .sinkOnMain { [
                 unowned self,
                 unowned newModalNavigationController,
                 unowned child

@@ -34,8 +34,7 @@ extension Coordinating {
         navigationController.present(viewControllerToPresent, animated: animated, completion: presentationCompletion)
 
         viewModel.navigator.navigation
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned scene] step in
+            .sinkOnMain { [unowned scene] step in
                 navigationHandler(step) { animated, navigationCompletion in
                     scene.dismiss(animated: animated, completion: navigationCompletion)
                 }

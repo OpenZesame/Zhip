@@ -1,7 +1,28 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
 
 import Combine
+import Factory
 import UIKit
+
+// MARK: - sinkOnMain
+
+extension Publisher where Failure == Never {
+
+    /// Subscribes and dispatches each value through the injected
+    /// `MainScheduler` before invoking `receiveValue`. In production this is
+    /// equivalent to `.receive(on: DispatchQueue.main).sink { ... }`; in tests
+    /// `ImmediateMainScheduler` delivers values synchronously so callers can
+    /// assert on side effects without pumping the runloop.
+    ///
+    /// Use this anywhere navigation/UI plumbing previously hard-coded
+    /// `.receive(on: DispatchQueue.main)`.
+    func sinkOnMain(_ receiveValue: @escaping (Output) -> Void) -> AnyCancellable {
+        let scheduler = Container.shared.mainScheduler()
+        return sink { value in
+            scheduler.schedule { receiveValue(value) }
+        }
+    }
+}
 
 // MARK: - --> binding operator
 

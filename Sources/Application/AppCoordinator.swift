@@ -55,8 +55,7 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
         scene.viewModel.navigator.navigation
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] userDid in
+            .sinkOnMain { [weak self] userDid in
                 switch userDid {
                 case .unlockApp:
                     self?.appIsUnlockedEmitBufferedDeeplinks()

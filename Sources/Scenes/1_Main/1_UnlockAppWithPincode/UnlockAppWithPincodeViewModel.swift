@@ -73,8 +73,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
         [
             pincodeValidationValue.filter(\.isValid).mapToVoid()
                 .merge(with: unlockUsingBiometricsTrigger.flatMapLatest { unlockUsingBiometrics() })
-                .receive(on: DispatchQueue.main)
-                .sink { userDid(.unlockApp) },
+                .sinkOnMain { userDid(.unlockApp) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(
