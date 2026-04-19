@@ -191,4 +191,26 @@ final class ContainerTests: XCTestCase {
         let prefs = KeyValueStore<PreferencesKey>.default
         XCTAssertNotNil(prefs)
     }
+
+    // MARK: - default factory closures for composite use cases
+
+    func test_transactionsUseCaseDefault_resolvesWithoutRegistration() {
+        let resolved = Container.shared.transactionsUseCase()
+        XCTAssertNotNil(resolved)
+    }
+
+    func test_onboardingUseCaseDefault_resolvesWithoutRegistration() {
+        let resolved = Container.shared.onboardingUseCase()
+        XCTAssertNotNil(resolved)
+    }
+
+    func test_pincodeUseCaseDefault_resolvesWithoutRegistration() {
+        let resolved = Container.shared.pincodeUseCase()
+        XCTAssertNotNil(resolved)
+    }
+
+    func test_soundPlayerDefault_resolvesWithoutRegistration() {
+        let resolved = Container.shared.soundPlayer()
+        XCTAssertNotNil(resolved)
+    }
 }

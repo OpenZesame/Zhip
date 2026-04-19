@@ -134,4 +134,69 @@ final class BinderTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1)
     }
+
+    func test_bindingOperator_optionalString_writesIntoLabel() {
+        let label = UILabel()
+        let subject = PassthroughSubject<String?, Never>()
+        var cancellables: Set<AnyCancellable> = []
+        let expectation = expectation(description: "applied")
+
+        (subject.eraseToAnyPublisher() --> label).store(in: &cancellables)
+        subject.send("optional-hello")
+        DispatchQueue.main.async {
+            if label.text == "optional-hello" { expectation.fulfill() }
+        }
+
+        wait(for: [expectation], timeout: 1)
+    }
+
+    func test_bindingOperator_optionalString_writesIntoTextView() {
+        let textView = UITextView()
+        let subject = PassthroughSubject<String?, Never>()
+        var cancellables: Set<AnyCancellable> = []
+        let expectation = expectation(description: "applied")
+
+        (subject.eraseToAnyPublisher() --> textView).store(in: &cancellables)
+        subject.send("optional-body")
+        DispatchQueue.main.async {
+            if textView.text == "optional-body" { expectation.fulfill() }
+        }
+
+        wait(for: [expectation], timeout: 1)
+    }
+
+    /// Exercises the `publisher --> Binder<T?>` overload (non-optional value lifted
+    /// into an optional sink).
+    func test_bindingOperator_nonOptionalIntoOptionalBinder() {
+        let label = UILabel()
+        let optionalBinder: Binder<String?> = Binder(label) { $0.text = $1 }
+        let subject = PassthroughSubject<String, Never>()
+        var cancellables: Set<AnyCancellable> = []
+        let expectation = expectation(description: "applied")
+
+        (subject.eraseToAnyPublisher() --> optionalBinder).store(in: &cancellables)
+        subject.send("lifted")
+        DispatchQueue.main.async {
+            if label.text == "lifted" { expectation.fulfill() }
+        }
+
+        wait(for: [expectation], timeout: 1)
+    }
+
+    /// Exercises the `publisher-of-optional --> Binder<T?>` overload.
+    func test_bindingOperator_optionalIntoOptionalBinder() {
+        let label = UILabel()
+        let binder: Binder<String?> = Binder(label) { $0.text = $1 }
+        let subject = PassthroughSubject<String?, Never>()
+        var cancellables: Set<AnyCancellable> = []
+        let expectation = expectation(description: "applied")
+
+        (subject.eraseToAnyPublisher() --> binder).store(in: &cancellables)
+        subject.send("opt-to-opt")
+        DispatchQueue.main.async {
+            if label.text == "opt-to-opt" { expectation.fulfill() }
+        }
+
+        wait(for: [expectation], timeout: 1)
+    }
 }

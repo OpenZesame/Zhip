@@ -21,4 +21,17 @@ final class EncodableDictionaryTests: XCTestCase {
         let result = sut.dictionaryRepresentation
         XCTAssertTrue(result.isEmpty)
     }
+
+    /// Forces the `encode(to:)` throw path by using an encoder that rejects the type.
+    private struct ThrowingOnEncode: Encodable {
+        struct BadError: Error {}
+        func encode(to encoder: Encoder) throws {
+            throw BadError()
+        }
+    }
+
+    func test_dictionaryRepresentation_whenEncodeThrows_returnsEmptyDictionary() {
+        let sut = ThrowingOnEncode()
+        XCTAssertTrue(sut.dictionaryRepresentation.isEmpty)
+    }
 }
