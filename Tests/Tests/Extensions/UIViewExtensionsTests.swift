@@ -46,4 +46,65 @@ final class UIViewExtensionsTests: XCTestCase {
 
         view.shake(duration: 0.01, withTranslation: 1)
     }
+
+    // MARK: - UIView.Border
+
+    func test_border_errorPreset_appliesErrorColor() {
+        let border = UIView.Border.error
+
+        XCTAssertEqual(border.color, AnyValidation.Color.error.cgColor)
+    }
+
+    func test_border_fromValidation_validWithoutRemark_usesValidWithoutRemarkColor() {
+        let border = UIView.Border.fromValidation(.valid(withRemark: nil))
+
+        XCTAssertEqual(border.color, AnyValidation.Color.validWithoutRemark.cgColor)
+    }
+
+    func test_border_fromValidation_validWithRemark_usesValidWithRemarkColor() {
+        let border = UIView.Border.fromValidation(.valid(withRemark: "looks good"))
+
+        XCTAssertEqual(border.color, AnyValidation.Color.validWithRemark.cgColor)
+    }
+
+    // MARK: - UILayoutPriority literal initializers
+
+    func test_layoutPriority_floatLiteral_initializes() {
+        let priority: UILayoutPriority = 123.5
+
+        XCTAssertEqual(priority.rawValue, 123.5)
+    }
+
+    func test_layoutPriority_integerLiteral_initializes() {
+        let priority: UILayoutPriority = 700
+
+        XCTAssertEqual(priority.rawValue, 700)
+    }
+
+    // MARK: - UIImageView+Styling
+
+    func test_imageView_setOptional_appliesValueWhenNotNil() {
+        let imageView = UIImageView()
+        let image = UIImage()
+
+        imageView.setOptional(\.image, ifNotNil: image)
+
+        XCTAssertTrue(imageView.image === image)
+    }
+
+    func test_imageView_setOptional_doesNothingWhenNil() {
+        let imageView = UIImageView()
+        imageView.image = UIImage()
+        let before = imageView.image
+
+        imageView.setOptional(\.image, ifNotNil: nil)
+
+        XCTAssertTrue(imageView.image === before)
+    }
+
+    func test_imageViewStyle_backgroundColorBuilder_setsBackgroundColor() {
+        let style = UIImageView.Style().backgroundColor(.red)
+
+        XCTAssertEqual(style.backgroundColor, .red)
+    }
 }
