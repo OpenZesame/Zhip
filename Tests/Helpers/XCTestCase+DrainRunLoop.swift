@@ -27,31 +27,54 @@ import XCTest
 
 extension XCTestCase {
 
-    /// Drains the main runloop for `seconds` so UIKit presentation and
-    /// Combine `.receive(on: DispatchQueue.main)` work can settle before
-    /// the test asserts.
+    /// Drains the main runloop until pending Combine
+    /// `.receive(on: DispatchQueue.main)` and GCD main-queue work has run,
+    /// then returns. Used by coordinator/use-case tests that fire a
+    /// navigation event and assert on its visible side effect.
     ///
-    /// **Why not `XCTestExpectation` + `DispatchQueue.main.asyncAfter`?**
-    /// That pattern made the test depend on GCD's timer subsystem firing
-    /// the asyncAfter block within the timeout. On CI the timer was
-    /// occasionally starved for >10s during the first window-bound test or
-    /// during modal presentation, producing flakes like "Asynchronous wait
-    /// failed: Exceeded timeout of 10.1 seconds, with unfulfilled
-    /// expectations: 'runloop drain'". Pumping the runloop directly removes
-    /// the dependency on the GCD timer entirely.
+    /// This helper has historically bounced between two implementations
+    /// that each address only half of the CI flake matrix:
     ///
-    /// **Why not bare `RunLoop.run(until:)`?** It returns immediately when
-    /// the mode has no input sources, which is sometimes true on the CI
-    /// simulator before any UI work has been queued. The repeat-while loop
-    /// here re-enters until the real-time deadline elapses, so it works in
-    /// both the "lots of sources" and the "no sources yet" cases. While the
-    /// runloop is being pumped in `.default` mode, the main-queue dispatch
-    /// source fires normally — pending GCD blocks and Combine main-queue
-    /// hops still get processed.
+    ///   1. `XCTestExpectation` + `DispatchQueue.main.asyncAfter` — relies
+    ///      on the GCD timer subsystem to fire the sentinel within the
+    ///      timeout. On the CI simulator that timer was occasionally
+    ///      starved for >10s, producing
+    ///      `Asynchronous wait failed: Exceeded timeout of 10.1 seconds`.
+    ///   2. `RunLoop.main.run(mode: .default, before:)` in a loop — pumps
+    ///      the runloop directly but `run(mode:before:)` returns after one
+    ///      source fires, so on CI the loop sometimes exits before the
+    ///      Combine main-queue hop has run, producing
+    ///      `expected .X, got nil` and `mockUrlOpener count = 0`.
+    ///
+    /// The hybrid below combines them so each side covers the other's
+    /// failure mode:
+    ///
+    ///   * A sentinel is scheduled via `DispatchQueue.main.asyncAfter` so
+    ///     when it fires we know (a) at least `seconds` of real time has
+    ///     elapsed, and (b) every main-queue block enqueued before the
+    ///     sentinel has run (serial-FIFO guarantee).
+    ///   * While waiting for the sentinel we actively pump the runloop in
+    ///     `.default` mode, so even when GCD's timer is starved the
+    ///     runloop continues to drain main-queue dispatch sources, which
+    ///     is what eventually fires the timer too.
+    ///   * The wait uses `XCTWaiter()` (not `XCTestCase.wait`) so a
+    ///     hard-deadline expiry doesn't auto-XCTFail — under genuine
+    ///     starvation we'd rather see the test's own assertion than a
+    ///     misleading drain timeout.
     func drainRunLoop(seconds: TimeInterval = 0.1) {
-        let endDate = Date(timeIntervalSinceNow: seconds)
-        repeat {
-            RunLoop.main.run(mode: .default, before: endDate)
-        } while Date() < endDate
+        // Use a plain Bool flag set by the GCD callback rather than an
+        // XCTestExpectation: XCTWaiter rejects repeated waits on the same
+        // expectation with "API violation - expectations can only be waited
+        // on once", and we need to spin in a loop to keep pumping the
+        // runloop. Both writer (the GCD block) and reader (this loop) run
+        // on the main thread, so plain `Bool` is safe.
+        var sentinelFired = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            sentinelFired = true
+        }
+        let hardDeadline = Date(timeIntervalSinceNow: seconds + 10)
+        while !sentinelFired, Date() < hardDeadline {
+            RunLoop.main.run(mode: .default, before: Date(timeIntervalSinceNow: 0.01))
+        }
     }
 }
