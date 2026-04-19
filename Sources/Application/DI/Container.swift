@@ -82,6 +82,20 @@ extension Container {
     var biometricsAuthenticator: Factory<BiometricsAuthenticator> {
         self { LAContextBiometricsAuthenticator() }.singleton
     }
+
+    /// QR code encoder/decoder. Stateless, so a fresh instance per resolve is
+    /// fine. Tests can register a stub when they want to observe encode/decode
+    /// calls without hitting `EFQRCode`.
+    var qrCoder: Factory<QRCoding> {
+        self { QRCoder() }
+    }
+
+    /// Abstracts `UIApplication.shared.open(_:)`. Tests register a mock so
+    /// unit tests never trigger a real OS-level URL open (which can hang the
+    /// iOS simulator runloop).
+    var urlOpener: Factory<UrlOpener> {
+        self { DefaultUrlOpener() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)

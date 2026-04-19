@@ -43,12 +43,7 @@ final class ReceiveViewModel: BaseViewModel<
 > {
     @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
     @Injected(\.pasteboard) private var pasteboard: Pasteboard
-
-    private let qrCoder: QRCoding
-
-    init(qrCoder: QRCoding = QRCoder()) {
-        self.qrCoder = qrCoder
-    }
+    @Injected(\.qrCoder) private var qrCoder: QRCoding
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
@@ -80,7 +75,7 @@ final class ReceiveViewModel: BaseViewModel<
             .combineLatest(amount.map { $0?.amount }.filterNil()) { TransactionIntent(to: $0, amount: $1) }
             .eraseToAnyPublisher()
 
-        let qrImage: AnyPublisher<UIImage?, Never> = transactionToReceive.map { [unowned qrCoder] in
+        let qrImage: AnyPublisher<UIImage?, Never> = transactionToReceive.map { [qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }.eraseToAnyPublisher()
 

@@ -22,22 +22,25 @@
 // SOFTWARE.
 //
 
-import Factory
-import UIKit
+import Foundation
+@testable import Zhip
 
-func openUrl(string baseUrlString: String, relative path: String? = nil) {
-    func createUrl() -> URL? {
-        guard let baseUrl = URL(string: baseUrlString) else { return nil }
-        guard let path else {
-            return baseUrl
-        }
-        return baseUrl.appendingPathComponent(path)
+/// In-test `UrlOpener` that NEVER forwards to `UIApplication.shared.open(_:)`.
+/// Records every dispatched URL so tests can assert which external navigation
+/// target was requested without triggering a real OS-level open (which hangs
+/// the runloop in the iOS simulator).
+final class MockUrlOpener: UrlOpener {
+
+    /// The most recent URL passed to `open(_:)`, or `nil` if none yet.
+    private(set) var lastOpenedUrl: URL?
+
+    /// Every URL passed to `open(_:)`, in call order.
+    private(set) var openInvocations: [URL] = []
+
+    init() {}
+
+    func open(_ url: URL) {
+        lastOpenedUrl = url
+        openInvocations.append(url)
     }
-
-    guard let url = createUrl() else {
-        log.error("Failed to create url")
-        return
-    }
-
-    Container.shared.urlOpener().open(url)
 }

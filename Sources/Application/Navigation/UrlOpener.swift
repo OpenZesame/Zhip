@@ -22,22 +22,19 @@
 // SOFTWARE.
 //
 
-import Factory
 import UIKit
 
-func openUrl(string baseUrlString: String, relative path: String? = nil) {
-    func createUrl() -> URL? {
-        guard let baseUrl = URL(string: baseUrlString) else { return nil }
-        guard let path else {
-            return baseUrl
-        }
-        return baseUrl.appendingPathComponent(path)
-    }
+/// Abstracts `UIApplication.shared.open(_:)` so tests can register a no-op
+/// implementation. In the iOS simulator the real call can dispatch a
+/// workspace round-trip that never completes within a unit-test timeout.
+protocol UrlOpener: AnyObject {
+    func open(_ url: URL)
+}
 
-    guard let url = createUrl() else {
-        log.error("Failed to create url")
-        return
-    }
+final class DefaultUrlOpener: UrlOpener {
+    init() {}
 
-    Container.shared.urlOpener().open(url)
+    func open(_ url: URL) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
 }

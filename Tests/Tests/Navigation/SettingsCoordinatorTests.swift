@@ -39,6 +39,7 @@ final class SettingsCoordinatorTests: XCTestCase {
     private var mockWallet: MockWalletUseCase!
     private var mockPincode: MockPincodeUseCase!
     private var mockOnboarding: MockOnboardingUseCase!
+    private var mockUrlOpener: MockUrlOpener!
     private var cancellables: Set<AnyCancellable> = []
     private var sut: SettingsCoordinator!
 
@@ -49,10 +50,12 @@ final class SettingsCoordinatorTests: XCTestCase {
         mockWallet.storedWallet = TestWalletFactory.makeWallet()
         mockPincode = MockPincodeUseCase()
         mockOnboarding = MockOnboardingUseCase()
+        mockUrlOpener = MockUrlOpener()
         Container.shared.transactionsUseCase.register { [unowned self] in self.mockTransactions }
         Container.shared.walletStorageUseCase.register { [unowned self] in self.mockWallet }
         Container.shared.pincodeUseCase.register { [unowned self] in self.mockPincode }
         Container.shared.onboardingUseCase.register { [unowned self] in self.mockOnboarding }
+        Container.shared.urlOpener.register { [unowned self] in self.mockUrlOpener }
         navigationController = NavigationBarLayoutingNavigationController()
         window = UIWindow(frame: .init(x: 0, y: 0, width: 320, height: 480))
         window.rootViewController = navigationController
@@ -68,6 +71,7 @@ final class SettingsCoordinatorTests: XCTestCase {
         window = nil
         navigationController = nil
         Container.shared.manager.reset()
+        mockUrlOpener = nil
         mockOnboarding = nil
         mockPincode = nil
         mockWallet = nil
@@ -78,9 +82,13 @@ final class SettingsCoordinatorTests: XCTestCase {
     // MARK: - Helpers
 
     private func drainRunLoop(seconds: TimeInterval = 0.1) {
-        let expectation = expectation(description: "runloop drain")
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { expectation.fulfill() }
-        wait(for: [expectation], timeout: seconds + 1)
+        // Run the main runloop directly instead of waiting on an
+        // asyncAfter-fulfilled XCTestExpectation. Some tests in this class
+        // (modal presentation, openUrl branches) keep the main queue busy
+        // longer than XCTest's 1.1s expectation timeout can tolerate, which
+        // surfaced as flakes. A direct `RunLoop.run(until:)` pump sidesteps
+        // that entirely — it simply processes events for the given window.
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: seconds))
     }
 
     private func startAndGetScene() -> Settings {
@@ -138,18 +146,27 @@ final class SettingsCoordinatorTests: XCTestCase {
         let scene = startAndGetScene()
 
         fire(.starUsOnGithub, on: scene)
+
+        XCTAssertEqual(mockUrlOpener.openInvocations.count, 1)
+        XCTAssertEqual(mockUrlOpener.lastOpenedUrl?.absoluteString, githubUrlString)
     }
 
     func test_reportIssueOnGithub_invokesOpenUrl() {
         let scene = startAndGetScene()
 
         fire(.reportIssueOnGithub, on: scene)
+
+        XCTAssertEqual(mockUrlOpener.openInvocations.count, 1)
+        XCTAssertEqual(mockUrlOpener.lastOpenedUrl?.absoluteString, "\(githubUrlString)/issues/new")
     }
 
     func test_acknowledgments_invokesOpenUrl() {
         let scene = startAndGetScene()
 
         fire(.acknowledgments, on: scene)
+
+        XCTAssertEqual(mockUrlOpener.openInvocations.count, 1)
+        XCTAssertEqual(mockUrlOpener.lastOpenedUrl?.absoluteString, UIApplication.openSettingsURLString)
     }
 
     // MARK: - Section 2 (legal / privacy)
