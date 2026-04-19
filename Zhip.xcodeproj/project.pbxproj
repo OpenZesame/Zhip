@@ -212,6 +212,8 @@
 		B10000000000000000000488 /* XCTestCase+DrainRunLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */; };
 		B10000000000000000000490 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000491 /* Clock.swift */; };
 		B10000000000000000000492 /* ImmediateClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000493 /* ImmediateClock.swift */; };
+		B10000000000000000000494 /* HtmlLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000495 /* HtmlLoader.swift */; };
+		B10000000000000000000496 /* MockHtmlLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000497 /* MockHtmlLoader.swift */; };
 		48F37D6421918E94008A2DA4 /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */; };
 		48F37D6621918EA4008A2DA4 /* Dictionary_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */; };
 		48F37D6E21918F6F008A2DA4 /* TransactionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F37D6D21918F6F008A2DA4 /* TransactionIntent.swift */; };
@@ -766,6 +768,8 @@
 		B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+DrainRunLoop.swift"; sourceTree = "<group>"; };
 		B10000000000000000000491 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		B10000000000000000000493 /* ImmediateClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmediateClock.swift; sourceTree = "<group>"; };
+		B10000000000000000000495 /* HtmlLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlLoader.swift; sourceTree = "<group>"; };
+		B10000000000000000000497 /* MockHtmlLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHtmlLoader.swift; sourceTree = "<group>"; };
 		48EF265E2F9246CA00247ACF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		48F37D6321918E94008A2DA4 /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		48F37D6521918EA4008A2DA4 /* Dictionary_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary_Extension.swift; sourceTree = "<group>"; };
@@ -2169,6 +2173,7 @@
 			children = (
 				B10000000000000000000491 /* Clock.swift */,
 				B10000000000000000000001 /* Container.swift */,
+				B10000000000000000000495 /* HtmlLoader.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -2191,6 +2196,7 @@
 				B10000000000000000000487 /* MockUrlOpener.swift */,
 				B10000000000000000000489 /* XCTestCase+DrainRunLoop.swift */,
 				B10000000000000000000493 /* ImmediateClock.swift */,
+				B10000000000000000000497 /* MockHtmlLoader.swift */,
 				B10000000000000000000460 /* SilenceSideEffects.swift */,
 			);
 			path = Helpers;
@@ -2750,6 +2756,7 @@
 				48ECF62A21A356DA0078D659 /* OpenUrl.swift in Sources */,
 				B10000000000000000000484 /* UrlOpener.swift in Sources */,
 				B10000000000000000000490 /* Clock.swift in Sources */,
+				B10000000000000000000494 /* HtmlLoader.swift in Sources */,
 				E6019A5C225E754D0079DDE8 /* PrepareTransactionViewModel.swift in Sources */,
 				E635A4B6225D301B00124823 /* CreateNewWallet.swift in Sources */,
 				483CE9DD2194E9E300BED31C /* Enum+Reflection.swift in Sources */,
@@ -2914,6 +2921,7 @@
 				B10000000000000000000486 /* MockUrlOpener.swift in Sources */,
 				B10000000000000000000488 /* XCTestCase+DrainRunLoop.swift in Sources */,
 				B10000000000000000000492 /* ImmediateClock.swift in Sources */,
+				B10000000000000000000496 /* MockHtmlLoader.swift in Sources */,
 				B1000000000000000000045F /* SilenceSideEffects.swift in Sources */,
 				B10000000000000000000462 /* SoundPlayerTests.swift in Sources */,
 				B10000000000000000000468 /* QRCodingTests.swift in Sources */,

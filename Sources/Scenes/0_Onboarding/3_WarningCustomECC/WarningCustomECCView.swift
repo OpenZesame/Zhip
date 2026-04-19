@@ -7,6 +7,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 
 final class WarningCustomECCView: ScrollableStackViewOwner {
@@ -64,7 +65,7 @@ private extension WarningCustomECCView {
 
         textView.withStyle(.nonSelectable)
         textView.backgroundColor = .clear
-        textView.attributedText = htmlAsAttributedString(htmlFileName: "CustomECCWarning")
+        textView.attributedText = Container.shared.htmlLoader().load(htmlFileName: "CustomECCWarning")
 
         // Makes hyperlinks in HTML (href) clickable
         textView.isSelectable = true

@@ -104,6 +104,14 @@ extension Container {
     var clock: Factory<Clock> {
         self { MainQueueClock() }.singleton
     }
+
+    /// Loads bundled HTML files into attributed strings. Production uses
+    /// WebKit-backed parsing which can block the main thread for seconds on CI
+    /// simulators; tests register a stub that returns an empty string so view
+    /// lifecycle completes immediately when modal presentation is synchronous.
+    var htmlLoader: Factory<HtmlLoader> {
+        self { DefaultHtmlLoader() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)
