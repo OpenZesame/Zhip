@@ -199,4 +199,20 @@ final class BinderTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1)
     }
+
+    /// Covers `UISegmentedControl.valuePublisher` — a `Merge` of the initial
+    /// `selectedSegmentIndex` and a `valueChanged` re-read.
+    func test_uiSegmentedControl_valuePublisher_emitsInitialAndChangedIndex() {
+        let segmented = UISegmentedControl(items: ["A", "B", "C"])
+        segmented.selectedSegmentIndex = 1
+        var emitted: [Int] = []
+        var cancellables: Set<AnyCancellable> = []
+
+        segmented.valuePublisher.sink { emitted.append($0) }.store(in: &cancellables)
+        segmented.selectedSegmentIndex = 2
+        segmented.sendActions(for: .valueChanged)
+
+        XCTAssertEqual(emitted.first, 1)
+        XCTAssertTrue(emitted.contains(2))
+    }
 }

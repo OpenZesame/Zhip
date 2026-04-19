@@ -140,4 +140,42 @@ final class CreateNewWalletCoordinatorTests: XCTestCase {
         XCTAssertTrue(top(as: BackupWallet.self) != nil)
         XCTAssertTrue(sut.childCoordinators.contains { $0 is BackupWalletCoordinator })
     }
+
+    // MARK: - BackupWalletCoordinator completion branches
+
+    private func driveToBackupWallet() -> BackupWallet {
+        sut.start()
+        top(as: EnsureThatYouAreNotBeingWatched.self)!.viewModel.navigator.next(.understand)
+        drainRunLoop()
+        let create = top(as: CreateNewWallet.self)!
+        create.viewModel.navigator.next(.createWallet(TestWalletFactory.makeWallet()))
+        drainRunLoop()
+        return top(as: BackupWallet.self)!
+    }
+
+    func test_backupWalletBackUp_bubblesCreate() {
+        let backup = driveToBackupWallet()
+        var received: CreateNewWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        backup.viewModel.navigator.next(.backupWallet)
+        drainRunLoop()
+
+        if case .create = received { } else {
+            XCTFail("expected .create, got \(String(describing: received))")
+        }
+    }
+
+    func test_backupWalletCancel_bubblesCancel() {
+        let backup = driveToBackupWallet()
+        var received: CreateNewWalletCoordinatorNavigationStep?
+        sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
+
+        backup.viewModel.navigator.next(.cancelOrDismiss)
+        drainRunLoop()
+
+        if case .cancel = received { } else {
+            XCTFail("expected .cancel, got \(String(describing: received))")
+        }
+    }
 }

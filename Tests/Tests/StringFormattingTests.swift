@@ -44,4 +44,29 @@ class StringFormattingTests: XCTestCase {
         XCTAssertEqual(f("123456789"), "123x456x789")
         XCTAssertEqual(f("123456789a"), "1x234x567x89a")
     }
+
+    /// Exercises the `hasSuffix(" ")` drop-last branch of `String.thousands` —
+    /// reachable when the input already ends in a space, which causes the
+    /// `inserting(string: " ", every: 3)` helper to leave a trailing separator.
+    func test_thousands_whenResultingStringEndsWithSpace_dropsTrailingSpace() {
+        let result = "abc def ".thousands
+        XCTAssertFalse(result.hasSuffix(" "))
+        XCTAssertEqual(result, "ab c d ef")
+    }
+
+    func test_thousands_whenNoGrouping_returnsUnchanged() {
+        XCTAssertEqual("12".thousands, "12")
+    }
+
+    func test_containsOnlyDecimalNumbers_allDigits_returnsTrue() {
+        XCTAssertTrue("12345".containsOnlyDecimalNumbers())
+    }
+
+    func test_containsOnlyDecimalNumbers_withLetter_returnsFalse() {
+        XCTAssertFalse("12a45".containsOnlyDecimalNumbers())
+    }
+
+    func test_containsOnlyDecimalNumbers_emptyString_returnsTrue() {
+        XCTAssertTrue("".containsOnlyDecimalNumbers())
+    }
 }
