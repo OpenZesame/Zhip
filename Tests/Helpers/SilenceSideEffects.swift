@@ -63,5 +63,7 @@ final class ZhipTestsBundle: NSObject, XCTestObservation {
         Container.shared.urlOpener.register { MockUrlOpener() }
         Container.shared.clock.register { ImmediateClock() }
         Container.shared.htmlLoader.register { MockHtmlLoader() }
+        Container.shared.hapticFeedback.register { MockHapticFeedback() }
+        Container.shared.dateProvider.register { FixedDateProvider() }
     }
 }

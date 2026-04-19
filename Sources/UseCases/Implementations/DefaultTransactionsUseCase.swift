@@ -1,6 +1,7 @@
 // MIT License — Copyright (c) 2018-2026 Open Zesame
 
 import Combine
+import Factory
 import Foundation
 import Zesame
 
@@ -21,6 +22,10 @@ final class DefaultTransactionsUseCase {
 
     /// Non-secret key-value store (cached balance, last-updated timestamp).
     let preferences: Preferences
+
+    /// "Now" oracle used when stamping a freshly-cached balance's last-updated
+    /// timestamp. Resolved via Factory so tests register a deterministic stand-in.
+    @Injected(\.dateProvider) private var dateProvider: DateProvider
 
     /// Designated initializer. Inject stand-ins in tests to make the use case
     /// fully deterministic.
@@ -62,7 +67,7 @@ extension DefaultTransactionsUseCase: TransactionsUseCase {
     /// to now.
     func cacheBalance(_ balance: Amount) {
         preferences.save(value: balance.qaString, for: .cachedBalance)
-        balanceWasUpdated(at: Date())
+        balanceWasUpdated(at: dateProvider.now())
     }
 
     /// Returns the network's minimum gas price as a one-shot publisher, also

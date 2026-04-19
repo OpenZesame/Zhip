@@ -22,22 +22,25 @@
 // SOFTWARE.
 //
 
-import Factory
-import Foundation
+import UIKit
 
-struct BalanceLastUpdatedFormatter {
-    private let formatter: RelativeDateTimeFormatter = {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
+/// Abstracts over `UINotificationFeedbackGenerator`. Tests register a mock so
+/// unit tests never trigger a real device vibration (on-device haptics can
+/// leak across concurrent test runs and interfere with UI tests).
+protocol HapticFeedback: AnyObject {
 
-    func string(from date: Date?) -> String {
-        guard let updatedAt = date else {
-            return String(localized: .Formatters.balanceFirstFetch)
-        }
-        let now = Container.shared.dateProvider().now()
-        let relative = formatter.localizedString(for: updatedAt, relativeTo: now)
-        return String(localized: .Formatters.balanceWasUpdatedAt(relativeTime: relative))
+    /// Fires a system haptic pulse of the requested `type`.
+    func notify(_ type: UINotificationFeedbackGenerator.FeedbackType)
+}
+
+/// Production `HapticFeedback` backed by `UINotificationFeedbackGenerator`.
+final class DefaultHapticFeedback: HapticFeedback {
+
+    private let generator = UINotificationFeedbackGenerator()
+
+    init() {}
+
+    func notify(_ type: UINotificationFeedbackGenerator.FeedbackType) {
+        generator.notificationOccurred(type)
     }
 }

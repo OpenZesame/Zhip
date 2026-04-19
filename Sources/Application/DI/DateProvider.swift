@@ -22,22 +22,26 @@
 // SOFTWARE.
 //
 
-import Factory
 import Foundation
 
-struct BalanceLastUpdatedFormatter {
-    private let formatter: RelativeDateTimeFormatter = {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
+/// Abstracts reading "what time is it now" so callers can be tested without
+/// depending on the real wall clock.
+///
+/// Production uses `DefaultDateProvider` (returns `Date()`); tests register
+/// `FixedDateProvider`, which returns a deterministic instant so relative-time
+/// formatting and "balance last updated" timestamps stay reproducible.
+protocol DateProvider: AnyObject {
 
-    func string(from date: Date?) -> String {
-        guard let updatedAt = date else {
-            return String(localized: .Formatters.balanceFirstFetch)
-        }
-        let now = Container.shared.dateProvider().now()
-        let relative = formatter.localizedString(for: updatedAt, relativeTo: now)
-        return String(localized: .Formatters.balanceWasUpdatedAt(relativeTime: relative))
+    /// The current instant according to whichever implementation is registered.
+    func now() -> Date
+}
+
+/// Production `DateProvider` backed by `Date()`.
+final class DefaultDateProvider: DateProvider {
+
+    init() {}
+
+    func now() -> Date {
+        Date()
     }
 }

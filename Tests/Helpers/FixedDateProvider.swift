@@ -22,22 +22,26 @@
 // SOFTWARE.
 //
 
-import Factory
 import Foundation
+@testable import Zhip
 
-struct BalanceLastUpdatedFormatter {
-    private let formatter: RelativeDateTimeFormatter = {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
+/// In-test `DateProvider` that returns a caller-controlled `Date` instead of
+/// the real wall clock, so timestamp-dependent logic (balance-last-updated,
+/// relative-time formatting) stays reproducible across runs.
+///
+/// Default `now` is the Unix epoch so tests that don't care about the specific
+/// instant still get a deterministic value.
+final class FixedDateProvider: DateProvider {
 
-    func string(from date: Date?) -> String {
-        guard let updatedAt = date else {
-            return String(localized: .Formatters.balanceFirstFetch)
-        }
-        let now = Container.shared.dateProvider().now()
-        let relative = formatter.localizedString(for: updatedAt, relativeTo: now)
-        return String(localized: .Formatters.balanceWasUpdatedAt(relativeTime: relative))
+    /// The `Date` returned by `now()`. Mutate between calls to simulate time
+    /// passing within a single test.
+    var fixedNow: Date
+
+    init(now: Date = Date(timeIntervalSince1970: 0)) {
+        self.fixedNow = now
+    }
+
+    func now() -> Date {
+        fixedNow
     }
 }

@@ -112,6 +112,19 @@ extension Container {
     var htmlLoader: Factory<HtmlLoader> {
         self { DefaultHtmlLoader() }.singleton
     }
+
+    /// Abstracts `UINotificationFeedbackGenerator`. Tests register a mock so
+    /// unit tests never trigger real device vibrations.
+    var hapticFeedback: Factory<HapticFeedback> {
+        self { DefaultHapticFeedback() }.singleton
+    }
+
+    /// Abstracts "what time is it now" so timestamp-dependent logic
+    /// (balance-last-updated, relative date formatting) is testable with a
+    /// fixed instant.
+    var dateProvider: Factory<DateProvider> {
+        self { DefaultDateProvider() }.singleton
+    }
 }
 
 // MARK: - Composite use cases (subsystems that remain monolithic)

@@ -1,4 +1,5 @@
 import Combine
+import Factory
 import UIKit
 import XCTest
 @testable import Zhip
@@ -6,9 +7,18 @@ import XCTest
 final class InputPincodeViewTests: XCTestCase {
 
     private var cancellables: Set<AnyCancellable> = []
+    private var mockHaptic: MockHapticFeedback!
+
+    override func setUp() {
+        super.setUp()
+        mockHaptic = MockHapticFeedback()
+        Container.shared.hapticFeedback.register { [unowned self] in self.mockHaptic }
+    }
 
     override func tearDown() {
         cancellables.removeAll()
+        Container.shared.manager.reset()
+        mockHaptic = nil
         super.tearDown()
     }
 
@@ -66,17 +76,27 @@ final class InputPincodeViewTests: XCTestCase {
         _ = sut.becomeFirstResponderBinder
     }
 
-    func test_vibrateOnInvalid_doesNotCrash() {
-        let view = UIView()
-        let generator = UINotificationFeedbackGenerator()
+    func test_validate_valid_firesSuccessHaptic() {
+        let sut = InputPincodeView()
 
-        view.vibrateOnInvalid(hapticFeedbackGenerator: generator)
+        sut.validate(.valid(withRemark: nil))
+
+        XCTAssertEqual(mockHaptic.notifications, [.success])
     }
 
-    func test_vibrateOnValid_doesNotCrash() {
-        let view = UIView()
-        let generator = UINotificationFeedbackGenerator()
+    func test_validate_errorMessage_firesErrorHaptic() {
+        let sut = InputPincodeView()
 
-        view.vibrateOnValid(hapticFeedbackGenerator: generator)
+        sut.validate(.errorMessage("bad pin"))
+
+        XCTAssertEqual(mockHaptic.notifications, [.error])
+    }
+
+    func test_validate_empty_firesNoHaptic() {
+        let sut = InputPincodeView()
+
+        sut.validate(.empty)
+
+        XCTAssertTrue(mockHaptic.notifications.isEmpty)
     }
 }

@@ -22,22 +22,20 @@
 // SOFTWARE.
 //
 
-import Factory
-import Foundation
+import UIKit
+@testable import Zhip
 
-struct BalanceLastUpdatedFormatter {
-    private let formatter: RelativeDateTimeFormatter = {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
+/// In-test `HapticFeedback` that NEVER forwards to
+/// `UINotificationFeedbackGenerator`. Records every requested feedback type so
+/// tests can assert which haptic fired.
+final class MockHapticFeedback: HapticFeedback {
 
-    func string(from date: Date?) -> String {
-        guard let updatedAt = date else {
-            return String(localized: .Formatters.balanceFirstFetch)
-        }
-        let now = Container.shared.dateProvider().now()
-        let relative = formatter.localizedString(for: updatedAt, relativeTo: now)
-        return String(localized: .Formatters.balanceWasUpdatedAt(relativeTime: relative))
+    /// Every `FeedbackType` passed to `notify(_:)`, in call order.
+    private(set) var notifications: [UINotificationFeedbackGenerator.FeedbackType] = []
+
+    init() {}
+
+    func notify(_ type: UINotificationFeedbackGenerator.FeedbackType) {
+        notifications.append(type)
     }
 }

@@ -28,8 +28,7 @@ import UIKit
 
 final class PollTransactionStatusView: ScrollableStackViewOwner {
     @Injected(\.soundPlayer) private var soundPlayer: SoundPlayer
-
-    private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
+    @Injected(\.hapticFeedback) private var hapticFeedback: HapticFeedback
 
     private lazy var motionEffectStarsImageViewWithGradient = GradientView()
     private lazy var checkmarkLogoImageView = UIImageView()
@@ -127,7 +126,7 @@ private extension PollTransactionStatusView {
     }
 
     func vibrate() {
-        vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
+        hapticFeedback.notify(.success)
     }
 
     /// Sound found here: https://freesound.org/people/MATTIX/sounds/445723/

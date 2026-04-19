@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import XCTest
 import Zesame
 @testable import Zhip
@@ -67,13 +68,17 @@ final class DefaultTransactionsUseCaseTests: XCTestCase {
 
     func test_cacheBalance_persistsValueAndStampsUpdatedAt() throws {
         let amount = try Amount(qa: "12345")
-        let before = Date()
+        // DateProvider is stubbed by SilenceSideEffects with FixedDateProvider;
+        // the use case stamps `balanceUpdatedAt` to whatever `dateProvider.now()`
+        // returns, so we assert against the stub's current value.
+        let stubbedNow = try XCTUnwrap(
+            (Container.shared.dateProvider() as? FixedDateProvider)?.fixedNow
+        )
 
         sut.cacheBalance(amount)
 
         XCTAssertEqual(sut.cachedBalance?.qaString, "12345")
-        let updatedAt = try XCTUnwrap(sut.balanceUpdatedAt)
-        XCTAssertGreaterThanOrEqual(updatedAt.timeIntervalSince1970, before.timeIntervalSince1970)
+        XCTAssertEqual(sut.balanceUpdatedAt, stubbedNow)
     }
 
     func test_balanceWasUpdated_writesTimestampOnly() {
