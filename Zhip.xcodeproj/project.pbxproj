@@ -283,6 +283,7 @@
 		B10000000000000000000478 /* BiometricsAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000479 /* BiometricsAuthenticator.swift */; };
 		B1000000000000000000047A /* MockBiometricsAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000047B /* MockBiometricsAuthenticator.swift */; };
 		B1000000000000000000047D /* LAContextBiometricsAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000047E /* LAContextBiometricsAuthenticatorTests.swift */; };
+		B10000000000000000000480 /* ConfigurationDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000481 /* ConfigurationDetectionTests.swift */; };
 		B10000000000000000000406 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000407 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift */; };
 		B10000000000000000000408 /* DefaultExtractKeyPairUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000409 /* DefaultExtractKeyPairUseCaseTests.swift */; };
 		B1000000000000000000040A /* DefaultTransactionsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000040B /* DefaultTransactionsUseCaseTests.swift */; };
@@ -849,6 +850,7 @@
 		B10000000000000000000479 /* BiometricsAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsAuthenticator.swift; sourceTree = "<group>"; };
 		B1000000000000000000047B /* MockBiometricsAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBiometricsAuthenticator.swift; sourceTree = "<group>"; };
 		B1000000000000000000047E /* LAContextBiometricsAuthenticatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAContextBiometricsAuthenticatorTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000481 /* ConfigurationDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationDetectionTests.swift; sourceTree = "<group>"; };
 		B1000000000000000000047F /* Auth */ = {isa = PBXGroup; children = (B1000000000000000000047E /* LAContextBiometricsAuthenticatorTests.swift */, ); path = Auth; sourceTree = "<group>"; };
 		B10000000000000000000407 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultVerifyEncryptionPasswordUseCaseTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000409 /* DefaultExtractKeyPairUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultExtractKeyPairUseCaseTests.swift; sourceTree = "<group>"; };
@@ -2300,6 +2302,7 @@
 				B10000000000000000000463 /* SoundPlayerTests.swift */,
 				B10000000000000000000469 /* QRCodingTests.swift */,
 				B10000000000000000000477 /* ErrorTrackerTests.swift */,
+				B10000000000000000000481 /* ConfigurationDetectionTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2933,6 +2936,7 @@
 				B10000000000000000000474 /* DefaultWalletStorageUseCaseTests.swift in Sources */,
 				B10000000000000000000476 /* ErrorTrackerTests.swift in Sources */,
 				B1000000000000000000047D /* LAContextBiometricsAuthenticatorTests.swift in Sources */,
+				B10000000000000000000480 /* ConfigurationDetectionTests.swift in Sources */,
 				B10000000000000000000406 /* DefaultVerifyEncryptionPasswordUseCaseTests.swift in Sources */,
 				B10000000000000000000408 /* DefaultExtractKeyPairUseCaseTests.swift in Sources */,
 				B1000000000000000000040A /* DefaultTransactionsUseCaseTests.swift in Sources */,
