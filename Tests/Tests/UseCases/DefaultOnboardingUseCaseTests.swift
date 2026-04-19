@@ -103,4 +103,17 @@ final class DefaultOnboardingUseCaseTests: XCTestCase {
         // Act / Assert
         XCTAssertTrue(sut.shouldPromptUserToChosePincode)
     }
+
+    func test_shouldPromptUserToChosePincode_isFalse_whenSkipPincodeSetupTrue() {
+        preferences.save(value: true, for: .skipPincodeSetup)
+
+        XCTAssertFalse(sut.shouldPromptUserToChosePincode)
+    }
+
+    func test_shouldPromptUserToChosePincode_isFalse_whenPincodeAlreadyConfigured() throws {
+        let pincode = try Pincode(digits: [.one, .two, .three, .four])
+        secureStore.save(pincode: pincode)
+
+        XCTAssertFalse(sut.shouldPromptUserToChosePincode)
+    }
 }

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Combine
 import Factory
 import XCTest
 @testable import Zhip
@@ -68,5 +69,39 @@ final class DefaultWalletStorageUseCaseTests: XCTestCase {
 
         XCTAssertNil(sut.loadWallet())
         XCTAssertFalse(sut.hasConfiguredWallet)
+    }
+
+    func test_walletPublisher_emitsCurrentlyLoadedWallet() {
+        let sut = DefaultWalletStorageUseCase()
+        sut.save(wallet: TestWalletFactory.makeWallet())
+        var cancellables: Set<AnyCancellable> = []
+        var received: Wallet?
+        let expectation = expectation(description: "wallet")
+
+        sut.wallet.sink {
+            received = $0
+            expectation.fulfill()
+        }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertNotNil(received)
+    }
+
+    func test_walletPublisher_emitsNilWhenEmpty() {
+        let sut = DefaultWalletStorageUseCase()
+        var cancellables: Set<AnyCancellable> = []
+        var emitted = false
+        var receivedValue: Wallet?
+        let expectation = expectation(description: "wallet")
+
+        sut.wallet.sink {
+            emitted = true
+            receivedValue = $0
+            expectation.fulfill()
+        }.store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertTrue(emitted)
+        XCTAssertNil(receivedValue)
     }
 }

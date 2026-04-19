@@ -85,4 +85,23 @@ final class DefaultVerifyEncryptionPasswordUseCaseTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
         XCTAssertEqual(result, false)
     }
+
+    func test_verifyForWallet_convenienceOverload_forwardsToKeystore() {
+        mockService.verifyEncryptionPasswordResult = .success(true)
+        let sut = DefaultVerifyEncryptionPasswordUseCase()
+        let wallet = TestWalletFactory.makeWallet()
+        var result: Bool?
+        let expectation = expectation(description: "value")
+
+        sut.verify(password: "secret", forWallet: wallet)
+            .sink(receiveCompletion: { _ in }, receiveValue: {
+                result = $0
+                expectation.fulfill()
+            })
+            .store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertEqual(result, true)
+        XCTAssertEqual(mockService.verifyEncryptionPasswordCallCount, 1)
+    }
 }

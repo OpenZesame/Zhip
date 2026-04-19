@@ -70,4 +70,27 @@ final class DefaultExtractKeyPairUseCaseTests: XCTestCase {
         XCTAssertNotNil(produced)
         XCTAssertEqual(mockService.extractKeyPairCallCount, 1)
     }
+
+    func test_extractKeyPairFromWallet_convenienceOverload_forwardsToKeystore() throws {
+        let privateKey = try PrivateKey(
+            rawRepresentation: Data(hex: "0E891B9DFF485000C7D1DC22ECF3A583CC50328684321D61947A86E57CF6C638")
+        )
+        let keyPair = try KeyPair(private: privateKey)
+        mockService.extractKeyPairResult = .success(keyPair)
+        let wallet = TestWalletFactory.makeWallet()
+        let sut = DefaultExtractKeyPairUseCase()
+        var produced: KeyPair?
+        let expectation = expectation(description: "value")
+
+        sut.extractKeyPairFrom(wallet: wallet, encryptedBy: "secret")
+            .sink(receiveCompletion: { _ in }, receiveValue: {
+                produced = $0
+                expectation.fulfill()
+            })
+            .store(in: &cancellables)
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertNotNil(produced)
+        XCTAssertEqual(mockService.extractKeyPairCallCount, 1)
+    }
 }

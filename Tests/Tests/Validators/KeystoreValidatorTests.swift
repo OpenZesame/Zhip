@@ -85,4 +85,16 @@ final class KeystoreValidatorTests: XCTestCase {
 
         XCTAssertNil(error)
     }
+
+    func test_errorInit_fromWalletImportBadAddress_returnsNil() {
+        let error = KeystoreValidator.Error(walletImportError: .badAddress)
+
+        XCTAssertNil(error)
+    }
+
+    func test_errorInit_fromZesameErrorNotWalletImport_returnsNil() {
+        let error = KeystoreValidator.Error(error: Zesame.Error.api(.timeout))
+
+        XCTAssertNil(error)
+    }
 }

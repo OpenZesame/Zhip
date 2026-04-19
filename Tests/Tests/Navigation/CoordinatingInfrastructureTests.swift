@@ -104,6 +104,14 @@ final class CoordinatingInfrastructureTests: XCTestCase {
         XCTAssertNil(parent.topMostScene)
     }
 
+    func test_topMostScene_withTopAbstractController_returnsIt() {
+        let abstract = AbstractController()
+        let nav = UINavigationController(rootViewController: abstract)
+        let parent = ReceiveCoordinator(navigationController: nav)
+
+        XCTAssertTrue(parent.topMostScene === abstract)
+    }
+
     // MARK: - Coordinating+NavigationStack
 
     func test_isTopmost_returnsFalseWhenStackEmpty() {
