@@ -33,19 +33,20 @@ enum DecryptKeystoreCoordinatorNavigationStep {
 }
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
-    private let wallet: AnyPublisher<Wallet, Never>
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
+    private let walletOverride: AnyPublisher<Wallet, Never>?
+
+    private lazy var wallet: AnyPublisher<Wallet, Never> = walletOverride
+        ?? walletStorageUseCase.wallet.map {
+            guard let wallet = $0 else {
+                incorrectImplementation("Should have saved wallet earlier")
+            }
+            return wallet
+        }.replaceErrorWithEmpty().eraseToAnyPublisher()
 
     init(navigationController: UINavigationController, wallet: AnyPublisher<Wallet, Never>? = nil) {
-        if let wallet {
-            self.wallet = wallet
-        } else {
-            self.wallet = Container.shared.walletStorageUseCase().wallet.map {
-                guard let wallet = $0 else {
-                    incorrectImplementation("Should have saved wallet earlier")
-                }
-                return wallet
-            }.replaceErrorWithEmpty().eraseToAnyPublisher()
-        }
+        self.walletOverride = wallet
         super.init(navigationController: navigationController)
     }
 

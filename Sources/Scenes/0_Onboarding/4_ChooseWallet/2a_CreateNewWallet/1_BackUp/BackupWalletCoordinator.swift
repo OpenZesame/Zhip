@@ -36,26 +36,24 @@ enum BackupWalletCoordinatorNavigationStep {
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
     @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
 
-    private let wallet: AnyPublisher<Wallet, Never>
+    private let walletOverride: AnyPublisher<Wallet, Never>?
     private let mode: BackupWalletViewModel.Mode
+
+    private lazy var wallet: AnyPublisher<Wallet, Never> = walletOverride
+        ?? walletStorageUseCase.wallet.map {
+            guard let wallet = $0 else {
+                incorrectImplementation("Should have saved wallet earlier")
+            }
+            return wallet
+        }.replaceErrorWithEmpty().eraseToAnyPublisher()
 
     init(
         navigationController: UINavigationController,
         wallet: AnyPublisher<Wallet, Never>? = nil,
         mode: BackupWalletViewModel.Mode = .cancellable
     ) {
+        self.walletOverride = wallet
         self.mode = mode
-        if let wallet {
-            self.wallet = wallet
-        } else {
-            // Resolve stored wallet lazily from the injected storage use case.
-            self.wallet = Container.shared.walletStorageUseCase().wallet.map {
-                guard let wallet = $0 else {
-                    incorrectImplementation("Should have saved wallet earlier")
-                }
-                return wallet
-            }.replaceErrorWithEmpty().eraseToAnyPublisher()
-        }
         super.init(navigationController: navigationController)
     }
 
