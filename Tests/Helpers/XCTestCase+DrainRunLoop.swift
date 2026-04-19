@@ -27,20 +27,23 @@ import XCTest
 
 extension XCTestCase {
 
-    /// Processes main-runloop events for `seconds` so UIKit presentation and
-    /// Combine `.receive(on: RunLoop.main)` work can settle before the test
-    /// asserts.
+    /// Drains the main queue for approximately `seconds` so UIKit
+    /// presentation and Combine `.receive(on: RunLoop.main)` work can settle
+    /// before the test asserts.
     ///
-    /// **Why not `DispatchQueue.main.asyncAfter` + `wait(for:timeout:)`?**
-    /// Every coordinator test originally used an expectation fulfilled by an
-    /// `asyncAfter(deadline: .now() + seconds)`, then waited with a 1.1s
-    /// timeout. On CI (and intermittently locally) modal-presentation and
-    /// `openUrl` branches keep the main queue busy longer than that
-    /// expectation tolerates — the scheduled fulfill never runs inside the
-    /// allotted window and the test fails as a flake. `RunLoop.run(until:)`
-    /// just processes events for the requested window and returns, without
-    /// any XCTest expectation machinery racing the main queue.
+    /// Uses `XCTestExpectation` + `DispatchQueue.main.asyncAfter` rather than
+    /// `RunLoop.current.run(until:)` because the latter returns immediately
+    /// when there are no input sources on `RunLoop.main` — which is often the
+    /// case on the CI simulator before any UI work has actually been queued.
+    /// The expectation path forces XCTest to spin the main runloop in its
+    /// standard wait mode, which reliably dispatches GCD main-queue blocks
+    /// and Combine scheduler work. Timeout headroom is deliberately generous
+    /// (10s) so CI's slower main queue never races the fulfill.
     func drainRunLoop(seconds: TimeInterval = 0.1) {
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: seconds))
+        let drainExpectation = expectation(description: "runloop drain")
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            drainExpectation.fulfill()
+        }
+        wait(for: [drainExpectation], timeout: seconds + 10)
     }
 }
