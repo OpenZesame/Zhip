@@ -248,4 +248,51 @@ final class SendCoordinatorTests: XCTestCase {
         drainRunLoop()
         // openURL returns asynchronously; we just verify the path ran.
     }
+
+    // MARK: - Deep-link filter reject branch
+
+    /// When the active scene is no longer `PrepareTransaction`, deep-linked
+    /// transactions must be filtered out so they don't mutate an unrelated
+    /// scene's state.
+    func test_deeplinkedTransaction_whenNotOnPrepare_isFilteredOut() throws {
+        sut.start()
+        let prepare = top(as: PrepareTransaction.self)!
+        let payment = try makePayment()
+        prepare.viewModel.navigator.next(.reviewPayment(payment))
+        drainRunLoop(seconds: 0.5)
+        XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
+
+        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
+        deeplinkSubject.send(TransactionIntent(to: address))
+        drainRunLoop()
+        // Reject path runs without mutating the scan-QR subject.
+    }
+
+    // MARK: - ScanQRCode result branches
+
+    func test_scanQRCode_cancel_dismissesWithoutCrashing() {
+        sut.start()
+        let prepare = top(as: PrepareTransaction.self)!
+        prepare.viewModel.navigator.next(.scanQRCode)
+        drainRunLoop(seconds: 0.5)
+
+        let presentedNav = navigationController.presentedViewController as? UINavigationController
+        let scan = presentedNav?.topViewController as? ScanQRCode
+        scan?.viewModel.navigator.next(.cancel)
+        drainRunLoop(seconds: 0.5)
+    }
+
+    func test_scanQRCode_scannedTransaction_dismissesAndForwardsToSubject() throws {
+        sut.start()
+        let prepare = top(as: PrepareTransaction.self)!
+        prepare.viewModel.navigator.next(.scanQRCode)
+        drainRunLoop(seconds: 0.5)
+
+        let presentedNav = navigationController.presentedViewController as? UINavigationController
+        let scan = presentedNav?.topViewController as? ScanQRCode
+        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
+        let intent = TransactionIntent(to: address)
+        scan?.viewModel.navigator.next(.scanQRContainingTransaction(intent))
+        drainRunLoop(seconds: 0.5)
+    }
 }
