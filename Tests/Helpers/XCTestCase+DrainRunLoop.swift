@@ -27,23 +27,31 @@ import XCTest
 
 extension XCTestCase {
 
-    /// Drains the main queue for approximately `seconds` so UIKit
-    /// presentation and Combine `.receive(on: RunLoop.main)` work can settle
-    /// before the test asserts.
+    /// Drains the main runloop for `seconds` so UIKit presentation and
+    /// Combine `.receive(on: DispatchQueue.main)` work can settle before
+    /// the test asserts.
     ///
-    /// Uses `XCTestExpectation` + `DispatchQueue.main.asyncAfter` rather than
-    /// `RunLoop.current.run(until:)` because the latter returns immediately
-    /// when there are no input sources on `RunLoop.main` — which is often the
-    /// case on the CI simulator before any UI work has actually been queued.
-    /// The expectation path forces XCTest to spin the main runloop in its
-    /// standard wait mode, which reliably dispatches GCD main-queue blocks
-    /// and Combine scheduler work. Timeout headroom is deliberately generous
-    /// (10s) so CI's slower main queue never races the fulfill.
+    /// **Why not `XCTestExpectation` + `DispatchQueue.main.asyncAfter`?**
+    /// That pattern made the test depend on GCD's timer subsystem firing
+    /// the asyncAfter block within the timeout. On CI the timer was
+    /// occasionally starved for >10s during the first window-bound test or
+    /// during modal presentation, producing flakes like "Asynchronous wait
+    /// failed: Exceeded timeout of 10.1 seconds, with unfulfilled
+    /// expectations: 'runloop drain'". Pumping the runloop directly removes
+    /// the dependency on the GCD timer entirely.
+    ///
+    /// **Why not bare `RunLoop.run(until:)`?** It returns immediately when
+    /// the mode has no input sources, which is sometimes true on the CI
+    /// simulator before any UI work has been queued. The repeat-while loop
+    /// here re-enters until the real-time deadline elapses, so it works in
+    /// both the "lots of sources" and the "no sources yet" cases. While the
+    /// runloop is being pumped in `.default` mode, the main-queue dispatch
+    /// source fires normally — pending GCD blocks and Combine main-queue
+    /// hops still get processed.
     func drainRunLoop(seconds: TimeInterval = 0.1) {
-        let drainExpectation = expectation(description: "runloop drain")
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            drainExpectation.fulfill()
-        }
-        wait(for: [drainExpectation], timeout: seconds + 10)
+        let endDate = Date(timeIntervalSinceNow: seconds)
+        repeat {
+            RunLoop.main.run(mode: .default, before: endDate)
+        } while Date() < endDate
     }
 }
