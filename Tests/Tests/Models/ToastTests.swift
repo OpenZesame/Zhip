@@ -33,15 +33,20 @@ final class ToastTests: XCTestCase {
         let sut = Toast("auto", dismissing: .after(duration: 0.05))
         sut.present(using: host)
 
-        let presented = expectation(description: "alert presented")
-        DispatchQueue.main.async { presented.fulfill() }
-        wait(for: [presented], timeout: 1.0)
+        // Pump the runloop so the queued `present(...)` call inside Toast
+        // resolves before we observe `presentedViewController`.
+        // `drainRunLoop` actively pumps the runloop in `.default` mode and
+        // avoids the bare-`wait(for:)` flake where the GCD main-queue timer
+        // is starved on CI.
+        drainRunLoop()
 
         XCTAssertTrue(host.presentedViewController is UIAlertController)
 
-        let dismissed = expectation(description: "alert dismissed")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { dismissed.fulfill() }
-        wait(for: [dismissed], timeout: 2.0)
+        // Auto-dismiss is scheduled via `Container.shared.clock()`, which
+        // tests register as `ImmediateClock` (fires on the next main-queue
+        // cycle). The dismiss animation itself is disabled by
+        // `SilenceSideEffects`, so a single drain settles everything.
+        drainRunLoop(seconds: 0.5)
 
         window.isHidden = true
     }
@@ -55,16 +60,13 @@ final class ToastTests: XCTestCase {
         let sut = Toast("manual", dismissing: .manual(dismissButtonTitle: "Close"))
         sut.present(using: host)
 
-        let presented = expectation(description: "alert presented")
-        DispatchQueue.main.async { presented.fulfill() }
-        wait(for: [presented], timeout: 1.0)
+        drainRunLoop()
 
         let alert = try XCTUnwrap(host.presentedViewController as? UIAlertController)
         XCTAssertEqual(alert.actions.first?.title, "Close")
 
-        let dismissed = expectation(description: "host dismissed")
-        host.dismiss(animated: false) { dismissed.fulfill() }
-        wait(for: [dismissed], timeout: 1.0)
+        host.dismiss(animated: false)
+        drainRunLoop()
         window.isHidden = true
     }
 }
