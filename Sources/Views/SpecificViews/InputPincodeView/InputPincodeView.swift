@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import TinyConstraints
 import UIKit
 
@@ -30,7 +31,7 @@ final class InputPincodeView: UIView {
     private lazy var errorLabel = UILabel()
     private lazy var stackView = UIStackView(arrangedSubviews: [pinField, errorLabel])
 
-    private let hapticFeedbackGenerator = UINotificationFeedbackGenerator()
+    @Injected(\.hapticFeedback) private var hapticFeedback: HapticFeedback
     private let isClearedOnValidInput: Bool
     init(isClearedOnValidInput: Bool = true) {
         self.isClearedOnValidInput = isClearedOnValidInput
@@ -75,27 +76,10 @@ private extension InputPincodeView {
     }
 
     func vibrateOnInvalid() {
-        vibrateOnInvalid(hapticFeedbackGenerator: hapticFeedbackGenerator)
+        hapticFeedback.notify(.error)
     }
 
     func vibrateOnValid() {
-        vibrateOnValid(hapticFeedbackGenerator: hapticFeedbackGenerator)
-    }
-}
-
-extension UIView {
-    func vibrateOnInvalid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
-        vibrate(style: .error, hapticFeedbackGenerator: hapticFeedbackGenerator)
-    }
-
-    func vibrateOnValid(hapticFeedbackGenerator: UINotificationFeedbackGenerator) {
-        vibrate(style: .success, hapticFeedbackGenerator: hapticFeedbackGenerator)
-    }
-
-    func vibrate(
-        style: UINotificationFeedbackGenerator.FeedbackType,
-        hapticFeedbackGenerator: UINotificationFeedbackGenerator
-    ) {
-        hapticFeedbackGenerator.notificationOccurred(style)
+        hapticFeedback.notify(.success)
     }
 }

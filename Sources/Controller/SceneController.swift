@@ -3,33 +3,56 @@
 import Combine
 import UIKit
 
-/// The "Single-Line Controller" base class
+/// The "Single-Line Controller" base class.
+///
+/// `SceneController<View>` is the generic scene glue: given a `ViewModelled` view
+/// type and its associated ViewModel, it instantiates the view, builds an
+/// `InputFromController`, invokes `viewModel.transform(input:)`, and binds the
+/// output back to the view via `View.populate(with:)`. It is almost never
+/// subclassed — coordinators push instances of this class directly using the
+/// `Scene` typealias.
 class SceneController<View: ContentView>: AbstractController
     where View.ViewModel.Input.FromController == InputFromController
 // swiftlint:disable:next opening_brace
 {
+    /// Convenience alias for the view's ViewModel type.
     typealias ViewModel = View.ViewModel
 
+    /// Bag of Combine subscriptions owned by this controller (navigation bar bindings,
+    /// toasts, title updates, view ↔ view-model bindings).
     private var cancellables = Set<AnyCancellable>()
+
+    /// The ViewModel injected by the coordinator at construction time.
     let viewModel: ViewModel
 
-    // Lifecycle subjects – fired in overrides below; passed into InputFromController.
+    /// Fires when `viewDidLoad` runs. Piped into `InputFromController.viewDidLoad`.
     private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+
+    /// Fires each time `viewWillAppear` runs.
     private let viewWillAppearSubject = PassthroughSubject<Void, Never>()
+
+    /// Fires each time `viewDidAppear` runs.
     private let viewDidAppearSubject = PassthroughSubject<Void, Never>()
 
+    /// Lazily-constructed root content view; the `force_cast` is safe because
+    /// `View: ContentView` and `ContentView: EmptyInitializable` by convention.
     private lazy var rootContentView: View =
         // swiftlint:disable:next force_cast
         (View.self as EmptyInitializable.Type).init() as! View
 
     // MARK: - Initialization
 
+    /// Designated initializer. Coordinators call this with a freshly-constructed
+    /// ViewModel; `setup()` wires the bindings eagerly so the View has live
+    /// publishers before `viewDidLoad` runs.
     required init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         setup()
     }
 
+    /// Unavailable — Interface Builder is not supported. Traps to enforce the
+    /// programmatic-only invariant.
     required init?(coder _: NSCoder) {
         interfaceBuilderSucks
     }

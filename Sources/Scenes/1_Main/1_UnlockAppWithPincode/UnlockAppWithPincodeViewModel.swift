@@ -23,8 +23,8 @@
 //
 
 import Combine
+import Factory
 import Foundation
-import LocalAuthentication
 
 // MARK: - UnlockAppWithPincodeUserAction
 
@@ -39,16 +39,15 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
     UnlockAppWithPincodeViewModel.InputFromView,
     UnlockAppWithPincodeViewModel.Output
 > {
-    private let useCase: PincodeUseCase
-    private let pincode: Pincode
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
+    @Injected(\.biometricsAuthenticator) private var biometricsAuthenticator: BiometricsAuthenticator
 
-    init(useCase: PincodeUseCase) {
-        self.useCase = useCase
-        guard let pincode = useCase.pincode else {
+    private lazy var pincode: Pincode = {
+        guard let pincode = pincodeUseCase.pincode else {
             incorrectImplementation("Should have pincode set")
         }
-        self.pincode = pincode
-    }
+        return pincode
+    }()
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
@@ -61,31 +60,12 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
             validator.validate(unconfirmedPincode: $0)
         }
 
-        // Always resolves the promise (even on unavailable / cancel / failure) so the publisher
-        // completes and doesn't leave dangling inner subscriptions when used under flatMap.
-        func unlockUsingBiometrics() -> AnyPublisher<Void, Never> {
-            Deferred {
-                Future<Bool, Never> { promise in
-                    let context = LAContext()
-                    context.localizedFallbackTitle = String(localized: .UnlockApp.biometricsFallback)
-                    // Is this ever used? I think that 'NSFaceIDUsageDescription' might override it?
-                    let reasonString = String(localized: .UnlockApp.biometricsReason)
-                    var authError: NSError?
-                    guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) else {
-                        promise(.success(false))
-                        return
-                    }
-                    context.evaluatePolicy(
-                        .deviceOwnerAuthenticationWithBiometrics,
-                        localizedReason: reasonString
-                    ) { didAuth, _ in
-                        promise(.success(didAuth))
-                    }
-                }
-            }
-            .filter { $0 }
-            .mapToVoid()
-            .eraseToAnyPublisher()
+        let biometricsAuthenticator = biometricsAuthenticator
+        let unlockUsingBiometrics = {
+            biometricsAuthenticator.authenticate()
+                .filter { $0 }
+                .mapToVoid()
+                .eraseToAnyPublisher()
         }
 
         let unlockUsingBiometricsTrigger = input.fromController.viewDidAppear
@@ -93,8 +73,7 @@ final class UnlockAppWithPincodeViewModel: BaseViewModel<
         [
             pincodeValidationValue.filter(\.isValid).mapToVoid()
                 .merge(with: unlockUsingBiometricsTrigger.flatMapLatest { unlockUsingBiometrics() })
-                .receive(on: DispatchQueue.main)
-                .sink { userDid(.unlockApp) },
+                .sinkOnMain { userDid(.unlockApp) },
         ].forEach { $0.store(in: &cancellables) }
 
         return Output(

@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import Foundation
 
 struct BalanceLastUpdatedFormatter {
@@ -35,7 +36,8 @@ struct BalanceLastUpdatedFormatter {
         guard let updatedAt = date else {
             return String(localized: .Formatters.balanceFirstFetch)
         }
-        let relative = formatter.localizedString(for: updatedAt, relativeTo: Date())
+        let now = Container.shared.dateProvider().now()
+        let relative = formatter.localizedString(for: updatedAt, relativeTo: now)
         return String(localized: .Formatters.balanceWasUpdatedAt(relativeTime: relative))
     }
 }

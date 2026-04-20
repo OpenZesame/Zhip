@@ -30,12 +30,6 @@ enum RestoreWalletCoordinatorNavigationStep {
 }
 
 final class RestoreWalletCoordinator: BaseCoordinator<RestoreWalletCoordinatorNavigationStep> {
-    private let useCase: WalletUseCase
-
-    init(navigationController: UINavigationController, useCase: WalletUseCase) {
-        self.useCase = useCase
-        super.init(navigationController: navigationController)
-    }
 
     override func start(didStart _: Completion? = nil) {
         toEnsureThatYouAreNotBeingWatched()
@@ -49,18 +43,18 @@ private extension RestoreWalletCoordinator {
         let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
         push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understand: toRestoreWallet()
-            case .cancel: cancel()
+            case .understand: self.toRestoreWallet()
+            case .cancel: self.cancel()
             }
         }
     }
 
     func toRestoreWallet() {
-        let viewModel = RestoreWalletViewModel(useCase: useCase)
+        let viewModel = RestoreWalletViewModel()
 
         push(scene: RestoreWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case let .restoreWallet(wallet): finishedRestoring(wallet: wallet)
+            case let .restoreWallet(wallet): self.finishedRestoring(wallet: wallet)
             }
         }
     }

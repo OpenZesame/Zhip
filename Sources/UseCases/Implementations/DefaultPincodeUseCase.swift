@@ -24,9 +24,22 @@
 
 import Foundation
 
+/// Default implementation of the composite `PincodeUseCase` and the two narrow
+/// protocols it composes (`PincodeReadUseCase`, `PincodeWriteUseCase`).
+///
+/// Pincode bytes live in the secure (Keychain) store; the "user has opted out of
+/// pincode setup" preference lives in UserDefaults because losing it on reinstall
+/// is fine.
 final class DefaultPincodeUseCase {
+
+    /// Non-secret key-value store used only to remember the "skip pincode setup"
+    /// preference.
     private let preferences: Preferences
+
+    /// Secret key-value store holding the serialized pincode bytes.
     let securePersistence: SecurePersistence
+
+    /// Designated initializer.
     init(preferences: Preferences, securePersistence: SecurePersistence) {
         self.preferences = preferences
         self.securePersistence = securePersistence
@@ -34,23 +47,31 @@ final class DefaultPincodeUseCase {
 }
 
 extension DefaultPincodeUseCase: PincodeUseCase {
+
+    /// Marks the onboarding pincode prompt as dismissed so we don't prompt again
+    /// on subsequent launches.
     func skipSettingUpPincode() {
         preferences.save(value: true, for: .skipPincodeSetup)
     }
 
+    /// The currently-configured pincode, or `nil` if none has been set.
     var pincode: Pincode? {
         securePersistence.loadCodable(Pincode.self, for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
     }
 
+    /// `true` if the user has previously set a pincode.
     var hasConfiguredPincode: Bool {
         securePersistence.hasConfiguredPincode
     }
 
+    /// Removes any persisted pincode and clears the "skip setup" preference so
+    /// subsequent launches prompt again.
     func deletePincode() {
         preferences.deleteValue(for: .skipPincodeSetup)
         securePersistence.deleteValue(for: .pincodeProtectingAppThatHasNothingToDoWithCryptography)
     }
 
+    /// Persists the user-chosen `pincode` to secure storage.
     func userChoose(pincode: Pincode) {
         securePersistence.save(pincode: pincode)
     }

@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -31,24 +32,16 @@ enum MainCoordinatorNavigationStep {
 }
 
 final class MainCoordinator: BaseCoordinator<MainCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private let deepLinkGenerator: DeepLinkGenerator
     private let deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     private let updateBalanceSubject = PassthroughSubject<Void, Never>()
 
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-
     init(
         navigationController: UINavigationController,
-        deepLinkGenerator: DeepLinkGenerator,
-        useCaseProvider: UseCaseProvider,
         deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
-        self.useCaseProvider = useCaseProvider
-        self.deepLinkGenerator = deepLinkGenerator
         self.deeplinkedTransaction = deeplinkedTransaction
         super.init(navigationController: navigationController)
-        deeplinkedTransaction.mapToVoid().sink { [unowned self] in toSendPrefilTransaction() }.store(in: &cancellables)
+        deeplinkedTransaction.mapToVoid().sink { [unowned self] in self.toSendPrefilTransaction() }.store(in: &cancellables)
     }
 
     override func start(didStart: Completion? = nil) {
@@ -72,8 +65,6 @@ private extension MainCoordinator {
 private extension MainCoordinator {
     func toMain(didStart: Completion? = nil) {
         let viewModel = MainViewModel(
-            transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
-            walletUseCase: useCaseProvider.makeWalletUseCase(),
             updateBalanceTrigger: updateBalanceSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
         )
 
@@ -83,9 +74,9 @@ private extension MainCoordinator {
             navigationPresentationCompletion: didStart
         ) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .send: toSend()
-            case .receive: toReceive()
-            case .goToSettings: toSettings()
+            case .send: self.toSend()
+            case .receive: self.toReceive()
+            case .goToSettings: self.toSettings()
             }
         }
     }
@@ -94,7 +85,6 @@ private extension MainCoordinator {
         presentModalCoordinator(
             makeCoordinator: { SendCoordinator(
                 navigationController: $0,
-                useCaseProvider: useCaseProvider,
                 deeplinkedTransaction: deeplinkedTransaction
             )
             },
@@ -102,7 +92,7 @@ private extension MainCoordinator {
                 switch userDid {
                 case let .finish(triggerBalanceFetching):
                     if triggerBalanceFetching {
-                        triggerFetchingOfBalance()
+                        self.triggerFetchingOfBalance()
                     }
                     dismissModalFlow(true)
                 }
@@ -112,12 +102,7 @@ private extension MainCoordinator {
 
     func toReceive() {
         presentModalCoordinator(
-            makeCoordinator: { ReceiveCoordinator(
-                navigationController: $0,
-                useCaseProvider: useCaseProvider,
-                deepLinkGenerator: deepLinkGenerator
-            )
-            },
+            makeCoordinator: { ReceiveCoordinator(navigationController: $0) },
             navigationHandler: { userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
                 case .finish: dismissModalFlow(true)
@@ -128,10 +113,10 @@ private extension MainCoordinator {
 
     func toSettings() {
         presentModalCoordinator(
-            makeCoordinator: { SettingsCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
+            makeCoordinator: { SettingsCoordinator(navigationController: $0) },
             navigationHandler: { [unowned self] userIntendsTo, dismissModalFlow in
                 switch userIntendsTo {
-                case .removeWallet: navigator.next(.removeWallet)
+                case .removeWallet: self.navigator.next(.removeWallet)
                 case .closeSettings: dismissModalFlow(true)
                 }
             }

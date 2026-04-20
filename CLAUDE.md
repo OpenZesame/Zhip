@@ -243,6 +243,83 @@ Coordinators hold a `cancellables: Set<AnyCancellable>` for retaining navigation
 
 ---
 
+## Use Cases
+
+Use cases live in `Sources/UseCases/`. The wallet subsystem is split into five
+narrow protocols, each backed by its own concrete `Default*` implementation
+that uses `@Injected` to resolve its own dependencies. The transactions,
+onboarding, and pincode subsystems still have a composite façade protocol
+(kept for now — prefer the narrow protocols in new code) plus per-facet
+factories that all resolve to the same shared instance.
+
+### Wallet subsystem (fully split)
+
+| Narrow protocol | Concrete implementation | What it injects |
+|-----------------|------------------------|-----------------|
+| `CreateWalletUseCase` | `DefaultCreateWalletUseCase` | `zilliqaService` |
+| `RestoreWalletUseCase` | `DefaultRestoreWalletUseCase` | `zilliqaService` |
+| `WalletStorageUseCase` | `DefaultWalletStorageUseCase` | `securePersistence` |
+| `VerifyEncryptionPasswordUseCase` | `DefaultVerifyEncryptionPasswordUseCase` | `zilliqaService` |
+| `ExtractKeyPairUseCase` | `DefaultExtractKeyPairUseCase` | `zilliqaService` |
+
+Each ViewModel/coordinator depends on *only* the narrow protocols it
+actually uses (`@Injected(\.createWalletUseCase) private var createWalletUseCase: CreateWalletUseCase`).
+
+### Other subsystems (composite + narrow facets)
+
+| Composite | Narrow protocols |
+|-----------|------------------|
+| `TransactionsUseCase` | `BalanceCacheUseCase`, `GasPriceUseCase`, `FetchBalanceUseCase`, `SendTransactionUseCase`, `TransactionReceiptUseCase` |
+| `OnboardingUseCase` | `TermsOfServiceAcceptanceUseCase`, `CustomECCWarningAcceptanceUseCase`, `CrashReportingPermissionsUseCase`, `PincodePromptUseCase` |
+| `PincodeUseCase` | `PincodeReadUseCase`, `PincodeWriteUseCase` |
+
+The single `Default{Transactions,Onboarding,Pincode}UseCase` concrete type
+conforms to every narrow protocol in its family, so the per-facet factories
+all resolve to the same shared instance (no adapter glue needed).
+
+---
+
+## Dependency Injection: `Container`
+
+The shared DI container is `Container.shared`, implemented in
+`Sources/Application/DI/Container.swift`. Its API mirrors
+[hmlongco/Factory](https://github.com/hmlongco/Factory) so a future swap to
+the real SPM package is a near-no-op.
+
+```swift
+// Production
+let storage = Container.shared.walletStorageUseCase()
+
+// Test
+Container.shared.walletStorageUseCase.register { MockWalletUseCase() }
+// ...
+Container.shared.manager.reset()  // restores every registered default
+```
+
+Each factory follows the pattern `lazy var <name>: Factory<Protocol> = _register { ... }`.
+See `Container.swift` for the full list (services, composite use cases, and
+narrow use case facets that all resolve to the same shared instance).
+
+See **TESTING.md** for concrete test patterns and how to add new
+`Tests/Helpers/*` files to the `ZhipTests` target.
+
+---
+
+## Testing
+
+- Framework: XCTest (`just test` / `just cov` / `just cov-detailed`).
+- Pattern: strict Arrange-Act-Assert with one-line sections where possible.
+- ViewModel tests drive `InputFromView` subjects via `FakeInputFromController`
+  and observe `navigator.navigation`.
+- Use-case tests use `TestStoreFactory.makePreferences()` /
+  `TestStoreFactory.makeSecurePersistence()` for in-memory stores.
+- Snapshot testing (`swift-snapshot-testing`) is scaffolded in TESTING.md but
+  not yet added as an SPM dep on `ZhipTests`.
+
+Full guide: [TESTING.md](./TESTING.md).
+
+---
+
 ## Key File Locations
 
 | Concept | Path |
@@ -260,3 +337,6 @@ Coordinators hold a `cancellables: Set<AnyCancellable>` for retaining navigation
 | `ActivityIndicator` | `Sources/Application/ViewModel/ActivityIndicator.swift` |
 | `AnyValidation` | `Sources/Application/InputValidators/Validation/AnyValidation/AnyValidation.swift` |
 | `SingleCellTypeTableView` | `Sources/Views/TableView/SingleCellTypeTableView.swift` |
+| `Factory` + `Container` | `Sources/Application/DI/Container.swift` |
+| Use case protocols | `Sources/UseCases/*.swift` |
+| `Default*UseCase` | `Sources/UseCases/Implementations/*.swift` |

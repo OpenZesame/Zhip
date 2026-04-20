@@ -33,19 +33,13 @@ enum SendCoordinatorNavigationStep {
 // MARK: - SendCoordinator
 
 final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private let onboardingUseCase: OnboardingUseCase
     private let transactionIntent: AnyPublisher<TransactionIntent, Never>
     private let scannedQRTransactionSubject = PassthroughSubject<TransactionIntent, Never>()
 
     init(
         navigationController: UINavigationController,
-        useCaseProvider: UseCaseProvider,
         deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
     ) {
-        self.useCaseProvider = useCaseProvider
-        onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-
         transactionIntent = deeplinkedTransaction.merge(with: scannedQRTransactionSubject.replaceErrorWithEmpty()).eraseToAnyPublisher()
         super.init(navigationController: navigationController)
     }
@@ -64,11 +58,9 @@ private extension SendCoordinator {
 
     func toPrepareTransaction() {
         let viewModel = PrepareTransactionViewModel(
-            walletUseCase: useCaseProvider.makeWalletUseCase(),
-            transactionUseCase: useCaseProvider.makeTransactionsUseCase(),
             scannedOrDeeplinkedTransaction: transactionIntent.filter { [unowned self] _ in
-                let prepareTransactionIsCurrentScene = navigationController.viewControllers
-                    .isEmpty || isTopmost(scene: PrepareTransaction.self)
+                let prepareTransactionIsCurrentScene = self.navigationController.viewControllers
+                    .isEmpty || self.isTopmost(scene: PrepareTransaction.self)
                 guard prepareTransactionIsCurrentScene else {
                     // Prevented deeplinked transaction since it is not the active scene
                     return false
@@ -79,9 +71,9 @@ private extension SendCoordinator {
 
         push(scene: PrepareTransaction.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .cancel: finish()
-            case .scanQRCode: toScanQRCode()
-            case let .reviewPayment(payment): toReviewPaymentBeforeSigning(payment)
+            case .cancel: self.finish()
+            case .scanQRCode: self.toScanQRCode()
+            case let .reviewPayment(payment): self.toReviewPaymentBeforeSigning(payment)
             }
         }
     }
@@ -110,37 +102,30 @@ private extension SendCoordinator {
         push(scene: ReviewTransactionBeforeSigning.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case let .acceptPaymentProceedWithSigning(reviewedPayment):
-                toSignPayment(reviewedPayment)
+                self.toSignPayment(reviewedPayment)
             }
         }
     }
 
     func toSignPayment(_ payment: Payment) {
-        let viewModel = SignTransactionViewModel(
-            paymentToSign: payment,
-            walletUseCase: useCaseProvider.makeWalletUseCase(),
-            transactionUseCase: useCaseProvider.makeTransactionsUseCase()
-        )
+        let viewModel = SignTransactionViewModel(paymentToSign: payment)
 
         push(scene: SignTransaction.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
             case let .sign(transactionResponse):
-                toWaitForReceiptForTransactionWith(id: transactionResponse.transactionIdentifier)
+                self.toWaitForReceiptForTransactionWith(id: transactionResponse.transactionIdentifier)
             }
         }
     }
 
     func toWaitForReceiptForTransactionWith(id transactionId: String) {
-        let viewModel = PollTransactionStatusViewModel(
-            useCase: useCaseProvider.makeTransactionsUseCase(),
-            transactionId: transactionId
-        )
+        let viewModel = PollTransactionStatusViewModel(transactionId: transactionId)
 
         push(scene: PollTransactionStatus.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .skip, .waitUntilTimeout: finish()
-            case .dismiss: finish(triggerBalanceFetching: true)
-            case let .viewTransactionDetailsInBrowser(txId): openInBrowserDetailsForTransaction(id: txId)
+            case .skip, .waitUntilTimeout: self.finish()
+            case .dismiss: self.finish(triggerBalanceFetching: true)
+            case let .viewTransactionDetailsInBrowser(txId): self.openInBrowserDetailsForTransaction(id: txId)
             }
         }
     }

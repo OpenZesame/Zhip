@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import Zesame
@@ -33,27 +34,26 @@ enum BackupWalletCoordinatorNavigationStep {
 }
 
 final class BackupWalletCoordinator: BaseCoordinator<BackupWalletCoordinatorNavigationStep> {
-    private let useCase: WalletUseCase
-    private let wallet: AnyPublisher<Wallet, Never>
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+
+    private let walletOverride: AnyPublisher<Wallet, Never>?
     private let mode: BackupWalletViewModel.Mode
+
+    private lazy var wallet: AnyPublisher<Wallet, Never> = walletOverride
+        ?? walletStorageUseCase.wallet.map {
+            guard let wallet = $0 else {
+                incorrectImplementation("Should have saved wallet earlier")
+            }
+            return wallet
+        }.replaceErrorWithEmpty().eraseToAnyPublisher()
+
     init(
         navigationController: UINavigationController,
-        useCase: WalletUseCase,
         wallet: AnyPublisher<Wallet, Never>? = nil,
         mode: BackupWalletViewModel.Mode = .cancellable
     ) {
-        self.useCase = useCase
+        self.walletOverride = wallet
         self.mode = mode
-        if let wallet {
-            self.wallet = wallet
-        } else {
-            self.wallet = useCase.wallet.map {
-                guard let wallet = $0 else {
-                    incorrectImplementation("Should have saved wallet earlier")
-                }
-                return wallet
-            }.replaceErrorWithEmpty().eraseToAnyPublisher()
-        }
         super.init(navigationController: navigationController)
     }
 
@@ -70,17 +70,17 @@ private extension BackupWalletCoordinator {
 
         push(scene: BackupWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .revealKeystore: toRevealKeystore()
-            case .revealPrivateKey: toDecryptKeystoreToRevealKeyPair()
-            case .cancelOrDismiss: cancel()
-            case .backupWallet: finish()
+            case .revealKeystore: self.toRevealKeystore()
+            case .revealPrivateKey: self.toDecryptKeystoreToRevealKeyPair()
+            case .cancelOrDismiss: self.cancel()
+            case .backupWallet: self.finish()
             }
         }
     }
 
     func toDecryptKeystoreToRevealKeyPair() {
         presentModalCoordinator(makeCoordinator: {
-            DecryptKeystoreCoordinator(navigationController: $0, useCase: useCase, wallet: wallet)
+            DecryptKeystoreCoordinator(navigationController: $0, wallet: wallet)
         }, navigationHandler: { userFinished, dismissModalFlow in
             switch userFinished {
             case .backingUpKeyPair: dismissModalFlow(true)

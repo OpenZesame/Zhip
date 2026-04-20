@@ -23,46 +23,23 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import Zesame
 
-final class DefaultWalletUseCase: WalletUseCase, SecurePersisting {
-    private let zilliqaService: ZilliqaServiceReactive
-    let securePersistence: SecurePersistence
-    init(zilliqaService: ZilliqaServiceReactive, securePersistence: SecurePersistence) {
-        self.zilliqaService = zilliqaService
-        self.securePersistence = securePersistence
-    }
-}
+/// Default implementation of `CreateWalletUseCase`.
+///
+/// Forwards to the shared `ZilliqaServiceReactive` via `@Injected` so tests can
+/// substitute the service using `Container.shared.zilliqaService.register { ... }`.
+final class DefaultCreateWalletUseCase: CreateWalletUseCase {
 
-extension DefaultWalletUseCase {
-    /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error> {
-        zilliqaService.verifyThat(encryptionPassword: password, canDecryptKeystore: keystore)
-            .mapError { $0 as Swift.Error }
-            .eraseToAnyPublisher()
-    }
+    @Injected(\.zilliqaService) private var zilliqaService: ZilliqaServiceReactive
 
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
-        zilliqaService.extractKeyPairFrom(keystore: keystore, encryptedBy: password)
-            .mapError { $0 as Swift.Error }
-            .eraseToAnyPublisher()
-    }
+    init() {}
 
     func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error> {
         zilliqaService.createNewWallet(encryptionPassword: encryptionPassword, kdf: .default)
             .map { Wallet(wallet: $0, origin: .generatedByThisApp) }
-            .mapError { $0 as Swift.Error }
-            .eraseToAnyPublisher()
-    }
-
-    func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error> {
-        let origin: Wallet.Origin = switch restoration {
-        case .keystore: .importedKeystore
-        case .privateKey: .importedPrivateKey
-        }
-        return zilliqaService.restoreWallet(from: restoration)
-            .map { Wallet(wallet: $0, origin: origin) }
             .mapError { $0 as Swift.Error }
             .eraseToAnyPublisher()
     }

@@ -26,53 +26,78 @@ import Combine
 import Foundation
 import Zesame
 
-protocol SecurePersisting: AnyObject {
-    var securePersistence: SecurePersistence { get }
+// MARK: - Narrow wallet use cases
+
+/// Creates a brand-new wallet from a user-chosen encryption password.
+protocol CreateWalletUseCase: AnyObject {
+
+    /// Generates a fresh wallet, encrypts it with `encryptionPassword`, and emits
+    /// the resulting `Wallet` once on success.
+    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error>
 }
 
-protocol WalletUseCase: AnyObject {
-    func createNewWallet(encryptionPassword: String) -> AnyPublisher<Wallet, Swift.Error>
+/// Restores an existing wallet from user-provided keystore or private-key material.
+protocol RestoreWalletUseCase: AnyObject {
+
+    /// Restores a wallet using the supplied `KeyRestoration` (either `.keystore` or
+    /// `.privateKey`) and emits the resulting `Wallet` once on success.
     func restoreWallet(from restoration: KeyRestoration) -> AnyPublisher<Wallet, Swift.Error>
+}
+
+/// Reads and writes the user's wallet to secure persistent storage.
+protocol WalletStorageUseCase: AnyObject {
+
+    /// Persists `wallet` to secure storage (replacing any previously saved wallet).
     func save(wallet: Wallet)
+
+    /// Removes the currently-persisted wallet, if any.
     func deleteWallet()
 
-    /// Checks if the passed `password` was used to encrypt the Keystore
-    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error>
-    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error>
+    /// Loads the currently-persisted wallet synchronously, or `nil` if none exists.
     func loadWallet() -> Wallet?
+
+    /// `true` if there is a wallet currently persisted in secure storage.
     var hasConfiguredWallet: Bool { get }
 }
 
-extension WalletUseCase {
-    /// Checks if the passed `password` was used to encrypt the Keystore inside the Wallet
+/// Verifies whether a user-provided password successfully decrypts a keystore.
+protocol VerifyEncryptionPasswordUseCase: AnyObject {
+
+    /// Checks if the passed `password` was used to encrypt `keystore`. The resulting
+    /// publisher emits `true`/`false` on the main queue.
+    func verify(password: String, forKeystore keystore: Keystore) -> AnyPublisher<Bool, Swift.Error>
+}
+
+/// Extracts the raw `KeyPair` from a keystore (public + private key) when supplied
+/// with the correct encryption password.
+protocol ExtractKeyPairUseCase: AnyObject {
+
+    /// Decrypts `keystore` with `password` and emits the underlying `KeyPair`.
+    func extractKeyPairFrom(keystore: Keystore, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error>
+}
+
+// MARK: - Convenience extensions
+
+extension VerifyEncryptionPasswordUseCase {
+
+    /// Convenience overload that verifies a password against the keystore embedded
+    /// inside a `Wallet`.
     func verify(password: String, forWallet wallet: Wallet) -> AnyPublisher<Bool, Swift.Error> {
         verify(password: password, forKeystore: wallet.keystore)
     }
+}
 
+extension ExtractKeyPairUseCase {
+
+    /// Convenience overload that extracts a key pair from the keystore inside a `Wallet`.
     func extractKeyPairFrom(wallet: Wallet, encryptedBy password: String) -> AnyPublisher<KeyPair, Swift.Error> {
         extractKeyPairFrom(keystore: wallet.keystore, encryptedBy: password)
     }
 }
 
-extension WalletUseCase where Self: SecurePersisting {
-    func deleteWallet() {
-        securePersistence.deleteWallet()
-    }
+extension WalletStorageUseCase {
 
-    func loadWallet() -> Wallet? {
-        securePersistence.wallet
-    }
-
-    func save(wallet: Wallet) {
-        securePersistence.save(wallet: wallet)
-    }
-
-    var hasConfiguredWallet: Bool {
-        securePersistence.hasConfiguredWallet
-    }
-}
-
-extension WalletUseCase {
+    /// Emits the currently-persisted wallet (or `nil`) as a one-shot publisher.
     var wallet: AnyPublisher<Wallet?, Never> {
         Just(loadWallet()).eraseToAnyPublisher()
     }

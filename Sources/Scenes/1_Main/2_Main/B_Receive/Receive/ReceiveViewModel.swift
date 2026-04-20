@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -40,20 +41,16 @@ final class ReceiveViewModel: BaseViewModel<
     ReceiveViewModel.InputFromView,
     ReceiveViewModel.Output
 > {
-    private let useCase: WalletUseCase
-    private let qrCoder: QRCoding
-
-    init(useCase: WalletUseCase, qrCoder: QRCoding = QRCoder()) {
-        self.useCase = useCase
-        self.qrCoder = qrCoder
-    }
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pasteboard) private var pasteboard: Pasteboard
+    @Injected(\.qrCoder) private var qrCoder: QRCoding
 
     override func transform(input: Input) -> Output {
         func userDid(_ userAction: NavigationStep) {
             navigator.next(userAction)
         }
 
-        let wallet = useCase.wallet.filterNil().replaceErrorWithEmpty()
+        let wallet = walletStorageUseCase.wallet.filterNil().replaceErrorWithEmpty()
 
         let validator = InputValidator()
 
@@ -78,7 +75,7 @@ final class ReceiveViewModel: BaseViewModel<
             .combineLatest(amount.map { $0?.amount }.filterNil()) { TransactionIntent(to: $0, amount: $1) }
             .eraseToAnyPublisher()
 
-        let qrImage: AnyPublisher<UIImage?, Never> = transactionToReceive.map { [unowned qrCoder] in
+        let qrImage: AnyPublisher<UIImage?, Never> = transactionToReceive.map { [qrCoder] in
             qrCoder.encode(transaction: $0, size: input.fromView.qrCodeImageHeight)
         }.eraseToAnyPublisher()
 
@@ -89,8 +86,8 @@ final class ReceiveViewModel: BaseViewModel<
                 .sink { userDid(.finish) },
 
             input.fromView.copyMyAddressTrigger.withLatestFrom(receivingAddress)
-                .sink {
-                    UIPasteboard.general.string = $0
+                .sink { [pasteboard] in
+                    pasteboard.copy($0)
                     input.fromController.toastSubject.send(Toast(String(localized: .Receive.copiedAddress)))
                 },
 

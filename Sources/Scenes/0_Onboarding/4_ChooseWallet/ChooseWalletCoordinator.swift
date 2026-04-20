@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -30,13 +31,7 @@ enum ChooseWalletCoordinatorNavigationStep {
 }
 
 final class ChooseWalletCoordinator: BaseCoordinator<ChooseWalletCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var useCase = useCaseProvider.makeWalletUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
 
     override func start(didStart _: Completion? = nil) {
         toChooseWallet()
@@ -51,19 +46,19 @@ private extension ChooseWalletCoordinator {
 
         push(scene: ChooseWallet.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .createNewWallet: toCreateNewWallet()
-            case .restoreWallet: toRestoreWallet()
+            case .createNewWallet: self.toCreateNewWallet()
+            case .restoreWallet: self.toRestoreWallet()
             }
         }
     }
 
     func toCreateNewWallet() {
         presentModalCoordinator(
-            makeCoordinator: { CreateNewWalletCoordinator(navigationController: $0, useCaseProvider: useCaseProvider) },
+            makeCoordinator: { CreateNewWalletCoordinator(navigationController: $0) },
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
-                case let .create(wallet): userFinishedChoosing(wallet: wallet)
+                case let .create(wallet): self.userFinishedChoosing(wallet: wallet)
                 case .cancel: break
                 }
             }
@@ -72,11 +67,11 @@ private extension ChooseWalletCoordinator {
 
     func toRestoreWallet() {
         presentModalCoordinator(
-            makeCoordinator: { RestoreWalletCoordinator(navigationController: $0, useCase: useCase) },
+            makeCoordinator: { RestoreWalletCoordinator(navigationController: $0) },
             navigationHandler: { [unowned self] userDid, dismissFlow in
                 defer { dismissFlow(true) }
                 switch userDid {
-                case let .finishedRestoring(wallet): userFinishedChoosing(wallet: wallet)
+                case let .finishedRestoring(wallet): self.userFinishedChoosing(wallet: wallet)
                 case .cancel: break
                 }
             }
@@ -84,7 +79,7 @@ private extension ChooseWalletCoordinator {
     }
 
     func userFinishedChoosing(wallet: Wallet) {
-        useCase.save(wallet: wallet)
+        walletStorageUseCase.save(wallet: wallet)
         navigator.next(.finishChoosingWallet)
     }
 }

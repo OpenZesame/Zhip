@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
@@ -164,12 +165,13 @@ private extension PrepareTransactionView {
             gasLimitField.text = Int.random(in: 50 ... 100).description
             gasPriceField.text = Int.random(in: 1000 ... 2000).description
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [unowned self] in
+            Container.shared.clock().schedule(after: 0.3) { [weak self] in
+                guard let self else { return }
                 [
-                    recipientAddressField,
-                    amountToSendField,
-                    gasLimitField,
-                    gasPriceField,
+                    self.recipientAddressField,
+                    self.amountToSendField,
+                    self.gasLimitField,
+                    self.gasPriceField,
                 ].forEach {
                     $0.sendActions(for: .editingDidEnd)
                 }

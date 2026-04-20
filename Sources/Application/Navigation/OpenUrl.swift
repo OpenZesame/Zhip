@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 
 func openUrl(string baseUrlString: String, relative path: String? = nil) {
@@ -38,5 +39,5 @@ func openUrl(string baseUrlString: String, relative path: String? = nil) {
         return
     }
 
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    Container.shared.urlOpener().open(url)
 }

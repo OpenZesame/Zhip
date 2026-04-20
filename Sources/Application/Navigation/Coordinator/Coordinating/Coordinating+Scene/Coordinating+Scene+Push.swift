@@ -35,8 +35,7 @@ extension Coordinating {
         )
 
         viewModel.navigator.navigation
-            .receive(on: DispatchQueue.main)
-            .sink { navigationHandler($0) }
+            .sinkOnMain { navigationHandler($0) }
             .store(in: &cancellables)
     }
 }

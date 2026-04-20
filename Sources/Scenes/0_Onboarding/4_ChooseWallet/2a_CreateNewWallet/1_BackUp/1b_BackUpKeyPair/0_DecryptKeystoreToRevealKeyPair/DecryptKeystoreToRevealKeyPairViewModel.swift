@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Zesame
 
 enum DecryptKeystoreToRevealKeyPairUserAction {
@@ -35,11 +36,11 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
     DecryptKeystoreToRevealKeyPairViewModel.InputFromView,
     DecryptKeystoreToRevealKeyPairViewModel.Output
 > {
-    private let useCase: WalletUseCase
+    @Injected(\.extractKeyPairUseCase) private var extractKeyPairUseCase: ExtractKeyPairUseCase
+
     private let wallet: AnyPublisher<Wallet, Never>
 
-    init(useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>) {
-        self.useCase = useCase
+    init(wallet: AnyPublisher<Wallet, Never>) {
         self.wallet = wallet
     }
 
@@ -72,8 +73,8 @@ final class DecryptKeystoreToRevealKeyPairViewModel: BaseViewModel<
                 ) { (_: Void, pair: (Wallet, String)) -> (wallet: Wallet, password: String) in
                     (wallet: pair.0, password: pair.1)
                 }
-                .flatMapLatest { [unowned useCase] in
-                    useCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
+                .flatMapLatest { [unowned self] in
+                    self.extractKeyPairUseCase.extractKeyPairFrom(wallet: $0.wallet, encryptedBy: $0.password)
                         .trackActivity(activityIndicator)
                         .trackError(errorTracker)
                         .replaceErrorWithEmpty()

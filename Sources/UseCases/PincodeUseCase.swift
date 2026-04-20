@@ -24,10 +24,34 @@
 
 import Foundation
 
-protocol PincodeUseCase: AnyObject {
-    func userChoose(pincode: Pincode)
-    func skipSettingUpPincode()
-    func deletePincode()
+// MARK: - Narrow use cases (split from the old monolithic `PincodeUseCase`)
+
+/// Reads the pincode stored in secure storage and whether one has ever been chosen.
+protocol PincodeReadUseCase: AnyObject {
+
+    /// The currently-configured pincode, or `nil` if none has been set.
     var pincode: Pincode? { get }
+
+    /// `true` if the user has previously set a pincode.
     var hasConfiguredPincode: Bool { get }
 }
+
+/// Writes or deletes the stored pincode, and records a "skip setup" preference.
+protocol PincodeWriteUseCase: AnyObject {
+
+    /// Persists the user-chosen `pincode` to secure storage.
+    func userChoose(pincode: Pincode)
+
+    /// Marks the one-time onboarding pincode prompt as dismissed, so we don't prompt
+    /// again on subsequent launches.
+    func skipSettingUpPincode()
+
+    /// Removes any persisted pincode and clears the "skip setup" preference.
+    func deletePincode()
+}
+
+// MARK: - Composite façade (backward-compatibility)
+
+/// Composite pincode protocol retained for backwards compatibility with existing
+/// call sites. Prefer the narrow protocols above in new code.
+protocol PincodeUseCase: PincodeReadUseCase, PincodeWriteUseCase {}

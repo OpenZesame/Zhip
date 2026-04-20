@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import Zesame
@@ -32,21 +33,20 @@ enum DecryptKeystoreCoordinatorNavigationStep {
 }
 
 final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinatorNavigationStep> {
-    private let useCase: WalletUseCase
-    private let wallet: AnyPublisher<Wallet, Never>
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
 
-    init(navigationController: UINavigationController, useCase: WalletUseCase, wallet: AnyPublisher<Wallet, Never>? = nil) {
-        self.useCase = useCase
-        if let wallet {
-            self.wallet = wallet
-        } else {
-            self.wallet = useCase.wallet.map {
-                guard let wallet = $0 else {
-                    incorrectImplementation("Should have saved wallet earlier")
-                }
-                return wallet
-            }.replaceErrorWithEmpty().eraseToAnyPublisher()
-        }
+    private let walletOverride: AnyPublisher<Wallet, Never>?
+
+    private lazy var wallet: AnyPublisher<Wallet, Never> = walletOverride
+        ?? walletStorageUseCase.wallet.map {
+            guard let wallet = $0 else {
+                incorrectImplementation("Should have saved wallet earlier")
+            }
+            return wallet
+        }.replaceErrorWithEmpty().eraseToAnyPublisher()
+
+    init(navigationController: UINavigationController, wallet: AnyPublisher<Wallet, Never>? = nil) {
+        self.walletOverride = wallet
         super.init(navigationController: navigationController)
     }
 
@@ -59,12 +59,12 @@ final class DecryptKeystoreCoordinator: BaseCoordinator<DecryptKeystoreCoordinat
 
 private extension DecryptKeystoreCoordinator {
     func toDecryptKeystore() {
-        let viewModel = DecryptKeystoreToRevealKeyPairViewModel(useCase: useCase, wallet: wallet)
+        let viewModel = DecryptKeystoreToRevealKeyPairViewModel(wallet: wallet)
 
         push(scene: DecryptKeystoreToRevealKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .dismiss: dismiss()
-            case let .decryptKeystoreReavealing(keyPair): toBackUpRevealed(keyPair: keyPair)
+            case .dismiss: self.dismiss()
+            case let .decryptKeystoreReavealing(keyPair): self.toBackUpRevealed(keyPair: keyPair)
             }
         }
     }
@@ -74,7 +74,7 @@ private extension DecryptKeystoreCoordinator {
 
         push(scene: BackUpRevealedKeyPair.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .finish: finish()
+            case .finish: self.finish()
             }
         }
     }

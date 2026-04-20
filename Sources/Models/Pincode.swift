@@ -24,9 +24,19 @@
 
 import Foundation
 
+/// A fixed-length user-chosen pincode used to unlock the app.
+///
+/// The pincode has **no cryptographic role** — the wallet's private key is
+/// protected by the user's `WalletEncryptionPassword`, not by this pincode. The
+/// pincode only gates re-entry into the already-authenticated app session.
 struct Pincode: Equatable, Codable {
+
+    /// The raw digits making up the pincode, in order. Guaranteed to be exactly
+    /// `Pincode.length` digits once successfully constructed.
     let digits: [Digit]
 
+    /// Constructs a pincode from an ordered list of digits. Throws if the list is
+    /// not exactly `Pincode.length` digits long.
     init(digits: [Digit]) throws {
         if digits.count > Pincode.length { throw Error.pincodeTooLong }
         if digits.count < Pincode.length { throw Error.pincodeTooShort }
@@ -37,14 +47,22 @@ struct Pincode: Equatable, Codable {
 // MARK: Minimum length
 
 extension Pincode {
+
+    /// The enforced pincode length, in digits.
     static let length: Int = 4
 }
 
 // MARK: - Error
 
 extension Pincode {
+
+    /// Construction failures surfaced from `Pincode.init(digits:)`.
     enum Error: Swift.Error {
+
+        /// Caller supplied more than `Pincode.length` digits.
         case pincodeTooLong
+
+        /// Caller supplied fewer than `Pincode.length` digits.
         case pincodeTooShort
     }
 }

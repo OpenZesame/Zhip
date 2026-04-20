@@ -64,7 +64,7 @@ extension DeepLinkHandler {
     }
 
     var navigation: AnyPublisher<DeepLink, Never> {
-        navigator.navigation.filter { [unowned self] _ in !appIsLockedSoBufferLink }
+        navigator.navigation.filter { [unowned self] _ in !self.appIsLockedSoBufferLink }
             .eraseToAnyPublisher()
     }
 }

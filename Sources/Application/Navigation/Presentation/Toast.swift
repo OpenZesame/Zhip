@@ -22,19 +22,37 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 
-/// Small message to be displayed to user, named after Android equivalence.
+/// A lightweight text message the UI surfaces as an auto-dismissing alert,
+/// named after the Android equivalent.
+///
+/// ViewModels `send(Toast(...))` into `InputFromController.toastSubject` to
+/// request a display; the `SceneController` presents it on the active view
+/// controller.
 struct Toast {
+
+    /// Describes how the toast should disappear after presentation.
     enum Dismissing {
+
+        /// Dismiss automatically after `duration` seconds.
         case after(duration: TimeInterval)
+
+        /// Wait for the user to tap the dismiss button with the given title.
         case manual(dismissButtonTitle: String)
     }
 
+    /// The body text shown inside the toast.
     private let message: String
+
+    /// How the toast is torn down once presented.
     private let dismissing: Dismissing
+
+    /// Optional callback invoked when the toast is dismissed.
     private let completion: Completion?
 
+    /// Creates a toast. Default `dismissing` is "auto-dismiss after 0.6 s".
     init(_ message: String, dismissing: Dismissing = .after(duration: 0.6), completion: Completion? = nil) {
         self.message = message
         self.dismissing = dismissing
@@ -64,7 +82,7 @@ extension Toast {
             }
             alert.addAction(dismissAction)
         case let .after(duration):
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) {
+            Container.shared.clock().schedule(after: duration) {
                 alert.dismiss(animated: true, completion: dismissedCompletion)
             }
         }

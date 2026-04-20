@@ -31,13 +31,6 @@ enum CreateNewWalletCoordinatorNavigationStep {
 }
 
 final class CreateNewWalletCoordinator: BaseCoordinator<CreateNewWalletCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
 
     override func start(didStart _: Completion? = nil) {
         toEnsureThatYouAreNotBeingWatched()
@@ -51,19 +44,19 @@ private extension CreateNewWalletCoordinator {
         let viewModel = EnsureThatYouAreNotBeingWatchedViewModel()
         push(scene: EnsureThatYouAreNotBeingWatched.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .understand: toCreateWallet()
-            case .cancel: cancel()
+            case .understand: self.toCreateWallet()
+            case .cancel: self.cancel()
             }
         }
     }
 
     func toCreateWallet() {
-        let viewModel = CreateNewWalletViewModel(useCase: walletUseCase)
+        let viewModel = CreateNewWalletViewModel()
 
         push(scene: CreateNewWallet.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case let .createWallet(wallet): toBackupWallet(wallet: wallet)
-            case .cancel: cancel()
+            case let .createWallet(wallet): self.toBackupWallet(wallet: wallet)
+            case .cancel: self.cancel()
             }
         }
     }
@@ -72,13 +65,12 @@ private extension CreateNewWalletCoordinator {
         start(
             coordinator: BackupWalletCoordinator(
                 navigationController: navigationController,
-                useCase: useCaseProvider.makeWalletUseCase(),
                 wallet: Just(wallet).eraseToAnyPublisher()
             )
         ) { [unowned self] userFinished in
             switch userFinished {
-            case .cancel: cancel()
-            case .backUp: toMain(wallet: wallet)
+            case .cancel: self.cancel()
+            case .backUp: self.toMain(wallet: wallet)
             }
         }
     }

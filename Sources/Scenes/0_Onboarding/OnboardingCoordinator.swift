@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -30,16 +31,9 @@ enum OnboardingCoordinatorNavigationStep {
 }
 
 final class OnboardingCoordinator: BaseCoordinator<OnboardingCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-
-    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.onboardingUseCase) private var onboardingUseCase: OnboardingUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
 
     override func start(didStart _: Completion? = nil) {
         toWelcome()
@@ -50,7 +44,7 @@ private extension OnboardingCoordinator {
     func toWelcome() {
         push(scene: Welcome.self, viewModel: WelcomeViewModel()) { [unowned self] userIntendsTo in
             switch userIntendsTo {
-            case .start: toNextStep()
+            case .start: self.toNextStep()
             }
         }
     }
@@ -68,7 +62,7 @@ private extension OnboardingCoordinator {
             return toCustomECCWarning()
         }
 
-        guard walletUseCase.hasConfiguredWallet else {
+        guard walletStorageUseCase.hasConfiguredWallet else {
             return toChooseWallet()
         }
 
@@ -83,7 +77,7 @@ private extension OnboardingCoordinator {
         let viewModel = TermsOfServiceViewModel(useCase: onboardingUseCase, isDismissible: false)
         push(scene: TermsOfService.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptTermsOfService, .dismiss: toAnalyticsPermission()
+            case .acceptTermsOfService, .dismiss: self.toAnalyticsPermission()
             }
         }
     }
@@ -93,7 +87,7 @@ private extension OnboardingCoordinator {
 
         push(scene: AskForCrashReportingPermissions.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .answerQuestionAboutCrashReporting, .dismiss: toCustomECCWarning()
+            case .answerQuestionAboutCrashReporting, .dismiss: self.toCustomECCWarning()
             }
         }
     }
@@ -106,20 +100,19 @@ private extension OnboardingCoordinator {
 
         push(scene: WarningCustomECC.self, viewModel: viewModel) { [unowned self] userDid in
             switch userDid {
-            case .acceptRisks, .dismiss: toChooseWallet()
+            case .acceptRisks, .dismiss: self.toChooseWallet()
             }
         }
     }
 
     func toChooseWallet() {
         let coordinator = ChooseWalletCoordinator(
-            navigationController: navigationController,
-            useCaseProvider: useCaseProvider
+            navigationController: navigationController
         )
 
         start(coordinator: coordinator) { [unowned self] in
             switch $0 {
-            case .finishChoosingWallet: toChoosePincode()
+            case .finishChoosingWallet: self.toChoosePincode()
             }
         }
     }
@@ -128,11 +121,11 @@ private extension OnboardingCoordinator {
         start(
             coordinator: SetPincodeCoordinator(
                 navigationController: navigationController,
-                useCase: useCaseProvider.makePincodeUseCase()
+                useCase: pincodeUseCase
             )
         ) { [unowned self] (userDid: SetPincodeCoordinatorNavigationStep) in
             switch userDid {
-            case .setPincode: finish()
+            case .setPincode: self.finish()
             }
         }
     }

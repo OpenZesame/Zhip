@@ -22,6 +22,7 @@
 // SOFTWARE.
 //
 
+import Factory
 import UIKit
 import Zesame
 
@@ -33,16 +34,10 @@ enum SettingsCoordinatorNavigationStep {
 }
 
 final class SettingsCoordinator: BaseCoordinator<SettingsCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
-    private lazy var transactionUseCase = useCaseProvider.makeTransactionsUseCase()
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
-    private lazy var onboardingUseCase = useCaseProvider.makeOnboardingUseCase()
-
-    init(navigationController: UINavigationController, useCaseProvider: UseCaseProvider) {
-        self.useCaseProvider = useCaseProvider
-        super.init(navigationController: navigationController)
-    }
+    @Injected(\.transactionsUseCase) private var transactionUseCase: TransactionsUseCase
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
+    @Injected(\.onboardingUseCase) private var onboardingUseCase: OnboardingUseCase
 
     override func start(didStart _: Completion? = nil) {
         toSettings()
@@ -59,21 +54,21 @@ private extension SettingsCoordinator {
         push(scene: Settings.self, viewModel: viewModel) { [unowned self] userIntendsTo in
             switch userIntendsTo {
             // Navigation bar
-            case .closeSettings: finish()
+            case .closeSettings: self.finish()
             // Section 0
-            case .removePincode: toRemovePincode()
-            case .setPincode: toSetPincode()
+            case .removePincode: self.toRemovePincode()
+            case .setPincode: self.toSetPincode()
             // Section 1
-            case .starUsOnGithub: toStarUsOnGitHub()
-            case .reportIssueOnGithub: toReportIssueOnGithub()
-            case .acknowledgments: toAcknowledgments()
+            case .starUsOnGithub: self.toStarUsOnGitHub()
+            case .reportIssueOnGithub: self.toReportIssueOnGithub()
+            case .acknowledgments: self.toAcknowledgments()
             // Section 2
-            case .readTermsOfService: toReadTermsOfService()
-            case .changeAnalyticsPermissions: toChangeAnalyticsPermissions()
-            case .readCustomECCWarning: toReadCustomECCWarning()
+            case .readTermsOfService: self.toReadTermsOfService()
+            case .changeAnalyticsPermissions: self.toChangeAnalyticsPermissions()
+            case .readCustomECCWarning: self.toReadCustomECCWarning()
             // Section 3
-            case .backupWallet: toBackupWallet()
-            case .removeWallet: toConfirmWalletRemoval()
+            case .backupWallet: self.toBackupWallet()
+            case .removeWallet: self.toConfirmWalletRemoval()
             }
         }
     }
@@ -92,7 +87,7 @@ private extension SettingsCoordinator {
         presentModalCoordinator(
             makeCoordinator: { SetPincodeCoordinator(
                 navigationController: $0,
-                useCase: useCaseProvider.makePincodeUseCase()
+                useCase: pincodeUseCase
             ) },
             navigationHandler: { userDid, dismissModalFlow in
                 switch userDid {
@@ -154,7 +149,6 @@ private extension SettingsCoordinator {
         presentModalCoordinator(
             makeCoordinator: { BackupWalletCoordinator(
                 navigationController: $0,
-                useCase: walletUseCase,
                 mode: .dismissable
             )
             },
@@ -167,14 +161,14 @@ private extension SettingsCoordinator {
     }
 
     func toConfirmWalletRemoval() {
-        let viewModel = ConfirmWalletRemovalViewModel(useCase: walletUseCase)
+        let viewModel = ConfirmWalletRemovalViewModel()
 
         modallyPresent(scene: ConfirmWalletRemoval.self, viewModel: viewModel) { userDid, dismissScene in
             switch userDid {
             case .cancel: dismissScene(true, nil)
             case .confirm:
                 dismissScene(true) { [unowned self] in
-                    toChooseWallet()
+                    self.toChooseWallet()
                 }
             }
         }
@@ -182,7 +176,7 @@ private extension SettingsCoordinator {
 
     func toChooseWallet() {
         transactionUseCase.deleteCachedBalance()
-        walletUseCase.deleteWallet()
+        walletStorageUseCase.deleteWallet()
         pincodeUseCase.deletePincode()
         userIntends(to: .removeWallet)
     }

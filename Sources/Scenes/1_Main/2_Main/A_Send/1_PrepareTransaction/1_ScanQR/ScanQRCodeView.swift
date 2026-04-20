@@ -58,11 +58,11 @@ private extension ScanQRCodeView {
         })
 
         reader.didFindCode = { [unowned self] in
-            scannedQrCodeSubject.send($0.value)
+            self.scannedQrCodeSubject.send($0.value)
         }
 
         reader.didFailDecoding = { [unowned self] in
-            scannedQrCodeSubject.send(nil)
+            self.scannedQrCodeSubject.send(nil)
         }
 
         readerView.switchCameraButton?.addTarget(

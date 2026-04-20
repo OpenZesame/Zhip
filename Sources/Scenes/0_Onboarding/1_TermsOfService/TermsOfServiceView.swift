@@ -23,6 +23,7 @@
 //
 
 import Combine
+import Factory
 import Foundation
 import UIKit
 import WebKit
@@ -82,6 +83,6 @@ private extension TermsOfServiceView {
 
         textView.withStyle(.nonSelectable)
         textView.backgroundColor = .clear
-        textView.attributedText = htmlAsAttributedString(htmlFileName: "TermsOfService")
+        textView.attributedText = Container.shared.htmlLoader().load(htmlFileName: "TermsOfService")
     }
 }

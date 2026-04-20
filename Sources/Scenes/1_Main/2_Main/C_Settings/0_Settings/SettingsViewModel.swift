@@ -72,7 +72,7 @@ final class SettingsViewModel: BaseViewModel<
         }
 
         let sections: AnyPublisher<[SectionModel<Void, SettingsItem>], Never> = input.fromController.viewWillAppear
-            .map { [unowned self] _ in return makeSections() }
+            .map { [unowned self] _ in return self.makeSections() }
             .eraseToAnyPublisher()
 
         let selectedCell: AnyPublisher<SettingsItem, Never> = input.fromView.selectedIndexPath.withLatestFrom(sections) {

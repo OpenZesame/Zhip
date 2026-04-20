@@ -27,15 +27,25 @@ import Foundation
 
 // MARK: - User action and navigation steps
 
+/// The single navigation step the welcome scene can emit.
 enum WelcomeUserAction {
+
+    /// The user tapped "Get Started", signalling intent to begin onboarding.
     case /* user intends to */ start
 }
 
+/// ViewModel for the first screen the user sees on a fresh install.
+///
+/// The scene has a single job: forward the `startTrigger` to the onboarding
+/// coordinator as `.start`.
 final class WelcomeViewModel: BaseViewModel<
     WelcomeUserAction,
     WelcomeViewModel.InputFromView,
     WelcomeViewModel.Output
 > {
+
+    /// Wires `startTrigger` → `navigator.next(.start)`. Returns an empty `Output`
+    /// because the welcome scene has no ViewModel-driven UI state.
     override func transform(input: Input) -> WelcomeViewModel.Output {
         func userIntends(to userAction: NavigationStep) {
             navigator.next(userAction)
@@ -53,9 +63,14 @@ final class WelcomeViewModel: BaseViewModel<
 }
 
 extension WelcomeViewModel {
+
+    /// User-event publishers the ViewModel consumes.
     struct InputFromView {
+
+        /// Fires when the user taps the "Get Started" button.
         let startTrigger: AnyPublisher<Void, Never>
     }
 
+    /// No outputs — the scene is entirely static until the user taps Start.
     struct Output {}
 }

@@ -36,7 +36,6 @@ class AppDelegate: UIResponder {
         return AppCoordinator(
             navigationController: navigationController,
             deepLinkHandler: DeepLinkHandler(),
-            useCaseProvider: DefaultUseCaseProvider.shared,
             isViewControllerRootOfWindow: { [weak self] in
                 self?.window?.rootViewController == $0
             },

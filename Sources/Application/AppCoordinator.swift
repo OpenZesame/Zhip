@@ -23,26 +23,39 @@
 //
 
 import Combine
+import Factory
 import UIKit
 import Zesame
 
+/// Navigation steps the app-level coordinator itself can emit. Empty because
+/// `AppCoordinator` is the root — it has nowhere "above" to report back to.
 enum AppCoordinatorNavigationStep {}
 
+/// Root coordinator owning the app's top-level flow: deciding between onboarding
+/// and the main wallet experience on launch, and the lock/unlock transitions when
+/// the app resigns active / returns active.
 final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
-    private let useCaseProvider: UseCaseProvider
+
+    /// Handles incoming deep links and decides whether they should be buffered
+    /// (while the lock screen is visible) or delivered immediately.
     private let deepLinkHandler: DeepLinkHandler
 
-    private lazy var walletUseCase = useCaseProvider.makeWalletUseCase()
-    private lazy var pincodeUseCase = useCaseProvider.makePincodeUseCase()
+    @Injected(\.walletStorageUseCase) private var walletStorageUseCase: WalletStorageUseCase
+    @Injected(\.pincodeUseCase) private var pincodeUseCase: PincodeUseCase
+    @Injected(\.clock) private var clock: Clock
+
+    /// Splash-style lock scene shown while the app is in the background.
     private lazy var lockAppScene = LockAppScene()
 
+    /// The pincode-entry scene shown when the user returns to the app and a pincode
+    /// has been configured. Lazily constructed so the use case and navigation
+    /// subscription only exist once the scene is actually needed.
     private lazy var unlockAppScene: UnlockAppWithPincode = {
-        let viewModel = UnlockAppWithPincodeViewModel(useCase: pincodeUseCase)
+        let viewModel = UnlockAppWithPincodeViewModel()
         let scene = UnlockAppWithPincode(viewModel: viewModel)
 
         scene.viewModel.navigator.navigation
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] userDid in
+            .sinkOnMain { [weak self] userDid in
                 switch userDid {
                 case .unlockApp:
                     self?.appIsUnlockedEmitBufferedDeeplinks()
@@ -53,25 +66,39 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
         return scene
     }()
 
+    /// Window-level root controller setter. Passed in rather than synthesized so
+    /// tests can capture the transitions without a real UIWindow.
     private let __setRootViewControllerOfWindow: (UIViewController) -> Void
+
+    /// Returns `true` if the given view controller is currently the window's root.
+    /// Used to distinguish the lock vs. unlock vs. main stack states.
     private let isViewControllerRootOfWindow: (UIViewController) -> Bool
 
+    /// Designated initializer.
+    ///
+    /// - Parameters:
+    ///   - navigationController: the wallet/onboarding navigation stack.
+    ///   - deepLinkHandler: handles buffering and replay of deep links around the
+    ///     lock/unlock boundary.
+    ///   - isViewControllerRootOfWindow: window-level root predicate.
+    ///   - setRootViewControllerOfWindow: window-level root setter.
     init(
         navigationController: UINavigationController,
         deepLinkHandler: DeepLinkHandler,
-        useCaseProvider: UseCaseProvider,
         isViewControllerRootOfWindow: @escaping (UIViewController) -> Bool,
         setRootViewControllerOfWindow: @escaping (UIViewController) -> Void
     ) {
         self.deepLinkHandler = deepLinkHandler
-        self.useCaseProvider = useCaseProvider
         __setRootViewControllerOfWindow = setRootViewControllerOfWindow
         self.isViewControllerRootOfWindow = isViewControllerRootOfWindow
         super.init(navigationController: navigationController)
     }
 
+    /// Routes the user to either the main wallet experience (with the unlock
+    /// scene if needed) or the onboarding flow, depending on whether a wallet is
+    /// already configured in secure storage.
     override func start(didStart _: Completion? = nil) {
-        if walletUseCase.hasConfiguredWallet {
+        if walletStorageUseCase.hasConfiguredWallet {
             toMain(displayUnlockSceneIfNeeded: true)
         } else {
             toOnboarding()
@@ -84,13 +111,12 @@ final class AppCoordinator: BaseCoordinator<AppCoordinatorNavigationStep> {
 private extension AppCoordinator {
     func toOnboarding() {
         let onboarding = OnboardingCoordinator(
-            navigationController: navigationController,
-            useCaseProvider: useCaseProvider
+            navigationController: navigationController
         )
 
         start(coordinator: onboarding, transition: .replace) { [unowned self] userDid in
             switch userDid {
-            case .finishOnboarding: toMain()
+            case .finishOnboarding: self.toMain()
             }
         }
     }
@@ -98,18 +124,16 @@ private extension AppCoordinator {
     func toMain(displayUnlockSceneIfNeeded displayUnlockScene: Bool = false) {
         let main = MainCoordinator(
             navigationController: navigationController,
-            deepLinkGenerator: DeepLinkGenerator(),
-            useCaseProvider: useCaseProvider,
             deeplinkedTransaction: deepLinkHandler.navigation.map(\.asTransaction).filterNil().eraseToAnyPublisher()
         )
 
         start(coordinator: main, transition: .replace, didStart: { [unowned self] in
             if displayUnlockScene {
-                toUnlockAppWithPincodeIfNeeded()
+                self.toUnlockAppWithPincodeIfNeeded()
             }
         }, navigationHandler: { [unowned self] userDid in
             switch userDid {
-            case .removeWallet: toOnboarding()
+            case .removeWallet: self.toOnboarding()
             }
         })
     }
@@ -181,7 +205,7 @@ private extension AppCoordinator {
     }
 
     func appIsUnlockedEmitBufferedDeeplinks(delayInSeconds: TimeInterval = 0.2) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) { [weak self] in
+        clock.schedule(after: delayInSeconds) { [weak self] in
             self?.deepLinkHandler.appIsUnlockedEmitBufferedDeeplinks()
         }
     }
