@@ -59,7 +59,7 @@ packages:
   # SingleLineController* modules — now NanoViewController*).
   NanoViewController:
     url: https://github.com/Sajjon/NanoViewController
-    branch: transform_result_builder
+    exactVersion: 0.1.5
 
 targets:
   Zhip:
