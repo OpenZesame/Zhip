@@ -266,27 +266,38 @@ final class SendCoordinatorTests: XCTestCase {
 
     // MARK: - Deep-link filter reject branch
 
-    /// When the active scene is no longer `PrepareTransaction`, deep-linked
-    /// transactions must be filtered out so they don't mutate an unrelated
-    /// scene's state.
+    /// Asserts that a deeplinked intent emitted while a non-Prepare scene is
+    /// topmost is dropped by `SendCoordinator`'s topmost-scene filter.
+    ///
+    /// Load-bearing assertion: Prepare's recipient text field is unchanged.
+    /// Stack-count alone would pass with the filter removed — a stray
+    /// pre-fill of a non-topmost view doesn't push/pop. See `chainedAssert`
+    /// helper for the recipient-snapshot rationale.
     func test_deeplinkedTransaction_whenNotOnPrepare_isFilteredOut() throws {
-        // Arrange — push past Prepare so the topmost-scene filter rejects.
+        // Arrange
         sut.start()
-        let payment = try makePayment()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
-        prepare.navigationHandler?(.reviewPayment(payment))
+        prepare.view.layoutIfNeeded()
+        let recipientField = try XCTUnwrap(
+            prepare.view.firstSubview(ofType: FloatingLabelTextField.self)
+        )
+        let recipientBeforeDeeplink = recipientField.text ?? ""
+        prepare.navigationHandler?(.reviewPayment(try makePayment()))
         drainRunLoop()
         XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
         let stackCountBeforeDeeplink = navigationController.viewControllers.count
+        let deeplinkedAddress = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
 
-        // Act — emit a deeplinked intent while Review is on top.
-        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        deeplinkSubject.send(TransactionIntent(to: address))
+        // Act
+        deeplinkSubject.send(TransactionIntent(to: deeplinkedAddress))
         drainRunLoop()
 
-        // Assert — filter dropped the intent: stack unchanged, no crash.
+        // Assert — filter dropped the intent: stack unchanged, recipient field
+        // byte-for-byte unchanged, and the new address explicitly didn't land.
         XCTAssertEqual(navigationController.viewControllers.count, stackCountBeforeDeeplink)
         XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
+        XCTAssertEqual(recipientField.text ?? "", recipientBeforeDeeplink)
+        XCTAssertFalse((recipientField.text ?? "").contains(deeplinkedAddress.asString))
     }
 
     // MARK: - ScanQRCode result branches
