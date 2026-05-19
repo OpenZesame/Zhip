@@ -59,12 +59,37 @@ public final class ScanQRCodeViewModel: AbstractViewModel<
     /// future use if the reader needs an explicit start trigger).
     private let startScanningSubject = CurrentValueSubject<Void, Never>(())
 
+    /// Externally-injected scan-string source, merged with the view's camera
+    /// stream inside `transform`. Nil in production; non-nil in tests (and
+    /// potentially anywhere a non-AVFoundation scan source needs to feed in).
+    /// Mirrors `PrepareTransactionViewModel.scannedOrDeeplinkedTransaction` —
+    /// the QR equivalent of the deep-link DI seam one level up.
+    private let scannedQrCodeStringInjected: AnyPublisher<String?, Never>?
+
+    /// Captures the optional injected scan-string source. Defaults to nil so
+    /// the production call site (`SendCoordinator.toScanQRCode`) keeps its
+    /// existing zero-arg construction; tests pass a `PassthroughSubject` to
+    /// drive `.scanQRContainingTransaction` without an `AVCaptureMetadataOutput`.
+    public init(scannedQrCodeString: AnyPublisher<String?, Never>? = nil) {
+        scannedQrCodeStringInjected = scannedQrCodeString
+    }
+
     /// Decodes scanned strings, strips an optional `zilliqa://` prefix, and
     /// surfaces the resulting `TransactionIntent` (or cancel on bar-button tap).
     override public func transform(input: Input) -> Output<Publishers, NavigationStep> {
         let navigator = Navigator<NavigationStep>()
 
-        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = input.fromView.scannedQrCodeString.map {
+        // Production: only the view's camera-backed subject emits.
+        // Tests: merge the injected stream so a synthesized scan flows through
+        // the same decode pipeline.
+        let scannedQrCodeString: AnyPublisher<String?, Never> = {
+            guard let injected = scannedQrCodeStringInjected else {
+                return input.fromView.scannedQrCodeString
+            }
+            return input.fromView.scannedQrCodeString.merge(with: injected).eraseToAnyPublisher()
+        }()
+
+        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = scannedQrCodeString.map {
             guard var stringFromQR = $0 else {
                 return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
             }

@@ -40,6 +40,7 @@ final class SendCoordinatorTests: XCTestCase {
     private var mockTransactions: MockTransactionsUseCase!
     private var mockWallet: MockWalletUseCase!
     private var deeplinkSubject: PassthroughSubject<TransactionIntent, Never>!
+    private var scannedQrCodeSubject: PassthroughSubject<String?, Never>!
     private var cancellables: Set<AnyCancellable> = []
     private var sut: SendCoordinator!
 
@@ -51,13 +52,15 @@ final class SendCoordinatorTests: XCTestCase {
         Container.shared.transactionsUseCase.register { [unowned self] in mainActorOnly { mockTransactions } }
         Container.shared.walletStorageUseCase.register { [unowned self] in mainActorOnly { mockWallet } }
         deeplinkSubject = PassthroughSubject<TransactionIntent, Never>()
+        scannedQrCodeSubject = PassthroughSubject<String?, Never>()
         navigationController = NavigationBarLayoutingNavigationController()
         window = TestWindowFactory.make(frame: .init(x: 0, y: 0, width: 320, height: 480))
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         sut = SendCoordinator(
             navigationController: navigationController,
-            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher()
+            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher(),
+            scannedQrCodeString: scannedQrCodeSubject.eraseToAnyPublisher()
         )
     }
 
@@ -68,6 +71,7 @@ final class SendCoordinatorTests: XCTestCase {
         window.isHidden = true
         window = nil
         navigationController = nil
+        scannedQrCodeSubject = nil
         deeplinkSubject = nil
         Container.shared.manager.reset()
         mockWallet = nil
@@ -213,11 +217,28 @@ final class SendCoordinatorTests: XCTestCase {
     }
 
     func test_scanQRCode_scannedTransaction_dismissesAndForwardsToSubject() throws {
-        // The `.scanQRContainingTransaction` step fires when the camera reads
-        // a valid QR code — there's no UI control (it's a delegate callback
-        // from `AVCaptureMetadataOutput`). Driving this without a real
-        // camera buffer would require fake-injecting into `scannedQrCodeString`
-        // which is no longer accessible after the navigator removal.
-        throw XCTSkip("Real QR-scan callback not drivable in unit tests; covered by ScanQRCodeViewModelTests.")
+        // Arrange — start, open the QR scanner modal, capture the presented scene.
+        sut.start()
+        let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
+        try tapButton(at: 0, in: prepare.view) // scanQR button on recipient field
+        drainRunLoop()
+        let presentedNav = try XCTUnwrap(navigationController.presentedViewController as? UINavigationController)
+        XCTAssertTrue(presentedNav.topViewController is ScanQRCode)
+        // Bare-address payload — `TransactionIntent.fromScannedQrCodeString`
+        // parses this as an `Address` and wraps it in a no-amount intent.
+        let scannedAddress = "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B"
+
+        // Act — push the synthesized scan through the injected DI seam.
+        scannedQrCodeSubject.send(scannedAddress)
+        drainRunLoop()
+
+        // Assert — modal dismissed and PrepareTransaction is back as top scene.
+        // `dismissAndForwardsToSubject`: the dismiss arm of the coordinator's
+        // `.scanQRContainingTransaction` handler ran, and the forward to
+        // `scannedQRTransactionSubject` would have followed in the dismiss
+        // completion (its effect — pre-filling the recipient — is covered by
+        // the PrepareTransaction VM tests).
+        XCTAssertNil(navigationController.presentedViewController)
+        XCTAssertTrue(top(as: PrepareTransaction.self) != nil)
     }
 }
