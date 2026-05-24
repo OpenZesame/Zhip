@@ -59,7 +59,7 @@ packages:
   # SingleLineController* modules — now NanoViewController*).
   NanoViewController:
     url: https://github.com/Sajjon/NanoViewController
-    branch: testing-spi-navigation-handler
+    exactVersion: 0.1.6
 
 targets:
   Zhip:

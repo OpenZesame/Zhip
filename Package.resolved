@@ -1,5 +1,5 @@
 {
-  "originHash" : "4c8be138a6d6c57df4bc3de1b60ccbb311c67b5a2381c88b32630c23b7c5372e",
+  "originHash" : "367e3357dc51a1b844dd847a0571a6684ac9b94b48698146f4730cc4973e774c",
   "pins" : [
     {
       "identity" : "bigint",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Sajjon/NanoViewController",
       "state" : {
-        "branch" : "testing-spi-navigation-handler",
-        "revision" : "88c8178d64235bbf2dae78383e08fc18f5238f83"
+        "revision" : "efc810291dee4d8e0fbf4cc009e7553e59be85e6",
+        "version" : "0.1.6"
       }
     },
     {
@@ -65,12 +65,48 @@
       }
     },
     {
+      "identity" : "swift-custom-dump",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-custom-dump",
+      "state" : {
+        "revision" : "06c57924455064182d6b217f06ebc05d00cb2990",
+        "version" : "1.5.0"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
         "revision" : "81558271e243f8f47dfe8e9fdd55f3c2b5413f68",
         "version" : "1.37.0"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
+      "state" : {
+        "revision" : "ad5e3190cc63dc288f28546f9c6827efc1e9d495",
+        "version" : "1.19.2"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "2b59c0c741e9184ab057fd22950b491076d42e91",
+        "version" : "603.0.0"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
+        "version" : "1.9.0"
       }
     },
     {
