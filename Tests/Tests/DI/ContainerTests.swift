@@ -58,22 +58,28 @@ final class ContainerTests: XCTestCase {
     // MARK: - reset()
 
     func test_reset_restoresDefaultFactory() {
-        // Arrange — snapshot the production preferences' current value for
-        // `.hasAcceptedTermsOfService` so the assertion is "unchanged by
-        // mock mutation" rather than "must be false". The production factory
-        // resolves to `KeyValueStore(UserDefaults.standard)`, whose contents
-        // are host-machine state — a dev who ran the simulator app once
-        // would have `true` here, which made the old `XCTAssertFalse` flake.
+        // Arrange — Factory's `.singleton` scope keeps its OWN cache, separate
+        // from the container's cache. `Container.shared.manager.reset()` only
+        // clears the container's cache and logs "Singleton scope not managed
+        // by container" — the singleton stays cached. A prior test that
+        // registered a `preferences` mock and then resolved it leaves that
+        // mock cached in `Scope.singleton`; without an explicit
+        // `Scope.singleton.reset()` here, the snapshot below captures that
+        // leaked mock instead of the real production factory.
+        Scope.singleton.reset()
         let productionValueBefore = Container.shared.preferences().isTrue(.hasAcceptedTermsOfService)
         let mock = TestStoreFactory.makePreferences()
         Container.shared.preferences.register { mock }
 
-        // Act
+        // Act — clear singleton cache too, otherwise the mock we just resolved
+        // (if `register` triggered a resolve) would persist through `reset()`.
         Container.shared.manager.reset()
+        Scope.singleton.reset()
 
         // Assert: after reset, the mock's mutation must NOT be visible
         // through the resolved factory — proves the mock is out of the
-        // resolution chain regardless of the host's UserDefaults state.
+        // resolution chain regardless of host UserDefaults state or any
+        // singleton-cache leakage from neighbouring tests.
         mock.save(value: !productionValueBefore, for: .hasAcceptedTermsOfService)
         XCTAssertEqual(
             Container.shared.preferences().isTrue(.hasAcceptedTermsOfService),
