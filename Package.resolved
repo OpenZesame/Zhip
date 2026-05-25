@@ -1,5 +1,5 @@
 {
-  "originHash" : "c2e9a642b63da4df1db90fde90d4765a7c4d459d5bb5cdcc0ecee87a920feec6",
+  "originHash" : "367e3357dc51a1b844dd847a0571a6684ac9b94b48698146f4730cc4973e774c",
   "pins" : [
     {
       "identity" : "bigint",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Sajjon/NanoViewController",
       "state" : {
-        "revision" : "8c21616bf2a7ae22b8deb31c63f5a7dbcf1c384c",
-        "version" : "0.1.4"
+        "revision" : "efc810291dee4d8e0fbf4cc009e7553e59be85e6",
+        "version" : "0.1.6"
       }
     },
     {

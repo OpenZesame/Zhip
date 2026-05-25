@@ -58,14 +58,23 @@ public final class SendCoordinator: BaseCoordinator<SendCoordinatorNavigationSte
     private let transactionIntent: AnyPublisher<TransactionIntent, Never>
     /// Subject used to push QR-scanned intents into `transactionIntent`.
     private let scannedQRTransactionSubject = PassthroughSubject<TransactionIntent, Never>()
+    /// Optional DI seam for the QR scan-string source consumed by step 1b
+    /// (`ScanQRCodeViewModel`). Nil in production — the view's camera-backed
+    /// subject is the only source. Non-nil from tests, which inject a
+    /// `PassthroughSubject` so the scan→decode pipeline is drivable without an
+    /// `AVCaptureMetadataOutput` callback. Mirrors `deeplinkedTransaction` one
+    /// step further down the chain.
+    private let scannedQrCodeString: AnyPublisher<String?, Never>?
 
     /// Captures the deep-link source and merges it with the QR subject.
     init(
         navigationController: UINavigationController,
-        deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>
+        deeplinkedTransaction: AnyPublisher<TransactionIntent, Never>,
+        scannedQrCodeString: AnyPublisher<String?, Never>? = nil
     ) {
         transactionIntent = deeplinkedTransaction.merge(with: scannedQRTransactionSubject.replaceErrorWithEmpty())
             .eraseToAnyPublisher()
+        self.scannedQrCodeString = scannedQrCodeString
         super.init(navigationController: navigationController)
     }
 
@@ -118,7 +127,7 @@ private extension SendCoordinator {
     func toScanQRCode() {
         modallyPresent(
             scene: ScanQRCode.self,
-            viewModel: ScanQRCodeViewModel()
+            viewModel: ScanQRCodeViewModel(scannedQrCodeString: scannedQrCodeString)
         ) { [weak self] userDid, dismissScene in
             switch userDid {
             case let .scanQRContainingTransaction(transaction):

@@ -25,7 +25,7 @@
 @testable import AppFeature
 import Combine
 import Factory
-import NanoViewControllerController
+@_spi(Testing) import NanoViewControllerController
 import UIKit
 import XCTest
 import Zesame
@@ -40,6 +40,7 @@ final class SendCoordinatorTests: XCTestCase {
     private var mockTransactions: MockTransactionsUseCase!
     private var mockWallet: MockWalletUseCase!
     private var deeplinkSubject: PassthroughSubject<TransactionIntent, Never>!
+    private var scannedQrCodeSubject: PassthroughSubject<String?, Never>!
     private var cancellables: Set<AnyCancellable> = []
     private var sut: SendCoordinator!
 
@@ -51,13 +52,15 @@ final class SendCoordinatorTests: XCTestCase {
         Container.shared.transactionsUseCase.register { [unowned self] in mainActorOnly { mockTransactions } }
         Container.shared.walletStorageUseCase.register { [unowned self] in mainActorOnly { mockWallet } }
         deeplinkSubject = PassthroughSubject<TransactionIntent, Never>()
+        scannedQrCodeSubject = PassthroughSubject<String?, Never>()
         navigationController = NavigationBarLayoutingNavigationController()
         window = TestWindowFactory.make(frame: .init(x: 0, y: 0, width: 320, height: 480))
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         sut = SendCoordinator(
             navigationController: navigationController,
-            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher()
+            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher(),
+            scannedQrCodeString: scannedQrCodeSubject.eraseToAnyPublisher()
         )
     }
 
@@ -68,24 +71,12 @@ final class SendCoordinatorTests: XCTestCase {
         window.isHidden = true
         window = nil
         navigationController = nil
+        scannedQrCodeSubject = nil
         deeplinkSubject = nil
         Container.shared.manager.reset()
         mockWallet = nil
         mockTransactions = nil
         super.tearDown()
-    }
-
-    // MARK: - Helpers
-
-    private func top<T>(as _: T.Type) -> T? {
-        navigationController.viewControllers.last as? T
-    }
-
-    private func makePayment() throws -> Payment {
-        let address = try LegacyAddress(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        let amount = try Amount(zil: 1)
-        let gasPrice = try GasPrice(li: 1_000_000)
-        return try Payment(to: address, amount: amount, gasPrice: gasPrice)
     }
 
     // MARK: - start
@@ -105,7 +96,8 @@ final class SendCoordinatorTests: XCTestCase {
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
 
-        prepare.viewModel.navigator.next(.cancel)
+        // `.cancel` is wired to the right-bar button.
+        prepare.rightBarButtonSubject.send(())
         drainRunLoop()
 
         if case .finish = received { } else {
@@ -117,36 +109,45 @@ final class SendCoordinatorTests: XCTestCase {
         sut.start()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
 
-        prepare.viewModel.navigator.next(.scanQRCode)
+        // The scan-QR trigger sits on the embedded button inside the
+        // recipient address field — first UIButton in `PrepareTransactionView`.
+        try tapButton(at: 0, in: prepare.view)
         drainRunLoop()
         // Presentation is modal; just verifying no crash.
     }
 
     func test_prepareTransactionReviewPayment_pushesReviewTransaction() throws {
+        // Arrange
         sut.start()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
         let payment = try makePayment()
 
-        prepare.viewModel.navigator.next(.reviewPayment(payment))
+        // Act — drive the coordinator's routing closure via NVC's @_spi(Testing)
+        // navigationHandler hook instead of filling the entire payment form.
+        prepare.navigationHandler?(.reviewPayment(payment))
         drainRunLoop()
 
-        XCTAssertTrue(top(as: ReviewTransactionBeforeSigning.self) != nil)
+        // Assert
+        XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
     }
 
     // MARK: - ReviewTransaction → SignTransaction
 
     func test_reviewAcceptPayment_pushesSignTransaction() throws {
+        // Arrange — chain into Review via the SPI handler.
         sut.start()
-        let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
         let payment = try makePayment()
-        prepare.viewModel.navigator.next(.reviewPayment(payment))
+        let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
+        prepare.navigationHandler?(.reviewPayment(payment))
         drainRunLoop()
         let review = try XCTUnwrap(top(as: ReviewTransactionBeforeSigning.self))
 
-        review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
+        // Act
+        review.navigationHandler?(.acceptPaymentProceedWithSigning(payment))
         drainRunLoop()
 
-        XCTAssertTrue(top(as: SignTransaction.self) != nil)
+        // Assert
+        XCTAssertNotNil(top(as: SignTransaction.self))
     }
 
     // MARK: - Deep-link forwarding
@@ -163,104 +164,140 @@ final class SendCoordinatorTests: XCTestCase {
 
     // MARK: - Sign → PollTransactionStatus
 
-    private func makeTransactionResponse() throws -> TransactionResponse {
-        try JSONDecoder().decode(TransactionResponse.self, from: Data(#"{"TranID":"abc123","Info":"Sent"}"#.utf8))
-    }
-
-    private func pushToSignTransaction() throws -> SignTransaction {
-        sut.start()
-        let prepare = top(as: PrepareTransaction.self)!
-        let payment = try makePayment()
-        prepare.viewModel.navigator.next(.reviewPayment(payment))
-        drainRunLoop()
-        let review = top(as: ReviewTransactionBeforeSigning.self)!
-        review.viewModel.navigator.next(.acceptPaymentProceedWithSigning(payment))
-        drainRunLoop()
-        return top(as: SignTransaction.self)!
-    }
-
     func test_signTransactionSign_pushesPollTransactionStatus() throws {
-        let sign = try pushToSignTransaction()
+        // Arrange — chain into Sign via SPI handlers.
+        sut.start()
+        let payment = try makePayment()
+        let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
+        prepare.navigationHandler?(.reviewPayment(payment))
+        drainRunLoop()
+        let review = try XCTUnwrap(top(as: ReviewTransactionBeforeSigning.self))
+        review.navigationHandler?(.acceptPaymentProceedWithSigning(payment))
+        drainRunLoop()
+        let sign = try XCTUnwrap(top(as: SignTransaction.self))
+        let response = try makeTransactionResponse()
 
-        try sign.viewModel.navigator.next(.sign(makeTransactionResponse()))
+        // Act
+        sign.navigationHandler?(.sign(response))
         drainRunLoop()
 
-        XCTAssertTrue(top(as: PollTransactionStatus.self) != nil)
+        // Assert
+        XCTAssertNotNil(top(as: PollTransactionStatus.self))
     }
 
     // MARK: - PollTransactionStatus branches
 
-    private func pushToPoll() throws -> PollTransactionStatus {
-        let sign = try pushToSignTransaction()
-        try sign.viewModel.navigator.next(.sign(makeTransactionResponse()))
-        drainRunLoop()
-        return top(as: PollTransactionStatus.self)!
-    }
-
     func test_pollSkip_bubblesFinishWithoutFetchingBalance() throws {
-        let poll = try pushToPoll()
+        // Arrange — chain into Poll, then observe the bubbled step.
+        let poll = try chainToPoll()
         var received: SendCoordinatorNavigationStep?
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
-        poll.viewModel.navigator.next(.skip)
+        // Act
+        poll.navigationHandler?(.skip)
         drainRunLoop()
 
-        if case let .finish(fetch) = received { XCTAssertFalse(fetch) } else {
-            XCTFail("expected .finish(false), got \(String(describing: received))")
+        // Assert — `.skip` should bubble `.finish(fetchBalance: false)`.
+        guard case let .finish(fetchBalance) = received else {
+            return XCTFail("expected .finish, got \(String(describing: received))")
         }
+        XCTAssertFalse(fetchBalance)
     }
 
     func test_pollWaitUntilTimeout_bubblesFinishWithoutFetchingBalance() throws {
-        let poll = try pushToPoll()
+        // Arrange
+        let poll = try chainToPoll()
         var received: SendCoordinatorNavigationStep?
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
-        poll.viewModel.navigator.next(.waitUntilTimeout)
+        // Act
+        poll.navigationHandler?(.waitUntilTimeout)
         drainRunLoop()
 
-        if case let .finish(fetch) = received { XCTAssertFalse(fetch) } else {
-            XCTFail("expected .finish(false), got \(String(describing: received))")
+        // Assert
+        guard case let .finish(fetchBalance) = received else {
+            return XCTFail("expected .finish, got \(String(describing: received))")
         }
+        XCTAssertFalse(fetchBalance)
     }
 
     func test_pollDismiss_bubblesFinishWithFetchingBalance() throws {
-        let poll = try pushToPoll()
+        // Arrange
+        let poll = try chainToPoll()
         var received: SendCoordinatorNavigationStep?
         sut.navigator.navigation.sink { received = $0 }.store(in: &cancellables)
 
-        poll.viewModel.navigator.next(.dismiss)
+        // Act
+        poll.navigationHandler?(.dismiss)
         drainRunLoop()
 
-        if case let .finish(fetch) = received { XCTAssertTrue(fetch) } else {
-            XCTFail("expected .finish(true), got \(String(describing: received))")
+        // Assert — `.dismiss` (user saw "confirmed") asks Main to refetch.
+        guard case let .finish(fetchBalance) = received else {
+            return XCTFail("expected .finish, got \(String(describing: received))")
         }
+        XCTAssertTrue(fetchBalance)
     }
 
     func test_pollViewTransactionDetails_opensBrowserWithoutCrashing() throws {
-        let poll = try pushToPoll()
+        // Arrange — register a mock URL opener so we don't trigger a real
+        // workspace round-trip in the simulator.
+        let mockOpener = MockUrlOpener()
+        Container.shared.urlOpener.register { mockOpener }
+        // Re-create the SUT so it picks up the freshly-registered opener
+        // (the existing one was resolved during setUp before the mock landed).
+        sut = SendCoordinator(
+            navigationController: navigationController,
+            deeplinkedTransaction: deeplinkSubject.eraseToAnyPublisher(),
+            scannedQrCodeString: scannedQrCodeSubject.eraseToAnyPublisher()
+        )
+        let poll = try chainToPoll()
 
-        poll.viewModel.navigator.next(.viewTransactionDetailsInBrowser(id: "abc123"))
+        // Act
+        poll.navigationHandler?(.viewTransactionDetailsInBrowser(id: "abc123"))
         drainRunLoop()
-        // openURL returns asynchronously; we just verify the path ran.
+
+        // Assert — exactly one URL was dispatched, containing the tx id.
+        XCTAssertEqual(mockOpener.openInvocations.count, 1)
+        XCTAssertTrue(
+            mockOpener.lastOpenedUrl?.absoluteString.contains("abc123") ?? false,
+            "expected URL to contain transaction id; got \(String(describing: mockOpener.lastOpenedUrl))"
+        )
     }
 
     // MARK: - Deep-link filter reject branch
 
-    /// When the active scene is no longer `PrepareTransaction`, deep-linked
-    /// transactions must be filtered out so they don't mutate an unrelated
-    /// scene's state.
+    /// Asserts that a deeplinked intent emitted while a non-Prepare scene is
+    /// topmost is dropped by `SendCoordinator`'s topmost-scene filter.
+    ///
+    /// Load-bearing assertion: Prepare's recipient text field is unchanged.
+    /// Stack-count alone would pass with the filter removed — a stray
+    /// pre-fill of a non-topmost view doesn't push/pop. See `chainedAssert`
+    /// helper for the recipient-snapshot rationale.
     func test_deeplinkedTransaction_whenNotOnPrepare_isFilteredOut() throws {
+        // Arrange
         sut.start()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
-        let payment = try makePayment()
-        prepare.viewModel.navigator.next(.reviewPayment(payment))
+        prepare.view.layoutIfNeeded()
+        let recipientField = try XCTUnwrap(
+            prepare.view.firstSubview(ofType: FloatingLabelTextField.self)
+        )
+        let recipientBeforeDeeplink = recipientField.text ?? ""
+        prepare.navigationHandler?(.reviewPayment(try makePayment()))
         drainRunLoop()
         XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
+        let stackCountBeforeDeeplink = navigationController.viewControllers.count
+        let deeplinkedAddress = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
 
-        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        deeplinkSubject.send(TransactionIntent(to: address))
+        // Act
+        deeplinkSubject.send(TransactionIntent(to: deeplinkedAddress))
         drainRunLoop()
-        // Reject path runs without mutating the scan-QR subject.
+
+        // Assert — filter dropped the intent: stack unchanged, recipient field
+        // byte-for-byte unchanged, and the new address explicitly didn't land.
+        XCTAssertEqual(navigationController.viewControllers.count, stackCountBeforeDeeplink)
+        XCTAssertNotNil(top(as: ReviewTransactionBeforeSigning.self))
+        XCTAssertEqual(recipientField.text ?? "", recipientBeforeDeeplink)
+        XCTAssertFalse((recipientField.text ?? "").contains(deeplinkedAddress.asString))
     }
 
     // MARK: - ScanQRCode result branches
@@ -268,26 +305,92 @@ final class SendCoordinatorTests: XCTestCase {
     func test_scanQRCode_cancel_dismissesWithoutCrashing() throws {
         sut.start()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
-        prepare.viewModel.navigator.next(.scanQRCode)
+        try tapButton(at: 0, in: prepare.view) // scanQR button
         drainRunLoop()
 
         let presentedNav = navigationController.presentedViewController as? UINavigationController
         let scan = presentedNav?.topViewController as? ScanQRCode
-        scan?.viewModel.navigator.next(.cancel)
+        // ScanQRCode `.cancel` is wired to the left-bar button.
+        scan?.leftBarButtonSubject.send(())
         drainRunLoop()
     }
 
     func test_scanQRCode_scannedTransaction_dismissesAndForwardsToSubject() throws {
+        // Arrange — start, open the QR scanner modal, capture the presented scene.
         sut.start()
         let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
-        prepare.viewModel.navigator.next(.scanQRCode)
+        try tapButton(at: 0, in: prepare.view) // scanQR button on recipient field
+        drainRunLoop()
+        let presentedNav = try XCTUnwrap(navigationController.presentedViewController as? UINavigationController)
+        XCTAssertTrue(presentedNav.topViewController is ScanQRCode)
+        // Bare-address payload — `TransactionIntent.fromScannedQrCodeString`
+        // parses this as an `Address` and wraps it in a no-amount intent.
+        let scannedAddress = "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B"
+
+        // Act — push the synthesized scan through the injected DI seam.
+        scannedQrCodeSubject.send(scannedAddress)
         drainRunLoop()
 
-        let presentedNav = navigationController.presentedViewController as? UINavigationController
-        let scan = presentedNav?.topViewController as? ScanQRCode
-        let address = try Address(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
-        let intent = TransactionIntent(to: address)
-        scan?.viewModel.navigator.next(.scanQRContainingTransaction(intent))
+        // Assert — modal dismissed and PrepareTransaction is back as top scene.
+        // `dismissAndForwardsToSubject`: the dismiss arm of the coordinator's
+        // `.scanQRContainingTransaction` handler ran, and the forward to
+        // `scannedQRTransactionSubject` would have followed in the dismiss
+        // completion (its effect — pre-filling the recipient — is covered by
+        // the PrepareTransaction VM tests).
+        XCTAssertNil(navigationController.presentedViewController)
+        XCTAssertTrue(top(as: PrepareTransaction.self) != nil)
+    }
+}
+
+// MARK: - Helpers
+
+private extension SendCoordinatorTests {
+    /// Returns the topmost view controller on the navigation stack typed
+    /// as `T`, or `nil` if the top isn't of that type.
+    func top<T>(as _: T.Type) -> T? {
+        navigationController.viewControllers.last as? T
+    }
+
+    /// Builds a valid `Payment` (1 ZIL → known address, minimum gas) used as
+    /// the carry-value when synthesizing `.reviewPayment` / `.acceptPayment`
+    /// routing steps via the NVC `@_spi(Testing)` seam.
+    func makePayment() throws -> Payment {
+        let address = try LegacyAddress(string: "e3090a1309DfAC40352d03dEc6cCD9cAd213e76B")
+        let amount = try Amount(zil: 1)
+        let gasPrice = try GasPrice(li: 1_000_000)
+        return try Payment(to: address, amount: amount, gasPrice: gasPrice)
+    }
+
+    /// Builds a minimal `TransactionResponse` JSON-encoded blob with a known
+    /// transaction id ("abc123"). Used to drive `.sign(...)` and the resulting
+    /// `PollTransactionStatus` push.
+    func makeTransactionResponse() throws -> TransactionResponse {
+        try JSONDecoder().decode(
+            TransactionResponse.self,
+            from: Data(#"{"TranID":"abc123","Info":"Sent"}"#.utf8)
+        )
+    }
+
+    /// Chains forward through the Send pipeline via NVC's `@_spi(Testing)`
+    /// `navigationHandler` hooks until `PollTransactionStatus` is on top.
+    /// Returns the polling scene so the test can drive its routing.
+    ///
+    /// Each `navigationHandler?(.X)` call dispatches the same closure NVC's
+    /// Combine sink installs in production — so the assertion target is the
+    /// coordinator's routing logic, not the view-model emissions (which are
+    /// covered by the per-VM test suites).
+    func chainToPoll() throws -> PollTransactionStatus {
+        sut.start()
+        let payment = try makePayment()
+        let prepare = try XCTUnwrap(top(as: PrepareTransaction.self))
+        prepare.navigationHandler?(.reviewPayment(payment))
         drainRunLoop()
+        let review = try XCTUnwrap(top(as: ReviewTransactionBeforeSigning.self))
+        review.navigationHandler?(.acceptPaymentProceedWithSigning(payment))
+        drainRunLoop()
+        let sign = try XCTUnwrap(top(as: SignTransaction.self))
+        sign.navigationHandler?(.sign(try makeTransactionResponse()))
+        drainRunLoop()
+        return try XCTUnwrap(top(as: PollTransactionStatus.self))
     }
 }

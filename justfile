@@ -15,7 +15,7 @@ result_dir := ".build"
 result     := result_dir + "/TestResults.xcresult"
 cov_json   := result_dir + "/coverage.json"
 sim_device := env_var_or_default("SIM_DEVICE", "iPhone 17")
-sim_os     := env_var_or_default("SIM_OS", "26.1")
+sim_os     := env_var_or_default("SIM_OS", "26.2")
 
 # Keep in sync with .github/workflows/ci.yml to ensure local and CI use
 # the same Apple Silicon simulator destination.

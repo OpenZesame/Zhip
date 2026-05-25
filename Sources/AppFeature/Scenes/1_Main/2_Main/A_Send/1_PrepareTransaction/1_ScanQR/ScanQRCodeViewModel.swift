@@ -27,6 +27,7 @@ import Foundation
 import NanoViewControllerCombine
 import NanoViewControllerCore
 import NanoViewControllerController
+import NanoViewControllerNavigation
 import Zesame
 
 // MARK: - User action and navigation steps
@@ -46,10 +47,10 @@ public enum ScanQRCodeUserAction: Sendable {
 ///
 /// Accepts both raw JSON-payload QRs and ones prefixed with `zilliqa://`
 /// (the QR scheme other Zilliqa wallets emit).
-public final class ScanQRCodeViewModel: BaseViewModel<
-    ScanQRCodeUserAction,
+public final class ScanQRCodeViewModel: AbstractViewModel<
     ScanQRCodeViewModel.InputFromView,
-    ScanQRCodeViewModel.Output
+    ScanQRCodeViewModel.Publishers,
+    ScanQRCodeUserAction
 > {
     /// Result type for the scan→decode pipeline.
     typealias ScannedQRResult = Result<TransactionIntent, Swift.Error>
@@ -58,14 +59,37 @@ public final class ScanQRCodeViewModel: BaseViewModel<
     /// future use if the reader needs an explicit start trigger).
     private let startScanningSubject = CurrentValueSubject<Void, Never>(())
 
+    /// Externally-injected scan-string source, merged with the view's camera
+    /// stream inside `transform`. Nil in production; non-nil in tests (and
+    /// potentially anywhere a non-AVFoundation scan source needs to feed in).
+    /// Mirrors `PrepareTransactionViewModel.scannedOrDeeplinkedTransaction` —
+    /// the QR equivalent of the deep-link DI seam one level up.
+    private let scannedQrCodeStringInjected: AnyPublisher<String?, Never>?
+
+    /// Captures the optional injected scan-string source. Defaults to nil so
+    /// the production call site (`SendCoordinator.toScanQRCode`) keeps its
+    /// existing zero-arg construction; tests pass a `PassthroughSubject` to
+    /// drive `.scanQRContainingTransaction` without an `AVCaptureMetadataOutput`.
+    public init(scannedQrCodeString: AnyPublisher<String?, Never>? = nil) {
+        scannedQrCodeStringInjected = scannedQrCodeString
+    }
+
     /// Decodes scanned strings, strips an optional `zilliqa://` prefix, and
     /// surfaces the resulting `TransactionIntent` (or cancel on bar-button tap).
-    override public func transform(input: Input) -> Output {
-        func userDid(_ userAction: NavigationStep) {
-            navigator.next(userAction)
-        }
+    override public func transform(input: Input) -> Output<Publishers, NavigationStep> {
+        let navigator = Navigator<NavigationStep>()
 
-        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = input.fromView.scannedQrCodeString.map {
+        // Production: only the view's camera-backed subject emits.
+        // Tests: merge the injected stream so a synthesized scan flows through
+        // the same decode pipeline.
+        let scannedQrCodeString: AnyPublisher<String?, Never> = {
+            guard let injected = scannedQrCodeStringInjected else {
+                return input.fromView.scannedQrCodeString
+            }
+            return input.fromView.scannedQrCodeString.merge(with: injected).eraseToAnyPublisher()
+        }()
+
+        let transactionIntentResult: AnyPublisher<ScannedQRResult, Never> = scannedQrCodeString.map {
             guard var stringFromQR = $0 else {
                 return ScannedQRResult.failure(TransactionIntent.Error.scannedStringNotAddressNorJson)
             }
@@ -82,30 +106,33 @@ public final class ScanQRCodeViewModel: BaseViewModel<
             }
         }.eraseToAnyPublisher()
 
-        // MARK: Navigate
+        let startScanningSubject = startScanningSubject
 
-        [
+        return Output(
+            publishers: Publishers(
+                startScanning: startScanningSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
+            ),
+            navigation: navigator.navigation
+        ) {
+            // MARK: Navigate
+
             input.fromController.leftBarButtonTrigger
-                .sink { userDid(.cancel) },
+                .sink { [navigator] in navigator.next(.cancel) }
 
-            transactionIntentResult.sink { [weak self] in
+            transactionIntentResult.sink { [navigator, startScanningSubject] in
                 switch $0 {
                 case .failure:
                     let toast = Toast(
                         String(localized: .ScanQRCode.incompatibleQRTitle),
                         dismissing: .manual(dismissButtonTitle: String(localized: .ScanQRCode.dismiss))
                     ) {
-                        self?.startScanningSubject.send(())
+                        startScanningSubject.send(())
                     }
                     input.fromController.toastSubject.send(toast)
-                case let .success(transactionIntent): userDid(.scanQRContainingTransaction(transactionIntent))
+                case let .success(transactionIntent): navigator.next(.scanQRContainingTransaction(transactionIntent))
                 }
-            },
-        ].forEach { $0.store(in: &cancellables) }
-
-        return Output(
-            startScanning: startScanningSubject.replaceErrorWithEmpty().eraseToAnyPublisher()
-        )
+            }
+        }
     }
 }
 
@@ -114,7 +141,7 @@ public extension ScanQRCodeViewModel {
         let scannedQrCodeString: AnyPublisher<String?, Never>
     }
 
-    struct Output {
+    struct Publishers {
         let startScanning: AnyPublisher<Void, Never>
     }
 }
